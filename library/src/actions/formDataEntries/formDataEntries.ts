@@ -21,6 +21,8 @@ export interface FormDataEntriesAction
  * object with `FormDataEntryValue` values. If a key has multiple values, the
  * values are returned as an array.
  *
+ * For more complex uses, consider {@link https://github.com/fabian-hiller/decode-formdata decode-formdata}.
+ *
  * @returns A transformation action.
  */
 export function formDataEntries(): FormDataEntriesAction {
