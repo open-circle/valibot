@@ -4,14 +4,17 @@ export interface FormDataEntries {
   [key: string]: FormDataEntryValue | FormDataEntryValue[];
 }
 
+export type FormDataMultiKeys<
+  TMultiKeys extends readonly string[] | undefined,
+> = TMultiKeys extends readonly string[]
+  ? Record<TMultiKeys[number], FormDataEntryValue[]>
+  : unknown;
+
 export interface FormDataEntriesAction<
   TMultiKeys extends readonly string[] | undefined,
 > extends BaseTransformation<
     FormData,
-    FormDataEntries &
-      (TMultiKeys extends readonly string[]
-        ? Record<TMultiKeys[number], FormDataEntryValue[]>
-        : unknown),
+    FormDataEntries & FormDataMultiKeys<TMultiKeys>,
     never
   > {
   /**
