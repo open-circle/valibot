@@ -1,0 +1,128 @@
+---
+title: formData
+description: Creates a form data schema.
+source: /schemas/formData/formData.ts
+contributors:
+  - EskiMojo14
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# formData
+
+Creates a form data schema.
+
+> The `FormData` class is not available by default in Node.js v18 and below.
+
+```ts
+const Schema = v.formData<TMessage>(message);
+```
+
+## Generics
+
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `formData` you can validate the data type of the input. If the input is not form data, you can use `message` to customize the error message.
+
+## Returns
+
+- `Schema` <Property {...properties.Schema} />
+
+## Examples
+
+The following examples show how `formData` can be used.
+
+### Form data schema
+
+Schema to validate a form data.
+
+```ts
+const FormDataSchema = v.formData();
+```
+
+## Related
+
+The following APIs can be combined with `formData`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'array',
+    'exactOptional',
+    'intersect',
+    'lazy',
+    'looseObject',
+    'looseTuple',
+    'map',
+    'nonNullable',
+    'nonNullish',
+    'nonOptional',
+    'nullable',
+    'nullish',
+    'object',
+    'objectWithRest',
+    'optional',
+    'record',
+    'set',
+    'strictObject',
+    'strictTuple',
+    'tuple',
+    'tupleWithRest',
+    'undefinedable',
+    'union',
+  ]}
+/>
+
+### Methods
+
+<ApiList
+  items={[
+    'assert',
+    'config',
+    'fallback',
+    'getDefault',
+    'getDefaults',
+    'getFallback',
+    'getFallbacks',
+    'is',
+    'message',
+    'parse',
+    'parser',
+    'pipe',
+    'safeParse',
+    'safeParser',
+  ]}
+/>
+
+### Actions
+
+<ApiList
+  items={[
+    'check',
+    'brand',
+    'description',
+    'maxSize',
+    'metadata',
+    'mimeType',
+    'minSize',
+    'notSize',
+    'rawCheck',
+    'rawTransform',
+    'readonly',
+    'size',
+    'title',
+    'transform',
+  ]}
+/>
+
+### Utils
+
+<ApiList items={['entriesFromList', 'isOfKind', 'isOfType']} />

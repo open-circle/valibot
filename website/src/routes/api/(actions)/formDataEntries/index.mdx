@@ -1,0 +1,60 @@
+---
+title: formDataEntries
+description: Creates a form data entries transformation action.
+source: /actions/formDataEntries/formDataEntries.ts
+contributors:
+  - EskiMojo14
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# formDataEntries
+
+Creates a transformation action that converts a `FormData` instance to an object with `FormDataEntryValue` values. If a key has multiple values, the values are returned as an array.
+
+> For more complex uses, consider [decode-formdata](https://github.com/fabian-hiller/decode-formdata).
+
+```ts
+const Action = v.formDataEntries();
+```
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `formDataEntries` can be used.
+
+### Form data entries schema
+
+Schema to validate and transform a form data instance with specific entries.
+
+```ts
+const FormSchema = v.pipe(
+  v.formData(),
+  v.formDataEntries()
+  v.object({
+    single: v.string(),
+    maybeMulti: v.union([v.string(), v.array(v.string())]),
+    multi: v.array(v.string()),
+  })
+);
+```
+
+## Related
+
+The following APIs can be combined with `formDataEntries`.
+
+### Schemas
+
+<ApiList items={['formData']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
