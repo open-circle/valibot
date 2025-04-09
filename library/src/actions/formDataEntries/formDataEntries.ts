@@ -4,8 +4,16 @@ export interface FormDataEntries {
   [key: string]: FormDataEntryValue | FormDataEntryValue[];
 }
 
-export interface FormDataEntriesAction
-  extends BaseTransformation<FormData, FormDataEntries, never> {
+export interface FormDataEntriesAction<
+  TMultiKeys extends readonly string[] | undefined,
+> extends BaseTransformation<
+    FormData,
+    FormDataEntries &
+      (TMultiKeys extends readonly string[]
+        ? Record<TMultiKeys[number], FormDataEntryValue[]>
+        : unknown),
+    never
+  > {
   /**
    * The transformation type.
    */
@@ -14,6 +22,11 @@ export interface FormDataEntriesAction
    * The transformation reference.
    */
   readonly reference: typeof formDataEntries;
+
+  /**
+   * The keys that have multiple values.
+   */
+  readonly multiKeys: TMultiKeys;
 }
 
 /**
@@ -25,12 +38,30 @@ export interface FormDataEntriesAction
  *
  * @returns A transformation action.
  */
-export function formDataEntries(): FormDataEntriesAction {
+export function formDataEntries(): FormDataEntriesAction<undefined>;
+/**
+ * Creates a transformation action that converts a `FormData` instance to an
+ * object with `FormDataEntryValue` values. If a key has multiple values, or is in `multiKeys`, the
+ * values are returned as an array.
+ *
+ * For more complex uses, consider {@link https://github.com/fabian-hiller/decode-formdata decode-formdata}.
+ *
+ * @param multiKeys The keys that have multiple values.
+ *
+ * @returns A transformation action.
+ */
+export function formDataEntries<const TMultiKeys extends readonly string[]>(
+  multiKeys: TMultiKeys
+): FormDataEntriesAction<TMultiKeys>;
+export function formDataEntries(
+  multiKeys?: string[]
+): FormDataEntriesAction<string[] | undefined> {
   return {
     kind: 'transformation',
     type: 'form_data_entries',
     reference: formDataEntries,
     async: false,
+    multiKeys,
     '~run'(dataset) {
       const entries: FormDataEntries = {};
       for (const [key, value] of dataset.value.entries()) {
@@ -41,7 +72,7 @@ export function formDataEntries(): FormDataEntriesAction {
             entries[key] = [entries[key], value];
           }
         } else {
-          entries[key] = value;
+          entries[key] = multiKeys?.includes(key) ? [value] : value;
         }
       }
       // @ts-expect-error

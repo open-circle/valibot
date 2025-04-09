@@ -16,8 +16,16 @@ Creates a transformation action that converts a `FormData` instance to an object
 > For more complex uses, consider [decode-formdata](https://github.com/fabian-hiller/decode-formdata).
 
 ```ts
-const Action = v.formDataEntries();
+const Action = v.formDataEntries<TMultiKeys>(['multi']);
 ```
+
+## Generics
+
+- `TMultiKeys` <Property {...properties.TMultiKeys} />
+
+## Parameters
+
+- `multiKeys` <Property {...properties.multiKeys} />
 
 ## Returns
 
@@ -34,7 +42,7 @@ Schema to validate and transform a form data instance with specific entries.
 ```ts
 const FormSchema = v.pipe(
   v.formData(),
-  v.formDataEntries()
+  v.formDataEntries(['multi']),
   v.object({
     single: v.string(),
     maybeMulti: v.union([v.string(), v.array(v.string())]),
