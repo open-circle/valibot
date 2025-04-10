@@ -31,19 +31,25 @@ export const properties: Record<string, PropertyProps> = {
           },
           true: {
             type: 'custom',
-            name: 'Record',
+            name: 'Partial',
             generics: [
               {
                 type: 'custom',
-                name: 'TMultiKeys',
-                indexes: ['number'],
-              },
-              {
-                type: 'array',
-                item: {
-                  type: 'custom',
-                  name: 'FormDataEntryValue',
-                },
+                name: 'Record',
+                generics: [
+                  {
+                    type: 'custom',
+                    name: 'TMultiKeys',
+                    indexes: ['number'],
+                  },
+                  {
+                    type: 'array',
+                    item: {
+                      type: 'custom',
+                      name: 'FormDataEntryValue',
+                    },
+                  },
+                ],
               },
             ],
           },

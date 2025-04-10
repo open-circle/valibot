@@ -7,7 +7,7 @@ export interface FormDataEntries {
 export type FormDataMultiKeys<
   TMultiKeys extends readonly string[] | undefined,
 > = TMultiKeys extends readonly string[]
-  ? Record<TMultiKeys[number], FormDataEntryValue[]>
+  ? { [TKey in TMultiKeys[number]]?: FormDataEntryValue[] }
   : unknown;
 
 export interface FormDataEntriesAction<
