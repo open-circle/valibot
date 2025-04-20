@@ -184,11 +184,26 @@ export function objectWithPatterns(
           // exclude specific keys for security reasons
           if (!_isValidObjectKey(input, key)) continue;
 
-          // Get pattern schema
-          const [, valueSchema = this.rest] =
-            this.patterns.find(
-              ([keySchema]) => !keySchema['~run']({ value: key }, config).issues
-            ) ?? [];
+          // Get pattern schema and new key
+
+          let valueSchema:
+            | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+            | undefined;
+          let newKey = key;
+          for (const [keySchema, valueSchema_] of patterns) {
+            const keyDataset = keySchema['~run']({ value: key }, config);
+            if (keyDataset.typed) {
+              valueSchema = valueSchema_;
+              newKey = keyDataset.value;
+              break;
+            }
+          }
+
+          // if no pattern matches, use rest schema
+          if (!valueSchema) {
+            valueSchema = rest;
+          }
+
           // @ts-expect-error
           const value = input[key];
           const valueDataset = valueSchema['~run']({ value }, config);
@@ -234,7 +249,7 @@ export function objectWithPatterns(
 
           // Add entry to dataset
           // @ts-expect-error
-          dataset.value[key] = valueDataset.value;
+          dataset.value[newKey] = valueDataset.value;
         }
         // Otherwise, add object issue
       } else {

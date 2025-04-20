@@ -94,6 +94,17 @@ describe('objectWithPatterns', () => {
         [{ 'foo(bar)': 'foo', 'bar(baz)': 123, other: true }]
       );
     });
+    test('should use transformed key', () => {
+      expect(
+        objectWithPatterns([[BarKeySchema, number()]], boolean())['~run'](
+          { value: { 'bar(baz)': 123 } },
+          {}
+        )
+      ).toStrictEqual({
+        typed: true,
+        value: { 'BAR(BAZ)': 123 },
+      });
+    });
   });
   describe('should return dataset with issues', () => {
     const schema = objectWithPatterns(
