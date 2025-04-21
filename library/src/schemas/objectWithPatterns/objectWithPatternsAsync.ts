@@ -108,7 +108,7 @@ export interface ObjectWithPatternsSchemaAsync<
 }
 
 /**
- * Creates a object schema that matches patterns.
+ * Creates an object schema that matches patterns.
  *
  * @param patterns Pairs of key and value schemas.
  * @param rest Schema to use when no pattern matches.
@@ -126,7 +126,7 @@ export function objectWithPatternsAsync<
 ): ObjectWithPatternsSchemaAsync<TPatterns, TRest, undefined>;
 
 /**
- * Creates a object schema that matches patterns.
+ * Creates an object schema that matches patterns.
  *
  * @param patterns Pairs of key and value schemas.
  * @param rest Schema to use when no pattern matches.

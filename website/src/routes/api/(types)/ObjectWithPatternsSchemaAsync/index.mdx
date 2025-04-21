@@ -1,0 +1,29 @@
+---
+title: ObjectWithPatternsSchemaAsync
+description: Object with patterns schema async interface.
+contributors:
+  - EskiMojo14
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# ObjectWithPatternsSchemaAsync
+
+Object with patterns schema async interface.
+
+## Generics
+
+- `TPatterns` <Property {...properties.TPatterns} />
+- `TRest` <Property {...properties.TRest} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Definition
+
+- `ObjectWithPatternsSchemaAsync` <Property {...properties.BaseSchema} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `patterns` <Property {...properties.patterns} />
+  - `rest` <Property {...properties.rest} />
+  - `message` <Property {...properties.message} />
