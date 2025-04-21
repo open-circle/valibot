@@ -98,7 +98,7 @@ export interface ObjectWithPatternsSchema<
 }
 
 /**
- * Creates a object schema that matches patterns.
+ * Creates an object schema that matches patterns.
  *
  * @param patterns Pairs of key and value schemas.
  * @param rest Schema to use when no pattern matches.
@@ -114,7 +114,7 @@ export function objectWithPatterns<
 ): ObjectWithPatternsSchema<TPatterns, TRest, undefined>;
 
 /**
- * Creates a object schema that matches patterns.
+ * Creates an object schema that matches patterns.
  *
  * @param patterns Pairs of key and value schemas.
  * @param rest Schema to use when no pattern matches.
