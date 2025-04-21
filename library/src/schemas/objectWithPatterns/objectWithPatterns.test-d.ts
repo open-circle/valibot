@@ -10,18 +10,16 @@ import type { NumberIssue, NumberSchema } from '../number/number.ts';
 import { number } from '../number/number.ts';
 import type { StringIssue, StringSchema } from '../string/string.ts';
 import { string } from '../string/string.ts';
-import {
-  objectWithPatterns,
-  type ObjectWithPatternsIssue,
-  type ObjectWithPatternsSchema,
-} from './objectWithPatterns.ts';
+import type { ObjectWithPatternsSchema } from './objectWithPatterns.ts';
+import { objectWithPatterns } from './objectWithPatterns.ts';
+import type { ObjectWithPatternsIssue } from './types.ts';
 
 const FooKeySchema = custom<`foo(${string})`>(
   (input) =>
     typeof input === 'string' && input.startsWith('foo(') && input.endsWith(')')
 );
 
-const BarKeysSchema = pipe(
+const BarKeySchema = pipe(
   custom<`bar(${string})`>(
     (input) =>
       typeof input === 'string' &&
@@ -38,7 +36,7 @@ describe('objectWithPatterns', () => {
         objectWithPatterns(
           [
             [FooKeySchema, string()],
-            [BarKeysSchema, number()],
+            [BarKeySchema, number()],
           ],
           boolean()
         )
@@ -46,7 +44,7 @@ describe('objectWithPatterns', () => {
         ObjectWithPatternsSchema<
           readonly [
             readonly [typeof FooKeySchema, StringSchema<undefined>],
-            readonly [typeof BarKeysSchema, NumberSchema<undefined>],
+            readonly [typeof BarKeySchema, NumberSchema<undefined>],
           ],
           BooleanSchema<undefined>,
           undefined
@@ -58,7 +56,7 @@ describe('objectWithPatterns', () => {
         objectWithPatterns(
           [
             [FooKeySchema, string()],
-            [BarKeysSchema, number()],
+            [BarKeySchema, number()],
           ],
           boolean(),
           'message'
@@ -67,7 +65,7 @@ describe('objectWithPatterns', () => {
         ObjectWithPatternsSchema<
           readonly [
             readonly [typeof FooKeySchema, StringSchema<undefined>],
-            readonly [typeof BarKeysSchema, NumberSchema<undefined>],
+            readonly [typeof BarKeySchema, NumberSchema<undefined>],
           ],
           BooleanSchema<undefined>,
           'message'
@@ -82,7 +80,7 @@ describe('objectWithPatterns', () => {
           ObjectWithPatternsSchema<
             readonly [
               readonly [typeof FooKeySchema, StringSchema<undefined>],
-              readonly [typeof BarKeysSchema, NumberSchema<undefined>],
+              readonly [typeof BarKeySchema, NumberSchema<undefined>],
             ],
             BooleanSchema<undefined>,
             undefined
@@ -101,7 +99,7 @@ describe('objectWithPatterns', () => {
           ObjectWithPatternsSchema<
             readonly [
               readonly [typeof FooKeySchema, StringSchema<undefined>],
-              readonly [typeof BarKeysSchema, NumberSchema<undefined>],
+              readonly [typeof BarKeySchema, NumberSchema<undefined>],
             ],
             BooleanSchema<undefined>,
             undefined
@@ -120,7 +118,7 @@ describe('objectWithPatterns', () => {
           ObjectWithPatternsSchema<
             readonly [
               readonly [typeof FooKeySchema, StringSchema<undefined>],
-              readonly [typeof BarKeysSchema, NumberSchema<undefined>],
+              readonly [typeof BarKeySchema, NumberSchema<undefined>],
             ],
             BooleanSchema<undefined>,
             undefined

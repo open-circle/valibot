@@ -14,6 +14,7 @@ import {
   _getStandardProps,
   _isValidObjectKey,
 } from '../../utils/index.ts';
+import type { ObjectWithPatternsIssue } from './types.ts';
 
 export type PatternTuple = readonly [
   key: BaseSchema<string, string, BaseIssue<unknown>>,
@@ -56,21 +57,6 @@ export type InferPatternsOutput<TPatterns extends PatternTuples> =
         ]
       ? InferPatternOutput<TPattern> & InferPatternsOutput<TRest>
       : never;
-
-export interface ObjectWithPatternsIssue extends BaseIssue<unknown> {
-  /**
-   * The issue kind.
-   */
-  readonly kind: 'schema';
-  /**
-   * The issue type.
-   */
-  readonly type: 'object_with_patterns';
-  /**
-   * The expected property.
-   */
-  readonly expected: 'Object' | `"${string}"`;
-}
 
 export interface ObjectWithPatternsSchema<
   TPatterns extends PatternTuples,
