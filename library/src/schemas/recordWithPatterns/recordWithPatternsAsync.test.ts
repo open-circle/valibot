@@ -2,8 +2,8 @@ import { describe, expect, test } from 'vitest';
 import { transformAsync } from '../../actions/index.ts';
 import { pipeAsync } from '../../methods/index.ts';
 import type {
-  ObjectWithPatternsIssue,
-  ObjectWithPatternsSchemaAsync,
+  RecordWithPatternsIssue,
+  RecordWithPatternsSchemaAsync,
 } from '../../schemas/index.ts';
 import {
   boolean,
@@ -11,7 +11,7 @@ import {
   never,
   number,
   objectAsync,
-  objectWithPatternsAsync,
+  recordWithPatternsAsync,
   string,
 } from '../../schemas/index.ts';
 import { FailureDataset } from '../../types/dataset.ts';
@@ -38,7 +38,7 @@ const BarKeySchema = pipeAsync(
   )
 );
 
-describe('objectWithPatternsAsync', () => {
+describe('recordWithPatternsAsync', () => {
   describe('should  return schema object', () => {
     const patterns = [
       [FooKeySchema, string()],
@@ -48,12 +48,12 @@ describe('objectWithPatternsAsync', () => {
     const rest = boolean();
     type Rest = typeof rest;
     const baseSchema: Omit<
-      ObjectWithPatternsSchemaAsync<Patterns, Rest, never>,
+      RecordWithPatternsSchemaAsync<Patterns, Rest, never>,
       'message'
     > = {
       kind: 'schema',
-      type: 'object_with_patterns',
-      reference: objectWithPatternsAsync,
+      type: 'record_with_patterns',
+      reference: recordWithPatternsAsync,
       expects: 'Object',
       patterns,
       rest,
@@ -66,14 +66,14 @@ describe('objectWithPatternsAsync', () => {
       '~run': expect.any(Function),
     };
     test('without message', () => {
-      expect(objectWithPatternsAsync(patterns, rest)).toStrictEqual({
+      expect(recordWithPatternsAsync(patterns, rest)).toStrictEqual({
         ...baseSchema,
         message: undefined,
       });
     });
 
     test('with string message', () => {
-      expect(objectWithPatternsAsync(patterns, rest, 'message')).toStrictEqual({
+      expect(recordWithPatternsAsync(patterns, rest, 'message')).toStrictEqual({
         ...baseSchema,
         message: 'message',
       });
@@ -81,7 +81,7 @@ describe('objectWithPatternsAsync', () => {
 
     test('with function message', () => {
       const message = () => 'message';
-      expect(objectWithPatternsAsync(patterns, rest, message)).toStrictEqual({
+      expect(recordWithPatternsAsync(patterns, rest, message)).toStrictEqual({
         ...baseSchema,
         message,
       });
@@ -91,13 +91,13 @@ describe('objectWithPatternsAsync', () => {
   describe('should return dataset without issues', () => {
     test('for empty object', async () => {
       await expectNoSchemaIssueAsync(
-        objectWithPatternsAsync([[FooKeySchema, string()]], string()),
+        recordWithPatternsAsync([[FooKeySchema, string()]], string()),
         [{}]
       );
     });
     test('for simple object', async () => {
       expect(
-        await objectWithPatternsAsync(
+        await recordWithPatternsAsync(
           [
             [FooKeySchema, string()],
             [BarKeySchema, number()],
@@ -115,14 +115,14 @@ describe('objectWithPatternsAsync', () => {
   });
 
   describe('should return dataset with issues', () => {
-    const schema = objectWithPatternsAsync(
+    const schema = recordWithPatternsAsync(
       [[FooKeySchema, string()]],
       never(),
       'message'
     );
-    const baseIssue: Omit<ObjectWithPatternsIssue, 'input' | 'received'> = {
+    const baseIssue: Omit<RecordWithPatternsIssue, 'input' | 'received'> = {
       kind: 'schema',
-      type: 'object_with_patterns',
+      type: 'record_with_patterns',
       expected: 'Object',
       message: 'message',
     };
@@ -176,7 +176,7 @@ describe('objectWithPatternsAsync', () => {
   describe('should return dataset without nested issues', () => {
     test('for simple object', async () => {
       await expectNoSchemaIssueAsync(
-        objectWithPatternsAsync([[FooKeySchema, string()]], boolean()),
+        recordWithPatternsAsync([[FooKeySchema, string()]], boolean()),
         // @ts-expect-error
         [{ 'foo(bar)': 'foo', other: true }]
       );
@@ -184,7 +184,7 @@ describe('objectWithPatternsAsync', () => {
 
     test('for nested object', async () => {
       await expectNoSchemaIssueAsync(
-        objectWithPatternsAsync(
+        recordWithPatternsAsync(
           [[FooKeySchema, objectAsync({ key: string() })]],
           objectAsync({ key: number() })
         ),
@@ -195,7 +195,7 @@ describe('objectWithPatternsAsync', () => {
   });
 
   describe('should return dataset with nested issues', () => {
-    const schema = objectWithPatternsAsync(
+    const schema = recordWithPatternsAsync(
       [
         [FooKeySchema, string()],
         [BarKeySchema, objectAsync({ key: number() })],

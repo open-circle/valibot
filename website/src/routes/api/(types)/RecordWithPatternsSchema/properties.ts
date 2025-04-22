@@ -5,44 +5,24 @@ export const properties: Record<string, PropertyProps> = {
     modifier: 'extends',
     type: {
       type: 'custom',
-      name: 'PatternTuplesAsync',
-      href: '../PatternTuplesAsync/',
+      name: 'PatternTuples',
+      href: '../PatternTuples/',
     },
   },
   TRest: {
     modifier: 'extends',
     type: {
-      type: 'union',
-      options: [
+      type: 'custom',
+      name: 'BaseSchema',
+      href: '../BaseSchema/',
+      generics: [
+        'unknown',
+        'unknown',
         {
           type: 'custom',
-          name: 'BaseSchema',
-          href: '../BaseSchema/',
-          generics: [
-            'unknown',
-            'unknown',
-            {
-              type: 'custom',
-              name: 'BaseIssue',
-              href: '../BaseIssue/',
-              generics: ['unknown'],
-            },
-          ],
-        },
-        {
-          type: 'custom',
-          name: 'BaseSchemaAsync',
-          href: '../BaseSchemaAsync/',
-          generics: [
-            'unknown',
-            'unknown',
-            {
-              type: 'custom',
-              name: 'BaseIssue',
-              href: '../BaseIssue/',
-              generics: ['unknown'],
-            },
-          ],
+          name: 'BaseIssue',
+          href: '../BaseIssue/',
+          generics: ['unknown'],
         },
       ],
     },
@@ -59,8 +39,8 @@ export const properties: Record<string, PropertyProps> = {
           generics: [
             {
               type: 'custom',
-              name: 'ObjectWithPatternsIssue',
-              href: '../ObjectWithPatternsIssue/',
+              name: 'RecordWithPatternsIssue',
+              href: '../RecordWithPatternsIssue/',
             },
           ],
         },

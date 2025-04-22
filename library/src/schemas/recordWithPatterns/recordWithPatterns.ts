@@ -14,7 +14,7 @@ import {
   _getStandardProps,
   _isValidObjectKey,
 } from '../../utils/index.ts';
-import type { ObjectWithPatternsIssue } from './types.ts';
+import type { RecordWithPatternsIssue } from './types.ts';
 
 export type PatternTuple = readonly [
   key: BaseSchema<string, string, BaseIssue<unknown>>,
@@ -58,10 +58,10 @@ export type InferPatternsOutput<TPatterns extends PatternTuples> =
       ? InferPatternOutput<TPattern> & InferPatternsOutput<TRest>
       : never;
 
-export interface ObjectWithPatternsSchema<
+export interface RecordWithPatternsSchema<
   TPatterns extends PatternTuples,
   TRest extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-  TMessage extends ErrorMessage<ObjectWithPatternsIssue> | undefined,
+  TMessage extends ErrorMessage<RecordWithPatternsIssue> | undefined,
 > extends BaseSchema<
     Prettify<InferPatternsInput<TPatterns>> & {
       [key: string]: InferInput<TRest>;
@@ -69,16 +69,16 @@ export interface ObjectWithPatternsSchema<
     Prettify<InferPatternsOutput<TPatterns>> & {
       [key: string]: InferOutput<TRest>;
     },
-    ObjectWithPatternsIssue | InferPatternsIssue<TPatterns> | InferIssue<TRest>
+    RecordWithPatternsIssue | InferPatternsIssue<TPatterns> | InferIssue<TRest>
   > {
   /**
    * The schema type.
    */
-  readonly type: 'object_with_patterns';
+  readonly type: 'record_with_patterns';
   /**
    * The schema reference.
    */
-  readonly reference: typeof objectWithPatterns;
+  readonly reference: typeof recordWithPatterns;
   /**
    * The expected property.
    */
@@ -98,54 +98,54 @@ export interface ObjectWithPatternsSchema<
 }
 
 /**
- * Creates an object schema that matches patterns.
+ * Creates a record schema that matches patterns.
  *
  * @param patterns Pairs of key and value schemas.
  * @param rest Schema to use when no pattern matches.
  *
- * @returns A object schema.
+ * @returns A record schema.
  */
-export function objectWithPatterns<
+export function recordWithPatterns<
   const TPatterns extends PatternTuples,
   const TRest extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
 >(
   patterns: TPatterns,
   rest: TRest
-): ObjectWithPatternsSchema<TPatterns, TRest, undefined>;
+): RecordWithPatternsSchema<TPatterns, TRest, undefined>;
 
 /**
- * Creates an object schema that matches patterns.
+ * Creates a record schema that matches patterns.
  *
  * @param patterns Pairs of key and value schemas.
  * @param rest Schema to use when no pattern matches.
  * @param message The error message.
  *
- * @returns A object schema.
+ * @returns A record schema.
  */
-export function objectWithPatterns<
+export function recordWithPatterns<
   const TPatterns extends PatternTuples,
   const TRest extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-  const TMessage extends ErrorMessage<ObjectWithPatternsIssue> | undefined,
+  const TMessage extends ErrorMessage<RecordWithPatternsIssue> | undefined,
 >(
   patterns: TPatterns,
   rest: TRest,
   message: TMessage
-): ObjectWithPatternsSchema<TPatterns, TRest, TMessage>;
+): RecordWithPatternsSchema<TPatterns, TRest, TMessage>;
 
 // @__NO_SIDE_EFFECTS__
-export function objectWithPatterns(
+export function recordWithPatterns(
   patterns: PatternTuples,
   rest: BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-  message?: ErrorMessage<ObjectWithPatternsIssue>
-): ObjectWithPatternsSchema<
+  message?: ErrorMessage<RecordWithPatternsIssue>
+): RecordWithPatternsSchema<
   PatternTuples,
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-  ErrorMessage<ObjectWithPatternsIssue> | undefined
+  ErrorMessage<RecordWithPatternsIssue> | undefined
 > {
   return {
     kind: 'schema',
-    type: 'object_with_patterns',
-    reference: objectWithPatterns,
+    type: 'record_with_patterns',
+    reference: recordWithPatterns,
     expects: 'Object',
     async: false,
     patterns,
@@ -245,7 +245,7 @@ export function objectWithPatterns(
       // @ts-expect-error
       return dataset as OutputDataset<
         InferPatternsOutput<PatternTuples> & { [key: string]: unknown },
-        | ObjectWithPatternsIssue
+        | RecordWithPatternsIssue
         | InferPatternsIssue<PatternTuples>
         | BaseIssue<unknown>
       >;

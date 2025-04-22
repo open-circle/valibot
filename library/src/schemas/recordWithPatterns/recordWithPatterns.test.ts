@@ -13,9 +13,9 @@ import type { FailureDataset } from '../../types/dataset.ts';
 import type { InferIssue } from '../../types/infer.ts';
 import { expectNoSchemaIssue } from '../../vitest/expectNoSchemaIssue.ts';
 import { expectSchemaIssue } from '../../vitest/expectSchemaIssue.ts';
-import type { ObjectWithPatternsSchema } from './objectWithPatterns.ts';
-import { objectWithPatterns } from './objectWithPatterns.ts';
-import type { ObjectWithPatternsIssue } from './types.ts';
+import type { RecordWithPatternsSchema } from './recordWithPatterns.ts';
+import { recordWithPatterns } from './recordWithPatterns.ts';
+import type { RecordWithPatternsIssue } from './types.ts';
 
 const FooKeySchema = custom<`foo(${string})`>(
   (input) =>
@@ -32,7 +32,7 @@ const BarKeySchema = pipe(
   transform((input) => input.toUpperCase() as Uppercase<typeof input>)
 );
 
-describe('objectWithPatterns', () => {
+describe('recordWithPatterns', () => {
   describe('should return schema object', () => {
     const patterns = [
       [FooKeySchema, string()],
@@ -42,12 +42,12 @@ describe('objectWithPatterns', () => {
     const rest = boolean();
     type Rest = typeof rest;
     const baseSchema: Omit<
-      ObjectWithPatternsSchema<Patterns, Rest, never>,
+      RecordWithPatternsSchema<Patterns, Rest, never>,
       'message'
     > = {
       kind: 'schema',
-      type: 'object_with_patterns',
-      reference: objectWithPatterns,
+      type: 'record_with_patterns',
+      reference: recordWithPatterns,
       expects: 'Object',
       patterns,
       rest,
@@ -60,13 +60,13 @@ describe('objectWithPatterns', () => {
       '~run': expect.any(Function),
     };
     test('without message', () => {
-      expect(objectWithPatterns(patterns, rest)).toStrictEqual({
+      expect(recordWithPatterns(patterns, rest)).toStrictEqual({
         ...baseSchema,
         message: undefined,
       });
     });
     test('with message', () => {
-      expect(objectWithPatterns(patterns, rest, 'message')).toStrictEqual({
+      expect(recordWithPatterns(patterns, rest, 'message')).toStrictEqual({
         ...baseSchema,
         message: 'message',
       });
@@ -75,13 +75,13 @@ describe('objectWithPatterns', () => {
   describe('should return dataset without issues', () => {
     test('for empty object', () => {
       expectNoSchemaIssue(
-        objectWithPatterns([[FooKeySchema, string()]], boolean()),
+        recordWithPatterns([[FooKeySchema, string()]], boolean()),
         [{}]
       );
     });
     test('for simple object', () => {
       expect(
-        objectWithPatterns(
+        recordWithPatterns(
           [
             [FooKeySchema, string()],
             [BarKeySchema, number()],
@@ -98,14 +98,14 @@ describe('objectWithPatterns', () => {
     });
   });
   describe('should return dataset with issues', () => {
-    const schema = objectWithPatterns(
+    const schema = recordWithPatterns(
       [[FooKeySchema, string()]],
       never(),
       'message'
     );
-    const baseIssue: Omit<ObjectWithPatternsIssue, 'input' | 'received'> = {
+    const baseIssue: Omit<RecordWithPatternsIssue, 'input' | 'received'> = {
       kind: 'schema',
-      type: 'object_with_patterns',
+      type: 'record_with_patterns',
       expected: 'Object',
       message: 'message',
     };
@@ -157,7 +157,7 @@ describe('objectWithPatterns', () => {
   describe('should return dataset without nested issues', () => {
     test('for simple object', () => {
       expectNoSchemaIssue(
-        objectWithPatterns([[FooKeySchema, string()]], boolean()),
+        recordWithPatterns([[FooKeySchema, string()]], boolean()),
         // @ts-expect-error
         [{ 'foo(bar)': 'foo', other: true }]
       );
@@ -165,7 +165,7 @@ describe('objectWithPatterns', () => {
 
     test('for nested object', () => {
       expectNoSchemaIssue(
-        objectWithPatterns(
+        recordWithPatterns(
           [[FooKeySchema, object({ key: string() })]],
           object({ key: number() })
         ),
@@ -175,7 +175,7 @@ describe('objectWithPatterns', () => {
     });
   });
   describe('should return dataset with nested issues', () => {
-    const schema = objectWithPatterns(
+    const schema = recordWithPatterns(
       [
         [FooKeySchema, string()],
         [BarKeySchema, object({ key: number() })],

@@ -1,6 +1,6 @@
 import type { BaseIssue } from '../../types/index.ts';
 
-export interface ObjectWithPatternsIssue extends BaseIssue<unknown> {
+export interface RecordWithPatternsIssue extends BaseIssue<unknown> {
   /**
    * The issue kind.
    */
@@ -8,7 +8,7 @@ export interface ObjectWithPatternsIssue extends BaseIssue<unknown> {
   /**
    * The issue type.
    */
-  readonly type: 'object_with_patterns';
+  readonly type: 'record_with_patterns';
   /**
    * The expected property.
    */

@@ -11,8 +11,8 @@ import type {
   Prettify,
 } from '../../types/index.ts';
 import { _addIssue, _getStandardProps } from '../../utils/index.ts';
-import type { objectWithPatterns } from './objectWithPatterns.ts';
-import type { ObjectWithPatternsIssue } from './types.ts';
+import type { recordWithPatterns } from './recordWithPatterns.ts';
+import type { RecordWithPatternsIssue } from './types.ts';
 
 export type PatternTupleAsync = readonly [
   key:
@@ -62,12 +62,12 @@ export type InferPatternsOutputAsync<TPatterns extends PatternTuplesAsync> =
       ? InferPatternOutputAsync<TPattern> & InferPatternsOutputAsync<TRest>
       : never;
 
-export interface ObjectWithPatternsSchemaAsync<
+export interface RecordWithPatternsSchemaAsync<
   TPatterns extends PatternTuplesAsync,
   TRest extends
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-  TMessage extends ErrorMessage<ObjectWithPatternsIssue> | undefined,
+  TMessage extends ErrorMessage<RecordWithPatternsIssue> | undefined,
 > extends BaseSchemaAsync<
     Prettify<InferPatternsInputAsync<TPatterns>> & {
       [key: string]: InferInput<TRest>;
@@ -75,20 +75,20 @@ export interface ObjectWithPatternsSchemaAsync<
     Prettify<InferPatternsOutputAsync<TPatterns>> & {
       [key: string]: InferOutput<TRest>;
     },
-    | ObjectWithPatternsIssue
+    | RecordWithPatternsIssue
     | InferPatternsIssueAsync<TPatterns>
     | InferIssue<TRest>
   > {
   /**
    * The schema type.
    */
-  readonly type: 'object_with_patterns';
+  readonly type: 'record_with_patterns';
   /**
    * The schema reference.
    */
   readonly reference:
-    | typeof objectWithPatterns
-    | typeof objectWithPatternsAsync;
+    | typeof recordWithPatterns
+    | typeof recordWithPatternsAsync;
   /**
    * The expected property.
    */
@@ -115,7 +115,7 @@ export interface ObjectWithPatternsSchemaAsync<
  *
  * @returns A object schema.
  */
-export function objectWithPatternsAsync<
+export function recordWithPatternsAsync<
   const TPatterns extends PatternTuplesAsync,
   const TRest extends
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
@@ -123,7 +123,7 @@ export function objectWithPatternsAsync<
 >(
   patterns: TPatterns,
   rest: TRest
-): ObjectWithPatternsSchemaAsync<TPatterns, TRest, undefined>;
+): RecordWithPatternsSchemaAsync<TPatterns, TRest, undefined>;
 
 /**
  * Creates an object schema that matches patterns.
@@ -134,35 +134,35 @@ export function objectWithPatternsAsync<
  *
  * @returns A object schema.
  */
-export function objectWithPatternsAsync<
+export function recordWithPatternsAsync<
   const TPatterns extends PatternTuplesAsync,
   const TRest extends
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-  const TMessage extends ErrorMessage<ObjectWithPatternsIssue> | undefined,
+  const TMessage extends ErrorMessage<RecordWithPatternsIssue> | undefined,
 >(
   patterns: TPatterns,
   rest: TRest,
   message: TMessage
-): ObjectWithPatternsSchemaAsync<TPatterns, TRest, TMessage>;
+): RecordWithPatternsSchemaAsync<TPatterns, TRest, TMessage>;
 
 // @__NO_SIDE_EFFECTS__
-export function objectWithPatternsAsync(
+export function recordWithPatternsAsync(
   patterns: PatternTuplesAsync,
   rest:
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-  message?: ErrorMessage<ObjectWithPatternsIssue>
-): ObjectWithPatternsSchemaAsync<
+  message?: ErrorMessage<RecordWithPatternsIssue>
+): RecordWithPatternsSchemaAsync<
   PatternTuplesAsync,
   | BaseSchema<unknown, unknown, BaseIssue<unknown>>
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-  ErrorMessage<ObjectWithPatternsIssue> | undefined
+  ErrorMessage<RecordWithPatternsIssue> | undefined
 > {
   return {
     kind: 'schema',
-    type: 'object_with_patterns',
-    reference: objectWithPatternsAsync,
+    type: 'record_with_patterns',
+    reference: recordWithPatternsAsync,
     expects: 'Object',
     async: true,
     patterns,
@@ -266,7 +266,7 @@ export function objectWithPatternsAsync(
         InferPatternsOutputAsync<PatternTuplesAsync> & {
           [key: string]: unknown;
         },
-        | ObjectWithPatternsIssue
+        | RecordWithPatternsIssue
         | InferPatternsIssueAsync<PatternTuplesAsync>
         | BaseIssue<unknown>
       >;

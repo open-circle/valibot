@@ -5,24 +5,44 @@ export const properties: Record<string, PropertyProps> = {
     modifier: 'extends',
     type: {
       type: 'custom',
-      name: 'PatternTuples',
-      href: '../PatternTuples/',
+      name: 'PatternTuplesAsync',
+      href: '../PatternTuplesAsync/',
     },
   },
   TRest: {
     modifier: 'extends',
     type: {
-      type: 'custom',
-      name: 'BaseSchema',
-      href: '../BaseSchema/',
-      generics: [
-        'unknown',
-        'unknown',
+      type: 'union',
+      options: [
         {
           type: 'custom',
-          name: 'BaseIssue',
-          href: '../BaseIssue/',
-          generics: ['unknown'],
+          name: 'BaseSchema',
+          href: '../BaseSchema/',
+          generics: [
+            'unknown',
+            'unknown',
+            {
+              type: 'custom',
+              name: 'BaseIssue',
+              href: '../BaseIssue/',
+              generics: ['unknown'],
+            },
+          ],
+        },
+        {
+          type: 'custom',
+          name: 'BaseSchemaAsync',
+          href: '../BaseSchemaAsync/',
+          generics: [
+            'unknown',
+            'unknown',
+            {
+              type: 'custom',
+              name: 'BaseIssue',
+              href: '../BaseIssue/',
+              generics: ['unknown'],
+            },
+          ],
         },
       ],
     },
@@ -39,8 +59,8 @@ export const properties: Record<string, PropertyProps> = {
           generics: [
             {
               type: 'custom',
-              name: 'ObjectWithPatternsIssue',
-              href: '../ObjectWithPatternsIssue/',
+              name: 'RecordWithPatternsIssue',
+              href: '../RecordWithPatternsIssue/',
             },
           ],
         },
@@ -64,27 +84,6 @@ export const properties: Record<string, PropertyProps> = {
     type: {
       type: 'custom',
       name: 'TMessage',
-    },
-  },
-  Schema: {
-    type: {
-      type: 'custom',
-      name: 'ObjectWithPatternsSchema',
-      href: '../ObjectWithPatternsSchema/',
-      generics: [
-        {
-          type: 'custom',
-          name: 'TPatterns',
-        },
-        {
-          type: 'custom',
-          name: 'TRest',
-        },
-        {
-          type: 'custom',
-          name: 'TMessage',
-        },
-      ],
     },
   },
 };

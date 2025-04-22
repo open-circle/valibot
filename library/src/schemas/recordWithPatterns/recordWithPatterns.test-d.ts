@@ -10,9 +10,9 @@ import type { NumberIssue, NumberSchema } from '../number/number.ts';
 import { number } from '../number/number.ts';
 import type { StringIssue, StringSchema } from '../string/string.ts';
 import { string } from '../string/string.ts';
-import type { ObjectWithPatternsSchema } from './objectWithPatterns.ts';
-import { objectWithPatterns } from './objectWithPatterns.ts';
-import type { ObjectWithPatternsIssue } from './types.ts';
+import type { RecordWithPatternsSchema } from './recordWithPatterns.ts';
+import { recordWithPatterns } from './recordWithPatterns.ts';
+import type { RecordWithPatternsIssue } from './types.ts';
 
 const FooKeySchema = custom<`foo(${string})`>(
   (input) =>
@@ -29,11 +29,11 @@ const BarKeySchema = pipe(
   transform((input) => input.toUpperCase() as Uppercase<typeof input>)
 );
 
-describe('objectWithPatterns', () => {
+describe('recordWithPatterns', () => {
   describe('should return schema object', () => {
     test('without message', () => {
       expectTypeOf(
-        objectWithPatterns(
+        recordWithPatterns(
           [
             [FooKeySchema, string()],
             [BarKeySchema, number()],
@@ -41,7 +41,7 @@ describe('objectWithPatterns', () => {
           boolean()
         )
       ).toEqualTypeOf<
-        ObjectWithPatternsSchema<
+        RecordWithPatternsSchema<
           readonly [
             readonly [typeof FooKeySchema, StringSchema<undefined>],
             readonly [typeof BarKeySchema, NumberSchema<undefined>],
@@ -53,7 +53,7 @@ describe('objectWithPatterns', () => {
     });
     test('with message', () => {
       expectTypeOf(
-        objectWithPatterns(
+        recordWithPatterns(
           [
             [FooKeySchema, string()],
             [BarKeySchema, number()],
@@ -62,7 +62,7 @@ describe('objectWithPatterns', () => {
           'message'
         )
       ).toEqualTypeOf<
-        ObjectWithPatternsSchema<
+        RecordWithPatternsSchema<
           readonly [
             readonly [typeof FooKeySchema, StringSchema<undefined>],
             readonly [typeof BarKeySchema, NumberSchema<undefined>],
@@ -77,7 +77,7 @@ describe('objectWithPatterns', () => {
     test('of input', () => {
       expectTypeOf<
         InferInput<
-          ObjectWithPatternsSchema<
+          RecordWithPatternsSchema<
             readonly [
               readonly [typeof FooKeySchema, StringSchema<undefined>],
               readonly [typeof BarKeySchema, NumberSchema<undefined>],
@@ -96,7 +96,7 @@ describe('objectWithPatterns', () => {
     test('of output', () => {
       expectTypeOf<
         InferOutput<
-          ObjectWithPatternsSchema<
+          RecordWithPatternsSchema<
             readonly [
               readonly [typeof FooKeySchema, StringSchema<undefined>],
               readonly [typeof BarKeySchema, NumberSchema<undefined>],
@@ -115,7 +115,7 @@ describe('objectWithPatterns', () => {
     test('of issue', () => {
       expectTypeOf<
         InferIssue<
-          ObjectWithPatternsSchema<
+          RecordWithPatternsSchema<
             readonly [
               readonly [typeof FooKeySchema, StringSchema<undefined>],
               readonly [typeof BarKeySchema, NumberSchema<undefined>],
@@ -125,7 +125,7 @@ describe('objectWithPatterns', () => {
           >
         >
       >().toEqualTypeOf<
-        | ObjectWithPatternsIssue
+        | RecordWithPatternsIssue
         | CustomIssue
         | StringIssue
         | NumberIssue

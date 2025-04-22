@@ -3,14 +3,14 @@ import { transformAsync } from '../../actions/index.ts';
 import { pipeAsync } from '../../methods/index.ts';
 import type {
   CustomIssue,
-  ObjectWithPatternsIssue,
-  ObjectWithPatternsSchemaAsync,
+  RecordWithPatternsIssue,
+  RecordWithPatternsSchemaAsync,
   StringIssue,
   StringSchema,
 } from '../../schemas/index.ts';
 import {
   customAsync,
-  objectWithPatternsAsync,
+  recordWithPatternsAsync,
   string,
 } from '../../schemas/index.ts';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
@@ -32,11 +32,11 @@ const BarKeySchema = pipeAsync(
   )
 );
 
-describe('objectWithPatternsAsync', () => {
+describe('recordWithPatternsAsync', () => {
   describe('should return schema object', () => {
     test('without message', () => {
       expectTypeOf(
-        objectWithPatternsAsync(
+        recordWithPatternsAsync(
           [
             [FooKeySchema, string()],
             [BarKeySchema, string()],
@@ -44,7 +44,7 @@ describe('objectWithPatternsAsync', () => {
           string()
         )
       ).toEqualTypeOf<
-        ObjectWithPatternsSchemaAsync<
+        RecordWithPatternsSchemaAsync<
           readonly [
             readonly [typeof FooKeySchema, StringSchema<undefined>],
             readonly [typeof BarKeySchema, StringSchema<undefined>],
@@ -57,7 +57,7 @@ describe('objectWithPatternsAsync', () => {
 
     test('with message', () => {
       expectTypeOf(
-        objectWithPatternsAsync(
+        recordWithPatternsAsync(
           [
             [FooKeySchema, string()],
             [BarKeySchema, string()],
@@ -66,7 +66,7 @@ describe('objectWithPatternsAsync', () => {
           'message'
         )
       ).toEqualTypeOf<
-        ObjectWithPatternsSchemaAsync<
+        RecordWithPatternsSchemaAsync<
           readonly [
             readonly [typeof FooKeySchema, StringSchema<undefined>],
             readonly [typeof BarKeySchema, StringSchema<undefined>],
@@ -82,7 +82,7 @@ describe('objectWithPatternsAsync', () => {
     test('of input', () => {
       expectTypeOf<
         InferInput<
-          ObjectWithPatternsSchemaAsync<
+          RecordWithPatternsSchemaAsync<
             readonly [
               readonly [typeof FooKeySchema, StringSchema<undefined>],
               readonly [typeof BarKeySchema, StringSchema<undefined>],
@@ -101,7 +101,7 @@ describe('objectWithPatternsAsync', () => {
     test('of output', () => {
       expectTypeOf<
         InferOutput<
-          ObjectWithPatternsSchemaAsync<
+          RecordWithPatternsSchemaAsync<
             readonly [
               readonly [typeof FooKeySchema, StringSchema<undefined>],
               readonly [typeof BarKeySchema, StringSchema<undefined>],
@@ -120,7 +120,7 @@ describe('objectWithPatternsAsync', () => {
     test('of issue', () => {
       expectTypeOf<
         InferIssue<
-          ObjectWithPatternsSchemaAsync<
+          RecordWithPatternsSchemaAsync<
             readonly [
               readonly [typeof FooKeySchema, StringSchema<undefined>],
               readonly [typeof BarKeySchema, StringSchema<undefined>],
@@ -129,7 +129,7 @@ describe('objectWithPatternsAsync', () => {
             undefined
           >
         >
-      >().toEqualTypeOf<ObjectWithPatternsIssue | CustomIssue | StringIssue>();
+      >().toEqualTypeOf<RecordWithPatternsIssue | CustomIssue | StringIssue>();
     });
   });
 });
