@@ -19,7 +19,7 @@ export const properties: Record<string, PropertyProps> = {
   type: {
     type: {
       type: 'string',
-      value: 'object_with_patterns',
+      value: 'record_with_patterns',
     },
   },
   expected: {

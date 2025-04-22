@@ -1,7 +1,7 @@
 ---
-title: objectWithPatterns
-description: Creates an object with patterns schema.
-source: /schemas/objectWithPatterns/objectWithPatterns.ts
+title: recordWithPatterns
+description: Creates a record schema that matches patterns.
+source: /schemas/recordWithPatterns/recordWithPatterns.ts
 contributors:
   - EskiMojo14
 ---
@@ -10,12 +10,12 @@ import { Link } from '@builder.io/qwik-city';
 import { ApiList, Property } from '~/components';
 import { properties } from './properties';
 
-# objectWithPatterns
+# recordWithPatterns
 
-Creates an object schema that matches patterns.
+Creates a record schema that matches patterns.
 
 ```ts
-const ObjectWithPatternsSchema = v.objectWithPatterns<
+const RecordWithPatternsSchema = v.recordWithPatterns<
   TPatterns,
   TRest,
   TMessage
@@ -44,10 +44,10 @@ Tuples of key and value schemas are iterated through until a key schema matches,
 
 ## Examples
 
-The following examples show how `objectWithPatterns` can be used. Please see the <Link href="/guides/objects/">object guide</Link> for more examples and explanations.
+The following examples show how `recordWithPatterns` can be used. Please see the <Link href="/guides/objects/">object guide</Link> for more examples and explanations.
 
 ```ts
-const ObjectWithPatternsSchema = v.objectWithPatterns(
+const RecordWithPatternsSchema = v.recordWithPatterns(
   [
     [v.pipe(v.string(), v.startsWith('str-')), v.string()],
     [v.pipe(v.string(), v.startsWith('num-')), v.number()],
@@ -58,7 +58,7 @@ const ObjectWithPatternsSchema = v.objectWithPatterns(
 
 ## Related
 
-The following APIs can be combined with `objectWithPatterns`.
+The following APIs can be combined with `recordWithPatterns`.
 
 ### Schemas
 
@@ -97,6 +97,7 @@ The following APIs can be combined with `objectWithPatterns`.
     'picklist',
     'promise',
     'record',
+    'recordWithPatterns',
     'set',
     'strictObject',
     'strictTuple',

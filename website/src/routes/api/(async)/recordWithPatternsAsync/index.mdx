@@ -1,7 +1,7 @@
 ---
-title: objectWithPatternsAsync
+title: recordWithPatternsAsync
 description: Creates an object schema that matches patterns.
-source: /schemas/objectWithPatterns/objectWithPatternsAsync.ts
+source: /schemas/recordWithPatterns/recordWithPatternsAsync.ts
 contributors:
   - EskiMojo14
 ---
@@ -10,12 +10,12 @@ import { Link } from '@builder.io/qwik-city';
 import { ApiList, Property } from '~/components';
 import { properties } from './properties';
 
-# objectWithPatternsAsync
+# recordWithPatternsAsync
 
 Creates an object schema that matches patterns.
 
 ```ts
-const ObjectWithPatternsSchemaAsync = v.objectWithPatternsAsync<
+const RecordWithPatternsSchemaAsync = v.recordWithPatternsAsync<
   TPatterns,
   TRest,
   TMessage
@@ -44,10 +44,10 @@ Tuples of key and value schemas are iterated through until a key schema matches,
 
 ## Examples
 
-The following examples show how `objectWithPatternsAsync` can be used. Please see the <Link href="/guides/objects/">object guide</Link> for more examples and explanations.
+The following examples show how `recordWithPatternsAsync` can be used. Please see the <Link href="/guides/objects/">object guide</Link> for more examples and explanations.
 
 ```ts
-const ObjectWithPatternsSchemaAsync = v.objectWithPatternsAsync(
+const RecordWithPatternsSchemaAsync = v.recordWithPatternsAsync(
   [
     [v.pipeAsync(v.string(), v.startsWith('str-')), v.string()],
     [v.pipeAsync(v.string(), v.startsWith('num-')), v.number()],
@@ -58,7 +58,7 @@ const ObjectWithPatternsSchemaAsync = v.objectWithPatternsAsync(
 
 ## Related
 
-The following APIs can be combined with `objectWithPatternsAsync`.
+The following APIs can be combined with `recordWithPatternsAsync`.
 
 ### Schemas
 
@@ -92,12 +92,12 @@ The following APIs can be combined with `objectWithPatternsAsync`.
     'nullish',
     'number',
     'object',
-    'objectWithPatterns',
     'objectWithRest',
     'optional',
     'picklist',
     'promise',
     'record',
+    'recordWithPatterns',
     'set',
     'strictObject',
     'strictTuple',

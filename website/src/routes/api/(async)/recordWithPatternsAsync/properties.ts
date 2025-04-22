@@ -59,8 +59,8 @@ export const properties: Record<string, PropertyProps> = {
           generics: [
             {
               type: 'custom',
-              name: 'ObjectWithPatternsIssue',
-              href: '../ObjectWithPatternsIssue/',
+              name: 'RecordWithPatternsIssue',
+              href: '../RecordWithPatternsIssue/',
             },
           ],
         },
@@ -89,8 +89,8 @@ export const properties: Record<string, PropertyProps> = {
   Schema: {
     type: {
       type: 'custom',
-      name: 'ObjectWithPatternsSchemaAsync',
-      href: '../ObjectWithPatternsSchemaAsync/',
+      name: 'RecordWithPatternsSchemaAsync',
+      href: '../RecordWithPatternsSchemaAsync/',
       generics: [
         {
           type: 'custom',
