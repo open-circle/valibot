@@ -58,6 +58,7 @@ export type SchemaWithCacheAsync<
  *
  * @returns The cached schema.
  */
+// @ts-expect-error
 export function cacheAsync<
   const TSchema extends
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
