@@ -1,3 +1,4 @@
+import QuickLRU from 'quick-lru';
 import { afterAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { string } from '../../schemas/index.ts';
 import { cacheAsync } from './cacheAsync.ts';
@@ -61,9 +62,9 @@ describe('cacheAsync', () => {
   });
   test('should allow custom cache instance', async () => {
     const schema = cacheAsync(string(), {
-      cache: new Map(),
+      cache: new QuickLRU({ maxSize: 1000 }),
     });
-    expect(schema.cache).toBeInstanceOf(Map);
+    expect(schema.cache).toBeInstanceOf(QuickLRU);
 
     const fooDataset = await schema['~run']({ value: 'foo' }, {});
     expect(await schema['~run']({ value: 'foo' }, {})).toBe(fooDataset);
