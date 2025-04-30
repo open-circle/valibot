@@ -8,7 +8,7 @@ import type {
   OutputDataset,
   UnknownDataset,
 } from '../../types/index.ts';
-import type { _CacheOptions } from '../../utils/index.ts';
+import type { CacheOptions } from '../../utils/index.ts';
 import { _Cache, _getStandardProps } from '../../utils/index.ts';
 import type { CacheInstanceOptions } from './types.ts';
 
@@ -16,7 +16,7 @@ export type SchemaWithCacheAsync<
   TSchema extends
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-  TOptions extends _CacheOptions | CacheInstanceOptions<TSchema> | undefined,
+  TOptions extends CacheOptions | CacheInstanceOptions<TSchema> | undefined,
 > = Omit<TSchema, 'async' | '~run'> & {
   /**
    * Whether it's async.
@@ -78,7 +78,7 @@ export function cacheAsync<
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   const TOptions extends
-    | _CacheOptions
+    | CacheOptions
     | CacheInstanceOptions<TSchema>
     | undefined,
 >(schema: TSchema, options: TOptions): SchemaWithCacheAsync<TSchema, TOptions>;
@@ -89,7 +89,7 @@ export function cacheAsync(
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   options?:
-    | _CacheOptions
+    | CacheOptions
     | CacheInstanceOptions<
         | BaseSchema<unknown, unknown, BaseIssue<unknown>>
         | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
@@ -97,7 +97,7 @@ export function cacheAsync(
 ): SchemaWithCacheAsync<
   | BaseSchema<unknown, unknown, BaseIssue<unknown>>
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-  | _CacheOptions
+  | CacheOptions
   | CacheInstanceOptions<
       | BaseSchema<unknown, unknown, BaseIssue<unknown>>
       | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
