@@ -7,7 +7,7 @@ import type {
   InferOutput,
   OutputDataset,
 } from '../../types/index.ts';
-import type { _Cache } from '../../utils/index.ts';
+import type { _Cache, BaseCache } from '../../utils/index.ts';
 import type { SchemaWithCache } from './cache.ts';
 import { cache } from './cache.ts';
 
@@ -26,6 +26,20 @@ describe('cache', () => {
       const schema = string();
       expectTypeOf(cache(schema, { maxSize: 10 })).toEqualTypeOf<
         SchemaWithCache<typeof schema, { maxSize: 10 }>
+      >();
+    });
+    test('with cache instance', () => {
+      const schema = string();
+
+      class CustomCache<TKey, TValue>
+        extends Map<TKey, TValue>
+        implements BaseCache<TKey, TValue> {}
+
+      expectTypeOf(cache(schema, { cache: new CustomCache() })).toEqualTypeOf<
+        SchemaWithCache<
+          typeof schema,
+          { cache: CustomCache<unknown, OutputDataset<string, StringIssue>> }
+        >
       >();
     });
   });

@@ -59,4 +59,16 @@ describe('cacheAsync', () => {
     schema.cache.clear();
     expect(await schema['~run']({ value: 'foo' }, {})).not.toBe(fooDataset);
   });
+  test('should allow custom cache instance', async () => {
+    const schema = cacheAsync(string(), {
+      cache: new Map(),
+    });
+    expect(schema.cache).toBeInstanceOf(Map);
+
+    const fooDataset = await schema['~run']({ value: 'foo' }, {});
+    expect(await schema['~run']({ value: 'foo' }, {})).toBe(fooDataset);
+
+    schema.cache.clear();
+    expect(await schema['~run']({ value: 'foo' }, {})).not.toBe(fooDataset);
+  });
 });
