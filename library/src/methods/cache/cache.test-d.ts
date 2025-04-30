@@ -2,12 +2,13 @@ import { describe, expectTypeOf, test } from 'vitest';
 import type { StringIssue, StringSchema } from '../../schemas/index.ts';
 import { string } from '../../schemas/index.ts';
 import type {
+  BaseCache,
   InferInput,
   InferIssue,
   InferOutput,
   OutputDataset,
 } from '../../types/index.ts';
-import type { _Cache, BaseCache } from '../../utils/index.ts';
+import type { _Cache } from '../../utils/index.ts';
 import type { SchemaWithCache } from './cache.ts';
 import { cache } from './cache.ts';
 

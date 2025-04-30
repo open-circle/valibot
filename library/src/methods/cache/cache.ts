@@ -5,13 +5,13 @@ import type {
   InferOutput,
   OutputDataset,
 } from '../../types/index.ts';
-import type { _CacheOptions } from '../../utils/index.ts';
+import type { CacheOptions } from '../../utils/index.ts';
 import { _Cache, _getStandardProps } from '../../utils/index.ts';
 import type { CacheInstanceOptions } from './types.ts';
 
 export type SchemaWithCache<
   TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-  TOptions extends _CacheOptions | CacheInstanceOptions<TSchema> | undefined,
+  TOptions extends CacheOptions | CacheInstanceOptions<TSchema> | undefined,
 > = TSchema & {
   /**
    * The cache options.
@@ -47,7 +47,7 @@ export function cache<
 export function cache<
   const TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   const TOptions extends
-    | _CacheOptions
+    | CacheOptions
     | CacheInstanceOptions<TSchema>
     | undefined,
 >(schema: TSchema, options: TOptions): SchemaWithCache<TSchema, TOptions>;
@@ -56,11 +56,11 @@ export function cache<
 export function cache(
   schema: BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   options?:
-    | _CacheOptions
+    | CacheOptions
     | CacheInstanceOptions<BaseSchema<unknown, unknown, BaseIssue<unknown>>>
 ): SchemaWithCache<
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-  | _CacheOptions
+  | CacheOptions
   | CacheInstanceOptions<BaseSchema<unknown, unknown, BaseIssue<unknown>>>
   | undefined
 > {

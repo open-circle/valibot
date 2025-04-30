@@ -1,12 +1,9 @@
-/**
- * A minimal cache interface, for custom cache implementations.
- */
-export interface BaseCache<TKey, TValue> {
-  get(key: TKey): TValue | undefined;
-  set(key: TKey, value: TValue): void;
-}
+import type { BaseCache } from '../../types/index.ts';
 
-export interface _CacheOptions {
+/**
+ * Cache options.
+ */
+export interface CacheOptions {
   maxSize?: number;
   duration?: number;
 }
@@ -23,7 +20,7 @@ export class _Cache<TKey, TValue> implements BaseCache<TKey, TValue> {
   private maxSize: number;
   private duration: number | undefined;
   private cache = new Map<TKey, _CacheEntry<TValue>>();
-  constructor(options?: _CacheOptions) {
+  constructor(options?: CacheOptions) {
     this.maxSize = options?.maxSize ?? 1;
     this.duration = options?.duration;
   }
