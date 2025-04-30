@@ -1,8 +1,8 @@
+import QuickLRU from 'quick-lru';
 import { describe, expectTypeOf, test } from 'vitest';
 import type { StringIssue, StringSchema } from '../../schemas/index.ts';
 import { string } from '../../schemas/index.ts';
 import type {
-  BaseCache,
   InferInput,
   InferIssue,
   InferOutput,
@@ -32,14 +32,12 @@ describe('cache', () => {
     test('with cache instance', () => {
       const schema = string();
 
-      class CustomCache<TKey, TValue>
-        extends Map<TKey, TValue>
-        implements BaseCache<TKey, TValue> {}
-
-      expectTypeOf(cache(schema, { cache: new CustomCache() })).toEqualTypeOf<
+      expectTypeOf(
+        cache(schema, { cache: new QuickLRU({ maxSize: 1000 }) })
+      ).toEqualTypeOf<
         SchemaWithCache<
           typeof schema,
-          { cache: CustomCache<unknown, OutputDataset<string, StringIssue>> }
+          { cache: QuickLRU<unknown, OutputDataset<string, StringIssue>> }
         >
       >();
     });
