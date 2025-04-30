@@ -59,4 +59,16 @@ describe('cache', () => {
     schema.cache.clear();
     expect(schema['~run']({ value: 'foo' }, {})).not.toBe(fooDataset);
   });
+  test('should allow custom cache instance', () => {
+    const schema = cache(string(), {
+      cache: new Map(),
+    });
+    expect(schema.cache).toBeInstanceOf(Map);
+
+    const fooDataset = schema['~run']({ value: 'foo' }, {});
+    expect(schema['~run']({ value: 'foo' }, {})).toBe(fooDataset);
+
+    schema.cache.clear();
+    expect(schema['~run']({ value: 'foo' }, {})).not.toBe(fooDataset);
+  });
 });

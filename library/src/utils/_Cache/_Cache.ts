@@ -1,3 +1,11 @@
+/**
+ * A minimal cache interface, for custom cache implementations.
+ */
+export interface BaseCache<TKey, TValue> {
+  get(key: TKey): TValue | undefined;
+  set(key: TKey, value: TValue): void;
+}
+
 export interface _CacheOptions {
   maxSize?: number;
   duration?: number;
@@ -11,7 +19,7 @@ interface _CacheEntry<TValue> {
 /**
  * A basic cache with optional max size and expiry.
  */
-export class _Cache<TKey, TValue> {
+export class _Cache<TKey, TValue> implements BaseCache<TKey, TValue> {
   private maxSize: number;
   private duration: number | undefined;
   private cache = new Map<TKey, _CacheEntry<TValue>>();
@@ -22,9 +30,6 @@ export class _Cache<TKey, TValue> {
   private scheduleExpiry(key: TKey) {
     if (!this.duration) return;
     return setTimeout(() => this.cache.delete(key), this.duration);
-  }
-  get size(): number {
-    return this.cache.size;
   }
   get(key: TKey): TValue | undefined {
     const entry = this.cache.get(key);
