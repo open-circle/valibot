@@ -10,52 +10,67 @@ export interface CacheOptions {
 
 interface _CacheEntry<TValue> {
   value: TValue;
-  expiryId: ReturnType<typeof setTimeout> | undefined;
+  lastAccess: number;
 }
 
 /**
  * A basic cache with optional max size and expiry.
  */
 export class _Cache<TKey, TValue> implements BaseCache<TKey, TValue> {
-  private maxSize: number;
-  private duration: number | undefined;
-  private cache = new Map<TKey, _CacheEntry<TValue>>();
+  maxSize: number;
+  duration: number | undefined;
   constructor(options?: CacheOptions) {
     this.maxSize = options?.maxSize ?? 1;
     this.duration = options?.duration;
   }
-  private scheduleExpiry(key: TKey) {
-    if (!this.duration) return;
-    return setTimeout(() => this.cache.delete(key), this.duration);
+  get size(): number {
+    return this['~cache'].size;
   }
   get(key: TKey): TValue | undefined {
-    const entry = this.cache.get(key);
-    if (entry) {
-      // reset expiry
-      clearTimeout(entry.expiryId);
-      entry.expiryId = this.scheduleExpiry(key);
-      return entry.value;
-    }
+    return this['~get'](key)?.value;
   }
-  set(key: TKey, value: TValue): void {
-    if (this.cache.size >= this.maxSize) {
-      this.delete(this.cache.keys().next().value!);
-    }
-    clearTimeout(this.cache.get(key)?.expiryId);
-    this.cache.set(key, {
+  set(key: TKey, value: TValue): this {
+    this['~cache'].set(key, {
       value,
-      expiryId: this.scheduleExpiry(key),
+      lastAccess: Date.now(),
     });
+    this['~clearExcess']();
+    return this;
   }
   has(key: TKey): boolean {
-    return this.cache.has(key);
+    return !!this['~get'](key);
   }
   delete(key: TKey): boolean {
-    clearTimeout(this.cache.get(key)?.expiryId);
-    return this.cache.delete(key);
+    return this['~cache'].delete(key);
   }
   clear(): void {
-    this.cache.forEach((entry) => clearTimeout(entry.expiryId));
-    this.cache.clear();
+    this['~cache'].clear();
+  }
+
+  '~cache': Map<TKey, _CacheEntry<TValue>> = new Map<
+    TKey,
+    _CacheEntry<TValue>
+  >();
+  private '~isStale'(entry: _CacheEntry<TValue>): boolean {
+    return !!this.duration && Date.now() - entry.lastAccess > this.duration;
+  }
+  private '~get'(key: TKey): _CacheEntry<TValue> | undefined {
+    const entry = this['~cache'].get(key);
+    if (!entry) return;
+    if (this['~isStale'](entry)) {
+      this['~cache'].delete(key);
+      return;
+    }
+    entry.lastAccess = Date.now();
+    return entry;
+  }
+  private '~clearExcess'(): void {
+    if (this.size <= this.maxSize) return;
+    const entries = Array.from(this['~cache']).sort(
+      ([, a], [, b]) => b.lastAccess - a.lastAccess
+    );
+    while (this.size > this.maxSize) {
+      this['~cache'].delete(entries.pop()![0]);
+    }
   }
 }
