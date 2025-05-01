@@ -1,4 +1,3 @@
-import { setTimeout } from 'node:timers/promises';
 import QuickLRU from 'quick-lru';
 import { afterAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { string } from '../../schemas/index.ts';
@@ -21,18 +20,14 @@ describe('cacheAsync', () => {
     const fooDataset = await schema['~run']({ value: 'foo' }, {});
     expect(await schema['~run']({ value: 'foo' }, {})).toBe(fooDataset);
 
-    // wait for next tick, to prevent same millisecond
-    await setTimeout(0);
     expect(await schema['~run']({ value: 'bar' }, {})).toBe(
       await schema['~run']({ value: 'bar' }, {})
     );
 
-    await setTimeout(0);
     expect(await schema['~run']({ value: 'baz' }, {})).toBe(
       await schema['~run']({ value: 'baz' }, {})
     );
 
-    await setTimeout(0);
     expect(await schema['~run']({ value: 'foo' }, {})).not.toBe(fooDataset);
   });
   describe('should allow custom duration', () => {

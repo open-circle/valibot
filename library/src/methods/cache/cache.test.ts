@@ -1,4 +1,3 @@
-import { setTimeout } from 'node:timers/promises';
 import QuickLRU from 'quick-lru';
 import { afterAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { string } from '../../schemas/index.ts';
@@ -14,25 +13,21 @@ describe('cache', () => {
     );
     expect(runSpy).toHaveBeenCalledTimes(1);
   });
-  test('should allow custom max size', async () => {
+  test('should allow custom max size', () => {
     const schema = cache(string(), { maxSize: 2 });
     expect(schema.options.maxSize).toBe(2);
 
     const fooDataset = schema['~run']({ value: 'foo' }, {});
     expect(schema['~run']({ value: 'foo' }, {})).toBe(fooDataset);
 
-    // wait for next tick, to prevent same millisecond
-    await setTimeout(0);
     expect(schema['~run']({ value: 'bar' }, {})).toBe(
       schema['~run']({ value: 'bar' }, {})
     );
 
-    await setTimeout(0);
     expect(schema['~run']({ value: 'baz' }, {})).toBe(
       schema['~run']({ value: 'baz' }, {})
     );
 
-    await setTimeout(0);
     expect(schema['~run']({ value: 'foo' }, {})).not.toBe(fooDataset);
   });
   describe('should allow custom duration', () => {
@@ -45,6 +40,7 @@ describe('cache', () => {
 
     test('and clear expired values', () => {
       const schema = cache(string(), { duration: 1000 });
+
       const fooDataset = schema['~run']({ value: 'foo' }, {});
       expect(schema['~run']({ value: 'foo' }, {})).toBe(fooDataset);
       vi.advanceTimersByTime(1001);

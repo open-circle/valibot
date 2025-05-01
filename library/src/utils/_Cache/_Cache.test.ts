@@ -1,27 +1,24 @@
-import { setTimeout } from 'node:timers/promises';
 import { afterAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { _Cache } from './_Cache.ts';
 
 describe('_Cache', () => {
-  test('should cache values', async () => {
+  test('should cache values', () => {
     const cache = new _Cache<string, number>();
 
     cache.set('foo', 123);
     expect(cache.get('foo')).toBe(123);
 
-    // wait for next tick, to prevent same millisecond
-    await setTimeout(0);
     cache.set('bar', 456);
 
     expect(cache.get('bar')).toBe(456);
     // default max size is 1
     expect(cache.get('foo')).toBeUndefined();
   });
-  test('should allow deleting', async () => {
+  test('should allow deleting', () => {
     const cache = new _Cache<string, number>();
+
     cache.set('foo', 123);
 
-    await setTimeout(0);
     cache.set('bar', 456);
 
     cache.delete('foo');
@@ -53,15 +50,13 @@ describe('_Cache', () => {
 
     expect(cache.size).toBe(2);
   });
-  test('should allow custom max size', async () => {
+  test('should allow custom max size', () => {
     const cache = new _Cache<string, number>({ maxSize: 2 });
 
     cache.set('foo', 123);
 
-    await setTimeout(0);
     cache.set('bar', 456);
 
-    await setTimeout(0);
     cache.set('baz', 789);
 
     expect(cache.get('foo')).toBeUndefined();
