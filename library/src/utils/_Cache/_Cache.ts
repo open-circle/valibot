@@ -30,10 +30,7 @@ export class _Cache<TKey, TValue> implements BaseCache<TKey, TValue> {
     return this['~get'](key)?.value;
   }
   set(key: TKey, value: TValue): this {
-    this['~cache'].set(key, {
-      value,
-      lastAccess: Date.now(),
-    });
+    this['~insert'](key, value);
     this['~clearExcess']();
     return this;
   }
@@ -61,16 +58,24 @@ export class _Cache<TKey, TValue> implements BaseCache<TKey, TValue> {
       this['~cache'].delete(key);
       return;
     }
-    entry.lastAccess = Date.now();
+    // move to end
+    this['~insert'](key, entry.value);
     return entry;
+  }
+  private '~insert'(key: TKey, value: TValue): void {
+    // make sure this is always an insertion, not an update
+    // important for map ordering
+    this['~cache'].delete(key);
+    this['~cache'].set(key, {
+      value,
+      lastAccess: Date.now(),
+    });
   }
   private '~clearExcess'(): void {
     if (this.size <= this.maxSize) return;
-    const entries = Array.from(this['~cache']).sort(
-      ([, a], [, b]) => b.lastAccess - a.lastAccess
-    );
+    const keys = this['~cache'].keys();
     while (this.size > this.maxSize) {
-      this['~cache'].delete(entries.pop()![0]);
+      this['~cache'].delete(keys.next().value!);
     }
   }
 }
