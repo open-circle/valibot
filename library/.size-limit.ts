@@ -45,15 +45,16 @@ const vRegex = /v\.(\w+)\(/g;
  */
 function ts(strings: TemplateStringsArray, ...values: unknown[]): Check {
   const dedented = dedent(strings, ...values);
-  const usedImports = Array.from(dedented.matchAll(vRegex)).map((m) => m[1]);
-  const uniqueImports = Array.from(new Set(usedImports)).map((importName) =>
+  const usedImports = Array.from(dedented.matchAll(vRegex), ([, importName]) =>
+    // if it's a reserved name, use the suffixed version
     importNames.has(importName + '_') ? importName + '_' : importName
   );
+  const uniqueImports = new Set(usedImports);
   return {
     name: `\`\`\`ts\n${dedented}\n\`\`\``,
     // ESM only
     path: paths[0],
-    import: `{ ${uniqueImports.join(', ')} }`,
+    import: `{ ${Array.from(uniqueImports).join(', ')} }`,
   };
 }
 
