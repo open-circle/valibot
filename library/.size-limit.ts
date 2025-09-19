@@ -61,10 +61,20 @@ function ts(strings: TemplateStringsArray, ...values: unknown[]): Check {
 
 checks.push(
   ts`
-  v.object({
+  const LoginSchema = v.object({
     email: v.pipe(v.string(), v.email()),
     password: v.pipe(v.string(), v.minLength(8)),
   })
+`,
+  ts`
+  const PixelSchema = v.pipe(
+    v.string(),
+    v.regex(/^\d{1,3}px$/),
+    v.transform(parseInt),
+    v.number(),
+    v.maxValue(100),
+    v.description('A pixel value between 1 and 100.')
+  )
 `
 );
 
