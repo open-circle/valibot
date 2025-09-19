@@ -54,7 +54,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@size-limit/esbuild": "^11.2.0",
     "@size-limit/preset-small-lib": "^11.2.0",
     "@vitest/coverage-v8": "^4.0.13",
     "dedent": "^1.7.0",
