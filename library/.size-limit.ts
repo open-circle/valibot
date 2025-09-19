@@ -12,28 +12,28 @@ const checks = paths.map(
   })
 );
 
-const importNames = new Set(Object.keys(v));
+const allExports = new Set(Object.keys(v));
 // exports such as `null` or `undefined` cannot be used as named imports without suffix
-const isReservedName = (name: string) => importNames.has(name + '_');
+const isReservedName = (name: string) => allExports.has(name + '_');
 const isInternal = (name: string) => name.startsWith('_');
 
 /**
  * Build a config for an individual export's size.
- * @param {string} importName Name of the export.
+ * @param {string} exportName Name of the export.
  * @returns {Check} The config.
  */
-function individualExportConfig(importName: string): Check {
+function individualExportConfig(exportName: string): Check {
   return {
-    name: `\`v.${importName}\``,
+    name: `\`v.${exportName}\``,
     // only check ESM individual exports
     path: paths[0],
-    import: `{ ${importName} }`,
+    import: `{ ${exportName} }`,
   };
 }
 
-for (const importName of importNames) {
-  if (isReservedName(importName) || isInternal(importName)) continue;
-  checks.push(individualExportConfig(importName));
+for (const exportName of allExports) {
+  if (isReservedName(exportName) || isInternal(exportName)) continue;
+  checks.push(individualExportConfig(exportName));
 }
 
 // a v.<name>( call
