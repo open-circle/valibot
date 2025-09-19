@@ -69,9 +69,6 @@ importers:
       '@eslint/js':
         specifier: ^9.39.1
         version: 9.39.1
-      '@size-limit/esbuild':
-        specifier: ^11.2.0
-        version: 11.2.0(size-limit@11.2.0)
       '@size-limit/preset-small-lib':
         specifier: ^11.2.0
         version: 11.2.0(size-limit@11.2.0)
