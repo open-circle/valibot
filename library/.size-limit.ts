@@ -2,15 +2,15 @@ import dedent from 'dedent';
 import type { Check, SizeLimitConfig } from 'size-limit';
 import * as v from './src';
 
-const paths = ['dist/index.js', 'dist/index.cjs'];
+const path = 'dist/index.js';
 
-const checks = paths.map(
-  (path): Check => ({
-    name: `Full bundle (${path.includes('.cjs') ? 'CJS' : 'ESM'})`,
+const checks: Check[] = [
+  {
+    name: 'Full bundle',
     path,
     import: '*',
-  })
-);
+  },
+];
 
 const allExports = new Set(Object.keys(v));
 // exports such as `null` or `undefined` cannot be used as named imports without suffix
@@ -25,8 +25,7 @@ const isInternal = (name: string) => name.startsWith('_');
 function individualExportConfig(exportName: string): Check {
   return {
     name: `\`v.${exportName}\``,
-    // only check ESM individual exports
-    path: paths[0],
+    path,
     import: `{ ${exportName} }`,
   };
 }
@@ -53,8 +52,7 @@ function ts(strings: TemplateStringsArray, ...values: unknown[]): Check {
   const uniqueImports = new Set(usedImports);
   return {
     name: `\`\`\`ts\n${snippet}\n\`\`\``,
-    // ESM only
-    path: paths[0],
+    path,
     import: `{ ${Array.from(uniqueImports).join(', ')} }`,
   };
 }
