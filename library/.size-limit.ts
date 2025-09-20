@@ -62,6 +62,10 @@ checks.push(
   const LoginSchema = v.object({
     email: v.pipe(v.string(), v.email()),
     password: v.pipe(v.string(), v.minLength(8)),
+  });
+  const output2 = v.parse(LoginSchema, {
+    email: 'jane@example.com',
+    password: '12345678',
   })
 `,
   ts`
