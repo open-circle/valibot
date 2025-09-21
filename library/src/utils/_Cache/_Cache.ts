@@ -4,7 +4,17 @@ import type { BaseCache } from '../../types/index.ts';
  * Cache options.
  */
 export interface CacheOptions {
+  /**
+   * The maximum number of items to cache.
+   *
+   * @default 1000
+   */
   maxSize?: number;
+  /**
+   * The maximum age of a cache entry in milliseconds.
+   *
+   * @default undefined
+   */
   duration?: number;
 }
 
@@ -20,7 +30,7 @@ export class _Cache<TKey, TValue> implements BaseCache<TKey, TValue> {
   maxSize: number;
   duration: number | undefined;
   constructor(options?: CacheOptions) {
-    this.maxSize = options?.maxSize ?? 1;
+    this.maxSize = options?.maxSize ?? 1000;
     this.duration = options?.duration;
   }
   get size(): number {
