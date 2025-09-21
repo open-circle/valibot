@@ -5,6 +5,8 @@ on:
     branches: [main]
   pull_request:
   workflow_call:
+permissions:
+  pull-requests: write
 
 jobs:
   install:
@@ -146,3 +148,16 @@ jobs:
       - name: Vitest tests
         run: pnpm test
         working-directory: codemod/zod-to-valibot
+
+  size:
+    runs-on: ubuntu-latest
+    env:
+      CI_JOB_NUMBER: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: EskiMojo14/size-limit-action@v2
+        with:
+          directory: library
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          package_manager: pnpm
+          size_margin: non-zero
