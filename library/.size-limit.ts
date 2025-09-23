@@ -59,25 +59,25 @@ function ts(strings: TemplateStringsArray, ...values: unknown[]): Check {
 
 checks.push(
   ts`
-  const LoginSchema = v.object({
-    email: v.pipe(v.string(), v.email()),
-    password: v.pipe(v.string(), v.minLength(8)),
-  });
-  const output2 = v.parse(LoginSchema, {
-    email: 'jane@example.com',
-    password: '12345678',
-  })
-`,
+    const LoginSchema = v.object({
+      email: v.pipe(v.string(), v.email()),
+      password: v.pipe(v.string(), v.minLength(8)),
+    });
+    const output2 = v.parse(LoginSchema, {
+      email: 'jane@example.com',
+      password: '12345678',
+    });
+  `,
   ts`
-  const PixelSchema = v.pipe(
-    v.string(),
-    v.regex(/^\d{1,3}px$/),
-    v.transform(parseInt),
-    v.number(),
-    v.maxValue(100),
-    v.description('A pixel value between 1 and 100.')
-  )
-`
+    const PixelSchema = v.pipe(
+      v.string(),
+      v.regex(/^d{1,3}px$/),
+      v.transform(parseInt),
+      v.number(),
+      v.maxValue(100),
+      v.description('A pixel value between 1 and 100.')
+    );
+  `
 );
 
 export default checks satisfies SizeLimitConfig;
