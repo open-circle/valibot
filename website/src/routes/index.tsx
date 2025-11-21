@@ -252,7 +252,7 @@ export default component$(() => {
             return (
               <li key={heading} class="flex flex-col px-8">
                 <Form action={faqToggle}>
-                  <input type="hidden" name="index" value={index} />
+                  <input type="hidden" name="index" value={isOpen ? -1 : index} />
                   <button
                     class={clsx(
                       'focus-ring flex w-full justify-between gap-4 rounded-md transition-colors focus-visible:outline-offset-[6px] focus-visible:ring-offset-8',
@@ -261,7 +261,6 @@ export default component$(() => {
                         : 'text-slate-800 hover:text-slate-700 dark:text-slate-300 hover:dark:text-slate-400'
                     )}
                     type="submit"
-                    disabled={isOpen}
                     aria-expanded={isOpen}
                     aria-controls={`faq-${index}`}
                   >
