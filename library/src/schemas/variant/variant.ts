@@ -156,7 +156,8 @@ export function variant(
                       ).issues
                     : discriminatorSchema.type !== 'exact_optional' &&
                       discriminatorSchema.type !== 'optional' &&
-                      discriminatorSchema.type !== 'nullish'
+                      discriminatorSchema.type !== 'nullish' &&
+                      discriminatorSchema.type !== 'undefinedable'
                 ) {
                   keysAreValid = false;
 
