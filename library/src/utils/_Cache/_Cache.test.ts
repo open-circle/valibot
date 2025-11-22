@@ -3,7 +3,7 @@ import { _Cache } from './_Cache.ts';
 
 describe('_Cache', () => {
   test('should cache values', () => {
-    const cache = new _Cache<string, number>();
+    const cache = new _Cache<string, number>({ maxSize: 1 });
 
     cache.set('foo', 123);
     expect(cache.get('foo')).toBe(123);
@@ -11,7 +11,7 @@ describe('_Cache', () => {
     cache.set('bar', 456);
 
     expect(cache.get('bar')).toBe(456);
-    // default max size is 1
+    
     expect(cache.get('foo')).toBeUndefined();
   });
   test('should allow deleting', () => {
