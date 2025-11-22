@@ -11,7 +11,7 @@ describe('_Cache', () => {
     cache.set('bar', 456);
 
     expect(cache.get('bar')).toBe(456);
-    
+
     expect(cache.get('foo')).toBeUndefined();
   });
   test('should allow deleting', () => {
