@@ -33,6 +33,8 @@ const Schema = v.optional<TWrapped, TDefault>(wrapped, default_);
 
 With `optional` the validation of your schema will pass `undefined` inputs, and if you specify a `default_` input value, the schema will use it if the input is `undefined`. For this reason, the output type may differ from the input type of the schema.
 
+> **Important**: When used in object schemas, if a key is missing and no `default_` value is provided, the schema's pipe (including transformations) will not be executed. To ensure pipes run for missing keys, provide a `default_` value.
+
 > Note that `optional` does not accept `null` as an input. If you want to accept `null` inputs, use <Link href="../nullable/">`nullable`</Link>, and if you want to accept `null` and `undefined` inputs, use <Link href="../nullish/">`nullish`</Link> instead. Also, if you want to set a default output value for any invalid input, you should use <Link href="../fallback/">`fallback`</Link> instead.
 
 ## Returns
@@ -78,6 +80,31 @@ Use <Link href="../unwrap/">`unwrap`</Link> to undo the effect of `optional`.
 ```ts
 const OptionalNumberSchema = v.optional(v.number());
 const NumberSchema = v.unwrap(OptionalNumberSchema);
+```
+
+### Optional with pipes
+
+When using `optional` in a <Link href="../../pipe/">`pipe`</Link>, the pipe actions only execute if a `default_` value is provided or the key is present. This applies to all pipe actions including <Link href="../../transform/">`transform`</Link>, <Link href="../../check/">`check`</Link>, and others.
+
+```ts
+// ❌ Pipe actions will NOT execute for missing keys - result stays undefined
+const SchemaWithoutDefault = v.object({
+  isActive: v.pipe(
+    v.optional(v.string()),
+    v.transform((value) => value === 'true') // Won't run for missing keys
+  ),
+});
+
+// ✅ Pipe actions WILL execute for missing keys using the default value
+const SchemaWithDefault = v.object({
+  isActive: v.pipe(
+    v.optional(v.string(), 'false'), // Default value provided
+    v.transform((value) => value === 'true') // Runs for all cases
+  ),
+});
+
+v.parse(SchemaWithoutDefault, {}); // { } - isActive is undefined (isActive?: boolean | undefined)
+v.parse(SchemaWithDefault, {}); // { isActive: false } - transform executed (isActive: boolean)
 ```
 
 ## Related

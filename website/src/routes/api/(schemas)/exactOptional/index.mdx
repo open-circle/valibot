@@ -32,6 +32,8 @@ const Schema = v.exactOptional<TWrapped, TDefault>(wrapped, default_);
 
 With `exactOptional` the validation of your schema will pass missing object entries, and if you specify a `default_` input value, the schema will use it if the object entry is missing. For this reason, the output type may differ from the input type of the schema.
 
+> **Important**: When used in object schemas, if a key is missing and no `default_` value is provided, the schema's pipe (including transformations) will not be executed. To ensure pipes run for missing keys, provide a `default_` value.
+
 > The difference to <Link href="../optional/">`optional`</Link> is that this schema function follows the implementation of TypeScript's [`exactOptionalPropertyTypes` configuration](https://www.typescriptlang.org/tsconfig/#exactOptionalPropertyTypes) and only allows missing but not undefined object entries.
 
 ## Returns
@@ -63,6 +65,31 @@ Use <Link href="../unwrap/">`unwrap`</Link> to undo the effect of `exactOptional
 ```ts
 const OptionalNumberSchema = v.exactOptional(v.number());
 const NumberSchema = v.unwrap(OptionalNumberSchema);
+```
+
+### Exact optional with pipes
+
+When using `exactOptional` in a <Link href="../../pipe/">`pipe`</Link>, the pipe actions only execute if a `default_` value is provided or the key is present. This applies to all pipe actions including <Link href="../../transform/">`transform`</Link>, <Link href="../../check/">`check`</Link>, and others.
+
+```ts
+// ❌ Pipe actions will NOT execute for missing keys - result stays undefined
+const SchemaWithoutDefault = v.object({
+  isEnabled: v.pipe(
+    v.exactOptional(v.string()),
+    v.transform((value) => value === '1') // Won't run for missing keys
+  ),
+});
+
+// ✅ Pipe actions WILL execute for missing keys using the default value
+const SchemaWithDefault = v.object({
+  isEnabled: v.pipe(
+    v.exactOptional(v.string(), '0'), // Default value provided
+    v.transform((value) => value === '1') // Runs for all cases
+  ),
+});
+
+v.parse(SchemaWithoutDefault, {}); // { } - isEnabled is undefined (isEnabled?: boolean | undefined)
+v.parse(SchemaWithDefault, {}); // { isEnabled: false } - transform executed (isEnabled: boolean)
 ```
 
 ## Related

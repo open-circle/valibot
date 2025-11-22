@@ -88,3 +88,43 @@ const CalculationSchema = v.pipe(
   }))
 );
 ```
+
+## Pipe execution behavior
+
+When using <Link href="/api/optional/">`optional`</Link>, <Link href="/api/exactOptional/">`exactOptional`</Link>, or other optional schemas with <Link href="/api/pipe/">`pipe`</Link> containing actions, it's important to understand when the pipe executes:
+
+### Without default values
+
+If no `default_` value is provided, missing object keys are completely ignored and their pipes will **not** be executed.
+
+```ts
+import * as v from 'valibot';
+
+const Schema = v.object({
+  value: v.pipe(
+    v.optional(v.string()),
+    v.transform((input) => input.toUpperCase()) // Won't run for missing keys
+  ),
+});
+
+const result = v.parse(Schema, {}); // { } - value is undefined (value?: string | undefined)
+```
+
+### With default values
+
+When a `default_` value is provided, the pipe will execute for missing keys using the default value.
+
+```ts
+import * as v from 'valibot';
+
+const Schema = v.object({
+  value: v.pipe(
+    v.optional(v.string(), 'hello'), // Default value provided
+    v.transform((input) => input.toUpperCase()) // Runs with 'hello' for missing keys
+  ),
+});
+
+const result = v.parse(Schema, {}); // { value: 'HELLO' } - transform executed
+```
+
+This behavior ensures that the output type is consistent and transforms can reliably process values.
