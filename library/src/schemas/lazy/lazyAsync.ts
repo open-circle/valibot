@@ -37,7 +37,10 @@ export interface LazySchemaAsync<
   /**
    * The schema getter.
    */
-  readonly getter: (input: unknown) => MaybePromise<TWrapped>;
+  readonly getter: (
+    input: unknown,
+    signal?: AbortSignal
+  ) => MaybePromise<TWrapped>;
 }
 
 /**
@@ -53,7 +56,7 @@ export function lazyAsync<
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
 >(
-  getter: (input: unknown) => MaybePromise<TWrapped>
+  getter: (input: unknown, signal?: AbortSignal) => MaybePromise<TWrapped>
 ): LazySchemaAsync<TWrapped> {
   return {
     kind: 'schema',
@@ -66,7 +69,10 @@ export function lazyAsync<
       return _getStandardProps(this);
     },
     async '~run'(dataset, config) {
-      return (await this.getter(dataset.value))['~run'](dataset, config);
+      return (await this.getter(dataset.value, config.signal))['~run'](
+        dataset,
+        config
+      );
     },
   };
 }
