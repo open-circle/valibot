@@ -24,6 +24,7 @@ type Action =
       number,
       v.ErrorMessage<v.EntriesIssue<v.EntriesInput, number>> | undefined
     >
+  | v.ExamplesAction<unknown, v.ArrayInput>
   | v.HexadecimalAction<
       string,
       v.ErrorMessage<v.HexadecimalIssue<string>> | undefined
@@ -174,6 +175,12 @@ export function convertAction(
     case 'entries': {
       jsonSchema.minProperties = valibotAction.requirement;
       jsonSchema.maxProperties = valibotAction.requirement;
+      break;
+    }
+
+    case 'examples': {
+      // @ts-expect-error
+      jsonSchema.examples = valibotAction.examples;
       break;
     }
 

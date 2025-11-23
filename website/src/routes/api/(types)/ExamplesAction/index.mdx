@@ -1,0 +1,90 @@
+---
+title: ExamplesAction
+description: Examples metadata action.
+contributors:
+  - EskiMojo14
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# ExamplesAction
+
+Examples metadata action.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TExamples` <Property {...properties.TExamples} />
+
+## Definition
+
+- `ExamplesAction` <Property {...properties.BaseMetadata} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `examples` <Property {...properties.examples} />
+
+## Related
+
+The following APIs can be combined with `ExamplesAction`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'array',
+    'bigint',
+    'blob',
+    'boolean',
+    'custom',
+    'date',
+    'enum',
+    'exactOptional',
+    'file',
+    'function',
+    'instance',
+    'intersect',
+    'lazy',
+    'literal',
+    'looseObject',
+    'looseTuple',
+    'map',
+    'nan',
+    'never',
+    'nonNullable',
+    'nonNullish',
+    'nonOptional',
+    'null',
+    'nullable',
+    'nullish',
+    'number',
+    'object',
+    'objectWithRest',
+    'optional',
+    'picklist',
+    'promise',
+    'record',
+    'set',
+    'strictObject',
+    'strictTuple',
+    'string',
+    'symbol',
+    'tuple',
+    'tupleWithRest',
+    'undefined',
+    'undefinedable',
+    'union',
+    'unknown',
+    'variant',
+    'void',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['getExamples', 'pipe']} />
+
+### Actions
+
+<ApiList items={['examples']} />

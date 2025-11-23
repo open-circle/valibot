@@ -17,6 +17,7 @@ export * from './empty/index.ts';
 export * from './endsWith/index.ts';
 export * from './entries/index.ts';
 export * from './everyItem/index.ts';
+export * from './examples/index.ts';
 export * from './excludes/index.ts';
 export * from './filterItems/index.ts';
 export * from './findItem/index.ts';

@@ -173,6 +173,14 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert examples action', () => {
+    expect(
+      convertAction({}, v.examples(['foo', 'bar']), undefined)
+    ).toStrictEqual({
+      examples: ['foo', 'bar'],
+    });
+  });
+
   test('should convert hexadecimal action', () => {
     expect(convertAction({}, v.hexadecimal<string>(), undefined)).toStrictEqual(
       {
