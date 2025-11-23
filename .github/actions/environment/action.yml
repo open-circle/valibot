@@ -26,12 +26,28 @@ runs:
       shell: bash
       run: pnpm install
 
+    - name: Create library build cache
+      id: library-build-cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ github.workspace }}/library/dist
+        key: library-build-cache-${{ hashFiles('library/src/**/*.ts', '!library/src/**/*.test.ts', '!library/src/**/*.test-d.ts') }}
+
     - name: Build library
+      if: steps.library-build-cache.outputs.cache-hit != 'true'
       shell: bash
       run: pnpm build
       working-directory: library
 
+    - name: Create to-json-schema build cache
+      id: to-json-schema-build-cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ github.workspace }}/packages/to-json-schema/dist
+        key: to-json-schema-build-cache-${{ hashFiles('packages/to-json-schema/src/**/*.ts', '!packages/to-json-schema/src/**/*.test.ts') }}
+
     - name: Build to-json-schema
+      if: steps.to-json-schema-build-cache.outputs.cache-hit != 'true'
       shell: bash
       run: pnpm build
       working-directory: packages/to-json-schema
