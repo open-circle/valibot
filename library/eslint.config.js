@@ -7,7 +7,15 @@ import pluginSecurity from 'eslint-plugin-security';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['eslint.config.js'] },
+  {
+    ignores: [
+      'eslint.config.js',
+      'tsdown.config.ts',
+      'vitest.config.ts',
+      'mod.ts',
+      'playground.ts',
+    ],
+  },
   eslint.configs.recommended,
   tseslint.configs.strict,
   tseslint.configs.stylistic,
