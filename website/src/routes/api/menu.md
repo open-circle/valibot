@@ -114,6 +114,7 @@
 - [ip](/api/ip/)
 - [ipv4](/api/ipv4/)
 - [ipv6](/api/ipv6/)
+- [isbn](/api/isbn/)
 - [isoDate](/api/isoDate/)
 - [isoDateTime](/api/isoDateTime/)
 - [isoTime](/api/isoTime/)
