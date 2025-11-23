@@ -24,6 +24,7 @@ export * from './finite/index.ts';
 export * from './flavor/index.ts';
 export * from './graphemes/index.ts';
 export * from './gtValue/index.ts';
+export * from './guard/index.ts';
 export * from './hash/index.ts';
 export * from './hexadecimal/index.ts';
 export * from './hexColor/index.ts';
