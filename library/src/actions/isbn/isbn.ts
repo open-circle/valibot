@@ -80,6 +80,8 @@ const ISBN_13_DETECTION_REGEX = /^\d{13}$/u;
  * Creates an [ISBN](https://en.wikipedia.org/wiki/ISBN) action.
  *
  * @returns An ISBN action.
+ *
+ * @beta
  */
 export function isbn<TInput extends string>(): IsbnAction<TInput, undefined>;
 
@@ -89,6 +91,8 @@ export function isbn<TInput extends string>(): IsbnAction<TInput, undefined>;
  * @param message The error message.
  *
  * @returns An ISBN action.
+ *
+ * @beta
  */
 export function isbn<
   TInput extends string,
