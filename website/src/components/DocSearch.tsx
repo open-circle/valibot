@@ -343,7 +343,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
     <div
       class={clsx(
         open.value &&
-          'fixed left-0 top-0 z-40 h-screen w-screen lg:p-40 xl:p-48'
+          'fixed top-0 left-0 z-40 h-screen w-screen lg:p-40 xl:p-48'
       )}
       window:onKeyDown$={[preventDefault, handleKeyDown]}
     >
@@ -432,7 +432,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
                                     getPrevItem()?.relation !== 'page'
                                   ? 'mt-6'
                                   : item.relation === 'child'
-                                    ? 'border-l-2 border-l-slate-200 pl-2 pt-2.5 dark:border-l-slate-800'
+                                    ? 'border-l-2 border-l-slate-200 pt-2.5 pl-2 dark:border-l-slate-800'
                                     : 'mt-2.5')
                           )}
                         >
@@ -486,7 +486,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
             </footer>
           </div>
           <div
-            class="hidden lg:absolute lg:left-0 lg:top-0 lg:-z-10 lg:block lg:h-full lg:w-full lg:cursor-default lg:bg-gray-200/50 lg:backdrop-blur-sm lg:dark:bg-gray-800/50"
+            class="hidden lg:absolute lg:top-0 lg:left-0 lg:-z-10 lg:block lg:h-full lg:w-full lg:cursor-default lg:bg-gray-200/50 lg:backdrop-blur-sm lg:dark:bg-gray-800/50"
             role="button"
             onClick$={() => (open.value = false)}
           />

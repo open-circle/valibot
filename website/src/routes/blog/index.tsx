@@ -50,7 +50,7 @@ export const usePosts = routeLoader$(async () =>
 export default component$(() => {
   const posts = usePosts();
   return (
-    <main class="max-w-(--breakpoint-lg) flex w-full flex-1 flex-col self-center py-12 md:py-14 lg:py-24 xl:py-32">
+    <main class="flex w-full max-w-(--breakpoint-lg) flex-1 flex-col self-center py-12 md:py-14 lg:py-24 xl:py-32">
       <div class="mdx">
         <h1>Blog</h1>
         <p>
@@ -66,7 +66,7 @@ export default component$(() => {
             <Link class="flex flex-col gap-8" href={post.href} prefetch={false}>
               <PostCover variant="blog" label={post.cover} />
               <div class="flex flex-col gap-5">
-                <h3 class="text-lg font-medium leading-normal text-slate-900 md:text-xl lg:text-2xl dark:text-slate-200">
+                <h3 class="text-lg leading-normal font-medium text-slate-900 md:text-xl lg:text-2xl dark:text-slate-200">
                   {post.title}
                 </h3>
                 <PostMeta
