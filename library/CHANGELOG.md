@@ -5,7 +5,9 @@ All notable changes to the library will be documented in this file.
 ## vX.X.X (Month DD, YYYY)
 
 - Add `toBigint`, `toBoolean`, `toDate`, `toNumber` and `toString` transformation actions (pull request #1212)
-- Export `RawCheckAddIssue`, `RawCheckContext`, `RawCheckIssueInfo`, `RawTransformAddIssue`, `RawTransformContext` and `RawTransformIssueInfo` types for better developer experience with `rawCheck` and `rawTransform` actions (pull request #1359)
+- Add `examples` action to add example values to a schema (pull request #1199)
+- Add `getExamples` method to extract example values from a schema (pull request #1199)
+- Add exports for `RawCheckAddIssue`, `RawCheckContext`, `RawCheckIssueInfo`, `RawTransformAddIssue`, `RawTransformContext` and `RawTransformIssueInfo` types for better developer experience with `rawCheck` and `rawTransform` actions (pull request #1359)
 - Change build step to tsdown
 
 ## v1.1.0 (May 06, 2025)

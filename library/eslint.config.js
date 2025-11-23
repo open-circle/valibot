@@ -17,6 +17,12 @@ export default tseslint.config(
   {
     files: ['src/**/*.ts'],
     extends: [importPlugin.flatConfigs.recommended],
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     plugins: { jsdoc, 'redos-detector': redosDetector },
     languageOptions: {
       parserOptions: {
