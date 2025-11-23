@@ -156,7 +156,7 @@ const Definition = component$<DefinitionProps>(({ parent, data }) => (
             data === 'never' ||
             data === 'any' ||
             data === 'unknown',
-          'capitalize text-sky-600 dark:text-sky-400':
+          'text-sky-600 capitalize dark:text-sky-400':
             data === 'object' ||
             data === 'array' ||
             data === 'tuple' ||
@@ -198,7 +198,7 @@ const Definition = component$<DefinitionProps>(({ parent, data }) => (
                     </>
                   ) : entrie.key.type ? (
                     <>
-                      <span class="italic text-orange-500 dark:text-orange-300">
+                      <span class="text-orange-500 italic dark:text-orange-300">
                         {entrie.key.name}
                       </span>
                       <span class="text-red-600 dark:text-red-400">:</span>{' '}

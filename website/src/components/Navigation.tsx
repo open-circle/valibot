@@ -120,7 +120,7 @@ const NavItem = component$<NavItemProps>(({ navElement, text, items }) => {
         >
           {text}
         </h4>
-        <div class="bg-linear-to-b pointer-events-none absolute -top-8 -z-10 h-24 w-full from-white via-white to-transparent opacity-90 dark:from-gray-900 dark:via-gray-900" />
+        <div class="pointer-events-none absolute -top-8 -z-10 h-24 w-full bg-linear-to-b from-white via-white to-transparent opacity-90 dark:from-gray-900 dark:via-gray-900" />
       </div>
       <div class="relative">
         <ul

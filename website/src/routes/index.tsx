@@ -47,7 +47,7 @@ export default component$(() => {
     <main class="flex flex-1 flex-col items-center gap-24 py-24 md:gap-36 md:py-36 xl:gap-52 xl:py-52">
       {/* Pitch */}
       <section class="px-4 text-center">
-        <h1 class="font-lexend-exa text-[min(6.2vw,30px)] font-medium leading-normal text-slate-900 md:text-[34px] lg:text-[40px] xl:text-5xl dark:text-slate-200">
+        <h1 class="font-lexend-exa text-[min(6.2vw,30px)] leading-normal font-medium text-slate-900 md:text-[34px] lg:text-[40px] xl:text-5xl dark:text-slate-200">
           <span class="block">
             Validate{' '}
             <span class="cursor-default blur-[1px] duration-[2s] hover:blur-none xl:blur-[2px]">
@@ -79,10 +79,10 @@ export default component$(() => {
             href="/playground/"
           />
         </ButtonGroup>
-        <div class="absolute left-0 top-0 -z-10 flex w-full justify-center overflow-x-clip">
+        <div class="absolute top-0 left-0 -z-10 flex w-full justify-center overflow-x-clip">
           <div class="relative w-full xl:w-0">
-            <div class="absolute -right-[300px] -top-[250px] h-[600px] w-[600px] bg-[radial-gradient(theme(--color-yellow-500/.08),transparent_70%)] md:-right-[500px] md:-top-[500px] md:h-[1000px] md:w-[1000px] xl:-right-[1100px] xl:-top-[500px] dark:bg-[radial-gradient(theme(--color-yellow-300/.08),transparent_70%)]" />
-            <div class="absolute -left-[370px] top-[200px] h-[600px] w-[600px] bg-[radial-gradient(theme(--color-sky-600/.08),transparent_70%)] md:-left-[550px] md:top-[100px] md:h-[1000px] md:w-[1000px] lg:top-[200px] xl:-left-[1100px] xl:top-[300px] dark:bg-[radial-gradient(theme(--color-sky-400/.08),transparent_70%)]" />
+            <div class="absolute -top-[250px] -right-[300px] h-[600px] w-[600px] bg-[radial-gradient(theme(--color-yellow-500/.08),transparent_70%)] md:-top-[500px] md:-right-[500px] md:h-[1000px] md:w-[1000px] xl:-top-[500px] xl:-right-[1100px] dark:bg-[radial-gradient(theme(--color-yellow-300/.08),transparent_70%)]" />
+            <div class="absolute top-[200px] -left-[370px] h-[600px] w-[600px] bg-[radial-gradient(theme(--color-sky-600/.08),transparent_70%)] md:top-[100px] md:-left-[550px] md:h-[1000px] md:w-[1000px] lg:top-[200px] xl:top-[300px] xl:-left-[1100px] dark:bg-[radial-gradient(theme(--color-sky-400/.08),transparent_70%)]" />
           </div>
         </div>
       </section>
@@ -94,6 +94,7 @@ export default component$(() => {
             { theme: 'dark', url: valibotTalkDarkUrl },
             { theme: 'light', url: valibotTalkLigthUrl },
           ].map(({ theme, url }) => (
+            // eslint-disable-next-line qwik/jsx-img
             <img
               key={url}
               class={clsx(
@@ -255,7 +256,7 @@ export default component$(() => {
                   <input type="hidden" name="index" value={index} />
                   <button
                     class={clsx(
-                      'focus-ring flex w-full justify-between gap-4 rounded-md transition-colors focus-visible:outline-offset-[6px] focus-visible:ring-offset-8',
+                      'focus-ring flex w-full justify-between gap-4 rounded-md transition-colors focus-visible:ring-offset-8 focus-visible:outline-offset-[6px]',
                       isOpen
                         ? 'text-sky-600 dark:text-sky-400'
                         : 'text-slate-800 hover:text-slate-700 dark:text-slate-300 hover:dark:text-slate-400'
@@ -265,7 +266,7 @@ export default component$(() => {
                     aria-expanded={isOpen}
                     aria-controls={`faq-${index}`}
                   >
-                    <span class="text-left font-medium leading-relaxed md:text-xl lg:text-2xl">
+                    <span class="text-left leading-relaxed font-medium md:text-xl lg:text-2xl">
                       {heading}
                     </span>
                     <PlusIcon

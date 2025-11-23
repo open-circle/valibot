@@ -96,7 +96,7 @@ export const Header = component$<HeaderProps>(({ searchOpen }) => {
         {/* Website logo */}
         <div class="-m-1 overflow-hidden p-1 lg:w-64">
           <Link
-            class="focus-ring inline-flex w-full select-none items-center rounded-lg p-2 font-medium transition-colors hover:text-slate-900 md:w-auto md:text-lg lg:text-xl dark:hover:text-slate-200"
+            class="focus-ring inline-flex w-full items-center rounded-lg p-2 font-medium transition-colors select-none hover:text-slate-900 md:w-auto md:text-lg lg:text-xl dark:hover:text-slate-200"
             href="/"
             prefetch={false}
             preventdefault:contextmenu
@@ -128,7 +128,7 @@ export const Header = component$<HeaderProps>(({ searchOpen }) => {
         {/* Main menu */}
         <nav
           class={clsx(
-            'absolute left-0 top-full flex max-h-[60vh] w-full origin-top flex-col overflow-y-auto border-b-2 pb-8 pt-4 duration-200 lg:static lg:top-auto lg:w-auto lg:translate-y-0 lg:flex-row lg:gap-5 lg:overflow-visible lg:border-none lg:bg-transparent lg:p-0 xl:gap-6 lg:dark:bg-transparent',
+            'absolute top-full left-0 flex max-h-[60vh] w-full origin-top flex-col overflow-y-auto border-b-2 pt-4 pb-8 duration-200 lg:static lg:top-auto lg:w-auto lg:translate-y-0 lg:flex-row lg:gap-5 lg:overflow-visible lg:border-none lg:bg-transparent lg:p-0 xl:gap-6 lg:dark:bg-transparent',
             !isOpen.value && 'invisible scale-y-0 lg:visible lg:scale-y-100',
             (isOpen.value && 'bg-white dark:bg-gray-900') ||
               (windowScrolled.value && 'bg-white/90 dark:bg-gray-900/90'),

@@ -86,7 +86,7 @@ export const CodemodEditor = component$(() => {
         value={{ value: zodCode }}
         model={model}
       />
-      <div class="absolute right-10 top-10 z-10 flex gap-6">
+      <div class="absolute top-10 right-10 z-10 flex gap-6">
         <IconButton
           type="button"
           variant="secondary"
@@ -118,19 +118,19 @@ export const CodemodEditor = component$(() => {
  * Sets up the Monaco editor environment.
  */
 async function setupMonaco() {
-  monaco.languages.typescript.typescriptDefaults.addExtraLib(
+  monaco.typescript.typescriptDefaults.addExtraLib(
     zod3PackageJson,
     'file:///node_modules/zod/package.json'
   );
-  monaco.languages.typescript.typescriptDefaults.addExtraLib(
+  monaco.typescript.typescriptDefaults.addExtraLib(
     zod3Types,
     'file:///node_modules/zod/dist/index.d.ts'
   );
-  monaco.languages.typescript.typescriptDefaults.addExtraLib(
+  monaco.typescript.typescriptDefaults.addExtraLib(
     zod4PackageJson,
     'file:///node_modules/zod/v4/package.json'
   );
-  monaco.languages.typescript.typescriptDefaults.addExtraLib(
+  monaco.typescript.typescriptDefaults.addExtraLib(
     zod4Types,
     'file:///node_modules/zod/v4/dist/index.d.ts'
   );
