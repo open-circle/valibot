@@ -1,0 +1,125 @@
+---
+title: getExamples
+description: Returns the examples of the schema.
+source: /methods/getExamples/getExamples.ts
+contributors:
+  - EskiMojo14
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# getExamples
+
+Returns the examples of the schema.
+
+> If multiple examples are defined, it concatenates them using depth-first search. If no examples are defined, an empty array is returned.
+
+```ts
+const examples = v.getExamples<TSchema>(schema);
+```
+
+## Generics
+
+- `TSchema` <Property {...properties.TSchema} />
+
+## Parameters
+
+- `schema` <Property {...properties.schema} />
+
+## Returns
+
+- `examples` <Property {...properties.examples} />
+
+## Examples
+
+The following examples show how `getExamples` can be used.
+
+### String schema
+
+```ts
+const StringSchema = v.pipe(v.string(), v.examples(['foo', 'bar', 'baz']));
+
+const examples = v.getExamples(StringSchema);
+
+// ['foo', 'bar', 'baz']
+```
+
+### Nested schema
+
+```ts
+const NestedSchema = v.pipe(
+  v.string(),
+  v.examples(['foo', 'bar', 'baz']),
+  v.pipe(v.string(), v.examples(['qux', 'quux']))
+);
+
+const examples = v.getExamples(NestedSchema);
+
+// ['foo', 'bar', 'baz', 'qux', 'quux']
+```
+
+## Related
+
+The following APIs can be combined with `getExamples`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'array',
+    'bigint',
+    'blob',
+    'boolean',
+    'custom',
+    'date',
+    'enum',
+    'exactOptional',
+    'file',
+    'function',
+    'instance',
+    'intersect',
+    'lazy',
+    'literal',
+    'looseObject',
+    'looseTuple',
+    'map',
+    'nan',
+    'never',
+    'nonNullable',
+    'nonNullish',
+    'nonOptional',
+    'null',
+    'nullable',
+    'nullish',
+    'number',
+    'object',
+    'objectWithRest',
+    'optional',
+    'picklist',
+    'promise',
+    'record',
+    'set',
+    'strictObject',
+    'strictTuple',
+    'string',
+    'symbol',
+    'tuple',
+    'tupleWithRest',
+    'undefined',
+    'undefinedable',
+    'union',
+    'unknown',
+    'variant',
+    'void',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['examples']} />

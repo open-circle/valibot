@@ -131,7 +131,7 @@ export const SideBar = component$<SideBarProps>(({ ref, toggle, ...props }) => {
         {/* Gradient overlay */}
         <div
           class={clsx(
-            'bg-linear-to-b pointer-events-none absolute bottom-14 z-20 h-14 w-full origin-bottom translate-y-0.5 from-transparent to-white duration-300 md:bottom-16 lg:hidden dark:to-gray-900',
+            'pointer-events-none absolute bottom-14 z-20 h-14 w-full origin-bottom translate-y-0.5 bg-linear-to-b from-transparent to-white duration-300 md:bottom-16 lg:hidden dark:to-gray-900',
             !isOpen.value && 'invisible scale-y-0'
           )}
         />

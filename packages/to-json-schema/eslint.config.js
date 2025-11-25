@@ -5,6 +5,9 @@ import pluginSecurity from 'eslint-plugin-security';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
+  {
+    ignores: ['eslint.config.js', 'tsdown.config.ts', 'vitest.config.ts'],
+  },
   eslint.configs.recommended,
   tseslint.configs.strict,
   tseslint.configs.stylistic,
@@ -13,7 +16,20 @@ export default tseslint.config(
   {
     files: ['src/**/*.ts'],
     extends: [importPlugin.flatConfigs.recommended],
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     plugins: { jsdoc },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: './tsconfig.json',
+        },
+      },
+    },
     rules: {
       // Enable rules -----------------------------------------------------------
 

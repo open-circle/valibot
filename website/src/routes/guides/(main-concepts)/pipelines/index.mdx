@@ -14,8 +14,7 @@ contributors:
   - ariskemper
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList } from '~/components';
+import { ApiList, Link } from '~/components';
 
 # Pipelines
 
@@ -76,6 +75,7 @@ Pipeline validation actions examine the input and, if the input does not meet a 
     'ip',
     'ipv4',
     'ipv6',
+    'isbn',
     'isoDate',
     'isoDateTime',
     'isoTime',
@@ -176,9 +176,14 @@ Pipeline transformation actions allow to change the value and data type of the i
     'readonly',
     'reduceItems',
     'sortItems',
+    'toBigint',
+    'toBoolean',
+    'toDate',
     'toLowerCase',
     'toMaxValue',
     'toMinValue',
+    'toNumber',
+    'toString',
     'toUpperCase',
     'transform',
     'trim',

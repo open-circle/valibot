@@ -19,7 +19,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup environment
         uses: ./.github/actions/environment
       - name: Build library
@@ -41,7 +41,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Publish library
         run: npx jsr publish
         working-directory: library
@@ -55,7 +55,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup environment
         uses: ./.github/actions/environment
       - name: Build i18n
@@ -77,7 +77,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup environment
         uses: ./.github/actions/environment
       - name: Build i18n
@@ -96,7 +96,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup environment
         uses: ./.github/actions/environment
       - name: Build to-json-schema
@@ -118,7 +118,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup environment
         uses: ./.github/actions/environment
       - name: Publish to-json-schema

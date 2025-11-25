@@ -1,0 +1,25 @@
+---
+title: RawTransformContext
+description: Raw transform context interface.
+contributors:
+  - fabian-hiller
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# RawTransformContext
+
+Raw transform context interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `RawTransformContext`
+  - `dataset` <Property {...properties.dataset} />
+  - `config` <Property {...properties.config} />
+  - `addIssue` <Property {...properties.addIssue} />
+  - `NEVER` <Property {...properties.NEVER} />

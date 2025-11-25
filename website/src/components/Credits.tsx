@@ -4,9 +4,9 @@ import {
   AlgoliaLogo,
   BoltLogo,
   BuilderLogo,
-  DailyDevLogo,
   DigitalOceanLogo,
   HdmLogo,
+  LambdaTestLogo,
   MotionLogo,
   PaceLogo,
   StainlessLogo,
@@ -65,8 +65,8 @@ export const Credits = component$(() => {
           { Logo: BoltLogo, href: 'https://bolt.new/' },
           { Logo: MotionLogo, href: 'https://www.usemotion.com/' },
           { Logo: VercelLogo, href: 'https://vercel.com' },
-          { Logo: DailyDevLogo, href: 'https://daily.dev/' },
           { Logo: StainlessLogo, href: 'https://www.stainless.com/' },
+          { Logo: LambdaTestLogo, href: 'https://www.lambdatest.com/' },
           { Logo: AlgoliaLogo, href: 'https://www.algolia.com' },
           { Logo: DigitalOceanLogo, href: 'https://www.digitalocean.com/' },
           { Logo: BuilderLogo, href: 'https://www.builder.io' },
@@ -88,6 +88,7 @@ export const Credits = component$(() => {
       <ul class="mt-4 flex flex-wrap gap-2 md:mt-5 lg:mt-6 lg:gap-3">
         {[
           'antfu',
+          'vasilii-kovalev',
           'saturnonearth',
           'ruiaraujo012',
           'hyunbinseo',
@@ -96,6 +97,7 @@ export const Credits = component$(() => {
           'andrewmd5',
           'Thanaen',
           'caegdeveloper',
+          'bmoyroud',
           'dslatkin',
         ].map((sponsor) => (
           <li key={sponsor}>

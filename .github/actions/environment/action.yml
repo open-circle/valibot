@@ -11,43 +11,32 @@ runs:
         run_install: false
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
-        node-version: 20
+        node-version: 22
         registry-url: 'https://registry.npmjs.org'
         cache: pnpm
 
     - name: Setup Deno
       uses: denoland/setup-deno@v2
       with:
-        deno-version: v2.2.12
+        deno-version: v2.5.6
 
     - name: Install dependencies
       shell: bash
       run: pnpm install
 
-    - name: Create library build cache
-      id: library-build-cache
-      uses: actions/cache@v4
-      with:
-        path: ${{ github.workspace }}/library/dist
-        key: library-build-cache-${{ hashFiles('library/src/**/*.ts', '!library/src/**/*.test.ts', '!library/src/**/*.test-d.ts') }}
-
     - name: Build library
-      if: steps.library-build-cache.outputs.cache-hit != 'true'
       shell: bash
       run: pnpm build
       working-directory: library
 
-    - name: Create to-json-schema build cache
-      id: to-json-schema-build-cache
-      uses: actions/cache@v4
-      with:
-        path: ${{ github.workspace }}/packages/to-json-schema/dist
-        key: to-json-schema-build-cache-${{ hashFiles('packages/to-json-schema/src/**/*.ts', '!packages/to-json-schema/src/**/*.test.ts') }}
-
     - name: Build to-json-schema
-      if: steps.to-json-schema-build-cache.outputs.cache-hit != 'true'
       shell: bash
       run: pnpm build
       working-directory: packages/to-json-schema
+
+    - name: Build zod-to-valibot
+      shell: bash
+      run: pnpm build
+      working-directory: codemod/zod-to-valibot
