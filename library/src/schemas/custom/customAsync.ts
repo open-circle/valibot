@@ -11,7 +11,10 @@ import type { CustomIssue } from './types.ts';
 /**
  * Check async type.
  */
-type CheckAsync = (input: unknown) => MaybePromise<boolean>;
+type CheckAsync = (
+  input: unknown,
+  signal?: AbortSignal
+) => MaybePromise<boolean>;
 
 /**
  * Custom schema async interface.
@@ -85,7 +88,7 @@ export function customAsync<TInput>(
       return _getStandardProps(this);
     },
     async '~run'(dataset, config) {
-      if (await this.check(dataset.value)) {
+      if (await this.check(dataset.value, config.signal)) {
         // @ts-expect-error
         dataset.typed = true;
       } else {

@@ -3104,6 +3104,7 @@ export function pipeAsync<
           }
 
           // Continue pipe execution if there is no reason to abort early
+          config.signal?.throwIfAborted();
           if (
             !dataset.issues ||
             (!config.abortEarly && !config.abortPipeEarly)

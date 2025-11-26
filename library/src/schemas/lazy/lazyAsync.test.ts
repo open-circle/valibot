@@ -99,6 +99,14 @@ describe('lazyAsync', () => {
     const getter = vi.fn(() => string());
     const dataset = { value: 'foo' };
     lazyAsync(getter)['~run'](dataset, {});
-    expect(getter).toHaveBeenCalledWith(dataset.value);
+    expect(getter).toHaveBeenCalledWith(dataset.value, undefined);
+  });
+
+  test('should call getter with signal', () => {
+    const getter = vi.fn(() => string());
+    const dataset = { value: 'foo' };
+    const signal = AbortSignal.abort();
+    lazyAsync(getter)['~run'](dataset, { signal });
+    expect(getter).toHaveBeenCalledWith(dataset.value, signal);
   });
 });
