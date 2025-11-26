@@ -1,0 +1,91 @@
+---
+title: guard
+description: Creates a guard transformation action.
+source: /actions/guard/guard.ts
+contributors:
+  - EskiMojo14
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# guard
+
+Creates a guard transformation action.
+
+```ts
+const Action = v.guard<TInput, TGuard, TMessage>(requirement, message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TGuard` <Property {...properties.TGuard} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `guard` you can freely validate the input and return `true` if it is valid or `false` otherwise. If the input does not match your `requirement`, you can use `message` to customize the error message.
+
+This is especially useful if you have an existing type predicate (for example, from an external library).
+
+> `guard` is useful for narrowing known types. For validating completely unknown values, consider [`custom`](../custom/) instead.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `guard` can be used.
+
+### Pixel string schema
+
+Schema to validate a pixel string.
+
+```ts
+const PixelStringSchema = v.pipe(
+  v.string(),
+  v.guard((input): input is `${number}px` => /^\d+px$/.test(input))
+);
+```
+
+### Axios Error schema
+
+Schema to validate an object containing an Axios error.
+
+```ts
+import { isAxiosError } from 'axios';
+
+const AxiosErrorSchema = v.object({
+  error: v.pipe(
+    v.instance(Error),
+    v.guard(isAxiosError, 'The error is not an Axios error.')
+  ),
+});
+```
+
+## Related
+
+The following APIs can be combined with `guard`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'instance', 'object', 'unknown']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
+
+### Actions
+
+<ApiList items={['check', 'rawCheck']} />
