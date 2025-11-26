@@ -1,0 +1,76 @@
+---
+title: stringbool
+description: Creates a string to boolean transformation action.
+source: /actions/stringbool/stringbool.ts
+contributors:
+  - alexilyaev
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# stringbool
+
+Creates a string to boolean transformation action.
+
+```ts
+const Action = v.stringbool<TInput, TOptions>(options);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TOptions` <Property {...properties.TOptions} />
+
+## Parameters
+
+- `options` <Property {...properties.options} />
+
+### Explanation
+
+With `stringbool` you can parse certain "boolish" string values into a plain boolean value (e.g. parsing environment variables).
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `stringbool` can be used.
+
+```ts
+const EnvSchema = v.object({
+  // Default behavior
+  PROD_MODE: v.pipe(v.string(), v.stringbool()),
+
+  // Custom options
+  LOG_ENABLED: v.pipe(
+    v.string(),
+    v.stringbool({
+      // These are the defaults
+      truthy: ['true', '1', 'yes', 'y', 'on', 'enabled'],
+      falsy: ['false', '0', 'no', 'n', 'off', 'disabled'],
+      case: 'insensitive',
+    })
+  ),
+
+  // Optional with default value
+  VERBOSE: v.optional(v.pipe(v.string(), v.stringbool()), 'false'),
+});
+```
+
+## Related
+
+The following APIs can be combined with `stringbool`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
