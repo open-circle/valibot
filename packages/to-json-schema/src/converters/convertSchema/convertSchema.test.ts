@@ -800,7 +800,42 @@ describe('convertSchema', () => {
           createContext()
         )
       ).toStrictEqual({
+        type: ['string', 'number'],
         enum: [0, 1, 'foo', 123],
+      });
+
+      enum TestOnlyNumbersEnum {
+        KEY1,
+        KEY2,
+      }
+      expect(
+        convertSchema(
+          {},
+          // @ts-expect-error
+          v.enum(TestOnlyNumbersEnum),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'number',
+        enum: [0, 1],
+      });
+
+      enum TestOnlyStringsEnum {
+        KEY1 = 'key1',
+        KEY2 = 'key2',
+      }
+      expect(
+        convertSchema(
+          {},
+          // @ts-expect-error
+          v.enum(TestOnlyStringsEnum),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'string',
+        enum: ['key1', 'key2'],
       });
     });
 
@@ -812,7 +847,29 @@ describe('convertSchema', () => {
           undefined,
           createContext()
         )
-      ).toStrictEqual({ enum: ['foo', 123, 'bar', 456] });
+      ).toStrictEqual({
+        type: ['string', 'number'],
+        enum: ['foo', 123, 'bar', 456],
+      });
+
+      expect(
+        convertSchema(
+          {},
+          v.picklist(['foo', 'bar']),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'string',
+        enum: ['foo', 'bar'],
+      });
+
+      expect(
+        convertSchema({}, v.picklist([123, 456]), undefined, createContext())
+      ).toStrictEqual({
+        type: 'number',
+        enum: [123, 456],
+      });
     });
 
     test('should throw error for unsupported picklist schema', () => {

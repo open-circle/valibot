@@ -428,15 +428,26 @@ export function convertSchema(
 
     case 'enum': {
       jsonSchema.enum = valibotSchema.options;
+      // the type could technically always be an array with only `string` or `number`
+      // we are specifically doing this check to match the MCP expectations that an enum
+      // can only contain string values AND the type is exactly "string" instead of ["string"]
+      if (valibotSchema.options.every((option) => typeof option === 'string')) {
+        jsonSchema.type = 'string';
+      } else if (
+        valibotSchema.options.every((option) => typeof option === 'number')
+      ) {
+        jsonSchema.type = 'number';
+      } else {
+        jsonSchema.type = ['string', 'number'];
+      }
       break;
     }
 
     case 'picklist': {
-      if (
-        valibotSchema.options.some(
-          (option) => typeof option !== 'number' && typeof option !== 'string'
-        )
-      ) {
+      const invalid = valibotSchema.options.some(
+        (option) => typeof option !== 'number' && typeof option !== 'string'
+      );
+      if (invalid) {
         errors = addError(
           errors,
           'An option of the "picklist" schema is not JSON compatible.'
@@ -444,6 +455,18 @@ export function convertSchema(
       }
       // @ts-expect-error
       jsonSchema.enum = valibotSchema.options;
+      // the type could technically always be an array with only `string` or `number`
+      // we are specifically doing this check to match the MCP expectations that an enum
+      // can only contain string values AND the type is exactly "string" instead of ["string"]
+      if (valibotSchema.options.every((option) => typeof option === 'string')) {
+        jsonSchema.type = 'string';
+      } else if (
+        valibotSchema.options.every((option) => typeof option === 'number')
+      ) {
+        jsonSchema.type = 'number';
+      } else if (!invalid) {
+        jsonSchema.type = ['string', 'number'];
+      }
       break;
     }
 
