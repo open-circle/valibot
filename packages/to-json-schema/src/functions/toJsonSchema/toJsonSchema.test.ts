@@ -15,6 +15,32 @@ describe('toJsonSchema', () => {
       });
     });
 
+    test('for integer schema with min value', () => {
+      const IntegerSchema = v.pipe(
+        v.number(),
+        v.integer(),
+        v.minValue(10, 'The number must be at least 10.')
+      );
+      expect(toJsonSchema(IntegerSchema)).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'integer',
+        minimum: 10,
+      });
+    });
+
+    test('for integer schema with max value', () => {
+      const IntegerSchema = v.pipe(
+        v.number(),
+        v.integer(),
+        v.maxValue(100, 'The number must be at most 100.')
+      );
+      expect(toJsonSchema(IntegerSchema)).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'integer',
+        maximum: 100,
+      });
+    });
+
     test('for complex schema with definitions', () => {
       const stringSchema = v.string();
       const complexSchema = v.pipe(
