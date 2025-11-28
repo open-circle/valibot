@@ -318,7 +318,7 @@ export function convertSchema(
       for (const key in valibotSchema.entries) {
         const entry = valibotSchema.entries[key] as SchemaOrPipe;
         jsonSchema.properties[key] = convertSchema({}, entry, config, context);
-        if (entry.type !== 'nullish' && entry.type !== 'optional') {
+        if (entry.type !== 'nullish' && entry.type !== 'optional' && entry.type !== 'undefinedable') {
           jsonSchema.required.push(key);
         }
       }

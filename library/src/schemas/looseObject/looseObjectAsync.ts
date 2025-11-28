@@ -115,7 +115,8 @@ export function looseObjectAsync(
               key in input ||
               ((valueSchema.type === 'exact_optional' ||
                 valueSchema.type === 'optional' ||
-                valueSchema.type === 'nullish') &&
+                valueSchema.type === 'nullish' ||
+                valueSchema.type === 'undefinedable') &&
                 // @ts-expect-error
                 valueSchema.default !== undefined)
             ) {
@@ -199,7 +200,8 @@ export function looseObjectAsync(
           } else if (
             valueSchema.type !== 'exact_optional' &&
             valueSchema.type !== 'optional' &&
-            valueSchema.type !== 'nullish'
+            valueSchema.type !== 'nullish' &&
+            valueSchema.type !== 'undefinedable'
           ) {
             _addIssue(this, 'key', dataset, config, {
               input: undefined,
