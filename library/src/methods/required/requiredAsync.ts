@@ -31,26 +31,31 @@ import type {
 } from '../../types/index.ts';
 import { _getStandardProps } from '../../utils/index.ts';
 
-/**
- * Schema type.
- */
-type Schema = SchemaWithoutPipe<
-  | LooseObjectSchemaAsync<
-      ObjectEntriesAsync,
-      ErrorMessage<LooseObjectIssue> | undefined
-    >
-  | ObjectSchemaAsync<ObjectEntriesAsync, ErrorMessage<ObjectIssue> | undefined>
-  | ObjectWithRestSchemaAsync<
-      ObjectEntriesAsync,
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  | StrictObjectSchemaAsync<
-      ObjectEntriesAsync,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
->;
+export namespace requiredAsync {
+  /**
+   * Schema type.
+   */
+  export type Schema = SchemaWithoutPipe<
+    | LooseObjectSchemaAsync<
+        ObjectEntriesAsync,
+        ErrorMessage<LooseObjectIssue> | undefined
+      >
+    | ObjectSchemaAsync<
+        ObjectEntriesAsync,
+        ErrorMessage<ObjectIssue> | undefined
+      >
+    | ObjectWithRestSchemaAsync<
+        ObjectEntriesAsync,
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<ObjectWithRestIssue> | undefined
+      >
+    | StrictObjectSchemaAsync<
+        ObjectEntriesAsync,
+        ErrorMessage<StrictObjectIssue> | undefined
+      >
+  >;
+}
 
 /**
  * Required entries type.
@@ -71,7 +76,7 @@ type RequiredEntries<
  * Schema with required type.
  */
 export type SchemaWithRequiredAsync<
-  TSchema extends Schema,
+  TSchema extends requiredAsync.Schema,
   TKeys extends ObjectKeys<TSchema> | undefined,
   TMessage extends ErrorMessage<NonOptionalIssue> | undefined,
 > = TSchema extends
@@ -281,7 +286,7 @@ export function requiredAsync<const TSchema extends Schema>(
  * @returns An object schema.
  */
 export function requiredAsync<
-  const TSchema extends Schema,
+  const TSchema extends requiredAsync.Schema,
   const TMessage extends ErrorMessage<NonOptionalIssue> | undefined,
 >(
   schema: TSchema,
@@ -298,7 +303,7 @@ export function requiredAsync<
  * @returns An object schema.
  */
 export function requiredAsync<
-  const TSchema extends Schema,
+  const TSchema extends requiredAsync.Schema,
   const TKeys extends ObjectKeys<TSchema>,
 >(
   schema: TSchema,
@@ -316,7 +321,7 @@ export function requiredAsync<
  * @returns An object schema.
  */
 export function requiredAsync<
-  const TSchema extends Schema,
+  const TSchema extends requiredAsync.Schema,
   const TKeys extends ObjectKeys<TSchema>,
   const TMessage extends ErrorMessage<NonOptionalIssue> | undefined,
 >(
@@ -327,12 +332,12 @@ export function requiredAsync<
 
 // @__NO_SIDE_EFFECTS__
 export function requiredAsync(
-  schema: Schema,
-  arg2?: ErrorMessage<NonOptionalIssue> | ObjectKeys<Schema>,
+  schema: requiredAsync.Schema,
+  arg2?: ErrorMessage<NonOptionalIssue> | ObjectKeys<requiredAsync.Schema>,
   arg3?: ErrorMessage<NonOptionalIssue>
 ): SchemaWithRequiredAsync<
-  Schema,
-  ObjectKeys<Schema> | undefined,
+  requiredAsync.Schema,
+  ObjectKeys<requiredAsync.Schema> | undefined,
   ErrorMessage<NonOptionalIssue> | undefined
 > {
   // Get keys and message from arguments
@@ -344,7 +349,7 @@ export function requiredAsync(
   // Create modified object entries
   const entries: RequiredEntries<
     ObjectEntriesAsync,
-    ObjectKeys<Schema>,
+    ObjectKeys<requiredAsync.Schema>,
     ErrorMessage<NonOptionalIssue> | undefined
   > = {};
   for (const key in schema.entries) {
