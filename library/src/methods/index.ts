@@ -6,6 +6,7 @@ export * from './forward/index.ts';
 export * from './getDefault/index.ts';
 export * from './getDefaults/index.ts';
 export * from './getDescription/index.ts';
+export * from './getExamples/index.ts';
 export * from './getFallback/index.ts';
 export * from './getFallbacks/index.ts';
 export * from './getMetadata/index.ts';

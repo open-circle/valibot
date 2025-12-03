@@ -1,0 +1,40 @@
+{
+  "name": "zod-to-valibot",
+  "description": "Official codemod for converting Zod schemas to Valibot",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Elton Lobo",
+  "homepage": "https://valibot.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-circle/valibot"
+  },
+  "keywords": [
+    "codemod",
+    "zod",
+    "valibot",
+    "schema"
+  ],
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "codemod": "jscodeshift",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "jscodeshift": "^17.3.0"
+  },
+  "devDependencies": {
+    "@types/jscodeshift": "17.3.0",
+    "@types/node": "^24.10.1",
+    "tsdown": "^0.16.6",
+    "typescript": "^5.9.3",
+    "vite-plugin-node-polyfills": "^0.24.0",
+    "vitest": "^4.0.13"
+  }
+}

@@ -13,7 +13,7 @@ All notable changes to the library will be documented in this file.
 
 ## v0.17.0 (July 26, 2024)
 
-- Add Indonesia (id) translations (pull request #683)
+- Add Indonesian (id) translations (pull request #683)
 
 ## v0.16.0 (June 19, 2024)
 

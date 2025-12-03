@@ -5,7 +5,7 @@ contributors:
   - fabian-hiller
 ---
 
-import { Link } from '@builder.io/qwik-city';
+import { Link } from '~/components';
 
 # JSON Schema
 
@@ -13,9 +13,9 @@ In favor of a larger feature set and smaller bundle size, Valibot is not impleme
 
 ## Valibot to JSON Schema
 
-A large part of Valibot's schemas are JSON Schema compatible and can be easily converted to the JSON Schema format using the official `toJsonSchema` function. This function is provided via a separate package called [`@valibot/to-json-schema`](https://github.com/fabian-hiller/valibot/tree/main/packages/to-json-schema).
+A large part of Valibot's schemas are JSON Schema compatible and can be easily converted to the JSON Schema format using the official `toJsonSchema` function. This function is provided via a separate package called [`@valibot/to-json-schema`](https://github.com/open-circle/valibot/tree/main/packages/to-json-schema).
 
-> See the [README](https://github.com/fabian-hiller/valibot/blob/main/packages/to-json-schema/README.md) of the `@valibot/to-json-schema` package for more details. It is also recommended that you take a look at <Link href="/blog/json-schema-package-upgrade/">this blog post</Link>, which highlights recent improvements.
+> See the [README](https://github.com/open-circle/valibot/blob/main/packages/to-json-schema/README.md) of the `@valibot/to-json-schema` package for more details. It is also recommended that you take a look at <Link href="/blog/json-schema-package-upgrade/">this blog post</Link>, which highlights recent improvements.
 
 ```ts
 import { toJsonSchema } from '@valibot/to-json-schema';

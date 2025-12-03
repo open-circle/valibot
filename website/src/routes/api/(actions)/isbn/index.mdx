@@ -1,0 +1,76 @@
+---
+title: isbn
+description: Creates an ISBN validation action.
+source: /actions/isbn/isbn.ts
+contributors:
+  - ysknsid25
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# isbn
+
+Creates an [ISBN](https://en.wikipedia.org/wiki/ISBN) validation action.
+
+```ts
+const Action = v.isbn<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `isbn` you can validate the formatting of a string. If the input is not an ISBN, you can use `message` to customize the error message.
+
+This action supports both ISBN-10 and ISBN-13 formats and accepts hyphens and spaces as separators.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `isbn` can be used.
+
+### ISBN schema
+
+Schema to validate an ISBN.
+
+```ts
+const IsbnSchema = v.pipe(v.string(), v.isbn('The ISBN is badly formatted'));
+
+// Valid ISBN-10 formats:
+// '0-306-40615-2'
+// '0306406152'
+// '0 306 40615 2'
+
+// Valid ISBN-13 formats:
+// '978-0-306-40615-7'
+// '9780306406157'
+// '978 0 306 40615 7'
+```
+
+## Related
+
+The following APIs can be combined with `isbn`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

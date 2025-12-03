@@ -4,7 +4,7 @@ import type {
   OutputDataset,
 } from '../../types/index.ts';
 import { _addIssue } from '../../utils/index.ts';
-import type { Context, RawTransformIssue } from './types.ts';
+import type { RawTransformContext, RawTransformIssue } from './types.ts';
 
 /**
  * Raw transform action interface.
@@ -30,7 +30,7 @@ export interface RawTransformAction<TInput, TOutput>
  */
 // @__NO_SIDE_EFFECTS__
 export function rawTransform<TInput, TOutput>(
-  action: (context: Context<TInput>) => TOutput
+  action: (context: RawTransformContext<TInput>) => TOutput
 ): RawTransformAction<TInput, TOutput> {
   return {
     kind: 'transformation',

@@ -8,11 +8,11 @@ type State = 'start' | 'loading' | 'end';
  * Loading animation that gives visual feedback that the route is being changed.
  */
 export const RoutingIndicator = component$(() => {
-  // Use is routing and create state signal
+  // Use location and create state signal
   const location = useLocation();
   const state = useSignal<State>('start');
 
-  // Update state when is routing changes
+  // Update state when location changes
   useTask$(({ track, cleanup }) => {
     if (track(() => location.isNavigating)) {
       state.value = 'loading';
@@ -30,10 +30,10 @@ export const RoutingIndicator = component$(() => {
         state.value === 'start' && 'scale-x-0',
         state.value === 'loading' && 'scale-x-75 duration-[3s] ease-linear',
         state.value === 'end' &&
-          'opacity-0 [transition:transform_.5s_ease-in,opacity_.5s_linear_.25s]'
+          'opacity-0 [transition:scale_.5s_ease-in,opacity_.5s_linear_.25s]'
       )}
       role="status"
-      aria-label={`App is ${location.isNavigating ? '' : 'not'}navigating`}
+      aria-label={`App is ${location.isNavigating ? '' : 'not'} navigating`}
     />
   );
 });

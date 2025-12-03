@@ -10,13 +10,22 @@ contributors:
   - morinokami
 ---
 
-import { Link } from '@builder.io/qwik-city';
+import { Link } from '~/components';
+import { CodemodEditor } from './CodemodEditor';
 
 # Migrate from Zod
 
 Migrating from [Zod](https://zod.dev/) to Valibot is very easy in most cases since both APIs have a lot of similarities. The following guide will help you migrate step by step and also point out important differences.
 
-> If anything is unclear or missing, please create an [issue](https://github.com/fabian-hiller/valibot/issues/new) on GitHub. We are very interested in making this guide as good as possible.
+## Official codemod
+
+To make the migration as smoth as possible, we have created an official codemod that automatically migrates your Zod schemas to Valibot. Just copy your schemas into this editor and click play.
+
+> The codemod is still in beta and may not cover all edge cases. If you encounter any problems or unexpected behaviour, please create an [issue](https://github.com/open-circle/valibot/issues/new). Alternatively, you can try to fix any issues yourself and create a [pull request](https://github.com/open-circle/valibot/pulls). You can find the source code [here](https://github.com/open-circle/valibot/tree/main/codemod/zod-to-valibot).
+
+<CodemodEditor />
+
+You will soon be able to also run the codemod locally in your terminal to migrate your entire codebase at once. Stay tuned!
 
 ## Replace imports
 
@@ -121,7 +130,7 @@ For individual error messages, you can pass a string or an object to Zod. It als
 
 ```ts
 // Change this
-const SchemaSchema = z
+const StringSchema = z
   .string({ invalid_type_error: 'Not a string' })
   .min(5, { message: 'Too short' });
 

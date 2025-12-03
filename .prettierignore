@@ -34,3 +34,4 @@ package-lock.json
 yarn.lock
 server
 .grit/patterns
+codemod/zod-to-valibot/__testfixtures__

@@ -59,6 +59,8 @@ const LoginSchema = object({
 });
 ```
 
+> You can migrate from Zod to Valibot using our [migration guide](/guides/migrate-from-zod/). It provides a codemod and a detailed overview of the differences between the two libraries.
+
 ## Performance
 
 With a schema library, a distinction must be made between startup performance and runtime performance. Startup performance describes the time required to load and initialize the library. This benchmark is mainly influenced by the bundle size and the amount of work required to create a schema. Runtime performance describes the time required to validate unknown data using a schema.

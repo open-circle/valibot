@@ -7,7 +7,7 @@ import {
   useSignal,
   useTask$,
 } from '@builder.io/qwik';
-import { Link, useLocation, useNavigate } from '@builder.io/qwik-city';
+import { useLocation, useNavigate } from '@builder.io/qwik-city';
 import { isBrowser } from '@builder.io/qwik/build';
 import clsx from 'clsx';
 import { useFocusTrap, useStorageSignal } from '~/hooks';
@@ -20,6 +20,7 @@ import {
 } from '~/icons';
 import { AlgoliaLogo } from '~/logos';
 import { trackEvent } from '~/utils';
+import { Link } from './Link';
 import { SystemIcon } from './SystemIcon';
 import { TextLink } from './TextLink';
 
@@ -245,7 +246,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
                 ...storage.value,
                 [currentInput]: {
                   result: searchResult,
-                  expires: Date.now() + 2.592e8, // 3 days
+                  expires: Date.now() + 6.048e8, // 7 days
                 },
               };
 
@@ -317,7 +318,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
       // Select current active index
       if (event.key === 'Enter') {
         const item = searchItems.value[activeIndex.value];
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
         if (item) {
           if (item.path === location.url.pathname) {
             open.value = false;
@@ -342,7 +343,8 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
   return (
     <div
       class={clsx(
-        open.value && 'fixed left-0 top-0 z-40 h-screen w-screen lg:p-48'
+        open.value &&
+          'fixed top-0 left-0 z-40 h-screen w-screen lg:p-40 xl:p-48'
       )}
       window:onKeyDown$={[preventDefault, handleKeyDown]}
     >
@@ -353,7 +355,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
             ref={modalElement}
           >
             {/* Header */}
-            <header class="flex h-14 flex-shrink-0 items-center px-2 md:h-16 lg:h-[72px] lg:px-4">
+            <header class="flex h-14 shrink-0 items-center px-2 md:h-16 lg:h-[72px] lg:px-4">
               <form class="flex flex-1" preventdefault:submit>
                 <SystemIcon
                   label={loading.value ? 'Search' : 'Focus search input'}
@@ -366,6 +368,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
                 <input
                   class="flex-1 bg-transparent px-2 text-lg text-slate-900 outline-none placeholder:text-slate-500 md:text-xl dark:text-slate-200"
                   ref={inputElement}
+                  name="search"
                   type="search"
                   placeholder="Search docs"
                   value={input.value}
@@ -373,7 +376,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
                 />
               </form>
               <SystemIcon
-                class="lg:!h-[22px] lg:!w-[22px]"
+                class="lg:h-[22px]! lg:w-[22px]!"
                 label="Close search"
                 type="button"
                 onClick$={() => (open.value = false)}
@@ -391,7 +394,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
                     An unexpected error has occurred. If this happens regularly,
                     please create an{' '}
                     <TextLink
-                      href="https://github.com/fabian-hiller/valibot/issues/new"
+                      href="https://github.com/open-circle/valibot/issues/new"
                       target="_blank"
                       colored
                       underlined
@@ -430,7 +433,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
                                     getPrevItem()?.relation !== 'page'
                                   ? 'mt-6'
                                   : item.relation === 'child'
-                                    ? 'border-l-2 border-l-slate-200 pl-2 pt-2.5 dark:border-l-slate-800'
+                                    ? 'border-l-2 border-l-slate-200 pt-2.5 pl-2 dark:border-l-slate-800'
                                     : 'mt-2.5')
                           )}
                         >
@@ -453,7 +456,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
                 recent.value!.length ? (
                   <>
                     <div class="text-sm md:text-base">Recent</div>
-                    <ul class="mt-6 space-y-2.5">
+                    <ul class="mt-6 flex flex-col gap-2.5">
                       {recent.value.map((item, index) => (
                         <li key={item.path + item.text}>
                           <SearchItem
@@ -472,7 +475,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
             </div>
 
             {/* Footer */}
-            <footer class="flex h-12 flex-shrink-0 items-center justify-end px-4 text-xs md:h-14 md:text-sm lg:h-[72px] lg:px-6">
+            <footer class="flex h-12 shrink-0 items-center justify-end px-4 text-xs md:h-14 md:text-sm lg:h-[72px] lg:px-6">
               Search by
               <TextLink
                 class="ml-2 md:ml-3"
@@ -484,7 +487,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
             </footer>
           </div>
           <div
-            class="hidden lg:absolute lg:left-0 lg:top-0 lg:-z-10 lg:block lg:h-full lg:w-full lg:cursor-default lg:bg-gray-200/50 lg:backdrop-blur-sm lg:dark:bg-gray-800/50"
+            class="hidden lg:absolute lg:top-0 lg:left-0 lg:-z-10 lg:block lg:h-full lg:w-full lg:cursor-default lg:bg-gray-200/50 lg:backdrop-blur-sm lg:dark:bg-gray-800/50"
             role="button"
             onClick$={() => (open.value = false)}
           />
@@ -547,9 +550,9 @@ const SearchItem = component$<SearchItemProps>(
         onClick$={onClick$}
       >
         {relation === 'page' ? (
-          <PageIcon class="h-5 flex-shrink-0 md:h-6" />
+          <PageIcon class="h-5 shrink-0 md:h-6" />
         ) : (
-          <HashtagIcon class="h-5 flex-shrink-0 md:h-6" />
+          <HashtagIcon class="h-5 shrink-0 md:h-6" />
         )}
         <div
           class={clsx(
@@ -576,7 +579,7 @@ const SearchItem = component$<SearchItemProps>(
             }${text}`}
           />
         </div>
-        <AngleRightIcon class="h-3 flex-shrink-0 md:h-4" />
+        <AngleRightIcon class="h-3 shrink-0 md:h-4" />
       </Link>
     );
   }

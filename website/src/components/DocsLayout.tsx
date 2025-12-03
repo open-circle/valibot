@@ -81,12 +81,14 @@ export const DocsLayout = component$(() => {
     <div
       class={clsx(
         'flex w-full flex-1 flex-col-reverse self-center lg:flex-row',
-        showChapters.value ? 'max-w-screen-2xl' : 'max-w-screen-xl'
+        showChapters.value
+          ? 'max-w-(--breakpoint-2xl)'
+          : 'max-w-(--breakpoint-xl)'
       )}
     >
       {/* Side bar navigation */}
       <SideBar class="lg:max-h-[calc(100vh-70px)]" toggle={sideBarToggle}>
-        <div q:slot="buttons" class="mr-4 flex space-x-6 lg:hidden">
+        <div q:slot="buttons" class="mr-4 flex gap-6 lg:hidden">
           <NavButtons
             pageIndex={navIndex.value}
             sourcePath={documentHead.frontmatter.source}
@@ -96,7 +98,7 @@ export const DocsLayout = component$(() => {
         </div>
         <Navigation
           class={clsx(
-            'px-8 py-9 lg:w-60 lg:py-32',
+            'px-8 py-9 lg:w-60 lg:py-24 xl:py-32',
             showChapters.value ? '2xl:w-64' : '2xl:w-72'
           )}
         />
@@ -104,14 +106,14 @@ export const DocsLayout = component$(() => {
 
       <main
         class={clsx(
-          'relative flex-1 py-12 md:py-20 lg:w-px lg:py-32',
+          'relative flex-1 py-12 md:py-14 lg:w-px lg:py-24 xl:py-32',
           showChapters.value ? 'lg:px-9' : 'lg:pl-9'
         )}
       >
         {/* Navigation buttons */}
         <nav
           class={clsx(
-            'hidden px-8 lg:absolute lg:flex lg:space-x-6 lg:px-10',
+            'hidden px-8 lg:absolute lg:flex lg:gap-6 lg:px-10',
             showChapters.value ? 'lg:right-9' : 'lg:right-0'
           )}
         >
@@ -136,7 +138,7 @@ export const DocsLayout = component$(() => {
             <IconButton
               variant="secondary"
               type="link"
-              href={`https://github.com/fabian-hiller/valibot/blob/main/website/src/routes${currentPage.value.href.replace(
+              href={`https://github.com/open-circle/valibot/blob/main/website/src/routes${currentPage.value.href.replace(
                 /^(\/.+)\/(.+\/)$/,
                 `$1/(${currentPage.value.group
                   .toLowerCase()
@@ -245,7 +247,7 @@ export const NavButtons = component$<NavButtonsProps>(
         <IconButton
           variant="secondary"
           type="link"
-          href={`https://github.com/fabian-hiller/valibot/blob/main/library/src${sourcePath}`}
+          href={`https://github.com/open-circle/valibot/blob/main/library/src${sourcePath}`}
           target="_blank"
           label="Source code"
           hideLabel

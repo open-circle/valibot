@@ -2,10 +2,9 @@ import { component$ } from '@builder.io/qwik';
 import {
   type DocumentHead,
   type DocumentHeadValue,
-  Link,
   routeLoader$,
 } from '@builder.io/qwik-city';
-import { PostCover, PostMeta } from '~/components';
+import { Link, PostCover, PostMeta } from '~/components';
 
 export const head: DocumentHead = {
   title: 'Blog',
@@ -50,7 +49,7 @@ export const usePosts = routeLoader$(async () =>
 export default component$(() => {
   const posts = usePosts();
   return (
-    <main class="flex w-full max-w-screen-lg flex-1 flex-col self-center py-12 md:py-20 lg:py-32">
+    <main class="flex w-full max-w-(--breakpoint-lg) flex-1 flex-col self-center py-12 md:py-14 lg:py-24 xl:py-32">
       <div class="mdx">
         <h1>Blog</h1>
         <p>
@@ -63,10 +62,10 @@ export default component$(() => {
       <ol class="mx-3 mt-6 flex flex-wrap lg:mx-2 lg:mt-10">
         {posts.value.map((post) => (
           <li class="w-full px-5 py-6 md:w-1/2 lg:p-8" key={post.href}>
-            <Link class="space-y-8" href={post.href}>
+            <Link class="flex flex-col gap-8" href={post.href} prefetch={false}>
               <PostCover variant="blog" label={post.cover} />
-              <div class="space-y-5">
-                <h3 class="text-lg font-medium leading-normal text-slate-900 md:text-xl lg:text-2xl dark:text-slate-200">
+              <div class="flex flex-col gap-5">
+                <h3 class="text-lg leading-normal font-medium text-slate-900 md:text-xl lg:text-2xl dark:text-slate-200">
                   {post.title}
                 </h3>
                 <PostMeta

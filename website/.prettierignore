@@ -12,3 +12,4 @@ server
 *.spec.ts
 .netlify
 .vercel
+zod

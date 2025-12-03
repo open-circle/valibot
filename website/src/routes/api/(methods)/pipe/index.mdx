@@ -10,8 +10,7 @@ contributors:
   - morinokami
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # pipe
@@ -191,6 +190,7 @@ The following APIs can be combined with `pipe`.
     'ip',
     'ipv4',
     'ipv6',
+    'isbn',
     'isoDate',
     'isoDateTime',
     'isoTime',
@@ -248,9 +248,14 @@ The following APIs can be combined with `pipe`.
     'startsWith',
     'stringifyJson',
     'title',
+    'toBigint',
+    'toBoolean',
+    'toDate',
     'toLowerCase',
     'toMaxValue',
     'toMinValue',
+    'toNumber',
+    'toString',
     'toUpperCase',
     'transform',
     'trim',

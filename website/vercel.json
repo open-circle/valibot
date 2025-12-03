@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd ../library && npm run build && cd ../packages/to-json-schema && npm run build && cd ../../website && npm run sitemap && npm run build",
+  "buildCommand": "cd ../library && npm run build && cd ../packages/to-json-schema && npm run build && cd ../../codemod/zod-to-valibot && pnpm build && cd ../../website && npm run sitemap && npm run llms && npm run build",
   "headers": [
     {
       "source": "/(.*)?service-worker.js",
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "source": "/assets/(.*)-index.min.js",
+      "source": "/assets/(.*)-index.min.mjs",
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",

@@ -1,4 +1,4 @@
-![Valibot Logo](https://github.com/fabian-hiller/valibot/blob/main/valibot.jpg?raw=true)
+![Valibot Logo](https://github.com/open-circle/valibot/blob/main/valibot.jpg?raw=true)
 
 # Valibot
 
@@ -25,7 +25,7 @@ Hello, I am Valibot and I would like to help you validate data easily using a sc
 
 ## Example
 
-First you create a schema that describes a structured data set. A schema can be compared to a type definition in TypeScript. The big difference is that TypeScript types are "not executed" and are more or less a DX feature. A schema on the other hand, apart from the inferred type definition, can also be executed at runtime to guarantee type safety of unknown data.
+First you create a schema that describes a structured data set. A schema can be compared to a type definition in TypeScript. The big difference is that TypeScript types are "not executed" and are more or less a DX feature. A schema on the other hand, apart from the inferred type definition, can also be executed at runtime to guarantee the type safety of unknown data.
 
 <!-- prettier-ignore -->
 ```ts
@@ -61,22 +61,28 @@ For example, this allows a bundler to use the import statements to remove code t
 
 In addition, it allows you to easily extend my functionality with external code and makes my source code more robust and secure because the functionality of the individual functions can be tested much more easily through unit tests.
 
+## Partners
+
+Thanks to our partners who support my development! [Join them](https://github.com/sponsors/fabian-hiller) and contribute to the sustainability of open source software!
+
+![Partners of Valibot](https://github.com/open-circle/valibot/blob/main/partners.webp?raw=true)
+
 ## Credits
 
-My friend [Fabian](https://github.com/fabian-hiller) created me as part of his bachelor thesis at [Stuttgart Media University](https://www.hdm-stuttgart.de/en/), supervised by Walter Kriha, [Miško Hevery](https://github.com/mhevery) and [Ryan Carniato](https://github.com/ryansolid). My role models also include [Colin McDonnell](https://github.com/colinhacks), who had a big influence on my API design with [Zod](https://zod.dev/).
+My friend [Fabian](https://github.com/fabian-hiller) created me as part of his [bachelor thesis](https://valibot.dev/thesis.pdf) at [Stuttgart Media University](https://www.hdm-stuttgart.de/en/), supervised by Walter Kriha, [Miško Hevery](https://github.com/mhevery) and [Ryan Carniato](https://github.com/ryansolid). My role models also include [Colin McDonnell](https://github.com/colinhacks), who had a big influence on my API design with [Zod](https://zod.dev/).
 
 ## Feedback
 
-Find a bug or have an idea how to improve my code? Please fill out an [issue](https://github.com/fabian-hiller/valibot/issues/new). Together we can make the library even better!
+Find a bug or have an idea how to improve my code? Please fill out an [issue](https://github.com/open-circle/valibot/issues/new). Together we can make the library even better!
 
 ## License
 
-I am completely free and licensed under the [MIT license](https://github.com/fabian-hiller/valibot/blob/main/LICENSE.md). But if you like, you can feed me with a star on [GitHub](https://github.com/fabian-hiller/valibot).
+I am completely free and licensed under the [MIT license](https://github.com/open-circle/valibot/blob/main/LICENSE.md). But if you like, you can feed me with a star on [GitHub](https://github.com/open-circle/valibot).
 
 [license-image]: https://img.shields.io/badge/License-MIT-brightgreen.svg?style=flat-square
 [license-url]: https://opensource.org/licenses/MIT
-[ci-image]: https://img.shields.io/github/actions/workflow/status/fabian-hiller/valibot/ci.yml?branch=main&logo=github&style=flat-square
-[ci-url]: https://github.com/fabian-hiller/valibot/actions/workflows/ci.yml
+[ci-image]: https://img.shields.io/github/actions/workflow/status/open-circle/valibot/ci.yml?branch=main&logo=github&style=flat-square
+[ci-url]: https://github.com/open-circle/valibot/actions/workflows/ci.yml
 [npm-image]: https://img.shields.io/npm/v/valibot.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/valibot
 [downloads-image]: https://img.shields.io/npm/dm/valibot.svg?style=flat-square

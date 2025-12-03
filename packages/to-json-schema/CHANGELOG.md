@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Add support for `examples` action
+
 ## v1.3.0 (June 01, 2025)
 
 - Add `ignoreActions` configuration to be able to ignore specific actions during conversion

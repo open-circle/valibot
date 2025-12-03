@@ -27,6 +27,7 @@ contributors:
   - ZerNico
   - logaretm
   - victorgarciaesgi
+  - gadicc
 ---
 
 # Ecosystem
@@ -47,7 +48,9 @@ This page is for you if you are looking for frameworks or libraries that support
 - [Hono](https://hono.dev/): Ultrafast web framework for the Edges
 - [next-safe-action](https://next-safe-action.dev) Type safe and validated Server Actions for Next.js
 - [oRPC](https://orpc.unnoq.com/): Typesafe APIs Made Simple
+- [piying-orm](https://github.com/piying-org/piying-orm): ORM for Valibot; Supports TypeORM, with more to come.
 - [tRPC](https://trpc.io/): Move Fast and Break Nothing. End-to-end typesafe APIs made easy
+- [upfetch](https://github.com/L-Blondy/up-fetch): Advanced fetch client builder
 
 ## AI libraries
 
@@ -60,9 +63,11 @@ This page is for you if you are looking for frameworks or libraries that support
 - [mantine-form-valibot-resolver](https://github.com/Songkeys/mantine-form-valibot-resolver): Valibot schema resolver for [@mantine/form](https://mantine.dev/form/use-form/)
 - [maz-ui](https://maz-ui.com/composables/use-form-validator): Vue3 flexible and typed composable to manage forms simply with multiple modes and advanced features
 - [Modular Forms](https://modularforms.dev/): Modular and type-safe form library for SolidJS, Qwik, Preact and React
+- [piying-view](https://github.com/piying-org/piying-view): Frontend Form Solution; Supports Angular, Vue, React, with more to come.
 - [React Hook Form](https://react-hook-form.com/): React Hooks for form state management and validation
 - [regle](https://github.com/victorgarciaesgi/regle): Headless form validation library for Vue.js
 - [Superforms](https://superforms.rocks): A comprehensive SvelteKit form library for server and client validation
+- [svelte-jsonschema-form](https://x0k.dev/svelte-jsonschema-form/validators/valibot/): Svelte 5 library for creating forms based on JSON schema
 - [TanStack Form](https://tanstack.com/form): Powerful and type-safe form state management for the web
 - [VeeValidate](https://vee-validate.logaretm.com/v4/): Painless Vue.js forms
 - [vue-valibot-form](https://github.com/IlyaSemenov/vue-valibot-form): Minimalistic Vue3 composable for handling form submit
@@ -73,25 +78,34 @@ This page is for you if you are looking for frameworks or libraries that support
 
 ## Valibot to X
 
-- [@valibot/to-json-schema](https://github.com/fabian-hiller/valibot/tree/main/packages/to-json-schema): The official JSON schema converter for Valibot
 - [@gcornut/cli-valibot-to-json-schema](https://github.com/gcornut/cli-valibot-to-json-schema): CLI wrapper for @valibot/to-json-schema
+- [@valibot/to-json-schema](https://github.com/open-circle/valibot/tree/main/packages/to-json-schema): The official JSON schema converter for Valibot
 - [Hono OpenAPI](https://github.com/rhinobase/hono-openapi): A plugin for Hono to generate OpenAPI Swagger documentation
 - [TypeMap](https://github.com/sinclairzx81/typemap/): Uniform Syntax, Mapping and Compiler Library for TypeBox, Valibot and Zod
 - [TypeSchema](https://typeschema.com/): Universal adapter for schema validation
+- [Valibot-Fast-Check](https://github.com/Eronmmer/valibot-fast-check): A library to generate [fast-check](https://fast-check.dev) arbitraries from Valibot schemas for property-based testing
+- [valibot-serialize](https://github.com/gadicc/valibot-serialize): Serialize a schema to JSON and back again, or to (tree-shaking safe) static code
 
 ## X to Valibot
 
+- [@hey-api/openapi-ts](https://heyapi.dev/openapi-ts/plugins/valibot): The OpenAPI to TypeScript codegen. Generate clients, SDKs, validators, and more.
+- [@traversable/valibot](https://github.com/traversable/schema/tree/main/packages/valibot): Build your own "Valibot to X" library, or pick one of 10+ off-the-shelf transformers
+- [DRZL](https://github.com/use-drzl/drzl): Analyze Drizzle ORM schema(s) and auto-generate Valibot validators, typed services, and strongly typed routers (oRPC/tRPC/etc) via a modular pipeline.
 - [graphql-codegen-typescript-validation-schema](https://github.com/Code-Hex/graphql-codegen-typescript-validation-schema): GraphQL Code Generator plugin to generate form validation schema from your GraphQL schema.
+- [Prisma Valibot Generator](https://github.com/omar-dulaimi/prisma-valibot-generator): Generate Valibot validators from your Prisma schema so types and runtime stay in sync.
 - [TypeBox-Codegen](https://sinclairzx81.github.io/typebox-workbench/): Code generation for schema libraries
 - [TypeMap](https://github.com/sinclairzx81/typemap/): Uniform Syntax, Mapping and Compiler Library for TypeBox, Valibot and Zod
+- [valibot-serialize](https://github.com/gadicc/valibot-serialize): From serialized JSON back to a schema instance or the (tree-shaking safe) code to create that instance
 
 ## Utilities
 
 - [@camflan/valibot-openapi-generator](https://github.com/camflan/valibot-openapi-generator): Functions to help build OpenAPI documentation using Valibot schemas
 - [@nest-lab/typeschema](https://github.com/jmcdo29/nest-lab/tree/main/packages/typeschema): A ValidationPipe that handles many schema validators in a class-based fashion for NestJS's input validation
-- [@valibot/i18n](https://github.com/fabian-hiller/valibot/tree/main/packages/i18n): The official i18n translations for Valibot
+- [@traversable/valibot-test](https://github.com/traversable/schema/tree/main/packages/valibot-test): Random Valibot schema generator built for fuzz testing, includes generators for both valid and invalid data
+- [@valibot/i18n](https://github.com/open-circle/valibot/tree/main/packages/i18n): The official i18n translations for Valibot
 - [fastify-type-provider-valibot](https://github.com/qlaffont/fastify-type-provider-valibot): Fastify Type Provider with Valibot
 - [valibot-env](https://y-hiraoka.github.io/valibot-env): Environment variables validator with Valibot
 - [valibotx](https://github.com/IlyaSemenov/valibotx): A collection of extensions and shortcuts to core Valibot functions
 - [valiload](https://github.com/JuerGenie/valiload): A simple and lightweight library for overloading functions in TypeScript
 - [valimock](https://github.com/saeris/valimock): Generate mock data using your Valibot schemas using [Faker](https://github.com/faker-js/faker)
+- [valipass](https://github.com/Saeris/valipass): Collection of password validation actions for Valibot schemas

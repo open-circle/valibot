@@ -13,10 +13,7 @@ type PostCoverProps = {
 export const PostMeta = component$<PostCoverProps>(
   ({ variant, authors, published }) => (
     <div
-      class={clsx(
-        'flex items-center space-x-4',
-        variant === 'post' && 'lg:space-x-5'
-      )}
+      class={clsx('flex items-center gap-4', variant === 'post' && 'lg:gap-5')}
     >
       {/* Authors */}
       <div class="-m-[3px] flex">

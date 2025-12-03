@@ -44,10 +44,10 @@ export default component$(() => {
   );
 
   return (
-    <main class="flex flex-1 flex-col items-center space-y-24 py-24 md:space-y-36 md:py-36 xl:space-y-52 xl:py-52">
+    <main class="flex flex-1 flex-col items-center gap-24 py-24 md:gap-36 md:py-36 xl:gap-52 xl:py-52">
       {/* Pitch */}
       <section class="px-4 text-center">
-        <h1 class="font-lexend-exa text-[min(6.2vw,30px)] font-medium leading-normal text-slate-900 md:text-[34px] md:leading-normal lg:text-[40px] lg:leading-normal xl:text-5xl xl:leading-normal dark:text-slate-200">
+        <h1 class="font-lexend-exa text-[min(6.2vw,30px)] leading-normal font-medium text-slate-900 md:text-[34px] lg:text-[40px] xl:text-5xl dark:text-slate-200">
           <span class="block">
             Validate{' '}
             <span class="cursor-default blur-[1px] duration-[2s] hover:blur-none xl:blur-[2px]">
@@ -59,7 +59,7 @@ export default component$(() => {
           </span>{' '}
           with confidence
         </h1>
-        <p class="mt-6 leading-loose md:mt-10 md:text-[17px] md:leading-loose lg:mt-14 lg:text-lg lg:leading-loose xl:text-[22px] xl:leading-loose">
+        <p class="mt-6 leading-loose md:mt-10 md:text-[17px] lg:mt-14 lg:text-lg xl:text-[22px] xl:leading-loose">
           <span class="sm:block">
             Valibot is the open source schema library for TypeScript with bundle
           </span>{' '}
@@ -79,10 +79,10 @@ export default component$(() => {
             href="/playground/"
           />
         </ButtonGroup>
-        <div class="absolute left-0 top-0 -z-10 flex w-full justify-center overflow-x-clip">
+        <div class="absolute top-0 left-0 -z-10 flex w-full justify-center overflow-x-clip">
           <div class="relative w-full xl:w-0">
-            <div class="absolute -right-[300px] -top-[250px] h-[600px] w-[600px] bg-[radial-gradient(theme(colors.yellow.500/.08),transparent_70%)] md:-right-[500px] md:-top-[500px] md:h-[1000px] md:w-[1000px] xl:-right-[1100px] xl:-top-[500px] dark:bg-[radial-gradient(theme(colors.yellow.300/.08),transparent_70%)]" />
-            <div class="absolute -left-[370px] top-[200px] h-[600px] w-[600px] bg-[radial-gradient(theme(colors.sky.600/.08),transparent_70%)] md:-left-[550px] md:top-[100px] md:h-[1000px] md:w-[1000px] lg:top-[200px] xl:-left-[1100px] xl:top-[300px] dark:bg-[radial-gradient(theme(colors.sky.400/.08),transparent_70%)]" />
+            <div class="absolute -top-[250px] -right-[300px] h-[600px] w-[600px] bg-[radial-gradient(theme(--color-yellow-500/.08),transparent_70%)] md:-top-[500px] md:-right-[500px] md:h-[1000px] md:w-[1000px] xl:-top-[500px] xl:-right-[1100px] dark:bg-[radial-gradient(theme(--color-yellow-300/.08),transparent_70%)]" />
+            <div class="absolute top-[200px] -left-[370px] h-[600px] w-[600px] bg-[radial-gradient(theme(--color-sky-600/.08),transparent_70%)] md:top-[100px] md:-left-[550px] md:h-[1000px] md:w-[1000px] lg:top-[200px] xl:top-[300px] xl:-left-[1100px] dark:bg-[radial-gradient(theme(--color-sky-400/.08),transparent_70%)]" />
           </div>
         </div>
       </section>
@@ -94,6 +94,7 @@ export default component$(() => {
             { theme: 'dark', url: valibotTalkDarkUrl },
             { theme: 'light', url: valibotTalkLigthUrl },
           ].map(({ theme, url }) => (
+            // eslint-disable-next-line qwik/jsx-img
             <img
               key={url}
               class={clsx(
@@ -155,12 +156,12 @@ export default component$(() => {
           ].map(({ emoji, heading, text }) => (
             <li
               key={emoji}
-              class="flex flex-col items-center space-y-6 text-center md:space-y-7 lg:max-w-[45%] lg:flex-row lg:items-start lg:space-x-8 lg:space-y-0 lg:text-left"
+              class="flex flex-col items-center gap-6 text-center md:gap-7 lg:max-w-[45%] lg:flex-row lg:items-start lg:gap-8 lg:text-left"
             >
               <div class="flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-2xl bg-sky-600/10 text-2xl dark:bg-sky-400/5">
                 {emoji}
               </div>
-              <div class="max-w-[370px] space-y-4 md:space-y-5">
+              <div class="flex max-w-[370px] flex-col gap-4 md:gap-5">
                 <h3 class="text-lg font-medium text-slate-900 md:text-xl dark:text-slate-200">
                   {heading}
                 </h3>
@@ -172,11 +173,11 @@ export default component$(() => {
       </section>
 
       {/* FAQ */}
-      <section class="space-y-14 md:max-w-4xl md:space-y-20 lg:space-y-32">
+      <section class="flex flex-col gap-14 md:max-w-4xl md:gap-20 lg:gap-32">
         <h2 class="px-4 text-center text-xl font-medium text-slate-900 md:text-2xl lg:text-3xl xl:text-4xl dark:text-slate-200">
           Frequently asked questions
         </h2>
-        <ul class="space-y-12 md:space-y-14 lg:space-y-16">
+        <ul class="flex flex-col gap-12 md:gap-14 lg:gap-16">
           {[
             {
               heading: 'Where can I enter my credit card?',
@@ -185,7 +186,7 @@ export default component$(() => {
                   You don't have to! Valibot is available free of charge and
                   licensed under the{' '}
                   <TextLink
-                    href="https://github.com/fabian-hiller/valibot/blob/main/LICENSE.md"
+                    href="https://github.com/open-circle/valibot/blob/main/LICENSE.md"
                     target="_blank"
                     underlined
                     colored
@@ -255,7 +256,7 @@ export default component$(() => {
                   <input type="hidden" name="index" value={index} />
                   <button
                     class={clsx(
-                      'focus-ring flex w-full justify-between space-x-4 rounded-md transition-colors focus-visible:outline-offset-[6px] focus-visible:ring-offset-8',
+                      'focus-ring flex w-full justify-between gap-4 rounded-md transition-colors focus-visible:ring-offset-8 focus-visible:outline-offset-[6px]',
                       isOpen
                         ? 'text-sky-600 dark:text-sky-400'
                         : 'text-slate-800 hover:text-slate-700 dark:text-slate-300 hover:dark:text-slate-400'
@@ -265,12 +266,12 @@ export default component$(() => {
                     aria-expanded={isOpen}
                     aria-controls={`faq-${index}`}
                   >
-                    <span class="text-left font-medium leading-relaxed md:text-xl lg:text-2xl">
+                    <span class="text-left leading-relaxed font-medium md:text-xl lg:text-2xl">
                       {heading}
                     </span>
                     <PlusIcon
                       class={clsx(
-                        'mt-1.5 h-4 flex-shrink-0 transition-transform lg:h-5',
+                        'mt-1.5 h-4 shrink-0 transition-transform lg:h-5',
                         isOpen && 'rotate-45'
                       )}
                       stroke-width={6}
@@ -282,7 +283,7 @@ export default component$(() => {
                   class="overflow-hidden"
                   expanded={isOpen}
                 >
-                  <p class="pt-6 leading-loose md:pt-7 md:text-lg md:leading-loose lg:pt-8 lg:text-xl lg:leading-loose">
+                  <p class="pt-6 leading-loose md:pt-7 md:text-lg lg:pt-8 lg:text-xl lg:leading-loose">
                     <Text />
                   </p>
                 </Expandable>

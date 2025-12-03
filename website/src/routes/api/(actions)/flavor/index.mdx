@@ -7,8 +7,7 @@ contributors:
   - fabian-hiller
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # flavor
@@ -32,7 +31,7 @@ const Action = v.flavor<TInput, TName>(name);
 
 `flavor` is a less strict version of <Link href='../brand/'>`brand`</Link> that allows you to flavor the output type of a schema with a `name`. Data is considered valid if it's type is unflavored or has been validated by a schema that has the same flavor.
 
-> `falvor` can also be used as a TypeScript DX hack to improve the editor's autocompletion by displaying only literal types, but still allowing the unflavored root type to be passed.
+> `flavor` can also be used as a TypeScript DX hack to improve the editor's autocompletion by displaying only literal types, but still allowing the unflavored root type to be passed.
 
 ## Returns
 

@@ -8,6 +8,7 @@
 - [Use cases](/guides/use-cases/)
 - [Comparison](/guides/comparison/)
 - [Ecosystem](/guides/ecosystem/)
+- [LLMs.txt](/guides/llms-txt/)
 
 ## Main concepts
 
@@ -40,6 +41,3 @@
 
 - [To v0.31.0](/guides/migrate-to-v0.31.0/)
 - [From Zod](/guides/migrate-from-zod/)
-- [From Ajv](/guides/migrate-from-ajv/)
-- [From Joi](/guides/migrate-from-joi/)
-- [From Yup](/guides/migrate-from-yup/)

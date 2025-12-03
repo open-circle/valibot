@@ -24,6 +24,7 @@ type Action =
       number,
       v.ErrorMessage<v.EntriesIssue<v.EntriesInput, number>> | undefined
     >
+  | v.ExamplesAction<unknown, readonly unknown[]>
   | v.HexadecimalAction<
       string,
       v.ErrorMessage<v.HexadecimalIssue<string>> | undefined
@@ -177,6 +178,20 @@ export function convertAction(
       break;
     }
 
+    case 'examples': {
+      if (Array.isArray(jsonSchema.examples)) {
+        // @ts-expect-error
+        jsonSchema.examples = [
+          ...jsonSchema.examples,
+          ...valibotAction.examples,
+        ];
+      } else {
+        // @ts-expect-error
+        jsonSchema.examples = valibotAction.examples;
+      }
+      break;
+    }
+
     case 'integer': {
       jsonSchema.type = 'integer';
       break;
@@ -265,7 +280,14 @@ export function convertAction(
         jsonSchema.description = valibotAction.metadata.description;
       }
       if (Array.isArray(valibotAction.metadata.examples)) {
-        jsonSchema.examples = valibotAction.metadata.examples;
+        if (Array.isArray(jsonSchema.examples)) {
+          jsonSchema.examples = [
+            ...jsonSchema.examples,
+            ...valibotAction.metadata.examples,
+          ];
+        } else {
+          jsonSchema.examples = valibotAction.metadata.examples;
+        }
       }
       break;
     }
