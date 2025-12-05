@@ -40,6 +40,7 @@ export * from './isoTime/index.ts';
 export * from './isoTimeSecond/index.ts';
 export * from './isoTimestamp/index.ts';
 export * from './isoWeek/index.ts';
+export * from './ksuid/index.ts';
 export * from './length/index.ts';
 export * from './ltValue/index.ts';
 export * from './mac/index.ts';

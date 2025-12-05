@@ -115,6 +115,11 @@ export const ISO_TIMESTAMP_REGEX: RegExp =
 export const ISO_WEEK_REGEX: RegExp = /^\d{4}-W(?:0[1-9]|[1-4]\d|5[0-3])$/u;
 
 /**
+ * [KSUID](https://github.com/segmentio/ksuid) regex.
+ */
+export const KSUID_REGEX: RegExp = /^[a-zA-Z0-9]{27}$/u;
+
+/**
  * [MAC](https://en.wikipedia.org/wiki/MAC_address) 48 bit regex.
  */
 export const MAC48_REGEX: RegExp =
