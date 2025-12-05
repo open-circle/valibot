@@ -20,7 +20,7 @@ The official i18n translations for Valibot. See the [internationalization guide]
 | Indonesian (id) | [#683][pr-683-url] | ✅     |
 | Italian (it)    | [#605][pr-605-url] | ✅     |
 | Japanese (ja)   | [#431][pr-431-url] | ✅     |
-| Korean (kr)     | [#429][pr-429-url] | ✅     |
+| Korean (ko)     | [#429][pr-429-url] | ✅     |
 | Norwegian (nb)  | [#439][pr-439-url] | ✅     |
 | Polish (pl)     | [#584][pr-584-url] | ✅     |
 | Portuguese (pt) | [#509][pr-509-url] | ✅     |
