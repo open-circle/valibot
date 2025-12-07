@@ -1,7 +1,7 @@
 {
   "name": "@valibot/zod-to-valibot",
   "description": "Official codemod for converting Zod schemas to Valibot",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "author": "Elton Lobo",
   "homepage": "https://valibot.dev",
