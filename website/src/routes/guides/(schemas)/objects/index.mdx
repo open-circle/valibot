@@ -71,6 +71,45 @@ const CalculationSchema = v.pipe(
 );
 ```
 
+### Extract an object field schema
+
+Valibot tries to reflect all schema information and make it available for further processing. For example you can extract a field schema from an <Link href="/api/object/">`object`</Link> schema to reuse it in other parts of your code.
+
+```ts
+import * as v from 'valibot';
+
+const PersonSchema = v.object({
+  name: v.string(),
+  age: v.number(),
+  address: v.object({
+    street: v.string(),
+    city: v.string(),
+  }),
+});
+
+const NameSchema = PersonSchema.entries.name;
+const StreetSchema = PersonSchema.entries.address.entries.street;
+```
+
+### Extraction vs composition
+
+Extracted field are reusable but depending on your use case you might want to use a composition pattern instead to improve the modularity of your code.
+
+```ts
+import * as v from 'valibot';
+
+const AddressSchema = v.object({
+  street: v.string(),
+  city: v.string(),
+});
+
+const PersonSchema = v.object({
+  name: v.string(),
+  age: v.number(),
+  address: AddressSchema,
+});
+```
+
 ## Record schema
 
 For an object with any number of uniform entries, <Link href="/api/record/">`record`</Link> is the right choice. The schema passed as the first argument validates the keys of your record, and the schema passed as the second argument validates the values.
