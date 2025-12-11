@@ -19,7 +19,7 @@ export interface TransformActionAsync<TInput, TOutput>
   /**
    * The transformation operation.
    */
-  readonly operation: (input: TInput) => Promise<TOutput>;
+  readonly operation: (input: TInput, signal?: AbortSignal) => Promise<TOutput>;
 }
 
 /**
@@ -31,7 +31,7 @@ export interface TransformActionAsync<TInput, TOutput>
  */
 // @__NO_SIDE_EFFECTS__
 export function transformAsync<TInput, TOutput>(
-  operation: (input: TInput) => Promise<TOutput>
+  operation: (input: TInput, signal?: AbortSignal) => Promise<TOutput>
 ): TransformActionAsync<TInput, TOutput> {
   return {
     kind: 'transformation',
@@ -39,9 +39,9 @@ export function transformAsync<TInput, TOutput>(
     reference: transformAsync,
     async: true,
     operation,
-    async '~run'(dataset) {
+    async '~run'(dataset, config) {
       // @ts-expect-error
-      dataset.value = await this.operation(dataset.value);
+      dataset.value = await this.operation(dataset.value, config.signal);
       // @ts-expect-error
       return dataset as SuccessDataset<TOutput>;
     },

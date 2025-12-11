@@ -154,4 +154,13 @@ describe('pipeAsync', () => {
       });
     });
   });
+
+  describe('abortSignal', () => {
+    test('should abort', async () => {
+      const signal = AbortSignal.abort('abort');
+      await expect(() =>
+        schema['~run']({ value: 'foo' }, { signal })
+      ).rejects.toThrowError('abort');
+    });
+  });
 });

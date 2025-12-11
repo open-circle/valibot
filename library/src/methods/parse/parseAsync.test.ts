@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
-import { transform } from '../../actions/index.ts';
+import { checkAsync, transform } from '../../actions/index.ts';
 import { number, objectAsync, string } from '../../schemas/index.ts';
-import { pipe } from '../pipe/index.ts';
+import { pipe, pipeAsync } from '../pipe/index.ts';
 import { parseAsync } from './parseAsync.ts';
 
 describe('parseAsync', () => {
@@ -28,5 +28,27 @@ describe('parseAsync', () => {
     await expect(() =>
       parseAsync(objectAsync(entries), null)
     ).rejects.toThrowError();
+  });
+
+  describe('abortSignal', () => {
+    test('should abort', async () => {
+      const abort = new AbortController();
+      const promise = expect(() =>
+        parseAsync(
+          pipeAsync(
+            string(),
+            checkAsync(async (_, signal) => {
+              await 0;
+              signal?.throwIfAborted();
+              return true;
+            })
+          ),
+          'foo',
+          { signal: abort.signal }
+        )
+      ).rejects.toThrowError('abort');
+      abort.abort('abort');
+      await promise;
+    });
   });
 });

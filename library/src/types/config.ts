@@ -21,4 +21,10 @@ export interface Config<TIssue extends BaseIssue<unknown>> {
    * Whether a pipe should be aborted early.
    */
   readonly abortPipeEarly?: boolean | undefined;
+  /**
+   * The abort signal.
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal
+   */
+  readonly signal?: AbortSignal | undefined;
 }
