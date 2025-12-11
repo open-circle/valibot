@@ -3,6 +3,7 @@ import {
   boolean,
   number,
   object,
+  optional,
   strictObject,
   strictTuple,
   string,
@@ -56,6 +57,13 @@ describe('getFallbacks', () => {
               key2: fallback(number(), () => 123 as const),
               key3: fallback(boolean(), false as const),
             }),
+            objectWithFallback: fallback(object({
+              foo: number(),
+              bar: fallback(number(), 5)
+
+            }), {
+              foo: 3
+            }),
             other: string(),
           })
         )
@@ -65,6 +73,7 @@ describe('getFallbacks', () => {
           key2: 123,
           key3: false,
         },
+        objectWithFallback: { foo: 3 },
         other: undefined,
       });
     });
