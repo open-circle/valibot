@@ -26,6 +26,7 @@ import uk from '../src/uk';
 import vi from '../src/vi';
 import zhCN from '../src/zh-CN';
 import zhTW from '../src/zh-TW';
+import mn from '../src/mn';
 
 // Start timer
 console.time('build');
@@ -59,6 +60,7 @@ const languages = [
   vi,
   zhCN,
   zhTW,
+  mn,
 ];
 
 // Create root import variables
