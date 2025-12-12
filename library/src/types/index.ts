@@ -1,5 +1,6 @@
 export * from './config.ts';
 export * from './dataset.ts';
+export * from './hkt.ts';
 export * from './infer.ts';
 export * from './issue.ts';
 export * from './metadata.ts';
