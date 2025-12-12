@@ -9,34 +9,36 @@ import type {
 import { _getLastMetadata } from '../../utils/index.ts';
 import type { SchemaWithPipe, SchemaWithPipeAsync } from '../index.ts';
 
-/**
- * Schema type.
- */
-type Schema =
-  | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-  | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
-  | SchemaWithPipe<
-      readonly [
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        ...(
-          | PipeItem<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
-          | DescriptionAction<unknown, string>
-        )[],
-      ]
-    >
-  | SchemaWithPipeAsync<
-      readonly [
-        (
-          | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-          | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
-        ),
-        ...(
-          | PipeItem<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
-          | PipeItemAsync<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
-          | DescriptionAction<unknown, string>
-        )[],
-      ]
-    >;
+export namespace getDescription {
+  /**
+   * Schema type.
+   */
+  export type Schema =
+    | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+    | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
+    | SchemaWithPipe<
+        readonly [
+          BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+          ...(
+            | PipeItem<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
+            | DescriptionAction<unknown, string>
+          )[],
+        ]
+      >
+    | SchemaWithPipeAsync<
+        readonly [
+          (
+            | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+            | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
+          ),
+          ...(
+            | PipeItem<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
+            | PipeItemAsync<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
+            | DescriptionAction<unknown, string>
+          )[],
+        ]
+      >;
+}
 
 /**
  * Returns the description of the schema.
@@ -52,6 +54,8 @@ type Schema =
  */
 // TODO: Investigate if return type can be strongly typed
 // @__NO_SIDE_EFFECTS__
-export function getDescription(schema: Schema): string | undefined {
+export function getDescription(
+  schema: getDescription.Schema
+): string | undefined {
   return _getLastMetadata(schema, 'description');
 }
