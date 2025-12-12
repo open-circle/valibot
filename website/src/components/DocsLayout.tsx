@@ -16,6 +16,7 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   GitHubIcon,
+  MarkdownIcon,
   MenuIcon,
   PenIcon,
 } from '~/icons';
@@ -77,6 +78,13 @@ export const DocsLayout = component$(() => {
     chaptersToggle.isRunning ? !chapters.value : chapters.value
   );
 
+  // Compute Markdown path from current location; skip on '/api/'
+  const mdPath = useComputed$(() =>
+    location.url.pathname === '/api/'
+      ? undefined
+      : `${location.url.pathname.replace(/\/$/, '')}.md`
+  );
+
   return (
     <div
       class={clsx(
@@ -92,6 +100,7 @@ export const DocsLayout = component$(() => {
           <NavButtons
             pageIndex={navIndex.value}
             sourcePath={documentHead.frontmatter.source}
+            mdPath={mdPath.value}
             prevPage={prevPage.value}
             nextPage={nextPage.value}
           />
@@ -120,6 +129,7 @@ export const DocsLayout = component$(() => {
           <NavButtons
             pageIndex={navIndex.value}
             sourcePath={documentHead.frontmatter.source}
+            mdPath={mdPath.value}
             prevPage={prevPage.value}
             nextPage={nextPage.value}
             chapters={chapters}
@@ -183,6 +193,7 @@ export const DocsLayout = component$(() => {
 type NavButtonsProps = {
   pageIndex: number;
   sourcePath: string | undefined;
+  mdPath: string | undefined;
   prevPage: ContentMenu | undefined;
   nextPage: ContentMenu | undefined;
   chapters?: ReadonlySignal<boolean>;
@@ -193,7 +204,15 @@ type NavButtonsProps = {
  * Buttons to navigate to the previous or next page.
  */
 export const NavButtons = component$<NavButtonsProps>(
-  ({ pageIndex, sourcePath, prevPage, nextPage, chapters, chaptersToggle }) => (
+  ({
+    pageIndex,
+    sourcePath,
+    mdPath,
+    prevPage,
+    nextPage,
+    chapters,
+    chaptersToggle,
+  }) => (
     <>
       {pageIndex !== -1 && (
         <>
@@ -253,6 +272,17 @@ export const NavButtons = component$<NavButtonsProps>(
           hideLabel
         >
           <GitHubIcon class="h-[18px]" />
+        </IconButton>
+      )}
+      {mdPath && (
+        <IconButton
+          variant="secondary"
+          type="link"
+          href={mdPath}
+          label="View as Markdown"
+          hideLabel
+        >
+          <MarkdownIcon class="h-[18px]" />
         </IconButton>
       )}
     </>
