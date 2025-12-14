@@ -1,9 +1,5 @@
 import { ISRC_REGEX } from '../../regex.ts';
-import type {
-  BaseIssue,
-  BaseValidation,
-  ErrorMessage,
-} from '../../types/index.ts';
+import type { BaseIssue, BaseValidation, ErrorMessage } from '../../types/index.ts';
 import { _addIssue } from '../../utils/index.ts';
 
 /**
@@ -63,6 +59,10 @@ export interface IsrcAction<
 
 /**
  * Creates an [ISRC](https://en.wikipedia.org/wiki/International_Standard_Recording_Code) validation action.
+ *
+ * Formats:
+ * - AAXXXYYNNNNN
+ * - AA-XXX-YY-NNNNN
  *
  * @returns An ISRC action.
  */
