@@ -25,7 +25,7 @@ export interface IsrcIssue<TInput extends string> extends BaseIssue<TInput> {
   /**
    * The validation function.
    */
-  readonly requirement: (input: string) => boolean;
+  readonly requirement: RegExp;
 }
 
 /**
@@ -50,7 +50,7 @@ export interface IsrcAction<
   /**
    * The validation function.
    */
-  readonly requirement: (input: string) => boolean;
+  readonly requirement: RegExp;
   /**
    * The error message.
    */
@@ -90,12 +90,10 @@ export function isrc(
     reference: isrc,
     async: false,
     expects: null,
-    requirement(input) {
-      return ISRC_REGEX.test(input);
-    },
+    requirement: ISRC_REGEX,
     message,
     '~run'(dataset, config) {
-      if (dataset.typed && !this.requirement(dataset.value)) {
+      if (dataset.typed && !this.requirement.test(dataset.value)) {
         _addIssue(this, 'ISRC', dataset, config);
       }
       return dataset;

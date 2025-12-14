@@ -2,132 +2,7 @@ import { describe, expect, test } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
 import { isrc, type IsrcAction, type IsrcIssue } from './isrc.ts';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import { ISRC_REGEX } from '../../regex.ts';
 
 describe('isrc', () => {
   describe('should return action object', () => {
@@ -136,7 +11,7 @@ describe('isrc', () => {
       type: 'isrc',
       reference: isrc,
       expects: null,
-      requirement: expect.any(Function),
+      requirement: ISRC_REGEX,
       async: false,
       '~run': expect.any(Function),
     };
@@ -206,7 +81,7 @@ describe('isrc', () => {
       type: 'isrc',
       expected: null,
       message: 'message',
-      requirement: expect.any(Function),
+      requirement: ISRC_REGEX,
     };
 
     test('for empty strings', () => {
