@@ -61,8 +61,8 @@ export interface IsrcAction<
  * Creates an [ISRC](https://en.wikipedia.org/wiki/International_Standard_Recording_Code) validation action.
  *
  * Formats:
- * - AAXXXYYNNNNN
- * - AA-XXX-YY-NNNNN
+ * - CCXXXYYNNNNN
+ * - CC-XXX-YY-NNNNN
  *
  * @returns An ISRC action.
  */
