@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
+import { ISRC_REGEX } from '../../regex.ts';
 import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
 import { isrc, type IsrcAction, type IsrcIssue } from './isrc.ts';
-import { ISRC_REGEX } from '../../regex.ts';
 
 describe('isrc', () => {
   describe('should return action object', () => {
@@ -64,7 +64,16 @@ describe('isrc', () => {
       });
     });
 
-    test('for valid ISRC', () => {
+    test('for valid ISRC without separators', () => {
+      expectNoActionIssue(action, [
+        'DEU671703268',
+        'FRIDO2512641',
+        'GBBPW0700093',
+        'US2S70465020',
+      ]);
+    });
+
+    test('for valid ISRC with separators', () => {
       expectNoActionIssue(action, [
         'DE-U67-17-03268',
         'FR-IDO-25-12641',
@@ -132,6 +141,19 @@ describe('isrc', () => {
         'DE-U67-170-03268', // extra C digit
         'DE-U67-17-0326', // missing D digit
         'DE-U67-17-032680', // extra D digit
+      ]);
+    });
+
+    test('for invalid fragments', () => {
+      expectActionIssue(action, baseIssue, [
+        '0EU671703268', // Country Code-fragment
+        '0E-U67-17-03268', // Country Code-fragment
+        'DEa671703268', // Registrant Code-fragment
+        'DE-a67-17-03268', // Registrant Code-fragment
+        'DEU67A703268', // Year of Reference-fragment
+        'DE-U67-A7-03268', // Year of Reference-fragment
+        'DEU6717A3268', // Designation Code-fragment
+        'DE-U67-17-A3268', // Designation Code-fragment
       ]);
     });
   });
