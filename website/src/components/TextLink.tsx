@@ -16,7 +16,7 @@ export const TextLink = component$<TextLinkProps>(
     return (
       <UnstyledButton
         class={clsx(
-          'focus-ring rounded focus-visible:outline-offset-4 focus-visible:ring-offset-[6px]',
+          'focus-ring rounded focus-visible:ring-offset-[6px] focus-visible:outline-offset-4',
           colored && 'text-sky-600 dark:text-sky-400',
           underlined &&
             'underline decoration-slate-400 decoration-dashed underline-offset-[3px] dark:decoration-slate-600',

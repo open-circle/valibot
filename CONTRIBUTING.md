@@ -57,6 +57,6 @@ You can ask for any help or clarifications from the collaborators.
 - [Aris Kemper](https://github.com/ariskemper)
 
 [fork]: https://help.github.com/articles/fork-a-repo/
-[pr]: https://github.com/fabian-hiller/valibot/compare
-[newissue]: https://github.com/fabian-hiller/valibot/issues/new
-[issues]: https://github.com/fabian-hiller/valibot/issues
+[pr]: https://github.com/open-circle/valibot/compare
+[newissue]: https://github.com/open-circle/valibot/issues/new
+[issues]: https://github.com/open-circle/valibot/issues

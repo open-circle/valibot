@@ -5,7 +5,7 @@ import type {
   OutputDataset,
 } from '../../types/index.ts';
 import { _addIssue } from '../../utils/index.ts';
-import type { Context, RawTransformIssue } from './types.ts';
+import type { RawTransformContext, RawTransformIssue } from './types.ts';
 
 /**
  * Raw transform action async interface.
@@ -31,7 +31,7 @@ export interface RawTransformActionAsync<TInput, TOutput>
  */
 // @__NO_SIDE_EFFECTS__
 export function rawTransformAsync<TInput, TOutput>(
-  action: (context: Context<TInput>) => MaybePromise<TOutput>
+  action: (context: RawTransformContext<TInput>) => MaybePromise<TOutput>
 ): RawTransformActionAsync<TInput, TOutput> {
   return {
     kind: 'transformation',

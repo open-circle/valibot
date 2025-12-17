@@ -173,6 +173,32 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert examples action', () => {
+    expect(
+      convertAction({}, v.examples(['foo', 'bar']), undefined)
+    ).toStrictEqual({
+      examples: ['foo', 'bar'],
+    });
+    expect(
+      convertAction(
+        { examples: ['baz'] },
+        v.examples(['foo', 'bar']),
+        undefined
+      )
+    ).toStrictEqual({
+      examples: ['baz', 'foo', 'bar'],
+    });
+  });
+
+  test('should merge examples from multiple actions', () => {
+    const jsonSchema = {};
+    convertAction(jsonSchema, v.examples(['foo']), undefined);
+    convertAction(jsonSchema, v.metadata({ examples: ['bar'] }), undefined);
+    expect(jsonSchema).toStrictEqual({
+      examples: ['foo', 'bar'],
+    });
+  });
+
   test('should convert hexadecimal action', () => {
     expect(convertAction({}, v.hexadecimal<string>(), undefined)).toStrictEqual(
       {
@@ -434,6 +460,19 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert max value action for integers', () => {
+    expect(
+      convertAction(
+        { type: 'integer' },
+        v.maxValue<v.ValueInput, 100>(100),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'integer',
+      maximum: 100,
+    });
+  });
+
   test('should throw error for max value action with invalid type', () => {
     const action = v.maxValue<v.ValueInput, 3>(3);
     const error1 =
@@ -486,6 +525,17 @@ describe('convertAction', () => {
       title: 'title',
       description: 'description',
       examples: ['example'],
+    });
+    expect(
+      convertAction(
+        { examples: ['existing'] },
+        v.metadata({
+          examples: ['new'],
+        }),
+        undefined
+      )
+    ).toStrictEqual({
+      examples: ['existing', 'new'],
     });
   });
 
@@ -589,6 +639,19 @@ describe('convertAction', () => {
     ).toStrictEqual({
       type: 'number',
       minimum: 3,
+    });
+  });
+
+  test('should convert min value action for integers', () => {
+    expect(
+      convertAction(
+        { type: 'integer' },
+        v.minValue<v.ValueInput, 1>(1),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'integer',
+      minimum: 1,
     });
   });
 

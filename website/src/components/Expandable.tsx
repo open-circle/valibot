@@ -38,7 +38,7 @@ export const Expandable = component$<ExpandableProps>(
     return (
       <div
         class={clsx(
-          '!m-0 origin-top duration-200',
+          'm-0! origin-top duration-200',
           !expanded && 'invisible h-0 -translate-y-2 scale-y-75 opacity-0',
           props.class
         )}

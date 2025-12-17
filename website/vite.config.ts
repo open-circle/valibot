@@ -1,12 +1,13 @@
 import { qwikCity } from '@builder.io/qwik-city/vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
 import rehypePrism from '@mapbox/rehype-prism';
+import tailwindcss from '@tailwindcss/vite';
 import rehypeExternalLinks from 'rehype-external-links';
 import { defineConfig } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-export default defineConfig(() => {
+export default defineConfig(({ isSsrBuild }) => {
   return {
     plugins: [
       qwikCity({
@@ -26,7 +27,8 @@ export default defineConfig(() => {
       }),
       qwikVite(),
       tsconfigPaths(),
-      nodePolyfills(),
+      !isSsrBuild && nodePolyfills(),
+      tailwindcss(),
     ],
     preview: {
       headers: {

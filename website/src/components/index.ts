@@ -12,6 +12,7 @@ export * from './GitHubIconLink';
 export * from './Head';
 export * from './Header';
 export * from './IconButton';
+export * from './Link';
 export * from './MainMenuToggle';
 export * from './Navigation';
 export * from './PostCover';

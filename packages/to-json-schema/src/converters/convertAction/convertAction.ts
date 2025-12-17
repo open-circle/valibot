@@ -1,6 +1,5 @@
-import type { JSONSchema7 } from 'json-schema';
 import type * as v from 'valibot';
-import type { ConversionConfig } from '../../type.ts';
+import type { ConversionConfig, JsonSchema } from '../../types/index.ts';
 import { addError, handleError } from '../../utils/index.ts';
 
 /**
@@ -24,6 +23,7 @@ type Action =
       number,
       v.ErrorMessage<v.EntriesIssue<v.EntriesInput, number>> | undefined
     >
+  | v.ExamplesAction<unknown, readonly unknown[]>
   | v.HexadecimalAction<
       string,
       v.ErrorMessage<v.HexadecimalIssue<string>> | undefined
@@ -113,10 +113,10 @@ type Action =
  * @returns The converted JSON Schema.
  */
 export function convertAction(
-  jsonSchema: JSONSchema7,
+  jsonSchema: JsonSchema,
   valibotAction: Action,
   config: ConversionConfig | undefined
-): JSONSchema7 {
+): JsonSchema {
   // Ignore action if specified in configuration
   if (config?.ignoreActions?.includes(valibotAction.type)) {
     return jsonSchema;
@@ -174,6 +174,20 @@ export function convertAction(
     case 'entries': {
       jsonSchema.minProperties = valibotAction.requirement;
       jsonSchema.maxProperties = valibotAction.requirement;
+      break;
+    }
+
+    case 'examples': {
+      if (Array.isArray(jsonSchema.examples)) {
+        // @ts-expect-error
+        jsonSchema.examples = [
+          ...jsonSchema.examples,
+          ...valibotAction.examples,
+        ];
+      } else {
+        // @ts-expect-error
+        jsonSchema.examples = valibotAction.examples;
+      }
       break;
     }
 
@@ -246,7 +260,7 @@ export function convertAction(
     }
 
     case 'max_value': {
-      if (jsonSchema.type !== 'number') {
+      if (jsonSchema.type !== 'number' && jsonSchema.type !== 'integer') {
         errors = addError(
           errors,
           `The "max_value" action is not supported on type "${jsonSchema.type}".`
@@ -265,7 +279,14 @@ export function convertAction(
         jsonSchema.description = valibotAction.metadata.description;
       }
       if (Array.isArray(valibotAction.metadata.examples)) {
-        jsonSchema.examples = valibotAction.metadata.examples;
+        if (Array.isArray(jsonSchema.examples)) {
+          jsonSchema.examples = [
+            ...jsonSchema.examples,
+            ...valibotAction.metadata.examples,
+          ];
+        } else {
+          jsonSchema.examples = valibotAction.metadata.examples;
+        }
       }
       break;
     }
@@ -291,7 +312,7 @@ export function convertAction(
     }
 
     case 'min_value': {
-      if (jsonSchema.type !== 'number') {
+      if (jsonSchema.type !== 'number' && jsonSchema.type !== 'integer') {
         errors = addError(
           errors,
           `The "min_value" action is not supported on type "${jsonSchema.type}".`

@@ -1,7 +1,10 @@
-import type { JSONSchema7 } from 'json-schema';
 import type * as v from 'valibot';
 import { convertSchema } from '../../converters/index.ts';
-import type { ConversionConfig, ConversionContext } from '../../type.ts';
+import type {
+  ConversionConfig,
+  ConversionContext,
+  JsonSchema,
+} from '../../types/index.ts';
 
 /**
  * Converts Valibot schema definitions to JSON Schema definitions.
@@ -19,7 +22,7 @@ export function toJsonSchemaDefs<
 >(
   definitions: TDefinitions,
   config?: Omit<ConversionConfig, 'definitions'>
-): { [TKey in keyof TDefinitions]: JSONSchema7 } {
+): { [TKey in keyof TDefinitions]: JsonSchema } {
   // Initialize JSON Schema context
   const context: ConversionContext = {
     definitions: {},

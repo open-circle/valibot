@@ -16,7 +16,7 @@ Hi folks, I am [Fabian](https://github.com/fabian-hiller), the creator and maint
 
 <NpmDownloads alt="Daily downloads from August 2023 to March 2024" />
 
-In the last few days I received two [API proposals](https://github.com/fabian-hiller/valibot/discussions/453) from [@Demivan](https://github.com/Demivan) and [@xcfox](https://github.com/xcfox). Both of them addressed similar pain points of Valibot's current API design. As our v1 release is getting closer and closer, it is important to me to involve the community in such a big decision.
+In the last few days I received two [API proposals](https://github.com/open-circle/valibot/discussions/453) from [@Demivan](https://github.com/Demivan) and [@xcfox](https://github.com/xcfox). Both of them addressed similar pain points of Valibot's current API design. As our v1 release is getting closer and closer, it is important to me to involve the community in such a big decision.
 
 ## Current pain points
 
@@ -72,7 +72,7 @@ The big difference is that the `pipe` function also allows you to transform the 
 
 With the `pipe` function, the mental model is reduced to schemas, methods, and actions. Actions are always used within the `pipe` function to further validate and transform the input and type of a schema.
 
-> Alternative names for `pipe` are `flow` (idea by [@mtt-artis](https://github.com/mtt-artis)), `schema` (idea by [@genki](https://github.com/genki)), `compose` (idea by [@MohammedEsafi](https://github.com/MohammedEsafi)), and `vali` (idea by [@Hugos68](https://github.com/Hugos68)). Please [share](https://github.com/fabian-hiller/valibot/discussions/463) your thoughts.
+> Alternative names for `pipe` are `flow` (idea by [@mtt-artis](https://github.com/mtt-artis)), `schema` (idea by [@genki](https://github.com/genki)), `compose` (idea by [@MohammedEsafi](https://github.com/MohammedEsafi)), and `vali` (idea by [@Hugos68](https://github.com/Hugos68)). Please [share](https://github.com/open-circle/valibot/discussions/463) your thoughts.
 
 ## The advantages
 
@@ -111,7 +111,7 @@ const NumberSchema = transform(
 );
 ```
 
-Besides that, the `pipe` function would also allow us to easily add a [metadata feature](https://github.com/fabian-hiller/valibot/issues/373) to Valibot. This could be interesting when working with databases to define SQL properties like `PRIMARY KEY`.
+Besides that, the `pipe` function would also allow us to easily add a [metadata feature](https://github.com/open-circle/valibot/issues/373) to Valibot. This could be interesting when working with databases to define SQL properties like `PRIMARY KEY`.
 
 ```ts
 // With the new `pipe` function
@@ -145,4 +145,4 @@ const NumberSchema = transform(
 
 ## Let's discuss
 
-Your opinion matters to me. I encourage everyone to share their thoughts. Even quick feedback like "I like this ... and I don't like that ..." is welcome and will help to shape Valibot's future API design. Please discuss with me on [GitHub](https://github.com/fabian-hiller/valibot/discussions/463) or share your thoughts on [Twitter](https://x.com/FabianHiller/status/1763253086464639035).
+Your opinion matters to me. I encourage everyone to share their thoughts. Even quick feedback like "I like this ... and I don't like that ..." is welcome and will help to shape Valibot's future API design. Please discuss with me on [GitHub](https://github.com/open-circle/valibot/discussions/463) or share your thoughts on [Twitter](https://x.com/FabianHiller/status/1763253086464639035).

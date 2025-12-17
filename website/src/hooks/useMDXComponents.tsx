@@ -47,7 +47,7 @@ const Pre = component$<PreProps>((props) => {
 
   return (
     <div class="code-wrapper group/code relative overflow-hidden rounded-2xl border-2 border-slate-200 lg:rounded-3xl lg:border-[3px] dark:border-slate-800">
-      <div class="absolute right-5 top-5 hidden space-x-5 group-hover/code:flex lg:right-10 lg:top-10">
+      <div class="absolute top-5 right-5 hidden gap-5 group-hover/code:flex lg:top-10 lg:right-10">
         <IconButton
           type="button"
           variant="secondary"
@@ -76,7 +76,7 @@ const Pre = component$<PreProps>((props) => {
       </div>
       <pre
         ref={preElement}
-        class="flex min-h-20 items-center overflow-x-auto p-5 leading-relaxed text-slate-700 md:text-lg md:leading-relaxed lg:min-h-[120px] lg:p-10 lg:text-xl lg:leading-relaxed dark:text-slate-300"
+        class="flex min-h-20 items-center overflow-x-auto p-5 leading-relaxed text-slate-700 md:text-lg lg:min-h-[120px] lg:p-10 lg:text-xl dark:text-slate-300"
       >
         <Slot />
       </pre>

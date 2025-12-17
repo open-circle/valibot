@@ -9,9 +9,20 @@ const transform: Transform = (fileInfo, api) => {
   // ------------ Imports ------------
   const transformImportsResult = transformImports(root);
   if (transformImportsResult.conclusion !== 'successful') {
-    return transformImportsResult.conclusion === 'skip'
-      ? undefined
-      : root.toSource();
+    if (transformImportsResult.conclusion === 'unsuccessful') {
+      const node = root.get().node;
+      // Add comment indicating unsuccessful transformation
+      node.comments ??= [];
+      node.comments.unshift(
+        j.commentBlock(
+          ` @valibot-migrate: unable to transform imports from Zod to Valibot: ${transformImportsResult.cause} `,
+          true,
+          false
+        )
+      );
+      return root.toSource();
+    }
+    return undefined;
   }
   const valibotIdentifier = transformImportsResult.valibotIdentifier;
 

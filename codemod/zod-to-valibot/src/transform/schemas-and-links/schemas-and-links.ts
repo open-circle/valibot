@@ -29,12 +29,14 @@ import {
   transformPartial,
   transformPassthrough,
   transformPick,
+  transformRefine,
   transformRequired,
   transformRest,
   transformSafeParse,
   transformSafeParseAsync,
   transformStrict,
   transformStrip,
+  transformTransform,
   transformUnwrap,
 } from './methods';
 import {
@@ -411,6 +413,8 @@ function toValibotMethodExp(
       return transformPassthrough(valibotIdentifier, schemaExp);
     case 'pick':
       return transformPick(...args);
+    case 'refine':
+      return transformRefine(...args);
     case 'required':
       return transformRequired(...args);
     case 'rest':
@@ -424,6 +428,8 @@ function toValibotMethodExp(
       return transformStrict(valibotIdentifier, schemaExp);
     case 'strip':
       return transformStrip(valibotIdentifier, schemaExp);
+    case 'transform':
+      return transformTransform(...args);
     case 'unwrap':
       return transformUnwrap(...args);
     case 'nullish':

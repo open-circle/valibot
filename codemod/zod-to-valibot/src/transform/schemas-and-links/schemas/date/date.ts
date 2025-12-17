@@ -1,8 +1,10 @@
 import j from 'jscodeshift';
 import {
   getDescription,
+  getOptions,
   getSchemaComps,
   getSchemaWithOptionalDescription,
+  getTransformedMsgs,
 } from '../helpers';
 
 export function transformDate(
@@ -18,45 +20,28 @@ export function transformDate(
     coerceSchema
   );
   if (coerce) {
+    const optionsArg =
+      args.length > 0 && args[args.length - 1]?.type === 'ObjectExpression'
+        ? args[args.length - 1]
+        : null;
+    const msgs = getTransformedMsgs(getOptions(optionsArg));
     return j.callExpression(
       j.memberExpression(j.identifier(valibotIdentifier), j.identifier('pipe')),
       [
         j.callExpression(
           j.memberExpression(
             j.identifier(valibotIdentifier),
-            j.identifier('any')
+            j.identifier('unknown')
           ),
           []
         ),
         j.callExpression(
           j.memberExpression(
             j.identifier(valibotIdentifier),
-            j.identifier('transform')
+            j.identifier('toDate')
           ),
-          [
-            j.arrowFunctionExpression(
-              [j.identifier('input')],
-              j.blockStatement([
-                j.tryStatement(
-                  j.blockStatement([
-                    j.returnStatement(
-                      j.newExpression(j.identifier('Date'), [
-                        j.identifier('input'),
-                      ])
-                    ),
-                  ]),
-                  j.catchClause(
-                    null,
-                    null,
-                    j.blockStatement([j.returnStatement(j.identifier('input'))])
-                  )
-                ),
-              ]),
-              false
-            ),
-          ]
+          msgs.filter((m) => m !== null)
         ),
-        baseSchema,
         ...(description
           ? [getDescription(valibotIdentifier, description)]
           : []),

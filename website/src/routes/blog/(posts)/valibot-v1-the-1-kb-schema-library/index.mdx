@@ -9,8 +9,8 @@ authors:
   - fabian-hiller
 ---
 
-import { Link } from '@builder.io/qwik-city';
 import clsx from 'clsx';
+import { Link } from '~/components';
 import { PlayIcon } from '~/icons';
 import { valibotTalkDarkUrl, valibotTalkLigthUrl } from '~/images';
 import {
@@ -41,7 +41,7 @@ If all this makes you curious, you should definitely check out the talk I gave l
     alt="Talk: Going fully modular with Valibot"
   />
   <a
-    class="focus-ring absolute flex h-10 w-16 animate-bounce items-center justify-center !rounded-xl bg-sky-500/10 backdrop-blur hover:bg-sky-500/20 md:h-12 md:w-20 lg:h-16 lg:w-28 lg:backdrop-blur-lg dark:bg-sky-400/10 dark:hover:bg-sky-400/20"
+    class="focus-ring absolute flex h-10 w-16 animate-bounce items-center justify-center rounded-xl! bg-sky-500/10 backdrop-blur hover:bg-sky-500/20 md:h-12 md:w-20 lg:h-16 lg:w-28 lg:backdrop-blur-lg dark:bg-sky-400/10 dark:hover:bg-sky-400/20"
     href="https://youtu.be/AnXbYrGdxv0"
     target="_blank"
     rel="noreferrer"
@@ -94,9 +94,9 @@ We are proud that Valibot is used on sites like [The Guardian](https://www.thegu
 
 Valibot has grown from a research paper to a community-driven project with more than 140 contributors and various partners. I want to give a shoutout to [Elton](https://github.com/EltonLobo07), who joined the project as a co-maintainer. He helped rewrite the entire library from scratch and contributed a significant amount to the API reference in our docs. Another shoutout goes to [CodingBill](https://github.com/Bilboramix), who has become a moderator on Discord. If you have any schema-related questions, he is the guy to talk to!
 
-Below you will find our most influential contributors as well as our current and past sponsors and partners who helped make Valibot v1 possible. If your company uses Valibot and benefits from our work, please consider supporting the project through [GitHub sponsors](https://github.com/fabian-hiller/valibot).
+Below you will find our most influential contributors as well as our current and past sponsors and partners who helped make Valibot v1 possible. If your company uses Valibot and benefits from our work, please consider supporting the project through [GitHub sponsors](https://github.com/open-circle/valibot).
 
-<ul class="!mx-8 !mt-10 flex !list-none flex-wrap gap-2 md:!mt-12 lg:!mx-10 lg:!mt-14 lg:gap-3">
+<ul class="mx-8! mt-10! flex list-none! flex-wrap gap-2 md:mt-12! lg:mx-10! lg:mt-14! lg:gap-3">
   {[
     'Bilboramix',
     'Demivan',
@@ -116,7 +116,7 @@ Below you will find our most influential contributors as well as our current and
     'ssalbdivad',
     'xcfox',
   ].map((sponsor) => (
-    <li key={sponsor} class="!m-0 !p-0">
+    <li key={sponsor} class="m-0! p-0!">
       <a
         href={`https://github.com/${sponsor}`}
         target="_blank"
@@ -135,7 +135,7 @@ Below you will find our most influential contributors as well as our current and
   ))}
 </ul>
 
-<ul class="!mx-8 !mt-10 flex !list-none flex-wrap gap-2 md:!mt-12 lg:!mx-10 lg:!mt-14 lg:gap-3">
+<ul class="mx-8! mt-10! flex list-none! flex-wrap gap-2 md:mt-12! lg:mx-10! lg:mt-14! lg:gap-3">
   {[
     'antfu',
     '/andrewmd5',
@@ -165,7 +165,7 @@ Below you will find our most influential contributors as well as our current and
     '/andrew-3kb',
     '/herkulano',
   ].map((sponsor) => (
-    <li key={sponsor} class="!m-0 !p-0">
+    <li key={sponsor} class="m-0! p-0!">
       <a
         href={`https://github.com/${sponsor}`}
         target="_blank"
@@ -184,7 +184,7 @@ Below you will find our most influential contributors as well as our current and
   ))}
 </ul>
 
-<ul class="!mx-8 !mt-10 flex !list-none flex-wrap gap-x-6 gap-y-3 md:!mt-12 md:gap-x-8 md:gap-y-4 lg:!mx-10 lg:!mt-14 lg:gap-x-10 lg:gap-y-5">
+<ul class="mx-8! mt-10! flex list-none! flex-wrap gap-x-6 gap-y-3 md:mt-12! md:gap-x-8 md:gap-y-4 lg:mx-10! lg:mt-14! lg:gap-x-10 lg:gap-y-5">
   {[
     { Logo: PaceLogo, href: 'https://www.pace.edu' },
     { Logo: BoltLogo, href: 'https://bolt.new/' },
@@ -197,7 +197,7 @@ Below you will find our most influential contributors as well as our current and
     { Logo: NetlifyLogo, href: 'https://www.netlify.com' },
     { Logo: DigitalOceanLogo, href: 'https://www.digitalocean.com/' },
   ].map(({ Logo, href }) => (
-    <li key={href} class="!m-0 !p-0">
+    <li key={href} class="m-0! p-0!">
       <a href={href} target="_blank" rel="noreferrer">
         <Logo class="h-9 md:h-11 lg:h-12" />
       </a>

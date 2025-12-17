@@ -3,6 +3,7 @@ import j, { type Collection } from 'jscodeshift';
 type TransformImportsReturn =
   | {
       conclusion: 'skip' | 'unsuccessful';
+      cause: string;
       valibotIdentifier?: undefined;
     }
   | { conclusion: 'successful'; valibotIdentifier: string };
@@ -20,6 +21,7 @@ export function transformImports(
   if (importNodes.length !== 1) {
     return {
       conclusion: importNodes.length === 0 ? 'skip' : 'unsuccessful',
+      cause: 'Expected exactly one import statement from "zod" or "zod/v4".',
     };
   }
   // Check the number of specifiers is exactly one
@@ -27,6 +29,7 @@ export function transformImports(
   if (importSpecifiers?.length !== 1) {
     return {
       conclusion: 'unsuccessful',
+      cause: 'Expected exactly one import specifier from "zod" or "zod/v4".',
     };
   }
   // Obtain the identifier
@@ -35,6 +38,7 @@ export function transformImports(
   if (typeof zodIdentifier !== 'string') {
     return {
       conclusion: 'unsuccessful',
+      cause: 'Expected the import specifier to have a local name.',
     };
   }
   const isZodIdentifierZ = zodIdentifier === 'z';
