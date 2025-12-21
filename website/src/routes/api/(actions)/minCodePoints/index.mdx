@@ -1,0 +1,74 @@
+---
+title: minCodePoints
+description: Creates a min code points validation action.
+source: /actions/minCodePoints/minCodePoints.ts
+contributors:
+  - fabian-hiller
+  - tats-u
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# minGraphemes
+
+Creates a min [code points](https://developer.mozilla.org/en-US/docs/Glossary/Code_point) validation action.
+
+```ts
+const Action = v.minCodePoints<TInput, TRequirement, TMessage>(
+  requirement,
+  message
+);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `minCodePoints` you can validate the number of code points in a string. If the input does not match the `requirement`, you can use `message` to customize the error message.
+
+> Hint: This action is suitable for `VARCHAR` in PostgreSQL and MySQL. Also, [NIST SP 800-63B requires us to count the length of a password in code points.](https://pages.nist.gov/800-63-4/sp800-63b.html#passwordver)
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `minCodePoints` can be used.
+
+### Min code points schema
+
+Schema to validate a string with a minimum of 8 code points.
+
+```ts
+const MinCodePointsSchema = v.pipe(
+  v.string(),
+  v.minCodePoints(8, 'The string must contain at least 8 code points.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `minCodePoints`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
