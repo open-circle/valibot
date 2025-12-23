@@ -29,7 +29,7 @@ const ObjectSchema = v.object({
 
 ### Loose and strict objects
 
-The <Link href="/api/object/">`object`</Link> schema removes unknown entries. This means that entries that you have not defined in the first argument are not validated and added to the output. You can change this behavior by using the <Link href="/api/looseObject/">`looseObject`</Link> or <Link href="/api/strictObject/">`strictObject`</Link> schema instead.
+The <Link href="/api/object/">`object`</Link> schema removes unknown entries. This means that entries that you have not defined in the first argument are neither validated nor added to the output. You can change this behavior by using the <Link href="/api/looseObject/">`looseObject`</Link> or <Link href="/api/strictObject/">`strictObject`</Link> schema instead.
 
 The <Link href="/api/looseObject/">`looseObject`</Link> schema allows unknown entries and adds them to the output. The <Link href="/api/strictObject/">`strictObject`</Link> schema forbids unknown entries and returns an issue for the first unknown entry found.
 
