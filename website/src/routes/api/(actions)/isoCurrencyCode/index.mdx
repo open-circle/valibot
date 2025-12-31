@@ -1,0 +1,74 @@
+---
+title: isoCurrencyCode
+description: Creates an ISO 4217 currency code validation action.
+source: /actions/isoCurrencyCode/isoCurrencyCode.ts
+contributors:
+  - ysknsid25
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# isoCurrencyCode
+
+Creates an [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code validation action.
+
+```ts
+const Action = v.isoCurrencyCode<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `isoCurrencyCode` you can validate the formatting of a string. If the input is not an ISO 4217 currency code, you can use `message` to customize the error message.
+
+This action supports the official list of [ISO4217](https://www.iso.org/iso-4217-currency-codes.html) currency codes.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `isoCurrencyCode` can be used.
+
+### ISO 4217 currency code schema
+
+Schema to validate an ISO 4217 currency code.
+
+```ts
+const CurrencyCodeSchema = v.pipe(
+  v.string(),
+  v.isoCurrencyCode('The currency code is badly formatted')
+);
+
+// Valid currency codes:
+// 'USD'
+// 'JPY'
+// 'EUR'
+```
+
+## Related
+
+The following APIs can be combined with `isoCurrencyCode`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
