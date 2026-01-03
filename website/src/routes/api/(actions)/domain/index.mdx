@@ -32,7 +32,7 @@ const Action = v.domain<TInput, TMessage>(message);
 With `domain` you can validate the formatting of a domain string.
 If the input is not a valid domain, you can use `message` to customize the error message.
 
-> Validates ASCII domains. Limits: 63 chars per label, 253 chars total. <Link href="https://en.wikipedia.org/wiki/Internationalized_domain_name">`Internationalized domain names`</Link> (IDN) not supported (including their Punycode form).
+> Validates ASCII domains. Limits: 63 chars per label, 253 chars total. <Link href="https://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized domain names</Link> (IDN) not supported (including their Punycode form).
 > If you need to validate a full URL (including protocol, path, query, etc.), use the <Link href="../url/">`url`</Link> action.
 
 ## Returns
