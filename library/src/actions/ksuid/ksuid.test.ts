@@ -4,7 +4,7 @@ import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
 import { ksuid, type KsuidAction, type KsuidIssue } from './ksuid.ts';
 
-describe('ulid', () => {
+describe('ksuid', () => {
   describe('should return action object', () => {
     const baseAction: Omit<KsuidAction<string, never>, 'message'> = {
       kind: 'validation',
