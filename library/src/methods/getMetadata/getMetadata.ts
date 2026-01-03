@@ -10,34 +10,36 @@ import type {
 } from '../../types/index.ts';
 import type { SchemaWithPipe, SchemaWithPipeAsync } from '../pipe/index.ts';
 
-/**
- * Schema type.
- */
-type Schema =
-  | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-  | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
-  | SchemaWithPipe<
-      readonly [
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        ...(
-          | PipeItem<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
-          | MetadataAction<unknown, Record<string, unknown>>
-        )[],
-      ]
-    >
-  | SchemaWithPipeAsync<
-      readonly [
-        (
-          | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-          | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
-        ),
-        ...(
-          | PipeItem<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
-          | PipeItemAsync<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
-          | MetadataAction<unknown, Record<string, unknown>>
-        )[],
-      ]
-    >;
+export namespace getMetadata {
+  /**
+   * Schema type.
+   */
+  export type Schema =
+    | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+    | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
+    | SchemaWithPipe<
+        readonly [
+          BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+          ...(
+            | PipeItem<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
+            | MetadataAction<unknown, Record<string, unknown>>
+          )[],
+        ]
+      >
+    | SchemaWithPipeAsync<
+        readonly [
+          (
+            | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+            | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
+          ),
+          ...(
+            | PipeItem<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
+            | PipeItemAsync<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
+            | MetadataAction<unknown, Record<string, unknown>>
+          )[],
+        ]
+      >;
+}
 
 /**
  * Basic pipe item type.
@@ -74,7 +76,7 @@ type RecursiveMerge<
  *
  * @beta
  */
-export type InferMetadata<TSchema extends Schema> =
+export type InferMetadata<TSchema extends getMetadata.Schema> =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   BaseSchema<any, any, any> extends TSchema
     ? Record<string, unknown>
@@ -101,11 +103,11 @@ export type InferMetadata<TSchema extends Schema> =
  * @beta
  */
 // @__NO_SIDE_EFFECTS__
-export function getMetadata<const TSchema extends Schema>(
+export function getMetadata<const TSchema extends getMetadata.Schema>(
   schema: TSchema
 ): InferMetadata<TSchema> {
   const result = {};
-  function depthFirstMerge(schema: Schema): void {
+  function depthFirstMerge(schema: getMetadata.Schema): void {
     if ('pipe' in schema) {
       for (const item of schema.pipe) {
         if (item.kind === 'schema' && 'pipe' in item) {
