@@ -64,7 +64,7 @@ export interface DomainAction<
 /**
  * Creates a domain name validation action.
  *
- * Hint: Hint: ASCII-only validation. 
+ * Hint: ASCII-only validation. 
  * Internationalized domain names (IDN) not supported (including their Punycode form).
  *
  * @returns A domain action.

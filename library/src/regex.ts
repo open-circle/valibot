@@ -28,7 +28,7 @@ export const DIGITS_REGEX: RegExp = /^\d+$/u;
 /**
  * [Domain name](https://en.wikipedia.org/wiki/Domain_name) regex.
  *
- * Hint: Hint: ASCII-only validation. 
+ * Hint: ASCII-only validation. 
  * Internationalized domain names (IDN) not supported (including their Punycode form).
  */
 export const DOMAIN_REGEX: RegExp =
