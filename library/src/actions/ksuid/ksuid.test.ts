@@ -96,14 +96,14 @@ describe('ksuid', () => {
       ]);
     });
 
-    test('for too short ULIDs', () => {
+    test('for too short KSUIDs', () => {
       expectActionIssue(action, baseIssue, [
         '0ujsswThIGTUYm2K8FjOOfXtY1',
         '2EbKL0J9w8vLcK7B',
       ]);
     });
 
-    test('for too long ULIDs', () => {
+    test('for too long KSUIDs', () => {
       expectActionIssue(action, baseIssue, [
         '0ujsswThIGTUYm2K8FjOOfXtY1Ka',
         '2EbKL0J9w8vLcK7BDmFnRQy0w1p123456',
