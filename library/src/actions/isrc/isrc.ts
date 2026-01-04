@@ -23,7 +23,7 @@ export interface IsrcIssue<TInput extends string> extends BaseIssue<TInput> {
    */
   readonly received: `"${string}"`;
   /**
-   * The validation function.
+   * The ISRC regex.
    */
   readonly requirement: RegExp;
 }
@@ -48,7 +48,7 @@ export interface IsrcAction<
    */
   readonly expects: null;
   /**
-   * The validation function.
+   * The ISRC regex.
    */
   readonly requirement: RegExp;
   /**
