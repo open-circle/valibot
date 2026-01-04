@@ -1,0 +1,75 @@
+---
+title: isoCountryCode
+description: Creates an ISO3166 country code validation action.
+source: /actions/isoCountryCode/isoCountryCode.ts
+contributors:
+  - ysknsid25
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# isoCountryCode
+
+Creates an [ISO3166](https://www.iso.org/iso-3166-country-codes.html) country code validation action.
+
+```ts
+const Action = v.isoCountryCode<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `isoCountryCode` you can validate the formatting of a string. If the input is not an ISO3166 country code, you can use `message` to customize the error message.
+
+This action supports the official list of active ISO3166 alpha-2 and alpha-3 country codes.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `isoCountryCode` can be used.
+
+### ISO3166 country code schema
+
+Schema to validate an ISO3166 country code.
+
+```ts
+const CountryCodeSchema = v.pipe(
+  v.string(),
+  v.isoCountryCode('The country code is badly formatted')
+);
+
+// Valid country codes:
+// 'US'
+// 'USA'
+// 'JP'
+// 'JPN'
+```
+
+## Related
+
+The following APIs can be combined with `isoCountryCode`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
