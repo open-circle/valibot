@@ -25,7 +25,15 @@ To make the migration as smoth as possible, we have created an official codemod 
 
 <CodemodEditor />
 
-You will soon be able to also run the codemod locally in your terminal to migrate your entire codebase at once. Stay tuned!
+You can also run the codemod locally to migrate your entire codebase at once:
+
+```bash
+// Preview changes (no writes)
+npx @valibot/zod-to-valibot src/**/* --dry
+
+// Apply changes
+npx @valibot/zod-to-valibot src/**/*
+```
 
 ## Replace imports
 

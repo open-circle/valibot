@@ -60,7 +60,8 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
-    "@vercel/og": "^0.8.5",
+    "@valibot/zod-to-valibot": "workspace:*",
+    "@vercel/og": "0.7.2",
     "@vercel/speed-insights": "^1.2.0",
     "clsx": "^2.1.1",
     "jscodeshift": "^17.3.0",
@@ -71,8 +72,7 @@
     "onigasm": "^2.2.5",
     "satori-html": "^0.3.2",
     "sucrase": "^3.35.1",
-    "valibot": "workspace:*",
-    "zod-to-valibot": "workspace:*"
+    "valibot": "workspace:*"
   },
   "engines": {
     "node": ">=20.0.0"

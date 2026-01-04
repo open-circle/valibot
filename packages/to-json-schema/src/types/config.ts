@@ -1,5 +1,5 @@
-import type { JSONSchema7 } from 'json-schema';
 import type * as v from 'valibot';
+import type { JsonSchema } from './schema.ts';
 
 /**
  * JSON Schema conversion context interface.
@@ -8,7 +8,7 @@ export interface ConversionContext {
   /**
    * The JSON Schema definitions that have already been created.
    */
-  readonly definitions: Record<string, JSONSchema7>;
+  readonly definitions: Record<string, JsonSchema>;
   /**
    * The JSON Schema reference map that is used to look up the reference ID
    * for a given Valibot schema.
@@ -44,7 +44,7 @@ export interface OverrideSchemaContext extends ConversionContext {
   /**
    * The converted JSON Schema.
    */
-  readonly jsonSchema: JSONSchema7;
+  readonly jsonSchema: JsonSchema;
   /**
    * The errors of the current Valibot schema conversion.
    */
@@ -65,7 +65,7 @@ export interface OverrideActionContext {
   /**
    * The converted JSON Schema.
    */
-  readonly jsonSchema: JSONSchema7;
+  readonly jsonSchema: JsonSchema;
   /**
    * The errors of the current Valibot action conversion.
    */
@@ -89,13 +89,17 @@ export interface OverrideRefContext extends ConversionContext {
   /**
    * The converted JSON Schema.
    */
-  readonly jsonSchema: JSONSchema7;
+  readonly jsonSchema: JsonSchema;
 }
 
 /**
  * JSON Schema conversion config interface.
  */
 export interface ConversionConfig {
+  /**
+   * The target JSON Schema draft version. Defaults to 'draft-07'.
+   */
+  readonly target?: 'draft-07' | 'draft-2020-12' | 'openapi-3.0';
   /**
    * Whether to convert the input or output type of the Valibot schema to JSON Schema.
    *
@@ -136,7 +140,7 @@ export interface ConversionConfig {
    */
   readonly overrideSchema?: (
     context: OverrideSchemaContext
-  ) => JSONSchema7 | null | undefined;
+  ) => JsonSchema | null | undefined;
   /**
    * The actions that should be ignored during the conversion.
    *
@@ -158,7 +162,7 @@ export interface ConversionConfig {
    */
   readonly overrideAction?: (
     context: OverrideActionContext
-  ) => JSONSchema7 | null | undefined;
+  ) => JsonSchema | null | undefined;
   /**
    * Overrides the JSON Schema reference for a specific reference ID.
    *
