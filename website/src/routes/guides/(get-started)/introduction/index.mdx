@@ -1,8 +1,8 @@
 ---
 title: Introduction
 description: >-
-  Hello, I am Valibot and I would like to help you validate data easily using a
-  schema. No matter if it is incoming data on a server, a form or even
+  Valibot is a modular and type safe schema library that helps you validate data
+  easily. No matter if it is incoming data on a server, a form or even
   configuration files.
 contributors:
   - fabian-hiller
@@ -14,9 +14,9 @@ import { Link } from '~/components';
 
 # Introduction
 
-Hello, I am Valibot and I would like to help you validate data easily using a schema. No matter if it is incoming data on a server, a form or even configuration files. I have no dependencies and can run in any JavaScript environment.
+Valibot is a modular and type safe schema library that helps you validate data easily. No matter if it is incoming data on a server, a form or even configuration files. Valibot has no dependencies and can run in any JavaScript environment.
 
-> I highly recommend you read the [announcement post](https://www.builder.io/blog/introducing-valibot), and if you are a nerd like me, the [bachelor's thesis](/thesis.pdf) I am based on.
+> We highly recommend you read the [announcement post](https://www.builder.io/blog/introducing-valibot), and if you are a nerd, the [bachelor's thesis](/thesis.pdf) that Valibot is based on.
 
 ## Highlights
 
@@ -56,24 +56,24 @@ const output2 = v.parse(LoginSchema, {
 });
 ```
 
-Apart from <Link href="/api/parse/">`parse`</Link> I also offer a non-exception-based API with <Link href="/api/safeParse/">`safeParse`</Link> and a type guard function with <Link href="/api/is/">`is`</Link>. You can read more about it <Link href="/guides/parse-data/">here</Link>.
+Apart from <Link href="/api/parse/">`parse`</Link>, Valibot also offers a non-exception-based API with <Link href="/api/safeParse/">`safeParse`</Link> and a type guard function with <Link href="/api/is/">`is`</Link>. You can read more about it <Link href="/guides/parse-data/">here</Link>.
 
 ## Comparison
 
-Instead of relying on a few large functions with many methods, my API design and source code is based on many small and independent functions, each with just a single task. This modular design has several advantages.
+Instead of relying on a few large functions with many methods, Valibot's API design and source code is based on many small and independent functions, each with just a single task. This modular design has several advantages.
 
 For example, this allows a bundler to use the import statements to remove code that is not needed. This way, only the code that is actually used gets into your production build. This can reduce the bundle size by up to 95 % compared to [Zod](https://zod.dev/).
 
-In addition, it allows you to easily extend my functionality with external code and makes my source code more robust and secure because the functionality of the individual functions can be tested much more easily through unit tests.
+In addition, it allows you to easily extend Valibot's functionality with external code and makes the source code more robust and secure because the functionality of the individual functions can be tested much more easily through unit tests.
 
 ## Credits
 
-My friend [Fabian](https://github.com/fabian-hiller) created me as part of his bachelor thesis at [Stuttgart Media University](https://www.hdm-stuttgart.de/en/), supervised by Walter Kriha, [Miško Hevery](https://github.com/mhevery) and [Ryan Carniato](https://github.com/ryansolid). My role models also include [Colin McDonnell](https://github.com/colinhacks), who had a big influence on my API design with [Zod](https://zod.dev/).
+Valibot was created by [Fabian Hiller](https://github.com/fabian-hiller) as part of his bachelor thesis at [Stuttgart Media University](https://www.hdm-stuttgart.de/en/), supervised by Walter Kriha, [Miško Hevery](https://github.com/mhevery) and [Ryan Carniato](https://github.com/ryansolid). The library's design was also influenced by [Colin McDonnell](https://github.com/colinhacks), who had a big impact on the API design with [Zod](https://zod.dev/).
 
 ## Feedback
 
-Find a bug or have an idea how to improve my code? Please fill out an [issue](https://github.com/open-circle/valibot/issues/new). Together we can make the library even better!
+Find a bug or have an idea how to improve the code? Please fill out an [issue](https://github.com/open-circle/valibot/issues/new). Together we can make the library even better!
 
 ## License
 
-I am completely free and licensed under the [MIT license](https://github.com/open-circle/valibot/blob/main/LICENSE.md). But if you like, you can feed me with a star on [GitHub](https://github.com/open-circle/valibot).
+Valibot is completely free and licensed under the [MIT license](https://github.com/open-circle/valibot/blob/main/LICENSE.md). But if you like, you can support the project with a star on [GitHub](https://github.com/open-circle/valibot).
