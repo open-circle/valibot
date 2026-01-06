@@ -29,7 +29,7 @@
       ]
     },
     {
-      "source": "/assets/(.*)-index.min.js",
+      "source": "/assets/(.*)-index.min.mjs",
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",

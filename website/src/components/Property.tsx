@@ -1,6 +1,6 @@
 import { component$, Fragment } from '@builder.io/qwik';
-import { Link } from '@builder.io/qwik-city';
 import clsx from 'clsx';
+import { Link } from './Link';
 
 type DefinitionData =
   | 'string'
@@ -156,7 +156,7 @@ const Definition = component$<DefinitionProps>(({ parent, data }) => (
             data === 'never' ||
             data === 'any' ||
             data === 'unknown',
-          'capitalize text-sky-600 dark:text-sky-400':
+          'text-sky-600 capitalize dark:text-sky-400':
             data === 'object' ||
             data === 'array' ||
             data === 'tuple' ||
@@ -198,7 +198,7 @@ const Definition = component$<DefinitionProps>(({ parent, data }) => (
                     </>
                   ) : entrie.key.type ? (
                     <>
-                      <span class="italic text-orange-500 dark:text-orange-300">
+                      <span class="text-orange-500 italic dark:text-orange-300">
                         {entrie.key.name}
                       </span>
                       <span class="text-red-600 dark:text-red-400">:</span>{' '}
@@ -360,7 +360,6 @@ const Definition = component$<DefinitionProps>(({ parent, data }) => (
                 data.name[0] !== data.name[0].toUpperCase(),
             }}
             href={data.href}
-            prefetch={false}
           >
             {data.name}
           </Link>

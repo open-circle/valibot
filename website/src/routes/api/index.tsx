@@ -27,7 +27,7 @@ export default component$(() => {
         This section of our website contains detailed reference documentation
         for working with Valibot. Please create an{' '}
         <a
-          href="https://github.com/fabian-hiller/valibot/issues/new"
+          href="https://github.com/open-circle/valibot/issues/new"
           target="_blank"
           rel="noreferrer"
         >
