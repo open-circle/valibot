@@ -1,0 +1,120 @@
+---
+title: examples
+description: Creates an examples metadata action.
+source: /actions/examples/examples.ts
+contributors:
+  - EskiMojo14
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# examples
+
+Creates an examples metadata action.
+
+```ts
+const Action = v.examples<TInput, TExamples>(examples_);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TExamples` <Property {...properties.TExamples} />
+
+## Parameters
+
+- `examples_` <Property {...properties['examples_']} />
+
+### Explanation
+
+With `examples` you can provide examples for a schema. This can be useful when working with AI tools or for documentation purposes.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `examples` can be used.
+
+### String schema
+
+Schema to validate a string with examples.
+
+```ts
+const StringSchema = v.pipe(v.string(), v.examples(['foo', 'bar', 'baz']));
+```
+
+### Number schema
+
+Schema to validate a number with examples.
+
+```ts
+const NumberSchema = v.pipe(v.number(), v.examples([1, 2, 3]));
+```
+
+## Related
+
+The following APIs can be combined with `examples`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'array',
+    'bigint',
+    'blob',
+    'boolean',
+    'custom',
+    'date',
+    'enum',
+    'exactOptional',
+    'file',
+    'function',
+    'instance',
+    'intersect',
+    'lazy',
+    'literal',
+    'looseObject',
+    'looseTuple',
+    'map',
+    'nan',
+    'never',
+    'nonNullable',
+    'nonNullish',
+    'nonOptional',
+    'null',
+    'nullable',
+    'nullish',
+    'number',
+    'object',
+    'objectWithRest',
+    'optional',
+    'picklist',
+    'promise',
+    'record',
+    'set',
+    'strictObject',
+    'strictTuple',
+    'string',
+    'symbol',
+    'tuple',
+    'tupleWithRest',
+    'undefined',
+    'undefinedable',
+    'union',
+    'unknown',
+    'variant',
+    'void',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['getExamples', 'pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

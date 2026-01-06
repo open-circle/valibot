@@ -308,26 +308,22 @@ The library source is organized as:
 When reading the source file (e.g., `/library/src/schemas/string/string.ts`), extract:
 
 1. **Interfaces and Types**
-
    - Look for the main Issue interface (e.g., `StringIssue`)
    - Look for the main Schema/Action interface (e.g., `StringSchema`, `MinLengthAction`)
    - Note all generic parameters and their constraints
    - Note all interface properties
 
 2. **Function Overloads**
-
    - The source includes multiple function signatures for different parameter combinations
    - Document each overload's parameters
    - The last signature is usually the most generic
 
 3. **JSDoc Comments**
-
    - Extract the description from JSDoc comments above the function
    - These often contain hints about usage and alternatives
    - For schemas like `object`, comments may mention related schemas (`looseObject`, `strictObject`)
 
 4. **Generic Constraints**
-
    - Note `extends` clauses on generic parameters
    - Common patterns:
      - `TMessage extends ErrorMessage<SomeIssue> | undefined`
@@ -429,13 +425,11 @@ From `/library/src/schemas/object/object.ts`, note the JSDoc:
 #### Special Considerations
 
 1. **Source Path**: Use the relative path from `/library/src/` for the `source` field in frontmatter:
-
    - `string.ts` → `source: /schemas/string/string.ts`
    - `minLength.ts` → `source: /actions/minLength/minLength.ts`
    - `parse.ts` → `source: /methods/parse/parse.ts`
 
 2. **Type Documentation**: If documenting a type (not a function), the source file defines the interface structure:
-
    - Properties become documentation entries
    - Use literal types where specified (e.g., `type: 'string'`)
    - Reference the parent interface with `extends`
@@ -813,8 +807,7 @@ contributors:
   - github-username
 ---
 
-import { Link } from '@qwik.dev/router';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # functionName
@@ -1081,8 +1074,7 @@ contributors:
 Always import these at the top (after front matter):
 
 ```typescript
-import { Link } from '@qwik.dev/router';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 ```
 
@@ -2369,8 +2361,7 @@ Before submitting a new API route, verify:
 
 ```typescript
 // In index.mdx
-import { Link } from '@qwik.dev/router';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 // In properties.ts
 import type { PropertyProps } from '~/components';
 import { properties } from './properties';

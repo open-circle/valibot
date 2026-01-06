@@ -1,5 +1,5 @@
 import { component$, type QRLEventHandlerMulti, Slot } from '@builder.io/qwik';
-import { Link } from '@builder.io/qwik-city';
+import { Link } from './Link';
 
 export type LinkButtonProps = {
   class?: string;

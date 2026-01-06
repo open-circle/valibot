@@ -11,10 +11,10 @@ export default component$(() => {
   return (
     <main class="flex flex-1 flex-col items-center py-12 md:py-20 lg:py-28 xl:py-32">
       {/* Article */}
-      <article class="max-w-(--breakpoint-xl) flex w-full flex-col gap-12 md:gap-20 lg:gap-24">
-        <div class="max-w-(--breakpoint-md) mx-8 flex flex-col gap-5 md:items-center md:gap-7 md:self-center lg:mx-10 lg:gap-9">
+      <article class="flex w-full max-w-(--breakpoint-xl) flex-col gap-12 md:gap-20 lg:gap-24">
+        <div class="mx-8 flex max-w-(--breakpoint-md) flex-col gap-5 md:items-center md:gap-7 md:self-center lg:mx-10 lg:gap-9">
           {/* Title */}
-          <h1 class="text-2xl font-medium leading-normal text-slate-900 md:text-center md:text-3xl lg:text-4xl dark:text-slate-200">
+          <h1 class="text-2xl leading-normal font-medium text-slate-900 md:text-center md:text-3xl lg:text-4xl dark:text-slate-200">
             {head.title}
           </h1>
 
@@ -30,7 +30,7 @@ export default component$(() => {
         <PostCover variant="post" label={head.frontmatter.cover} />
 
         {/* Content */}
-        <div class="mdx max-w-(--breakpoint-lg) flex w-full flex-col lg:self-center">
+        <div class="mdx flex w-full max-w-(--breakpoint-lg) flex-col lg:self-center">
           <Slot />
 
           {/* Edit page buttton */}
@@ -38,7 +38,7 @@ export default component$(() => {
             class="mx-8 lg:mx-10"
             variant="secondary"
             type="link"
-            href={`https://github.com/fabian-hiller/valibot/blob/main/website/src/routes/blog/(posts)${location.url.pathname.slice(5)}index.mdx`}
+            href={`https://github.com/open-circle/valibot/blob/main/website/src/routes/blog/(posts)${location.url.pathname.slice(5)}index.mdx`}
             target="_blank"
             label="Edit page"
           >
@@ -48,7 +48,7 @@ export default component$(() => {
       </article>
 
       {/* Credits */}
-      <div class="max-w-(--breakpoint-lg) w-full">
+      <div class="w-full max-w-(--breakpoint-lg)">
         <Credits />
       </div>
     </main>

@@ -1,4 +1,4 @@
-import type { ConversionContext } from '../type.ts';
+import type { ConversionContext } from '../types/index.ts';
 
 /**
  * Creates a new conversion context.

@@ -68,7 +68,7 @@ contributors:
   - github-username
 ---
 
-import { Link } from '@qwik.dev/router';
+import { Link } from '~/components';
 
 # Guide Title
 
@@ -105,7 +105,7 @@ Follow these guidelines when writing content:
 
 #### Imports
 
-- Always import `Link` from `@qwik.dev/router` for internal links
+- Always import `Link` from `~/components` for internal links
 - Import other components as needed (e.g., `ApiList` from `~/components`)
 
 #### Internal Links

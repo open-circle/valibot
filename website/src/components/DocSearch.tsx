@@ -7,7 +7,7 @@ import {
   useSignal,
   useTask$,
 } from '@builder.io/qwik';
-import { Link, useLocation, useNavigate } from '@builder.io/qwik-city';
+import { useLocation, useNavigate } from '@builder.io/qwik-city';
 import { isBrowser } from '@builder.io/qwik/build';
 import clsx from 'clsx';
 import { useFocusTrap, useStorageSignal } from '~/hooks';
@@ -20,6 +20,7 @@ import {
 } from '~/icons';
 import { AlgoliaLogo } from '~/logos';
 import { trackEvent } from '~/utils';
+import { Link } from './Link';
 import { SystemIcon } from './SystemIcon';
 import { TextLink } from './TextLink';
 
@@ -317,7 +318,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
       // Select current active index
       if (event.key === 'Enter') {
         const item = searchItems.value[activeIndex.value];
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
         if (item) {
           if (item.path === location.url.pathname) {
             open.value = false;
@@ -343,7 +344,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
     <div
       class={clsx(
         open.value &&
-          'fixed left-0 top-0 z-40 h-screen w-screen lg:p-40 xl:p-48'
+          'fixed top-0 left-0 z-40 h-screen w-screen lg:p-40 xl:p-48'
       )}
       window:onKeyDown$={[preventDefault, handleKeyDown]}
     >
@@ -393,7 +394,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
                     An unexpected error has occurred. If this happens regularly,
                     please create an{' '}
                     <TextLink
-                      href="https://github.com/fabian-hiller/valibot/issues/new"
+                      href="https://github.com/open-circle/valibot/issues/new"
                       target="_blank"
                       colored
                       underlined
@@ -432,7 +433,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
                                     getPrevItem()?.relation !== 'page'
                                   ? 'mt-6'
                                   : item.relation === 'child'
-                                    ? 'border-l-2 border-l-slate-200 pl-2 pt-2.5 dark:border-l-slate-800'
+                                    ? 'border-l-2 border-l-slate-200 pt-2.5 pl-2 dark:border-l-slate-800'
                                     : 'mt-2.5')
                           )}
                         >
@@ -486,7 +487,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
             </footer>
           </div>
           <div
-            class="hidden lg:absolute lg:left-0 lg:top-0 lg:-z-10 lg:block lg:h-full lg:w-full lg:cursor-default lg:bg-gray-200/50 lg:backdrop-blur-sm lg:dark:bg-gray-800/50"
+            class="hidden lg:absolute lg:top-0 lg:left-0 lg:-z-10 lg:block lg:h-full lg:w-full lg:cursor-default lg:bg-gray-200/50 lg:backdrop-blur-sm lg:dark:bg-gray-800/50"
             role="button"
             onClick$={() => (open.value = false)}
           />

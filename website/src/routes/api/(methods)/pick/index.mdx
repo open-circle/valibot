@@ -8,8 +8,7 @@ contributors:
   - fabian-hiller
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # pick
@@ -50,7 +49,7 @@ Schema that contains only the selected keys of an existing schema.
 
 ```ts
 const PickedSchema = v.pick(
-  object({
+  v.object({
     key1: string(),
     key2: number(),
     key3: boolean(),
