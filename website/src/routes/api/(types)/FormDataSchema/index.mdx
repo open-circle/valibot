@@ -1,0 +1,25 @@
+---
+title: FormDataSchema
+description: Form data schema interface.
+contributors:
+  - EskiMojo14
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# FormDataSchema
+
+Form data schema interface.
+
+## Generics
+
+- `TMessage` <Property {...properties.TMessage} />
+
+## Definition
+
+- `FormDataSchema` <Property {...properties.BaseSchema} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `message` <Property {...properties.message} />
