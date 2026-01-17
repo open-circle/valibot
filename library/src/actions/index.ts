@@ -92,6 +92,7 @@ export * from './slug/index.ts';
 export * from './someItem/index.ts';
 export * from './sortItems/index.ts';
 export * from './startsWith/index.ts';
+export * from './stringbool/index.ts';
 export * from './stringifyJson/index.ts';
 export * from './title/index.ts';
 export * from './toBigint/index.ts';
