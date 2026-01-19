@@ -3,6 +3,7 @@ export * from './await/index.ts';
 export * from './base64/index.ts';
 export * from './bic/index.ts';
 export * from './brand/index.ts';
+export * from './btcAddress/index.ts';
 export * from './bytes/index.ts';
 export * from './check/index.ts';
 export * from './checkItems/index.ts';
