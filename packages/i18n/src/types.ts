@@ -27,7 +27,8 @@ export type Language = {
     | 'uk'
     | 'vi'
     | 'zh-CN'
-    | 'zh-TW';
+    | 'zh-TW'
+    | 'mn';
   schema: ErrorMessage<BaseIssue<unknown>>;
   specific: {
     base64: ErrorMessage<BaseIssue<unknown>>;

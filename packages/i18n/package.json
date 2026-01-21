@@ -66,7 +66,8 @@
     "uk",
     "vi",
     "zh-CN",
-    "zh-TW"
+    "zh-TW",
+    "mn"
   ],
   "exports": {
     ".": {
@@ -18577,6 +18578,746 @@
       "require": {
         "types": "./zh-TW/words.d.cts",
         "default": "./zh-TW/words.cjs"
+      }
+    },
+    "./mn": {
+      "import": {
+        "types": "./mn/index.d.ts",
+        "default": "./mn/index.js"
+      },
+      "require": {
+        "types": "./mn/index.d.cts",
+        "default": "./mn/index.cjs"
+      }
+    },
+    "./mn/schema": {
+      "import": {
+        "types": "./mn/schema.d.ts",
+        "default": "./mn/schema.js"
+      },
+      "require": {
+        "types": "./mn/schema.d.cts",
+        "default": "./mn/schema.cjs"
+      }
+    },
+    "./mn/base64": {
+      "import": {
+        "types": "./mn/base64.d.ts",
+        "default": "./mn/base64.js"
+      },
+      "require": {
+        "types": "./mn/base64.d.cts",
+        "default": "./mn/base64.cjs"
+      }
+    },
+    "./mn/bic": {
+      "import": {
+        "types": "./mn/bic.d.ts",
+        "default": "./mn/bic.js"
+      },
+      "require": {
+        "types": "./mn/bic.d.cts",
+        "default": "./mn/bic.cjs"
+      }
+    },
+    "./mn/bytes": {
+      "import": {
+        "types": "./mn/bytes.d.ts",
+        "default": "./mn/bytes.js"
+      },
+      "require": {
+        "types": "./mn/bytes.d.cts",
+        "default": "./mn/bytes.cjs"
+      }
+    },
+    "./mn/check": {
+      "import": {
+        "types": "./mn/check.d.ts",
+        "default": "./mn/check.js"
+      },
+      "require": {
+        "types": "./mn/check.d.cts",
+        "default": "./mn/check.cjs"
+      }
+    },
+    "./mn/checkAsync": {
+      "import": {
+        "types": "./mn/checkAsync.d.ts",
+        "default": "./mn/checkAsync.js"
+      },
+      "require": {
+        "types": "./mn/checkAsync.d.cts",
+        "default": "./mn/checkAsync.cjs"
+      }
+    },
+    "./mn/checkItems": {
+      "import": {
+        "types": "./mn/checkItems.d.ts",
+        "default": "./mn/checkItems.js"
+      },
+      "require": {
+        "types": "./mn/checkItems.d.cts",
+        "default": "./mn/checkItems.cjs"
+      }
+    },
+    "./mn/checkItemsAsync": {
+      "import": {
+        "types": "./mn/checkItemsAsync.d.ts",
+        "default": "./mn/checkItemsAsync.js"
+      },
+      "require": {
+        "types": "./mn/checkItemsAsync.d.cts",
+        "default": "./mn/checkItemsAsync.cjs"
+      }
+    },
+    "./mn/creditCard": {
+      "import": {
+        "types": "./mn/creditCard.d.ts",
+        "default": "./mn/creditCard.js"
+      },
+      "require": {
+        "types": "./mn/creditCard.d.cts",
+        "default": "./mn/creditCard.cjs"
+      }
+    },
+    "./mn/cuid2": {
+      "import": {
+        "types": "./mn/cuid2.d.ts",
+        "default": "./mn/cuid2.js"
+      },
+      "require": {
+        "types": "./mn/cuid2.d.cts",
+        "default": "./mn/cuid2.cjs"
+      }
+    },
+    "./mn/decimal": {
+      "import": {
+        "types": "./mn/decimal.d.ts",
+        "default": "./mn/decimal.js"
+      },
+      "require": {
+        "types": "./mn/decimal.d.cts",
+        "default": "./mn/decimal.cjs"
+      }
+    },
+    "./mn/digits": {
+      "import": {
+        "types": "./mn/digits.d.ts",
+        "default": "./mn/digits.js"
+      },
+      "require": {
+        "types": "./mn/digits.d.cts",
+        "default": "./mn/digits.cjs"
+      }
+    },
+    "./mn/email": {
+      "import": {
+        "types": "./mn/email.d.ts",
+        "default": "./mn/email.js"
+      },
+      "require": {
+        "types": "./mn/email.d.cts",
+        "default": "./mn/email.cjs"
+      }
+    },
+    "./mn/emoji": {
+      "import": {
+        "types": "./mn/emoji.d.ts",
+        "default": "./mn/emoji.js"
+      },
+      "require": {
+        "types": "./mn/emoji.d.cts",
+        "default": "./mn/emoji.cjs"
+      }
+    },
+    "./mn/empty": {
+      "import": {
+        "types": "./mn/empty.d.ts",
+        "default": "./mn/empty.js"
+      },
+      "require": {
+        "types": "./mn/empty.d.cts",
+        "default": "./mn/empty.cjs"
+      }
+    },
+    "./mn/endsWith": {
+      "import": {
+        "types": "./mn/endsWith.d.ts",
+        "default": "./mn/endsWith.js"
+      },
+      "require": {
+        "types": "./mn/endsWith.d.cts",
+        "default": "./mn/endsWith.cjs"
+      }
+    },
+    "./mn/everyItem": {
+      "import": {
+        "types": "./mn/everyItem.d.ts",
+        "default": "./mn/everyItem.js"
+      },
+      "require": {
+        "types": "./mn/everyItem.d.cts",
+        "default": "./mn/everyItem.cjs"
+      }
+    },
+    "./mn/excludes": {
+      "import": {
+        "types": "./mn/excludes.d.ts",
+        "default": "./mn/excludes.js"
+      },
+      "require": {
+        "types": "./mn/excludes.d.cts",
+        "default": "./mn/excludes.cjs"
+      }
+    },
+    "./mn/finite": {
+      "import": {
+        "types": "./mn/finite.d.ts",
+        "default": "./mn/finite.js"
+      },
+      "require": {
+        "types": "./mn/finite.d.cts",
+        "default": "./mn/finite.cjs"
+      }
+    },
+    "./mn/graphemes": {
+      "import": {
+        "types": "./mn/graphemes.d.ts",
+        "default": "./mn/graphemes.js"
+      },
+      "require": {
+        "types": "./mn/graphemes.d.cts",
+        "default": "./mn/graphemes.cjs"
+      }
+    },
+    "./mn/hash": {
+      "import": {
+        "types": "./mn/hash.d.ts",
+        "default": "./mn/hash.js"
+      },
+      "require": {
+        "types": "./mn/hash.d.cts",
+        "default": "./mn/hash.cjs"
+      }
+    },
+    "./mn/hexColor": {
+      "import": {
+        "types": "./mn/hexColor.d.ts",
+        "default": "./mn/hexColor.js"
+      },
+      "require": {
+        "types": "./mn/hexColor.d.cts",
+        "default": "./mn/hexColor.cjs"
+      }
+    },
+    "./mn/hexadecimal": {
+      "import": {
+        "types": "./mn/hexadecimal.d.ts",
+        "default": "./mn/hexadecimal.js"
+      },
+      "require": {
+        "types": "./mn/hexadecimal.d.cts",
+        "default": "./mn/hexadecimal.cjs"
+      }
+    },
+    "./mn/imei": {
+      "import": {
+        "types": "./mn/imei.d.ts",
+        "default": "./mn/imei.js"
+      },
+      "require": {
+        "types": "./mn/imei.d.cts",
+        "default": "./mn/imei.cjs"
+      }
+    },
+    "./mn/includes": {
+      "import": {
+        "types": "./mn/includes.d.ts",
+        "default": "./mn/includes.js"
+      },
+      "require": {
+        "types": "./mn/includes.d.cts",
+        "default": "./mn/includes.cjs"
+      }
+    },
+    "./mn/integer": {
+      "import": {
+        "types": "./mn/integer.d.ts",
+        "default": "./mn/integer.js"
+      },
+      "require": {
+        "types": "./mn/integer.d.cts",
+        "default": "./mn/integer.cjs"
+      }
+    },
+    "./mn/ip": {
+      "import": {
+        "types": "./mn/ip.d.ts",
+        "default": "./mn/ip.js"
+      },
+      "require": {
+        "types": "./mn/ip.d.cts",
+        "default": "./mn/ip.cjs"
+      }
+    },
+    "./mn/ipv4": {
+      "import": {
+        "types": "./mn/ipv4.d.ts",
+        "default": "./mn/ipv4.js"
+      },
+      "require": {
+        "types": "./mn/ipv4.d.cts",
+        "default": "./mn/ipv4.cjs"
+      }
+    },
+    "./mn/ipv6": {
+      "import": {
+        "types": "./mn/ipv6.d.ts",
+        "default": "./mn/ipv6.js"
+      },
+      "require": {
+        "types": "./mn/ipv6.d.cts",
+        "default": "./mn/ipv6.cjs"
+      }
+    },
+    "./mn/isoDate": {
+      "import": {
+        "types": "./mn/isoDate.d.ts",
+        "default": "./mn/isoDate.js"
+      },
+      "require": {
+        "types": "./mn/isoDate.d.cts",
+        "default": "./mn/isoDate.cjs"
+      }
+    },
+    "./mn/isoDateTime": {
+      "import": {
+        "types": "./mn/isoDateTime.d.ts",
+        "default": "./mn/isoDateTime.js"
+      },
+      "require": {
+        "types": "./mn/isoDateTime.d.cts",
+        "default": "./mn/isoDateTime.cjs"
+      }
+    },
+    "./mn/isoTime": {
+      "import": {
+        "types": "./mn/isoTime.d.ts",
+        "default": "./mn/isoTime.js"
+      },
+      "require": {
+        "types": "./mn/isoTime.d.cts",
+        "default": "./mn/isoTime.cjs"
+      }
+    },
+    "./mn/isoTimeSecond": {
+      "import": {
+        "types": "./mn/isoTimeSecond.d.ts",
+        "default": "./mn/isoTimeSecond.js"
+      },
+      "require": {
+        "types": "./mn/isoTimeSecond.d.cts",
+        "default": "./mn/isoTimeSecond.cjs"
+      }
+    },
+    "./mn/isoTimestamp": {
+      "import": {
+        "types": "./mn/isoTimestamp.d.ts",
+        "default": "./mn/isoTimestamp.js"
+      },
+      "require": {
+        "types": "./mn/isoTimestamp.d.cts",
+        "default": "./mn/isoTimestamp.cjs"
+      }
+    },
+    "./mn/isoWeek": {
+      "import": {
+        "types": "./mn/isoWeek.d.ts",
+        "default": "./mn/isoWeek.js"
+      },
+      "require": {
+        "types": "./mn/isoWeek.d.cts",
+        "default": "./mn/isoWeek.cjs"
+      }
+    },
+    "./mn/length": {
+      "import": {
+        "types": "./mn/length.d.ts",
+        "default": "./mn/length.js"
+      },
+      "require": {
+        "types": "./mn/length.d.cts",
+        "default": "./mn/length.cjs"
+      }
+    },
+    "./mn/mac": {
+      "import": {
+        "types": "./mn/mac.d.ts",
+        "default": "./mn/mac.js"
+      },
+      "require": {
+        "types": "./mn/mac.d.cts",
+        "default": "./mn/mac.cjs"
+      }
+    },
+    "./mn/mac48": {
+      "import": {
+        "types": "./mn/mac48.d.ts",
+        "default": "./mn/mac48.js"
+      },
+      "require": {
+        "types": "./mn/mac48.d.cts",
+        "default": "./mn/mac48.cjs"
+      }
+    },
+    "./mn/mac64": {
+      "import": {
+        "types": "./mn/mac64.d.ts",
+        "default": "./mn/mac64.js"
+      },
+      "require": {
+        "types": "./mn/mac64.d.cts",
+        "default": "./mn/mac64.cjs"
+      }
+    },
+    "./mn/maxBytes": {
+      "import": {
+        "types": "./mn/maxBytes.d.ts",
+        "default": "./mn/maxBytes.js"
+      },
+      "require": {
+        "types": "./mn/maxBytes.d.cts",
+        "default": "./mn/maxBytes.cjs"
+      }
+    },
+    "./mn/maxGraphemes": {
+      "import": {
+        "types": "./mn/maxGraphemes.d.ts",
+        "default": "./mn/maxGraphemes.js"
+      },
+      "require": {
+        "types": "./mn/maxGraphemes.d.cts",
+        "default": "./mn/maxGraphemes.cjs"
+      }
+    },
+    "./mn/maxLength": {
+      "import": {
+        "types": "./mn/maxLength.d.ts",
+        "default": "./mn/maxLength.js"
+      },
+      "require": {
+        "types": "./mn/maxLength.d.cts",
+        "default": "./mn/maxLength.cjs"
+      }
+    },
+    "./mn/maxSize": {
+      "import": {
+        "types": "./mn/maxSize.d.ts",
+        "default": "./mn/maxSize.js"
+      },
+      "require": {
+        "types": "./mn/maxSize.d.cts",
+        "default": "./mn/maxSize.cjs"
+      }
+    },
+    "./mn/maxValue": {
+      "import": {
+        "types": "./mn/maxValue.d.ts",
+        "default": "./mn/maxValue.js"
+      },
+      "require": {
+        "types": "./mn/maxValue.d.cts",
+        "default": "./mn/maxValue.cjs"
+      }
+    },
+    "./mn/maxWords": {
+      "import": {
+        "types": "./mn/maxWords.d.ts",
+        "default": "./mn/maxWords.js"
+      },
+      "require": {
+        "types": "./mn/maxWords.d.cts",
+        "default": "./mn/maxWords.cjs"
+      }
+    },
+    "./mn/mimeType": {
+      "import": {
+        "types": "./mn/mimeType.d.ts",
+        "default": "./mn/mimeType.js"
+      },
+      "require": {
+        "types": "./mn/mimeType.d.cts",
+        "default": "./mn/mimeType.cjs"
+      }
+    },
+    "./mn/minBytes": {
+      "import": {
+        "types": "./mn/minBytes.d.ts",
+        "default": "./mn/minBytes.js"
+      },
+      "require": {
+        "types": "./mn/minBytes.d.cts",
+        "default": "./mn/minBytes.cjs"
+      }
+    },
+    "./mn/minGraphemes": {
+      "import": {
+        "types": "./mn/minGraphemes.d.ts",
+        "default": "./mn/minGraphemes.js"
+      },
+      "require": {
+        "types": "./mn/minGraphemes.d.cts",
+        "default": "./mn/minGraphemes.cjs"
+      }
+    },
+    "./mn/minLength": {
+      "import": {
+        "types": "./mn/minLength.d.ts",
+        "default": "./mn/minLength.js"
+      },
+      "require": {
+        "types": "./mn/minLength.d.cts",
+        "default": "./mn/minLength.cjs"
+      }
+    },
+    "./mn/minSize": {
+      "import": {
+        "types": "./mn/minSize.d.ts",
+        "default": "./mn/minSize.js"
+      },
+      "require": {
+        "types": "./mn/minSize.d.cts",
+        "default": "./mn/minSize.cjs"
+      }
+    },
+    "./mn/minValue": {
+      "import": {
+        "types": "./mn/minValue.d.ts",
+        "default": "./mn/minValue.js"
+      },
+      "require": {
+        "types": "./mn/minValue.d.cts",
+        "default": "./mn/minValue.cjs"
+      }
+    },
+    "./mn/minWords": {
+      "import": {
+        "types": "./mn/minWords.d.ts",
+        "default": "./mn/minWords.js"
+      },
+      "require": {
+        "types": "./mn/minWords.d.cts",
+        "default": "./mn/minWords.cjs"
+      }
+    },
+    "./mn/multipleOf": {
+      "import": {
+        "types": "./mn/multipleOf.d.ts",
+        "default": "./mn/multipleOf.js"
+      },
+      "require": {
+        "types": "./mn/multipleOf.d.cts",
+        "default": "./mn/multipleOf.cjs"
+      }
+    },
+    "./mn/nanoid": {
+      "import": {
+        "types": "./mn/nanoid.d.ts",
+        "default": "./mn/nanoid.js"
+      },
+      "require": {
+        "types": "./mn/nanoid.d.cts",
+        "default": "./mn/nanoid.cjs"
+      }
+    },
+    "./mn/nonEmpty": {
+      "import": {
+        "types": "./mn/nonEmpty.d.ts",
+        "default": "./mn/nonEmpty.js"
+      },
+      "require": {
+        "types": "./mn/nonEmpty.d.cts",
+        "default": "./mn/nonEmpty.cjs"
+      }
+    },
+    "./mn/notBytes": {
+      "import": {
+        "types": "./mn/notBytes.d.ts",
+        "default": "./mn/notBytes.js"
+      },
+      "require": {
+        "types": "./mn/notBytes.d.cts",
+        "default": "./mn/notBytes.cjs"
+      }
+    },
+    "./mn/notGraphemes": {
+      "import": {
+        "types": "./mn/notGraphemes.d.ts",
+        "default": "./mn/notGraphemes.js"
+      },
+      "require": {
+        "types": "./mn/notGraphemes.d.cts",
+        "default": "./mn/notGraphemes.cjs"
+      }
+    },
+    "./mn/notLength": {
+      "import": {
+        "types": "./mn/notLength.d.ts",
+        "default": "./mn/notLength.js"
+      },
+      "require": {
+        "types": "./mn/notLength.d.cts",
+        "default": "./mn/notLength.cjs"
+      }
+    },
+    "./mn/notSize": {
+      "import": {
+        "types": "./mn/notSize.d.ts",
+        "default": "./mn/notSize.js"
+      },
+      "require": {
+        "types": "./mn/notSize.d.cts",
+        "default": "./mn/notSize.cjs"
+      }
+    },
+    "./mn/notValue": {
+      "import": {
+        "types": "./mn/notValue.d.ts",
+        "default": "./mn/notValue.js"
+      },
+      "require": {
+        "types": "./mn/notValue.d.cts",
+        "default": "./mn/notValue.cjs"
+      }
+    },
+    "./mn/notWords": {
+      "import": {
+        "types": "./mn/notWords.d.ts",
+        "default": "./mn/notWords.js"
+      },
+      "require": {
+        "types": "./mn/notWords.d.cts",
+        "default": "./mn/notWords.cjs"
+      }
+    },
+    "./mn/octal": {
+      "import": {
+        "types": "./mn/octal.d.ts",
+        "default": "./mn/octal.js"
+      },
+      "require": {
+        "types": "./mn/octal.d.cts",
+        "default": "./mn/octal.cjs"
+      }
+    },
+    "./mn/partialCheck": {
+      "import": {
+        "types": "./mn/partialCheck.d.ts",
+        "default": "./mn/partialCheck.js"
+      },
+      "require": {
+        "types": "./mn/partialCheck.d.cts",
+        "default": "./mn/partialCheck.cjs"
+      }
+    },
+    "./mn/regex": {
+      "import": {
+        "types": "./mn/regex.d.ts",
+        "default": "./mn/regex.js"
+      },
+      "require": {
+        "types": "./mn/regex.d.cts",
+        "default": "./mn/regex.cjs"
+      }
+    },
+    "./mn/safeInteger": {
+      "import": {
+        "types": "./mn/safeInteger.d.ts",
+        "default": "./mn/safeInteger.js"
+      },
+      "require": {
+        "types": "./mn/safeInteger.d.cts",
+        "default": "./mn/safeInteger.cjs"
+      }
+    },
+    "./mn/size": {
+      "import": {
+        "types": "./mn/size.d.ts",
+        "default": "./mn/size.js"
+      },
+      "require": {
+        "types": "./mn/size.d.cts",
+        "default": "./mn/size.cjs"
+      }
+    },
+    "./mn/someItem": {
+      "import": {
+        "types": "./mn/someItem.d.ts",
+        "default": "./mn/someItem.js"
+      },
+      "require": {
+        "types": "./mn/someItem.d.cts",
+        "default": "./mn/someItem.cjs"
+      }
+    },
+    "./mn/startsWith": {
+      "import": {
+        "types": "./mn/startsWith.d.ts",
+        "default": "./mn/startsWith.js"
+      },
+      "require": {
+        "types": "./mn/startsWith.d.cts",
+        "default": "./mn/startsWith.cjs"
+      }
+    },
+    "./mn/ulid": {
+      "import": {
+        "types": "./mn/ulid.d.ts",
+        "default": "./mn/ulid.js"
+      },
+      "require": {
+        "types": "./mn/ulid.d.cts",
+        "default": "./mn/ulid.cjs"
+      }
+    },
+    "./mn/url": {
+      "import": {
+        "types": "./mn/url.d.ts",
+        "default": "./mn/url.js"
+      },
+      "require": {
+        "types": "./mn/url.d.cts",
+        "default": "./mn/url.cjs"
+      }
+    },
+    "./mn/uuid": {
+      "import": {
+        "types": "./mn/uuid.d.ts",
+        "default": "./mn/uuid.js"
+      },
+      "require": {
+        "types": "./mn/uuid.d.cts",
+        "default": "./mn/uuid.cjs"
+      }
+    },
+    "./mn/value": {
+      "import": {
+        "types": "./mn/value.d.ts",
+        "default": "./mn/value.js"
+      },
+      "require": {
+        "types": "./mn/value.d.cts",
+        "default": "./mn/value.cjs"
+      }
+    },
+    "./mn/words": {
+      "import": {
+        "types": "./mn/words.d.ts",
+        "default": "./mn/words.js"
+      },
+      "require": {
+        "types": "./mn/words.d.cts",
+        "default": "./mn/words.cjs"
       }
     }
   }
