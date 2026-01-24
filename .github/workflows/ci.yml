@@ -155,6 +155,8 @@ jobs:
       CI_JOB_NUMBER: 1
     steps:
       - uses: actions/checkout@v4
+      - name: Setup environment
+        uses: ./.github/actions/environment
       - uses: EskiMojo14/size-limit-action@v2
         with:
           directory: library
