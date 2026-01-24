@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import type { Check, SizeLimitConfig } from 'size-limit';
 import * as v from './src';
 
-const path = 'dist/index.js';
+const path = 'dist/index.mjs';
 
 const checks: Check[] = [
   {
