@@ -29,22 +29,27 @@ import type {
 } from '../../types/index.ts';
 import { _getStandardProps } from '../../utils/index.ts';
 
-/**
- * Schema type.
- */
-type Schema = SchemaWithoutPipe<
-  | LooseObjectSchema<ObjectEntries, ErrorMessage<LooseObjectIssue> | undefined>
-  | ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined>
-  | ObjectWithRestSchema<
-      ObjectEntries,
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  | StrictObjectSchema<
-      ObjectEntries,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
->;
+export namespace partial {
+  /**
+   * Schema type.
+   */
+  export type Schema = SchemaWithoutPipe<
+    | LooseObjectSchema<
+        ObjectEntries,
+        ErrorMessage<LooseObjectIssue> | undefined
+      >
+    | ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined>
+    | ObjectWithRestSchema<
+        ObjectEntries,
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<ObjectWithRestIssue> | undefined
+      >
+    | StrictObjectSchema<
+        ObjectEntries,
+        ErrorMessage<StrictObjectIssue> | undefined
+      >
+  >;
+}
 
 /**
  * Partial entries type.
@@ -64,7 +69,7 @@ type PartialEntries<
  * Schema with partial type.
  */
 export type SchemaWithPartial<
-  TSchema extends Schema,
+  TSchema extends partial.Schema,
   TKeys extends ObjectKeys<TSchema> | undefined,
 > = TSchema extends
   | ObjectSchema<infer TEntries, ErrorMessage<ObjectIssue> | undefined>
@@ -248,7 +253,7 @@ export type SchemaWithPartial<
  *
  * @returns An object schema.
  */
-export function partial<const TSchema extends Schema>(
+export function partial<const TSchema extends partial.Schema>(
   schema: TSchema
 ): SchemaWithPartial<TSchema, undefined>;
 
@@ -262,17 +267,17 @@ export function partial<const TSchema extends Schema>(
  * @returns An object schema.
  */
 export function partial<
-  const TSchema extends Schema,
+  const TSchema extends partial.Schema,
   const TKeys extends ObjectKeys<TSchema>,
 >(schema: TSchema, keys: TKeys): SchemaWithPartial<TSchema, TKeys>;
 
 // @__NO_SIDE_EFFECTS__
 export function partial(
-  schema: Schema,
-  keys?: ObjectKeys<Schema>
-): SchemaWithPartial<Schema, ObjectKeys<Schema> | undefined> {
+  schema: partial.Schema,
+  keys?: ObjectKeys<partial.Schema>
+): SchemaWithPartial<partial.Schema, ObjectKeys<partial.Schema> | undefined> {
   // Create modified object entries
-  const entries: PartialEntries<ObjectEntries, ObjectKeys<Schema>> = {};
+  const entries: PartialEntries<ObjectEntries, ObjectKeys<partial.Schema>> = {};
   for (const key in schema.entries) {
     // @ts-expect-error
     entries[key] =

@@ -18,18 +18,20 @@ import type {
 } from '../../types/index.ts';
 import { ValiError } from '../../utils/index.ts';
 
-/**
- * Schema type.
- */
-type Schema =
-  | LooseTupleSchema<TupleItems, ErrorMessage<LooseTupleIssue> | undefined>
-  | StrictTupleSchema<TupleItems, ErrorMessage<StrictTupleIssue> | undefined>
-  | TupleSchema<TupleItems, ErrorMessage<TupleIssue> | undefined>
-  | TupleWithRestSchema<
-      TupleItems,
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<TupleWithRestIssue> | undefined
-    >;
+export namespace args {
+  /**
+   * Schema type.
+   */
+  export type Schema =
+    | LooseTupleSchema<TupleItems, ErrorMessage<LooseTupleIssue> | undefined>
+    | StrictTupleSchema<TupleItems, ErrorMessage<StrictTupleIssue> | undefined>
+    | TupleSchema<TupleItems, ErrorMessage<TupleIssue> | undefined>
+    | TupleWithRestSchema<
+        TupleItems,
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<TupleWithRestIssue> | undefined
+      >;
+}
 
 /**
  * Args action type.
@@ -37,7 +39,7 @@ type Schema =
 export interface ArgsAction<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TInput extends (...args: any[]) => unknown,
-  TSchema extends Schema,
+  TSchema extends args.Schema,
 > extends BaseTransformation<
     TInput,
     (...args: InferInput<TSchema>) => ReturnType<TInput>,
@@ -67,13 +69,13 @@ export interface ArgsAction<
 export function args<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TInput extends (...args: any[]) => unknown,
-  TSchema extends Schema,
+  TSchema extends args.Schema,
 >(schema: TSchema): ArgsAction<TInput, TSchema>;
 
 // @__NO_SIDE_EFFECTS__
 export function args(
-  schema: Schema
-): ArgsAction<(...args: unknown[]) => unknown, Schema> {
+  schema: args.Schema
+): ArgsAction<(...args: unknown[]) => unknown, args.Schema> {
   return {
     kind: 'transformation',
     type: 'args',
