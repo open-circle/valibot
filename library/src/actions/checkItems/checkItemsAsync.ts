@@ -78,7 +78,9 @@ export function checkItemsAsync(
     async '~run'(dataset, config) {
       if (dataset.typed) {
         const requirementResults = await Promise.all(
-          dataset.value.map(this.requirement)
+          dataset.value.map((...args) =>
+            this.requirement(...args, config.signal)
+          )
         );
         for (let index = 0; index < dataset.value.length; index++) {
           if (!requirementResults[index]) {

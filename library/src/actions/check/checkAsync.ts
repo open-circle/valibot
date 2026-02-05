@@ -28,7 +28,10 @@ export interface CheckActionAsync<
   /**
    * The validation function.
    */
-  readonly requirement: (input: TInput) => MaybePromise<boolean>;
+  readonly requirement: (
+    input: TInput,
+    signal?: AbortSignal
+  ) => MaybePromise<boolean>;
   /**
    * The error message.
    */
@@ -43,7 +46,7 @@ export interface CheckActionAsync<
  * @returns A check action.
  */
 export function checkAsync<TInput>(
-  requirement: (input: TInput) => MaybePromise<boolean>
+  requirement: (input: TInput, signal?: AbortSignal) => MaybePromise<boolean>
 ): CheckActionAsync<TInput, undefined>;
 
 /**
@@ -58,13 +61,13 @@ export function checkAsync<
   TInput,
   const TMessage extends ErrorMessage<CheckIssue<TInput>> | undefined,
 >(
-  requirement: (input: TInput) => MaybePromise<boolean>,
+  requirement: (input: TInput, signal?: AbortSignal) => MaybePromise<boolean>,
   message: TMessage
 ): CheckActionAsync<TInput, TMessage>;
 
 // @__NO_SIDE_EFFECTS__
 export function checkAsync(
-  requirement: (input: unknown) => MaybePromise<boolean>,
+  requirement: (input: unknown, signal?: AbortSignal) => MaybePromise<boolean>,
   message?: ErrorMessage<CheckIssue<unknown>>
 ): CheckActionAsync<unknown, ErrorMessage<CheckIssue<unknown>> | undefined> {
   return {
@@ -76,7 +79,10 @@ export function checkAsync(
     requirement,
     message,
     async '~run'(dataset, config) {
-      if (dataset.typed && !(await this.requirement(dataset.value))) {
+      if (
+        dataset.typed &&
+        !(await this.requirement(dataset.value, config.signal))
+      ) {
         _addIssue(this, 'input', dataset, config);
       }
       return dataset;

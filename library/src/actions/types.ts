@@ -20,7 +20,8 @@ export type ArrayRequirement<TInput extends ArrayInput> = (
 export type ArrayRequirementAsync<TInput extends ArrayInput> = (
   item: TInput[number],
   index: number,
-  array: TInput
+  array: TInput,
+  signal?: AbortSignal
 ) => MaybePromise<boolean>;
 
 /**

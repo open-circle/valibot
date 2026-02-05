@@ -13,6 +13,7 @@ describe('config', () => {
     message: undefined,
     abortEarly: undefined,
     abortPipeEarly: undefined,
+    signal: undefined,
   };
 
   const customConfig: GlobalConfig = {
