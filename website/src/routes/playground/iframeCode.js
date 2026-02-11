@@ -122,7 +122,7 @@ function stringify(args) {
 window.onerror = (...args) => {
   parent.postMessage(
     { type: 'log', log: ['error', stringify([args[4]])] },
-    '*'
+    window.location.ancestorOrigins[0] || '*'
   );
 };
 
@@ -130,13 +130,20 @@ window.onerror = (...args) => {
 ['log', 'info', 'debug', 'warn', 'error'].forEach((level) => {
   const original = console[level];
   console[level] = (...args) => {
-    parent.postMessage({ type: 'log', log: [level, stringify(args)] }, '*');
+    parent.postMessage({ type: 'log', log: [level, stringify(args)] }, window.location.ancestorOrigins[0] || '*');
     original(...args);
   };
 });
 
 // Listen for code messages
 window.addEventListener('message', (event) => {
+  // Validate origin to prevent malicious code injection
+  const expectedOrigin = window.location.ancestorOrigins[0];
+  if (expectedOrigin && event.origin !== expectedOrigin) {
+    console.error('Rejected message from unauthorized origin:', event.origin);
+    return;
+  }
+
   if (event.data.type === 'code') {
     const element = document.createElement('script');
     element.type = 'module';

@@ -152,7 +152,7 @@ export default component$(() => {
             transforms: ['typescript'],
           }).code,
         },
-        '*'
+        window.location.origin
       );
 
       // Handle transform errors
@@ -290,7 +290,7 @@ export default component$(() => {
                 >
                   {level}
                 </span>
-                ]: <span dangerouslySetInnerHTML={message} />
+                ]: <span>{message}</span>
               </pre>
             </li>
           ))}
