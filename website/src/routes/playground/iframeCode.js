@@ -18,18 +18,18 @@ const jsonTokens = [
 ];
 
 /**
- * Stringify, prettify and colorize log arguments.
+ * Stringify, prettify and tokenize log arguments.
  *
  * @param args The log arguments.
  *
- * @returns The stringified output.
+ * @returns Array of tokens with type and text.
  */
 function stringify(args) {
   return args
     .map((arg) => {
       // If argument is an error, stringify it
       if (arg instanceof Error) {
-        return arg.stack ?? `${arg.name}: ${arg.message}`;
+        return [{ type: 'text', text: arg.stack ?? `${arg.name}: ${arg.message}` }];
       }
 
       // Otherwise, convert argument to JSON string
@@ -68,61 +68,71 @@ function stringify(args) {
         2
       );
 
-      // Transform and colorize specific JSON tokens
-      const output = [];
+      // Transform JSON into tokens
+      const tokens = [];
       while (jsonString) {
-        for (const [token, regex] of jsonTokens) {
+        for (const [tokenType, regex] of jsonTokens) {
           const match = regex.exec(jsonString);
           if (match) {
             const substring = match[0];
             jsonString = jsonString.substring(substring.length);
-            if (token === 'key') {
-              output.push(
-                `<span class="text-slate-700 dark:text-slate-300">${substring.slice(1, -1)}</span>`
-              );
-            } else if (token === 'instance') {
-              output.push(
-                `<span class="text-sky-600 dark:text-sky-400">${substring.slice(2, -2)}</span>`
-              );
-            } else if (token === 'string') {
-              output.push(
-                `<span class="text-yellow-600 dark:text-amber-200">${substring}</span>`
-              );
-            } else if (token === 'number') {
-              output.push(
-                `<span class="text-purple-600 dark:text-purple-400">${substring}</span>`
-              );
-            } else if (token === 'boolean' || token === 'null') {
-              output.push(
-                `<span class="text-teal-600 dark:text-teal-400">${substring}</span>`
-              );
+
+            // Map token types to display types
+            if (tokenType === 'key') {
+              tokens.push({ type: 'key', text: substring.slice(1, -1) });
+            } else if (tokenType === 'instance') {
+              tokens.push({ type: 'instance', text: substring.slice(2, -2) });
+            } else if (tokenType === 'string') {
+              tokens.push({ type: 'string', text: substring });
+            } else if (tokenType === 'number') {
+              tokens.push({ type: 'number', text: substring });
+            } else if (tokenType === 'boolean' || tokenType === 'null') {
+              tokens.push({ type: 'boolean', text: substring });
             } else if (
-              token === 'undefined' ||
-              token === 'infinity' ||
-              token === 'nan'
+              tokenType === 'undefined' ||
+              tokenType === 'infinity' ||
+              tokenType === 'nan'
             ) {
-              output.push(
-                `<span class="text-teal-600 dark:text-teal-400">${substring.slice(2, -2)}</span>`
-              );
+              tokens.push({ type: 'special', text: substring.slice(2, -2) });
             } else {
-              output.push(substring);
+              tokens.push({ type: 'text', text: substring });
             }
             break;
           }
         }
       }
 
-      // Return transformed and colorized output
-      return output.join('');
+      return tokens;
     })
-    .join(', ');
+    .flat(); // Flatten array of token arrays
+}
+
+/**
+ * Get safe target origin for postMessage.
+ * Uses ancestorOrigins (Chrome/Safari) or document.referrer (Firefox/others).
+ *
+ * @returns The safe target origin.
+ */
+function getSafeTargetOrigin() {
+  if (window.location.ancestorOrigins && window.location.ancestorOrigins[0]) {
+    return window.location.ancestorOrigins[0];
+  }
+  if (document.referrer) {
+    try {
+      return new URL(document.referrer).origin;
+    } catch (e) {
+      console.error('Failed to parse referrer origin:', e);
+    }
+  }
+  // Fallback to same origin (safer than '*')
+  return window.location.origin;
 }
 
 // Forward errors to parent window
 window.onerror = (...args) => {
   parent.postMessage(
     { type: 'log', log: ['error', stringify([args[4]])] },
-    window.location.ancestorOrigins[0] || '*'
+    getSafeTargetOrigin()
   );
 };
 
@@ -130,7 +140,10 @@ window.onerror = (...args) => {
 ['log', 'info', 'debug', 'warn', 'error'].forEach((level) => {
   const original = console[level];
   console[level] = (...args) => {
-    parent.postMessage({ type: 'log', log: [level, stringify(args)] }, window.location.ancestorOrigins[0] || '*');
+    parent.postMessage(
+      { type: 'log', log: [level, stringify(args)] },
+      getSafeTargetOrigin()
+    );
     original(...args);
   };
 });
@@ -138,8 +151,21 @@ window.onerror = (...args) => {
 // Listen for code messages
 window.addEventListener('message', (event) => {
   // Validate origin to prevent malicious code injection
-  const expectedOrigin = window.location.ancestorOrigins[0];
-  if (expectedOrigin && event.origin !== expectedOrigin) {
+  // Use ancestorOrigins (Chrome/Safari) or document.referrer (Firefox/others)
+  let expectedOrigin;
+
+  if (window.location.ancestorOrigins && window.location.ancestorOrigins[0]) {
+    expectedOrigin = window.location.ancestorOrigins[0];
+  } else if (document.referrer) {
+    try {
+      expectedOrigin = new URL(document.referrer).origin;
+    } catch (e) {
+      console.error('Failed to parse referrer origin:', e);
+    }
+  }
+
+  // Reject if we can't determine expected origin OR if origin doesn't match
+  if (!expectedOrigin || event.origin !== expectedOrigin) {
     console.error('Rejected message from unauthorized origin:', event.origin);
     return;
   }
