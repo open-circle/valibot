@@ -2,6 +2,14 @@
 
 All notable changes to the library will be documented in this file.
 
+## v1.5.0 (December 11, 2025)
+
+- Add support for JSON Schema draft-2020-12 and OpenAPI 3.0 Schema Object format
+- Add `propertyNames` support to record schemas for key validation constraints
+- Add support for `toBigint`, `toBoolean`, `toDate`, `toNumber` and `toString` actions for `typeMode: 'input'`
+- Add new `toStandardJsonSchema` function to convert Valibot schemas to Standard JSON Schema format
+- Change return type from `JSONSchema7` to a custom `JsonSchema` type
+
 ## v1.4.0 (December 02, 2025)
 
 - Add support for `examples` action

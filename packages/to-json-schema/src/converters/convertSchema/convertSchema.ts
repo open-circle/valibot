@@ -1,6 +1,9 @@
-import type { JSONSchema7 } from 'json-schema';
 import * as v from 'valibot';
-import type { ConversionConfig, ConversionContext } from '../../type.ts';
+import type {
+  ConversionConfig,
+  ConversionContext,
+  JsonSchema,
+} from '../../types/index.ts';
 import { addError, handleError } from '../../utils/index.ts';
 import { convertAction } from '../convertAction/index.ts';
 
@@ -134,12 +137,12 @@ let refCount = 0;
  * @returns The converted JSON Schema.
  */
 export function convertSchema(
-  jsonSchema: JSONSchema7,
+  jsonSchema: JsonSchema,
   valibotSchema: SchemaOrPipe,
   config: ConversionConfig | undefined,
   context: ConversionContext,
   skipRef = false
-): JSONSchema7 {
+): JsonSchema {
   if (!skipRef) {
     // If schema is in reference map use reference and skip conversion
     const referenceId = context.referenceMap.get(valibotSchema);
@@ -182,6 +185,11 @@ export function convertSchema(
                 item.type === 'raw_transform' ||
                 item.type === 'reduce_items' ||
                 item.type === 'stringify_json' ||
+                item.type === 'to_bigint' ||
+                item.type === 'to_boolean' ||
+                item.type === 'to_date' ||
+                item.type === 'to_number' ||
+                item.type === 'to_string' ||
                 item.type === 'transform'))
         );
       if (inputStopIndex !== -1) {
@@ -249,7 +257,13 @@ export function convertSchema(
     }
 
     case 'null': {
-      jsonSchema.type = 'null';
+      if (config?.target === 'openapi-3.0') {
+        // Hint: OpenAPI 3.0 does not have a null type. That's why we're using
+        // an enum as a workaround.
+        jsonSchema.enum = [null];
+      } else {
+        jsonSchema.type = 'null';
+      }
       break;
     }
 
@@ -282,25 +296,83 @@ export function convertSchema(
     case 'strict_tuple': {
       jsonSchema.type = 'array';
 
-      // Add JSON Schema of items and ensure each item is required
-      jsonSchema.items = [];
-      jsonSchema.minItems = valibotSchema.items.length;
-      for (const item of valibotSchema.items) {
-        jsonSchema.items.push(
-          convertSchema({}, item as SchemaOrPipe, config, context)
-        );
-      }
+      // If target is OpenAPI 3.0
+      if (config?.target === 'openapi-3.0') {
+        // Uses anyOf pattern with minItems/maxItems
+        jsonSchema.items = { anyOf: [] };
+        jsonSchema.minItems = valibotSchema.items.length;
+        for (const item of valibotSchema.items) {
+          // @ts-expect-error
+          jsonSchema.items.anyOf.push(
+            convertSchema({}, item as SchemaOrPipe, config, context)
+          );
+        }
 
-      // Add additional items depending on schema type
-      if (valibotSchema.type === 'tuple_with_rest') {
-        jsonSchema.additionalItems = convertSchema(
-          {},
-          valibotSchema.rest as SchemaOrPipe,
-          config,
-          context
-        );
-      } else if (valibotSchema.type === 'strict_tuple') {
-        jsonSchema.additionalItems = false;
+        // Add rest item to anyOf if present
+        if (valibotSchema.type === 'tuple_with_rest') {
+          // @ts-expect-error
+          jsonSchema.items.anyOf.push(
+            convertSchema(
+              {},
+              valibotSchema.rest as SchemaOrPipe,
+              config,
+              context
+            )
+          );
+
+          // Set maxItems for tuples with fixed length
+        } else if (
+          valibotSchema.type === 'strict_tuple' ||
+          valibotSchema.type === 'tuple'
+        ) {
+          jsonSchema.maxItems = valibotSchema.items.length;
+        }
+
+        // If target is draft-2020-12
+      } else if (config?.target === 'draft-2020-12') {
+        // Use prefixItems for draft-2020-12
+        jsonSchema.prefixItems = [];
+        jsonSchema.minItems = valibotSchema.items.length;
+        for (const item of valibotSchema.items) {
+          jsonSchema.prefixItems.push(
+            convertSchema({}, item as SchemaOrPipe, config, context)
+          );
+        }
+
+        // Add additional items depending on schema type
+        if (valibotSchema.type === 'tuple_with_rest') {
+          jsonSchema.items = convertSchema(
+            {},
+            valibotSchema.rest as SchemaOrPipe,
+            config,
+            context
+          );
+        } else if (valibotSchema.type === 'strict_tuple') {
+          jsonSchema.items = false;
+        }
+
+        // If target is draft-07 or unspecified
+      } else {
+        // Use items array for draft-07
+        jsonSchema.items = [];
+        jsonSchema.minItems = valibotSchema.items.length;
+        for (const item of valibotSchema.items) {
+          jsonSchema.items.push(
+            convertSchema({}, item as SchemaOrPipe, config, context)
+          );
+        }
+
+        // Add additional items depending on schema type
+        if (valibotSchema.type === 'tuple_with_rest') {
+          jsonSchema.additionalItems = convertSchema(
+            {},
+            valibotSchema.rest as SchemaOrPipe,
+            config,
+            context
+          );
+        } else if (valibotSchema.type === 'strict_tuple') {
+          jsonSchema.additionalItems = false;
+        }
       }
 
       break;
@@ -343,7 +415,7 @@ export function convertSchema(
     }
 
     case 'record': {
-      if ('pipe' in valibotSchema.key) {
+      if (config?.target === 'openapi-3.0' && 'pipe' in valibotSchema.key) {
         errors = addError(
           errors,
           'The "record" schema with a schema for the key that contains a "pipe" cannot be converted to JSON Schema.'
@@ -355,7 +427,19 @@ export function convertSchema(
           `The "record" schema with the "${valibotSchema.key.type}" schema for the key cannot be converted to JSON Schema.`
         );
       }
+
       jsonSchema.type = 'object';
+
+      // propertyNames is not supported in OpenAPI 3.0
+      if (config?.target !== 'openapi-3.0') {
+        jsonSchema.propertyNames = convertSchema(
+          {},
+          valibotSchema.key as SchemaOrPipe,
+          config,
+          context
+        );
+      }
+
       jsonSchema.additionalProperties = convertSchema(
         {},
         valibotSchema.value as SchemaOrPipe,
@@ -374,16 +458,29 @@ export function convertSchema(
 
     case 'nullable':
     case 'nullish': {
-      // Add union of wrapped schema and null to JSON Schema
-      jsonSchema.anyOf = [
-        convertSchema(
+      // If target is OpenAPI 3.0 use nullable property
+      if (config?.target === 'openapi-3.0') {
+        const innerSchema = convertSchema(
           {},
           valibotSchema.wrapped as SchemaOrPipe,
           config,
           context
-        ),
-        { type: 'null' },
-      ];
+        );
+        Object.assign(jsonSchema, innerSchema);
+        jsonSchema.nullable = true;
+
+        // Otherwise, use union of wrapped schema and null
+      } else {
+        jsonSchema.anyOf = [
+          convertSchema(
+            {},
+            valibotSchema.wrapped as SchemaOrPipe,
+            config,
+            context
+          ),
+          { type: 'null' },
+        ];
+      }
 
       // Add default value to JSON Schema, if available
       if (valibotSchema.default !== undefined) {
@@ -425,8 +522,14 @@ export function convertSchema(
           'The value of the "literal" schema is not JSON compatible.'
         );
       }
-      // @ts-expect-error
-      jsonSchema.const = valibotSchema.literal;
+      if (config?.target === 'openapi-3.0') {
+        // Hint: OpenAPI 3.0 does not support const. That's why we use an enum instead.
+        // @ts-expect-error
+        jsonSchema.enum = [valibotSchema.literal];
+      } else {
+        // @ts-expect-error
+        jsonSchema.const = valibotSchema.literal;
+      }
       break;
     }
 

@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Add `guard` transformation action to narrow types using type predicates (pull request #1204)
+
 ## v1.2.0 (November 24, 2025)
 
 - Add `toBigint`, `toBoolean`, `toDate`, `toNumber` and `toString` transformation actions (pull request #1212)

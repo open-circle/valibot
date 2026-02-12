@@ -265,6 +265,14 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should convert null schema for openapi-3.0', () => {
+      expect(
+        convertSchema({}, v.null_(), { target: 'openapi-3.0' }, createContext())
+      ).toStrictEqual({
+        enum: [null],
+      });
+    });
+
     test('should convert number schema', () => {
       expect(
         convertSchema({}, v.number(), undefined, createContext())
@@ -307,6 +315,39 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should convert tuple schema for draft-2020-12', () => {
+      expect(
+        convertSchema(
+          {},
+          v.tuple([v.string(), v.number()]),
+          { target: 'draft-2020-12' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        prefixItems: [{ type: 'string' }, { type: 'number' }],
+        minItems: 2,
+      });
+    });
+
+    test('should convert tuple schema for openapi-3.0', () => {
+      expect(
+        convertSchema(
+          {},
+          v.tuple([v.string(), v.number()]),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        items: {
+          anyOf: [{ type: 'string' }, { type: 'number' }],
+        },
+        minItems: 2,
+        maxItems: 2,
+      });
+    });
+
     test('should convert tuple with rest schema', () => {
       expect(
         convertSchema(
@@ -320,6 +361,39 @@ describe('convertSchema', () => {
         items: [{ type: 'number' }, { type: 'string' }],
         minItems: 2,
         additionalItems: { type: 'boolean' },
+      });
+    });
+
+    test('should convert tuple with rest schema for draft-2020-12', () => {
+      expect(
+        convertSchema(
+          {},
+          v.tupleWithRest([v.string()], v.number()),
+          { target: 'draft-2020-12' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        prefixItems: [{ type: 'string' }],
+        minItems: 1,
+        items: { type: 'number' },
+      });
+    });
+
+    test('should convert tuple with rest schema for openapi-3.0', () => {
+      expect(
+        convertSchema(
+          {},
+          v.tupleWithRest([v.string()], v.number()),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        items: {
+          anyOf: [{ type: 'string' }, { type: 'number' }],
+        },
+        minItems: 1,
       });
     });
 
@@ -338,6 +412,38 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should convert loose tuple schema for draft-2020-12', () => {
+      expect(
+        convertSchema(
+          {},
+          v.looseTuple([v.string(), v.number()]),
+          { target: 'draft-2020-12' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        prefixItems: [{ type: 'string' }, { type: 'number' }],
+        minItems: 2,
+      });
+    });
+
+    test('should convert loose tuple schema for openapi-3.0', () => {
+      expect(
+        convertSchema(
+          {},
+          v.looseTuple([v.string(), v.number()]),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        items: {
+          anyOf: [{ type: 'string' }, { type: 'number' }],
+        },
+        minItems: 2,
+      });
+    });
+
     test('should convert strict tuple schema', () => {
       expect(
         convertSchema(
@@ -351,6 +457,40 @@ describe('convertSchema', () => {
         items: [{ type: 'number' }, { type: 'string' }],
         minItems: 2,
         additionalItems: false,
+      });
+    });
+
+    test('should convert strict tuple schema for draft-2020-12', () => {
+      expect(
+        convertSchema(
+          {},
+          v.strictTuple([v.string(), v.boolean()]),
+          { target: 'draft-2020-12' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        prefixItems: [{ type: 'string' }, { type: 'boolean' }],
+        minItems: 2,
+        items: false,
+      });
+    });
+
+    test('should convert strict tuple schema for openapi-3.0', () => {
+      expect(
+        convertSchema(
+          {},
+          v.strictTuple([v.string(), v.boolean()]),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        items: {
+          anyOf: [{ type: 'string' }, { type: 'boolean' }],
+        },
+        minItems: 2,
+        maxItems: 2,
       });
     });
 
@@ -485,37 +625,55 @@ describe('convertSchema', () => {
         )
       ).toStrictEqual({
         type: 'object',
+        propertyNames: { type: 'string' },
         additionalProperties: { type: 'number' },
       });
     });
 
-    test('should throw error for record schema with pipe in key', () => {
-      const schema = v.record(v.pipe(v.string(), v.email()), v.number());
-      const error =
-        'The "record" schema with a schema for the key that contains a "pipe" cannot be converted to JSON Schema.';
-      expect(() =>
-        convertSchema({}, schema, undefined, createContext())
-      ).toThrowError(error);
-      expect(() =>
-        convertSchema({}, schema, { errorMode: 'throw' }, createContext())
-      ).toThrowError(error);
-    });
-
-    test('should warn error for record schema with pipe in key schema', () => {
+    test('should convert record schema for openapi-3.0', () => {
       expect(
         convertSchema(
           {},
-          v.record(v.pipe(v.string(), v.email()), v.number()),
-          { errorMode: 'warn' },
+          v.record(v.string(), v.number()),
+          { target: 'openapi-3.0' },
           createContext()
         )
       ).toStrictEqual({
         type: 'object',
         additionalProperties: { type: 'number' },
       });
-      expect(console.warn).toHaveBeenLastCalledWith(
-        'The "record" schema with a schema for the key that contains a "pipe" cannot be converted to JSON Schema.'
-      );
+    });
+
+    test('should convert record schema with pipe in key', () => {
+      expect(
+        convertSchema(
+          {},
+          v.record(v.pipe(v.string(), v.email()), v.number()),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'object',
+        propertyNames: { type: 'string', format: 'email' },
+        additionalProperties: { type: 'number' },
+      });
+    });
+
+    test('should throw error for record with piped key schema for openapi-3.0', () => {
+      const schema = v.record(v.pipe(v.string(), v.email()), v.number());
+      const error =
+        'The "record" schema with a schema for the key that contains a "pipe" cannot be converted to JSON Schema.';
+      expect(() =>
+        convertSchema({}, schema, { target: 'openapi-3.0' }, createContext())
+      ).toThrowError(error);
+      expect(() =>
+        convertSchema(
+          {},
+          schema,
+          { target: 'openapi-3.0', errorMode: 'throw' },
+          createContext()
+        )
+      ).toThrowError(error);
     });
 
     test('should throw error for record schema with non-string schema key', () => {
@@ -538,6 +696,7 @@ describe('convertSchema', () => {
         convertSchema({}, schema, { errorMode: 'warn' }, createContext())
       ).toStrictEqual({
         type: 'object',
+        propertyNames: { type: 'number', minimum: 10 },
         additionalProperties: { type: 'number' },
       });
       expect(console.warn).toHaveBeenLastCalledWith(
@@ -564,6 +723,35 @@ describe('convertSchema', () => {
         convertSchema({}, v.nullable(v.string()), undefined, createContext())
       ).toStrictEqual({
         anyOf: [{ type: 'string' }, { type: 'null' }],
+      });
+    });
+
+    test('should convert nullable schema for openapi-3.0', () => {
+      expect(
+        convertSchema(
+          {},
+          v.nullable(v.string()),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'string',
+        nullable: true,
+      });
+    });
+
+    test('should convert nullable schema with default for openapi-3.0', () => {
+      expect(
+        convertSchema(
+          {},
+          v.nullable(v.string(), 'foo'),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'string',
+        nullable: true,
+        default: 'foo',
       });
     });
 
@@ -597,6 +785,35 @@ describe('convertSchema', () => {
         convertSchema({}, v.nullish(v.string()), undefined, createContext())
       ).toStrictEqual({
         anyOf: [{ type: 'string' }, { type: 'null' }],
+      });
+    });
+
+    test('should convert nullish schema for openapi-3.0', () => {
+      expect(
+        convertSchema(
+          {},
+          v.nullish(v.number()),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'number',
+        nullable: true,
+      });
+    });
+
+    test('should convert nullish schema with default for openapi-3.0', () => {
+      expect(
+        convertSchema(
+          {},
+          v.nullish(v.number(), 42),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'number',
+        nullable: true,
+        default: 42,
       });
     });
 
@@ -749,6 +966,39 @@ describe('convertSchema', () => {
         convertSchema({}, v.literal('foo'), undefined, createContext())
       ).toStrictEqual({
         const: 'foo',
+      });
+    });
+
+    test('should convert literal schema for openapi-3.0', () => {
+      expect(
+        convertSchema(
+          {},
+          v.literal('test'),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        enum: ['test'],
+      });
+      expect(
+        convertSchema(
+          {},
+          v.literal(42),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        enum: [42],
+      });
+      expect(
+        convertSchema(
+          {},
+          v.literal(true),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        enum: [true],
       });
     });
 
@@ -1095,33 +1345,35 @@ describe('convertSchema', () => {
     });
   });
 
-  test('should override JSON Schema and suppress error', () => {
-    expect(() =>
-      convertSchema(
-        {},
-        // @ts-expect-error
-        v.date(),
-        { overrideSchema: () => null },
-        createContext()
-      )
-    ).toThrowError('The "date" schema cannot be converted to JSON Schema.');
-    expect(
-      convertSchema(
-        {},
-        // @ts-expect-error
-        v.date(),
-        {
-          overrideSchema({ valibotSchema }) {
-            if (valibotSchema.type === 'date') {
-              return { type: 'string', format: 'date-time' };
-            }
+  describe('custom config', () => {
+    test('should override JSON Schema and suppress error', () => {
+      expect(() =>
+        convertSchema(
+          {},
+          // @ts-expect-error
+          v.date(),
+          { overrideSchema: () => null },
+          createContext()
+        )
+      ).toThrowError('The "date" schema cannot be converted to JSON Schema.');
+      expect(
+        convertSchema(
+          {},
+          // @ts-expect-error
+          v.date(),
+          {
+            overrideSchema({ valibotSchema }) {
+              if (valibotSchema.type === 'date') {
+                return { type: 'string', format: 'date-time' };
+              }
+            },
           },
-        },
-        createContext()
-      )
-    ).toStrictEqual({
-      type: 'string',
-      format: 'date-time',
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'string',
+        format: 'date-time',
+      });
     });
   });
 });

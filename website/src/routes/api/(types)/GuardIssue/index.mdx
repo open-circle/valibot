@@ -1,0 +1,25 @@
+---
+title: GuardIssue
+description: Guard issue interface.
+contributors:
+  - EskiMojo14
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# GuardIssue
+
+Guard issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TGuard` <Property {...properties.TGuard} />
+
+## Definition
+
+- `GuardIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `requirement` <Property {...properties.requirement} />

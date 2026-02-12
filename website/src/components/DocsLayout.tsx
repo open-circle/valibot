@@ -16,6 +16,7 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   GitHubIcon,
+  MarkdownIcon,
   MenuIcon,
   PenIcon,
 } from '~/icons';
@@ -27,6 +28,8 @@ import { Credits } from './Credits';
 import { IconButton } from './IconButton';
 import { Navigation } from './Navigation';
 import { SideBar, useSideBarToggle } from './SideBar';
+
+const MDX_PATH_REGEX = /^\/(?:[\w-]+\/){2}$/;
 
 type NavItem = ContentMenu & { group: string };
 
@@ -77,6 +80,13 @@ export const DocsLayout = component$(() => {
     chaptersToggle.isRunning ? !chapters.value : chapters.value
   );
 
+  // Compute Markdown path from current location
+  const markdownPath = useComputed$(() =>
+    MDX_PATH_REGEX.test(location.url.pathname)
+      ? `${location.url.pathname.replace(/\/$/, '')}.md`
+      : undefined
+  );
+
   return (
     <div
       class={clsx(
@@ -92,6 +102,7 @@ export const DocsLayout = component$(() => {
           <NavButtons
             pageIndex={navIndex.value}
             sourcePath={documentHead.frontmatter.source}
+            markdownPath={markdownPath.value}
             prevPage={prevPage.value}
             nextPage={nextPage.value}
           />
@@ -120,6 +131,7 @@ export const DocsLayout = component$(() => {
           <NavButtons
             pageIndex={navIndex.value}
             sourcePath={documentHead.frontmatter.source}
+            markdownPath={markdownPath.value}
             prevPage={prevPage.value}
             nextPage={nextPage.value}
             chapters={chapters}
@@ -183,6 +195,7 @@ export const DocsLayout = component$(() => {
 type NavButtonsProps = {
   pageIndex: number;
   sourcePath: string | undefined;
+  markdownPath: string | undefined;
   prevPage: ContentMenu | undefined;
   nextPage: ContentMenu | undefined;
   chapters?: ReadonlySignal<boolean>;
@@ -193,7 +206,15 @@ type NavButtonsProps = {
  * Buttons to navigate to the previous or next page.
  */
 export const NavButtons = component$<NavButtonsProps>(
-  ({ pageIndex, sourcePath, prevPage, nextPage, chapters, chaptersToggle }) => (
+  ({
+    pageIndex,
+    sourcePath,
+    markdownPath,
+    prevPage,
+    nextPage,
+    chapters,
+    chaptersToggle,
+  }) => (
     <>
       {pageIndex !== -1 && (
         <>
@@ -253,6 +274,18 @@ export const NavButtons = component$<NavButtonsProps>(
           hideLabel
         >
           <GitHubIcon class="h-[18px]" />
+        </IconButton>
+      )}
+      {markdownPath && (
+        <IconButton
+          variant="secondary"
+          type="link"
+          href={markdownPath}
+          target="_blank"
+          label="View as Markdown"
+          hideLabel
+        >
+          <MarkdownIcon class="h-[18px]" />
         </IconButton>
       )}
     </>
