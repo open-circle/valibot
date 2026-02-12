@@ -83,6 +83,7 @@
 
 - [args](/api/args/)
 - [base64](/api/base64/)
+- [base64Url](/api/base64Url/)
 - [bic](/api/bic/)
 - [brand](/api/brand/)
 - [bytes](/api/bytes/)
@@ -284,6 +285,8 @@
 - [AwaitActionAsync](/api/AwaitActionAsync/)
 - [Base64Action](/api/Base64Action/)
 - [Base64Issue](/api/Base64Issue/)
+- [Base64UrlAction](/api/Base64UrlAction/)
+- [Base64UrlIssue](/api/Base64UrlIssue/)
 - [BaseIssue](/api/BaseIssue/)
 - [BaseMetadata](/api/BaseMetadata/)
 - [BaseSchema](/api/BaseSchema/)
