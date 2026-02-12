@@ -1,7 +1,7 @@
 {
-  "name": "zod-to-valibot",
+  "name": "@valibot/zod-to-valibot",
   "description": "Official codemod for converting Zod schemas to Valibot",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "license": "MIT",
   "author": "Elton Lobo",
   "homepage": "https://valibot.dev",
@@ -18,9 +18,16 @@
   "type": "module",
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
+  "bin": {
+    "zod-to-valibot": "./cli.mjs"
+  },
   "files": [
-    "dist"
+    "dist",
+    "cli.mjs"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsdown",
     "codemod": "jscodeshift",
@@ -34,7 +41,9 @@
     "@types/node": "^24.10.1",
     "tsdown": "^0.16.6",
     "typescript": "^5.9.3",
+    "valibot": "workspace:*",
     "vite-plugin-node-polyfills": "^0.24.0",
-    "vitest": "^4.0.13"
+    "vitest": "^4.0.13",
+    "zod": "^3.25.76"
   }
 }

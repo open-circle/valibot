@@ -206,4 +206,30 @@ describe('toJsonSchema', () => {
       });
     });
   });
+
+  describe('should handle target config', () => {
+    test('for draft-07', () => {
+      expect(toJsonSchema(v.string(), { target: 'draft-07' })).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'string',
+      });
+    });
+
+    test('for draft-2020-12', () => {
+      expect(
+        toJsonSchema(v.string(), { target: 'draft-2020-12' })
+      ).toStrictEqual({
+        $schema: 'https://json-schema.org/draft/2020-12/schema',
+        type: 'string',
+      });
+    });
+
+    test('for openapi-3.0', () => {
+      expect(toJsonSchema(v.string(), { target: 'openapi-3.0' })).toStrictEqual(
+        {
+          type: 'string',
+        }
+      );
+    });
+  });
 });

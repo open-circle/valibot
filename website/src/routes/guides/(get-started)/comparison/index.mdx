@@ -43,19 +43,41 @@ const LoginSchema = v.object({
 
 ### Comparison with Zod
 
-For example, to validate a simple login form, [Zod](https://zod.dev/) requires [13.5 kB](https://bundlejs.com/?q=zod&treeshake=%5B%7B+object%2Cstring+%7D%5D) whereas Valibot require only [1.37 kB](https://bundlejs.com/?q=valibot&treeshake=%5B%7B+email%2CminLength%2CnonEmpty%2Cobject%2Cstring%2Cpipe+%7D%5D). That's a 90 % reduction in bundle size. This is due to the fact that Zod's functions have several methods with additional functionalities, that cannot be easily removed by current bundlers when they are not executed in your source code.
+For example, to validate a simple login form, [Zod](https://zod.dev/) requires [17.7 kB with esbuild](https://bundlejs.com/?q=zod&treeshake=%5B%7B+object%2Cstring+%7D%5D) and 15.18 kB with Rolldown, whereas Valibot requires only [1.37 kB](https://bundlejs.com/?q=valibot&treeshake=%5B%7B+email%2CminLength%2CnonEmpty%2Cobject%2Cstring%2Cpipe+%7D%5D). That's a 90 % reduction in bundle size. This is due to the fact that Zod's functions have several methods with additional functionalities, that cannot be easily removed by current bundlers when they are not executed in your source code.
 
 {/* prettier-ignore */}
 ```ts
-import { object, string } from 'zod'; // 13.5 kB
+// 17.7 kB with esbuild and 15.18 kB with Rolldown
+import * as z from 'zod'; 
 
-const LoginSchema = object({
-  email: string()
+const LoginSchema = z.object({
+  email: z.string()
     .min(1, 'Please enter your email.')
     .email('The email address is badly formatted.'),
-  password: string()
+  password: z.string()
     .min(1, 'Please enter your password.')
     .min(8, 'Your password must have 8 characters or more.'),
+});
+```
+
+Zod v4 also introduces Zod Mini, a tree-shakable, functional variant aimed at reducing bundle size. For the same login form, Zod Mini requires approximately [6.88 kB with esbuild](https://bundlejs.com/?q=zod%2Fmini&treeshake=%5B%7B+check%2Cemail%2CminLength%2Cobject%2Cstring+%7D%5D) and 3.94 kB with Rolldown, still about 3 to 5x larger than Valibot's [1.37 kB](https://bundlejs.com/?q=valibot&treeshake=%5B%7B+email%2CminLength%2CnonEmpty%2Cobject%2Cstring%2Cpipe+%7D%5D), representing a ~73 % reduction when using Valibot over Zod Mini.
+
+{/* prettier-ignore */}
+```ts
+// 6.88 kB with esbuild and 3.94 kB with Rolldown
+import * as z from 'zod/mini'; 
+
+const LoginSchema = z.object({
+  email: z.check(
+    z.string(),
+    z.minLength(1, 'Please enter your email.'),
+    z.email('The email address is badly formatted.')
+  ),
+  password: z.check(
+    z.string(),
+    z.minLength(1, 'Please enter your password.'),
+    z.minLength(8, 'Your password must have 8 characters or more.')
+  ),
 });
 ```
 
@@ -65,6 +87,6 @@ const LoginSchema = object({
 
 With a schema library, a distinction must be made between startup performance and runtime performance. Startup performance describes the time required to load and initialize the library. This benchmark is mainly influenced by the bundle size and the amount of work required to create a schema. Runtime performance describes the time required to validate unknown data using a schema.
 
-Since Valibot's implementation is optimized to minimize the bundle size and the effort of initialization, there is hardly any library that performs better in a [TTI](https://web.dev/articles/tti) benchmark. In terms of runtime performance, Valibot is in the midfield. Roughly speaking, the library is about twice as fast as [Zod](https://zod.dev/), but much slower than [Typia](https://typia.io/) and [TypeBox](https://github.com/sinclairzx81/typebox), because we don't yet use a compiler that can generate highly optimized runtime code, and our implementation doesn't allow the use of the [`Function`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function) constructor.
+Since Valibot's implementation is optimized to minimize the bundle size and the effort of initialization, there is hardly any library that performs better in a [TTI](https://web.dev/articles/tti) benchmark. In terms of runtime performance, Valibot is in the midfield. Roughly speaking, the library is about twice as fast as [Zod](https://zod.dev/) v3, and has similar runtime performance to Zod v4 (including Zod Mini), but is much slower than [Typia](https://typia.io/) and [TypeBox](https://github.com/sinclairzx81/typebox), because we don't yet use a compiler that can generate highly optimized runtime code, and our implementation doesn't allow the use of the [`Function`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function) constructor.
 
 > Further details on performance can be found in the [bachelor's thesis](/thesis.pdf) Valibot is based on.
