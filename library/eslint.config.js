@@ -105,9 +105,6 @@ export default tseslint.config(
       '@typescript-eslint/consistent-indexed-object-style': 'off',
       '@typescript-eslint/no-inferrable-types': 'off',
 
-      // Imports
-      'no-duplicate-imports': 'off',
-
       // JSDoc
       'jsdoc/require-param-type': 'off',
       'jsdoc/require-returns-type': 'off',
