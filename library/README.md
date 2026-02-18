@@ -8,6 +8,7 @@
 [![Downloads][downloads-image]][npm-url]
 [![JSR version][jsr-image]][jsr-url]
 [![Discord][discord-image]][discord-url]
+[![Gurubase][gurubase-image]][gurubase-url]
 
 Hello, I am Valibot and I would like to help you validate data easily using a schema. No matter if it is incoming data on a server, a form or even configuration files. I have no dependencies and can run in any JavaScript environment.
 
@@ -90,3 +91,5 @@ I am completely free and licensed under the [MIT license](https://github.com/ope
 [jsr-url]: https://jsr.io/@valibot/valibot
 [discord-image]: https://img.shields.io/discord/1252985447273992222?label=Discord&style=flat-square
 [discord-url]: https://discord.gg/tkMjQACf2P
+[gurubase-image]: https://img.shields.io/badge/Gurubase-Ask%20Valibot%20Guru-006BFF?style=flat-square
+[gurubase-url]: https://gurubase.io/g/valibot
