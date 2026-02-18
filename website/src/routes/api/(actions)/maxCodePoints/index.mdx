@@ -1,0 +1,75 @@
+---
+title: maxCodePoints
+description: Creates a max code points validation action.
+source: /actions/maxCodePoints/maxCodePoints.ts
+contributors:
+  - fabian-hiller
+  - tats-u
+---
+
+import { Link } from '@builder.io/qwik-city';
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# maxCodePoints
+
+Creates a max [code points](https://developer.mozilla.org/en-US/docs/Glossary/Code_point) validation action.
+
+```ts
+const Action = v.maxCodePoints<TInput, TRequirement, TMessage>(
+  requirement,
+  message
+);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `maxCodePoints` you can validate the number of code points in a string. If the input does not match the `requirement`, you can use `message` to customize the error message.
+
+> Hint: This action is suitable for `VARCHAR` in PostgreSQL and MySQL. Also, [NIST SP 800-63B requires us to count the length of a password in code points.](https://pages.nist.gov/800-63-4/sp800-63b.html#passwordver)
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `maxCodePoints` can be used.
+
+### Max code points schema
+
+Schema to validate a string with a maximum of 8 code points.
+
+```ts
+const MaxCodePointsSchema = v.pipe(
+  v.string(),
+  v.maxCodePoints(8, 'The string must not exceed 8 code points.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `maxCodePoints`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string', 'unknown']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
