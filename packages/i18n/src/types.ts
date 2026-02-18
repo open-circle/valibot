@@ -19,6 +19,7 @@ export type Language = {
     | 'nl'
     | 'pl'
     | 'pt'
+    | 'pseudo'
     | 'ro'
     | 'ru'
     | 'sl'
