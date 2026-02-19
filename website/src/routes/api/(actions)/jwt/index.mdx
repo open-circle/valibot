@@ -1,0 +1,79 @@
+---
+title: jwt
+description: Creates a JSON Web Token validation action.
+source: /actions/jwt/jwt.ts
+contributors:
+  - yslpn
+---
+
+import { Link } from '@builder.io/qwik-city';
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# jwt
+
+Creates a [JSON Web Token](https://en.wikipedia.org/wiki/JSON_Web_Token) validation action.
+
+```ts
+const Action = v.jwt<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `jwt` you can validate that a string matches the three-part structure of a Base64URL-encoded JSON Web Token. If the input is not a JWT, you can use `message` to customize the error message.
+
+> This validation action only checks the structural format of a JWT. It does not decode the token, verify the signature, or validate individual claims.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `jwt` can be used.
+
+### Access token schema
+
+Schema to validate that an access token string looks like a JWT.
+
+```ts
+const AccessTokenSchema = v.pipe(
+  v.string(),
+  v.nonEmpty('Provide an access token.'),
+  v.jwt('The token must be a valid JWT.')
+);
+```
+
+### Parsing tokens
+
+Validates a JWT string and throws when the format is invalid.
+
+```ts
+const token = getToken();
+const accessToken = v.parse(AccessTokenSchema, token);
+```
+
+## Related
+
+The following APIs can be combined with `jwt`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
