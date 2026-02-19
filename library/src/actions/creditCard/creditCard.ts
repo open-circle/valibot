@@ -65,7 +65,7 @@ export interface CreditCardAction<
  * Credit card regex.
  */
 const CREDIT_CARD_REGEX =
-  /^(?:\d{14,19}|\d{4}(?: \d{3,6}){2,4}|\d{4}(?:-\d{3,6}){2,4})$/u;
+  /^(?:\d{13,19}|\d{4}(?: \d{3,6}){2,4}|\d{4}(?:-\d{3,6}){2,4})$/u;
 
 /**
  * Sanitize regex.

@@ -105,7 +105,11 @@ describe('creditCard', () => {
     });
 
     test('for Visa', () => {
-      expectNoActionIssue(action, ['4242424242424242', '4000056655665556']);
+      expectNoActionIssue(action, [
+        '4242424242424242',
+        '4000056655665556',
+        '4007000000027',
+      ]);
     });
 
     test('with space dividers', () => {
