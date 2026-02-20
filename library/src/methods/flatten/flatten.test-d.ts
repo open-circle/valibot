@@ -80,4 +80,15 @@ describe('flatten', () => {
       readonly other?: [string, ...string[]];
     }>();
   });
+
+  test('should accept readonly list of errors', () => {
+    const readonlyIssues = issues as Readonly<typeof issues>;
+    expectTypeOf(flatten(readonlyIssues)).toEqualTypeOf<{
+      readonly root?: [string, ...string[]];
+      readonly nested?: Readonly<
+        Partial<Record<string, [string, ...string[]]>>
+      >;
+      readonly other?: [string, ...string[]];
+    }>();
+  });
 });
