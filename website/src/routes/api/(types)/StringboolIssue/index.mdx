@@ -1,0 +1,24 @@
+---
+title: StringboolIssue
+description: String to boolean issue interface.
+contributors:
+  - alexilyaev
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# StringboolIssue
+
+String to boolean issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `StringboolIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} /> 
