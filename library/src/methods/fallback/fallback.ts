@@ -15,12 +15,23 @@ import { getFallback } from '../getFallback/index.ts';
  */
 export type Fallback<
   TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+  TFallbackSchema = MaybeReadonly<InferOutput<TSchema>>
 > =
-  | MaybeReadonly<InferOutput<TSchema>>
+  | {
+    [key in keyof TFallbackSchema as TFallbackSchema[key] extends SchemaWithFallback<any, any> ? never : key]: TFallbackSchema[key];
+    } & {
+      [key in keyof TFallbackSchema as TFallbackSchema[key] extends SchemaWithFallback<any, any> ? key : never]?: TFallbackSchema[key];
+    }
   | ((
       dataset?: OutputDataset<InferOutput<TSchema>, InferIssue<TSchema>>,
       config?: Config<InferIssue<TSchema>>
-    ) => MaybeReadonly<InferOutput<TSchema>>);
+    ) => ({
+      [key in keyof TFallbackSchema]: TFallbackSchema[key] extends SchemaWithFallback<any, any>
+      ? TFallbackSchema[key]
+      : TFallbackSchema[key];
+    } & {
+      [key in keyof TFallbackSchema as TFallbackSchema[key] extends SchemaWithFallback<any, any> ? key : never]?: TFallbackSchema[key];
+    }));
 
 /**
  * Schema with fallback type.

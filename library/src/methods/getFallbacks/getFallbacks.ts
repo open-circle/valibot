@@ -64,6 +64,12 @@ export function getFallbacks<
         ErrorMessage<TupleWithRestIssue> | undefined
       >,
 >(schema: TSchema): InferFallbacks<TSchema> {
+  
+  // If it has a fallback, return it.
+  if ('fallback' in schema) {
+    return schema.fallback as InferFallbacks<TSchema>;
+  }
+
   // If it is an object schema, return fallbacks of entries
   if ('entries' in schema) {
     const object: Record<string, unknown> = {};
