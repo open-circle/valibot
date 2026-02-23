@@ -34,9 +34,14 @@ import iframeCode from './iframeCode.js?raw';
 
 type LogLevel = 'log' | 'info' | 'debug' | 'warn' | 'error';
 
+type Token = {
+  type: string;
+  text: string;
+};
+
 type MessageEventData = {
   type: 'log';
-  log: [LogLevel, string];
+  log: [LogLevel, Token[]];
 };
 
 export const head: DocumentHead = {
@@ -62,7 +67,7 @@ export default component$(() => {
 
   // Use model and logs signals
   const model = useSignal<NoSerialize<monaco.editor.ITextModel>>();
-  const logs = useSignal<[LogLevel, string][]>([]);
+  const logs = useSignal<[LogLevel, Token[]][]>([]);
 
   // Use iframe, logs and last log element signals
   const iframeElement = useSignal<HTMLIFrameElement>();
@@ -152,14 +157,14 @@ export default component$(() => {
             transforms: ['typescript'],
           }).code,
         },
-        '*'
+        window.location.origin
       );
 
       // Handle transform errors
     } catch {
       logs.value = [
         ...logs.value,
-        ['error', 'TypeScript syntax error detected'],
+        ['error', [{ type: 'text', text: 'TypeScript syntax error detected' }]],
       ];
     }
 
@@ -274,7 +279,7 @@ export default component$(() => {
           ref={logsElement}
           class="flex h-full flex-col items-start overflow-auto overscroll-contain scroll-smooth px-8 py-9 lg:absolute lg:w-full lg:rounded-3xl lg:border-[3px] lg:border-slate-200 lg:p-10 lg:dark:border-slate-800"
         >
-          {logs.value.map(([level, message], index) => (
+          {logs.value.map(([level, tokens], index) => (
             <li key={index} class="scroll-mx-8 scroll-my-9 lg:scroll-m-10">
               <pre class="lg:text-lg">
                 [
@@ -290,7 +295,7 @@ export default component$(() => {
                 >
                   {level}
                 </span>
-                ]: <span dangerouslySetInnerHTML={message} />
+                ]: <TokenRenderer tokens={tokens} />
               </pre>
             </li>
           ))}
@@ -322,6 +327,58 @@ export default component$(() => {
         `}
       />
     </main>
+  );
+});
+
+/**
+ * Renders tokens with appropriate syntax highlighting.
+ */
+const TokenRenderer = component$<{ tokens: Token[] }>(({ tokens }) => {
+  return (
+    <>
+      {tokens.map((token, idx) => {
+        switch (token.type) {
+          case 'key':
+            return (
+              <span key={idx} class="text-slate-700 dark:text-slate-300">
+                {token.text}
+              </span>
+            );
+          case 'instance':
+            return (
+              <span key={idx} class="text-sky-600 dark:text-sky-400">
+                {token.text}
+              </span>
+            );
+          case 'string':
+            return (
+              <span key={idx} class="text-yellow-600 dark:text-amber-200">
+                {token.text}
+              </span>
+            );
+          case 'number':
+            return (
+              <span key={idx} class="text-purple-600 dark:text-purple-400">
+                {token.text}
+              </span>
+            );
+          case 'boolean':
+            return (
+              <span key={idx} class="text-teal-600 dark:text-teal-400">
+                {token.text}
+              </span>
+            );
+          case 'special':
+            return (
+              <span key={idx} class="text-teal-600 dark:text-teal-400">
+                {token.text}
+              </span>
+            );
+          default:
+            return <span key={idx}>{token.text}</span>;
+        }
+      })}
+    </>
   );
 });
 
