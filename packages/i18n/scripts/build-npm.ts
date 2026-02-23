@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import package_ from '../package.json';
 import ar from '../src/ar';
-import az from "../src/az.ts";
+import az from '../src/az.ts';
 import ca from '../src/ca';
 import cs from '../src/cs';
 import de from '../src/de';
