@@ -9,6 +9,7 @@ export type Language = {
     | 'en'
     | 'es'
     | 'fa'
+    | 'fi'
     | 'fr'
     | 'hu'
     | 'id'
