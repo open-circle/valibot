@@ -27,6 +27,7 @@ import uk from '../src/uk';
 import vi from '../src/vi';
 import zhCN from '../src/zh-CN';
 import zhTW from '../src/zh-TW';
+import az from "../src/az.ts";
 
 // Start timer
 console.time('build');
@@ -36,6 +37,7 @@ console.time('build');
 // messages of Valibot are already in English
 const languages = [
   ar,
+  az,
   ca,
   cs,
   de,
