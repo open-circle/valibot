@@ -1,5 +1,11 @@
 packages:
-  - 'codemod/*'
-  - 'library'
-  - 'packages/*'
-  - 'website'
+  - codemod/*
+  - library
+  - packages/*
+  - website
+
+onlyBuiltDependencies:
+  - '@ast-grep/cli'
+  - '@vercel/speed-insights'
+  - esbuild
+  - sharp
