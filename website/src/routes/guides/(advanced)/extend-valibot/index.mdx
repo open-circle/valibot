@@ -61,9 +61,8 @@ interface StringIssue extends v.BaseIssue<unknown> {
 }
 
 // 2. Define the schema interface
-interface StringSchema<
-  TMessage extends v.ErrorMessage<StringIssue> | undefined,
-> extends v.BaseSchema<string, string, StringIssue> {
+interface StringSchema<TMessage extends v.ErrorMessage<StringIssue> | undefined>
+  extends v.BaseSchema<string, string, StringIssue> {
   type: 'string';
   reference: typeof string;
   expects: 'string';
