@@ -7,6 +7,7 @@ contributors:
   - fabian-hiller
   - Shyam-Chen
   - jojojojojoj5564656465465
+  - flySewa
 ---
 
 # Installation
@@ -17,7 +18,7 @@ Valibot is currently available for Node, Bun and Deno. Below you will learn how 
 
 Except for this guide, the rest of this documentation assumes that you are using npm for the import statements in the code examples.
 
-It should make no difference whether you use individual imports or a wildcard import. Tree shaking and code splitting should work in both cases.
+It does not make a difference whether you use individual imports or a wildcard import. Tree shaking and code splitting should work in both cases.
 
 If you are using TypeScript, we recommend that you enable strict mode in your `tsconfig.json` so that all types are calculated correctly.
 
@@ -31,6 +32,16 @@ If you are using TypeScript, we recommend that you enable strict mode in your `t
   }
 }
 ```
+
+## For AI Agents
+
+We provide an agent skill that teaches AI agents the correct patterns for generating Valibot schemas. You can install it by running the following command in your terminal:
+
+```bash
+npx skills add open-circle/agent-skills --skill valibot
+```
+
+You can learn more about the Valibot agent skill [here](https://github.com/open-circle/agent-skills).
 
 ## From npm
 
@@ -96,14 +107,3 @@ import { … } from 'https://deno.land/x/valibot/mod.ts';
 // With a wildcard import
 import * as v from 'https://deno.land/x/valibot/mod.ts';
 ```
-
-## For AI Agents
-
-Valibot includes an agent skill that teaches AI agents the correct patterns for generating Valibot schemas. You can install it by running one of the following commands in your terminal:
-
-```bash
-npx skills add open-circle/agent-skills
-npx add-skill open-circle/agent-skills
-```
-
-[Learn more](https://github.com/open-circle/agent-skills) about the Valibot skill.
