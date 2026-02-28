@@ -1,0 +1,91 @@
+---
+title: cron
+description: Creates a cron expression validation action.
+source: /actions/cron/cron.ts
+contributors:
+  - ysknsid25
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# cron
+
+Creates a [cron expression](https://en.wikipedia.org/wiki/Cron) validation action.
+
+```ts
+const Action = v.cron<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `cron` you can validate the formatting of a string. If the input is not a valid cron expression, you can use `message` to customize the error message.
+
+A cron expression consists of 5 space-separated fields: minute, hour, day of month, month, and day of week. Each field supports wildcards (`*`), specific values, ranges (`1-5`), steps (`*/5`), and comma-separated lists (`1,2,3`).
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `cron` can be used.
+
+### Cron schema
+
+Schema to validate a cron expression.
+
+```ts
+const CronSchema = v.pipe(
+  v.string(),
+  v.cron('The cron expression is badly formatted.')
+);
+
+// Valid cron expressions:
+// '* * * * *'       (every minute)
+// '*/5 * * * *'     (every 5 minutes)
+// '0 9-17 * * 1-5'  (every hour from 9–17, weekdays only)
+// '0 0 1,15 * *'    (midnight on the 1st and 15th)
+```
+
+### Cron schema with buildCron
+
+Type-safe cron expression using `buildCron`.
+
+```ts
+import { buildCron } from 'valibot';
+
+const expr = buildCron({
+  minute: '*/5',
+  hour: '0',
+  day: '*',
+  month: '*',
+  weekday: '1-5',
+}); // '*/5 0 * * 1-5'
+```
+
+## Related
+
+The following APIs can be combined with `cron`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['buildCron', 'isOfKind', 'isOfType']} />
