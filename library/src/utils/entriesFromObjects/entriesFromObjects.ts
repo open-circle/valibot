@@ -23,56 +23,76 @@ import type {
   Prettify,
 } from '../../types/index.ts';
 
-/**
- * Schema type.
- */
-type Schema =
-  | LooseObjectSchema<ObjectEntries, ErrorMessage<LooseObjectIssue> | undefined>
-  | LooseObjectSchemaAsync<
-      ObjectEntriesAsync,
-      ErrorMessage<LooseObjectIssue> | undefined
-    >
-  | ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined>
-  | ObjectSchemaAsync<ObjectEntriesAsync, ErrorMessage<ObjectIssue> | undefined>
-  | ObjectWithRestSchema<
-      ObjectEntries,
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  | ObjectWithRestSchemaAsync<
-      ObjectEntriesAsync,
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  | StrictObjectSchema<
-      ObjectEntries,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
-  | StrictObjectSchemaAsync<
-      ObjectEntriesAsync,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >;
+export namespace entriesFromObjects {
+  /**
+   * Schema type.
+   */
+  export type Schema =
+    | LooseObjectSchema<
+        ObjectEntries,
+        ErrorMessage<LooseObjectIssue> | undefined
+      >
+    | LooseObjectSchemaAsync<
+        ObjectEntriesAsync,
+        ErrorMessage<LooseObjectIssue> | undefined
+      >
+    | ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined>
+    | ObjectSchemaAsync<
+        ObjectEntriesAsync,
+        ErrorMessage<ObjectIssue> | undefined
+      >
+    | ObjectWithRestSchema<
+        ObjectEntries,
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<ObjectWithRestIssue> | undefined
+      >
+    | ObjectWithRestSchemaAsync<
+        ObjectEntriesAsync,
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<ObjectWithRestIssue> | undefined
+      >
+    | StrictObjectSchema<
+        ObjectEntries,
+        ErrorMessage<StrictObjectIssue> | undefined
+      >
+    | StrictObjectSchemaAsync<
+        ObjectEntriesAsync,
+        ErrorMessage<StrictObjectIssue> | undefined
+      >;
+}
 
 /**
  * Recursive merge type.
  */
-type RecursiveMerge<TSchemas extends readonly [Schema, ...Schema[]]> =
-  TSchemas extends readonly [infer TFirstSchema extends Schema]
-    ? TFirstSchema['entries']
-    : TSchemas extends readonly [
-          infer TFirstSchema extends Schema,
-          ...infer TRestSchemas extends readonly [Schema, ...Schema[]],
-        ]
-      ? Merge<TFirstSchema['entries'], RecursiveMerge<TRestSchemas>>
-      : never;
+type RecursiveMerge<
+  TSchemas extends readonly [
+    entriesFromObjects.Schema,
+    ...entriesFromObjects.Schema[],
+  ],
+> = TSchemas extends readonly [
+  infer TFirstSchema extends entriesFromObjects.Schema,
+]
+  ? TFirstSchema['entries']
+  : TSchemas extends readonly [
+        infer TFirstSchema extends entriesFromObjects.Schema,
+        ...infer TRestSchemas extends readonly [
+          entriesFromObjects.Schema,
+          ...entriesFromObjects.Schema[],
+        ],
+      ]
+    ? Merge<TFirstSchema['entries'], RecursiveMerge<TRestSchemas>>
+    : never;
 
 /**
  * Merged entries types.
  */
-type MergedEntries<TSchemas extends readonly [Schema, ...Schema[]]> = Prettify<
-  RecursiveMerge<TSchemas>
->;
+type MergedEntries<
+  TSchemas extends readonly [
+    entriesFromObjects.Schema,
+    ...entriesFromObjects.Schema[],
+  ],
+> = Prettify<RecursiveMerge<TSchemas>>;
 
 /**
  * Creates a new object entries definition from existing object schemas.
@@ -82,13 +102,16 @@ type MergedEntries<TSchemas extends readonly [Schema, ...Schema[]]> = Prettify<
  * @returns The object entries from the schemas.
  */
 export function entriesFromObjects<
-  const TSchemas extends readonly [Schema, ...Schema[]],
+  const TSchemas extends readonly [
+    entriesFromObjects.Schema,
+    ...entriesFromObjects.Schema[],
+  ],
 >(schemas: TSchemas): MergedEntries<TSchemas>;
 
 // @__NO_SIDE_EFFECTS__
 export function entriesFromObjects(
-  schemas: [Schema, ...Schema[]]
-): MergedEntries<[Schema, ...Schema[]]> {
+  schemas: [entriesFromObjects.Schema, ...entriesFromObjects.Schema[]]
+): MergedEntries<[entriesFromObjects.Schema, ...entriesFromObjects.Schema[]]> {
   const entries = {};
   for (const schema of schemas) {
     Object.assign(entries, schema.entries);

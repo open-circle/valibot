@@ -25,33 +25,35 @@ import type {
 } from '../../types/index.ts';
 import { ValiError } from '../../utils/index.ts';
 
-/**
- * Schema type.
- */
-type Schema =
-  | LooseTupleSchema<TupleItems, ErrorMessage<LooseTupleIssue> | undefined>
-  | LooseTupleSchemaAsync<
-      TupleItemsAsync,
-      ErrorMessage<LooseTupleIssue> | undefined
-    >
-  | StrictTupleSchema<TupleItems, ErrorMessage<StrictTupleIssue> | undefined>
-  | StrictTupleSchemaAsync<
-      TupleItemsAsync,
-      ErrorMessage<StrictTupleIssue> | undefined
-    >
-  | TupleSchema<TupleItems, ErrorMessage<TupleIssue> | undefined>
-  | TupleSchemaAsync<TupleItemsAsync, ErrorMessage<TupleIssue> | undefined>
-  | TupleWithRestSchema<
-      TupleItems,
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<TupleWithRestIssue> | undefined
-    >
-  | TupleWithRestSchemaAsync<
-      TupleItemsAsync,
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<TupleWithRestIssue> | undefined
-    >;
+export namespace argsAsync {
+  /**
+   * Schema type.
+   */
+  export type Schema =
+    | LooseTupleSchema<TupleItems, ErrorMessage<LooseTupleIssue> | undefined>
+    | LooseTupleSchemaAsync<
+        TupleItemsAsync,
+        ErrorMessage<LooseTupleIssue> | undefined
+      >
+    | StrictTupleSchema<TupleItems, ErrorMessage<StrictTupleIssue> | undefined>
+    | StrictTupleSchemaAsync<
+        TupleItemsAsync,
+        ErrorMessage<StrictTupleIssue> | undefined
+      >
+    | TupleSchema<TupleItems, ErrorMessage<TupleIssue> | undefined>
+    | TupleSchemaAsync<TupleItemsAsync, ErrorMessage<TupleIssue> | undefined>
+    | TupleWithRestSchema<
+        TupleItems,
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<TupleWithRestIssue> | undefined
+      >
+    | TupleWithRestSchemaAsync<
+        TupleItemsAsync,
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<TupleWithRestIssue> | undefined
+      >;
+}
 
 /**
  * Args action async type.
@@ -59,7 +61,7 @@ type Schema =
 export interface ArgsActionAsync<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TInput extends (...args: any[]) => unknown,
-  TSchema extends Schema,
+  TSchema extends argsAsync.Schema,
 > extends BaseTransformation<
     TInput,
     (...args: InferInput<TSchema>) => Promise<Awaited<ReturnType<TInput>>>,
@@ -89,13 +91,13 @@ export interface ArgsActionAsync<
 export function argsAsync<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TInput extends (...args: any[]) => unknown,
-  TSchema extends Schema,
+  TSchema extends argsAsync.Schema,
 >(schema: TSchema): ArgsActionAsync<TInput, TSchema>;
 
 // @__NO_SIDE_EFFECTS__
 export function argsAsync(
-  schema: Schema
-): ArgsActionAsync<(...args: unknown[]) => unknown, Schema> {
+  schema: argsAsync.Schema
+): ArgsActionAsync<(...args: unknown[]) => unknown, argsAsync.Schema> {
   return {
     kind: 'transformation',
     type: 'args',
