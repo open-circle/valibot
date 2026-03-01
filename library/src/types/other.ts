@@ -70,3 +70,11 @@ export type DefaultValue<
       ? Awaited<ReturnType<TDefault>>
       : TDefault
     : never;
+
+/**
+ * A minimal cache interface, for custom cache implementations.
+ */
+export interface BaseCache<TKey, TValue> {
+  get(key: TKey): TValue | undefined;
+  set(key: TKey, value: TValue): void;
+}

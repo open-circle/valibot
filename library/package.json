@@ -62,6 +62,7 @@
     "eslint-plugin-security": "^3.0.1",
     "jsdom": "^27.2.0",
     "tsdown": "^0.16.6",
+    "quick-lru": "^7.0.1",
     "tsm": "^2.3.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.47.0",
