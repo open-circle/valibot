@@ -1,5 +1,7 @@
 import { getDefault } from '../../methods/index.ts';
+import type { SchemaMapperHKT } from '../../methods/mapEntries/mapEntries.ts';
 import type {
+  BaseHKTable,
   BaseIssue,
   BaseSchema,
   Default,
@@ -10,6 +12,10 @@ import type {
 import { _getStandardProps } from '../../utils/index.ts';
 import type { InferNullishOutput } from './types.ts';
 
+export interface NullishModifierHKT extends SchemaMapperHKT {
+  result: NullishSchema<this['wrapped'], undefined>;
+}
+
 /**
  * Nullish schema interface.
  */
@@ -17,10 +23,11 @@ export interface NullishSchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TDefault extends Default<TWrapped, null | undefined>,
 > extends BaseSchema<
-    InferInput<TWrapped> | null | undefined,
-    InferNullishOutput<TWrapped, TDefault>,
-    InferIssue<TWrapped>
-  > {
+      InferInput<TWrapped> | null | undefined,
+      InferNullishOutput<TWrapped, TDefault>,
+      InferIssue<TWrapped>
+    >,
+    BaseHKTable<NullishModifierHKT> {
   /**
    * The schema type.
    */
@@ -104,5 +111,6 @@ export function nullish(
       // Otherwise, return dataset of wrapped schema
       return this.wrapped['~run'](dataset, config);
     },
+    '~preferHkt': true,
   };
 }

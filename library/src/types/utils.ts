@@ -102,3 +102,7 @@ type UnionToTupleHelper<TUnion, TResult extends unknown[]> =
  * Converts union to tuple type.
  */
 export type UnionToTuple<TUnion> = UnionToTupleHelper<TUnion, []>;
+
+export type IfMaybeUndefined<T, True, False> = [undefined] extends [T]
+  ? True
+  : False;
