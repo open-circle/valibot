@@ -8,6 +8,7 @@ export * from './date/index.ts';
 export * from './enum/index.ts';
 export * from './exactOptional/index.ts';
 export * from './file/index.ts';
+export * from './formData/index.ts';
 export * from './function/index.ts';
 export * from './instance/index.ts';
 export * from './intersect/index.ts';

@@ -1,0 +1,50 @@
+---
+title: checkbox
+description: Creates a checkbox transformation action.
+source: /actions/checkbox/checkbox.ts
+contributors:
+  - EskiMojo14
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# checkbox
+
+Creates a checkbox transformation action, turning the string `"on"` into `true` and all other values into `false`.
+
+```ts
+const Action = v.checkbox();
+```
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `checkbox` can be used.
+
+### Checkbox schema
+
+Schema to validate a checkbox string.
+
+```ts
+const CheckboxSchema = v.pipe(v.string(), v.checkbox());
+```
+
+## Related
+
+The following APIs can be combined with `checkbox`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string', 'unknown']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
