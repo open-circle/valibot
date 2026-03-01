@@ -2,6 +2,7 @@ module.exports = {
   plugins: [
     '@trivago/prettier-plugin-sort-imports',
     'prettier-plugin-tailwindcss',
+    'prettier-plugin-embed',
   ],
   printWidth: 80,
   tabWidth: 2,
