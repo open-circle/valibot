@@ -19,6 +19,7 @@ import pl from '../src/pl';
 import pt from '../src/pt';
 import ro from '../src/ro';
 import ru from '../src/ru';
+import sk from '../src/sk';
 import sl from '../src/sl';
 import sv from '../src/sv';
 import tr from '../src/tr';
@@ -52,6 +53,7 @@ const languages = [
   pt,
   ro,
   ru,
+  sk,
   sl,
   sv,
   tr,
