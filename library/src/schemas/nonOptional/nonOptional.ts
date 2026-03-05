@@ -1,4 +1,6 @@
+import type { SchemaMapperHKT } from '../../methods/mapEntries/mapEntries.ts';
 import type {
+  BaseHKTable,
   BaseIssue,
   BaseSchema,
   ErrorMessage,
@@ -12,6 +14,10 @@ import type {
   NonOptionalIssue,
 } from './types.ts';
 
+export interface NonOptionalModifierHKT extends SchemaMapperHKT {
+  result: NonOptionalSchema<this['wrapped'], undefined>;
+}
+
 /**
  * Non optional schema interface.
  */
@@ -19,10 +25,11 @@ export interface NonOptionalSchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<NonOptionalIssue> | undefined,
 > extends BaseSchema<
-    InferNonOptionalInput<TWrapped>,
-    InferNonOptionalOutput<TWrapped>,
-    NonOptionalIssue | InferNonOptionalIssue<TWrapped>
-  > {
+      InferNonOptionalInput<TWrapped>,
+      InferNonOptionalOutput<TWrapped>,
+      NonOptionalIssue | InferNonOptionalIssue<TWrapped>
+    >,
+    BaseHKTable<NonOptionalModifierHKT> {
   /**
    * The schema type.
    */
@@ -104,5 +111,6 @@ export function nonOptional(
       // @ts-expect-error
       return dataset as OutputDataset<unknown, BaseIssue<unknown>>;
     },
+    '~preferHkt': true,
   };
 }
