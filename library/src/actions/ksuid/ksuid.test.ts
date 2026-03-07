@@ -112,7 +112,7 @@ describe('ksuid', () => {
 
     test('for invalid letters', () => {
       expectActionIssue(action, baseIssue, [
-        '!ujsswThIGTUYm2K8FjOOfXtY1',
+        '!ujsswThIGTUYm2K8FjOOfXtY1K',
         '0ujsswThIGTUYm2K8FjOOfXtY@1',
       ]);
     });
