@@ -1,0 +1,145 @@
+---
+title: cacheAsync
+description: Creates a version of a schema that caches its output.
+source: /methods/cache/cacheAsync.ts
+contributors:
+  - EskiMojo14
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# cacheAsync
+
+Creates a version of a schema that caches its output.
+
+```ts
+const Schema = v.cacheAsync<TSchema, TOptions>(schema, options);
+```
+
+## Generics
+
+- `TSchema` <Property {...properties.TSchema} />
+- `TOptions` <Property {...properties.TOptions} />
+
+## Parameters
+
+- `schema` <Property {...properties.schema} />
+- `options` <Property {...properties.options} />
+
+### Explanation
+
+The `cacheAsync` method creates a version of the given `schema` that caches its output. This can be useful for performance optimization, for example when validation involves a network request.
+
+## Returns
+
+- `Schema` <Property {...properties.Schema} />
+
+## Examples
+
+The following examples show how `cacheAsync` can be used.
+
+### Cache schema
+
+Schema that caches its output.
+
+```ts
+const CacheSchema = v.cacheAsync(v.string());
+```
+
+### Max size schema
+
+Schema that caches its output for a maximum of 100 items.
+
+```ts
+const MaxSizeSchema = v.cacheAsync(v.string(), { maxSize: 100 });
+```
+
+### Max age schema
+
+Schema that caches its output for a maximum of 10 seconds.
+
+```ts
+const MaxAgeSchema = v.cacheAsync(v.string(), { duration: 10_000 });
+```
+
+### Custom cache schema
+
+Schema that uses a custom cache instance, in this case [QuickLRU](https://github.com/sindresorhus/quick-lru).
+
+```ts
+import QuickLRU from 'quick-lru';
+
+const CustomCacheSchema = v.cacheAsync(v.string(), {
+  cache: new QuickLRU({ maxSize: 1000 }),
+});
+```
+
+## Related
+
+The following APIs can be combined with `cacheAsync`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'array',
+    'bigint',
+    'blob',
+    'boolean',
+    'custom',
+    'date',
+    'enum',
+    'exactOptional',
+    'file',
+    'function',
+    'instance',
+    'intersect',
+    'lazy',
+    'literal',
+    'looseObject',
+    'looseTuple',
+    'map',
+    'nan',
+    'never',
+    'nonNullable',
+    'nonNullish',
+    'nonOptional',
+    'null',
+    'nullable',
+    'nullish',
+    'number',
+    'object',
+    'objectWithRest',
+    'optional',
+    'picklist',
+    'promise',
+    'record',
+    'set',
+    'strictObject',
+    'strictTuple',
+    'string',
+    'symbol',
+    'tuple',
+    'tupleWithRest',
+    'undefined',
+    'undefinedable',
+    'union',
+    'unknown',
+    'variant',
+    'void',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['config', 'getDefault', 'getFallback']} />
+
+### Actions
+
+<ApiList items={['message', 'unwrap']} />
+
+### Async
+
+<ApiList items={['parseAsync', 'safeParseAsync']} />
