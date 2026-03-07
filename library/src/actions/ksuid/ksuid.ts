@@ -64,16 +64,16 @@ export interface KsuidAction<
 /**
  * Creates a [KSUID](https://github.com/segmentio/ksuid) validation action.
  *
- * `@returns` A KSUID action.
+ * @returns A KSUID action.
  */
 export function ksuid<TInput extends string>(): KsuidAction<TInput, undefined>;
 
 /**
  * Creates a [KSUID](https://github.com/segmentio/ksuid) validation action.
  *
- * `@param` message The error message.
+ * @param message The error message.
  *
- * `@returns` A KSUID action.
+ * @returns A KSUID action.
  */
 export function ksuid<
   TInput extends string,
