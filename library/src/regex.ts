@@ -32,7 +32,7 @@ export const DIGITS_REGEX: RegExp = /^\d+$/u;
  * Internationalized domain names (IDN) not supported (including their Punycode form).
  */
 export const DOMAIN_REGEX: RegExp =
-  /^(?=.{1,253}$)([A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/u;
+  /^(?=.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/u;
 
 /**
  * [Email address](https://en.wikipedia.org/wiki/Email_address) regex.
