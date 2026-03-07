@@ -1,16 +1,17 @@
 ---
-title: StringboolIssue
-description: String to boolean issue interface.
+title: ParseBooleanIssue
+description: Parse boolean issue interface.
 contributors:
   - alexilyaev
+  - fabian-hiller
 ---
 
 import { Property } from '~/components';
 import { properties } from './properties';
 
-# StringboolIssue
+# ParseBooleanIssue
 
-String to boolean issue interface.
+Parse boolean issue interface.
 
 ## Generics
 
@@ -18,7 +19,7 @@ String to boolean issue interface.
 
 ## Definition
 
-- `StringboolIssue` <Property {...properties.BaseIssue} />
+- `ParseBooleanIssue` <Property {...properties.BaseIssue} />
   - `kind` <Property {...properties.kind} />
   - `type` <Property {...properties.type} />
-  - `expected` <Property {...properties.expected} /> 
+  - `expected` <Property {...properties.expected} />

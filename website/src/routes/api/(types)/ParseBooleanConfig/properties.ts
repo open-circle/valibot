@@ -9,7 +9,7 @@ export const properties: Record<string, PropertyProps> = {
       generics: [
         {
           type: 'array',
-          item: 'string',
+          item: 'unknown',
         },
       ],
     },
@@ -22,29 +22,9 @@ export const properties: Record<string, PropertyProps> = {
       generics: [
         {
           type: 'array',
-          item: 'string',
+          item: 'unknown',
         },
       ],
-    },
-  },
-  case: {
-    type: {
-      type: 'union',
-      options: [
-        {
-          type: 'string',
-          value: 'sensitive',
-        },
-        {
-          type: 'string',
-          value: 'insensitive',
-        },
-        'undefined',
-      ],
-    },
-    default: {
-      type: 'string',
-      value: 'insensitive',
     },
   },
 };
