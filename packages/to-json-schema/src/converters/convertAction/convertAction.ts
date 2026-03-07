@@ -12,6 +12,7 @@ type Action =
   | v.DecimalAction<string, v.ErrorMessage<v.DecimalIssue<string>> | undefined>
   | v.DescriptionAction<unknown, string>
   | v.DigitsAction<string, v.ErrorMessage<v.DigitsIssue<string>> | undefined>
+  | v.DomainAction<string, v.ErrorMessage<v.DomainIssue<string>> | undefined>
   | v.EmailAction<string, v.ErrorMessage<v.EmailIssue<string>> | undefined>
   | v.EmojiAction<string, v.ErrorMessage<v.EmojiIssue<string>> | undefined>
   | v.EmptyAction<
@@ -136,6 +137,7 @@ export function convertAction(
     case 'cuid2':
     case 'decimal':
     case 'digits':
+    case 'domain':
     case 'emoji':
     case 'hexadecimal':
     case 'hex_color':

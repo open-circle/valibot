@@ -5,8 +5,10 @@ source: /actions/url/url.ts
 contributors:
   - fabian-hiller
   - depsimon
+  - yslpn
 ---
 
+import { Link } from '@builder.io/qwik-city';
 import { ApiList, Property } from '~/components';
 import { properties } from './properties';
 
@@ -30,6 +32,8 @@ const Action = v.url<TInput, TMessage>(message);
 ### Explanation
 
 With `url` you can validate the formatting of a string. If the input is not an URL, you can use `message` to customize the error message.
+
+> If you only need to validate the domain name (host part), consider the <Link href="../domain/">`domain`</Link> action.
 
 ## Returns
 

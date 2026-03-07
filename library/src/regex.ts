@@ -26,6 +26,15 @@ export const DECIMAL_REGEX: RegExp = /^[+-]?(?:\d*\.)?\d+$/u;
 export const DIGITS_REGEX: RegExp = /^\d+$/u;
 
 /**
+ * [Domain name](https://en.wikipedia.org/wiki/Domain_name) regex.
+ *
+ * Hint: ASCII-only validation.
+ * Internationalized domain names (IDN) not supported (including their Punycode form).
+ */
+export const DOMAIN_REGEX: RegExp =
+  /^(?=.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/u;
+
+/**
  * [Email address](https://en.wikipedia.org/wiki/Email_address) regex.
  */
 export const EMAIL_REGEX: RegExp =

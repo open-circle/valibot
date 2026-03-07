@@ -135,6 +135,21 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should convert domain pipe items', () => {
+      expect(
+        convertSchema(
+          {},
+          v.pipe(v.string(), v.domain(), v.description('foo')),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'string',
+        pattern: v.DOMAIN_REGEX.source,
+        description: 'foo',
+      });
+    });
+
     test('should convert pipe schema in definitions', () => {
       const schema = v.string();
       expect(
