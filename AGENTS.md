@@ -32,7 +32,7 @@ pnpm build                      # Build for publishing (all packages)
 ## Other Rules
 
 - **Source code is the single source of truth.** All documentation must match `/library/src/`.
-- **Lint and format before committing.** Run `pnpm lint` and `pnpm format` so CI passes.
+- **Lint and format after modifying code.** Run `pnpm lint` and `pnpm format` so CI passes.
 
 ## Library Architecture
 

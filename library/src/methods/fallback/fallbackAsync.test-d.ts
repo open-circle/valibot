@@ -1,11 +1,11 @@
 import { describe, expectTypeOf, test } from 'vitest';
 import { transform, type TransformAction } from '../../actions/index.ts';
+import type { ArrayIssue, ArraySchema } from '../../schemas/array/index.ts';
 import {
   number,
   type NumberIssue,
   type NumberSchema,
 } from '../../schemas/index.ts';
-import type { ArrayIssue, ArraySchema } from '../../schemas/array/index.ts';
 import type { ObjectIssue, ObjectSchema } from '../../schemas/object/index.ts';
 import type { StringIssue, StringSchema } from '../../schemas/string/index.ts';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
