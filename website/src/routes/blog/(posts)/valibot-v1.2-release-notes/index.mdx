@@ -1,34 +1,29 @@
 ---
 cover: Valibot v1.2
-title: Valibot v1.2 release notes
+title: 'Valibot v1.2: Type coercion, AI metadata, and ISBN validation'
 description: >-
-  Valibot v1.2 is out! This version adds powerful transformation actions for
-  type coercion and new metadata features to improve AI tool integration.
+  Valibot v1.2 adds powerful transformation actions for type coercion, new
+  metadata features to improve AI tool integration, and ISBN validation.
 published: 2025-11-24
 authors:
   - fabian-hiller
   - EskiMojo14
+  - flySewa
 ---
 
 import { Link } from '~/components';
 
-Valibot v1.2 is out! This version adds powerful transformation actions for type coercion, new metadata features to improve AI tool integration, and ISBN validation for library management systems. These additions make it easier to work with forms, APIs, and AI-powered applications while maintaining Valibot's modular design and minimal bundle size.
+Valibot v1.2 adds powerful transformation actions for type coercion, new metadata features to improve AI tool integration, and ISBN validation. These additions make it easier to work with forms, APIs, and AI-powered applications while maintaining Valibot's modular design and minimal bundle size.
 
 > This release also includes an important security fix for a ReDoS vulnerability in the <Link href="/api/emoji/">`emoji`</Link> action. If you're using this action, we strongly recommend upgrading as soon as possible.
 
-This is our second minor release since v1, and we continue to prioritize stability and quality through our comprehensive test coverage. The work we've invested in maintaining robust tests continues to pay off with fewer bugs and a more reliable library. Before diving into the new features, I want to thank our amazing contributors who made this release possible.
+Huge thanks to [@EskiMojo14](https://github.com/EskiMojo14) for implementing type coercion and examples metadata, and to [@ysknsid25](https://github.com/ysknsid25), a certified librarian, for contributing ISBN validation.
 
-## Contributors and acknowledgments
+## Type coercion actions
 
-A huge thank you to [@EskiMojo14](https://github.com/EskiMojo14) who contributed the majority of the features in this release! He implemented the type coercion actions, the examples metadata feature, and worked tirelessly to ensure everything is well-documented and tested. We'd also like to welcome [@ysknsid25](https://github.com/ysknsid25), a certified librarian, who contributed the ISBN validation action—a perfect example of how domain expertise can enrich our library.
+Five new transformation actions make type coercion straightforward: <Link href="/api/toBigint/">`toBigint`</Link>, <Link href="/api/toBoolean/">`toBoolean`</Link>, <Link href="/api/toDate/">`toDate`</Link>, <Link href="/api/toNumber/">`toNumber`</Link>, and <Link href="/api/toString/">`toString`</Link>.
 
-We're also excited to welcome [LambdaTest](https://lambdatest.com/) as a new partner! LambdaTest is a leading cloud-based testing platform that helps developers test their web applications across 3000+ browsers and operating systems. If your company uses Valibot and benefits from our work, please consider supporting the project through [GitHub sponsors](https://github.com/open-circle/valibot).
-
-## Type coercion made simple
-
-One requested features has been a straightforward way to coerce types in validation pipelines. Whether you're working with form data that arrives as strings, URL parameters, or API responses, type coercion is essential. With Valibot v1.2, we're introducing five new transformation actions that make this dead simple: <Link href="/api/toBigint/">`toBigint`</Link>, <Link href="/api/toBoolean/">`toBoolean`</Link>, <Link href="/api/toDate/">`toDate`</Link>, <Link href="/api/toNumber/">`toNumber`</Link>, and <Link href="/api/toString/">`toString`</Link>.
-
-These actions use JavaScript's native coercion functions (`BigInt()`, `Boolean()`, `Date()`, `Number()`, `String()`) under the hood, but with added error handling to catch edge cases. For example, `toNumber` checks for `NaN` after conversion, and `toDate` validates that the resulting date is valid.
+Perfect for HTML forms and query parameters where everything arrives as strings. These actions use JavaScript's native coercion functions with added error handling. For example, `toNumber` checks for `NaN` after conversion, and `toDate` validates that the resulting date is valid.
 
 ```ts
 import * as v from 'valibot';
@@ -44,7 +39,7 @@ const FormSchema = v.object({
 // Output: { quantity: 25, balance: 1000n, createdAt: Date }
 ```
 
-This is particularly useful for validating HTML form submissions or query parameters where everything arrives as a string. Similar to Zod's `z.coerce`, Valibot's coercion actions help you transform types, but they follow Valibot's modular approach—they can be composed anywhere in pipelines, giving you precise control over when and how transformations occur.
+Unlike Zod's `z.coerce`, Valibot's coercion actions can be composed anywhere in your pipeline, giving you precise control over when and how transformations occur.
 
 ```ts
 const QuerySchema = v.object({
@@ -65,9 +60,9 @@ const QuerySchema = v.object({
 });
 ```
 
-## Examples for AI and documentation
+## Examples for AI tools and documentation
 
-As AI-powered development tools become more prevalent, providing machine-readable metadata about your schemas becomes increasingly important. With Valibot v1.2, you can now attach example values to any schema using the new <Link href="/api/examples/">`examples`</Link> action and extract them with the <Link href="/api/getExamples/">`getExamples`</Link> method.
+As AI-powered applications become standard, providing machine-readable metadata about your schemas is increasingly important. The new <Link href="/api/examples/">`examples()`</Link> action lets you attach example values to any schema.
 
 ```ts
 import * as v from 'valibot';
@@ -94,11 +89,11 @@ const UserSchema = v.object({
 const emailExamples = v.getExamples(UserSchema.entries.email);
 ```
 
-When multiple <Link href="/api/examples/">`examples`</Link> actions are present in a pipeline, <Link href="/api/getExamples/">`getExamples`</Link> automatically concatenates them using depth-first search, giving you a complete list of all examples in the schema tree.
+When multiple <Link href="/api/examples/">`examples()`</Link> actions appear in a pipeline, <Link href="/api/getExamples/">`getExamples()`</Link> automatically concatenates them using depth-first search, giving you a complete list of all examples in the schema tree. Use this for AI tool integration, generating documentation, or creating test fixtures.
 
-## ISBN validation for libraries
+## ISBN validation
 
-Thanks to [@ysknsid25](https://github.com/ysknsid25), a certified librarian, we now have built-in <Link href="/api/isbn/">`isbn`</Link> validation! This action validates both ISBN-10 and ISBN-13 formats and is perfect for library management systems, bookstores, or any application that needs to validate book identifiers.
+Thanks to [@ysknsid25](https://github.com/ysknsid25), a certified librarian, we now have built-in <Link href="/api/isbn/">`isbn()`</Link> validation for both ISBN-10 and ISBN-13 formats.
 
 ```ts
 import * as v from 'valibot';
@@ -116,7 +111,7 @@ const BookSchema = v.object({
 // '978-0-306-40615-7', '9780306406157', '978 0 306 40615 7'
 ```
 
-The <Link href="/api/isbn/">`isbn`</Link> action accepts hyphens and spaces as separators and validates the checksum to ensure the ISBN is mathematically correct. This is a great example of how domain-specific validation can be added to Valibot while maintaining our modular architecture and small bundle size.
+The action accepts hyphens and spaces as separators and validates the checksum to ensure mathematical correctness. Perfect for library management systems, bookstores, or any application handling book identifiers.
 
 ## Security fix: ReDoS vulnerability
 
@@ -126,10 +121,14 @@ The vulnerability could allow an attacker to cause excessive CPU usage by provid
 
 ## Faster builds with tsdown
 
-While this isn't a user-facing feature, we've switched our build process from tsup to [tsdown](https://www.npmjs.com/package/tsdown). Built on top of [Rolldown](https://rolldown.rs/)—which actually uses Valibot for validation—tsdown speeds up our build times, making development and releases faster. If we made no mistakes you won't notice any differences in functionality.
+We've switched from tsup to [tsdown](https://www.npmjs.com/package/tsdown) (built on [Rolldown](https://rolldown.rs/), which uses Valibot for validation). This speeds up our build times.
+
+## New partner announcement
+
+We're excited to welcome [LambdaTest](https://lambdatest.com/) as a new partner! LambdaTest is a leading cloud-based testing platform that helps developers test their web applications across 3000+ browsers and operating systems. If your company uses Valibot and benefits from our work, please consider supporting the project through [GitHub sponsors](https://github.com/open-circle/valibot).
 
 ## What's next?
 
-We're planning to create more educational content to help developers understand the benefits of choosing Valibot. If you have specific topics you'd like us to cover, please let us know on [Discord](https://discord.gg/Jwf9vjvReZ) or [GitHub](https://github.com/open-circle/valibot/discussions).
+We're creating more guides to help you get the most out of Valibot. Got a specific use case or pattern you'd like us to cover? Let us know on [Discord](https://discord.gg/Jwf9vjvReZ) or open a discussion on [GitHub](https://github.com/open-circle/valibot/discussions).
 
-For a complete list of changes, check out [the release notes](https://github.com/open-circle/valibot/releases/tag/v1.2.0) on GitHub.
+New to Valibot? [Get started](/start). Coming from Zod? [Migration guide](/migration). [Full changelog](https://github.com/open-circle/valibot/releases/tag/v1.2.0).

@@ -2,6 +2,15 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Add `guard` transformation action to narrow types using type predicates (pull request #1204)
+- Add `parseBoolean` transformation action to parse boolean values from strings and other types (pull request #1251)
+- Add `isrc` validation action to validate ISRC codes (pull request #1373)
+- Add `domain` validation action to validate domain names (pull request #1284)
+- Fix `creditCard` validation action to allow 13-digit Visa card numbers (pull request #1347)
+- Fix types for deeply readonly default and fallback values
+
 ## v1.2.0 (November 24, 2025)
 
 - Add `toBigint`, `toBoolean`, `toDate`, `toNumber` and `toString` transformation actions (pull request #1212)

@@ -5,9 +5,9 @@ import {
   useSignal,
   useVisibleTask$,
 } from '@builder.io/qwik';
+import transform from '@valibot/zod-to-valibot';
 import jscodeshift from 'jscodeshift';
 import * as monaco from 'monaco-editor';
-import transform from 'zod-to-valibot';
 import { CodeEditor, IconButton } from '~/components';
 import { useResetSignal } from '~/hooks';
 import { CheckIcon, CopyIcon, PlayIcon } from '~/icons';

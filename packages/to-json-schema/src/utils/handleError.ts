@@ -1,4 +1,4 @@
-import type { ConversionConfig } from '../type.ts';
+import type { ConversionConfig } from '../types/index.ts';
 
 /**
  * Throws an error or logs a warning based on the configuration.

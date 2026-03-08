@@ -26,6 +26,16 @@ export const DECIMAL_REGEX: RegExp = /^[+-]?(?:\d*\.)?\d+$/u;
 export const DIGITS_REGEX: RegExp = /^\d+$/u;
 
 /**
+ * [Domain name](https://en.wikipedia.org/wiki/Domain_name) regex.
+ *
+ * Hint: We decided against the `i` flag for better JSON Schema compatibility.
+ * ASCII-only validation. Internationalized domain names (IDN) in Unicode form
+ * are not supported.
+ */
+export const DOMAIN_REGEX: RegExp =
+  /^(?=.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/u;
+
+/**
  * [Email address](https://en.wikipedia.org/wiki/Email_address) regex.
  */
 export const EMAIL_REGEX: RegExp =
@@ -113,6 +123,12 @@ export const ISO_TIMESTAMP_REGEX: RegExp =
  * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) week regex.
  */
 export const ISO_WEEK_REGEX: RegExp = /^\d{4}-W(?:0[1-9]|[1-4]\d|5[0-3])$/u;
+
+/**
+ * [ISRC](https://en.wikipedia.org/wiki/International_Standard_Recording_Code) regex.
+ */
+export const ISRC_REGEX: RegExp =
+  /^(?:[A-Z]{2}[A-Z\d]{3}\d{7}|[A-Z]{2}-[A-Z\d]{3}-\d{2}-\d{5})$/u;
 
 /**
  * [MAC](https://en.wikipedia.org/wiki/MAC_address) 48 bit regex.

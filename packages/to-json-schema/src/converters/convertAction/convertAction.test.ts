@@ -78,6 +78,18 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert domain action', () => {
+    expect(convertAction({}, v.domain<string>(), undefined)).toStrictEqual({
+      pattern: v.DOMAIN_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.domain<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.DOMAIN_REGEX.source,
+    });
+  });
+
   test('should convert description action', () => {
     expect(convertAction({}, v.description('test'), undefined)).toStrictEqual({
       description: 'test',
@@ -460,6 +472,19 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert max value action for integers', () => {
+    expect(
+      convertAction(
+        { type: 'integer' },
+        v.maxValue<v.ValueInput, 100>(100),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'integer',
+      maximum: 100,
+    });
+  });
+
   test('should throw error for max value action with invalid type', () => {
     const action = v.maxValue<v.ValueInput, 3>(3);
     const error1 =
@@ -626,6 +651,19 @@ describe('convertAction', () => {
     ).toStrictEqual({
       type: 'number',
       minimum: 3,
+    });
+  });
+
+  test('should convert min value action for integers', () => {
+    expect(
+      convertAction(
+        { type: 'integer' },
+        v.minValue<v.ValueInput, 1>(1),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'integer',
+      minimum: 1,
     });
   });
 

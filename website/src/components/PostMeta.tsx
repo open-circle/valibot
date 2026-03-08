@@ -18,21 +18,27 @@ export const PostMeta = component$<PostCoverProps>(
       {/* Authors */}
       <div class="-m-[3px] flex">
         {authors.map((author, index) => (
-          <img
+          <a
+            key={author}
             class={clsx(
-              'box-content w-6 rounded-full border-[3px] border-white dark:border-gray-900',
+              'box-content w-6 overflow-hidden rounded-full border-[3px] border-white dark:border-gray-900',
               variant === 'blog' && 'lg:w-7',
               variant === 'post' && 'md:w-7 lg:w-8',
               index > 0 && '-ml-3'
             )}
             style={{ zIndex: authors.length - index }}
-            key={author}
-            src={`https://github.com/${author}.png?size=64`}
-            width="64"
-            height="64"
-            loading="lazy"
-            alt={`GitHub profile picture of ${author}`}
-          />
+            href={`https://github.com/${author}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={`https://github.com/${author}.png?size=64`}
+              width="64"
+              height="64"
+              loading="lazy"
+              alt={`GitHub profile picture of ${author}`}
+            />
+          </a>
         ))}
       </div>
 
@@ -45,6 +51,7 @@ export const PostMeta = component$<PostCoverProps>(
           year: 'numeric',
           month: 'long',
           day: 'numeric',
+          timeZone: 'UTC',
         })}
       </time>
     </div>
