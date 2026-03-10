@@ -356,11 +356,9 @@ export function objectWithRestAsync(
             await processEntry(valueDataset);
           }
 
-          // Process each rest entry of schema if necessary
-          if (!dataset.issues || !config.abortEarly) {
-            for (const restDataset of restDatasets) {
-              processRestEntry(restDataset);
-            }
+          // Process each rest entry of schema
+          for (const restDataset of restDatasets) {
+            processRestEntry(restDataset);
           }
         }
 
