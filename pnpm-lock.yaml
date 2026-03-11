@@ -47,7 +47,7 @@ importers:
         version: 24.10.1
       tsdown:
         specifier: ^0.16.6
-        version: 0.16.6(typescript@5.9.3)
+        version: 0.16.6(synckit@0.11.11)(typescript@5.9.3)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -81,6 +81,9 @@ importers:
       eslint-plugin-jsdoc:
         specifier: ^61.4.0
         version: 61.4.0(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-redos:
+        specifier: ^4.6.0-beta.3
+        version: 4.6.0-beta.3(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-redos-detector:
         specifier: ^3.1.1
         version: 3.1.1(eslint@9.39.1(jiti@2.6.1))
@@ -95,7 +98,7 @@ importers:
         version: 27.2.0
       tsdown:
         specifier: ^0.16.6
-        version: 0.16.6(typescript@5.9.3)
+        version: 0.16.6(synckit@0.11.11)(typescript@5.9.3)
       tsm:
         specifier: ^2.3.0
         version: 2.3.0
@@ -158,7 +161,7 @@ importers:
         version: 16.5.0
       tsdown:
         specifier: ^0.16.6
-        version: 0.16.6(typescript@5.9.3)
+        version: 0.16.6(synckit@0.11.11)(typescript@5.9.3)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -1349,6 +1352,10 @@ packages:
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
+
+  '@pkgr/core@0.2.9':
+    resolution: {integrity: sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==}
+    engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
   '@quansync/fs@0.1.5':
     resolution: {integrity: sha512-lNS9hL2aS2NZgNW7BBj+6EBl4rOf8l+tQ0eRY6JWCI8jI2kc53gSoqbjojU0OnAWhzoXiOjFyGsHcDGePB3lhA==}
@@ -3310,6 +3317,12 @@ packages:
     peerDependencies:
       eslint: '>=6'
 
+  eslint-plugin-redos@4.6.0-beta.3:
+    resolution: {integrity: sha512-QsXAHZQR9tAsaxtDE5iODja0cAxTIiLhSEFNWFo/8Lu/f9e/S30yn0DAHZY2a1CPhaUWtvjKEvbhTQvUsbhNMg==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      eslint: '>= 3'
+
   eslint-plugin-regexp@2.10.0:
     resolution: {integrity: sha512-ovzQT8ESVn5oOe5a7gIDPD5v9bCSjIFJu57sVPDqgPRXicQzOnYfFN21WoQBQF18vrhT5o7UMKFwJQVVjyJ0ng==}
     engines: {node: ^18 || >=20}
@@ -4971,6 +4984,38 @@ packages:
     resolution: {integrity: sha512-YTUo+Flmw4ZXiWfQKGcwwc11KnoRAYgzAE2E7mXKCjSviTKShtxBsN6YUUBB2gtaBzKzeKunxhUwNHQuRryhWA==}
     engines: {node: '>= 4'}
 
+  recheck-jar@4.6.0-beta.3:
+    resolution: {integrity: sha512-CwADkL99b8QlGcg7vRzuhkzfQebIPO8+IfIOi1HIlzBRUC8k6/zAylmzcavI9rjZD4jVStRR+Px+TnkCOCoXbQ==}
+
+  recheck-linux-arm64@4.6.0-beta.3:
+    resolution: {integrity: sha512-ym3//7ygvClNCPezhvGhvD/phqQPlEcQpUWbkZVczoOwMjFaJn+7/Gtnt2RXzOMGW1fy2pVGtWAK7B871JTlJA==}
+    cpu: [arm64]
+    os: [linux]
+
+  recheck-linux-x64@4.6.0-beta.3:
+    resolution: {integrity: sha512-QBzszyfVO7jZqOh6yjNlulD45BYS0QVReHrPzN2rDWSTs8NnDbWcrXMGo5zSlCsS/hMmuuExbs/jYIZQfqyIsQ==}
+    cpu: [x64]
+    os: [linux]
+
+  recheck-macos-arm64@4.6.0-beta.3:
+    resolution: {integrity: sha512-28hiCHhgXyA2ZsYxK2L9uzFfcgo1yQ4x9cVqH2HbDRSD9c+B3P5GpxsYWSKk0VFCvMuPjWrqWtGgRQJgIv9dew==}
+    cpu: [arm64]
+    os: [darwin]
+
+  recheck-macos-x64@4.6.0-beta.3:
+    resolution: {integrity: sha512-sGb55OMrMC2cygjGktQctgXyWm8p7M+LiyppTvB044yIGbAusShFE6AJaroaeB2rSAivLDRhAfnclZZiRBnyfA==}
+    cpu: [x64]
+    os: [darwin]
+
+  recheck-windows-x64@4.6.0-beta.3:
+    resolution: {integrity: sha512-kLASRM4KvltHHY2APe3eDrOdPrZs9bbUEFCiVpCJxxnWMpxqmO465DmU71jIZUIRCf+1y4iyyvMxCYbw8Kw3tQ==}
+    cpu: [x64]
+    os: [win32]
+
+  recheck@4.6.0-beta.3:
+    resolution: {integrity: sha512-vFGnR2AF6o8O5/gyLoIx5Kcnqdf/e3RLeMbZYgTJAiTIkKFPEFAWKxHiGWOhZDg5ibt46oqN7h+yJE6Gx2HqYw==}
+    engines: {node: '>=20'}
+
   recma-build-jsx@1.0.0:
     resolution: {integrity: sha512-8GtdyqaBcDfva+GUKDr3nev3VpKAhup1+RvkMvUxURHpW7QyIvk9F5wz7Vzo06CEMSilw6uArgRqhpiUcWp8ew==}
 
@@ -5401,6 +5446,10 @@ packages:
 
   symbol-tree@3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
+
+  synckit@0.11.11:
+    resolution: {integrity: sha512-MeQTA1r0litLUf0Rp/iisCaL8761lKAZHaimlbGK4j0HysC4PLfqygQj9srcs0m2RdtDYnF8UuYyKpbjHYp7Jw==}
+    engines: {node: ^14.18.0 || >=16.0.0}
 
   tailwindcss@4.1.17:
     resolution: {integrity: sha512-j9Ee2YjuQqYT9bbRTfTZht9W/ytp5H+jJpZKiYdP/bpnXARAuELt9ofP0lPnmHjbga7SNQIxdTAXCmtKVYjN+Q==}
@@ -7048,6 +7097,8 @@ snapshots:
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
+
+  '@pkgr/core@0.2.9': {}
 
   '@quansync/fs@0.1.5':
     dependencies:
@@ -9122,6 +9173,11 @@ snapshots:
     dependencies:
       eslint: 9.39.1(jiti@2.6.1)
 
+  eslint-plugin-redos@4.6.0-beta.3(eslint@9.39.1(jiti@2.6.1)):
+    dependencies:
+      eslint: 9.39.1(jiti@2.6.1)
+      recheck: 4.6.0-beta.3
+
   eslint-plugin-regexp@2.10.0(eslint@9.39.1(jiti@2.6.1)):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.1(jiti@2.6.1))
@@ -11055,6 +11111,35 @@ snapshots:
       tiny-invariant: 1.3.3
       tslib: 2.8.1
 
+  recheck-jar@4.6.0-beta.3:
+    optional: true
+
+  recheck-linux-arm64@4.6.0-beta.3:
+    optional: true
+
+  recheck-linux-x64@4.6.0-beta.3:
+    optional: true
+
+  recheck-macos-arm64@4.6.0-beta.3:
+    optional: true
+
+  recheck-macos-x64@4.6.0-beta.3:
+    optional: true
+
+  recheck-windows-x64@4.6.0-beta.3:
+    optional: true
+
+  recheck@4.6.0-beta.3:
+    dependencies:
+      synckit: 0.11.11
+    optionalDependencies:
+      recheck-jar: 4.6.0-beta.3
+      recheck-linux-arm64: 4.6.0-beta.3
+      recheck-linux-x64: 4.6.0-beta.3
+      recheck-macos-arm64: 4.6.0-beta.3
+      recheck-macos-x64: 4.6.0-beta.3
+      recheck-windows-x64: 4.6.0-beta.3
+
   recma-build-jsx@1.0.0:
     dependencies:
       '@types/estree': 1.0.8
@@ -11653,6 +11738,10 @@ snapshots:
 
   symbol-tree@3.2.4: {}
 
+  synckit@0.11.11:
+    dependencies:
+      '@pkgr/core': 0.2.9
+
   tailwindcss@4.1.17: {}
 
   tapable@2.3.0: {}
@@ -11800,7 +11889,7 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tsdown@0.16.6(typescript@5.9.3):
+  tsdown@0.16.6(synckit@0.11.11)(typescript@5.9.3):
     dependencies:
       ansis: 4.2.0
       cac: 6.7.14
@@ -11816,7 +11905,7 @@ snapshots:
       tinyglobby: 0.2.15
       tree-kill: 1.2.2
       unconfig-core: 7.4.1
-      unrun: 0.2.11
+      unrun: 0.2.11(synckit@0.11.11)
     optionalDependencies:
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -12024,10 +12113,12 @@ snapshots:
       '@unrs/resolver-binding-win32-ia32-msvc': 1.11.1
       '@unrs/resolver-binding-win32-x64-msvc': 1.11.1
 
-  unrun@0.2.11:
+  unrun@0.2.11(synckit@0.11.11):
     dependencies:
       '@oxc-project/runtime': 0.96.0
       rolldown: 1.0.0-beta.51
+    optionalDependencies:
+      synckit: 0.11.11
 
   update-browserslist-db@1.1.4(browserslist@4.28.0):
     dependencies:
