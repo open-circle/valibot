@@ -3,6 +3,7 @@ import type { BaseIssue, ErrorMessage } from 'valibot';
 export type Language = {
   code:
     | 'ar'
+    | 'az'
     | 'ca'
     | 'cs'
     | 'de'
