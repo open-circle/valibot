@@ -30,26 +30,31 @@ import type {
 } from '../../types/index.ts';
 import { _getStandardProps } from '../../utils/index.ts';
 
-/**
- * Schema type.
- */
-type Schema = SchemaWithoutPipe<
-  | LooseObjectSchemaAsync<
-      ObjectEntriesAsync,
-      ErrorMessage<LooseObjectIssue> | undefined
-    >
-  | ObjectSchemaAsync<ObjectEntriesAsync, ErrorMessage<ObjectIssue> | undefined>
-  | ObjectWithRestSchemaAsync<
-      ObjectEntriesAsync,
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  | StrictObjectSchemaAsync<
-      ObjectEntriesAsync,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
->;
+export namespace partialAsync {
+  /**
+   * Schema type.
+   */
+  export type Schema = SchemaWithoutPipe<
+    | LooseObjectSchemaAsync<
+        ObjectEntriesAsync,
+        ErrorMessage<LooseObjectIssue> | undefined
+      >
+    | ObjectSchemaAsync<
+        ObjectEntriesAsync,
+        ErrorMessage<ObjectIssue> | undefined
+      >
+    | ObjectWithRestSchemaAsync<
+        ObjectEntriesAsync,
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<ObjectWithRestIssue> | undefined
+      >
+    | StrictObjectSchemaAsync<
+        ObjectEntriesAsync,
+        ErrorMessage<StrictObjectIssue> | undefined
+      >
+  >;
+}
 
 /**
  * Partial entries type.
@@ -69,7 +74,7 @@ type PartialEntries<
  * Schema with partial type.
  */
 export type SchemaWithPartialAsync<
-  TSchema extends Schema,
+  TSchema extends partialAsync.Schema,
   TKeys extends ObjectKeys<TSchema> | undefined,
 > = TSchema extends
   | ObjectSchemaAsync<infer TEntries, ErrorMessage<ObjectIssue> | undefined>
@@ -259,7 +264,7 @@ export type SchemaWithPartialAsync<
  *
  * @returns An object schema.
  */
-export function partialAsync<const TSchema extends Schema>(
+export function partialAsync<const TSchema extends partialAsync.Schema>(
   schema: TSchema
 ): SchemaWithPartialAsync<TSchema, undefined>;
 
@@ -273,17 +278,23 @@ export function partialAsync<const TSchema extends Schema>(
  * @returns An object schema.
  */
 export function partialAsync<
-  const TSchema extends Schema,
+  const TSchema extends partialAsync.Schema,
   const TKeys extends ObjectKeys<TSchema>,
 >(schema: TSchema, keys: TKeys): SchemaWithPartialAsync<TSchema, TKeys>;
 
 // @__NO_SIDE_EFFECTS__
 export function partialAsync(
-  schema: Schema,
-  keys?: ObjectKeys<Schema>
-): SchemaWithPartialAsync<Schema, ObjectKeys<Schema> | undefined> {
+  schema: partialAsync.Schema,
+  keys?: ObjectKeys<partialAsync.Schema>
+): SchemaWithPartialAsync<
+  partialAsync.Schema,
+  ObjectKeys<partialAsync.Schema> | undefined
+> {
   // Create modified object entries
-  const entries: PartialEntries<ObjectEntriesAsync, ObjectKeys<Schema>> = {};
+  const entries: PartialEntries<
+    ObjectEntriesAsync,
+    ObjectKeys<partialAsync.Schema>
+  > = {};
   for (const key in schema.entries) {
     // @ts-expect-error
     entries[key] =

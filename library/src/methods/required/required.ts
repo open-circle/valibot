@@ -30,22 +30,27 @@ import type {
 } from '../../types/index.ts';
 import { _getStandardProps } from '../../utils/index.ts';
 
-/**
- * Schema type.
- */
-type Schema = SchemaWithoutPipe<
-  | LooseObjectSchema<ObjectEntries, ErrorMessage<LooseObjectIssue> | undefined>
-  | ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined>
-  | ObjectWithRestSchema<
-      ObjectEntries,
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  | StrictObjectSchema<
-      ObjectEntries,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
->;
+export namespace required {
+  /**
+   * Schema type.
+   */
+  export type Schema = SchemaWithoutPipe<
+    | LooseObjectSchema<
+        ObjectEntries,
+        ErrorMessage<LooseObjectIssue> | undefined
+      >
+    | ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined>
+    | ObjectWithRestSchema<
+        ObjectEntries,
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<ObjectWithRestIssue> | undefined
+      >
+    | StrictObjectSchema<
+        ObjectEntries,
+        ErrorMessage<StrictObjectIssue> | undefined
+      >
+  >;
+}
 
 /**
  * Required entries type.
@@ -66,7 +71,7 @@ type RequiredEntries<
  * Schema with required type.
  */
 export type SchemaWithRequired<
-  TSchema extends Schema,
+  TSchema extends required.Schema,
   TKeys extends ObjectKeys<TSchema> | undefined,
   TMessage extends ErrorMessage<NonOptionalIssue> | undefined,
 > = TSchema extends
@@ -257,7 +262,7 @@ export type SchemaWithRequired<
  */
 // @ts-expect-error FIXME: TypeScript incorrectly claims that the overload
 // signature is not compatible with the implementation signature
-export function required<const TSchema extends Schema>(
+export function required<const TSchema extends required.Schema>(
   schema: TSchema
 ): SchemaWithRequired<TSchema, undefined, undefined>;
 
@@ -270,7 +275,7 @@ export function required<const TSchema extends Schema>(
  * @returns An object schema.
  */
 export function required<
-  const TSchema extends Schema,
+  const TSchema extends required.Schema,
   const TMessage extends ErrorMessage<NonOptionalIssue> | undefined,
 >(
   schema: TSchema,
@@ -287,7 +292,7 @@ export function required<
  * @returns An object schema.
  */
 export function required<
-  const TSchema extends Schema,
+  const TSchema extends required.Schema,
   const TKeys extends ObjectKeys<TSchema>,
 >(schema: TSchema, keys: TKeys): SchemaWithRequired<TSchema, TKeys, undefined>;
 
@@ -302,7 +307,7 @@ export function required<
  * @returns An object schema.
  */
 export function required<
-  const TSchema extends Schema,
+  const TSchema extends required.Schema,
   const TKeys extends ObjectKeys<TSchema>,
   const TMessage extends ErrorMessage<NonOptionalIssue> | undefined,
 >(
@@ -313,12 +318,12 @@ export function required<
 
 // @__NO_SIDE_EFFECTS__
 export function required(
-  schema: Schema,
-  arg2?: ErrorMessage<NonOptionalIssue> | ObjectKeys<Schema>,
+  schema: required.Schema,
+  arg2?: ErrorMessage<NonOptionalIssue> | ObjectKeys<required.Schema>,
   arg3?: ErrorMessage<NonOptionalIssue>
 ): SchemaWithRequired<
-  Schema,
-  ObjectKeys<Schema> | undefined,
+  required.Schema,
+  ObjectKeys<required.Schema> | undefined,
   ErrorMessage<NonOptionalIssue> | undefined
 > {
   // Get keys and message from arguments
@@ -330,7 +335,7 @@ export function required(
   // Create modified object entries
   const entries: RequiredEntries<
     ObjectEntries,
-    ObjectKeys<Schema>,
+    ObjectKeys<required.Schema>,
     ErrorMessage<NonOptionalIssue> | undefined
   > = {};
   for (const key in schema.entries) {

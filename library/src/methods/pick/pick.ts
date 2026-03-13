@@ -34,43 +34,51 @@ import type {
 } from '../../types/index.ts';
 import { _getStandardProps } from '../../utils/index.ts';
 
-/**
- * The schema type.
- */
-type Schema = SchemaWithoutPipe<
-  | LooseObjectSchema<ObjectEntries, ErrorMessage<LooseObjectIssue> | undefined>
-  | LooseObjectSchemaAsync<
-      ObjectEntriesAsync,
-      ErrorMessage<LooseObjectIssue> | undefined
-    >
-  | ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined>
-  | ObjectSchemaAsync<ObjectEntriesAsync, ErrorMessage<ObjectIssue> | undefined>
-  | ObjectWithRestSchema<
-      ObjectEntries,
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  | ObjectWithRestSchemaAsync<
-      ObjectEntriesAsync,
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  | StrictObjectSchema<
-      ObjectEntries,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
-  | StrictObjectSchemaAsync<
-      ObjectEntriesAsync,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
->;
+export namespace pick {
+  /**
+   * The schema type.
+   */
+  export type Schema = SchemaWithoutPipe<
+    | LooseObjectSchema<
+        ObjectEntries,
+        ErrorMessage<LooseObjectIssue> | undefined
+      >
+    | LooseObjectSchemaAsync<
+        ObjectEntriesAsync,
+        ErrorMessage<LooseObjectIssue> | undefined
+      >
+    | ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined>
+    | ObjectSchemaAsync<
+        ObjectEntriesAsync,
+        ErrorMessage<ObjectIssue> | undefined
+      >
+    | ObjectWithRestSchema<
+        ObjectEntries,
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<ObjectWithRestIssue> | undefined
+      >
+    | ObjectWithRestSchemaAsync<
+        ObjectEntriesAsync,
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<ObjectWithRestIssue> | undefined
+      >
+    | StrictObjectSchema<
+        ObjectEntries,
+        ErrorMessage<StrictObjectIssue> | undefined
+      >
+    | StrictObjectSchemaAsync<
+        ObjectEntriesAsync,
+        ErrorMessage<StrictObjectIssue> | undefined
+      >
+  >;
+}
 
 /**
  * Schema with pick type.
  */
 export type SchemaWithPick<
-  TSchema extends Schema,
+  TSchema extends pick.Schema,
   TKeys extends ObjectKeys<TSchema>,
 > = TSchema extends
   | ObjectSchema<infer TEntries, ErrorMessage<ObjectIssue> | undefined>
@@ -465,7 +473,7 @@ export type SchemaWithPick<
  */
 // @__NO_SIDE_EFFECTS__
 export function pick<
-  const TSchema extends Schema,
+  const TSchema extends pick.Schema,
   const TKeys extends ObjectKeys<TSchema>,
 >(schema: TSchema, keys: TKeys): SchemaWithPick<TSchema, TKeys> {
   // Create modified object entries
