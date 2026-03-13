@@ -66,9 +66,9 @@ describe('multipleOf', () => {
     });
 
     test('for valid decimal numbers', () => {
-      expectNoActionIssue(multipleOf(0.01), [3, 0.1, 0.03, 1.5]);
-      expectNoActionIssue(multipleOf(0.1), [0.3]);
-      expectNoActionIssue(multipleOf(0.25), [0.75]);
+      expectNoActionIssue(multipleOf(0.01), [3, 0.1, 0.03, 1.5, -0.1, -1.5]);
+      expectNoActionIssue(multipleOf(0.1), [0.3, -0.3]);
+      expectNoActionIssue(multipleOf(0.25), [0.75, -0.75]);
     });
 
     test('for valid bigints', () => {
