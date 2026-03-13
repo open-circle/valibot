@@ -50,7 +50,7 @@ Schema to validate a string with a minimum of 2 digits.
 ```ts
 const minDigitCharsSchema = v.pipe(
   v.string(),
-  v.minDigitChars(2, 'This string must include not 1, but at least 2 digits.')
+  v.minDigitChars(2, 'This string must include at least 2 digits.')
 );
 ```
 
