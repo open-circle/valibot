@@ -1,0 +1,27 @@
+---
+title: MinDigitCharsIssue
+description: Min digits issue interface.
+contributors:
+  - will-stone
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# MinDigitCharsIssue
+
+Min digits issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+
+## Definition
+
+- `MinDigitCharsIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `received` <Property {...properties.received} />
+  - `requirement` <Property {...properties.requirement} />
