@@ -1,0 +1,190 @@
+---
+cover: JSON Schema
+title: JSON Schema package upgrade
+description: >-
+  This blog post introduces new configurations such as "typeMode" and
+  "overrideSchema", as well as the new "toJsonSchemaDefs" function, which were
+  added in the last two minor versions.
+published: 2025-06-01
+authors:
+  - fabian-hiller
+---
+
+import { Link } from '~/components';
+
+Valibot's [JSON Schema package](https://github.com/open-circle/valibot/tree/main/packages/to-json-schema) has seen significant growth in adoption over the past few weeks, reaching almost 200,000 monthly downloads on npm. We believe it is particularly popular for documentation and code generation purposes via the OpenAPI specification, as well as for generating structured LLM outputs.
+
+As these use cases will probably become more common in future, we have listened to your feedback and decided to invest more time in developing the package to make it extremely powerful. This blog post will introduce the new features added in the last two minor versions.
+
+## Convert input or output of schema
+
+The JSON Schema package now supports a new `typeMode` configuration option, which allows you to specify whether you want to convert the input or output of a Valibot schema.
+
+This is particularly useful when validating and defining an API endpoint with Valibot and your schemas contain transformations. This is because external developers are usually interested in the input schema of the request data but in the output schema of the response data.
+
+{/* prettier-ignore */}
+```ts
+import * as v from 'valibot';
+import { toJsonSchema } from '@valibot/to-json-schema';
+
+const ValibotSchema = v.pipe(
+  v.string(),
+  v.decimal(),
+  v.transform(Number),
+  v.number(),
+  v.maxValue(100)
+);
+
+toJsonSchema(ValibotSchema, { typeMode: 'input' });
+
+// {
+//   $schema: "http://json-schema.org/draft-07/schema#",
+//   type: "string",
+//   pattern: "^[+-]?(?:\\d*\\.)?\\d+$"
+// }
+
+toJsonSchema(ValibotSchema, { typeMode: 'output' });
+
+// {
+//   $schema: "http://json-schema.org/draft-07/schema#",
+//   type: "number",
+//   maximum: 100
+// }
+```
+
+## Override default JSON Schema conversion
+
+The JSON Schema package now enables you to override the default behaviour of the JSON Schema conversion process. This can be achieved using the three new configuration options: `overrideSchema`, `overrideAction` and `overrideRef`. These let you specify a custom function that will be called for each schema, action or reference during conversion.
+
+You can either return a value to override the default behaviour, or return `null` or `undefined` to skip the override. Furthermore, all three callback functions provide the full context via the first function argument, enabling you to perform the same actions as we do internally.
+
+{/* prettier-ignore */}
+```ts
+import * as v from 'valibot';
+import { toJsonSchema } from '@valibot/to-json-schema';
+
+const ValibotSchema = v.object({ createdAt: v.date() });
+
+toJsonSchema(ValibotSchema, {
+  overrideSchema(context) {
+    if (context.valibotSchema.type === 'date') {
+      return { type: 'string', format: 'date-time' };
+    }
+  },
+});
+
+// {
+//   $schema: "http://json-schema.org/draft-07/schema#",
+//   type: "object",
+//   properties: {
+//     createdAt: { type: "string" format: "date-time" }
+//   },
+//   required: ["createdAt"]
+// }
+```
+
+## New global definition storage
+
+If you are reusing Valibot schemas within other Valibot schemas, you may be interested in representing these schemas as references in the JSON Schema output. To facilitate this, the JSON Schema package now includes a new global definition storage.
+
+This feature allows you to define these definitions after creating a Valibot schema, rather than when calling `toJsonSchema`. This can be particularly useful for larger projects with many schemas, as it helps to keep your code clean and organised.
+
+{/* prettier-ignore */}
+```ts
+import * as v from 'valibot';
+import { addGlobalDefs, toJsonSchema } from '@valibot/to-json-schema';
+
+const ValibotSchema1 = v.string();
+const ValibotSchema2 = v.number();
+
+addGlobalDefs({ ValibotSchema1, ValibotSchema2 });
+
+const ValibotSchema3 = v.tuple([ValibotSchema1, ValibotSchema2]);
+
+toJsonSchema(ValibotSchema3);
+
+// {
+//   $schema: "http://json-schema.org/draft-07/schema#",
+//   type: "array",
+//   items: [
+//     { $ref: "#/$defs/ValibotSchema1" },
+//     { $ref: "#/$defs/ValibotSchema2" }
+//   ],
+//   minItems: 2,
+//   $defs: {
+//     ValibotSchema1: { type: "string" },
+//     ValibotSchema2: { type: "number" }
+//   }
+// }
+```
+
+## Output schema definitions only
+
+If you're working with the OpenAPI specification, you might be interested in generating only the JSON Schema definitions and overriding the reference IDs to customise them. The new `toJsonSchemaDefs` function and `overrideRef` configuration option now make this possible.
+
+{/* prettier-ignore */}
+```ts
+import * as v from 'valibot';
+import { toJsonSchemaDefs } from '@valibot/to-json-schema';
+
+const ValibotSchema1 = v.string();
+const ValibotSchema2 = v.number();
+const ValibotSchema3 = v.tuple([ValibotSchema1, ValibotSchema2]);
+
+toJsonSchemaDefs(
+  { ValibotSchema1, ValibotSchema2, ValibotSchema3 },
+  { overrideRef: (context) => `#/schemas/${context.referenceId}` }
+);
+
+// {
+//   ValibotSchema1: { type: "string" },
+//   ValibotSchema2: { type: "number" },
+//   ValibotSchema3: {
+//     type: "array",
+//     items: [
+//       { $ref: "#/schemas/ValibotSchema1" },
+//       { $ref: "#/schemas/ValibotSchema2" }
+//     ],
+//     minItems: 2
+//   }
+// }
+```
+
+You can also convert global definitions added via the new `addGlobalDefs` function. To do this, call `getGlobalDefs` to retrieve the definitions and pass them as the first argument to `toJsonSchemaDefs`.
+
+## Enhanced metadata support
+
+Previously we only supported the <Link href="/api/title/">`title`</Link> and <Link href="/api/description/">`description`</Link> action directly but not the generic <Link href="/api/metadata/">`metadata`</Link> action. This was improved so that title, description and examples can now also be specified via the generic <Link href="/api/metadata/">`metadata`</Link> action, providing you with more flexibility in defining your schemas.
+
+{/* prettier-ignore */}
+```ts
+import * as v from 'valibot';
+import { toJsonSchema } from '@valibot/to-json-schema';
+
+const ValibotSchema = v.pipe(
+  v.string(),
+  v.email(),
+  v.metadata({
+    title: 'Email Schema',
+    description: 'A schema that validates email addresses.',
+    examples: ['jane@example.com'],
+  })
+);
+
+toJsonSchema(ValibotSchema);
+
+// {
+//   $schema: "http://json-schema.org/draft-07/schema#",
+//   type: "string",
+//   format: "email",
+//   title: "Email Schema",
+//   description: "A schema that validates email addresses.",
+//   examples: ["jane@example.com"]
+// }
+```
+
+## What's next?
+
+Firstly, I would like to thank [@Xiot](https://github.com/Xiot) for his detailed feedback on the JSON Schema package and all the new changes. His help in identifying edge cases and advising on the API design was invaluable.
+
+Next, we will probably release the Zod-to-Valibot codemod to help you migrate to Valibot if you are interested. Stay tuned for that!

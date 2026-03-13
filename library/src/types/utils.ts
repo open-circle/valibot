@@ -31,6 +31,20 @@ export type NonOptional<TValue> = TValue extends undefined ? never : TValue;
 export type MaybeReadonly<TValue> = TValue | Readonly<TValue>;
 
 /**
+ * Constructs a type that is deeply readonly.
+ */
+export type DeepReadonly<TValue> = TValue extends
+  | Record<string, unknown>
+  | readonly unknown[]
+  ? { readonly [TKey in keyof TValue]: DeepReadonly<TValue[TKey]> }
+  : TValue;
+
+/**
+ * Constructs a type that is maybe deeply readonly.
+ */
+export type MaybeDeepReadonly<TValue> = TValue | DeepReadonly<TValue>;
+
+/**
  * Constructs a type that is maybe a promise.
  */
 export type MaybePromise<TValue> = TValue | Promise<TValue>;
@@ -46,21 +60,29 @@ export type Prettify<TObject> = { [TKey in keyof TObject]: TObject[TKey] } & {};
 /**
  * Marks specific keys as optional.
  */
-export type MarkOptional<
-  TObject,
-  TKeys extends keyof TObject,
-> = Partial<TObject> & Required<Omit<TObject, TKeys>>;
+export type MarkOptional<TObject, TKeys extends keyof TObject> =
+  // Mapping any entry to unknown preserves key order in final output
+  { [TKey in keyof TObject]?: unknown } & Omit<TObject, TKeys> &
+    Partial<Pick<TObject, TKeys>>;
+
+/**
+ * Merges two objects. Overlapping entries from the second object overwrite
+ * properties from the first object.
+ */
+export type Merge<TFirstObject, TSecondObject> = Omit<
+  TFirstObject,
+  keyof TFirstObject & keyof TSecondObject
+> &
+  TSecondObject;
 
 /**
  * Extracts first tuple item.
- *
  */
 export type FirstTupleItem<TTuple extends readonly [unknown, ...unknown[]]> =
   TTuple[0];
 
 /**
  * Extracts last tuple item.
- *
  */
 export type LastTupleItem<TTuple extends readonly [unknown, ...unknown[]]> =
   TTuple[TTuple extends readonly [unknown, ...infer TRest]

@@ -3,11 +3,17 @@ import type { PropertyProps } from '~/components';
 export const properties: Record<string, PropertyProps> = {
   TInput: {
     modifier: 'extends',
-    type: 'number',
+    type: {
+      type: 'union',
+      options: ['number', 'bigint'],
+    },
   },
   TRequirement: {
     modifier: 'extends',
-    type: 'number',
+    type: {
+      type: 'union',
+      options: ['number', 'bigint'],
+    },
   },
   BaseIssue: {
     modifier: 'extends',
@@ -36,9 +42,6 @@ export const properties: Record<string, PropertyProps> = {
     },
   },
   expected: {
-    type: 'null',
-  },
-  received: {
     type: {
       type: 'template',
       parts: [
@@ -53,16 +56,21 @@ export const properties: Record<string, PropertyProps> = {
       ],
     },
   },
-  requirement: {
+  received: {
     type: {
-      type: 'function',
-      params: [
+      type: 'template',
+      parts: [
         {
-          name: 'input',
-          type: 'number',
+          type: 'custom',
+          name: 'TInput',
         },
       ],
-      return: 'boolean',
+    },
+  },
+  requirement: {
+    type: {
+      type: 'custom',
+      name: 'TRequirement',
     },
   },
 };

@@ -19,9 +19,9 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup environment
-        uses: ./.github/actions/pnpm
+        uses: ./.github/actions/environment
       - name: Build library
         run: pnpm build
         working-directory: library
@@ -41,7 +41,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Publish library
         run: npx jsr publish
         working-directory: library
@@ -55,9 +55,9 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup environment
-        uses: ./.github/actions/pnpm
+        uses: ./.github/actions/environment
       - name: Build i18n
         run: pnpm build.npm
         working-directory: packages/i18n
@@ -77,9 +77,9 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup environment
-        uses: ./.github/actions/pnpm
+        uses: ./.github/actions/environment
       - name: Build i18n
         run: pnpm build.jsr
         working-directory: packages/i18n
@@ -96,9 +96,9 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup environment
-        uses: ./.github/actions/pnpm
+        uses: ./.github/actions/environment
       - name: Build to-json-schema
         run: pnpm build
         working-directory: packages/to-json-schema
@@ -118,9 +118,9 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup environment
-        uses: ./.github/actions/pnpm
+        uses: ./.github/actions/environment
       - name: Publish to-json-schema
         run: npx jsr publish
         working-directory: packages/to-json-schema

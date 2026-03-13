@@ -7,7 +7,7 @@ The official i18n translations for Valibot. See the [internationalization guide]
 | Language        | Pull Request       | Status |
 | --------------- | ------------------ | ------ |
 | Arabic (ar)     | [#527][pr-527-url] | ✅     |
-| Catalan (ca)    | [#652][pr-527-url] | ✅     |
+| Catalan (ca)    | [#652][pr-652-url] | ✅     |
 | Chinese (zh-CN) | [#419][pr-419-url] | ✅     |
 | Chinese (zh-TW) | [#427][pr-427-url] | ✅     |
 | Czech (cs)      | [#886][pr-886-url] | ✅     |
@@ -17,7 +17,7 @@ The official i18n translations for Valibot. See the [internationalization guide]
 | French (fr)     | [#418][pr-418-url] | ✅     |
 | German (de)     | [#397][pr-397-url] | ✅     |
 | Hungarian (hu)  | [#560][pr-560-url] | ✅     |
-| Indonesia (id)  | [#683][pr-683-url] | ✅     |
+| Indonesian (id) | [#683][pr-683-url] | ✅     |
 | Italian (it)    | [#605][pr-605-url] | ✅     |
 | Japanese (ja)   | [#431][pr-431-url] | ✅     |
 | Korean (kr)     | [#429][pr-429-url] | ✅     |
@@ -33,38 +33,38 @@ The official i18n translations for Valibot. See the [internationalization guide]
 | Ukrainian (uk)  | [#423][pr-423-url] | ✅     |
 | Vietnamese (vi) | [#951][pr-951-url] | ✅     |
 
-[pr-397-url]: https://github.com/fabian-hiller/valibot/pull/397
-[pr-418-url]: https://github.com/fabian-hiller/valibot/pull/418
-[pr-419-url]: https://github.com/fabian-hiller/valibot/pull/419
-[pr-422-url]: https://github.com/fabian-hiller/valibot/pull/422
-[pr-423-url]: https://github.com/fabian-hiller/valibot/pull/423
-[pr-427-url]: https://github.com/fabian-hiller/valibot/pull/427
-[pr-429-url]: https://github.com/fabian-hiller/valibot/pull/429
-[pr-431-url]: https://github.com/fabian-hiller/valibot/pull/431
-[pr-434-url]: https://github.com/fabian-hiller/valibot/pull/434
-[pr-438-url]: https://github.com/fabian-hiller/valibot/pull/438
-[pr-439-url]: https://github.com/fabian-hiller/valibot/pull/439
-[pr-472-url]: https://github.com/fabian-hiller/valibot/pull/472
-[pr-509-url]: https://github.com/fabian-hiller/valibot/pull/509
-[pr-527-url]: https://github.com/fabian-hiller/valibot/pull/527
-[pr-549-url]: https://github.com/fabian-hiller/valibot/pull/549
-[pr-560-url]: https://github.com/fabian-hiller/valibot/pull/560
-[pr-581-url]: https://github.com/fabian-hiller/valibot/pull/581
-[pr-584-url]: https://github.com/fabian-hiller/valibot/pull/584
-[pr-605-url]: https://github.com/fabian-hiller/valibot/pull/605
-[pr-606-url]: https://github.com/fabian-hiller/valibot/pull/606
-[pr-652-url]: https://github.com/fabian-hiller/valibot/pull/652
-[pr-683-url]: https://github.com/fabian-hiller/valibot/pull/683
-[pr-838-url]: https://github.com/fabian-hiller/valibot/pull/838
-[pr-886-url]: https://github.com/fabian-hiller/valibot/pull/886
-[pr-951-url]: https://github.com/fabian-hiller/valibot/pull/951
+[pr-397-url]: https://github.com/open-circle/valibot/pull/397
+[pr-418-url]: https://github.com/open-circle/valibot/pull/418
+[pr-419-url]: https://github.com/open-circle/valibot/pull/419
+[pr-422-url]: https://github.com/open-circle/valibot/pull/422
+[pr-423-url]: https://github.com/open-circle/valibot/pull/423
+[pr-427-url]: https://github.com/open-circle/valibot/pull/427
+[pr-429-url]: https://github.com/open-circle/valibot/pull/429
+[pr-431-url]: https://github.com/open-circle/valibot/pull/431
+[pr-434-url]: https://github.com/open-circle/valibot/pull/434
+[pr-438-url]: https://github.com/open-circle/valibot/pull/438
+[pr-439-url]: https://github.com/open-circle/valibot/pull/439
+[pr-472-url]: https://github.com/open-circle/valibot/pull/472
+[pr-509-url]: https://github.com/open-circle/valibot/pull/509
+[pr-527-url]: https://github.com/open-circle/valibot/pull/527
+[pr-549-url]: https://github.com/open-circle/valibot/pull/549
+[pr-560-url]: https://github.com/open-circle/valibot/pull/560
+[pr-581-url]: https://github.com/open-circle/valibot/pull/581
+[pr-584-url]: https://github.com/open-circle/valibot/pull/584
+[pr-605-url]: https://github.com/open-circle/valibot/pull/605
+[pr-606-url]: https://github.com/open-circle/valibot/pull/606
+[pr-652-url]: https://github.com/open-circle/valibot/pull/652
+[pr-683-url]: https://github.com/open-circle/valibot/pull/683
+[pr-838-url]: https://github.com/open-circle/valibot/pull/838
+[pr-886-url]: https://github.com/open-circle/valibot/pull/886
+[pr-951-url]: https://github.com/open-circle/valibot/pull/951
 
 ## Getting started
 
 Step 1: Clone repository
 
 ```bash
-git clone git@github.com:fabian-hiller/valibot.git
+git clone git@github.com:open-circle/valibot.git
 ```
 
 Step 2: Install dependencies

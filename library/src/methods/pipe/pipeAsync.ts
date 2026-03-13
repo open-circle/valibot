@@ -32,7 +32,10 @@ export type SchemaWithPipeAsync<
       | PipeItemAsync<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
     )[],
   ],
-> = Omit<FirstTupleItem<TPipe>, 'async' | '~standard' | '~run' | '~types'> & {
+> = Omit<
+  FirstTupleItem<TPipe>,
+  'async' | 'pipe' | '~standard' | '~run' | '~types'
+> & {
   /**
    * The pipe items.
    */

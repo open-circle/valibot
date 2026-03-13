@@ -21,9 +21,9 @@ export interface RawTransformIssue<TInput> extends BaseIssue<TInput> {
 }
 
 /**
- * Issue info interface.
+ * Raw transform issue info interface.
  */
-interface IssueInfo<TInput> {
+export interface RawTransformIssueInfo<TInput> {
   label?: string | undefined;
   input?: unknown | undefined;
   expected?: string | undefined;
@@ -33,16 +33,18 @@ interface IssueInfo<TInput> {
 }
 
 /**
- * Add issue type.
+ * Raw transform add issue type.
  */
-type AddIssue<TInput> = (info?: IssueInfo<TInput>) => void;
+export type RawTransformAddIssue<TInput> = (
+  info?: RawTransformIssueInfo<TInput>
+) => void;
 
 /**
- * Context interface.
+ * Raw transform context interface.
  */
-export interface Context<TInput> {
+export interface RawTransformContext<TInput> {
   readonly dataset: SuccessDataset<TInput>;
   readonly config: Config<RawTransformIssue<TInput>>;
-  readonly addIssue: AddIssue<TInput>;
+  readonly addIssue: RawTransformAddIssue<TInput>;
   readonly NEVER: never;
 }

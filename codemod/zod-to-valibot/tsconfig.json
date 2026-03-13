@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES6",
+    "allowJs": true
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["node_modules", "./dist/**/*", "./__testfixtures__/**/*"]
+}

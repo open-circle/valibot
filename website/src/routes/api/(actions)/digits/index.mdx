@@ -7,12 +7,14 @@ contributors:
   - andrew-3kb
 ---
 
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # digits
 
 Creates a [digits](https://en.wikipedia.org/wiki/Numerical_digit) validation action.
+
+> The difference between `digits` and <Link href="../decimal/">`decimal`</Link> is that `digits` accepts only the digits 0-9, while <Link href="../decimal/">`decimal`</Link> accepts floating point numbers and negative numbers.
 
 ```ts
 const Action = v.digits<TInput, TMessage>(message);
@@ -56,7 +58,7 @@ The following APIs can be combined with `digits`.
 
 ### Schemas
 
-<ApiList items={['any', 'custom', 'string', 'unknown']} />
+<ApiList items={['any', 'custom', 'string']} />
 
 ### Methods
 

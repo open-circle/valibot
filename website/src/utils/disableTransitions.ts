@@ -7,5 +7,5 @@ export function disableTransitions() {
   if (timeout) clearTimeout(timeout);
   const { classList } = document.documentElement;
   classList.add('disable-transitions');
-  timeout = setTimeout(() => classList.remove('disable-transitions'), 100);
+  timeout = setTimeout(() => classList.remove('disable-transitions'), 500);
 }

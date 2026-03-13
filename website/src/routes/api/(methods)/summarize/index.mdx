@@ -1,0 +1,56 @@
+---
+title: summarize
+description: Summarize the error messages of issues in a pretty-printable multi-line string.
+source: /methods/summarize/summarize.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# summarize
+
+Summarize the error messages of issues in a pretty-printable multi-line string.
+
+```ts
+const errors = v.summarize(issues);
+```
+
+## Parameters
+
+- `issues` <Property {...properties.issues} />
+
+### Explanation
+
+If an issue in `issues` contains a path that can be converted to a dot path, the dot path will be displayed in the `errors` output just below the issue's error message.
+
+## Returns
+
+- `errors` <Property {...properties.errors} />
+
+## Examples
+
+The following example show how `summarize` can be used.
+
+```ts
+const Schema = v.object({
+  nested: v.object({
+    foo: v.string('Value of "nested.foo" is invalid.'),
+  }),
+});
+
+const result = v.safeParse(Schema, { nested: { foo: null } });
+
+if (result.issues) {
+  console.log(v.summarize(result.issues));
+}
+```
+
+## Related
+
+The following APIs can be combined with `summarize`.
+
+### Methods
+
+<ApiList items={['parse', 'parser', 'safeParse']} />

@@ -4,10 +4,36 @@ All notable changes to the library will be documented in this file.
 
 ## vX.X.X (Month DD, YYYY)
 
+- Add `guard` transformation action to narrow types using type predicates (pull request #1204)
+- Add `parseBoolean` transformation action to parse boolean values from strings and other types (pull request #1251)
+- Add `isrc` validation action to validate ISRC codes (pull request #1373)
+- Add `domain` validation action to validate domain names (pull request #1284)
+- Fix `creditCard` validation action to allow 13-digit Visa card numbers (pull request #1347)
+- Fix types for deeply readonly default and fallback values
+
+## v1.2.0 (November 24, 2025)
+
+- Add `toBigint`, `toBoolean`, `toDate`, `toNumber` and `toString` transformation actions (pull request #1212)
+- Add `examples` action to add example values to a schema (pull request #1199)
+- Add `getExamples` method to extract example values from a schema (pull request #1199)
+- Add `isbn` validation action to validate ISBN-10 and ISBN-13 strings (pull request #1097)
+- Add exports for `RawCheckAddIssue`, `RawCheckContext`, `RawCheckIssueInfo`, `RawTransformAddIssue`, `RawTransformContext` and `RawTransformIssueInfo` types for better developer experience with `rawCheck` and `rawTransform` actions (pull request #1359)
+- Change build step to tsdown
+- Fix ReDoS vulnerability in `EMOJI_REGEX` used by `emoji` action
+
+## v1.1.0 (May 06, 2025)
+
 - Add `message` method to overwrite local error message configuration of a schema (pull request #1103)
+- Add `summarize` method to summarize issues into a pretty-printable multi-line string (pull request #1158)
+- Add `getTitle`, `getDescription` and `getMetadata` methods to extract metadata of a schema (pull request #1154)
 - Add `minEntries` and `maxEntries` validation action to validate number of object entries (pull request #1100)
 - Add `entries` and `notEntries` validation action to validate number of object entries (pull request #1156)
+- Add `parseJson` and `stringifyJson` transformation action to parse and stringify JSON (pull request #1137)
+- Add `flavor` transformation action to flavor the output type of a schema (pull request #950)
+- Add support for bigints to `multipleOf` validation action (pull request #1164)
 - Change implementation of `variant` and `variantAsync` schema to improve performance by aborting validation of discriminators early (pull request #1110)
+- Change name of `NanoIDAction` and `NanoIDIssue` interface to `NanoIdAction` and `NanoIdIssue` (pull request #1171)
+- Fix internal `MarkOptional` type to fix input and output type of objects in edge cases (issue #1176)
 
 ## v1.0.0 (March 18, 2025)
 
@@ -261,7 +287,7 @@ All notable changes to the library will be documented in this file.
 
 ## v0.20.0 (October 31, 2023)
 
-> Note: The library has been revised and refactored. There is a migration guide in the [release notes](https://github.com/fabian-hiller/valibot/releases/tag/v0.20.0).
+> Note: The library has been revised and refactored. There is a migration guide in the [release notes](https://github.com/open-circle/valibot/releases/tag/v0.20.0).
 
 - Add `getRestAndDefaultArgs` utility function
 - Add `rest` argument to `object` and `objectAsync` schema
@@ -347,7 +373,7 @@ All notable changes to the library will be documented in this file.
 
 ## v0.13.0 (August 23, 2023)
 
-> Note: The library has been revised and refactored. There is a migration guide in the [release notes](https://github.com/fabian-hiller/valibot/releases/tag/v0.13.0).
+> Note: The library has been revised and refactored. There is a migration guide in the [release notes](https://github.com/open-circle/valibot/releases/tag/v0.13.0).
 
 - Add `fallback` and `fallbackAsync` method (pull request #103)
 - Add `excludes` validation as negation of `includes`

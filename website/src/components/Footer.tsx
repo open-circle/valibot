@@ -7,7 +7,7 @@ import { TextLink } from './TextLink';
 export const Footer = component$(() => (
   <footer class="flex justify-between p-4 text-sm md:text-base lg:px-8 lg:py-6 lg:text-[17px]">
     <div>&copy; {new Date().getFullYear()} Fabian Hiller</div>
-    <nav class="space-x-5 lg:space-x-12">
+    <nav class="flex gap-5 lg:gap-12">
       {[
         { label: 'Contact', href: '/contact/' },
         { label: 'Privacy', href: '/privacy/' },

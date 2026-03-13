@@ -7,6 +7,8 @@ const jsonTokens = [
   ['comma', /^,/],
   ['key', /^"(?:\\.|[^"\\])*"(?=:)/],
   ['undefined', /^"\[undefined\]"/],
+  ['infinity', /^"\[-?Infinity\]"/],
+  ['nan', /^"\[NaN\]"/],
   ['instance', /^"\[[A-Z]\w*\]"/],
   ['string', /^"(?:\\.|[^"\\])*"/],
   ['number', /^-?\d+(?:\.\d+)?(?:e[+-]?\d+)?/i],
@@ -50,9 +52,14 @@ function stringify(args) {
             }
           }
 
-          // If it is undefined, convert it to a string
-          if (value === undefined) {
-            return '[undefined]';
+          // If it is a non supported value, convert it to a string
+          if (
+            value === undefined ||
+            value === Infinity ||
+            value === -Infinity ||
+            Number.isNaN(value)
+          ) {
+            return `[${value}]`;
           }
 
           // Otherwise, return value as is
@@ -89,7 +96,11 @@ function stringify(args) {
               output.push(
                 `<span class="text-teal-600 dark:text-teal-400">${substring}</span>`
               );
-            } else if (token === 'undefined') {
+            } else if (
+              token === 'undefined' ||
+              token === 'infinity' ||
+              token === 'nan'
+            ) {
               output.push(
                 `<span class="text-teal-600 dark:text-teal-400">${substring.slice(2, -2)}</span>`
               );

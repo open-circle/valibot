@@ -6,11 +6,16 @@ import type {
 import { _addIssue } from '../../utils/index.ts';
 
 /**
+ * Input type
+ */
+type Input = number | bigint;
+
+/**
  * Multiple of issue interface.
  */
 export interface MultipleOfIssue<
-  TInput extends number,
-  TRequirement extends number,
+  TInput extends Input,
+  TRequirement extends Input,
 > extends BaseIssue<TInput> {
   /**
    * The issue kind.
@@ -27,7 +32,7 @@ export interface MultipleOfIssue<
   /**
    * The received property.
    */
-  readonly received: `${number}`;
+  readonly received: `${TInput}`;
   /**
    * The divisor.
    */
@@ -38,8 +43,8 @@ export interface MultipleOfIssue<
  * Multiple of action interface.
  */
 export interface MultipleOfAction<
-  TInput extends number,
-  TRequirement extends number,
+  TInput extends Input,
+  TRequirement extends Input,
   TMessage extends
     | ErrorMessage<MultipleOfIssue<TInput, TRequirement>>
     | undefined,
@@ -86,6 +91,18 @@ export function multipleOf<
  * Creates a [multiple](https://en.wikipedia.org/wiki/Multiple_(mathematics)) of validation action.
  *
  * @param requirement The divisor.
+ *
+ * @returns A multiple of action.
+ */
+export function multipleOf<
+  TInput extends bigint,
+  const TRequirement extends bigint,
+>(requirement: TRequirement): MultipleOfAction<TInput, TRequirement, undefined>;
+
+/**
+ * Creates a [multiple](https://en.wikipedia.org/wiki/Multiple_(mathematics)) of validation action.
+ *
+ * @param requirement The divisor.
  * @param message The error message.
  *
  * @returns A multiple of action.
@@ -101,14 +118,33 @@ export function multipleOf<
   message: TMessage
 ): MultipleOfAction<TInput, TRequirement, TMessage>;
 
+/**
+ * Creates a [multiple](https://en.wikipedia.org/wiki/Multiple_(mathematics)) of validation action.
+ *
+ * @param requirement The divisor.
+ * @param message The error message.
+ *
+ * @returns A multiple of action.
+ */
+export function multipleOf<
+  TInput extends bigint,
+  const TRequirement extends bigint,
+  const TMessage extends
+    | ErrorMessage<MultipleOfIssue<TInput, TRequirement>>
+    | undefined,
+>(
+  requirement: TRequirement,
+  message: TMessage
+): MultipleOfAction<TInput, TRequirement, TMessage>;
+
 // @__NO_SIDE_EFFECTS__
 export function multipleOf(
-  requirement: number,
-  message?: ErrorMessage<MultipleOfIssue<number, number>>
+  requirement: Input,
+  message?: ErrorMessage<MultipleOfIssue<Input, Input>>
 ): MultipleOfAction<
-  number,
-  number,
-  ErrorMessage<MultipleOfIssue<number, number>> | undefined
+  Input,
+  Input,
+  ErrorMessage<MultipleOfIssue<Input, Input>> | undefined
 > {
   return {
     kind: 'validation',
@@ -119,7 +155,8 @@ export function multipleOf(
     requirement,
     message,
     '~run'(dataset, config) {
-      if (dataset.typed && dataset.value % this.requirement !== 0) {
+      // @ts-expect-error
+      if (dataset.typed && dataset.value % this.requirement != 0) {
         _addIssue(this, 'multiple', dataset, config);
       }
       return dataset;

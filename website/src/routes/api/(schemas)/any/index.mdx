@@ -9,8 +9,7 @@ contributors:
   - morinokami
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # any
@@ -98,6 +97,7 @@ The following APIs can be combined with `any`.
     'decimal',
     'description',
     'digits',
+    'domain',
     'email',
     'emoji',
     'empty',
@@ -108,6 +108,7 @@ The following APIs can be combined with `any`.
     'filterItems',
     'findItem',
     'finite',
+    'flavor',
     'graphemes',
     'gtValue',
     'hash',
@@ -119,6 +120,8 @@ The following APIs can be combined with `any`.
     'ip',
     'ipv4',
     'ipv6',
+    'isbn',
+    'isrc',
     'isoDate',
     'isoDateTime',
     'isoTime',
@@ -160,6 +163,7 @@ The following APIs can be combined with `any`.
     'notValues',
     'notWords',
     'octal',
+    'parseJson',
     'partialCheck',
     'rawCheck',
     'rawTransform',
@@ -174,10 +178,16 @@ The following APIs can be combined with `any`.
     'someItem',
     'sortItem',
     'startsWith',
+    'stringifyJson',
     'title',
+    'toBigint',
+    'toBoolean',
+    'toDate',
     'toLowerCase',
     'toMaxValue',
     'toMinValue',
+    'toNumber',
+    'toString',
     'toUpperCase',
     'transform',
     'trim',

@@ -1,9 +1,16 @@
 import { describe, expectTypeOf, test } from 'vitest';
-import type { ReadonlyAction, TransformAction } from '../../actions/index.ts';
+import type {
+  Brand,
+  BrandAction,
+  DescriptionAction,
+  ReadonlyAction,
+  TransformAction,
+} from '../../actions/index.ts';
 import type { SchemaWithPipe } from '../../methods/index.ts';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
 import type { AnySchema } from '../any/index.ts';
 import type { BooleanIssue, BooleanSchema } from '../boolean/index.ts';
+import type { CustomIssue, CustomSchema } from '../custom/index.ts';
 import type { ExactOptionalSchema } from '../exactOptional/index.ts';
 import type { NullishSchema } from '../nullish/index.ts';
 import {
@@ -68,6 +75,10 @@ describe('objectWithRest', () => {
             TransformAction<undefined | string, number>,
           ]
         >;
+        key07: CustomSchema<`a${string}` | `b${string}`, undefined>;
+        key08: SchemaWithPipe<
+          [StringSchema<undefined>, BrandAction<string, 'foo'>]
+        >;
 
         // ExactOptionalSchema
         key10: ExactOptionalSchema<StringSchema<undefined>, undefined>;
@@ -87,6 +98,41 @@ describe('objectWithRest', () => {
         key33: NullishSchema<StringSchema<undefined>, () => undefined>;
         key34: NullishSchema<StringSchema<undefined>, () => null>;
         key35: NullishSchema<StringSchema<undefined>, () => 'foo'>;
+
+        // SchemaWithPipe
+        key40: SchemaWithPipe<
+          [ExactOptionalSchema<StringSchema<undefined>, undefined>]
+        >;
+        key41: SchemaWithPipe<
+          [
+            ExactOptionalSchema<StringSchema<undefined>, undefined>,
+            DescriptionAction<string, 'foo'>,
+          ]
+        >;
+        key42: SchemaWithPipe<
+          [OptionalSchema<StringSchema<undefined>, undefined>]
+        >;
+        key43: SchemaWithPipe<
+          [
+            OptionalSchema<StringSchema<undefined>, undefined>,
+            DescriptionAction<string | undefined, 'foo'>,
+          ]
+        >;
+        key44: SchemaWithPipe<
+          [NullishSchema<StringSchema<undefined>, undefined>]
+        >;
+        key45: SchemaWithPipe<
+          [
+            NullishSchema<StringSchema<undefined>, undefined>,
+            DescriptionAction<string | null | undefined, 'foo'>,
+          ]
+        >;
+        key46: SchemaWithPipe<
+          [
+            NullishSchema<StringSchema<undefined>, undefined>,
+            TransformAction<string | null | undefined, string[]>,
+          ]
+        >;
       },
       BooleanSchema<undefined>,
       undefined
@@ -103,6 +149,8 @@ describe('objectWithRest', () => {
           key04: string;
           key05: string | undefined;
           key06?: string | undefined;
+          key07: `a${string}` | `b${string}`;
+          key08: string;
 
           // ExactOptionalSchema
           key10?: string;
@@ -122,6 +170,15 @@ describe('objectWithRest', () => {
           key33?: string | null | undefined;
           key34?: string | null | undefined;
           key35?: string | null | undefined;
+
+          // SchemaWithPipe
+          key40?: string;
+          key41?: string;
+          key42?: string | undefined;
+          key43?: string | undefined;
+          key44?: string | null | undefined;
+          key45?: string | null | undefined;
+          key46?: string | null | undefined;
         } & { [key: string]: boolean }
       >();
     });
@@ -137,6 +194,8 @@ describe('objectWithRest', () => {
           readonly key04: string;
           key05: string;
           key06?: number;
+          key07: `a${string}` | `b${string}`;
+          key08: string & Brand<'foo'>;
 
           // ExactOptionalSchema
           key10?: string;
@@ -156,6 +215,15 @@ describe('objectWithRest', () => {
           key33: string | undefined;
           key34: string | null;
           key35: string;
+
+          // SchemaWithPipe
+          key40?: string;
+          key41?: string;
+          key42?: string | undefined;
+          key43?: string | undefined;
+          key44?: string | null | undefined;
+          key45?: string | null | undefined;
+          key46?: string[];
         } & { [key: string]: boolean }
       >();
     });
@@ -167,6 +235,7 @@ describe('objectWithRest', () => {
         | StringIssue
         | NumberIssue
         | BooleanIssue
+        | CustomIssue
       >();
     });
   });

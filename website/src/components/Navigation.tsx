@@ -6,11 +6,11 @@ import {
 } from '@builder.io/qwik';
 import {
   type ContentMenu,
-  Link,
   useContent,
   useLocation,
 } from '@builder.io/qwik-city';
 import clsx from 'clsx';
+import { Link } from './Link';
 
 type NavigationProps = {
   class?: string;
@@ -30,7 +30,7 @@ export const Navigation = component$<NavigationProps>((props) => {
       ref={navElement}
       class={clsx('h-full overflow-auto overscroll-contain', props.class)}
     >
-      <ul class="space-y-9 lg:space-y-12">
+      <ul class="flex flex-col gap-9 lg:gap-12">
         {content.menu?.items?.map((item) => (
           <NavItem {...item} navElement={navElement} key={item.text} />
         ))}
@@ -109,7 +109,7 @@ const NavItem = component$<NavItemProps>(({ navElement, text, items }) => {
   );
 
   return (
-    <li class="space-y-6">
+    <li class="flex flex-col gap-6">
       <div class="sticky -top-1 z-10 lg:-top-24">
         <h4
           class={clsx(
@@ -120,11 +120,11 @@ const NavItem = component$<NavItemProps>(({ navElement, text, items }) => {
         >
           {text}
         </h4>
-        <div class="pointer-events-none absolute -top-8 -z-10 h-24 w-full bg-gradient-to-b from-white via-white to-transparent opacity-90 dark:from-gray-900 dark:via-gray-900" />
+        <div class="pointer-events-none absolute -top-8 -z-10 h-24 w-full bg-linear-to-b from-white via-white to-transparent opacity-90 dark:from-gray-900 dark:via-gray-900" />
       </div>
       <div class="relative">
         <ul
-          class="space-y-5 border-l-2 border-l-slate-200 dark:border-l-slate-800"
+          class="flex flex-col gap-5 border-l-2 border-l-slate-200 dark:border-l-slate-800"
           ref={listElement}
         >
           {items?.map(({ text, href }) => (

@@ -10,7 +10,9 @@ type EventName =
   | 'save_playground_code'
   | 'execute_playground_code'
   | 'clear_playground_logs'
-  | 'resize_playground';
+  | 'resize_playground'
+  | 'copy_zod_codemod_result'
+  | 'execute_zod_codemod';
 
 type EventData = { [key: string]: string | number | boolean | undefined };
 

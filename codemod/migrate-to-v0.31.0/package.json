@@ -10,7 +10,7 @@
   ],
   "devDependencies": {
     "@codemod.com/workflow": "^0.0.31",
-    "@types/node": "^22.13.5",
-    "typescript": "^5.7.3"
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
   }
 }

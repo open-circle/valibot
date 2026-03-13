@@ -6,8 +6,7 @@ contributors:
   - fabian-hiller
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # flatten
@@ -30,7 +29,7 @@ const errors = v.flatten<TSchema>(issues);
 
 The error messages of issues without a path that belong to the root of the schema are added to the `.root` key.
 
-The error messages of Issues with a path that belong to the nested parts of the schema and can be converted to a dot path are added to the `.nested` key.
+The error messages of issues with a path that belong to the nested parts of the schema and can be converted to a dot path are added to the `.nested` key.
 
 Some issue paths, for example for complex data types like `Set` and `Map`, have no key or a key that cannot be converted to a dot path. These error messages are added to the `.other` key.
 
@@ -45,11 +44,11 @@ The following example show how `flatten` can be used.
 ```ts
 const Schema = v.object({
   nested: v.object({
-    key: v.string('Value of "nested.key" is missing.'),
+    foo: v.string('Value of "nested.foo" is invalid.'),
   }),
 });
 
-const result = v.safeParse(Schema, { nested: {} });
+const result = v.safeParse(Schema, { nested: { foo: null } });
 
 if (result.issues) {
   const flatErrors = v.flatten<typeof Schema>(result.issues);

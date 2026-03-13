@@ -26,6 +26,16 @@ export const DECIMAL_REGEX: RegExp = /^[+-]?(?:\d*\.)?\d+$/u;
 export const DIGITS_REGEX: RegExp = /^\d+$/u;
 
 /**
+ * [Domain name](https://en.wikipedia.org/wiki/Domain_name) regex.
+ *
+ * Hint: We decided against the `i` flag for better JSON Schema compatibility.
+ * ASCII-only validation. Internationalized domain names (IDNs) are not
+ * supported, including Punycode-encoded labels.
+ */
+export const DOMAIN_REGEX: RegExp =
+  /^(?=.{1,253}$)(?:(?![Xx][Nn]--)[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/u;
+
+/**
  * [Email address](https://en.wikipedia.org/wiki/Email_address) regex.
  */
 export const EMAIL_REGEX: RegExp =
@@ -38,8 +48,8 @@ export const EMAIL_REGEX: RegExp =
  * not supported in older runtimes and does not match all emoji.
  */
 export const EMOJI_REGEX: RegExp =
-  // eslint-disable-next-line redos-detector/no-unsafe-regex, regexp/no-dupe-disjunctions -- false positives
-  /^(?:[\u{1F1E6}-\u{1F1FF}]{2}|\u{1F3F4}[\u{E0061}-\u{E007A}]{2}[\u{E0030}-\u{E0039}\u{E0061}-\u{E007A}]{1,3}\u{E007F}|(?:\p{Emoji}\uFE0F\u20E3?|\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|\p{Emoji_Presentation})(?:\u200D(?:\p{Emoji}\uFE0F\u20E3?|\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|\p{Emoji_Presentation}))*)+$/u;
+  // eslint-disable-next-line redos-detector/no-unsafe-regex -- false positives
+  /^(?:[\u{1F1E6}-\u{1F1FF}]{2}|\u{1F3F4}[\u{E0061}-\u{E007A}]{2}[\u{E0030}-\u{E0039}\u{E0061}-\u{E007A}]{1,3}\u{E007F}|(?:\p{Emoji}\uFE0F\u20E3?|\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|(?![\p{Emoji_Modifier_Base}\u{1F1E6}-\u{1F1FF}])\p{Emoji_Presentation})(?:\u200D(?:\p{Emoji}\uFE0F\u20E3?|\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|(?![\p{Emoji_Modifier_Base}\u{1F1E6}-\u{1F1FF}])\p{Emoji_Presentation}))*)+$/u;
 
 /**
  * [Hexadecimal](https://en.wikipedia.org/wiki/Hexadecimal) regex.
@@ -113,6 +123,12 @@ export const ISO_TIMESTAMP_REGEX: RegExp =
  * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) week regex.
  */
 export const ISO_WEEK_REGEX: RegExp = /^\d{4}-W(?:0[1-9]|[1-4]\d|5[0-3])$/u;
+
+/**
+ * [ISRC](https://en.wikipedia.org/wiki/International_Standard_Recording_Code) regex.
+ */
+export const ISRC_REGEX: RegExp =
+  /^(?:[A-Z]{2}[A-Z\d]{3}\d{7}|[A-Z]{2}-[A-Z\d]{3}-\d{2}-\d{5})$/u;
 
 /**
  * [MAC](https://en.wikipedia.org/wiki/MAC_address) 48 bit regex.

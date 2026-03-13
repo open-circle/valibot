@@ -24,7 +24,7 @@ export type SchemaWithPipe<
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ...PipeItem<any, unknown, BaseIssue<unknown>>[],
   ],
-> = Omit<FirstTupleItem<TPipe>, '~standard' | '~run' | '~types'> & {
+> = Omit<FirstTupleItem<TPipe>, 'pipe' | '~standard' | '~run' | '~types'> & {
   /**
    * The pipe items.
    */

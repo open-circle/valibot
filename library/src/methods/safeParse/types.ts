@@ -28,7 +28,7 @@ export type SafeParseResult<
        */
       readonly output: InferOutput<TSchema>;
       /**
-       * The issues if any.
+       * The issues, if any.
        */
       readonly issues: undefined;
     }

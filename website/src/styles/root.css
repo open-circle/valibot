@@ -1,7 +1,24 @@
 /* Tailwind CSS */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-lexend: 'Lexend', ui-sans-serif, system-ui, sans-serif;
+  --font-lexend-exa: 'Lexend Exa', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Custom utils */
+@utility focus-ring {
+  @apply focus-visible:ring-4 focus-visible:ring-sky-600/10 focus-visible:ring-offset-[3px] focus-visible:ring-offset-white focus-visible:outline-2 focus-visible:outline-sky-600/50 dark:focus-visible:ring-sky-400/10 dark:focus-visible:ring-offset-gray-900 dark:focus-visible:outline-sky-400/50;
+}
+@utility scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 /* Base layer */
 @layer base {
@@ -24,11 +41,11 @@
   /* Scrollbar */
   * {
     scrollbar-width: thin;
-    scrollbar-color: theme('colors.slate.300') theme('colors.transparent');
+    scrollbar-color: var(--color-slate-300) transparent;
   }
   .dark,
   .dark * {
-    scrollbar-color: theme('colors.slate.700') theme('colors.transparent');
+    scrollbar-color: var(--color-slate-700) transparent;
   }
 
   /* Monaco editor */
@@ -66,7 +83,7 @@
 
   /* Typography */
   .mdx :is(h1, h2, h3, h4) {
-    @apply scroll-mt-24 font-medium leading-normal text-slate-900 md:scroll-mt-32 md:leading-normal lg:scroll-mt-48 lg:leading-normal dark:text-slate-200;
+    @apply scroll-mt-24 leading-normal font-medium text-slate-900 md:scroll-mt-32 lg:scroll-mt-48 dark:text-slate-200;
   }
   .mdx h1 {
     @apply text-2xl md:text-3xl lg:text-4xl;
@@ -81,7 +98,7 @@
     @apply md:text-lg lg:text-xl;
   }
   .mdx :is(p, blockquote, ul, ol) {
-    @apply leading-loose md:text-lg md:leading-loose lg:text-xl lg:leading-loose;
+    @apply leading-loose md:text-lg lg:text-xl;
   }
   .mdx p strong {
     @apply text-slate-800 dark:text-slate-300;
@@ -94,7 +111,7 @@
 
   /* Links */
   .mdx a {
-    @apply focus-ring rounded-md text-sky-600 underline decoration-slate-400 decoration-dashed underline-offset-[3px] focus-visible:outline-offset-4 focus-visible:ring-offset-[6px] dark:text-sky-400 dark:decoration-slate-600;
+    @apply focus-ring rounded-md text-sky-600 underline decoration-slate-400 decoration-dashed underline-offset-[3px] focus-visible:ring-offset-[6px] focus-visible:outline-offset-4 dark:text-sky-400 dark:decoration-slate-600;
   }
 
   /* Images */
@@ -104,10 +121,10 @@
 
   /* Lists */
   .mdx :is(ul, ol) {
-    @apply space-y-2;
+    @apply flex flex-col gap-2;
   }
   .mdx :is(ul, ol) :is(ul, ol) {
-    @apply pl-4 pt-2 lg:pl-5;
+    @apply pt-2 pl-4 lg:pl-5;
   }
   .mdx ul {
     @apply list-disc;
@@ -127,13 +144,13 @@
     @apply w-full md:text-lg lg:text-xl;
   }
   .mdx tbody tr {
-    @apply border-t-[1px] border-t-slate-200 lg:border-t-2 dark:border-t-slate-800;
+    @apply border-t border-t-slate-200 lg:border-t-2 dark:border-t-slate-800;
   }
   .mdx th {
     @apply text-left font-medium text-slate-700 dark:text-slate-300;
   }
   .mdx :is(th, td) {
-    @apply whitespace-nowrap py-2.5 lg:py-3;
+    @apply py-2.5 whitespace-nowrap lg:py-3;
   }
   .mdx :is(th, td) + :is(th, td) {
     @apply pl-3;
@@ -155,7 +172,7 @@
     @apply mx-8 lg:mx-10;
   }
   .mdx > :is(ul, ol) {
-    @apply ml-12 mr-8 lg:ml-14 lg:mr-10;
+    @apply mr-8 ml-12 lg:mr-10 lg:ml-14;
   }
   .mdx > :is(img, .code-wrapper, .table-wrapper) {
     @apply mx-3 lg:mx-10 2xl:mx-0;
@@ -170,23 +187,5 @@
   }
   .mdx > * + h2 {
     @apply mt-12 md:mt-14 lg:mt-16;
-  }
-}
-
-/* Component layer */
-@layer components {
-  .focus-ring {
-    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-600/50 focus-visible:ring-4 focus-visible:ring-sky-600/10 focus-visible:ring-offset-[3px] focus-visible:ring-offset-white dark:focus-visible:outline-sky-400/50 dark:focus-visible:ring-sky-400/10 dark:focus-visible:ring-offset-gray-900;
-  }
-}
-
-/* Util layer */
-@layer utilities {
-  .scrollbar-none::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-none {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
   }
 }
