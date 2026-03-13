@@ -60,6 +60,7 @@
     "pt",
     "ro",
     "ru",
+    "sk",
     "sl",
     "sv",
     "tr",
@@ -13397,6 +13398,746 @@
       "require": {
         "types": "./ru/words.d.cts",
         "default": "./ru/words.cjs"
+      }
+    },
+    "./sk": {
+      "import": {
+        "types": "./sk/index.d.mts",
+        "default": "./sk/index.mjs"
+      },
+      "require": {
+        "types": "./sk/index.d.cts",
+        "default": "./sk/index.cjs"
+      }
+    },
+    "./sk/schema": {
+      "import": {
+        "types": "./sk/schema.d.mts",
+        "default": "./sk/schema.mjs"
+      },
+      "require": {
+        "types": "./sk/schema.d.cts",
+        "default": "./sk/schema.cjs"
+      }
+    },
+    "./sk/base64": {
+      "import": {
+        "types": "./sk/base64.d.mts",
+        "default": "./sk/base64.mjs"
+      },
+      "require": {
+        "types": "./sk/base64.d.cts",
+        "default": "./sk/base64.cjs"
+      }
+    },
+    "./sk/bic": {
+      "import": {
+        "types": "./sk/bic.d.mts",
+        "default": "./sk/bic.mjs"
+      },
+      "require": {
+        "types": "./sk/bic.d.cts",
+        "default": "./sk/bic.cjs"
+      }
+    },
+    "./sk/bytes": {
+      "import": {
+        "types": "./sk/bytes.d.mts",
+        "default": "./sk/bytes.mjs"
+      },
+      "require": {
+        "types": "./sk/bytes.d.cts",
+        "default": "./sk/bytes.cjs"
+      }
+    },
+    "./sk/check": {
+      "import": {
+        "types": "./sk/check.d.mts",
+        "default": "./sk/check.mjs"
+      },
+      "require": {
+        "types": "./sk/check.d.cts",
+        "default": "./sk/check.cjs"
+      }
+    },
+    "./sk/checkAsync": {
+      "import": {
+        "types": "./sk/checkAsync.d.mts",
+        "default": "./sk/checkAsync.mjs"
+      },
+      "require": {
+        "types": "./sk/checkAsync.d.cts",
+        "default": "./sk/checkAsync.cjs"
+      }
+    },
+    "./sk/checkItems": {
+      "import": {
+        "types": "./sk/checkItems.d.mts",
+        "default": "./sk/checkItems.mjs"
+      },
+      "require": {
+        "types": "./sk/checkItems.d.cts",
+        "default": "./sk/checkItems.cjs"
+      }
+    },
+    "./sk/checkItemsAsync": {
+      "import": {
+        "types": "./sk/checkItemsAsync.d.mts",
+        "default": "./sk/checkItemsAsync.mjs"
+      },
+      "require": {
+        "types": "./sk/checkItemsAsync.d.cts",
+        "default": "./sk/checkItemsAsync.cjs"
+      }
+    },
+    "./sk/creditCard": {
+      "import": {
+        "types": "./sk/creditCard.d.mts",
+        "default": "./sk/creditCard.mjs"
+      },
+      "require": {
+        "types": "./sk/creditCard.d.cts",
+        "default": "./sk/creditCard.cjs"
+      }
+    },
+    "./sk/cuid2": {
+      "import": {
+        "types": "./sk/cuid2.d.mts",
+        "default": "./sk/cuid2.mjs"
+      },
+      "require": {
+        "types": "./sk/cuid2.d.cts",
+        "default": "./sk/cuid2.cjs"
+      }
+    },
+    "./sk/decimal": {
+      "import": {
+        "types": "./sk/decimal.d.mts",
+        "default": "./sk/decimal.mjs"
+      },
+      "require": {
+        "types": "./sk/decimal.d.cts",
+        "default": "./sk/decimal.cjs"
+      }
+    },
+    "./sk/digits": {
+      "import": {
+        "types": "./sk/digits.d.mts",
+        "default": "./sk/digits.mjs"
+      },
+      "require": {
+        "types": "./sk/digits.d.cts",
+        "default": "./sk/digits.cjs"
+      }
+    },
+    "./sk/email": {
+      "import": {
+        "types": "./sk/email.d.mts",
+        "default": "./sk/email.mjs"
+      },
+      "require": {
+        "types": "./sk/email.d.cts",
+        "default": "./sk/email.cjs"
+      }
+    },
+    "./sk/emoji": {
+      "import": {
+        "types": "./sk/emoji.d.mts",
+        "default": "./sk/emoji.mjs"
+      },
+      "require": {
+        "types": "./sk/emoji.d.cts",
+        "default": "./sk/emoji.cjs"
+      }
+    },
+    "./sk/empty": {
+      "import": {
+        "types": "./sk/empty.d.mts",
+        "default": "./sk/empty.mjs"
+      },
+      "require": {
+        "types": "./sk/empty.d.cts",
+        "default": "./sk/empty.cjs"
+      }
+    },
+    "./sk/endsWith": {
+      "import": {
+        "types": "./sk/endsWith.d.mts",
+        "default": "./sk/endsWith.mjs"
+      },
+      "require": {
+        "types": "./sk/endsWith.d.cts",
+        "default": "./sk/endsWith.cjs"
+      }
+    },
+    "./sk/everyItem": {
+      "import": {
+        "types": "./sk/everyItem.d.mts",
+        "default": "./sk/everyItem.mjs"
+      },
+      "require": {
+        "types": "./sk/everyItem.d.cts",
+        "default": "./sk/everyItem.cjs"
+      }
+    },
+    "./sk/excludes": {
+      "import": {
+        "types": "./sk/excludes.d.mts",
+        "default": "./sk/excludes.mjs"
+      },
+      "require": {
+        "types": "./sk/excludes.d.cts",
+        "default": "./sk/excludes.cjs"
+      }
+    },
+    "./sk/finite": {
+      "import": {
+        "types": "./sk/finite.d.mts",
+        "default": "./sk/finite.mjs"
+      },
+      "require": {
+        "types": "./sk/finite.d.cts",
+        "default": "./sk/finite.cjs"
+      }
+    },
+    "./sk/graphemes": {
+      "import": {
+        "types": "./sk/graphemes.d.mts",
+        "default": "./sk/graphemes.mjs"
+      },
+      "require": {
+        "types": "./sk/graphemes.d.cts",
+        "default": "./sk/graphemes.cjs"
+      }
+    },
+    "./sk/hash": {
+      "import": {
+        "types": "./sk/hash.d.mts",
+        "default": "./sk/hash.mjs"
+      },
+      "require": {
+        "types": "./sk/hash.d.cts",
+        "default": "./sk/hash.cjs"
+      }
+    },
+    "./sk/hexColor": {
+      "import": {
+        "types": "./sk/hexColor.d.mts",
+        "default": "./sk/hexColor.mjs"
+      },
+      "require": {
+        "types": "./sk/hexColor.d.cts",
+        "default": "./sk/hexColor.cjs"
+      }
+    },
+    "./sk/hexadecimal": {
+      "import": {
+        "types": "./sk/hexadecimal.d.mts",
+        "default": "./sk/hexadecimal.mjs"
+      },
+      "require": {
+        "types": "./sk/hexadecimal.d.cts",
+        "default": "./sk/hexadecimal.cjs"
+      }
+    },
+    "./sk/imei": {
+      "import": {
+        "types": "./sk/imei.d.mts",
+        "default": "./sk/imei.mjs"
+      },
+      "require": {
+        "types": "./sk/imei.d.cts",
+        "default": "./sk/imei.cjs"
+      }
+    },
+    "./sk/includes": {
+      "import": {
+        "types": "./sk/includes.d.mts",
+        "default": "./sk/includes.mjs"
+      },
+      "require": {
+        "types": "./sk/includes.d.cts",
+        "default": "./sk/includes.cjs"
+      }
+    },
+    "./sk/integer": {
+      "import": {
+        "types": "./sk/integer.d.mts",
+        "default": "./sk/integer.mjs"
+      },
+      "require": {
+        "types": "./sk/integer.d.cts",
+        "default": "./sk/integer.cjs"
+      }
+    },
+    "./sk/ip": {
+      "import": {
+        "types": "./sk/ip.d.mts",
+        "default": "./sk/ip.mjs"
+      },
+      "require": {
+        "types": "./sk/ip.d.cts",
+        "default": "./sk/ip.cjs"
+      }
+    },
+    "./sk/ipv4": {
+      "import": {
+        "types": "./sk/ipv4.d.mts",
+        "default": "./sk/ipv4.mjs"
+      },
+      "require": {
+        "types": "./sk/ipv4.d.cts",
+        "default": "./sk/ipv4.cjs"
+      }
+    },
+    "./sk/ipv6": {
+      "import": {
+        "types": "./sk/ipv6.d.mts",
+        "default": "./sk/ipv6.mjs"
+      },
+      "require": {
+        "types": "./sk/ipv6.d.cts",
+        "default": "./sk/ipv6.cjs"
+      }
+    },
+    "./sk/isoDate": {
+      "import": {
+        "types": "./sk/isoDate.d.mts",
+        "default": "./sk/isoDate.mjs"
+      },
+      "require": {
+        "types": "./sk/isoDate.d.cts",
+        "default": "./sk/isoDate.cjs"
+      }
+    },
+    "./sk/isoDateTime": {
+      "import": {
+        "types": "./sk/isoDateTime.d.mts",
+        "default": "./sk/isoDateTime.mjs"
+      },
+      "require": {
+        "types": "./sk/isoDateTime.d.cts",
+        "default": "./sk/isoDateTime.cjs"
+      }
+    },
+    "./sk/isoTime": {
+      "import": {
+        "types": "./sk/isoTime.d.mts",
+        "default": "./sk/isoTime.mjs"
+      },
+      "require": {
+        "types": "./sk/isoTime.d.cts",
+        "default": "./sk/isoTime.cjs"
+      }
+    },
+    "./sk/isoTimeSecond": {
+      "import": {
+        "types": "./sk/isoTimeSecond.d.mts",
+        "default": "./sk/isoTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./sk/isoTimeSecond.d.cts",
+        "default": "./sk/isoTimeSecond.cjs"
+      }
+    },
+    "./sk/isoTimestamp": {
+      "import": {
+        "types": "./sk/isoTimestamp.d.mts",
+        "default": "./sk/isoTimestamp.mjs"
+      },
+      "require": {
+        "types": "./sk/isoTimestamp.d.cts",
+        "default": "./sk/isoTimestamp.cjs"
+      }
+    },
+    "./sk/isoWeek": {
+      "import": {
+        "types": "./sk/isoWeek.d.mts",
+        "default": "./sk/isoWeek.mjs"
+      },
+      "require": {
+        "types": "./sk/isoWeek.d.cts",
+        "default": "./sk/isoWeek.cjs"
+      }
+    },
+    "./sk/length": {
+      "import": {
+        "types": "./sk/length.d.mts",
+        "default": "./sk/length.mjs"
+      },
+      "require": {
+        "types": "./sk/length.d.cts",
+        "default": "./sk/length.cjs"
+      }
+    },
+    "./sk/mac": {
+      "import": {
+        "types": "./sk/mac.d.mts",
+        "default": "./sk/mac.mjs"
+      },
+      "require": {
+        "types": "./sk/mac.d.cts",
+        "default": "./sk/mac.cjs"
+      }
+    },
+    "./sk/mac48": {
+      "import": {
+        "types": "./sk/mac48.d.mts",
+        "default": "./sk/mac48.mjs"
+      },
+      "require": {
+        "types": "./sk/mac48.d.cts",
+        "default": "./sk/mac48.cjs"
+      }
+    },
+    "./sk/mac64": {
+      "import": {
+        "types": "./sk/mac64.d.mts",
+        "default": "./sk/mac64.mjs"
+      },
+      "require": {
+        "types": "./sk/mac64.d.cts",
+        "default": "./sk/mac64.cjs"
+      }
+    },
+    "./sk/maxBytes": {
+      "import": {
+        "types": "./sk/maxBytes.d.mts",
+        "default": "./sk/maxBytes.mjs"
+      },
+      "require": {
+        "types": "./sk/maxBytes.d.cts",
+        "default": "./sk/maxBytes.cjs"
+      }
+    },
+    "./sk/maxGraphemes": {
+      "import": {
+        "types": "./sk/maxGraphemes.d.mts",
+        "default": "./sk/maxGraphemes.mjs"
+      },
+      "require": {
+        "types": "./sk/maxGraphemes.d.cts",
+        "default": "./sk/maxGraphemes.cjs"
+      }
+    },
+    "./sk/maxLength": {
+      "import": {
+        "types": "./sk/maxLength.d.mts",
+        "default": "./sk/maxLength.mjs"
+      },
+      "require": {
+        "types": "./sk/maxLength.d.cts",
+        "default": "./sk/maxLength.cjs"
+      }
+    },
+    "./sk/maxSize": {
+      "import": {
+        "types": "./sk/maxSize.d.mts",
+        "default": "./sk/maxSize.mjs"
+      },
+      "require": {
+        "types": "./sk/maxSize.d.cts",
+        "default": "./sk/maxSize.cjs"
+      }
+    },
+    "./sk/maxValue": {
+      "import": {
+        "types": "./sk/maxValue.d.mts",
+        "default": "./sk/maxValue.mjs"
+      },
+      "require": {
+        "types": "./sk/maxValue.d.cts",
+        "default": "./sk/maxValue.cjs"
+      }
+    },
+    "./sk/maxWords": {
+      "import": {
+        "types": "./sk/maxWords.d.mts",
+        "default": "./sk/maxWords.mjs"
+      },
+      "require": {
+        "types": "./sk/maxWords.d.cts",
+        "default": "./sk/maxWords.cjs"
+      }
+    },
+    "./sk/mimeType": {
+      "import": {
+        "types": "./sk/mimeType.d.mts",
+        "default": "./sk/mimeType.mjs"
+      },
+      "require": {
+        "types": "./sk/mimeType.d.cts",
+        "default": "./sk/mimeType.cjs"
+      }
+    },
+    "./sk/minBytes": {
+      "import": {
+        "types": "./sk/minBytes.d.mts",
+        "default": "./sk/minBytes.mjs"
+      },
+      "require": {
+        "types": "./sk/minBytes.d.cts",
+        "default": "./sk/minBytes.cjs"
+      }
+    },
+    "./sk/minGraphemes": {
+      "import": {
+        "types": "./sk/minGraphemes.d.mts",
+        "default": "./sk/minGraphemes.mjs"
+      },
+      "require": {
+        "types": "./sk/minGraphemes.d.cts",
+        "default": "./sk/minGraphemes.cjs"
+      }
+    },
+    "./sk/minLength": {
+      "import": {
+        "types": "./sk/minLength.d.mts",
+        "default": "./sk/minLength.mjs"
+      },
+      "require": {
+        "types": "./sk/minLength.d.cts",
+        "default": "./sk/minLength.cjs"
+      }
+    },
+    "./sk/minSize": {
+      "import": {
+        "types": "./sk/minSize.d.mts",
+        "default": "./sk/minSize.mjs"
+      },
+      "require": {
+        "types": "./sk/minSize.d.cts",
+        "default": "./sk/minSize.cjs"
+      }
+    },
+    "./sk/minValue": {
+      "import": {
+        "types": "./sk/minValue.d.mts",
+        "default": "./sk/minValue.mjs"
+      },
+      "require": {
+        "types": "./sk/minValue.d.cts",
+        "default": "./sk/minValue.cjs"
+      }
+    },
+    "./sk/minWords": {
+      "import": {
+        "types": "./sk/minWords.d.mts",
+        "default": "./sk/minWords.mjs"
+      },
+      "require": {
+        "types": "./sk/minWords.d.cts",
+        "default": "./sk/minWords.cjs"
+      }
+    },
+    "./sk/multipleOf": {
+      "import": {
+        "types": "./sk/multipleOf.d.mts",
+        "default": "./sk/multipleOf.mjs"
+      },
+      "require": {
+        "types": "./sk/multipleOf.d.cts",
+        "default": "./sk/multipleOf.cjs"
+      }
+    },
+    "./sk/nanoid": {
+      "import": {
+        "types": "./sk/nanoid.d.mts",
+        "default": "./sk/nanoid.mjs"
+      },
+      "require": {
+        "types": "./sk/nanoid.d.cts",
+        "default": "./sk/nanoid.cjs"
+      }
+    },
+    "./sk/nonEmpty": {
+      "import": {
+        "types": "./sk/nonEmpty.d.mts",
+        "default": "./sk/nonEmpty.mjs"
+      },
+      "require": {
+        "types": "./sk/nonEmpty.d.cts",
+        "default": "./sk/nonEmpty.cjs"
+      }
+    },
+    "./sk/notBytes": {
+      "import": {
+        "types": "./sk/notBytes.d.mts",
+        "default": "./sk/notBytes.mjs"
+      },
+      "require": {
+        "types": "./sk/notBytes.d.cts",
+        "default": "./sk/notBytes.cjs"
+      }
+    },
+    "./sk/notGraphemes": {
+      "import": {
+        "types": "./sk/notGraphemes.d.mts",
+        "default": "./sk/notGraphemes.mjs"
+      },
+      "require": {
+        "types": "./sk/notGraphemes.d.cts",
+        "default": "./sk/notGraphemes.cjs"
+      }
+    },
+    "./sk/notLength": {
+      "import": {
+        "types": "./sk/notLength.d.mts",
+        "default": "./sk/notLength.mjs"
+      },
+      "require": {
+        "types": "./sk/notLength.d.cts",
+        "default": "./sk/notLength.cjs"
+      }
+    },
+    "./sk/notSize": {
+      "import": {
+        "types": "./sk/notSize.d.mts",
+        "default": "./sk/notSize.mjs"
+      },
+      "require": {
+        "types": "./sk/notSize.d.cts",
+        "default": "./sk/notSize.cjs"
+      }
+    },
+    "./sk/notValue": {
+      "import": {
+        "types": "./sk/notValue.d.mts",
+        "default": "./sk/notValue.mjs"
+      },
+      "require": {
+        "types": "./sk/notValue.d.cts",
+        "default": "./sk/notValue.cjs"
+      }
+    },
+    "./sk/notWords": {
+      "import": {
+        "types": "./sk/notWords.d.mts",
+        "default": "./sk/notWords.mjs"
+      },
+      "require": {
+        "types": "./sk/notWords.d.cts",
+        "default": "./sk/notWords.cjs"
+      }
+    },
+    "./sk/octal": {
+      "import": {
+        "types": "./sk/octal.d.mts",
+        "default": "./sk/octal.mjs"
+      },
+      "require": {
+        "types": "./sk/octal.d.cts",
+        "default": "./sk/octal.cjs"
+      }
+    },
+    "./sk/partialCheck": {
+      "import": {
+        "types": "./sk/partialCheck.d.mts",
+        "default": "./sk/partialCheck.mjs"
+      },
+      "require": {
+        "types": "./sk/partialCheck.d.cts",
+        "default": "./sk/partialCheck.cjs"
+      }
+    },
+    "./sk/regex": {
+      "import": {
+        "types": "./sk/regex.d.mts",
+        "default": "./sk/regex.mjs"
+      },
+      "require": {
+        "types": "./sk/regex.d.cts",
+        "default": "./sk/regex.cjs"
+      }
+    },
+    "./sk/safeInteger": {
+      "import": {
+        "types": "./sk/safeInteger.d.mts",
+        "default": "./sk/safeInteger.mjs"
+      },
+      "require": {
+        "types": "./sk/safeInteger.d.cts",
+        "default": "./sk/safeInteger.cjs"
+      }
+    },
+    "./sk/size": {
+      "import": {
+        "types": "./sk/size.d.mts",
+        "default": "./sk/size.mjs"
+      },
+      "require": {
+        "types": "./sk/size.d.cts",
+        "default": "./sk/size.cjs"
+      }
+    },
+    "./sk/someItem": {
+      "import": {
+        "types": "./sk/someItem.d.mts",
+        "default": "./sk/someItem.mjs"
+      },
+      "require": {
+        "types": "./sk/someItem.d.cts",
+        "default": "./sk/someItem.cjs"
+      }
+    },
+    "./sk/startsWith": {
+      "import": {
+        "types": "./sk/startsWith.d.mts",
+        "default": "./sk/startsWith.mjs"
+      },
+      "require": {
+        "types": "./sk/startsWith.d.cts",
+        "default": "./sk/startsWith.cjs"
+      }
+    },
+    "./sk/ulid": {
+      "import": {
+        "types": "./sk/ulid.d.mts",
+        "default": "./sk/ulid.mjs"
+      },
+      "require": {
+        "types": "./sk/ulid.d.cts",
+        "default": "./sk/ulid.cjs"
+      }
+    },
+    "./sk/url": {
+      "import": {
+        "types": "./sk/url.d.mts",
+        "default": "./sk/url.mjs"
+      },
+      "require": {
+        "types": "./sk/url.d.cts",
+        "default": "./sk/url.cjs"
+      }
+    },
+    "./sk/uuid": {
+      "import": {
+        "types": "./sk/uuid.d.mts",
+        "default": "./sk/uuid.mjs"
+      },
+      "require": {
+        "types": "./sk/uuid.d.cts",
+        "default": "./sk/uuid.cjs"
+      }
+    },
+    "./sk/value": {
+      "import": {
+        "types": "./sk/value.d.mts",
+        "default": "./sk/value.mjs"
+      },
+      "require": {
+        "types": "./sk/value.d.cts",
+        "default": "./sk/value.cjs"
+      }
+    },
+    "./sk/words": {
+      "import": {
+        "types": "./sk/words.d.mts",
+        "default": "./sk/words.mjs"
+      },
+      "require": {
+        "types": "./sk/words.d.cts",
+        "default": "./sk/words.cjs"
       }
     },
     "./sl": {
