@@ -65,6 +65,12 @@ describe('multipleOf', () => {
       expectNoActionIssue(multipleOf(5), [-15, -10, -5, 0, 5, 10, 15]);
     });
 
+    test('for valid decimal numbers', () => {
+      expectNoActionIssue(multipleOf(0.01), [3, 0.1, 0.03, 1.5, -0.1, -1.5]);
+      expectNoActionIssue(multipleOf(0.1), [0.3, -0.3]);
+      expectNoActionIssue(multipleOf(0.25), [0.75, -0.75]);
+    });
+
     test('for valid bigints', () => {
       expectNoActionIssue(multipleOf(5n), [-15n, -10n, -5n, 0n, 5n, 10n, 15n]);
     });
@@ -99,6 +105,43 @@ describe('multipleOf', () => {
         multipleOf(5, 'message'),
         { ...baseIssue, requirement: 5 },
         [NaN]
+      );
+    });
+
+    test('for decimal requirement with infinity and NaN', () => {
+      expectActionIssue(
+        multipleOf(0.01, 'message'),
+        { ...baseIssue, expected: '%0.01', requirement: 0.01 },
+        [-Infinity, Infinity, NaN]
+      );
+    });
+
+    test('for invalid decimal numbers', () => {
+      expectActionIssue(
+        multipleOf(0.01, 'message'),
+        { ...baseIssue, expected: '%0.01', requirement: 0.01 },
+        [0.001, 0.015, 1.234]
+      );
+      expectActionIssue(
+        multipleOf(0.1, 'message'),
+        { ...baseIssue, expected: '%0.1', requirement: 0.1 },
+        [0.15, 0.25]
+      );
+    });
+
+    test('for decimal value with integer requirement', () => {
+      expectActionIssue(
+        multipleOf(2, 'message'),
+        { ...baseIssue, expected: '%2', requirement: 2 },
+        [1.5, 0.5, 2.5]
+      );
+    });
+
+    test('for zero requirement', () => {
+      expectActionIssue(
+        multipleOf(0, 'message'),
+        { ...baseIssue, expected: '%0', requirement: 0 },
+        [0, 1, 5]
       );
     });
 
