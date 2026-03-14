@@ -120,6 +120,18 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert jwsCompact action', () => {
+    expect(convertAction({}, v.jwsCompact<string>(), undefined)).toStrictEqual({
+      pattern: v.JWS_COMPACT_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.jwsCompact<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.JWS_COMPACT_REGEX.source,
+    });
+  });
+
   test('should convert empty action for strings', () => {
     expect(
       convertAction({ type: 'string' }, v.empty(), undefined)

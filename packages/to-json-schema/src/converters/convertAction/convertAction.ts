@@ -46,6 +46,10 @@ type Action =
       string,
       v.ErrorMessage<v.IsoTimestampIssue<string>> | undefined
     >
+  | v.JwsCompactAction<
+      string,
+      v.ErrorMessage<v.JwsCompactIssue<string>> | undefined
+    >
   | v.LengthAction<
       v.LengthInput,
       number,
@@ -221,6 +225,11 @@ export function convertAction(
 
     case 'iso_time': {
       jsonSchema.format = 'time';
+      break;
+    }
+
+    case 'jws_compact': {
+      jsonSchema.pattern = valibotAction.requirement.source;
       break;
     }
 

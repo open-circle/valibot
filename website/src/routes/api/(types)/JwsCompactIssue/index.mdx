@@ -1,0 +1,28 @@
+---
+title: JwsCompactIssue
+description: JWS compact issue interface for structural validation.
+contributors:
+  - yslpn
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# JwsCompactIssue
+
+JWS compact issue interface.
+
+Used by `jwsCompact` when a string does not match JWS compact serialization.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `JwsCompactIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `received` <Property {...properties.received} />
+  - `requirement` <Property {...properties.requirement} />

@@ -126,6 +126,17 @@ export const ISO_TIMESTAMP_REGEX: RegExp =
 export const ISO_WEEK_REGEX: RegExp = /^\d{4}-W(?:0[1-9]|[1-4]\d|5[0-3])$/u;
 
 /**
+ * [JWS compact serialization](https://datatracker.ietf.org/doc/html/rfc7515#section-3.1)
+ * regex.
+ *
+ * Hint: Empty payload and signature segments are allowed because the
+ * Base64URL-encoded representation of an empty octet sequence is an empty
+ * string.
+ */
+export const JWS_COMPACT_REGEX: RegExp =
+  /^(?:[\w-]{2,3}|(?:[\w-]{4})+(?:[\w-]{2,3})?)\.(?:[\w-]{2,3}|(?:[\w-]{4})+(?:[\w-]{2,3})?)?\.(?:[\w-]{2,3}|(?:[\w-]{4})+(?:[\w-]{2,3})?)?$/u;
+
+/**
  * [ISRC](https://en.wikipedia.org/wiki/International_Standard_Recording_Code) regex.
  */
 export const ISRC_REGEX: RegExp =
