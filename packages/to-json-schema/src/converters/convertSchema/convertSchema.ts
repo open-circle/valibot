@@ -1,9 +1,12 @@
-import * as v from 'valibot';
+import { getDefault } from 'valibot';
+
+import type * as v from 'valibot';
 import type {
   ConversionConfig,
   ConversionContext,
   JsonSchema,
 } from '../../types/index.ts';
+
 import { addError, handleError } from '../../utils/index.ts';
 import { convertAction } from '../convertAction/index.ts';
 
@@ -485,7 +488,7 @@ export function convertSchema(
       // Add default value to JSON Schema, if available
       if (valibotSchema.default !== undefined) {
         // @ts-expect-error
-        jsonSchema.default = v.getDefault(valibotSchema);
+        jsonSchema.default = getDefault(valibotSchema);
       }
 
       break;
@@ -505,7 +508,7 @@ export function convertSchema(
       // Add default value to JSON Schema, if available
       if (valibotSchema.default !== undefined) {
         // @ts-expect-error
-        jsonSchema.default = v.getDefault(valibotSchema);
+        jsonSchema.default = getDefault(valibotSchema);
       }
 
       break;
