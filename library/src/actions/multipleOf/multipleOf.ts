@@ -4,32 +4,7 @@ import type {
   ErrorMessage,
 } from '../../types/index.ts';
 import { _addIssue } from '../../utils/index.ts';
-
-/**
- * Gets the number of decimal places of a number.
- *
- * @param value The number to check.
- *
- * @returns The number of decimal places.
- *
- * @internal
- */
-const _getDecimalPlaces = (value: number): number => {
-  const valueAsString = Math.abs(value).toString();
-  if (!valueAsString.includes('.') && !valueAsString.includes('e')) {
-    return 0;
-  }
-
-  const [coefficient, exponent] = valueAsString.split('e');
-  const decimalPlaces = coefficient.includes('.')
-    ? coefficient.split('.')[1]!.length
-    : 0;
-  if (!exponent) {
-    return decimalPlaces;
-  }
-
-  return Math.max(0, decimalPlaces - Number(exponent));
-};
+import { _getDecimalPlaces } from './utils/index.ts';
 
 /**
  * Input type
@@ -172,6 +147,8 @@ export function multipleOf(
   Input,
   ErrorMessage<MultipleOfIssue<Input, Input>> | undefined
 > {
+  const requirementDecimalPlaces =
+    typeof requirement === 'number' ? _getDecimalPlaces(requirement) : 0;
   return {
     kind: 'validation',
     type: 'multiple_of',
@@ -188,7 +165,7 @@ export function multipleOf(
         ) {
           const decimalPlaces = Math.max(
             _getDecimalPlaces(dataset.value),
-            _getDecimalPlaces(this.requirement)
+            requirementDecimalPlaces
           );
           const multiplier = 10 ** decimalPlaces;
 

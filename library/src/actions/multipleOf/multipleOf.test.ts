@@ -116,6 +116,35 @@ describe('multipleOf', () => {
       );
     });
 
+    test('for invalid decimal numbers', () => {
+      expectActionIssue(
+        multipleOf(0.01, 'message'),
+        { ...baseIssue, expected: '%0.01', requirement: 0.01 },
+        [0.001, 0.015, 1.234]
+      );
+      expectActionIssue(
+        multipleOf(0.1, 'message'),
+        { ...baseIssue, expected: '%0.1', requirement: 0.1 },
+        [0.15, 0.25]
+      );
+    });
+
+    test('for decimal value with integer requirement', () => {
+      expectActionIssue(
+        multipleOf(2, 'message'),
+        { ...baseIssue, expected: '%2', requirement: 2 },
+        [1.5, 0.5, 2.5]
+      );
+    });
+
+    test('for zero requirement', () => {
+      expectActionIssue(
+        multipleOf(0, 'message'),
+        { ...baseIssue, expected: '%0', requirement: 0 },
+        [0, 1, 5]
+      );
+    });
+
     test('for invalid bigints', () => {
       expectActionIssue(
         multipleOf(5n, 'message'),
