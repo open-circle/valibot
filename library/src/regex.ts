@@ -29,11 +29,11 @@ export const DIGITS_REGEX: RegExp = /^\d+$/u;
  * [Domain name](https://en.wikipedia.org/wiki/Domain_name) regex.
  *
  * Hint: We decided against the `i` flag for better JSON Schema compatibility.
- * ASCII-only validation. Internationalized domain names (IDN) in Unicode form
- * are not supported.
+ * ASCII-only validation. Internationalized domain names (IDNs) are not
+ * supported, including Punycode-encoded labels.
  */
 export const DOMAIN_REGEX: RegExp =
-  /^(?=.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/u;
+  /^(?=.{1,253}$)(?:(?![Xx][Nn]--)[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/u;
 
 /**
  * [Email address](https://en.wikipedia.org/wiki/Email_address) regex.
@@ -114,10 +114,11 @@ export const ISO_TIME_SECOND_REGEX: RegExp =
   /^(?:0\d|1\d|2[0-3])(?::[0-5]\d){2}$/u;
 
 /**
- * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp regex.
+ * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp regex. Allows a
+ * space as a date/time separator and an optional space before the UTC offset.
  */
 export const ISO_TIMESTAMP_REGEX: RegExp =
-  /^\d{4}-(?:0[1-9]|1[0-2])-(?:[12]\d|0[1-9]|3[01])[T ](?:0\d|1\d|2[0-3])(?::[0-5]\d){2}(?:\.\d{1,9})?(?:Z|[+-](?:0\d|1\d|2[0-3])(?::?[0-5]\d)?)$/u;
+  /^\d{4}-(?:0[1-9]|1[0-2])-(?:[12]\d|0[1-9]|3[01])[T ](?:0\d|1\d|2[0-3])(?::[0-5]\d){2}(?:\.\d{1,9})?(?:Z| ?[+-](?:0\d|1\d|2[0-3])(?::?[0-5]\d)?)$/u;
 
 /**
  * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) week regex.
