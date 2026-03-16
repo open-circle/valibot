@@ -5,7 +5,7 @@ import type {
   InferIssue,
   InferOutput,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _cloneDataset, _getStandardProps } from '../../utils/index.ts';
 import { _LruCache } from './_LruCache.ts';
 import type { Cache, CacheConfig } from './types.ts';
 
@@ -93,7 +93,9 @@ export function cache(
           (outputDataset = schema['~run'](dataset, runConfig))
         );
       }
-      return outputDataset;
+      // Hint: We clone the dataset before returning it so downstream pipe items
+      // do not mutate the cached dataset.
+      return _cloneDataset(outputDataset);
     },
   };
 }

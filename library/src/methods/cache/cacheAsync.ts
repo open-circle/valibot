@@ -10,7 +10,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _cloneDataset, _getStandardProps } from '../../utils/index.ts';
 import { _LruCache } from './_LruCache.ts';
 import type { Cache, CacheConfig } from './types.ts';
 
@@ -140,7 +140,11 @@ export function cacheAsync(
 
       // Check and return cached output if exists
       const cached = this.cache.get(key);
-      if (cached) return cached;
+      if (cached) {
+        // Hint: We clone the dataset before returning it so downstream pipe
+        // items do not mutate the cached dataset.
+        return _cloneDataset(cached);
+      }
 
       // If not cached, check if a matching run is already in progress
       let promise = activeRuns?.get(key);
@@ -154,7 +158,9 @@ export function cacheAsync(
       try {
         const outputDataset = await promise;
         this.cache.set(key, outputDataset);
-        return outputDataset;
+        // Hint: We clone the dataset before returning it so downstream pipe
+        // items do not mutate the cached dataset.
+        return _cloneDataset(outputDataset);
 
         // Cleanup active runs map
       } finally {

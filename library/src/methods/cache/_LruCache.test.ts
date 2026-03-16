@@ -38,10 +38,12 @@ describe('_LruCache', () => {
     expect(cache.key(null, {})).toContain('null');
   });
 
-  test('should return symbol sentinel for symbol input', () => {
+  test('should include symbol type for symbol input', () => {
     const cache = new _LruCache<unknown>();
 
-    expect(cache.key(Symbol('foo'), {})).toBe('symbol');
+    expect(cache.key(Symbol('foo'), {})).toBe(
+      'symbol|undefined|undefined|undefined|undefined'
+    );
   });
 
   test('should create different keys for different object references', () => {

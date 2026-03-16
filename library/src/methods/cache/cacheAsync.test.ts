@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
-import { minLength } from '../../actions/index.ts';
+import { minLength, transformAsync } from '../../actions/index.ts';
 import { string } from '../../schemas/index.ts';
-import { pipe } from '../index.ts';
+import { pipe, pipeAsync } from '../index.ts';
 import { cacheAsync, type SchemaWithCacheAsync } from './cacheAsync.ts';
 
 describe('cacheAsync', () => {
@@ -48,9 +48,44 @@ describe('cacheAsync', () => {
       const baseSchema = string();
       const runSpy = vi.spyOn(baseSchema, '~run');
       const schema = cacheAsync(baseSchema);
+      const dataset1 = await schema['~run']({ value: 'foo' }, {});
+      const dataset2 = await schema['~run']({ value: 'foo' }, {});
 
-      expect(await schema['~run']({ value: 'foo' }, {})).toBe(
-        await schema['~run']({ value: 'foo' }, {})
+      expect(dataset1).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(dataset2).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(dataset1).not.toBe(dataset2);
+      expect(runSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('without reusing mutated pipe datasets', async () => {
+      const baseSchema = string();
+      const runSpy = vi.spyOn(baseSchema, '~run');
+      const schema = pipeAsync(
+        cacheAsync(baseSchema),
+        transformAsync(async (input) => `${input}!`)
+      );
+
+      await expect(schema['~run']({ value: 'foo' }, {})).resolves.toStrictEqual(
+        {
+          typed: true,
+          value: 'foo!',
+          issues: undefined,
+        }
+      );
+      await expect(schema['~run']({ value: 'foo' }, {})).resolves.toStrictEqual(
+        {
+          typed: true,
+          value: 'foo!',
+          issues: undefined,
+        }
       );
       expect(runSpy).toHaveBeenCalledTimes(1);
     });
@@ -66,12 +101,35 @@ describe('cacheAsync', () => {
         { value: 'foo' },
         { lang: 'de' }
       );
+      const defaultDataset2 = await schema['~run']({ value: 'foo' }, {});
+      const langDataset2 = await schema['~run'](
+        { value: 'foo' },
+        { lang: 'de' }
+      );
 
       expect(defaultDataset).not.toBe(langDataset);
-      expect(await schema['~run']({ value: 'foo' }, {})).toBe(defaultDataset);
-      expect(
-        await schema['~run']({ value: 'foo' }, { lang: 'de' })
-      ).toBe(langDataset);
+      expect(defaultDataset).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(defaultDataset2).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(defaultDataset2).not.toBe(defaultDataset);
+      expect(langDataset).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(langDataset2).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(langDataset2).not.toBe(langDataset);
       expect(runSpy).toHaveBeenCalledTimes(2);
     });
 
@@ -91,14 +149,36 @@ describe('cacheAsync', () => {
 
   describe('should expose cache for manual clearing', () => {
     test('to invalidate cached output', async () => {
-      const schema = cacheAsync(string());
-      const dataset = await schema['~run']({ value: 'foo' }, {});
+      const baseSchema = string();
+      const runSpy = vi.spyOn(baseSchema, '~run');
+      const schema = cacheAsync(baseSchema);
 
-      expect(await schema['~run']({ value: 'foo' }, {})).toBe(dataset);
+      await expect(schema['~run']({ value: 'foo' }, {})).resolves.toStrictEqual(
+        {
+          typed: true,
+          value: 'foo',
+          issues: undefined,
+        }
+      );
+      await expect(schema['~run']({ value: 'foo' }, {})).resolves.toStrictEqual(
+        {
+          typed: true,
+          value: 'foo',
+          issues: undefined,
+        }
+      );
+      expect(runSpy).toHaveBeenCalledTimes(1);
 
       schema.cache.clear();
 
-      expect(await schema['~run']({ value: 'foo' }, {})).not.toBe(dataset);
+      await expect(schema['~run']({ value: 'foo' }, {})).resolves.toStrictEqual(
+        {
+          typed: true,
+          value: 'foo',
+          issues: undefined,
+        }
+      );
+      expect(runSpy).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -111,7 +191,8 @@ describe('cacheAsync', () => {
       const promise2 = schema['~run']({ value: 'foo' }, {});
       const [dataset1, dataset2] = await Promise.all([promise1, promise2]);
 
-      expect(dataset1).toBe(dataset2);
+      expect(dataset1).toStrictEqual(dataset2);
+      expect(dataset1).not.toBe(dataset2);
       expect(runSpy).toHaveBeenCalledTimes(1);
     });
   });
@@ -131,6 +212,7 @@ describe('cacheAsync', () => {
         {
           typed: true,
           value: 'foo',
+          issues: undefined,
         }
       );
     });

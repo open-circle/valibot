@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from 'vitest';
-import { minLength } from '../../actions/index.ts';
+import { minLength, transform } from '../../actions/index.ts';
 import { string } from '../../schemas/index.ts';
 import { pipe } from '../index.ts';
 import { cache, type SchemaWithCache } from './cache.ts';
@@ -44,10 +44,41 @@ describe('cache', () => {
       const baseSchema = string();
       const runSpy = vi.spyOn(baseSchema, '~run');
       const schema = cache(baseSchema);
+      const dataset1 = schema['~run']({ value: 'foo' }, {});
+      const dataset2 = schema['~run']({ value: 'foo' }, {});
 
-      expect(schema['~run']({ value: 'foo' }, {})).toBe(
-        schema['~run']({ value: 'foo' }, {})
+      expect(dataset1).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(dataset2).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(dataset1).not.toBe(dataset2);
+      expect(runSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('without reusing mutated pipe datasets', () => {
+      const baseSchema = string();
+      const runSpy = vi.spyOn(baseSchema, '~run');
+      const schema = pipe(
+        cache(baseSchema),
+        transform((input) => `${input}!`)
       );
+
+      expect(schema['~run']({ value: 'foo' }, {})).toStrictEqual({
+        typed: true,
+        value: 'foo!',
+        issues: undefined,
+      });
+      expect(schema['~run']({ value: 'foo' }, {})).toStrictEqual({
+        typed: true,
+        value: 'foo!',
+        issues: undefined,
+      });
       expect(runSpy).toHaveBeenCalledTimes(1);
     });
   });
@@ -59,12 +90,32 @@ describe('cache', () => {
       const schema = cache(baseSchema);
       const defaultDataset = schema['~run']({ value: 'foo' }, {});
       const langDataset = schema['~run']({ value: 'foo' }, { lang: 'de' });
+      const defaultDataset2 = schema['~run']({ value: 'foo' }, {});
+      const langDataset2 = schema['~run']({ value: 'foo' }, { lang: 'de' });
 
       expect(defaultDataset).not.toBe(langDataset);
-      expect(schema['~run']({ value: 'foo' }, {})).toBe(defaultDataset);
-      expect(schema['~run']({ value: 'foo' }, { lang: 'de' })).toBe(
-        langDataset
-      );
+      expect(defaultDataset).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(defaultDataset2).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(defaultDataset2).not.toBe(defaultDataset);
+      expect(langDataset).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(langDataset2).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(langDataset2).not.toBe(langDataset);
       expect(runSpy).toHaveBeenCalledTimes(2);
     });
 
@@ -84,14 +135,30 @@ describe('cache', () => {
 
   describe('should expose cache for manual clearing', () => {
     test('to invalidate cached output', () => {
-      const schema = cache(string());
-      const dataset = schema['~run']({ value: 'foo' }, {});
+      const baseSchema = string();
+      const runSpy = vi.spyOn(baseSchema, '~run');
+      const schema = cache(baseSchema);
 
-      expect(schema['~run']({ value: 'foo' }, {})).toBe(dataset);
+      expect(schema['~run']({ value: 'foo' }, {})).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(schema['~run']({ value: 'foo' }, {})).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(runSpy).toHaveBeenCalledTimes(1);
 
       schema.cache.clear();
 
-      expect(schema['~run']({ value: 'foo' }, {})).not.toBe(dataset);
+      expect(schema['~run']({ value: 'foo' }, {})).toStrictEqual({
+        typed: true,
+        value: 'foo',
+        issues: undefined,
+      });
+      expect(runSpy).toHaveBeenCalledTimes(2);
     });
   });
 });
