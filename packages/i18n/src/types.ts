@@ -7,6 +7,7 @@ export type Language = {
     | 'ca'
     | 'cs'
     | 'de'
+    | 'el'
     | 'en'
     | 'es'
     | 'fa'

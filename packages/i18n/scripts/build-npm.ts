@@ -6,6 +6,7 @@ import az from '../src/az';
 import ca from '../src/ca';
 import cs from '../src/cs';
 import de from '../src/de';
+import el from '../src/el';
 import es from '../src/es';
 import fa from '../src/fa';
 import fi from '../src/fi';
@@ -32,9 +33,6 @@ import vi from '../src/vi';
 import zhCN from '../src/zh-CN';
 import zhTW from '../src/zh-TW';
 
-// Start timer
-console.time('build');
-
 // Create languages array
 // Note: The language file `en` does not need to be added as the default
 // messages of Valibot are already in English
@@ -44,6 +42,7 @@ const languages = [
   ca,
   cs,
   de,
+  el,
   es,
   fa,
   fi,
@@ -300,6 +299,3 @@ fs.writeFileSync(
 
 // Write root .gitignore file
 fs.writeFileSync('.gitignore', files.join('\n'));
-
-// End timer
-console.timeEnd('build');
