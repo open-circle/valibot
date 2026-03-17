@@ -52,6 +52,7 @@
 ## Methods
 
 - [assert](/api/assert/)
+- [cache](/api/cache/)
 - [config](/api/config/)
 - [fallback](/api/fallback/)
 - [flatten](/api/flatten/)
@@ -230,6 +231,7 @@
 - [argsAsync](/api/argsAsync/)
 - [arrayAsync](/api/arrayAsync/)
 - [awaitAsync](/api/awaitAsync/)
+- [cacheAsync](/api/cacheAsync/)
 - [checkAsync](/api/checkAsync/)
 - [checkItemsAsync](/api/checkItemsAsync/)
 - [customAsync](/api/customAsync/)
@@ -309,6 +311,8 @@
 - [BrandName](/api/BrandName/)
 - [BytesAction](/api/BytesAction/)
 - [BytesIssue](/api/BytesIssue/)
+- [Cache](/api/Cache/)
+- [CacheConfig](/api/CacheConfig/)
 - [CheckAction](/api/CheckAction/)
 - [CheckActionAsync](/api/CheckActionAsync/)
 - [CheckIssue](/api/CheckIssue/)
@@ -654,6 +658,8 @@
 - [SafeParser](/api/SafeParser/)
 - [SafeParserAsync](/api/SafeParserAsync/)
 - [SafeParseResult](/api/SafeParseResult/)
+- [SchemaWithCache](/api/SchemaWithCache/)
+- [SchemaWithCacheAsync](/api/SchemaWithCacheAsync/)
 - [SchemaWithFallback](/api/SchemaWithFallback/)
 - [SchemaWithFallbackAsync](/api/SchemaWithFallbackAsync/)
 - [SchemaWithoutPipe](/api/SchemaWithoutPipe/)

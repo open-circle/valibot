@@ -33,6 +33,7 @@ pnpm build                      # Build for publishing (all packages)
 
 - **Source code is the single source of truth.** All documentation must match `/library/src/`.
 - **Lint and format after modifying code.** Run `pnpm lint` and `pnpm format` so CI passes.
+- **Use the GitHub CLI for GitHub-related tasks.** Prefer `gh` for pull requests, issues, checks, and other GitHub operations.
 
 ## Library Architecture
 

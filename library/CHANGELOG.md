@@ -7,6 +7,7 @@ All notable changes to the library will be documented in this file.
 - Add `guard` transformation action to narrow types using type predicates (pull request #1204)
 - Add `parseBoolean` transformation action to parse boolean values from strings and other types (pull request #1251)
 - Add `isrc` validation action to validate ISRC codes (pull request #1373)
+- Add `cache` method for caching schema output by input (pull request #1170)
 - Add `domain` validation action to validate domain names (pull request #1284)
 - Add `jwsCompact` validation action to validate JWS compact strings (pull request #1348)
 - Fix `creditCard` validation action to allow 13-digit Visa card numbers (pull request #1347)
