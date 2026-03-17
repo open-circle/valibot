@@ -14,6 +14,7 @@ export type Language = {
     | 'id'
     | 'it'
     | 'ja'
+    | 'ko'
     | 'kr'
     | 'nb'
     | 'nl'

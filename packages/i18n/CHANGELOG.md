@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Fix ISO 639-1 code for Korean (`ko`) (pull request #1306)
+
 ## v1.0.0 (March 19, 2025)
 
 - Add new and missing actions to translations
