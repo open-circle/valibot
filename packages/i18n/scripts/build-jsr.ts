@@ -34,9 +34,6 @@ import vi from '../src/vi';
 import zhCN from '../src/zh-CN';
 import zhTW from '../src/zh-TW';
 
-// Start timer
-console.time('build');
-
 // Create languages array
 // Note: The language file `en` does not need to be added as the default
 // messages of Valibot are already in English
@@ -172,6 +169,3 @@ fs.writeFileSync(
   'jsr.json',
   JSON.stringify({ ...jsr, exclude, exports }, null, 2)
 );
-
-// End timer
-console.timeEnd('build');
