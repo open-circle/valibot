@@ -5,6 +5,7 @@ All notable changes to the library will be documented in this file.
 ## vX.X.X (Month DD, YYYY)
 
 - Add Azerbaijani (az) translations (pull request #1409)
+- Add Mongolian (mn) translations (pull request #1224)
 - Add new and missing actions to translations (pull request #1306)
 - Change Valibot peer dependency to `^1.3.0`
 - Fix ISO 639-1 code for Korean (`ko`) (pull request #1306)

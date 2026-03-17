@@ -16,6 +16,7 @@ import it from '../src/it';
 import ja from '../src/ja';
 import ko from '../src/ko';
 import kr from '../src/kr';
+import mn from '../src/mn';
 import nb from '../src/nb';
 import nl from '../src/nl';
 import pl from '../src/pl';
@@ -51,6 +52,7 @@ const languages = [
   ja,
   ko,
   kr,
+  mn,
   nb,
   nl,
   pl,
