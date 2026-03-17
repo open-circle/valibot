@@ -1,3 +1,4 @@
+import * as vm from 'node:vm';
 import { describe, expect, test } from 'vitest';
 import { isPlainObject } from './isPlainObject.ts';
 
@@ -6,6 +7,11 @@ describe('isPlainObject', () => {
     expect(isPlainObject({})).toBe(true);
     expect(isPlainObject({ foo: 1, bar: 2 })).toBe(true);
     expect(isPlainObject(Object.create(null))).toBe(true);
+  });
+
+  test('should return true for cross-realm objects', () => {
+    const value = vm.runInNewContext('({})');
+    expect(isPlainObject(value)).toBe(true);
   });
 
   test.each([
@@ -23,6 +29,7 @@ describe('isPlainObject', () => {
     new Map(),
     new Set(),
     new Date(),
+    vm.runInNewContext('([])'),
   ])('should return false for %s', (value) => {
     expect(isPlainObject(value)).toBe(false);
   });

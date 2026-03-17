@@ -55,6 +55,7 @@ export interface PojoSchema<
    */
   readonly message: TMessage;
 }
+
 /**
  * Creates a POJO schema.
  *
