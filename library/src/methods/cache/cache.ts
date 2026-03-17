@@ -1,4 +1,4 @@
-import type { OutputDataset } from '../../types/dataset.ts';
+import type { OutputDataset } from '../../types/index.ts';
 import type {
   BaseIssue,
   BaseSchema,
