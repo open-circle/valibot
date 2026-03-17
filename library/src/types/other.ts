@@ -3,7 +3,7 @@ import type { UnknownDataset } from './dataset.ts';
 import type { InferInput, InferIssue } from './infer.ts';
 import type { BaseIssue } from './issue.ts';
 import type { BaseSchema, BaseSchemaAsync } from './schema.ts';
-import type { MaybePromise, MaybeReadonly } from './utils.ts';
+import type { MaybeDeepReadonly, MaybePromise } from './utils.ts';
 
 /**
  * Error message type.
@@ -19,11 +19,11 @@ export type Default<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TInput extends null | undefined,
 > =
-  | MaybeReadonly<InferInput<TWrapped> | TInput>
+  | MaybeDeepReadonly<InferInput<TWrapped> | TInput>
   | ((
       dataset?: UnknownDataset,
       config?: Config<InferIssue<TWrapped>>
-    ) => MaybeReadonly<InferInput<TWrapped> | TInput>)
+    ) => MaybeDeepReadonly<InferInput<TWrapped> | TInput>)
   | undefined;
 
 /**
@@ -35,11 +35,11 @@ export type DefaultAsync<
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   TInput extends null | undefined,
 > =
-  | MaybeReadonly<InferInput<TWrapped> | TInput>
+  | MaybeDeepReadonly<InferInput<TWrapped> | TInput>
   | ((
       dataset?: UnknownDataset,
       config?: Config<InferIssue<TWrapped>>
-    ) => MaybePromise<MaybeReadonly<InferInput<TWrapped> | TInput>>)
+    ) => MaybePromise<MaybeDeepReadonly<InferInput<TWrapped> | TInput>>)
   | undefined;
 
 /**
@@ -66,7 +66,7 @@ export type DefaultValue<
     ? TDefault extends (
         dataset?: UnknownDataset,
         config?: Config<InferIssue<TWrapped>>
-      ) => MaybePromise<InferInput<TWrapped> | TInput>
+      ) => MaybePromise<MaybeDeepReadonly<InferInput<TWrapped> | TInput>>
       ? Awaited<ReturnType<TDefault>>
       : TDefault
     : never;
