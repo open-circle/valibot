@@ -25,7 +25,7 @@ Huge thanks to [@EskiMojo14](https://github.com/EskiMojo14), [@alexilyaev](https
 
 ## Smarter pipelines
 
-Two new additions make Valibot pipelines more expressive. <Link href="/api/guard/">`guard`</Link> lets you narrow values using an existing type predicate, and <Link href="/api/parseBoolean/">`parseBoolean`</Link> turns common boolish input into a real boolean.
+Two new additions make it easier to refine and transform data directly inside a pipeline. <Link href="/api/guard/">`guard`</Link> lets you narrow values using an existing type predicate (a function that checks and confirms a more specific type), and <Link href="/api/parseBoolean/">`parseBoolean`</Link> turns common boolish input into a real boolean.
 
 This is especially useful when your input starts as a broad type and becomes more precise step by step.
 
@@ -82,7 +82,7 @@ const UsernameSchema = v.cacheAsync(
 
 For async workflows, <Link href="/api/cacheAsync/">`cacheAsync`</Link> can also deduplicate matching concurrent runs, which is especially useful when validation involves a network request.
 
-One important detail from the implementation: primitive inputs are cached by value, while objects and functions are cached by reference identity. That means mutating an input object and reusing the same reference can return a stale cached result. For best results, use caching with immutable inputs and avoid mutating cached output objects.
+One important detail from the implementation: primitive values like strings and numbers are cached by value, while objects and functions are cached by their reference, meaning the exact instance in memory. That means mutating an input object and reusing the same reference can return a stale cached result. For best results, use caching with immutable inputs and avoid mutating cached output objects.
 
 ## New validators
 
@@ -102,7 +102,7 @@ const DomainSchema = v.pipe(
 
 The validation is intentionally focused on ASCII domains. Internationalized domain names and Punycode-encoded labels are not supported here, so if you need full URL validation you should continue using <Link href="/api/url/">`url`</Link> or add your own preprocessing step.
 
-For authentication flows, <Link href="/api/jwsCompact/">`jwsCompact`</Link> checks whether a string matches the three-part JWS compact serialization shape with unpadded Base64URL-like segments. This is a lightweight structural check, not full JWT verification.
+For authentication flows, <Link href="/api/jwsCompact/">`jwsCompact`</Link> checks whether a string matches the three-part JWS compact serialization shape with unpadded Base64URL-like segments. This is a lightweight structural check and does not verify the token's authenticity.
 
 ```ts
 const AccessTokenSchema = v.pipe(
