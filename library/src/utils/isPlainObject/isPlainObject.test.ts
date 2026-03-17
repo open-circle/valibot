@@ -14,9 +14,10 @@ describe('isPlainObject', () => {
     true,
     1n,
     Symbol('foo'),
-    function () {
-      // empty
-    },
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    function () {},
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    () => {},
     [],
     new Map(),
     new Set(),
