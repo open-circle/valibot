@@ -1,10 +1,6 @@
-# Copilot Instructions
+# AI Instructions
 
 Valibot is a modular, type-safe schema validation library with zero runtime dependencies.
-
-## Planning Mode
-
-When in planning mode and something is unclear, ask questions **one at a time** (like a quiz). Wait for each answer before asking the next question. Only after all questions are answered and you have no remaining uncertainties, present the final plan.
 
 ## Monorepo Layout
 
@@ -20,10 +16,10 @@ When in planning mode and something is unclear, ask questions **one at a time** 
 
 ```bash
 pnpm install                    # Install dependencies
-pnpm -C library test            # Run tests (includes type tests)
-pnpm -C library lint            # ESLint + tsc + deno check
-pnpm -C library build           # Build for publishing
-pnpm -C website dev             # Start docs site
+pnpm test                       # Run tests (all packages)
+pnpm lint                       # ESLint + tsc + deno check (all packages)
+pnpm format                     # Format code with Prettier (all packages)
+pnpm build                      # Build for publishing (all packages)
 ```
 
 ## Code Conventions
@@ -36,6 +32,8 @@ pnpm -C website dev             # Start docs site
 ## Other Rules
 
 - **Source code is the single source of truth.** All documentation must match `/library/src/`.
+- **Lint and format after modifying code.** Run `pnpm lint` and `pnpm format` so CI passes.
+- **Use the GitHub CLI for GitHub-related tasks.** Prefer `gh` for pull requests, issues, checks, and other GitHub operations.
 
 ## Library Architecture
 

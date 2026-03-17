@@ -1,0 +1,27 @@
+---
+title: Cache
+description: Cache interface type.
+contributors:
+  - fabianhiller
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# Cache
+
+Cache interface type.
+
+> Hint: The `key` method uses value-based keys for primitive inputs and reference-identity keys for object and function inputs.
+
+## Generics
+
+- `TValue` <Property {...properties.TValue} />
+
+## Definition
+
+- `Cache`
+  - `key` <Property {...properties.key} />
+  - `get` <Property {...properties.get} />
+  - `set` <Property {...properties.set} />
+  - `clear` <Property {...properties.clear} />

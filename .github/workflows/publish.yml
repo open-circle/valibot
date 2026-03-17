@@ -26,11 +26,9 @@ jobs:
         run: pnpm build
         working-directory: library
       - name: Publish library
-        run: pnpm publish --provenance --access public --no-git-checks
+        run: npm publish --access public
         working-directory: library
         continue-on-error: true
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   library_jsr:
     name: Publish library to JSR
@@ -62,11 +60,9 @@ jobs:
         run: pnpm build.npm
         working-directory: packages/i18n
       - name: Publish i18n
-        run: pnpm publish --provenance --access public --no-git-checks
+        run: npm publish --access public
         working-directory: packages/i18n
         continue-on-error: true
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   i18n_jsr:
     name: Publish i18n to JSR
@@ -103,11 +99,9 @@ jobs:
         run: pnpm build
         working-directory: packages/to-json-schema
       - name: Publish to-json-schema
-        run: pnpm publish --provenance --access public --no-git-checks
+        run: npm publish --access public
         working-directory: packages/to-json-schema
         continue-on-error: true
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   to_json_schema_jsr:
     name: Publish to-json-schema to JSR

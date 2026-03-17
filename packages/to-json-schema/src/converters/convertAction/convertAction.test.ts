@@ -78,6 +78,18 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert domain action', () => {
+    expect(convertAction({}, v.domain<string>(), undefined)).toStrictEqual({
+      pattern: v.DOMAIN_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.domain<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.DOMAIN_REGEX.source,
+    });
+  });
+
   test('should convert description action', () => {
     expect(convertAction({}, v.description('test'), undefined)).toStrictEqual({
       description: 'test',
@@ -105,6 +117,18 @@ describe('convertAction', () => {
     ).toStrictEqual({
       type: 'string',
       pattern: v.EMOJI_REGEX.source,
+    });
+  });
+
+  test('should convert jwsCompact action', () => {
+    expect(convertAction({}, v.jwsCompact<string>(), undefined)).toStrictEqual({
+      pattern: v.JWS_COMPACT_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.jwsCompact<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.JWS_COMPACT_REGEX.source,
     });
   });
 
