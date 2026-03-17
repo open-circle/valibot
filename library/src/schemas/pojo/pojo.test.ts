@@ -39,6 +39,10 @@ describe('pojo', () => {
     test('for plain object', () => {
       expectNoSchemaIssue(schema, [{}, { key: 'value' }]);
     });
+
+    test('for null prototype', () => {
+      expectNoSchemaIssue(schema, [Object.create(null)]);
+    });
   });
 
   describe('should return dataset with issues', () => {
