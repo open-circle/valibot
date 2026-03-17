@@ -14,6 +14,7 @@ export type Language = {
     | 'id'
     | 'it'
     | 'ja'
+    | 'ko'
     | 'kr'
     | 'nb'
     | 'nl'
@@ -42,34 +43,43 @@ export type Language = {
     cuid2: ErrorMessage<BaseIssue<unknown>>;
     decimal: ErrorMessage<BaseIssue<unknown>>;
     digits: ErrorMessage<BaseIssue<unknown>>;
+    domain: ErrorMessage<BaseIssue<unknown>>;
     email: ErrorMessage<BaseIssue<unknown>>;
     emoji: ErrorMessage<BaseIssue<unknown>>;
     empty: ErrorMessage<BaseIssue<unknown>>;
     endsWith: ErrorMessage<BaseIssue<unknown>>;
+    entries: ErrorMessage<BaseIssue<unknown>>;
     everyItem: ErrorMessage<BaseIssue<unknown>>;
     excludes: ErrorMessage<BaseIssue<unknown>>;
     finite: ErrorMessage<BaseIssue<unknown>>;
     graphemes: ErrorMessage<BaseIssue<unknown>>;
+    gtValue: ErrorMessage<BaseIssue<unknown>>;
+    guard: ErrorMessage<BaseIssue<unknown>>;
     hash: ErrorMessage<BaseIssue<unknown>>;
-    hexColor: ErrorMessage<BaseIssue<unknown>>;
     hexadecimal: ErrorMessage<BaseIssue<unknown>>;
+    hexColor: ErrorMessage<BaseIssue<unknown>>;
     imei: ErrorMessage<BaseIssue<unknown>>;
     includes: ErrorMessage<BaseIssue<unknown>>;
     integer: ErrorMessage<BaseIssue<unknown>>;
     ip: ErrorMessage<BaseIssue<unknown>>;
     ipv4: ErrorMessage<BaseIssue<unknown>>;
     ipv6: ErrorMessage<BaseIssue<unknown>>;
+    isbn: ErrorMessage<BaseIssue<unknown>>;
     isoDate: ErrorMessage<BaseIssue<unknown>>;
     isoDateTime: ErrorMessage<BaseIssue<unknown>>;
     isoTime: ErrorMessage<BaseIssue<unknown>>;
     isoTimeSecond: ErrorMessage<BaseIssue<unknown>>;
     isoTimestamp: ErrorMessage<BaseIssue<unknown>>;
     isoWeek: ErrorMessage<BaseIssue<unknown>>;
+    isrc: ErrorMessage<BaseIssue<unknown>>;
+    jwsCompact: ErrorMessage<BaseIssue<unknown>>;
     length: ErrorMessage<BaseIssue<unknown>>;
+    ltValue: ErrorMessage<BaseIssue<unknown>>;
     mac: ErrorMessage<BaseIssue<unknown>>;
     mac48: ErrorMessage<BaseIssue<unknown>>;
     mac64: ErrorMessage<BaseIssue<unknown>>;
     maxBytes: ErrorMessage<BaseIssue<unknown>>;
+    maxEntries: ErrorMessage<BaseIssue<unknown>>;
     maxGraphemes: ErrorMessage<BaseIssue<unknown>>;
     maxLength: ErrorMessage<BaseIssue<unknown>>;
     maxSize: ErrorMessage<BaseIssue<unknown>>;
@@ -77,6 +87,7 @@ export type Language = {
     maxWords: ErrorMessage<BaseIssue<unknown>>;
     mimeType: ErrorMessage<BaseIssue<unknown>>;
     minBytes: ErrorMessage<BaseIssue<unknown>>;
+    minEntries: ErrorMessage<BaseIssue<unknown>>;
     minGraphemes: ErrorMessage<BaseIssue<unknown>>;
     minLength: ErrorMessage<BaseIssue<unknown>>;
     minSize: ErrorMessage<BaseIssue<unknown>>;
@@ -86,22 +97,36 @@ export type Language = {
     nanoid: ErrorMessage<BaseIssue<unknown>>;
     nonEmpty: ErrorMessage<BaseIssue<unknown>>;
     notBytes: ErrorMessage<BaseIssue<unknown>>;
+    notEntries: ErrorMessage<BaseIssue<unknown>>;
     notGraphemes: ErrorMessage<BaseIssue<unknown>>;
     notLength: ErrorMessage<BaseIssue<unknown>>;
     notSize: ErrorMessage<BaseIssue<unknown>>;
     notValue: ErrorMessage<BaseIssue<unknown>>;
+    notValues: ErrorMessage<BaseIssue<unknown>>;
     notWords: ErrorMessage<BaseIssue<unknown>>;
     octal: ErrorMessage<BaseIssue<unknown>>;
+    parseBoolean: ErrorMessage<BaseIssue<unknown>>;
+    parseJson: ErrorMessage<BaseIssue<unknown>>;
     partialCheck: ErrorMessage<BaseIssue<unknown>>;
+    rawCheck: ErrorMessage<BaseIssue<unknown>>;
+    rawTransform: ErrorMessage<BaseIssue<unknown>>;
     regex: ErrorMessage<BaseIssue<unknown>>;
+    rfcEmail: ErrorMessage<BaseIssue<unknown>>;
     safeInteger: ErrorMessage<BaseIssue<unknown>>;
     size: ErrorMessage<BaseIssue<unknown>>;
+    slug: ErrorMessage<BaseIssue<unknown>>;
     someItem: ErrorMessage<BaseIssue<unknown>>;
     startsWith: ErrorMessage<BaseIssue<unknown>>;
+    stringifyJson: ErrorMessage<BaseIssue<unknown>>;
+    toBigint: ErrorMessage<BaseIssue<unknown>>;
+    toDate: ErrorMessage<BaseIssue<unknown>>;
+    toNumber: ErrorMessage<BaseIssue<unknown>>;
+    toString: ErrorMessage<BaseIssue<unknown>>;
     ulid: ErrorMessage<BaseIssue<unknown>>;
     url: ErrorMessage<BaseIssue<unknown>>;
     uuid: ErrorMessage<BaseIssue<unknown>>;
     value: ErrorMessage<BaseIssue<unknown>>;
+    values: ErrorMessage<BaseIssue<unknown>>;
     words: ErrorMessage<BaseIssue<unknown>>;
   };
 };

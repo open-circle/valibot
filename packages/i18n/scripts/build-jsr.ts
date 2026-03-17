@@ -13,6 +13,7 @@ import hu from '../src/hu';
 import id from '../src/id';
 import it from '../src/it';
 import ja from '../src/ja';
+import ko from '../src/ko';
 import kr from '../src/kr';
 import nb from '../src/nb';
 import nl from '../src/nl';
@@ -47,6 +48,7 @@ const languages = [
   it,
   hu,
   ja,
+  ko,
   kr,
   nb,
   nl,
@@ -114,7 +116,7 @@ for (const language of languages) {
   fs.writeFileSync(
     path.join(language.code, 'schema.ts'),
     `
-import { setSchemaMessage } from "jsr:@valibot/valibot@1.0.0-beta.3";
+import { setSchemaMessage } from "jsr:@valibot/valibot@1.3.0";
 
 setSchemaMessage(
   ${language.schema.toString()},
@@ -136,7 +138,7 @@ setSchemaMessage(
     fs.writeFileSync(
       path.join(language.code, `${reference}.ts`),
       `
-import { setSpecificMessage, ${reference} } from "jsr:@valibot/valibot@1.0.0-beta.3";
+import { setSpecificMessage, ${reference} } from "jsr:@valibot/valibot@1.3.0";
 
 setSpecificMessage(
   ${reference},

@@ -1,0 +1,69 @@
+---
+title: jwsCompact
+description: Creates a validation action for JWS compact strings.
+source: /actions/jwsCompact/jwsCompact.ts
+contributors:
+  - yslpn
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# jwsCompact
+
+Creates a [JWS compact serialization](https://datatracker.ietf.org/doc/html/rfc7515#section-3.1) validation action.
+
+```ts
+const Action = v.jwsCompact<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `jwsCompact` you can validate that a string matches the three-part compact string shape used by JWS compact serialization with unpadded Base64URL-like segments. If the input does not match this JWS compact string shape, you can use `message` to customize the error message.
+
+> Hint: This validation action only checks the three-part compact string shape. It does not decode the segments, verify the signature, or validate claims. Empty payload and signature segments are accepted when they appear as valid compact-serialization segments. If you need full JWT validation, signature verification, or claim checks, use a dedicated library such as one from [jwt.io/libraries](https://www.jwt.io/libraries).
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `jwsCompact` can be used.
+
+### Access token schema
+
+Schema to validate that an access token string matches the JWS compact string shape.
+
+```ts
+const AccessTokenSchema = v.pipe(
+  v.string(),
+  v.nonEmpty('Provide an access token.'),
+  v.jwsCompact('The token must be a valid JWS compact string.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `jwsCompact`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

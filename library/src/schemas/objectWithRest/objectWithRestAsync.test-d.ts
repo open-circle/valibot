@@ -2,6 +2,7 @@ import { describe, expectTypeOf, test } from 'vitest';
 import type {
   Brand,
   BrandAction,
+  DescriptionAction,
   ReadonlyAction,
   TransformAction,
 } from '../../actions/index.ts';
@@ -158,6 +159,47 @@ describe('objectWithRestAsync', () => {
           StringSchema<undefined>,
           () => Promise<'foo'>
         >;
+
+        // SchemaWithPipe
+        key80: SchemaWithPipe<
+          [ExactOptionalSchema<StringSchema<undefined>, undefined>]
+        >;
+        key81: SchemaWithPipe<
+          [
+            ExactOptionalSchema<StringSchema<undefined>, undefined>,
+            DescriptionAction<string, 'foo'>,
+          ]
+        >;
+        key82: SchemaWithPipe<
+          [OptionalSchema<StringSchema<undefined>, undefined>]
+        >;
+        key83: SchemaWithPipe<
+          [
+            OptionalSchema<StringSchema<undefined>, undefined>,
+            DescriptionAction<string | undefined, 'foo'>,
+          ]
+        >;
+        key84: SchemaWithPipe<
+          [NullishSchema<StringSchema<undefined>, undefined>]
+        >;
+        key85: SchemaWithPipe<
+          [
+            NullishSchema<StringSchema<undefined>, undefined>,
+            DescriptionAction<string | null | undefined, 'foo'>,
+          ]
+        >;
+        key86: SchemaWithPipe<
+          [
+            NullishSchema<StringSchema<undefined>, undefined>,
+            TransformAction<string | null | undefined, string[]>,
+          ]
+        >;
+        key87: SchemaWithPipeAsync<
+          [
+            NullishSchemaAsync<StringSchema<undefined>, undefined>,
+            TransformAction<string | null | undefined, string[]>,
+          ]
+        >;
       },
       BooleanSchema<undefined>,
       undefined
@@ -222,6 +264,16 @@ describe('objectWithRestAsync', () => {
           key76?: string | null | undefined;
           key77?: string | null | undefined;
           key78?: string | null | undefined;
+
+          // SchemaWithPipe
+          key80?: string;
+          key81?: string;
+          key82?: string | undefined;
+          key83?: string | undefined;
+          key84?: string | null | undefined;
+          key85?: string | null | undefined;
+          key86?: string | null | undefined;
+          key87?: string | null | undefined;
         } & { [key: string]: boolean }
       >();
     });
@@ -285,6 +337,16 @@ describe('objectWithRestAsync', () => {
           key76: string | undefined;
           key77: string | null;
           key78: string;
+
+          // SchemaWithPipe
+          key80?: string;
+          key81?: string;
+          key82?: string | undefined;
+          key83?: string | undefined;
+          key84?: string | null | undefined;
+          key85?: string | null | undefined;
+          key86?: string[];
+          key87?: string[];
         } & { [key: string]: boolean }
       >();
     });
