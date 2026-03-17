@@ -1,8 +1,8 @@
 ---
 title: Objects
 description: >-
-  To validate objects with a schema, you can use `object` or `record`. You use
-  `object` for an object with a specific shape and `record` in the other case.
+  To validate objects with a schema, you can use `pojo`, `object` or `record`
+  depending on how specific the validation should be.
 contributors:
   - fabian-hiller
   - Mini-ghost
@@ -12,7 +12,7 @@ import { Link } from '~/components';
 
 # Objects
 
-To validate objects with a schema, you can use <Link href="/api/object/">`object`</Link> or <Link href="/api/record/">`record`</Link>. You use <Link href="/api/object/">`object`</Link> for an object with a specific shape and <Link href="/api/record/">`record`</Link> for objects with any number of uniform entries.
+To validate objects with a schema, you can use <Link href="/api/pojo/">`pojo`</Link>, <Link href="/api/object/">`object`</Link> or <Link href="/api/record/">`record`</Link>. Use <Link href="/api/pojo/">`pojo`</Link> when you only need to validate that the input is a plain object, <Link href="/api/object/">`object`</Link> for an object with a specific shape and <Link href="/api/record/">`record`</Link> for objects with any number of uniform entries.
 
 ## Object schema
 
@@ -32,6 +32,16 @@ const ObjectSchema = v.object({
 The <Link href="/api/object/">`object`</Link> schema removes unknown entries. This means that entries that you have not defined in the first argument are neither validated nor added to the output. You can change this behavior by using the <Link href="/api/looseObject/">`looseObject`</Link> or <Link href="/api/strictObject/">`strictObject`</Link> schema instead.
 
 The <Link href="/api/looseObject/">`looseObject`</Link> schema allows unknown entries and adds them to the output. The <Link href="/api/strictObject/">`strictObject`</Link> schema forbids unknown entries and returns an issue for the first unknown entry found.
+
+### Plain objects without entry validation
+
+If you only need to validate that the input is a plain object and do not want to define or validate entries, use <Link href="/api/pojo/">`pojo`</Link>. Unlike <Link href="/api/object/">`object`</Link> and <Link href="/api/record/">`record`</Link>, it only checks the root type. It also accepts objects with a `null` prototype.
+
+```ts
+import * as v from 'valibot';
+
+const PojoSchema = v.pojo();
+```
 
 ### Object with specific rest
 

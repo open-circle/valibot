@@ -36,6 +36,8 @@ With `record` you can validate the data type of the input and whether the entrie
 
 > This schema filters certain entries from the record for security reasons.
 
+> If you only need to validate that the input is a plain object and do not need to validate specific keys or values, use <Link href="../pojo/">`pojo`</Link> instead.
+
 > This schema marks an entry as optional if it detects that its key is a literal type. The reason for this is that it is not technically possible to detect missing literal keys without restricting the `key` schema to <Link href="../string/">`string`</Link>, <Link href="../enum/">`enum`</Link> and <Link href="../picklist/">`picklist`</Link>. However, if <Link href="../enum/">`enum`</Link> and <Link href="../picklist/">`picklist`</Link> are used, it is better to use <Link href="../object/">`object`</Link> with <Link href="../entriesFromList/">`entriesFromList`</Link> because it already covers the needed functionality. This decision also reduces the bundle size of `record`, because it only needs to check the entries of the input and not any missing keys.
 
 ## Returns
@@ -130,6 +132,7 @@ The following APIs can be combined with `record`.
     'objectWithRest',
     'optional',
     'picklist',
+    'pojo',
     'promise',
     'set',
     'strictObject',
