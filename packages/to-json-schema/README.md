@@ -34,6 +34,7 @@ This package is particularly popular for:
 | `literal`        | ⚠️     | Only JSON compatible values are supported                                                                                             |
 | `looseObject`    | ✅     |                                                                                                                                       |
 | `looseTuple`     | ✅     |                                                                                                                                       |
+| `never`          | ✅     |                                                                                                                                       |
 | `null`           | ✅     |                                                                                                                                       |
 | `nullable`       | ✅     |                                                                                                                                       |
 | `nullish`        | ✅     |                                                                                                                                       |
@@ -53,45 +54,66 @@ This package is particularly popular for:
 | `unknown`        | ✅     |                                                                                                                                       |
 | `variant`        | ⚠️     | The discriminator key will be ignored                                                                                                 |
 
-| Actions        | Status | Note                                                        |
-| -------------- | ------ | ----------------------------------------------------------- |
-| `base64`       | ✅     |                                                             |
-| `bic`          | ✅     |                                                             |
-| `cuid2`        | ✅     |                                                             |
-| `decimal`      | ✅     |                                                             |
-| `description`  | ✅     |                                                             |
-| `digits`       | ✅     |                                                             |
-| `email`        | ✅     |                                                             |
-| `emoji`        | ✅     |                                                             |
-| `empty`        | ✅     |                                                             |
-| `entries`      | ✅     |                                                             |
-| `hexadecimal`  | ✅     |                                                             |
-| `hexColor`     | ✅     |                                                             |
-| `integer`      | ✅     |                                                             |
-| `ipv4`         | ✅     |                                                             |
-| `ipv6`         | ✅     |                                                             |
-| `isoDate`      | ✅     |                                                             |
-| `isoDateTime`  | ✅     |                                                             |
-| `isoTime`      | ✅     |                                                             |
-| `isoTimestamp` | ✅     |                                                             |
-| `length`       | ⚠️     | Only in combination with `string` and `array` schema        |
-| `maxEntries`   | ✅     |                                                             |
-| `maxLength`    | ⚠️     | Only in combination with `string` and `array` schema        |
-| `maxValue`     | ⚠️     | Only in combination with `number` schema                    |
-| `metadata`     | ⚠️     | Only for valid `title`, `description` and `examples` values |
-| `minEntries`   | ✅     |                                                             |
-| `minLength`    | ⚠️     | Only in combination with `string` and `array` schemas       |
-| `minValue`     | ⚠️     | Only in combination with `number` schema                    |
-| `multipleOf`   | ✅     |                                                             |
-| `nanoid`       | ✅     |                                                             |
-| `nonEmpty`     | ✅     |                                                             |
-| `octal`        | ✅     |                                                             |
-| `regex`        | ⚠️     | RexExp flags are not supported in JSON schema               |
-| `title`        | ✅     |                                                             |
-| `ulid`         | ✅     |                                                             |
-| `url`          | ✅     |                                                             |
-| `uuid`         | ✅     |                                                             |
-| `value`        | ✅     |                                                             |
+| Actions         | Status | Note                                                        |
+| --------------- | ------ | ----------------------------------------------------------- |
+| `base64`        | ✅     |                                                             |
+| `bic`           | ✅     |                                                             |
+| `cuid2`         | ✅     |                                                             |
+| `decimal`       | ✅     |                                                             |
+| `description`   | ✅     |                                                             |
+| `digits`        | ✅     |                                                             |
+| `domain`        | ✅     |                                                             |
+| `email`         | ✅     |                                                             |
+| `emoji`         | ✅     |                                                             |
+| `empty`         | ✅     |                                                             |
+| `endsWith`      | ✅     |                                                             |
+| `entries`       | ✅     |                                                             |
+| `examples`      | ✅     |                                                             |
+| `gtValue`       | ⚠️     | Only in combination with `number` and `integer` schema      |
+| `hash`          | ✅     |                                                             |
+| `hexadecimal`   | ✅     |                                                             |
+| `hexColor`      | ✅     |                                                             |
+| `includes`      | ✅     |                                                             |
+| `integer`       | ✅     |                                                             |
+| `ipv4`          | ✅     |                                                             |
+| `ipv6`          | ✅     |                                                             |
+| `isoDate`       | ✅     |                                                             |
+| `isoDateTime`   | ✅     |                                                             |
+| `isoTime`       | ✅     |                                                             |
+| `isoTimeSecond` | ✅     |                                                             |
+| `isoTimestamp`  | ✅     |                                                             |
+| `isoWeek`       | ✅     |                                                             |
+| `isrc`          | ✅     |                                                             |
+| `jwsCompact`    | ✅     |                                                             |
+| `length`        | ⚠️     | Only in combination with `string` and `array` schema        |
+| `ltValue`       | ⚠️     | Only in combination with `number` and `integer` schema      |
+| `mac`           | ✅     |                                                             |
+| `mac48`         | ✅     |                                                             |
+| `mac64`         | ✅     |                                                             |
+| `maxEntries`    | ✅     |                                                             |
+| `maxLength`     | ⚠️     | Only in combination with `string` and `array` schema        |
+| `maxValue`      | ⚠️     | Only in combination with `number` schema                    |
+| `metadata`      | ⚠️     | Only for valid `title`, `description` and `examples` values |
+| `minEntries`    | ✅     |                                                             |
+| `minLength`     | ⚠️     | Only in combination with `string` and `array` schema        |
+| `minValue`      | ⚠️     | Only in combination with `number` schema                    |
+| `multipleOf`    | ✅     |                                                             |
+| `nanoid`        | ✅     |                                                             |
+| `nonEmpty`      | ✅     |                                                             |
+| `notValue`      | ⚠️     | Only JSON compatible values are supported                   |
+| `notValues`     | ⚠️     | Only JSON compatible values are supported                   |
+| `octal`         | ✅     |                                                             |
+| `regex`         | ⚠️     | RegExp flags are not supported in JSON Schema               |
+| `rfcEmail`      | ✅     |                                                             |
+| `safeInteger`   | ✅     |                                                             |
+| `slug`          | ✅     |                                                             |
+| `startsWith`    | ✅     |                                                             |
+| `title`         | ✅     |                                                             |
+| `ulid`          | ✅     |                                                             |
+| `url`           | ✅     |                                                             |
+| `uuid`          | ✅     |                                                             |
+| `value`         | ⚠️     | Only JSON compatible values are supported                   |
+| `values`        | ⚠️     | Only JSON compatible values are supported                   |
 
 ## Configurations
 

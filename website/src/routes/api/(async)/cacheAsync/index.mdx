@@ -1,0 +1,136 @@
+---
+title: cacheAsync
+description: Creates a version of a schema that caches its output.
+source: /methods/cache/cacheAsync.ts
+contributors:
+  - EskiMojo14
+  - fabianhiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# cacheAsync
+
+Creates a version of a schema that caches its output.
+
+```ts
+const Schema = v.cacheAsync<TSchema, TCacheConfig>(schema, config);
+```
+
+## Generics
+
+- `TSchema` <Property {...properties.TSchema} />
+- `TCacheConfig` <Property {...properties.TCacheConfig} />
+
+## Parameters
+
+- `schema` <Property {...properties.schema} />
+- `config` <Property {...properties.config} />
+
+### Explanation
+
+The `cacheAsync` method creates a version of the given `schema` that caches its output. This can be useful for performance optimization, for example when validation involves a network request.
+
+> Hint: Primitive inputs are cached by value. Object and function inputs are cached by reference identity, so mutating input objects and reusing the same reference can return a stale cached dataset. Returned objects are also reused by reference, so mutating cached output can affect later cache hits. For best results, use `cacheAsync` with immutable inputs and avoid mutating returned cached objects.
+
+## Returns
+
+- `Schema` <Property {...properties.Schema} />
+
+## Examples
+
+The following examples show how `cacheAsync` can be used.
+
+### Cache schema
+
+Schema that caches its output.
+
+```ts
+const CacheSchema = v.cacheAsync(v.string());
+```
+
+### Max size schema
+
+Schema that caches its output for a maximum of 100 items.
+
+```ts
+const MaxSizeSchema = v.cacheAsync(v.string(), { maxSize: 100 });
+```
+
+### Max age schema
+
+Schema that caches its output for a maximum of 10 seconds.
+
+```ts
+const MaxAgeSchema = v.cacheAsync(v.string(), { maxAge: 10_000 });
+```
+
+## Related
+
+The following APIs can be combined with `cacheAsync`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'array',
+    'bigint',
+    'blob',
+    'boolean',
+    'custom',
+    'date',
+    'enum',
+    'exactOptional',
+    'file',
+    'function',
+    'instance',
+    'intersect',
+    'lazy',
+    'literal',
+    'looseObject',
+    'looseTuple',
+    'map',
+    'nan',
+    'never',
+    'nonNullable',
+    'nonNullish',
+    'nonOptional',
+    'null',
+    'nullable',
+    'nullish',
+    'number',
+    'object',
+    'objectWithRest',
+    'optional',
+    'picklist',
+    'promise',
+    'record',
+    'set',
+    'strictObject',
+    'strictTuple',
+    'string',
+    'symbol',
+    'tuple',
+    'tupleWithRest',
+    'undefined',
+    'undefinedable',
+    'union',
+    'unknown',
+    'variant',
+    'void',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['config', 'getDefault', 'getFallback']} />
+
+### Actions
+
+<ApiList items={['message', 'unwrap']} />
+
+### Async
+
+<ApiList items={['parseAsync', 'safeParseAsync']} />

@@ -135,9 +135,8 @@ jobs:
 
   zod_to_valibot_vitest:
     name: Run Vitest in codemod/zod-to-valibot
+    needs: install
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6

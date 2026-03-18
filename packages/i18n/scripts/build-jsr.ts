@@ -3,23 +3,29 @@ import path from 'node:path';
 import jsr from '../jsr.json';
 import package_ from '../package.json';
 import ar from '../src/ar';
+import az from '../src/az';
 import ca from '../src/ca';
 import cs from '../src/cs';
 import de from '../src/de';
+import el from '../src/el';
 import es from '../src/es';
 import fa from '../src/fa';
+import fi from '../src/fi';
 import fr from '../src/fr';
 import hu from '../src/hu';
 import id from '../src/id';
 import it from '../src/it';
 import ja from '../src/ja';
+import ko from '../src/ko';
 import kr from '../src/kr';
+import mn from '../src/mn';
 import nb from '../src/nb';
 import nl from '../src/nl';
 import pl from '../src/pl';
 import pt from '../src/pt';
 import ro from '../src/ro';
 import ru from '../src/ru';
+import sk from '../src/sk';
 import sl from '../src/sl';
 import sv from '../src/sv';
 import tr from '../src/tr';
@@ -28,31 +34,34 @@ import vi from '../src/vi';
 import zhCN from '../src/zh-CN';
 import zhTW from '../src/zh-TW';
 
-// Start timer
-console.time('build');
-
 // Create languages array
 // Note: The language file `en` does not need to be added as the default
 // messages of Valibot are already in English
 const languages = [
   ar,
+  az,
   ca,
   cs,
   de,
+  el,
   es,
   fa,
+  fi,
   fr,
+  hu,
   id,
   it,
-  hu,
   ja,
+  ko,
   kr,
+  mn,
   nb,
   nl,
   pl,
   pt,
   ro,
   ru,
+  sk,
   sl,
   sv,
   tr,
@@ -112,7 +121,7 @@ for (const language of languages) {
   fs.writeFileSync(
     path.join(language.code, 'schema.ts'),
     `
-import { setSchemaMessage } from "jsr:@valibot/valibot@1.0.0-beta.3";
+import { setSchemaMessage } from "jsr:@valibot/valibot@1.3.0";
 
 setSchemaMessage(
   ${language.schema.toString()},
@@ -134,7 +143,7 @@ setSchemaMessage(
     fs.writeFileSync(
       path.join(language.code, `${reference}.ts`),
       `
-import { setSpecificMessage, ${reference} } from "jsr:@valibot/valibot@1.0.0-beta.3";
+import { setSpecificMessage, ${reference} } from "jsr:@valibot/valibot@1.3.0";
 
 setSpecificMessage(
   ${reference},
@@ -160,6 +169,3 @@ fs.writeFileSync(
   'jsr.json',
   JSON.stringify({ ...jsr, exclude, exports }, null, 2)
 );
-
-// End timer
-console.timeEnd('build');

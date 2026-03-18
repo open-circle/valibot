@@ -2,9 +2,22 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v1.3.1 (March 18, 2026)
+
+- Change `MAC48_REGEX`, `MAC64_REGEX` and `MAC_REGEX` to drop the `i` flag for better JSON Schema compatibility (pull request #1430)
+- Change `hash` action to use case-expanded character classes instead of the `i` flag (pull request #1430)
+
+## v1.3.0 (March 17, 2026)
 
 - Add `guard` transformation action to narrow types using type predicates (pull request #1204)
+- Add `parseBoolean` transformation action to parse boolean values from strings and other types (pull request #1251)
+- Add `isrc` validation action to validate ISRC codes (pull request #1373)
+- Add `cache` method for caching schema output by input (pull request #1170)
+- Add `domain` validation action to validate domain names (pull request #1284)
+- Add `jwsCompact` validation action to validate JWS compact strings (pull request #1348)
+- Fix `creditCard` validation action to allow 13-digit Visa card numbers (pull request #1347)
+- Fix `isoTimestamp` validation action to allow optional space before UTC offset for PostgreSQL `timestamptz` compatibility (pull request #1195)
+- Fix types for deeply readonly default and fallback values
 
 ## v1.2.0 (November 24, 2025)
 
