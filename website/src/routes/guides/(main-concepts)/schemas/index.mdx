@@ -66,6 +66,7 @@ Among complex values, Valibot supports objects, records, arrays, tuples, and sev
     'map',
     'object',
     'objectWithRest',
+    'pojo',
     'promise',
     'record',
     'set',
@@ -89,6 +90,7 @@ const LooseTupleSchema = v.looseTuple([v.string(), v.number()]); // [string, num
 const MapSchema = v.map(v.string(), v.number()); // Map<string, number>
 const ObjectSchema = v.object({ key: v.string() }); // { key: string }
 const ObjectWithRestSchema = v.objectWithRest({ key: v.string() }, v.null()); // { key: string } & { [key: string]: null }
+const PojoSchema = v.pojo(); // Record<string, unknown>
 const PromiseSchema = v.promise(); // Promise<unknown>
 const RecordSchema = v.record(v.string(), v.number()); // Record<string, number>
 const SetSchema = v.set(v.number()); // Set<number>
