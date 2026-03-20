@@ -163,6 +163,10 @@ export function multipleOf(
           typeof dataset.value === 'number' &&
           typeof this.requirement === 'number'
         ) {
+          if (dataset.value === 0 && this.requirement !== 0 && Number.isFinite(this.requirement)) {
+            return dataset;
+          }
+
           const decimalPlaces = Math.max(
             _getDecimalPlaces(dataset.value),
             requirementDecimalPlaces
@@ -178,10 +182,16 @@ export function multipleOf(
           }
         } else if (
           typeof dataset.value === 'bigint' &&
-          typeof this.requirement === 'bigint' &&
-          dataset.value % this.requirement !== 0n
+          typeof this.requirement === 'bigint'
         ) {
-          _addIssue(this, 'multiple', dataset, config);
+          if (this.requirement === 0n) {
+            _addIssue(this, 'multiple', dataset, config);
+            return dataset;
+          }
+
+          if (dataset.value % this.requirement !== 0n) {
+            _addIssue(this, 'multiple', dataset, config);
+          }
         }
       }
       return dataset;

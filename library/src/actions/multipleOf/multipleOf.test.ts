@@ -69,6 +69,7 @@ describe('multipleOf', () => {
       expectNoActionIssue(multipleOf(0.01), [3, 0.1, 0.03, 1.5, -0.1, -1.5]);
       expectNoActionIssue(multipleOf(0.1), [0.3, -0.3]);
       expectNoActionIssue(multipleOf(0.25), [0.75, -0.75]);
+      expectNoActionIssue(multipleOf(1e-7), [0, 1e-7, 2e-7, -3e-7]);
     });
 
     test('for valid bigints', () => {
@@ -145,11 +146,27 @@ describe('multipleOf', () => {
       );
     });
 
+    test('for scientific notation', () => {
+      expectActionIssue(
+        multipleOf(1e-7, 'message'),
+        { ...baseIssue, expected: '%1e-7', requirement: 1e-7 },
+        [1e-8, 1.5e-7]
+      );
+    });
+
     test('for invalid bigints', () => {
       expectActionIssue(
         multipleOf(5n, 'message'),
         { ...baseIssue, requirement: 5n },
         [-14n, -9n, -4n, 1n, 3n, 6n, 11n]
+      );
+    });
+
+    test('for zero bigint requirement', () => {
+      expectActionIssue(
+        multipleOf(0n, 'message'),
+        { ...baseIssue, expected: '%0', requirement: 0n },
+        [-1n, 0n, 1n]
       );
     });
   });
