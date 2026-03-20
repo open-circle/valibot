@@ -173,7 +173,11 @@ export function multipleOf(
           );
           const multiplier = 10 ** decimalPlaces;
 
-          if (
+          if (!Number.isFinite(multiplier)) {
+            if (dataset.value % this.requirement !== 0) {
+              _addIssue(this, 'multiple', dataset, config);
+            }
+          } else if (
             Math.round(dataset.value * multiplier) %
               Math.round(this.requirement * multiplier) !==
             0
