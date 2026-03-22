@@ -5,6 +5,7 @@ import type {
   InferIssue,
   ObjectPathItem,
   OutputDataset,
+  UnknownDataset,
 } from '../../types/index.ts';
 import {
   _addIssue,
@@ -105,6 +106,13 @@ export function record(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<RecordIssue> | undefined
 > {
+  // Pre-bind ~run and pre-allocate reusable frames. Two frames needed because
+  // keyDataset is still live when valueDataset is populated.
+  const _keyRun = key['~run'].bind(key) as typeof key['~run'];
+  const _valueRun = value['~run'].bind(value) as typeof value['~run'];
+  const _keyDataset: UnknownDataset = { value: undefined, typed: false, issues: undefined };
+  const _valueDataset: UnknownDataset = { value: undefined, typed: false, issues: undefined };
+
   return {
     kind: 'schema',
     type: 'record',
@@ -137,7 +145,14 @@ export function record(
             const entryValue: unknown = input[entryKey as keyof typeof input];
 
             // Get dataset of key schema
-            const keyDataset = this.key['~run']({ value: entryKey }, config);
+            _keyDataset.value = entryKey;
+            _keyDataset.typed = false;
+            _keyDataset.issues = undefined;
+
+            const keyDataset = _keyRun(
+              _keyDataset,
+              config
+            );
 
             // If there are issues, capture them
             if (keyDataset.issues) {
@@ -170,8 +185,12 @@ export function record(
             }
 
             // Get dataset of value schema
-            const valueDataset = this.value['~run'](
-              { value: entryValue },
+            _valueDataset.value = entryValue;
+            _valueDataset.typed = false;
+            _valueDataset.issues = undefined;
+            
+            const valueDataset = _valueRun(
+              _valueDataset,
               config
             );
 

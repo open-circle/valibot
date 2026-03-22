@@ -5,8 +5,12 @@ import type {
   Config,
   InferIssue,
   InferOutput,
+  UnknownDataset,
 } from '../../types/index.ts';
 import { ValiError } from '../../utils/index.ts';
+
+// Reusable dataset frame; safe because parse() is synchronous and non-reentrant
+const _dataset: UnknownDataset = { value: undefined, typed: false, issues: undefined };
 
 /**
  * Parses an unknown input based on a schema.
@@ -24,7 +28,10 @@ export function parse<
   input: unknown,
   config?: Config<InferIssue<TSchema>>
 ): InferOutput<TSchema> {
-  const dataset = schema['~run']({ value: input }, getGlobalConfig(config));
+  _dataset.value = input;
+  _dataset.typed = false;
+  _dataset.issues = undefined;
+  const dataset = schema['~run'](_dataset, getGlobalConfig(config));
   if (dataset.issues) {
     throw new ValiError(dataset.issues);
   }

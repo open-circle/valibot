@@ -4,8 +4,12 @@ import type {
   BaseSchema,
   Config,
   InferIssue,
+  UnknownDataset,
 } from '../../types/index.ts';
 import type { SafeParseResult } from './types.ts';
+
+// Reusable dataset frame; safe because safeParse() is synchronous and non-reentrant
+const _dataset: UnknownDataset = { value: undefined, typed: false, issues: undefined };
 
 /**
  * Parses an unknown input based on a schema.
@@ -24,7 +28,10 @@ export function safeParse<
   input: unknown,
   config?: Config<InferIssue<TSchema>>
 ): SafeParseResult<TSchema> {
-  const dataset = schema['~run']({ value: input }, getGlobalConfig(config));
+  _dataset.value = input;
+  _dataset.typed = false;
+  _dataset.issues = undefined;
+  const dataset = schema['~run'](_dataset, getGlobalConfig(config));
   return {
     typed: dataset.typed,
     success: !dataset.issues,

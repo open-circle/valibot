@@ -8,6 +8,7 @@ import type {
   InferTupleOutput,
   OutputDataset,
   TupleItems,
+  UnknownDataset,
 } from '../../types/index.ts';
 import { _addIssue, _getStandardProps } from '../../utils/index.ts';
 import type { StrictTupleIssue } from './types.ts';
@@ -74,6 +75,9 @@ export function strictTuple(
   items: TupleItems,
   message?: ErrorMessage<StrictTupleIssue>
 ): StrictTupleSchema<TupleItems, ErrorMessage<StrictTupleIssue> | undefined> {
+  const _itemRuns = items.map((item) => item['~run'].bind(item) as typeof item['~run']);
+  const _entryDataset: UnknownDataset = { value: undefined, typed: false, issues: undefined };
+
   return {
     kind: 'schema',
     type: 'strict_tuple',
@@ -99,7 +103,12 @@ export function strictTuple(
         // Parse schema of each tuple item
         for (let key = 0; key < this.items.length; key++) {
           const value = input[key];
-          const itemDataset = this.items[key]['~run']({ value }, config);
+
+          _entryDataset.value = value;
+          _entryDataset.typed = false;
+          _entryDataset.issues = undefined;
+          
+          const itemDataset = _itemRuns[key](_entryDataset, config);
 
           // If there are issues, capture them
           if (itemDataset.issues) {

@@ -15,6 +15,7 @@ import type {
   ErrorMessage,
   InferInput,
   TupleItems,
+  UnknownDataset,
 } from '../../types/index.ts';
 import { ValiError } from '../../utils/index.ts';
 
@@ -74,6 +75,8 @@ export function args<
 export function args(
   schema: Schema
 ): ArgsAction<(...args: unknown[]) => unknown, Schema> {
+  // Reusable dataset frame; safe because the wrapped function is synchronous and non-reentrant
+  const _argsDataset: UnknownDataset = { value: undefined, typed: false, issues: undefined };
   return {
     kind: 'transformation',
     type: 'args',
@@ -83,7 +86,10 @@ export function args(
     '~run'(dataset, config) {
       const func = dataset.value;
       dataset.value = (...args_) => {
-        const argsDataset = this.schema['~run']({ value: args_ }, config);
+        _argsDataset.value = args_;
+        _argsDataset.typed = false;
+        _argsDataset.issues = undefined;
+        const argsDataset = this.schema['~run'](_argsDataset, config);
         if (argsDataset.issues) {
           throw new ValiError(argsDataset.issues);
         }
