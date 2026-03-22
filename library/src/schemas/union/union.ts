@@ -57,6 +57,9 @@ export interface UnionSchema<
   readonly message: TMessage;
 }
 
+// Cache the last-successful option index per union schema instance
+const _lastSuccessIndex = new WeakMap<object, number>();
+
 /**
  * Creates an union schema.
  *
@@ -113,9 +116,28 @@ export function union(
         | undefined;
       let untypedDatasets: FailureDataset<BaseIssue<unknown>>[] | undefined;
 
+      // Try the last-successful option first as a fast path
+      const lastIndex = _lastSuccessIndex.get(this) ?? -1;
+      let lastDataset:
+        | ReturnType<(typeof this.options)[number]['~run']>
+        | undefined;
+      if (lastIndex >= 0) {
+        lastDataset = this.options[lastIndex]['~run'](
+          { value: dataset.value },
+          config
+        );
+        if (lastDataset.typed && !lastDataset.issues) {
+          return lastDataset as SuccessDataset<unknown>;
+        }
+      }
+
       // Parse schema of each option and collect datasets
-      for (const schema of this.options) {
-        const optionDataset = schema['~run']({ value: dataset.value }, config);
+      for (let i = 0; i < this.options.length; i++) {
+        // Reuse the already-computed dataset for the last-success index
+        const optionDataset =
+          i === lastIndex && lastDataset
+            ? lastDataset
+            : this.options[i]['~run']({ value: dataset.value }, config);
 
         // If typed, add it to valid or typed datasets
         if (optionDataset.typed) {
@@ -127,8 +149,9 @@ export function union(
               typedDatasets = [optionDataset];
             }
 
-            // Otherwise, add it as valid dataset and break loop
+            // Otherwise, record it as valid dataset and break loop
           } else {
+            _lastSuccessIndex.set(this, i);
             validDataset = optionDataset;
             break;
           }
