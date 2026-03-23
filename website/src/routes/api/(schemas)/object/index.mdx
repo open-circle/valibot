@@ -33,7 +33,7 @@ const Schema = v.object<TEntries, TMessage>(entries, message);
 
 With `object` you can validate the data type of the input and whether the content matches `entries`. If the input is not an object, you can use `message` to customize the error message.
 
-> This schema removes unknown entries. The output will only include the entries you specify. To include unknown entries, use <Link href="../looseObject/">`looseObject`</Link>. To return an issue for unknown entries, use <Link href="../strictObject/">`strictObject`</Link>. To include and validate unknown entries, use <Link href="../objectWithRest/">`objectWithRest`</Link>.
+> This schema removes unknown entries. The output will only include the entries you specify. To include unknown entries, use <Link href="../looseObject/">`looseObject`</Link>. To return an issue for unknown entries, use <Link href="../strictObject/">`strictObject`</Link>. To include and validate unknown entries, use <Link href="../objectWithRest/">`objectWithRest`</Link>. If you only need to validate that the input is a plain object, use <Link href="../pojo/">`pojo`</Link>.
 
 ## Returns
 
@@ -131,6 +131,7 @@ The following APIs can be combined with `object`.
     'objectWithRest',
     'optional',
     'picklist',
+    'pojo',
     'promise',
     'record',
     'set',
