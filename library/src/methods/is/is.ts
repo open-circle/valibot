@@ -1,5 +1,8 @@
 import type { BaseIssue, BaseSchema, InferInput } from '../../types/index.ts';
 
+// Shared config — allocating `{ abortEarly: true }` on every call would be wasteful
+const ABORT_EARLY_CONFIG = { abortEarly: true } as const;
+
 /**
  * Checks if the input matches the schema. By using a type predicate, this
  * function can be used as a type guard.
@@ -13,5 +16,5 @@ import type { BaseIssue, BaseSchema, InferInput } from '../../types/index.ts';
 export function is<
   const TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
 >(schema: TSchema, input: unknown): input is InferInput<TSchema> {
-  return !schema['~run']({ value: input }, { abortEarly: true }).issues;
+  return !schema['~run']({ value: input }, ABORT_EARLY_CONFIG).issues;
 }
