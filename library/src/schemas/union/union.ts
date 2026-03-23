@@ -116,17 +116,20 @@ export function union(
         | undefined;
       let untypedDatasets: FailureDataset<BaseIssue<unknown>>[] | undefined;
 
-      // Try the last-successful option first as a fast path
+      // Try the last-successful option first as a fast path.
+      // Bounds-check lastIndex in case this.options was mutated externally.
       const lastIndex = _lastSuccessIndex.get(this) ?? -1;
       let lastDataset:
         | ReturnType<(typeof this.options)[number]['~run']>
         | undefined;
-      if (lastIndex >= 0) {
+      if (lastIndex >= 0 && lastIndex < this.options.length) {
         lastDataset = this.options[lastIndex]['~run'](
           { value: dataset.value },
           config
         );
-        if (lastDataset.typed && !lastDataset.issues) {
+        // Only skip the full scan when lastIndex === 0 — there are no earlier
+        // branches that could have higher priority under left-to-right semantics.
+        if (lastIndex === 0 && lastDataset.typed && !lastDataset.issues) {
           return lastDataset as SuccessDataset<unknown>;
         }
       }
