@@ -135,7 +135,7 @@ export function looseObject(
             _entryDataset.value = value;
             _entryDataset.typed = false;
             _entryDataset.issues = undefined;
-            
+
             const valueDataset = usePrebuilt
               ? _entryRuns[key](_entryDataset, config)
               : valueSchema['~run'](_entryDataset, config);
