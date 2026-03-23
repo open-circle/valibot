@@ -5,6 +5,7 @@ import type {
   InferIssue,
   OutputDataset,
   SetPathItem,
+  UnknownDataset,
 } from '../../types/index.ts';
 import { _addIssue, _getStandardProps } from '../../utils/index.ts';
 import type { InferSetInput, InferSetOutput, SetIssue } from './types.ts';
@@ -74,6 +75,9 @@ export function set(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<SetIssue> | undefined
 > {
+  const _valueRun = value['~run'].bind(value) as typeof value['~run'];
+  const _valueDataset: UnknownDataset = { value: undefined, typed: false, issues: undefined };
+
   return {
     kind: 'schema',
     type: 'set',
@@ -98,10 +102,10 @@ export function set(
 
         // Parse schema of each set value
         for (const inputValue of input) {
-          const valueDataset = this.value['~run'](
-            { value: inputValue },
-            config
-          );
+          _valueDataset.value = inputValue;
+          _valueDataset.typed = false;
+          _valueDataset.issues = undefined;
+          const valueDataset = _valueRun(_valueDataset, config);
 
           // If there are issues, capture them
           if (valueDataset.issues) {

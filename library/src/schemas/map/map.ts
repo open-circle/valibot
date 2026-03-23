@@ -5,6 +5,7 @@ import type {
   InferIssue,
   MapPathItem,
   OutputDataset,
+  UnknownDataset,
 } from '../../types/index.ts';
 import { _addIssue, _getStandardProps } from '../../utils/index.ts';
 import type { InferMapInput, InferMapOutput, MapIssue } from './types.ts';
@@ -89,6 +90,13 @@ export function map(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<MapIssue> | undefined
 > {
+  // Pre-bind ~run and pre-allocate reusable frames. Two frames needed because
+  // keyDataset is still live when valueDataset is populated.
+  const _keyRun = key['~run'].bind(key) as typeof key['~run'];
+  const _valueRun = value['~run'].bind(value) as typeof value['~run'];
+  const _keyDataset: UnknownDataset = { value: undefined, typed: false, issues: undefined };
+  const _valueDataset: UnknownDataset = { value: undefined, typed: false, issues: undefined };
+
   return {
     kind: 'schema',
     type: 'map',
@@ -115,7 +123,14 @@ export function map(
         // Parse schema of each map entry
         for (const [inputKey, inputValue] of input) {
           // Get dataset of key schema
-          const keyDataset = this.key['~run']({ value: inputKey }, config);
+          _keyDataset.value = inputKey;
+          _keyDataset.typed = false;
+          _keyDataset.issues = undefined;
+
+          const keyDataset = _keyRun(
+            _keyDataset,
+            config
+          );
 
           // If there are issues, capture them
           if (keyDataset.issues) {
@@ -152,8 +167,12 @@ export function map(
           }
 
           // Get dataset of value schema
-          const valueDataset = this.value['~run'](
-            { value: inputValue },
+          _valueDataset.value = inputValue;
+          _valueDataset.typed = false;
+          _valueDataset.issues = undefined;
+          
+          const valueDataset = _valueRun(
+            _valueDataset,
             config
           );
 
