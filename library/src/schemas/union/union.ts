@@ -116,31 +116,25 @@ export function union(
         | undefined;
       let untypedDatasets: FailureDataset<BaseIssue<unknown>>[] | undefined;
 
-      // Try the last-successful option first as a fast path.
-      // Bounds-check lastIndex in case this.options was mutated externally.
-      const lastIndex = _lastSuccessIndex.get(this) ?? -1;
-      let lastDataset:
-        | ReturnType<(typeof this.options)[number]['~run']>
-        | undefined;
-      if (lastIndex >= 0 && lastIndex < this.options.length) {
-        lastDataset = this.options[lastIndex]['~run'](
+      // Fast path: if the first option succeeded last time, try it first.
+      // Restricted to index 0 to preserve left-to-right priority semantics and
+      // avoid running side-effecting branches (transforms) out of order.
+      if (_lastSuccessIndex.get(this) === 0) {
+        const fastDataset = this.options[0]['~run'](
           { value: dataset.value },
           config
         );
-        // Only skip the full scan when lastIndex === 0 — there are no earlier
-        // branches that could have higher priority under left-to-right semantics.
-        if (lastIndex === 0 && lastDataset.typed && !lastDataset.issues) {
-          return lastDataset as SuccessDataset<unknown>;
+        if (fastDataset.typed && !fastDataset.issues) {
+          return fastDataset as SuccessDataset<unknown>;
         }
       }
 
       // Parse schema of each option and collect datasets
       for (let i = 0; i < this.options.length; i++) {
-        // Reuse the already-computed dataset for the last-success index
-        const optionDataset =
-          i === lastIndex && lastDataset
-            ? lastDataset
-            : this.options[i]['~run']({ value: dataset.value }, config);
+        const optionDataset = this.options[i]['~run'](
+          { value: dataset.value },
+          config
+        );
 
         // If typed, add it to valid or typed datasets
         if (optionDataset.typed) {
