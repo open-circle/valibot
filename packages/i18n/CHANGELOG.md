@@ -4,7 +4,6 @@ All notable changes to the library will be documented in this file.
 
 ## v1.1.0 (March 17, 2026)
 
-- Add Uzbek (uz) translations (pull request #1449)
 - Add Greek (el) translations (pull request #1311)
 - Add Slovak (sk) translations (pull request #1334)
 - Add Finnish (fi) translations (pull request #1318)
