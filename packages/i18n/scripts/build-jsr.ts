@@ -30,6 +30,7 @@ import sl from '../src/sl';
 import sv from '../src/sv';
 import tr from '../src/tr';
 import uk from '../src/uk';
+import uz from '../src/uz';
 import vi from '../src/vi';
 import zhCN from '../src/zh-CN';
 import zhTW from '../src/zh-TW';
@@ -66,6 +67,7 @@ const languages = [
   sv,
   tr,
   uk,
+  uz,
   vi,
   zhCN,
   zhTW,
