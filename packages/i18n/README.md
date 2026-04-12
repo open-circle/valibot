@@ -38,7 +38,6 @@ Valibot ships English messages by default, so this package publishes translated 
 | Swedish (sv)     | [#606][pr-606-url]   | ✅     |
 | Turkish (tr)     | [#549][pr-549-url]   | ✅     |
 | Ukrainian (uk)   | [#423][pr-423-url]   | ✅     |
-| Uzbek (uz)       | [#pending][pr-uz-url]    | 🆕     |
 | Vietnamese (vi)  | [#951][pr-951-url]   | ✅     |
 
 The deprecated `kr` submodule remains available as an alias of `ko` for compatibility, but new integrations should use `ko`.
@@ -73,7 +72,6 @@ The deprecated `kr` submodule remains available as an alias of `ko` for compatib
 [pr-1318-url]: https://github.com/open-circle/valibot/pull/1318
 [pr-1334-url]: https://github.com/open-circle/valibot/pull/1334
 [pr-1409-url]: https://github.com/open-circle/valibot/pull/1409
-[pr-uz-url]: https://github.com/open-circle/valibot/pulls?q=is%3Apr+uzbek
 
 ## Getting started
 
