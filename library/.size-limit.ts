@@ -71,7 +71,7 @@ checks.push(
   ts`
     const PixelSchema = v.pipe(
       v.string(),
-      v.regex(/^d{1,3}px$/),
+      v.regex(/^\d{1,3}px$/),
       v.transform(parseInt),
       v.number(),
       v.maxValue(100),
