@@ -5,21 +5,20 @@
  *
  * @returns Whether the value is a plain object.
  */
+// inlined from @httpx/plain-object
 // @__NO_SIDE_EFFECTS__
 export function isPlainObject(
   value: unknown
 ): value is Record<string, unknown> {
-  if (typeof value !== 'object' || value === null) {
+  if (value === null || typeof value !== 'object') {
     return false;
   }
 
-  let proto = value;
-  while (Object.getPrototypeOf(proto) !== null) {
-    proto = Object.getPrototypeOf(proto);
-  }
-
+  const proto = Object.getPrototypeOf(value);
   return (
-    Object.getPrototypeOf(value) === proto ||
-    Object.getPrototypeOf(value) === null
+    proto === null ||
+    proto === Object.prototype ||
+    // Required to support node:vm.runInNewContext({})
+    Object.getPrototypeOf(proto) === null
   );
 }
