@@ -1,4 +1,6 @@
+import type { SchemaMapperHKT } from '../../methods/mapEntries/mapEntries.ts';
 import type {
+  BaseHKTable,
   BaseIssue,
   BaseSchema,
   Default,
@@ -8,6 +10,10 @@ import type {
 } from '../../types/index.ts';
 import { _getStandardProps } from '../../utils/index.ts';
 
+export interface ExactOptionalModifierHKT extends SchemaMapperHKT {
+  result: ExactOptionalSchema<this['wrapped'], undefined>;
+}
+
 /**
  * Exact optional schema interface.
  */
@@ -15,10 +21,11 @@ export interface ExactOptionalSchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TDefault extends Default<TWrapped, never>,
 > extends BaseSchema<
-    InferInput<TWrapped>,
-    InferOutput<TWrapped>,
-    InferIssue<TWrapped>
-  > {
+      InferInput<TWrapped>,
+      InferOutput<TWrapped>,
+      InferIssue<TWrapped>
+    >,
+    BaseHKTable<ExactOptionalModifierHKT> {
   /**
    * The schema type.
    */
@@ -90,5 +97,6 @@ export function exactOptional(
     '~run'(dataset, config) {
       return this.wrapped['~run'](dataset, config);
     },
+    '~preferHkt': true,
   };
 }
