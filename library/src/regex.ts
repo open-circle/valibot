@@ -143,6 +143,11 @@ export const ISRC_REGEX: RegExp =
   /^(?:[A-Z]{2}[A-Z\d]{3}\d{7}|[A-Z]{2}-[A-Z\d]{3}-\d{2}-\d{5})$/u;
 
 /**
+ * [KSUID](https://github.com/segmentio/ksuid) regex.
+ */
+export const KSUID_REGEX: RegExp = /^[a-zA-Z0-9]{27}$/u;
+
+/**
  * [MAC](https://en.wikipedia.org/wiki/MAC_address) 48 bit regex.
  *
  * Hint: We decided against the `i` flag for better JSON Schema compatibility.
