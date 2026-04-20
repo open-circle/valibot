@@ -137,63 +137,46 @@ export function objectWithRestAsync(
         dataset.typed = true;
         dataset.value = {};
 
-        // Parse each normal and rest entry
-        const [normalDatasets, restDatasets] = await Promise.all([
+        const parseEntry = async ([key, valueSchema]: [
+          string,
+          (typeof this.entries)[string],
+        ]) => {
           // If key is present or its an optional schema with a default value,
           // parse input of key or default value asynchronously
-          Promise.all(
-            Object.entries(this.entries).map(async ([key, valueSchema]) => {
-              if (
-                key in input ||
-                ((valueSchema.type === 'exact_optional' ||
-                  valueSchema.type === 'optional' ||
-                  valueSchema.type === 'nullish') &&
-                  // @ts-expect-error
-                  valueSchema.default !== undefined)
-              ) {
-                const value: unknown =
-                  key in input
-                    ? // @ts-expect-error
-                      input[key]
-                    : await getDefault(valueSchema);
-                return [
-                  key,
-                  value,
-                  valueSchema,
-                  await valueSchema['~run']({ value }, config),
-                ] as const;
-              }
-              return [
-                key,
-                // @ts-expect-error
-                input[key] as unknown,
-                valueSchema,
-                null,
-              ] as const;
-            })
-          ),
-
-          // Parse other entries with rest schema asynchronously
-          // Hint: We exclude specific keys for security reasons
-          Promise.all(
-            Object.entries(input)
-              .filter(
-                ([key]) =>
-                  _isValidObjectKey(input, key) && !(key in this.entries)
-              )
-              .map(
-                async ([key, value]) =>
-                  [
-                    key,
-                    value,
-                    await this.rest['~run']({ value }, config),
-                  ] as const
-              )
-          ),
-        ]);
-
-        // Process each normal object entry of schema
-        for (const [key, value, valueSchema, valueDataset] of normalDatasets) {
+          if (
+            key in input ||
+            ((valueSchema.type === 'exact_optional' ||
+              valueSchema.type === 'optional' ||
+              valueSchema.type === 'nullish') &&
+              // @ts-expect-error
+              valueSchema.default !== undefined)
+          ) {
+            const value: unknown =
+              key in input
+                ? // @ts-expect-error
+                  input[key]
+                : await getDefault(valueSchema);
+            return [
+              key,
+              value,
+              valueSchema,
+              await valueSchema['~run']({ value }, config),
+            ] as const;
+          }
+          return [
+            key,
+            // @ts-expect-error
+            input[key] as unknown,
+            valueSchema,
+            null,
+          ] as const;
+        };
+        const processEntry = async ([
+          key,
+          value,
+          valueSchema,
+          valueDataset,
+        ]: Awaited<ReturnType<typeof parseEntry>>) => {
           // If key is present or its an optional schema with a default value,
           // process its value dataset
           if (valueDataset) {
@@ -227,7 +210,7 @@ export function objectWithRestAsync(
               // If necessary, abort early
               if (config.abortEarly) {
                 dataset.typed = false;
-                break;
+                return true;
               }
             }
 
@@ -268,56 +251,114 @@ export function objectWithRestAsync(
 
             // If necessary, abort early
             if (config.abortEarly) {
+              return true;
+            }
+          }
+          return false;
+        };
+        const processRestEntry = ([key, value, valueDataset]: readonly [
+          string,
+          unknown,
+          OutputDataset<unknown, BaseIssue<unknown>>,
+        ]) => {
+          // If there are issues, capture them
+          if (valueDataset.issues) {
+            // Create object path item
+            const pathItem: ObjectPathItem = {
+              type: 'object',
+              origin: 'value',
+              input: input as Record<string, unknown>,
+              key,
+              value,
+            };
+
+            // Add modified entry dataset issues to issues
+            for (const issue of valueDataset.issues) {
+              if (issue.path) {
+                issue.path.unshift(pathItem);
+              } else {
+                // @ts-expect-error
+                issue.path = [pathItem];
+              }
+              // @ts-expect-error
+              dataset.issues?.push(issue);
+            }
+            if (!dataset.issues) {
+              // @ts-expect-error
+              dataset.issues = valueDataset.issues;
+            }
+
+            // If necessary, abort early
+            if (config.abortEarly) {
+              dataset.typed = false;
+              return true;
+            }
+          }
+
+          // If not typed, set typed to `false`
+          if (!valueDataset.typed) {
+            dataset.typed = false;
+          }
+
+          // Add entry to dataset
+          // @ts-expect-error
+          dataset.value[key] = valueDataset.value;
+          return false;
+        };
+
+        // Use sequential parsing if we need to abort before starting the next
+        // asynchronous validator.
+        if (config.abortEarly) {
+          for (const entry of Object.entries(this.entries)) {
+            if (await processEntry(await parseEntry(entry))) {
               break;
             }
           }
-        }
 
-        // Process each rest entry of schema if necessary
-        if (!dataset.issues || !config.abortEarly) {
-          for (const [key, value, valueDataset] of restDatasets) {
-            // If there are issues, capture them
-            if (valueDataset.issues) {
-              // Create object path item
-              const pathItem: ObjectPathItem = {
-                type: 'object',
-                origin: 'value',
-                input: input as Record<string, unknown>,
-                key,
-                value,
-              };
-
-              // Add modified entry dataset issues to issues
-              for (const issue of valueDataset.issues) {
-                if (issue.path) {
-                  issue.path.unshift(pathItem);
-                } else {
-                  // @ts-expect-error
-                  issue.path = [pathItem];
+          // Process each rest entry of schema if necessary
+          if (!dataset.issues) {
+            for (const [key, value] of Object.entries(input)) {
+              if (_isValidObjectKey(input, key) && !(key in this.entries)) {
+                if (
+                  processRestEntry([
+                    key,
+                    value,
+                    await this.rest['~run']({ value }, config),
+                  ])
+                ) {
+                  break;
                 }
-                // @ts-expect-error
-                dataset.issues?.push(issue);
-              }
-              if (!dataset.issues) {
-                // @ts-expect-error
-                dataset.issues = valueDataset.issues;
-              }
-
-              // If necessary, abort early
-              if (config.abortEarly) {
-                dataset.typed = false;
-                break;
               }
             }
+          }
+        } else {
+          // Parse each normal and rest entry in parallel.
+          const [normalDatasets, restDatasets] = await Promise.all([
+            Promise.all(Object.entries(this.entries).map(parseEntry)),
+            Promise.all(
+              Object.entries(input)
+                .filter(
+                  ([key]) =>
+                    _isValidObjectKey(input, key) && !(key in this.entries)
+                )
+                .map(
+                  async ([key, value]) =>
+                    [
+                      key,
+                      value,
+                      await this.rest['~run']({ value }, config),
+                    ] as const
+                )
+            ),
+          ]);
 
-            // If not typed, set typed to `false`
-            if (!valueDataset.typed) {
-              dataset.typed = false;
-            }
+          for (const valueDataset of normalDatasets) {
+            await processEntry(valueDataset);
+          }
 
-            // Add entry to dataset
-            // @ts-expect-error
-            dataset.value[key] = valueDataset.value;
+          // Process each rest entry of schema
+          for (const restDataset of restDatasets) {
+            processRestEntry(restDataset);
           }
         }
 
