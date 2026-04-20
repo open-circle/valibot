@@ -1,0 +1,50 @@
+---
+title: toSnakeCase
+description: Creates a to snake case transformation action.
+source: /actions/toSnakeCase/toSnakeCase.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# toSnakeCase
+
+Creates a to snake case transformation action.
+
+```ts
+const Action = v.toSnakeCase();
+```
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `toSnakeCase` can be used.
+
+### Snake case string
+
+Schema that transforms a string to snake case.
+
+```ts
+const StringSchema = v.pipe(v.string(), v.toSnakeCase());
+```
+
+## Related
+
+The following APIs can be combined with `toSnakeCase`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
