@@ -114,11 +114,9 @@ describe('recordAsync', () => {
 
     // Complex types
 
-    // TODO: Enable this test again in case we find a reliable way to check for
-    // plain objects
-    // test('for arrays', async () => {
-    //   await expectSchemaIssueAsync(schema, baseIssue, [[], ['value']]);
-    // });
+    test('for arrays', async () => {
+      await expectSchemaIssueAsync(schema, baseIssue, [[], ['value']]);
+    });
 
     test('for functions', async () => {
       await expectSchemaIssueAsync(schema, baseIssue, [

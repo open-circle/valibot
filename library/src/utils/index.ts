@@ -14,5 +14,6 @@ export * from './entriesFromObjects/index.ts';
 export * from './getDotPath/index.ts';
 export * from './isOfKind/index.ts';
 export * from './isOfType/index.ts';
+export * from './isPlainObject/index.ts';
 export * from './isValiError/index.ts';
 export * from './ValiError/index.ts';
