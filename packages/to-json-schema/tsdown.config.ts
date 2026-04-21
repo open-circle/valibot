@@ -8,6 +8,7 @@ export default defineConfig([
     minify: false,
     dts: true,
     outDir: './dist',
+    target: 'es2020',
   },
   {
     entry: ['./src/index.ts'],
@@ -16,6 +17,7 @@ export default defineConfig([
     minify: true,
     dts: false,
     outDir: './dist',
+    target: 'es2020',
     outExtensions: ({ format }) => ({
       js: format === 'cjs' ? '.min.cjs' : '.min.mjs',
     }),
