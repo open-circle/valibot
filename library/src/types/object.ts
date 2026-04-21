@@ -2,8 +2,6 @@ import type { ReadonlyAction } from '../actions/index.ts';
 import type {
   SchemaWithFallback,
   SchemaWithFallbackAsync,
-  SchemaWithPipe,
-  SchemaWithPipeAsync,
 } from '../methods/index.ts';
 import type {
   ExactOptionalSchema,
@@ -192,11 +190,11 @@ type OutputWithQuestionMarks<
  * Readonly output keys type.
  */
 type ReadonlyOutputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
-  [TKey in keyof TEntries]: TEntries[TKey] extends
-    | SchemaWithPipe<infer TPipe>
-    | SchemaWithPipeAsync<infer TPipe>
+  [TKey in keyof TEntries]: TEntries[TKey] extends {
+    readonly pipe: readonly unknown[];
+  }
     ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ReadonlyAction<any> extends TPipe[number]
+      ReadonlyAction<any> extends TEntries[TKey]['pipe'][number]
       ? TKey
       : never
     : never;
@@ -211,8 +209,11 @@ type OutputWithReadonly<
     TEntries,
     InferEntriesOutput<TEntries>
   >,
-> = Readonly<TObject> &
-  Pick<TObject, Exclude<keyof TObject, ReadonlyOutputKeys<TEntries>>>;
+> =
+  ReadonlyOutputKeys<TEntries> extends never
+    ? TObject
+    : Readonly<TObject> &
+        Pick<TObject, Exclude<keyof TObject, ReadonlyOutputKeys<TEntries>>>;
 
 /**
  * Infer object input type.
