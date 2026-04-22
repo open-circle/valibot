@@ -7,6 +7,7 @@ import type {
   InferIssue,
   InferOutput,
   OutputDataset,
+  UnknownDataset,
 } from '../../types/index.ts';
 import { _addIssue, _getStandardProps } from '../../utils/index.ts';
 import type { ArrayIssue } from './types.ts';
@@ -76,6 +77,17 @@ export function array(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ArrayIssue> | undefined
 > {
+  // Pre-bind item's ~run once to avoid per-call property lookups and keep the
+  // call site in ~run monomorphic (always the same function reference).
+  const _itemRun = item['~run'].bind(item) as typeof item['~run'];
+
+  // Pre-allocate the entry dataset frame; safe because parsing is synchronous.
+  const _entryDataset: UnknownDataset = {
+    value: undefined,
+    typed: false,
+    issues: undefined,
+  };
+
   return {
     kind: 'schema',
     type: 'array',
@@ -93,15 +105,24 @@ export function array(
 
       // If root type is valid, check nested types
       if (Array.isArray(input)) {
-        // Set typed to `true` and value to empty array
+        // Set typed to `true` and value to pre-sized output array
         // @ts-expect-error
         dataset.typed = true;
-        dataset.value = [];
+        // Pre-size the output array to avoid re-allocations during push.
+        const output: unknown[] = new Array(input.length);
+        dataset.value = output;
 
-        // Parse schema of each array item
-        for (let key = 0; key < input.length; key++) {
+        // Parse schema of each array item. Track `key` outside the loop so
+        // we can truncate the output array if we abort early.
+        let key = 0;
+        for (; key < input.length; key++) {
           const value = input[key];
-          const itemDataset = this.item['~run']({ value }, config);
+
+          _entryDataset.value = value;
+          _entryDataset.typed = false;
+          _entryDataset.issues = undefined;
+
+          const itemDataset = _itemRun(_entryDataset, config);
 
           // If there are issues, capture them
           if (itemDataset.issues) {
@@ -143,8 +164,13 @@ export function array(
           }
 
           // Add item to dataset
-          // @ts-expect-error
-          dataset.value.push(itemDataset.value);
+          output[key] = itemDataset.value;
+        }
+
+        // If we aborted early, trim the pre-sized output array to the number
+        // of elements that were actually processed and assigned.
+        if (key < input.length) {
+          output.length = key;
         }
 
         // Otherwise, add array issue

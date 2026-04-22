@@ -8,6 +8,7 @@ import type {
   ObjectEntries,
   ObjectPathItem,
   OutputDataset,
+  UnknownDataset,
 } from '../../types/index.ts';
 import {
   _addIssue,
@@ -81,6 +82,12 @@ export function looseObject(
   ObjectEntries,
   ErrorMessage<LooseObjectIssue> | undefined
 > {
+  const _entryRuns: Record<string, ObjectEntries[string]['~run']> = {};
+  for (const key of Object.keys(entries)) {
+    _entryRuns[key] = entries[key]['~run'].bind(entries[key]) as ObjectEntries[string]['~run'];
+  }
+  const _entryDataset: UnknownDataset = { value: undefined, typed: false, issues: undefined };
+
   return {
     kind: 'schema',
     type: 'loose_object',
@@ -103,6 +110,8 @@ export function looseObject(
         dataset.typed = true;
         dataset.value = {};
 
+        const usePrebuilt = this.entries === entries;
+
         // Process each object entry of schema
         for (const key in this.entries) {
           const valueSchema = this.entries[key];
@@ -122,7 +131,14 @@ export function looseObject(
                 ? // @ts-expect-error
                   input[key]
                 : getDefault(valueSchema);
-            const valueDataset = valueSchema['~run']({ value }, config);
+            
+            _entryDataset.value = value;
+            _entryDataset.typed = false;
+            _entryDataset.issues = undefined;
+
+            const valueDataset = usePrebuilt
+              ? _entryRuns[key](_entryDataset, config)
+              : valueSchema['~run'](_entryDataset, config);
 
             // If there are issues, capture them
             if (valueDataset.issues) {

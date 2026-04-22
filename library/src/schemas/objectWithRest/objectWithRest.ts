@@ -12,6 +12,7 @@ import type {
   ObjectEntries,
   ObjectPathItem,
   OutputDataset,
+  UnknownDataset,
 } from '../../types/index.ts';
 import {
   _addIssue,
@@ -103,6 +104,13 @@ export function objectWithRest(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ObjectWithRestIssue> | undefined
 > {
+  const _entryRuns: Record<string, ObjectEntries[string]['~run']> = {};
+  for (const key of Object.keys(entries)) {
+    _entryRuns[key] = entries[key]['~run'].bind(entries[key]) as ObjectEntries[string]['~run'];
+  }
+  const _restRun = rest['~run'].bind(rest) as typeof rest['~run'];
+  const _entryDataset: UnknownDataset = { value: undefined, typed: false, issues: undefined };
+
   return {
     kind: 'schema',
     type: 'object_with_rest',
@@ -126,6 +134,8 @@ export function objectWithRest(
         dataset.typed = true;
         dataset.value = {};
 
+        const usePrebuilt = this.entries === entries;
+
         // Process each object entry of schema
         for (const key in this.entries) {
           const valueSchema = this.entries[key];
@@ -145,7 +155,14 @@ export function objectWithRest(
                 ? // @ts-expect-error
                   input[key]
                 : getDefault(valueSchema);
-            const valueDataset = valueSchema['~run']({ value }, config);
+            
+            _entryDataset.value = value;
+            _entryDataset.typed = false;
+            _entryDataset.issues = undefined;
+
+            const valueDataset = usePrebuilt
+              ? _entryRuns[key](_entryDataset, config)
+              : valueSchema['~run'](_entryDataset, config);
 
             // If there are issues, capture them
             if (valueDataset.issues) {
@@ -229,11 +246,12 @@ export function objectWithRest(
         if (!dataset.issues || !config.abortEarly) {
           for (const key in input) {
             if (_isValidObjectKey(input, key) && !(key in this.entries)) {
-              const valueDataset = this.rest['~run'](
-                // @ts-expect-error
-                { value: input[key] },
-                config
-              );
+              // @ts-expect-error
+              _entryDataset.value = input[key];
+              _entryDataset.typed = false;
+              _entryDataset.issues = undefined;
+              
+              const valueDataset = _restRun(_entryDataset, config);
 
               // If there are issues, capture them
               if (valueDataset.issues) {
