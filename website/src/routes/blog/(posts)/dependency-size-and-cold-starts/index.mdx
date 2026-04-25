@@ -53,27 +53,39 @@ For the schema in this experiment, this meant importing: object, string, number,
 
 Here's the same User schema in both libraries:
 
+
 ```ts
 // Zod
-import { z } from "zod";
+import * as z from "zod";
 
 const UserSchema = z.object({
-  name: z.string(),
+  name: z.string().min(1),
   email: z.string().email(),
-  age: z.number(),
-  role: z.enum(["admin", "user"]),
+  age: z.number().int().min(0).max(120),
+  role: z.enum(["admin", "user", "guest"]),
 });
 ```
 
-```ts
-// Valibot
-import { object, string, email, number, picklist, pipe } from "valibot";
+```ts 
+// Valibot 
+import {
+  email,
+  integer,
+  maxValue,
+  minLength,
+  minValue,
+  number,
+  object,
+  picklist,
+  pipe,
+  string,
+} from "valibot";
 
 const UserSchema = object({
-  name: string(),
+  name: pipe(string(), minLength(1)),
   email: pipe(string(), email()),
-  age: number(),
-  role: picklist(["admin", "user"]),
+  age: pipe(number(), integer(), minValue(0), maxValue(120)),
+  role: picklist(["admin", "user", "guest"]),
 });
 ```
 
