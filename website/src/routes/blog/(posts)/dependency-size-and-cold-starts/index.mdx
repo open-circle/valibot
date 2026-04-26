@@ -89,7 +89,7 @@ const UserSchema = object({
 });
 ```
 
-The schemas are functionally identical. The difference is what the bundler sees. In the Zod version, the bundler can see individual exports, but shared internals like the parsing engine, error formatting, and type utilities are tightly coupled and get pulled in regardless of how little of the API you use. In the Valibot version, each import is a discrete, standalone function. There is very little shared infrastructure to drag in, so the bundler includes only what the schema actually needs." For the schema in this experiment, the bundler included only the specific validators the schema used. That's most of what ended up in the bundle.
+The schemas are functionally identical. The difference is what the bundler sees. In the Zod version, the bundler can see individual exports, but shared internals like the parsing engine, error formatting, and type utilities are tightly coupled and get pulled in regardless of how little of the API you use. In the Valibot version, each import is a discrete, standalone function. There is very little shared infrastructure to drag in, so the bundler includes only what the schema actually needs. 
 
 That's where the 9.8x comes from.
 
