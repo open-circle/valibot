@@ -1,5 +1,5 @@
 ---
-cover: Dependency Size and Cold Starts in Edge 
+cover: Cold Starts
 title: How Dependency Size Impacts Cold Starts in Edge JavaScript Runtimes
 description: A concrete experiment comparing Valibot and Zod bundle sizes, and why a 9.8x difference matters for cold start performance on edge runtimes like Cloudflare Workers.
 published: 2026-04-25
@@ -17,16 +17,16 @@ A big part of the answer lives in your dependencies.
 
 ## The Experiment
 
-To put a concrete number on this, we built a minimal Cloudflare Worker to understand the cold start cost of our own library compared to Zod, using a single User schema covering name, email, age, and role. 
+To put a concrete number on this, we built a minimal Cloudflare Worker to understand the cold start cost of our own library compared to Zod, using a single User schema covering name, email, age, and role.
 
 We built it twice using Wrangler 4.81.1 and TypeScript, keeping everything identical except for the validation library being imported. One build used Zod and the other used Valibot. Both builds were done in production mode using Wrangler's default bundling, so minification and tree-shaking are enabled.
 
 Here's what came out of the bundler:
 
-| Library | Raw Bundle | Gzipped |
-|---|---|---|
-| Zod 4.3.6 | 141.43 KiB | 26.75 KiB |
-| Valibot 1.3.1 | 11.92 KiB | 2.72 KiB |
+| **Library**       | Raw Bundle | Gzipped   |
+| ----------------- | ---------- | --------- |
+| **Zod 4.3.6**     | 141.43 KiB | 26.75 KiB |
+| **Valibot 1.3.1** | 11.92 KiB  | 2.72 KiB  |
 
 Valibot's gzipped bundle is 9.8x smaller than Zod's for an identical schema.
 
@@ -50,47 +50,37 @@ Zod uses a class-based, chainable API. It is easy to use and has strong TypeScri
 
 Valibot is built differently. Each validator is a small standalone function. You import exactly what you need. This is a fine-grained import model. The bundler can include only the functions you use and drop the rest.
 
-For the schema in this experiment, the bundler included only the specific validators the schema used. That's most of what ended up in the bundle. 
+For the schema in this experiment, the bundler included only the specific validators the schema used. That's most of what ended up in the bundle.
 
 Here's the same User schema in both libraries:
 
-
 ```ts
 // Zod
-import * as z from "zod";
+import * as z from 'zod';
 
 const UserSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
   age: z.number().int().min(0).max(120),
-  role: z.enum(["admin", "user", "guest"]),
+  role: z.enum(['admin', 'user', 'guest']),
 });
 ```
 
-```ts 
-// Valibot 
-import {
-  email,
-  integer,
-  maxValue,
-  minLength,
-  minValue,
-  number,
-  object,
-  picklist,
-  pipe,
-  string,
-} from "valibot";
+```ts
+// Valibot
+import * as v from 'valibot';
 
-const UserSchema = object({
-  name: pipe(string(), minLength(1)),
-  email: pipe(string(), email()),
-  age: pipe(number(), integer(), minValue(0), maxValue(120)),
-  role: picklist(["admin", "user", "guest"]),
+const UserSchema = v.object({
+  name: v.pipe(v.string(), v.minLength(1)),
+  email: v.pipe(v.string(), v.email()),
+  age: v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(120)),
+  role: v.picklist(['admin', 'user', 'guest']),
 });
 ```
 
-The schemas are functionally identical. The difference is what the bundler sees. In the Zod version, the bundler can see individual exports, but shared internals like the parsing engine, error formatting, and type utilities are tightly coupled and get pulled in regardless of how little of the API you use. In the Valibot version, each import is a discrete, standalone function. There is very little shared infrastructure to drag in, so the bundler includes only what the schema actually needs. 
+> Using `import * as v from 'valibot'` here does not disable tree-shaking. With modern ESM bundlers, namespace imports like this are still statically analyzable, so only the specific `v.*` exports referenced by the schema are retained in the final bundle.
+
+The schemas are functionally identical. The difference is what the bundler sees. In the Zod version, the bundler can see individual exports, but shared internals like the parsing engine, error formatting, and type utilities are tightly coupled and get pulled in regardless of how little of the API you use. In the Valibot version, each import is a discrete, standalone function. There is very little shared infrastructure to drag in, so the bundler includes only what the schema actually needs.
 
 That's where the 9.8x comes from.
 
@@ -100,7 +90,7 @@ Up to this point, we've only looked at one dependency in isolation. In a real ap
 
 When a new edge instance starts, the runtime has to process that script before it can respond to a request. It does not jump straight into your handler. It first has to load the code, read through it, and run the modules so everything is ready. As that bundle gets larger, that setup step takes more work. There is simply more code to go through, and more modules that need to run before the instance is ready.
 
-You can think of it as replaying your module graph on each new instance. The larger the graph, the more work the runtime has to do before it can serve anything. A 9.8x difference in bundle size means the runtime is doing materially less work on every cold start. 
+You can think of it as replaying your module graph on each new instance. The larger the graph, the more work the runtime has to do before it can serve anything. A 9.8x difference in bundle size means the runtime is doing materially less work on every cold start.
 
 This shows up most clearly during deployments and traffic spikes, exactly when you can least afford extra latency. During a traffic spike, the platform scales out and starts more instances. In quieter periods, instances may not stay warm, so the next request has to go through that setup again. In all of these cases, the first request handled by a new instance waits for that initialization to finish.
 
@@ -121,7 +111,8 @@ Valibot works with the tools most teams are already using:
 Type inference works the same way you'd expect coming from Zod:
 
 ```ts
-import { InferOutput } from "valibot";
+import { InferOutput } from 'valibot';
+
 type User = InferOutput<typeof UserSchema>;
 ```
 
