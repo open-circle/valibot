@@ -89,7 +89,7 @@ const UserSchema = object({
 });
 ```
 
-The schemas are functionally identical. The difference is what the bundler sees. In the Zod version, importing from "zod" is a single entry point, and the bundler can't easily tell which parts of the class hierarchy you actually touched. In the Valibot version, each import is a discrete, standalone function. The bundler eliminates everything else.
+The schemas are functionally identical. The difference is what the bundler sees. In the Zod version, the bundler can see individual exports, but shared internals like the parsing engine, error formatting, and type utilities are tightly coupled and get pulled in regardless of how little of the API you use. In the Valibot version, each import is a discrete, standalone function. There is very little shared infrastructure to drag in, so the bundler includes only what the schema actually needs." For the schema in this experiment, the bundler included only the specific validators the schema used. That's most of what ended up in the bundle.
 
 That's where the 9.8x comes from.
 
@@ -111,10 +111,11 @@ A fair question before switching anything is whether you lose ecosystem coverage
 
 Valibot works with the tools most teams are already using:
 
-- **tRPC** – Valibot schemas are supported natively via the Standard Schema interface. Pass a Valibot schema directly to `.input()` without any wrapper.
-- **React Hook Form** – drop-in via `@hookform/resolvers/valibot`
-- **Hono** – supported through `@hono/valibot-validator`
-- **Conform** – official support via `@conform-to/valibot`
+- [**Standard Schema**](https://standardschema.dev/) – Valibot implements the Standard Schema specification, which means it works natively with any tool that supports it without adapters or wrappers.
+- [**tRPC**](https://trpc.io/) – Pass a Valibot schema directly to `.input()` without any wrapper.
+- [**React Hook Form**](https://github.com/react-hook-form/resolvers) – drop-in via `@hookform/resolvers/valibot`
+- [**Hono**](https://github.com/honojs/middleware/tree/main/packages/valibot-validator) – supported through `@hono/valibot-validator`
+- [**Conform**](https://conform.guide/) – official support via `@conform-to/valibot`
 
 Type inference works the same way you'd expect coming from Zod:
 
@@ -134,3 +135,12 @@ If you're running long-lived services where instances stay warm for extended per
 But if you're building for edge environments like Cloudflare Workers, Vercel Edge Functions, and Deno Deploy, cold starts are closer to the request path, and initialization overhead is more likely to show up in your p99s. In those environments, choosing a smaller, more modular library reduces the amount of work done during initialization without sacrificing type safety or expressiveness.
 
 The broader principle holds too: validation libraries aren't the only place this happens. Any large dependency with poor tree-shaking characteristics can have a similar effect. It's worth auditing what actually ends up in your bundle, not just what you imported.
+
+
+
+
+
+
+
+
+
