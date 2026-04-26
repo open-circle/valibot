@@ -49,7 +49,7 @@ Zod uses a class-based, chainable API. It is easy to use and has strong TypeScri
 
 Valibot is built differently. Each validator is a small standalone function. You import exactly what you need. This is a fine-grained import model. The bundler can include only the functions you use and drop the rest.
 
-For the schema in this experiment, this meant importing: object, string, number, and email. That's most of what ended up in the bundle.
+For the schema in this experiment, the bundler included only the specific validators the schema used. That's most of what ended up in the bundle. 
 
 Here's the same User schema in both libraries:
 
