@@ -1,0 +1,193 @@
+---
+title: recordWithPatternsAsync
+description: Creates an object schema that matches patterns.
+source: /schemas/recordWithPatterns/recordWithPatternsAsync.ts
+contributors:
+  - EskiMojo14
+---
+
+import { Link } from '@builder.io/qwik-city';
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# recordWithPatternsAsync
+
+Creates an object schema that matches patterns.
+
+```ts
+const RecordWithPatternsSchemaAsync = v.recordWithPatternsAsync<
+  TPatterns,
+  TRest,
+  TMessage
+>(patterns, rest, message);
+```
+
+## Generics
+
+- `TPatterns` <Property {...properties.TPatterns} />
+- `TRest` <Property {...properties.TRest} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `patterns` <Property {...properties.patterns} />
+- `rest` <Property {...properties.rest} />
+- `message` <Property {...properties.message} />
+
+## Returns
+
+- `Schema` <Property {...properties.Schema} />
+
+## Explanation
+
+Tuples of key and value schemas are iterated through until a key schema matches, and the value schema is used to validate the value. If no key schema matches, the rest schema is used.
+
+## Examples
+
+The following examples show how `recordWithPatternsAsync` can be used. Please see the <Link href="/guides/objects/">object guide</Link> for more examples and explanations.
+
+```ts
+const RecordWithPatternsSchemaAsync = v.recordWithPatternsAsync(
+  [
+    [v.pipeAsync(v.string(), v.startsWith('str-')), v.string()],
+    [v.pipeAsync(v.string(), v.startsWith('num-')), v.number()],
+  ],
+  v.boolean()
+);
+```
+
+## Related
+
+The following APIs can be combined with `recordWithPatternsAsync`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'array',
+    'bigint',
+    'blob',
+    'boolean',
+    'custom',
+    'date',
+    'enum',
+    'exactOptional',
+    'file',
+    'function',
+    'instance',
+    'intersect',
+    'lazy',
+    'literal',
+    'looseObject',
+    'looseTuple',
+    'map',
+    'nan',
+    'never',
+    'nonNullable',
+    'nonNullish',
+    'nonOptional',
+    'null',
+    'nullable',
+    'nullish',
+    'number',
+    'object',
+    'objectWithRest',
+    'optional',
+    'picklist',
+    'promise',
+    'record',
+    'recordWithPatterns',
+    'set',
+    'strictObject',
+    'strictTuple',
+    'string',
+    'symbol',
+    'tuple',
+    'tupleWithRest',
+    'undefined',
+    'undefinedable',
+    'union',
+    'unknown',
+    'variant',
+    'void',
+  ]}
+/>
+
+### Methods
+
+<ApiList
+  items={['config', 'getDefault', 'getFallback', 'keyof', 'omit', 'pick']}
+/>
+
+### Actions
+
+<ApiList
+  items={[
+    'brand',
+    'check',
+    'description',
+    'entries',
+    'maxEntries',
+    'metadata',
+    'minEntries',
+    'notEntries',
+    'partialCheck',
+    'rawCheck',
+    'rawTransform',
+    'readonly',
+    'title',
+    'transform',
+  ]}
+/>
+
+### Utils
+
+<ApiList items={['entriesFromList', 'isOfKind', 'isOfType']} />
+
+### Async
+
+<ApiList
+  items={[
+    'arrayAsync',
+    'checkAsync',
+    'customAsync',
+    'exactOptionalAsync',
+    'fallbackAsync',
+    'forwardAsync',
+    'getDefaultsAsync',
+    'getFallbacksAsync',
+    'intersectAsync',
+    'lazyAsync',
+    'looseObjectAsync',
+    'looseTupleAsync',
+    'mapAsync',
+    'nonNullableAsync',
+    'nonNullishAsync',
+    'nonOptionalAsync',
+    'nullableAsync',
+    'nullishAsync',
+    'objectAsync',
+    'objectWithRestAsync',
+    'optionalAsync',
+    'parseAsync',
+    'parserAsync',
+    'partialAsync',
+    'partialCheckAsync',
+    'pipeAsync',
+    'rawCheckAsync',
+    'rawTransformAsync',
+    'recordAsync',
+    'requiredAsync',
+    'safeParseAsync',
+    'safeParserAsync',
+    'setAsync',
+    'strictObjectAsync',
+    'strictTupleAsync',
+    'transformAsync',
+    'tupleAsync',
+    'tupleWithRestAsync',
+    'unionAsync',
+    'variantAsync',
+  ]}
+/>
