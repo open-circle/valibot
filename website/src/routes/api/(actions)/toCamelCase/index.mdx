@@ -1,0 +1,50 @@
+---
+title: toCamelCase
+description: Creates a to camel case transformation action.
+source: /actions/toCamelCase/toCamelCase.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# toCamelCase
+
+Creates a to camel case transformation action.
+
+```ts
+const Action = v.toCamelCase();
+```
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `toCamelCase` can be used.
+
+### Camel case string
+
+Schema that transforms a string to camel case.
+
+```ts
+const StringSchema = v.pipe(v.string(), v.toCamelCase());
+```
+
+## Related
+
+The following APIs can be combined with `toCamelCase`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

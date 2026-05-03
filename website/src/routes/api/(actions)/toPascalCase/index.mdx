@@ -1,0 +1,50 @@
+---
+title: toPascalCase
+description: Creates a to pascal case transformation action.
+source: /actions/toPascalCase/toPascalCase.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# toPascalCase
+
+Creates a to pascal case transformation action.
+
+```ts
+const Action = v.toPascalCase();
+```
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `toPascalCase` can be used.
+
+### Pascal case string
+
+Schema that transforms a string to pascal case.
+
+```ts
+const StringSchema = v.pipe(v.string(), v.toPascalCase());
+```
+
+## Related
+
+The following APIs can be combined with `toPascalCase`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

@@ -1,0 +1,50 @@
+---
+title: toKebabCase
+description: Creates a to kebab case transformation action.
+source: /actions/toKebabCase/toKebabCase.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# toKebabCase
+
+Creates a to kebab case transformation action.
+
+```ts
+const Action = v.toKebabCase();
+```
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `toKebabCase` can be used.
+
+### Kebab case string
+
+Schema that transforms a string to kebab case.
+
+```ts
+const StringSchema = v.pipe(v.string(), v.toKebabCase());
+```
+
+## Related
+
+The following APIs can be combined with `toKebabCase`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

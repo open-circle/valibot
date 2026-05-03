@@ -1,4 +1,5 @@
 export * from './_addIssue/index.ts';
+export * from './_caseWords/index.ts';
 export * from './_cloneDataset/index.ts';
 export * from './_getByteCount/index.ts';
 export * from './_getGraphemeCount/index.ts';
