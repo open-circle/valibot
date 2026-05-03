@@ -11,7 +11,24 @@ contributors:
 
 # Comparison
 
-Even though Valibot's API resembles other solutions at first glance, the implementation and structure of the source code is very different. In the following, we would like to highlight the differences that can be beneficial for both you and your users.
+Valibot and Zod solve the same problem: runtime schema validation with TypeScript type inference. 
+
+Valibot uses small, independent functions. Each validator is a separate import and only included if you use it. This means unused code can be removed during bundling. 
+
+Zod defines schemas as objects with methods. Validators are attached to the schema and included together, even if only part of the functionality is used.
+
+This difference affects how much code ends up in your bundle and how you work with the API.
+
+## Quick comparison
+
+| | Valibot | Zod |
+|---|---|---|
+| Bundle size | Small, tree-shakeable | Larger, partially tree-shakeable |
+| API style | Functions | Method chaining |
+| Runtime performance | Faster in most benchmarks | Baseline |
+| Ecosystem | Growing | Extensive |
+| TypeScript inference | ✓ | ✓ |
+
 
 ## Modular design
 
