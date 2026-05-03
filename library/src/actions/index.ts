@@ -40,6 +40,7 @@ export * from './isbn/index.ts';
 export * from './isrc/index.ts';
 export * from './isoDate/index.ts';
 export * from './isoDateTime/index.ts';
+export * from './isoDateTimeSecond/index.ts';
 export * from './isoTime/index.ts';
 export * from './isoTimeSecond/index.ts';
 export * from './isoTimestamp/index.ts';
