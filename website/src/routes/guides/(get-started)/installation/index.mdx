@@ -33,6 +33,19 @@ If you are using TypeScript, we recommend that you enable strict mode in your `t
 }
 ```
 
+## Requirements
+
+Valibot's distributed files target **ES2020**. Make sure your bundler or transpiler supports ES2020 syntax. If you are using Babel, ensure that your configuration targets ES2020 or later, for example by adding the appropriate presets or setting the `targets` option in your Babel config:
+
+```js
+// babel.config.js
+module.exports = {
+  presets: [
+    ['@babel/preset-env', { targets: 'es2020' }],
+  ],
+};
+```
+
 ## For AI Agents
 
 We provide an agent skill that teaches AI agents the correct patterns for generating Valibot schemas. You can install it by running the following command in your terminal:
