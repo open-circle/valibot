@@ -71,14 +71,19 @@ type WithReadonly<
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   TObject extends WithQuestionMarks<Record<string | number | symbol, unknown>>,
-> = TValue extends {
-  readonly pipe: readonly unknown[];
-}
-  ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ReadonlyAction<any> extends TValue['pipe'][number]
-    ? Readonly<TObject>
-    : TObject
-  : TObject;
+> =
+  // NOTE: We use a structural `{ readonly pipe: readonly unknown[] }` check
+  // plus indexed access instead of `SchemaWithPipe<infer TPipe>` because
+  // `infer` forces TS to decompose the full `Omit + &` intersection of
+  // `SchemaWithPipe`, which is expensive on large schemas (see issue #1374).
+  TValue extends {
+    readonly pipe: readonly unknown[];
+  }
+    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ReadonlyAction<any> extends TValue['pipe'][number]
+      ? Readonly<TObject>
+      : TObject
+    : TObject;
 
 /**
  * Infer record input type.

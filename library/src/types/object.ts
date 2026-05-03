@@ -189,7 +189,13 @@ type OutputWithQuestionMarks<
 /**
  * Readonly output keys type.
  */
+
 type ReadonlyOutputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
+  // NOTE: We use a structural `{ readonly pipe: readonly unknown[] }` check
+  // plus indexed access instead of `SchemaWithPipe<infer TPipe>` because
+  // `infer` forces TS to decompose the full `Omit + &` intersection of
+  // `SchemaWithPipe` for every entry, which dominates check time on large
+  // schemas (see issue #1374).
   [TKey in keyof TEntries]: TEntries[TKey] extends {
     readonly pipe: readonly unknown[];
   }
@@ -210,6 +216,9 @@ type OutputWithReadonly<
     InferEntriesOutput<TEntries>
   >,
 > =
+  // NOTE: We short-circuit to `TObject` when no entry has a `ReadonlyAction`
+  // to avoid building the `Readonly<T> & Pick<T, ...>` intersection in the
+  // common case (see issue #1374).
   ReadonlyOutputKeys<TEntries> extends never
     ? TObject
     : Readonly<TObject> &
