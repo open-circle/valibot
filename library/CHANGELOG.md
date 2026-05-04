@@ -2,6 +2,11 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Change internal `ReadonlyOutputKeys` and `OutputWithReadonly` types of `object` schemas and `WithReadonly` type of `record` schemas to improve TypeScript type performance (pull request #1442)
+- Fix `creditCard` validation action to reject Mastercard numbers with invalid lengths (pull request #1462)
+
 ## v1.3.1 (March 18, 2026)
 
 - Change `MAC48_REGEX`, `MAC64_REGEX` and `MAC_REGEX` to drop the `i` flag for better JSON Schema compatibility (pull request #1430)
