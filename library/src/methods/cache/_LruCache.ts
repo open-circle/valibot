@@ -32,7 +32,8 @@ class _LruCache<TValue> implements Cache<TValue> {
    *
    * @returns A cache key component.
    */
-  #stringify(input: unknown): string {
+  // TODO: Switch to a `#stringify` private class field once the build target is raised to ES2022.
+  private stringify(input: unknown): string {
     const type = typeof input;
     if (type === 'string') {
       return `"${input}"`;
@@ -67,9 +68,9 @@ class _LruCache<TValue> implements Cache<TValue> {
    * @returns The cache key.
    */
   key(input: unknown, config: Config<BaseIssue<unknown>> = {}): string {
-    return `${this.#stringify(input)}|${this.#stringify(config.lang)}|${this.#stringify(
+    return `${this.stringify(input)}|${this.stringify(config.lang)}|${this.stringify(
       config.message
-    )}|${this.#stringify(config.abortEarly)}|${this.#stringify(
+    )}|${this.stringify(config.abortEarly)}|${this.stringify(
       config.abortPipeEarly
     )}`;
   }

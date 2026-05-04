@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Change build target to ES2020 so distributed output stays compatible with environments that lack support for newer syntax (pull request #1455)
+
 ## v1.6.0 (March 17, 2026)
 
 - Add support for `never` schema (pull request #1430)
