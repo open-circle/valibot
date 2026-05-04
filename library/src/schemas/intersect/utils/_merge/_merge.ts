@@ -69,7 +69,7 @@ export function _merge(value1: unknown, value2: unknown): MergeDataset {
       if (value1.length === value2.length) {
         const nextValue = [...value1];
 
-        // Merge item of `value2` into `value1`
+        // Merge items of `value2` into `nextValue`
         for (let index = 0; index < value1.length; index++) {
           const dataset = _merge(value1[index], value2[index]);
 
