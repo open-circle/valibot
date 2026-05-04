@@ -62,7 +62,7 @@ function createBook(data: unknown) {
 
 ## Actions
 
-Actions help you to **further validate or transform** a specific data type. They are used exclusively in conjunction with the <Link href="/api/pipe/">`pipe`</Link> method, which extends the functionality of a schema by adding additional validation and transformation rules. For example, the following schema can be used to trim a string and check if it is a valid email address.
+Actions help you to **further validate, transform, or annotate** a specific data type. They are used exclusively in conjunction with the <Link href="/api/pipe/">`pipe`</Link> method, which extends the functionality of a schema by adding additional validation, transformation, and metadata rules. For example, the following schema can be used to trim a string and check if it is a valid email address.
 
 ```ts
 import * as v from 'valibot';
@@ -70,4 +70,4 @@ import * as v from 'valibot';
 const EmailSchema = v.pipe(v.string(), v.trim(), v.email());
 ```
 
-Actions are very powerful. There are basically no limits to what you can do with them. Besides basic validations and transformations as shown in the example above, they also allow you to modify the output type with actions like <Link href="/api/readonly/">`readonly`</Link> and <Link href="/api/brand/">`brand`</Link>.
+Actions are very powerful. There are basically no limits to what you can do with them. Besides validations and transformations, pipelines can also carry metadata with actions like <Link href="/api/title/">`title`</Link>, <Link href="/api/description/">`description`</Link>, <Link href="/api/examples/">`examples`</Link>, and <Link href="/api/metadata/">`metadata`</Link>. This can be useful for documentation, AI tools, and other integrations. Actions can also modify the output type with transformations like <Link href="/api/readonly/">`readonly`</Link> and <Link href="/api/brand/">`brand`</Link>.
