@@ -102,7 +102,9 @@ export function getExamples<const TSchema extends Schema>(
           depthFirstCollect(item);
         } else if (item.kind === 'metadata' && item.type === 'examples') {
           // @ts-expect-error
-          examples.push(...item.examples);
+          for (const example of item.examples) {
+            examples.push(example);
+          }
         }
       }
     }

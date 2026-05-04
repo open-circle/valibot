@@ -31,6 +31,8 @@ const Schema = v.exactOptionalAsync<TWrapped, TDefault>(wrapped, default_);
 
 With `exactOptionalAsync` the validation of your schema will pass missing object entries, and if you specify a `default_` input value, the schema will use it if the object entry is missing. For this reason, the output type may differ from the input type of the schema.
 
+> **Important**: When used in object schemas, if a key is missing and no `default_` value is provided, the schema's pipe (including transformations) will not be executed. To ensure pipes run for missing keys, provide a `default_` value.
+
 > The difference to <Link href="../optionalAsync/">`optionalAsync`</Link> is that this schema function follows the implementation of TypeScript's [`exactOptionalPropertyTypes` configuration](https://www.typescriptlang.org/tsconfig/#exactOptionalPropertyTypes) and only allows missing but not undefined object entries.
 
 ## Returns
@@ -91,6 +93,26 @@ const UsernameSchema = v.unwrap(
     )
   )
 );
+```
+
+### Exact optional async with pipes
+
+When using `exactOptionalAsync` in a <Link href="../../pipeAsync/">`pipeAsync`</Link>, the pipe actions only execute if a `default_` value is provided or the key is present. This applies to all pipe actions including <Link href="../../transformAsync/">`transformAsync`</Link>, <Link href="../../checkAsync/">`checkAsync`</Link>, and others.
+
+```ts
+const SchemaWithoutDefault = v.objectAsync({
+  isEnabled: v.pipeAsync(
+    v.exactOptionalAsync(v.string()),
+    v.transformAsync(async (value) => value === '1') // Does not run for missing keys
+  ),
+}); // Output type: { isEnabled?: boolean }
+
+const SchemaWithDefault = v.objectAsync({
+  isEnabled: v.pipeAsync(
+    v.exactOptionalAsync(v.string(), '0'), // Default value provided
+    v.transformAsync(async (value) => value === '1') // Runs for missing keys too
+  ),
+}); // Output type: { isEnabled: boolean }
 ```
 
 ## Related
