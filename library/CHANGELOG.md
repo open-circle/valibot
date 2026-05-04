@@ -5,6 +5,8 @@ All notable changes to the library will be documented in this file.
 ## vX.X.X (Month DD, YYYY)
 
 - Change internal `ReadonlyOutputKeys` and `OutputWithReadonly` types of `object` schemas and `WithReadonly` type of `record` schemas to improve TypeScript type performance (pull request #1442)
+- Change hot paths to reduce object allocations and improve runtime performance (pull request #1437)
+- Fix potential `RangeError` caused by spreading large issue arrays (pull request #1437)
 - Fix `creditCard` validation action to reject Mastercard numbers with invalid lengths (pull request #1462)
 
 ## v1.3.1 (March 18, 2026)
