@@ -36,7 +36,7 @@ export function _merge(value1: unknown, value2: unknown): MergeDataset {
     ) {
       const nextValue = { ...value1 };
 
-      // Deeply merge entries of `value2` into `value1`
+      // Deeply merge entries of `value2` into `nextValue`
       for (const key in value2) {
         // @ts-expect-error
         if (key in value1) {
