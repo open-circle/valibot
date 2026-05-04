@@ -1,5 +1,10 @@
 import { describe, expect, test } from 'vitest';
-import { minLength, minValue, transform } from '../../actions/index.ts';
+import {
+  minLength,
+  minValue,
+  readonly,
+  transform,
+} from '../../actions/index.ts';
 import { pipe } from '../../methods/index.ts';
 import type {
   FailureDataset,
@@ -75,6 +80,24 @@ describe('intersect', () => {
             { key1: 'bar', key2: -456, key3: new Date(), key4: ['baz'] },
           ],
         ]
+      );
+    });
+
+    test('for frozen values', () => {
+      expectNoSchemaIssue(
+        intersect([
+          pipe(
+            object({
+              key1: string(),
+            }),
+            readonly(),
+            transform((value) => Object.freeze({ ...value }))
+          ),
+          object({
+            key2: number(),
+          }),
+        ]),
+        [{ key1: 'foo', key2: 123 }]
       );
     });
   });

@@ -34,6 +34,8 @@ export function _merge(value1: unknown, value2: unknown): MergeDataset {
       value1.constructor === Object &&
       value2.constructor === Object
     ) {
+      const nextValue = { ...value1 };
+
       // Deeply merge entries of `value2` into `value1`
       for (const key in value2) {
         // @ts-expect-error
@@ -48,23 +50,25 @@ export function _merge(value1: unknown, value2: unknown): MergeDataset {
 
           // Otherwise, replace merged entry
           // @ts-expect-error
-          value1[key] = dataset.value;
+          nextValue[key] = dataset.value;
 
           // Otherwise, just add entry
         } else {
           // @ts-expect-error
-          value1[key] = value2[key];
+          nextValue[key] = value2[key];
         }
       }
 
       // Return deeply merged object
-      return { value: value1 };
+      return { value: nextValue };
     }
 
     // Return deeply merged array
     if (Array.isArray(value1) && Array.isArray(value2)) {
       // Continue if arrays have same length
       if (value1.length === value2.length) {
+        const nextValue = [...value1];
+
         // Merge item of `value2` into `value1`
         for (let index = 0; index < value1.length; index++) {
           const dataset = _merge(value1[index], value2[index]);
@@ -75,11 +79,11 @@ export function _merge(value1: unknown, value2: unknown): MergeDataset {
           }
 
           // Otherwise, replace merged items
-          value1[index] = dataset.value;
+          nextValue[index] = dataset.value;
         }
 
         // Return deeply merged array
-        return { value: value1 };
+        return { value: nextValue };
       }
     }
   }
