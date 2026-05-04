@@ -1,3 +1,4 @@
+import { ABORT_EARLY_CONFIG } from '../../const.ts';
 import type { BaseIssue, BaseSchema, InferInput } from '../../types/index.ts';
 
 // Shared config — allocating `{ abortEarly: true }` on every call would be wasteful
