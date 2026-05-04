@@ -33,8 +33,14 @@ describe('_merge', () => {
       });
     });
 
-    test('for valid frozen objects', () => {
+    test('for valid frozen object', () => {
       expect(_merge(Object.freeze({ key: 1 }), { key: 1 })).toStrictEqual({
+        value: { key: 1 },
+      });
+    });
+
+    test('for valid frozen empty object', () => {
+      expect(_merge(Object.freeze({}), { key: 1 })).toStrictEqual({
         value: { key: 1 },
       });
     });
@@ -49,7 +55,7 @@ describe('_merge', () => {
       });
     });
 
-    test('for valid frozen arrays', () => {
+    test('for valid frozen array', () => {
       expect(_merge(Object.freeze([1, 2, 3]), [1, 2, 3])).toStrictEqual({
         value: [1, 2, 3],
       });
