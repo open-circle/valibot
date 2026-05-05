@@ -9,4 +9,5 @@ export * from './MotionLogo';
 export * from './NetlifyLogo';
 export * from './PaceLogo';
 export * from './StainlessLogo';
+export * from './TestMuAiLogo';
 export * from './VercelLogo';

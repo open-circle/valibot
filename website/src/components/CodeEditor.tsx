@@ -425,6 +425,7 @@ async function setupMonaco() {
   // Set TypeScript compiler options
   monaco.typescript.typescriptDefaults.setCompilerOptions({
     strict: true,
+    exactOptionalPropertyTypes: true,
     target: monaco.typescript.ScriptTarget.ESNext,
     module: monaco.typescript.ModuleKind.ESNext,
     moduleResolution: monaco.typescript.ModuleResolutionKind.NodeJs,

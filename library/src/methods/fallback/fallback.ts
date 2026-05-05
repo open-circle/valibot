@@ -4,7 +4,7 @@ import type {
   Config,
   InferIssue,
   InferOutput,
-  MaybeReadonly,
+  MaybeDeepReadonly,
   OutputDataset,
 } from '../../types/index.ts';
 import { _getStandardProps } from '../../utils/index.ts';
@@ -16,11 +16,11 @@ import { getFallback } from '../getFallback/index.ts';
 export type Fallback<
   TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
 > =
-  | MaybeReadonly<InferOutput<TSchema>>
+  | MaybeDeepReadonly<InferOutput<TSchema>>
   | ((
       dataset?: OutputDataset<InferOutput<TSchema>, InferIssue<TSchema>>,
       config?: Config<InferIssue<TSchema>>
-    ) => MaybeReadonly<InferOutput<TSchema>>);
+    ) => MaybeDeepReadonly<InferOutput<TSchema>>);
 
 /**
  * Schema with fallback type.

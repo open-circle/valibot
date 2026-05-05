@@ -1,4 +1,4 @@
-import * as v from 'valibot';
+import type * as v from 'valibot';
 import type {
   ConversionConfig,
   ConversionContext,
@@ -96,6 +96,7 @@ type Schema =
       v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
       v.ErrorMessage<v.ArrayIssue> | undefined
     >
+  | v.NeverSchema<v.ErrorMessage<v.NeverIssue> | undefined>
   | v.LazySchema<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>>;
 
 /**
@@ -456,6 +457,11 @@ export function convertSchema(
       break;
     }
 
+    case 'never': {
+      jsonSchema.not = {};
+      break;
+    }
+
     case 'nullable':
     case 'nullish': {
       // If target is OpenAPI 3.0 use nullable property
@@ -484,8 +490,10 @@ export function convertSchema(
 
       // Add default value to JSON Schema, if available
       if (valibotSchema.default !== undefined) {
-        // @ts-expect-error
-        jsonSchema.default = v.getDefault(valibotSchema);
+        jsonSchema.default =
+          typeof valibotSchema.default === 'function'
+            ? valibotSchema.default()
+            : valibotSchema.default;
       }
 
       break;
@@ -504,8 +512,10 @@ export function convertSchema(
 
       // Add default value to JSON Schema, if available
       if (valibotSchema.default !== undefined) {
-        // @ts-expect-error
-        jsonSchema.default = v.getDefault(valibotSchema);
+        jsonSchema.default =
+          typeof valibotSchema.default === 'function'
+            ? valibotSchema.default()
+            : valibotSchema.default;
       }
 
       break;
@@ -535,15 +545,24 @@ export function convertSchema(
 
     case 'enum': {
       jsonSchema.enum = valibotSchema.options;
+      if (valibotSchema.options.every((option) => typeof option === 'string')) {
+        jsonSchema.type = 'string';
+      } else if (
+        valibotSchema.options.every((option) => typeof option === 'number')
+      ) {
+        jsonSchema.type = 'number';
+      } else if (config?.target !== 'openapi-3.0') {
+        // Hint: OpenAPI 3.0 does not support multi-type arrays.
+        jsonSchema.type = ['string', 'number'];
+      }
       break;
     }
 
     case 'picklist': {
-      if (
-        valibotSchema.options.some(
-          (option) => typeof option !== 'number' && typeof option !== 'string'
-        )
-      ) {
+      const hasInvalidOption = valibotSchema.options.some(
+        (option) => typeof option !== 'number' && typeof option !== 'string'
+      );
+      if (hasInvalidOption) {
         errors = addError(
           errors,
           'An option of the "picklist" schema is not JSON compatible.'
@@ -551,6 +570,16 @@ export function convertSchema(
       }
       // @ts-expect-error
       jsonSchema.enum = valibotSchema.options;
+      if (valibotSchema.options.every((option) => typeof option === 'string')) {
+        jsonSchema.type = 'string';
+      } else if (
+        valibotSchema.options.every((option) => typeof option === 'number')
+      ) {
+        jsonSchema.type = 'number';
+      } else if (!hasInvalidOption && config?.target !== 'openapi-3.0') {
+        // Hint: OpenAPI 3.0 does not support multi-type arrays.
+        jsonSchema.type = ['string', 'number'];
+      }
       break;
     }
 

@@ -34,7 +34,7 @@ const NullishStringSchema = v.nullish(v.string()); // string | null | undefined
 
 ### Use in objects
 
-When used inside of objects, <Link href="/api/optional/">`optional`</Link>, <Link href="/api/exactOptional/">`exactOptional`</Link> and <Link href="/api/nullish/">`nullish`</Link> is a special case, as it also marks the value as optional in TypeScript with a question mark.
+When used inside objects, <Link href="/api/optional/">`optional`</Link>, <Link href="/api/exactOptional/">`exactOptional`</Link>, and <Link href="/api/nullish/">`nullish`</Link> are a special case, as they also mark the key as optional in TypeScript with a question mark.
 
 ```ts
 import * as v from 'valibot';
@@ -88,3 +88,43 @@ const CalculationSchema = v.pipe(
   }))
 );
 ```
+
+## Pipe execution behavior
+
+When an object entry uses <Link href="/api/optional/">`optional`</Link>, <Link href="/api/exactOptional/">`exactOptional`</Link>, or <Link href="/api/nullish/">`nullish`</Link> inside a <Link href="/api/pipe/">`pipe`</Link>, it is important to understand when the pipe executes.
+
+### Without default values
+
+If no `default_` value is provided, missing object keys are completely ignored and their pipes will **not** be executed. If the key is present with `undefined` or `null`, the pipe still runs (but it may return an issue depending on the schema used).
+
+```ts
+import * as v from 'valibot';
+
+const Schema = v.object({
+  value: v.pipe(
+    v.optional(v.string()),
+    v.transform((input) => input.toUpperCase()) // Does not run for missing keys
+  ),
+});
+
+const result = v.parse(Schema, {}); // Output: {}
+```
+
+### With default values
+
+When a `default_` value is provided, the pipe will execute for missing keys using the default value.
+
+```ts
+import * as v from 'valibot';
+
+const Schema = v.object({
+  value: v.pipe(
+    v.optional(v.string(), 'hello'), // Default value provided
+    v.transform((input) => input.toUpperCase()) // Runs with 'hello' for missing keys too
+  ),
+});
+
+const result = v.parse(Schema, {}); // Output: { value: 'HELLO' }
+```
+
+This behavior ensures that the output type is consistent and transforms can reliably process values.

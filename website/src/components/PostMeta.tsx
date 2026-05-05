@@ -17,23 +17,38 @@ export const PostMeta = component$<PostCoverProps>(
     >
       {/* Authors */}
       <div class="-m-[3px] flex">
-        {authors.map((author, index) => (
-          <img
-            class={clsx(
-              'box-content w-6 rounded-full border-[3px] border-white dark:border-gray-900',
-              variant === 'blog' && 'lg:w-7',
-              variant === 'post' && 'md:w-7 lg:w-8',
-              index > 0 && '-ml-3'
-            )}
-            style={{ zIndex: authors.length - index }}
-            key={author}
-            src={`https://github.com/${author}.png?size=64`}
-            width="64"
-            height="64"
-            loading="lazy"
-            alt={`GitHub profile picture of ${author}`}
-          />
-        ))}
+        {authors.map((author, index) => {
+          const Author = variant === 'blog' ? 'div' : 'a';
+          const authorProps =
+            variant === 'post'
+              ? {
+                  href: `https://github.com/${author}`,
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                }
+              : null;
+          return (
+            <Author
+              {...authorProps}
+              key={author}
+              style={{ zIndex: authors.length - index }}
+              class={clsx(
+                'box-content w-6 overflow-hidden rounded-full border-[3px] border-white dark:border-gray-900',
+                variant === 'blog' && 'lg:w-7',
+                variant === 'post' && 'md:w-7 lg:w-8',
+                index > 0 && '-ml-3'
+              )}
+            >
+              <img
+                src={`https://github.com/${author}.png?size=64`}
+                width="64"
+                height="64"
+                loading="lazy"
+                alt={`GitHub profile picture of ${author}`}
+              />
+            </Author>
+          );
+        })}
       </div>
 
       {/* Date */}
@@ -45,6 +60,7 @@ export const PostMeta = component$<PostCoverProps>(
           year: 'numeric',
           month: 'long',
           day: 'numeric',
+          timeZone: 'UTC',
         })}
       </time>
     </div>

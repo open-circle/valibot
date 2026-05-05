@@ -87,6 +87,11 @@ type DefinitionData =
       false: DefinitionData;
     }
   | {
+      type: 'predicate';
+      param: string;
+      is: DefinitionData;
+    }
+  | {
       type: 'custom';
       modifier?: string;
       spread?: boolean;
@@ -344,6 +349,14 @@ const Definition = component$<DefinitionProps>(({ parent, data }) => (
           </Fragment>
         ))}
         <Definition parent={data.type} data={data.false} />
+      </>
+    ) : data.type === 'predicate' ? (
+      <>
+        <span class="text-orange-500 italic dark:text-orange-300">
+          {data.param}
+        </span>
+        <span class="text-red-600 dark:text-red-400"> is </span>
+        <Definition parent="conditional" data={data.is} />
       </>
     ) : (
       <>

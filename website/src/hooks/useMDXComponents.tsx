@@ -1,5 +1,10 @@
-import { $, component$, Slot, useSignal } from '@builder.io/qwik';
-import { useLocation } from '@builder.io/qwik-city';
+import {
+  $,
+  component$,
+  Slot,
+  useSignal,
+  useVisibleTask$,
+} from '@builder.io/qwik';
 import lz from 'lz-string';
 import { IconButton } from '~/components';
 import { useResetSignal } from '~/hooks';
@@ -14,10 +19,20 @@ type PreProps = {
  * Pre component for rendering code snippets.
  */
 const Pre = component$<PreProps>((props) => {
-  // Use location and signals
-  const location = useLocation();
+  // Use element and state signals
   const preElement = useSignal<HTMLPreElement>();
+  const isValibotCode = useSignal(false);
   const copied = useResetSignal(false);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(() => {
+    if (
+      props.class === 'language-ts' &&
+      preElement.value?.innerText.includes("import * as v from 'valibot'")
+    ) {
+      isValibotCode.value = true;
+    }
+  });
 
   /**
    * Copies the current code of the <pre /> element to the clipboard.
@@ -61,18 +76,17 @@ const Pre = component$<PreProps>((props) => {
             <CopyIcon class="h-[18px]" />
           )}
         </IconButton>
-        {props.class === 'language-ts' &&
-          location.url.pathname.startsWith('/guides/') && (
-            <IconButton
-              type="button"
-              variant="secondary"
-              label="Execute code"
-              hideLabel
-              onClick$={openPlayground}
-            >
-              <PlayIcon class="h-[16px]" />
-            </IconButton>
-          )}
+        {isValibotCode.value && (
+          <IconButton
+            type="button"
+            variant="secondary"
+            label="Execute code"
+            hideLabel
+            onClick$={openPlayground}
+          >
+            <PlayIcon class="h-[16px]" />
+          </IconButton>
+        )}
       </div>
       <pre
         ref={preElement}
