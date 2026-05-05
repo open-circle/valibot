@@ -73,7 +73,6 @@ describe('domain', () => {
         'sub.example.com',
         'sub.sub2.example.co.uk',
         'a.example',
-        'xn--bcher-kva.example',
       ]);
     });
   });
@@ -142,6 +141,15 @@ describe('domain', () => {
         'http://example.com',
         '127.0.0.1',
         'example.123',
+      ]);
+    });
+
+    test('for IDN and Punycode domains', () => {
+      expectActionIssue(action, baseIssue, [
+        'bücher.example',
+        'почта.рф',
+        'xn--bcher-kva.example',
+        'xn--80a1acny.xn--p1ai',
       ]);
     });
   });

@@ -24,7 +24,7 @@ Update documentation when source code changes:
 
 1. **Read full source file** - Don't just look at diff; understand complete current state
 2. **Identify changes** - Categorize as addition, removal, or modification
-3. **Update `properties.ts`** - Match types exactly to source
+3. **Update `properties.ts`** - Match types exactly to source; for optional object keys, keep the plain key name and use a union with `undefined` as the last option instead of appending `?`
 4. **Update `index.mdx`** - Signature, generics, parameters, examples
 5. **Update related files** - Type docs, `menu.md` if renamed
 
@@ -76,7 +76,7 @@ Update:
 ### Interface Property Added
 
 1. Update type documentation in `(types)/TypeName/`
-2. Add new property to `properties.ts`
+2. Add new property to `properties.ts`; if the source key is optional, do not append `?` to the key name and model it as a union with `undefined` last
 3. Document in Definition section
 
 ### Function Renamed

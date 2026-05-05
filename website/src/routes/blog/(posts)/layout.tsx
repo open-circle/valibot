@@ -3,9 +3,15 @@ import { useDocumentHead, useLocation } from '@builder.io/qwik-city';
 import { Credits, IconButton, PostCover, PostMeta } from '~/components';
 import { PenIcon } from '~/icons';
 
+type PostFrontmatter = {
+  cover: string;
+  authors: string[];
+  published: string;
+};
+
 export default component$(() => {
   // Use document head and location
-  const head = useDocumentHead();
+  const head = useDocumentHead<PostFrontmatter>();
   const location = useLocation();
 
   return (

@@ -69,8 +69,8 @@ export interface DomainAction<
  * Creates a [domain name](https://en.wikipedia.org/wiki/Domain_name) validation
  * action.
  *
- * Hint: ASCII-only validation. Internationalized domain names (IDN) in
- * Unicode form are not supported.
+ * Hint: ASCII-only validation. Internationalized domain names (IDNs) are not
+ * supported, including Punycode-encoded labels.
  *
  * @returns A domain action.
  *
@@ -85,8 +85,8 @@ export function domain<TInput extends string>(): DomainAction<
  * Creates a [domain name](https://en.wikipedia.org/wiki/Domain_name) validation
  * action.
  *
- * Hint: ASCII-only validation. Internationalized domain names (IDN) in
- * Unicode form are not supported.
+ * Hint: ASCII-only validation. Internationalized domain names (IDNs) are not
+ * supported, including Punycode-encoded labels.
  *
  * @param message The error message.
  *

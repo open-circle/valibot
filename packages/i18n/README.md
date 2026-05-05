@@ -4,34 +4,43 @@ The official i18n translations for Valibot. See the [internationalization guide]
 
 ## Current status
 
-| Language        | Pull Request       | Status |
-| --------------- | ------------------ | ------ |
-| Arabic (ar)     | [#527][pr-527-url] | ✅     |
-| Catalan (ca)    | [#652][pr-652-url] | ✅     |
-| Chinese (zh-CN) | [#419][pr-419-url] | ✅     |
-| Chinese (zh-TW) | [#427][pr-427-url] | ✅     |
-| Czech (cs)      | [#886][pr-886-url] | ✅     |
-| Dutch (nl)      | [#438][pr-438-url] | ✅     |
-| English (en)    | [#397][pr-397-url] | ✅     |
-| Farsi (fa)      | [#838][pr-838-url] | ✅     |
-| French (fr)     | [#418][pr-418-url] | ✅     |
-| German (de)     | [#397][pr-397-url] | ✅     |
-| Hungarian (hu)  | [#560][pr-560-url] | ✅     |
-| Indonesian (id) | [#683][pr-683-url] | ✅     |
-| Italian (it)    | [#605][pr-605-url] | ✅     |
-| Japanese (ja)   | [#431][pr-431-url] | ✅     |
-| Korean (kr)     | [#429][pr-429-url] | ✅     |
-| Norwegian (nb)  | [#439][pr-439-url] | ✅     |
-| Polish (pl)     | [#584][pr-584-url] | ✅     |
-| Portuguese (pt) | [#509][pr-509-url] | ✅     |
-| Romanian (ro)   | [#472][pr-472-url] | ✅     |
-| Russian (ru)    | [#434][pr-434-url] | ✅     |
-| Slovenian (sl)  | [#422][pr-422-url] | ✅     |
-| Spanish (es)    | [#581][pr-581-url] | ✅     |
-| Swedish (sv)    | [#606][pr-606-url] | ✅     |
-| Turkish (tr)    | [#549][pr-549-url] | ✅     |
-| Ukrainian (uk)  | [#423][pr-423-url] | ✅     |
-| Vietnamese (vi) | [#951][pr-951-url] | ✅     |
+Valibot ships English messages by default, so this package publishes translated submodules for the languages below.
+
+| Language         | Pull Request         | Status |
+| ---------------- | -------------------- | ------ |
+| Arabic (ar)      | [#527][pr-527-url]   | ✅     |
+| Azerbaijani (az) | [#1409][pr-1409-url] | ✅     |
+| Catalan (ca)     | [#652][pr-652-url]   | ✅     |
+| Chinese (zh-CN)  | [#419][pr-419-url]   | ✅     |
+| Chinese (zh-TW)  | [#427][pr-427-url]   | ✅     |
+| Czech (cs)       | [#886][pr-886-url]   | ✅     |
+| Dutch (nl)       | [#438][pr-438-url]   | ✅     |
+| English (en)     | [#397][pr-397-url]   | ✅     |
+| Farsi (fa)       | [#838][pr-838-url]   | ✅     |
+| Finnish (fi)     | [#1318][pr-1318-url] | ✅     |
+| French (fr)      | [#418][pr-418-url]   | ✅     |
+| German (de)      | [#397][pr-397-url]   | ✅     |
+| Greek (el)       | [#1311][pr-1311-url] | ✅     |
+| Hungarian (hu)   | [#560][pr-560-url]   | ✅     |
+| Indonesian (id)  | [#683][pr-683-url]   | ✅     |
+| Italian (it)     | [#605][pr-605-url]   | ✅     |
+| Japanese (ja)    | [#431][pr-431-url]   | ✅     |
+| Korean (ko)      | [#1306][pr-1306-url] | ✅     |
+| Mongolian (mn)   | [#1224][pr-1224-url] | ✅     |
+| Norwegian (nb)   | [#439][pr-439-url]   | ✅     |
+| Polish (pl)      | [#584][pr-584-url]   | ✅     |
+| Portuguese (pt)  | [#509][pr-509-url]   | ✅     |
+| Romanian (ro)    | [#472][pr-472-url]   | ✅     |
+| Russian (ru)     | [#434][pr-434-url]   | ✅     |
+| Slovak (sk)      | [#1334][pr-1334-url] | ✅     |
+| Slovenian (sl)   | [#422][pr-422-url]   | ✅     |
+| Spanish (es)     | [#581][pr-581-url]   | ✅     |
+| Swedish (sv)     | [#606][pr-606-url]   | ✅     |
+| Turkish (tr)     | [#549][pr-549-url]   | ✅     |
+| Ukrainian (uk)   | [#423][pr-423-url]   | ✅     |
+| Vietnamese (vi)  | [#951][pr-951-url]   | ✅     |
+
+The deprecated `kr` submodule remains available as an alias of `ko` for compatibility, but new integrations should use `ko`.
 
 [pr-397-url]: https://github.com/open-circle/valibot/pull/397
 [pr-418-url]: https://github.com/open-circle/valibot/pull/418
@@ -39,7 +48,6 @@ The official i18n translations for Valibot. See the [internationalization guide]
 [pr-422-url]: https://github.com/open-circle/valibot/pull/422
 [pr-423-url]: https://github.com/open-circle/valibot/pull/423
 [pr-427-url]: https://github.com/open-circle/valibot/pull/427
-[pr-429-url]: https://github.com/open-circle/valibot/pull/429
 [pr-431-url]: https://github.com/open-circle/valibot/pull/431
 [pr-434-url]: https://github.com/open-circle/valibot/pull/434
 [pr-438-url]: https://github.com/open-circle/valibot/pull/438
@@ -58,6 +66,12 @@ The official i18n translations for Valibot. See the [internationalization guide]
 [pr-838-url]: https://github.com/open-circle/valibot/pull/838
 [pr-886-url]: https://github.com/open-circle/valibot/pull/886
 [pr-951-url]: https://github.com/open-circle/valibot/pull/951
+[pr-1224-url]: https://github.com/open-circle/valibot/pull/1224
+[pr-1306-url]: https://github.com/open-circle/valibot/pull/1306
+[pr-1311-url]: https://github.com/open-circle/valibot/pull/1311
+[pr-1318-url]: https://github.com/open-circle/valibot/pull/1318
+[pr-1334-url]: https://github.com/open-circle/valibot/pull/1334
+[pr-1409-url]: https://github.com/open-circle/valibot/pull/1409
 
 ## Getting started
 
@@ -87,11 +101,12 @@ cd ../packages/i18n
 
 ## Add language
 
-1. Add ISO code to `src/types.ts` in line 4
+1. Add the ISO code to `src/types.ts`
 2. Duplicate `src/en.ts` and change file name to ISO code
 3. Change ISO code and translate messages in new file
 4. Import new language file in `scripts/build-npm.ts` and `scripts/build-jsr.ts`
-5. Add new import to `languages` array
+5. Add the new import to the `languages` array
+6. Update the "Current status" table in this README
 
 ## Build library
 
