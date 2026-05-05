@@ -1,0 +1,72 @@
+---
+title: isoDateTimeSecond
+description: Creates an ISO date time second validation action.
+source: /actions/isoDateTimeSecond/isoDateTimeSecond.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# isoDateTimeSecond
+
+Creates an [ISO date time second](https://en.wikipedia.org/wiki/ISO_8601) validation action.
+
+Format: `yyyy-mm-ddThh:mm:ss`
+
+> The regex used cannot validate the maximum number of days based on year and month. For example, "2023-06-31T00:00:00" is valid although June has only 30 days.
+
+> The regex also allows a space as a separator between the date and time parts instead of the "T" character.
+
+```ts
+const Action = v.isoDateTimeSecond<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `isoDateTimeSecond` you can validate the formatting of a string. If the input is not an ISO date time with seconds, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `isoDateTimeSecond` can be used.
+
+### ISO date time second schema
+
+Schema to validate an ISO date time with seconds.
+
+```ts
+const IsoDateTimeSecondSchema = v.pipe(
+  v.string(),
+  v.isoDateTimeSecond('The date is badly formatted.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `isoDateTimeSecond`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
