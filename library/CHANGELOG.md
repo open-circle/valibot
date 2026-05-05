@@ -4,11 +4,29 @@ All notable changes to the library will be documented in this file.
 
 ## vX.X.X (Month DD, YYYY)
 
+- Add `isoDateTimeSecond` validation action to validate ISO date times with seconds (pull request #1418)
+- Change internal `ReadonlyOutputKeys` and `OutputWithReadonly` types of `object` schemas and `WithReadonly` type of `record` schemas to improve TypeScript type performance (pull request #1442)
+- Change hot paths to reduce object allocations and improve runtime performance (pull request #1437)
+- Change build target to ES2020 so distributed output stays compatible with environments that lack support for newer syntax (pull request #1455)
+- Change internal `_LruCache` to use a TypeScript `private` method instead of a `#private` class field to avoid runtime helpers in the transpiled output (pull request #1455)
+- Fix potential `RangeError` caused by spreading large issue arrays (pull request #1437)
+- Fix `creditCard` validation action to reject Mastercard numbers with invalid lengths (pull request #1462)
+
+## v1.3.1 (March 18, 2026)
+
+- Change `MAC48_REGEX`, `MAC64_REGEX` and `MAC_REGEX` to drop the `i` flag for better JSON Schema compatibility (pull request #1430)
+- Change `hash` action to use case-expanded character classes instead of the `i` flag (pull request #1430)
+
+## v1.3.0 (March 17, 2026)
+
 - Add `guard` transformation action to narrow types using type predicates (pull request #1204)
 - Add `parseBoolean` transformation action to parse boolean values from strings and other types (pull request #1251)
 - Add `isrc` validation action to validate ISRC codes (pull request #1373)
+- Add `cache` method for caching schema output by input (pull request #1170)
 - Add `domain` validation action to validate domain names (pull request #1284)
+- Add `jwsCompact` validation action to validate JWS compact strings (pull request #1348)
 - Fix `creditCard` validation action to allow 13-digit Visa card numbers (pull request #1347)
+- Fix `isoTimestamp` validation action to allow optional space before UTC offset for PostgreSQL `timestamptz` compatibility (pull request #1195)
 - Fix types for deeply readonly default and fallback values
 
 ## v1.2.0 (November 24, 2025)
