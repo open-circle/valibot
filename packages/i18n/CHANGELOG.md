@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Add Uzbek (uz) translations (pull request #1452)
+
 ## v1.1.0 (March 17, 2026)
 
 - Add Greek (el) translations (pull request #1311)

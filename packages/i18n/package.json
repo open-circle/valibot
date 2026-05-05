@@ -70,6 +70,7 @@
     "sv",
     "tr",
     "uk",
+    "uz",
     "vi",
     "zh-CN",
     "zh-TW"
@@ -27523,6 +27524,986 @@
       "require": {
         "types": "./uk/words.d.cts",
         "default": "./uk/words.cjs"
+      }
+    },
+    "./uz": {
+      "import": {
+        "types": "./uz/index.d.mts",
+        "default": "./uz/index.mjs"
+      },
+      "require": {
+        "types": "./uz/index.d.cts",
+        "default": "./uz/index.cjs"
+      }
+    },
+    "./uz/schema": {
+      "import": {
+        "types": "./uz/schema.d.mts",
+        "default": "./uz/schema.mjs"
+      },
+      "require": {
+        "types": "./uz/schema.d.cts",
+        "default": "./uz/schema.cjs"
+      }
+    },
+    "./uz/base64": {
+      "import": {
+        "types": "./uz/base64.d.mts",
+        "default": "./uz/base64.mjs"
+      },
+      "require": {
+        "types": "./uz/base64.d.cts",
+        "default": "./uz/base64.cjs"
+      }
+    },
+    "./uz/bic": {
+      "import": {
+        "types": "./uz/bic.d.mts",
+        "default": "./uz/bic.mjs"
+      },
+      "require": {
+        "types": "./uz/bic.d.cts",
+        "default": "./uz/bic.cjs"
+      }
+    },
+    "./uz/bytes": {
+      "import": {
+        "types": "./uz/bytes.d.mts",
+        "default": "./uz/bytes.mjs"
+      },
+      "require": {
+        "types": "./uz/bytes.d.cts",
+        "default": "./uz/bytes.cjs"
+      }
+    },
+    "./uz/check": {
+      "import": {
+        "types": "./uz/check.d.mts",
+        "default": "./uz/check.mjs"
+      },
+      "require": {
+        "types": "./uz/check.d.cts",
+        "default": "./uz/check.cjs"
+      }
+    },
+    "./uz/checkAsync": {
+      "import": {
+        "types": "./uz/checkAsync.d.mts",
+        "default": "./uz/checkAsync.mjs"
+      },
+      "require": {
+        "types": "./uz/checkAsync.d.cts",
+        "default": "./uz/checkAsync.cjs"
+      }
+    },
+    "./uz/checkItems": {
+      "import": {
+        "types": "./uz/checkItems.d.mts",
+        "default": "./uz/checkItems.mjs"
+      },
+      "require": {
+        "types": "./uz/checkItems.d.cts",
+        "default": "./uz/checkItems.cjs"
+      }
+    },
+    "./uz/checkItemsAsync": {
+      "import": {
+        "types": "./uz/checkItemsAsync.d.mts",
+        "default": "./uz/checkItemsAsync.mjs"
+      },
+      "require": {
+        "types": "./uz/checkItemsAsync.d.cts",
+        "default": "./uz/checkItemsAsync.cjs"
+      }
+    },
+    "./uz/creditCard": {
+      "import": {
+        "types": "./uz/creditCard.d.mts",
+        "default": "./uz/creditCard.mjs"
+      },
+      "require": {
+        "types": "./uz/creditCard.d.cts",
+        "default": "./uz/creditCard.cjs"
+      }
+    },
+    "./uz/cuid2": {
+      "import": {
+        "types": "./uz/cuid2.d.mts",
+        "default": "./uz/cuid2.mjs"
+      },
+      "require": {
+        "types": "./uz/cuid2.d.cts",
+        "default": "./uz/cuid2.cjs"
+      }
+    },
+    "./uz/decimal": {
+      "import": {
+        "types": "./uz/decimal.d.mts",
+        "default": "./uz/decimal.mjs"
+      },
+      "require": {
+        "types": "./uz/decimal.d.cts",
+        "default": "./uz/decimal.cjs"
+      }
+    },
+    "./uz/digits": {
+      "import": {
+        "types": "./uz/digits.d.mts",
+        "default": "./uz/digits.mjs"
+      },
+      "require": {
+        "types": "./uz/digits.d.cts",
+        "default": "./uz/digits.cjs"
+      }
+    },
+    "./uz/domain": {
+      "import": {
+        "types": "./uz/domain.d.mts",
+        "default": "./uz/domain.mjs"
+      },
+      "require": {
+        "types": "./uz/domain.d.cts",
+        "default": "./uz/domain.cjs"
+      }
+    },
+    "./uz/email": {
+      "import": {
+        "types": "./uz/email.d.mts",
+        "default": "./uz/email.mjs"
+      },
+      "require": {
+        "types": "./uz/email.d.cts",
+        "default": "./uz/email.cjs"
+      }
+    },
+    "./uz/emoji": {
+      "import": {
+        "types": "./uz/emoji.d.mts",
+        "default": "./uz/emoji.mjs"
+      },
+      "require": {
+        "types": "./uz/emoji.d.cts",
+        "default": "./uz/emoji.cjs"
+      }
+    },
+    "./uz/empty": {
+      "import": {
+        "types": "./uz/empty.d.mts",
+        "default": "./uz/empty.mjs"
+      },
+      "require": {
+        "types": "./uz/empty.d.cts",
+        "default": "./uz/empty.cjs"
+      }
+    },
+    "./uz/endsWith": {
+      "import": {
+        "types": "./uz/endsWith.d.mts",
+        "default": "./uz/endsWith.mjs"
+      },
+      "require": {
+        "types": "./uz/endsWith.d.cts",
+        "default": "./uz/endsWith.cjs"
+      }
+    },
+    "./uz/entries": {
+      "import": {
+        "types": "./uz/entries.d.mts",
+        "default": "./uz/entries.mjs"
+      },
+      "require": {
+        "types": "./uz/entries.d.cts",
+        "default": "./uz/entries.cjs"
+      }
+    },
+    "./uz/everyItem": {
+      "import": {
+        "types": "./uz/everyItem.d.mts",
+        "default": "./uz/everyItem.mjs"
+      },
+      "require": {
+        "types": "./uz/everyItem.d.cts",
+        "default": "./uz/everyItem.cjs"
+      }
+    },
+    "./uz/excludes": {
+      "import": {
+        "types": "./uz/excludes.d.mts",
+        "default": "./uz/excludes.mjs"
+      },
+      "require": {
+        "types": "./uz/excludes.d.cts",
+        "default": "./uz/excludes.cjs"
+      }
+    },
+    "./uz/finite": {
+      "import": {
+        "types": "./uz/finite.d.mts",
+        "default": "./uz/finite.mjs"
+      },
+      "require": {
+        "types": "./uz/finite.d.cts",
+        "default": "./uz/finite.cjs"
+      }
+    },
+    "./uz/graphemes": {
+      "import": {
+        "types": "./uz/graphemes.d.mts",
+        "default": "./uz/graphemes.mjs"
+      },
+      "require": {
+        "types": "./uz/graphemes.d.cts",
+        "default": "./uz/graphemes.cjs"
+      }
+    },
+    "./uz/gtValue": {
+      "import": {
+        "types": "./uz/gtValue.d.mts",
+        "default": "./uz/gtValue.mjs"
+      },
+      "require": {
+        "types": "./uz/gtValue.d.cts",
+        "default": "./uz/gtValue.cjs"
+      }
+    },
+    "./uz/guard": {
+      "import": {
+        "types": "./uz/guard.d.mts",
+        "default": "./uz/guard.mjs"
+      },
+      "require": {
+        "types": "./uz/guard.d.cts",
+        "default": "./uz/guard.cjs"
+      }
+    },
+    "./uz/hash": {
+      "import": {
+        "types": "./uz/hash.d.mts",
+        "default": "./uz/hash.mjs"
+      },
+      "require": {
+        "types": "./uz/hash.d.cts",
+        "default": "./uz/hash.cjs"
+      }
+    },
+    "./uz/hexadecimal": {
+      "import": {
+        "types": "./uz/hexadecimal.d.mts",
+        "default": "./uz/hexadecimal.mjs"
+      },
+      "require": {
+        "types": "./uz/hexadecimal.d.cts",
+        "default": "./uz/hexadecimal.cjs"
+      }
+    },
+    "./uz/hexColor": {
+      "import": {
+        "types": "./uz/hexColor.d.mts",
+        "default": "./uz/hexColor.mjs"
+      },
+      "require": {
+        "types": "./uz/hexColor.d.cts",
+        "default": "./uz/hexColor.cjs"
+      }
+    },
+    "./uz/imei": {
+      "import": {
+        "types": "./uz/imei.d.mts",
+        "default": "./uz/imei.mjs"
+      },
+      "require": {
+        "types": "./uz/imei.d.cts",
+        "default": "./uz/imei.cjs"
+      }
+    },
+    "./uz/includes": {
+      "import": {
+        "types": "./uz/includes.d.mts",
+        "default": "./uz/includes.mjs"
+      },
+      "require": {
+        "types": "./uz/includes.d.cts",
+        "default": "./uz/includes.cjs"
+      }
+    },
+    "./uz/integer": {
+      "import": {
+        "types": "./uz/integer.d.mts",
+        "default": "./uz/integer.mjs"
+      },
+      "require": {
+        "types": "./uz/integer.d.cts",
+        "default": "./uz/integer.cjs"
+      }
+    },
+    "./uz/ip": {
+      "import": {
+        "types": "./uz/ip.d.mts",
+        "default": "./uz/ip.mjs"
+      },
+      "require": {
+        "types": "./uz/ip.d.cts",
+        "default": "./uz/ip.cjs"
+      }
+    },
+    "./uz/ipv4": {
+      "import": {
+        "types": "./uz/ipv4.d.mts",
+        "default": "./uz/ipv4.mjs"
+      },
+      "require": {
+        "types": "./uz/ipv4.d.cts",
+        "default": "./uz/ipv4.cjs"
+      }
+    },
+    "./uz/ipv6": {
+      "import": {
+        "types": "./uz/ipv6.d.mts",
+        "default": "./uz/ipv6.mjs"
+      },
+      "require": {
+        "types": "./uz/ipv6.d.cts",
+        "default": "./uz/ipv6.cjs"
+      }
+    },
+    "./uz/isbn": {
+      "import": {
+        "types": "./uz/isbn.d.mts",
+        "default": "./uz/isbn.mjs"
+      },
+      "require": {
+        "types": "./uz/isbn.d.cts",
+        "default": "./uz/isbn.cjs"
+      }
+    },
+    "./uz/isoDate": {
+      "import": {
+        "types": "./uz/isoDate.d.mts",
+        "default": "./uz/isoDate.mjs"
+      },
+      "require": {
+        "types": "./uz/isoDate.d.cts",
+        "default": "./uz/isoDate.cjs"
+      }
+    },
+    "./uz/isoDateTime": {
+      "import": {
+        "types": "./uz/isoDateTime.d.mts",
+        "default": "./uz/isoDateTime.mjs"
+      },
+      "require": {
+        "types": "./uz/isoDateTime.d.cts",
+        "default": "./uz/isoDateTime.cjs"
+      }
+    },
+    "./uz/isoTime": {
+      "import": {
+        "types": "./uz/isoTime.d.mts",
+        "default": "./uz/isoTime.mjs"
+      },
+      "require": {
+        "types": "./uz/isoTime.d.cts",
+        "default": "./uz/isoTime.cjs"
+      }
+    },
+    "./uz/isoTimeSecond": {
+      "import": {
+        "types": "./uz/isoTimeSecond.d.mts",
+        "default": "./uz/isoTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./uz/isoTimeSecond.d.cts",
+        "default": "./uz/isoTimeSecond.cjs"
+      }
+    },
+    "./uz/isoTimestamp": {
+      "import": {
+        "types": "./uz/isoTimestamp.d.mts",
+        "default": "./uz/isoTimestamp.mjs"
+      },
+      "require": {
+        "types": "./uz/isoTimestamp.d.cts",
+        "default": "./uz/isoTimestamp.cjs"
+      }
+    },
+    "./uz/isoWeek": {
+      "import": {
+        "types": "./uz/isoWeek.d.mts",
+        "default": "./uz/isoWeek.mjs"
+      },
+      "require": {
+        "types": "./uz/isoWeek.d.cts",
+        "default": "./uz/isoWeek.cjs"
+      }
+    },
+    "./uz/isrc": {
+      "import": {
+        "types": "./uz/isrc.d.mts",
+        "default": "./uz/isrc.mjs"
+      },
+      "require": {
+        "types": "./uz/isrc.d.cts",
+        "default": "./uz/isrc.cjs"
+      }
+    },
+    "./uz/jwsCompact": {
+      "import": {
+        "types": "./uz/jwsCompact.d.mts",
+        "default": "./uz/jwsCompact.mjs"
+      },
+      "require": {
+        "types": "./uz/jwsCompact.d.cts",
+        "default": "./uz/jwsCompact.cjs"
+      }
+    },
+    "./uz/length": {
+      "import": {
+        "types": "./uz/length.d.mts",
+        "default": "./uz/length.mjs"
+      },
+      "require": {
+        "types": "./uz/length.d.cts",
+        "default": "./uz/length.cjs"
+      }
+    },
+    "./uz/ltValue": {
+      "import": {
+        "types": "./uz/ltValue.d.mts",
+        "default": "./uz/ltValue.mjs"
+      },
+      "require": {
+        "types": "./uz/ltValue.d.cts",
+        "default": "./uz/ltValue.cjs"
+      }
+    },
+    "./uz/mac": {
+      "import": {
+        "types": "./uz/mac.d.mts",
+        "default": "./uz/mac.mjs"
+      },
+      "require": {
+        "types": "./uz/mac.d.cts",
+        "default": "./uz/mac.cjs"
+      }
+    },
+    "./uz/mac48": {
+      "import": {
+        "types": "./uz/mac48.d.mts",
+        "default": "./uz/mac48.mjs"
+      },
+      "require": {
+        "types": "./uz/mac48.d.cts",
+        "default": "./uz/mac48.cjs"
+      }
+    },
+    "./uz/mac64": {
+      "import": {
+        "types": "./uz/mac64.d.mts",
+        "default": "./uz/mac64.mjs"
+      },
+      "require": {
+        "types": "./uz/mac64.d.cts",
+        "default": "./uz/mac64.cjs"
+      }
+    },
+    "./uz/maxBytes": {
+      "import": {
+        "types": "./uz/maxBytes.d.mts",
+        "default": "./uz/maxBytes.mjs"
+      },
+      "require": {
+        "types": "./uz/maxBytes.d.cts",
+        "default": "./uz/maxBytes.cjs"
+      }
+    },
+    "./uz/maxEntries": {
+      "import": {
+        "types": "./uz/maxEntries.d.mts",
+        "default": "./uz/maxEntries.mjs"
+      },
+      "require": {
+        "types": "./uz/maxEntries.d.cts",
+        "default": "./uz/maxEntries.cjs"
+      }
+    },
+    "./uz/maxGraphemes": {
+      "import": {
+        "types": "./uz/maxGraphemes.d.mts",
+        "default": "./uz/maxGraphemes.mjs"
+      },
+      "require": {
+        "types": "./uz/maxGraphemes.d.cts",
+        "default": "./uz/maxGraphemes.cjs"
+      }
+    },
+    "./uz/maxLength": {
+      "import": {
+        "types": "./uz/maxLength.d.mts",
+        "default": "./uz/maxLength.mjs"
+      },
+      "require": {
+        "types": "./uz/maxLength.d.cts",
+        "default": "./uz/maxLength.cjs"
+      }
+    },
+    "./uz/maxSize": {
+      "import": {
+        "types": "./uz/maxSize.d.mts",
+        "default": "./uz/maxSize.mjs"
+      },
+      "require": {
+        "types": "./uz/maxSize.d.cts",
+        "default": "./uz/maxSize.cjs"
+      }
+    },
+    "./uz/maxValue": {
+      "import": {
+        "types": "./uz/maxValue.d.mts",
+        "default": "./uz/maxValue.mjs"
+      },
+      "require": {
+        "types": "./uz/maxValue.d.cts",
+        "default": "./uz/maxValue.cjs"
+      }
+    },
+    "./uz/maxWords": {
+      "import": {
+        "types": "./uz/maxWords.d.mts",
+        "default": "./uz/maxWords.mjs"
+      },
+      "require": {
+        "types": "./uz/maxWords.d.cts",
+        "default": "./uz/maxWords.cjs"
+      }
+    },
+    "./uz/mimeType": {
+      "import": {
+        "types": "./uz/mimeType.d.mts",
+        "default": "./uz/mimeType.mjs"
+      },
+      "require": {
+        "types": "./uz/mimeType.d.cts",
+        "default": "./uz/mimeType.cjs"
+      }
+    },
+    "./uz/minBytes": {
+      "import": {
+        "types": "./uz/minBytes.d.mts",
+        "default": "./uz/minBytes.mjs"
+      },
+      "require": {
+        "types": "./uz/minBytes.d.cts",
+        "default": "./uz/minBytes.cjs"
+      }
+    },
+    "./uz/minEntries": {
+      "import": {
+        "types": "./uz/minEntries.d.mts",
+        "default": "./uz/minEntries.mjs"
+      },
+      "require": {
+        "types": "./uz/minEntries.d.cts",
+        "default": "./uz/minEntries.cjs"
+      }
+    },
+    "./uz/minGraphemes": {
+      "import": {
+        "types": "./uz/minGraphemes.d.mts",
+        "default": "./uz/minGraphemes.mjs"
+      },
+      "require": {
+        "types": "./uz/minGraphemes.d.cts",
+        "default": "./uz/minGraphemes.cjs"
+      }
+    },
+    "./uz/minLength": {
+      "import": {
+        "types": "./uz/minLength.d.mts",
+        "default": "./uz/minLength.mjs"
+      },
+      "require": {
+        "types": "./uz/minLength.d.cts",
+        "default": "./uz/minLength.cjs"
+      }
+    },
+    "./uz/minSize": {
+      "import": {
+        "types": "./uz/minSize.d.mts",
+        "default": "./uz/minSize.mjs"
+      },
+      "require": {
+        "types": "./uz/minSize.d.cts",
+        "default": "./uz/minSize.cjs"
+      }
+    },
+    "./uz/minValue": {
+      "import": {
+        "types": "./uz/minValue.d.mts",
+        "default": "./uz/minValue.mjs"
+      },
+      "require": {
+        "types": "./uz/minValue.d.cts",
+        "default": "./uz/minValue.cjs"
+      }
+    },
+    "./uz/minWords": {
+      "import": {
+        "types": "./uz/minWords.d.mts",
+        "default": "./uz/minWords.mjs"
+      },
+      "require": {
+        "types": "./uz/minWords.d.cts",
+        "default": "./uz/minWords.cjs"
+      }
+    },
+    "./uz/multipleOf": {
+      "import": {
+        "types": "./uz/multipleOf.d.mts",
+        "default": "./uz/multipleOf.mjs"
+      },
+      "require": {
+        "types": "./uz/multipleOf.d.cts",
+        "default": "./uz/multipleOf.cjs"
+      }
+    },
+    "./uz/nanoid": {
+      "import": {
+        "types": "./uz/nanoid.d.mts",
+        "default": "./uz/nanoid.mjs"
+      },
+      "require": {
+        "types": "./uz/nanoid.d.cts",
+        "default": "./uz/nanoid.cjs"
+      }
+    },
+    "./uz/nonEmpty": {
+      "import": {
+        "types": "./uz/nonEmpty.d.mts",
+        "default": "./uz/nonEmpty.mjs"
+      },
+      "require": {
+        "types": "./uz/nonEmpty.d.cts",
+        "default": "./uz/nonEmpty.cjs"
+      }
+    },
+    "./uz/notBytes": {
+      "import": {
+        "types": "./uz/notBytes.d.mts",
+        "default": "./uz/notBytes.mjs"
+      },
+      "require": {
+        "types": "./uz/notBytes.d.cts",
+        "default": "./uz/notBytes.cjs"
+      }
+    },
+    "./uz/notEntries": {
+      "import": {
+        "types": "./uz/notEntries.d.mts",
+        "default": "./uz/notEntries.mjs"
+      },
+      "require": {
+        "types": "./uz/notEntries.d.cts",
+        "default": "./uz/notEntries.cjs"
+      }
+    },
+    "./uz/notGraphemes": {
+      "import": {
+        "types": "./uz/notGraphemes.d.mts",
+        "default": "./uz/notGraphemes.mjs"
+      },
+      "require": {
+        "types": "./uz/notGraphemes.d.cts",
+        "default": "./uz/notGraphemes.cjs"
+      }
+    },
+    "./uz/notLength": {
+      "import": {
+        "types": "./uz/notLength.d.mts",
+        "default": "./uz/notLength.mjs"
+      },
+      "require": {
+        "types": "./uz/notLength.d.cts",
+        "default": "./uz/notLength.cjs"
+      }
+    },
+    "./uz/notSize": {
+      "import": {
+        "types": "./uz/notSize.d.mts",
+        "default": "./uz/notSize.mjs"
+      },
+      "require": {
+        "types": "./uz/notSize.d.cts",
+        "default": "./uz/notSize.cjs"
+      }
+    },
+    "./uz/notValue": {
+      "import": {
+        "types": "./uz/notValue.d.mts",
+        "default": "./uz/notValue.mjs"
+      },
+      "require": {
+        "types": "./uz/notValue.d.cts",
+        "default": "./uz/notValue.cjs"
+      }
+    },
+    "./uz/notValues": {
+      "import": {
+        "types": "./uz/notValues.d.mts",
+        "default": "./uz/notValues.mjs"
+      },
+      "require": {
+        "types": "./uz/notValues.d.cts",
+        "default": "./uz/notValues.cjs"
+      }
+    },
+    "./uz/notWords": {
+      "import": {
+        "types": "./uz/notWords.d.mts",
+        "default": "./uz/notWords.mjs"
+      },
+      "require": {
+        "types": "./uz/notWords.d.cts",
+        "default": "./uz/notWords.cjs"
+      }
+    },
+    "./uz/octal": {
+      "import": {
+        "types": "./uz/octal.d.mts",
+        "default": "./uz/octal.mjs"
+      },
+      "require": {
+        "types": "./uz/octal.d.cts",
+        "default": "./uz/octal.cjs"
+      }
+    },
+    "./uz/parseBoolean": {
+      "import": {
+        "types": "./uz/parseBoolean.d.mts",
+        "default": "./uz/parseBoolean.mjs"
+      },
+      "require": {
+        "types": "./uz/parseBoolean.d.cts",
+        "default": "./uz/parseBoolean.cjs"
+      }
+    },
+    "./uz/parseJson": {
+      "import": {
+        "types": "./uz/parseJson.d.mts",
+        "default": "./uz/parseJson.mjs"
+      },
+      "require": {
+        "types": "./uz/parseJson.d.cts",
+        "default": "./uz/parseJson.cjs"
+      }
+    },
+    "./uz/partialCheck": {
+      "import": {
+        "types": "./uz/partialCheck.d.mts",
+        "default": "./uz/partialCheck.mjs"
+      },
+      "require": {
+        "types": "./uz/partialCheck.d.cts",
+        "default": "./uz/partialCheck.cjs"
+      }
+    },
+    "./uz/rawCheck": {
+      "import": {
+        "types": "./uz/rawCheck.d.mts",
+        "default": "./uz/rawCheck.mjs"
+      },
+      "require": {
+        "types": "./uz/rawCheck.d.cts",
+        "default": "./uz/rawCheck.cjs"
+      }
+    },
+    "./uz/rawTransform": {
+      "import": {
+        "types": "./uz/rawTransform.d.mts",
+        "default": "./uz/rawTransform.mjs"
+      },
+      "require": {
+        "types": "./uz/rawTransform.d.cts",
+        "default": "./uz/rawTransform.cjs"
+      }
+    },
+    "./uz/regex": {
+      "import": {
+        "types": "./uz/regex.d.mts",
+        "default": "./uz/regex.mjs"
+      },
+      "require": {
+        "types": "./uz/regex.d.cts",
+        "default": "./uz/regex.cjs"
+      }
+    },
+    "./uz/rfcEmail": {
+      "import": {
+        "types": "./uz/rfcEmail.d.mts",
+        "default": "./uz/rfcEmail.mjs"
+      },
+      "require": {
+        "types": "./uz/rfcEmail.d.cts",
+        "default": "./uz/rfcEmail.cjs"
+      }
+    },
+    "./uz/safeInteger": {
+      "import": {
+        "types": "./uz/safeInteger.d.mts",
+        "default": "./uz/safeInteger.mjs"
+      },
+      "require": {
+        "types": "./uz/safeInteger.d.cts",
+        "default": "./uz/safeInteger.cjs"
+      }
+    },
+    "./uz/size": {
+      "import": {
+        "types": "./uz/size.d.mts",
+        "default": "./uz/size.mjs"
+      },
+      "require": {
+        "types": "./uz/size.d.cts",
+        "default": "./uz/size.cjs"
+      }
+    },
+    "./uz/slug": {
+      "import": {
+        "types": "./uz/slug.d.mts",
+        "default": "./uz/slug.mjs"
+      },
+      "require": {
+        "types": "./uz/slug.d.cts",
+        "default": "./uz/slug.cjs"
+      }
+    },
+    "./uz/someItem": {
+      "import": {
+        "types": "./uz/someItem.d.mts",
+        "default": "./uz/someItem.mjs"
+      },
+      "require": {
+        "types": "./uz/someItem.d.cts",
+        "default": "./uz/someItem.cjs"
+      }
+    },
+    "./uz/startsWith": {
+      "import": {
+        "types": "./uz/startsWith.d.mts",
+        "default": "./uz/startsWith.mjs"
+      },
+      "require": {
+        "types": "./uz/startsWith.d.cts",
+        "default": "./uz/startsWith.cjs"
+      }
+    },
+    "./uz/stringifyJson": {
+      "import": {
+        "types": "./uz/stringifyJson.d.mts",
+        "default": "./uz/stringifyJson.mjs"
+      },
+      "require": {
+        "types": "./uz/stringifyJson.d.cts",
+        "default": "./uz/stringifyJson.cjs"
+      }
+    },
+    "./uz/toBigint": {
+      "import": {
+        "types": "./uz/toBigint.d.mts",
+        "default": "./uz/toBigint.mjs"
+      },
+      "require": {
+        "types": "./uz/toBigint.d.cts",
+        "default": "./uz/toBigint.cjs"
+      }
+    },
+    "./uz/toDate": {
+      "import": {
+        "types": "./uz/toDate.d.mts",
+        "default": "./uz/toDate.mjs"
+      },
+      "require": {
+        "types": "./uz/toDate.d.cts",
+        "default": "./uz/toDate.cjs"
+      }
+    },
+    "./uz/toNumber": {
+      "import": {
+        "types": "./uz/toNumber.d.mts",
+        "default": "./uz/toNumber.mjs"
+      },
+      "require": {
+        "types": "./uz/toNumber.d.cts",
+        "default": "./uz/toNumber.cjs"
+      }
+    },
+    "./uz/toString": {
+      "import": {
+        "types": "./uz/toString.d.mts",
+        "default": "./uz/toString.mjs"
+      },
+      "require": {
+        "types": "./uz/toString.d.cts",
+        "default": "./uz/toString.cjs"
+      }
+    },
+    "./uz/ulid": {
+      "import": {
+        "types": "./uz/ulid.d.mts",
+        "default": "./uz/ulid.mjs"
+      },
+      "require": {
+        "types": "./uz/ulid.d.cts",
+        "default": "./uz/ulid.cjs"
+      }
+    },
+    "./uz/url": {
+      "import": {
+        "types": "./uz/url.d.mts",
+        "default": "./uz/url.mjs"
+      },
+      "require": {
+        "types": "./uz/url.d.cts",
+        "default": "./uz/url.cjs"
+      }
+    },
+    "./uz/uuid": {
+      "import": {
+        "types": "./uz/uuid.d.mts",
+        "default": "./uz/uuid.mjs"
+      },
+      "require": {
+        "types": "./uz/uuid.d.cts",
+        "default": "./uz/uuid.cjs"
+      }
+    },
+    "./uz/value": {
+      "import": {
+        "types": "./uz/value.d.mts",
+        "default": "./uz/value.mjs"
+      },
+      "require": {
+        "types": "./uz/value.d.cts",
+        "default": "./uz/value.cjs"
+      }
+    },
+    "./uz/values": {
+      "import": {
+        "types": "./uz/values.d.mts",
+        "default": "./uz/values.mjs"
+      },
+      "require": {
+        "types": "./uz/values.d.cts",
+        "default": "./uz/values.cjs"
+      }
+    },
+    "./uz/words": {
+      "import": {
+        "types": "./uz/words.d.mts",
+        "default": "./uz/words.mjs"
+      },
+      "require": {
+        "types": "./uz/words.d.cts",
+        "default": "./uz/words.cjs"
       }
     },
     "./vi": {
