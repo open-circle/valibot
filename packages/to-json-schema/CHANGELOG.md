@@ -2,9 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v1.7.0 (May 05, 2026)
 
 - Change build target to ES2020 so distributed output stays compatible with environments that lack support for newer syntax (pull request #1455)
+- Change Valibot peer dependency to v1.4.0
 
 ## v1.6.0 (March 17, 2026)
 
