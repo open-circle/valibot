@@ -12,6 +12,7 @@ All notable changes to the library will be documented in this file.
 - Change internal `_LruCache` to use a TypeScript `private` method instead of a `#private` class field to avoid runtime helpers in the transpiled output (pull request #1455)
 - Fix potential `RangeError` caused by spreading large issue arrays (pull request #1437)
 - Fix `creditCard` validation action to reject Mastercard numbers with invalid lengths (pull request #1462)
+- Fix `intersect` schema to no longer mutate input values, allowing frozen objects and arrays to be merged (pull request #1463)
 
 ## v1.3.1 (March 18, 2026)
 
