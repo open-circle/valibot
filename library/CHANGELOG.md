@@ -4,6 +4,7 @@ All notable changes to the library will be documented in this file.
 
 ## vX.X.X (Month DD, YYYY)
 
+- Add `isoDateTimeSecond` validation action to validate ISO date times with seconds (pull request #1418)
 - Change internal `ReadonlyOutputKeys` and `OutputWithReadonly` types of `object` schemas and `WithReadonly` type of `record` schemas to improve TypeScript type performance (pull request #1442)
 - Change hot paths to reduce object allocations and improve runtime performance (pull request #1437)
 - Change build target to ES2020 so distributed output stays compatible with environments that lack support for newer syntax (pull request #1455)
