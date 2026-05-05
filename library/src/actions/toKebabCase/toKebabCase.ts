@@ -25,10 +25,8 @@ export interface ToKebabCaseAction
  * and acronym boundaries.
  *
  * Hint: Acronym runs are normalized to lowercase (e.g. `parseURLValue` →
- * `parse-url-value`).
- *
- * Hint: Digits stay attached to the preceding token (e.g. `item2Name` →
- * `item2-name`).
+ * `parse-url-value`) and digits stay attached to the preceding token (e.g.
+ * `item2Name` → `item2-name`).
  *
  * @returns A to kebab case action.
  *

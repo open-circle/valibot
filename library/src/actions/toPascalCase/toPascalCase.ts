@@ -25,10 +25,8 @@ export interface ToPascalCaseAction
  * and acronym boundaries.
  *
  * Hint: Acronym runs are normalized to lowercase (e.g. `parseURLValue` →
- * `ParseUrlValue`).
- *
- * Hint: Digits stay attached to the preceding token (e.g. `item2Name` →
- * `Item2Name`).
+ * `ParseUrlValue`) and digits stay attached to the preceding token (e.g.
+ * `item2Name` → `Item2Name`).
  *
  * @returns A to pascal case action.
  *

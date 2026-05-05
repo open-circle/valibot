@@ -25,10 +25,8 @@ export interface ToCamelCaseAction
  * and acronym boundaries.
  *
  * Hint: Acronym runs are normalized to lowercase (e.g. `parseURLValue` →
- * `parseUrlValue`).
- *
- * Hint: Digits stay attached to the preceding token (e.g. `item2Name` →
- * `item2Name`).
+ * `parseUrlValue`) and digits stay attached to the preceding token (e.g.
+ * `item2Name` → `item2Name`).
  *
  * @returns A to camel case action.
  *

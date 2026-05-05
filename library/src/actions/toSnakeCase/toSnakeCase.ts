@@ -25,10 +25,8 @@ export interface ToSnakeCaseAction
  * and acronym boundaries.
  *
  * Hint: Acronym runs are normalized to lowercase (e.g. `parseURLValue` →
- * `parse_url_value`).
- *
- * Hint: Digits stay attached to the preceding token (e.g. `item2Name` →
- * `item2_name`).
+ * `parse_url_value`) and digits stay attached to the preceding token (e.g.
+ * `item2Name` → `item2_name`).
  *
  * @returns A to snake case action.
  *
