@@ -153,6 +153,7 @@ export const ZOD_METHODS = [
   'partial',
   'passthrough',
   'pick',
+  'refine',
   'required',
   'rest',
   'safeParse',
@@ -160,6 +161,7 @@ export const ZOD_METHODS = [
   'strict',
   'strip',
   'spa',
+  'transform',
   'unwrap',
 ] as const;
 

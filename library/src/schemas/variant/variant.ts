@@ -1,3 +1,4 @@
+import { ABORT_EARLY_CONFIG } from '../../const.ts';
 import type {
   BaseIssue,
   BaseSchema,
@@ -152,7 +153,7 @@ export function variant(
                     ? discriminatorSchema['~run'](
                         // @ts-expect-error
                         { typed: false, value: input[currentKey] },
-                        { abortEarly: true }
+                        ABORT_EARLY_CONFIG
                       ).issues
                     : discriminatorSchema.type !== 'exact_optional' &&
                       discriminatorSchema.type !== 'optional' &&

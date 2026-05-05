@@ -2,6 +2,8 @@ import { describe, expectTypeOf, test } from 'vitest';
 import type { TransformActionAsync } from '../../actions/index.ts';
 import type { SchemaWithPipeAsync } from '../../methods/index.ts';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
+import type { ArrayIssue, ArraySchema } from '../array/index.ts';
+import type { ObjectIssue, ObjectSchema } from '../object/index.ts';
 import {
   string,
   type StringIssue,
@@ -72,6 +74,27 @@ describe('optionalAsync', () => {
       >,
       'foo'
     >;
+    type Schema8 = OptionalSchemaAsync<
+      ObjectSchema<
+        { foo: ArraySchema<StringSchema<undefined>, undefined> },
+        undefined
+      >,
+      { foo: string[] }
+    >;
+    type Schema9 = OptionalSchemaAsync<
+      ObjectSchema<
+        { foo: ArraySchema<StringSchema<undefined>, undefined> },
+        undefined
+      >,
+      () => { foo: string[] }
+    >;
+    type Schema10 = OptionalSchemaAsync<
+      ObjectSchema<
+        { foo: ArraySchema<StringSchema<undefined>, undefined> },
+        undefined
+      >,
+      () => Promise<{ foo: string[] }>
+    >;
 
     test('of input', () => {
       type Input = string | undefined;
@@ -82,6 +105,15 @@ describe('optionalAsync', () => {
       expectTypeOf<InferInput<Schema5>>().toEqualTypeOf<Input>();
       expectTypeOf<InferInput<Schema6>>().toEqualTypeOf<Input>();
       expectTypeOf<InferInput<Schema7>>().toEqualTypeOf<Input>();
+      expectTypeOf<InferInput<Schema8>>().toEqualTypeOf<
+        { foo: string[] } | undefined
+      >();
+      expectTypeOf<InferInput<Schema9>>().toEqualTypeOf<
+        { foo: string[] } | undefined
+      >();
+      expectTypeOf<InferInput<Schema10>>().toEqualTypeOf<
+        { foo: string[] } | undefined
+      >();
     });
 
     test('of output', () => {
@@ -92,6 +124,9 @@ describe('optionalAsync', () => {
       expectTypeOf<InferOutput<Schema5>>().toEqualTypeOf<string | undefined>();
       expectTypeOf<InferOutput<Schema6>>().toEqualTypeOf<string>();
       expectTypeOf<InferOutput<Schema7>>().toEqualTypeOf<number>();
+      expectTypeOf<InferOutput<Schema8>>().toEqualTypeOf<{ foo: string[] }>();
+      expectTypeOf<InferOutput<Schema9>>().toEqualTypeOf<{ foo: string[] }>();
+      expectTypeOf<InferOutput<Schema10>>().toEqualTypeOf<{ foo: string[] }>();
     });
 
     test('of issue', () => {
@@ -102,6 +137,15 @@ describe('optionalAsync', () => {
       expectTypeOf<InferIssue<Schema5>>().toEqualTypeOf<StringIssue>();
       expectTypeOf<InferIssue<Schema6>>().toEqualTypeOf<StringIssue>();
       expectTypeOf<InferIssue<Schema7>>().toEqualTypeOf<StringIssue>();
+      expectTypeOf<InferIssue<Schema8>>().toEqualTypeOf<
+        ObjectIssue | ArrayIssue | StringIssue
+      >();
+      expectTypeOf<InferIssue<Schema9>>().toEqualTypeOf<
+        ObjectIssue | ArrayIssue | StringIssue
+      >();
+      expectTypeOf<InferIssue<Schema10>>().toEqualTypeOf<
+        ObjectIssue | ArrayIssue | StringIssue
+      >();
     });
   });
 });

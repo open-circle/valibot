@@ -230,4 +230,17 @@ describe('stringifyJson', () => {
       });
     });
   });
+
+  describe('should throw non-Error exceptions', () => {
+    test('for non-Error thrown by replacer', () => {
+      const action = stringifyJson({
+        replacer: () => {
+          throw 'custom string error';
+        },
+      });
+      expect(() =>
+        action['~run']({ typed: true, value: { foo: 'bar' } }, {})
+      ).toThrow('custom string error');
+    });
+  });
 });

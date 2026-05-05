@@ -2,6 +2,8 @@ import { describe, expectTypeOf, test } from 'vitest';
 import type { TransformActionAsync } from '../../actions/index.ts';
 import type { SchemaWithPipeAsync } from '../../methods/index.ts';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
+import type { ArrayIssue, ArraySchema } from '../array/index.ts';
+import type { ObjectIssue, ObjectSchema } from '../object/index.ts';
 import {
   string,
   type StringIssue,
@@ -63,6 +65,27 @@ describe('exactOptionalAsync', () => {
       >,
       'foo'
     >;
+    type Schema6 = ExactOptionalSchemaAsync<
+      ObjectSchema<
+        { foo: ArraySchema<StringSchema<undefined>, undefined> },
+        undefined
+      >,
+      { foo: string[] }
+    >;
+    type Schema7 = ExactOptionalSchemaAsync<
+      ObjectSchema<
+        { foo: ArraySchema<StringSchema<undefined>, undefined> },
+        undefined
+      >,
+      () => { foo: string[] }
+    >;
+    type Schema8 = ExactOptionalSchemaAsync<
+      ObjectSchema<
+        { foo: ArraySchema<StringSchema<undefined>, undefined> },
+        undefined
+      >,
+      () => Promise<{ foo: string[] }>
+    >;
 
     test('of input', () => {
       expectTypeOf<InferInput<Schema1>>().toEqualTypeOf<string>();
@@ -70,6 +93,9 @@ describe('exactOptionalAsync', () => {
       expectTypeOf<InferInput<Schema3>>().toEqualTypeOf<string>();
       expectTypeOf<InferInput<Schema4>>().toEqualTypeOf<string>();
       expectTypeOf<InferInput<Schema5>>().toEqualTypeOf<string>();
+      expectTypeOf<InferInput<Schema6>>().toEqualTypeOf<{ foo: string[] }>();
+      expectTypeOf<InferInput<Schema7>>().toEqualTypeOf<{ foo: string[] }>();
+      expectTypeOf<InferInput<Schema8>>().toEqualTypeOf<{ foo: string[] }>();
     });
 
     test('of output', () => {
@@ -78,6 +104,9 @@ describe('exactOptionalAsync', () => {
       expectTypeOf<InferOutput<Schema3>>().toEqualTypeOf<string>();
       expectTypeOf<InferOutput<Schema4>>().toEqualTypeOf<string>();
       expectTypeOf<InferOutput<Schema5>>().toEqualTypeOf<number>();
+      expectTypeOf<InferOutput<Schema6>>().toEqualTypeOf<{ foo: string[] }>();
+      expectTypeOf<InferOutput<Schema7>>().toEqualTypeOf<{ foo: string[] }>();
+      expectTypeOf<InferOutput<Schema8>>().toEqualTypeOf<{ foo: string[] }>();
     });
 
     test('of issue', () => {
@@ -86,6 +115,15 @@ describe('exactOptionalAsync', () => {
       expectTypeOf<InferIssue<Schema3>>().toEqualTypeOf<StringIssue>();
       expectTypeOf<InferIssue<Schema4>>().toEqualTypeOf<StringIssue>();
       expectTypeOf<InferIssue<Schema5>>().toEqualTypeOf<StringIssue>();
+      expectTypeOf<InferIssue<Schema6>>().toEqualTypeOf<
+        ObjectIssue | ArrayIssue | StringIssue
+      >();
+      expectTypeOf<InferIssue<Schema7>>().toEqualTypeOf<
+        ObjectIssue | ArrayIssue | StringIssue
+      >();
+      expectTypeOf<InferIssue<Schema8>>().toEqualTypeOf<
+        ObjectIssue | ArrayIssue | StringIssue
+      >();
     });
   });
 });

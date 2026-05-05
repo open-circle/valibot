@@ -72,5 +72,14 @@ describe('_getLastMetadata', () => {
         )
       ).toBe('bar');
     });
+
+    test('for nested schema without matching metadata', () => {
+      expect(
+        _getLastMetadata(
+          pipe(pipe(string(), title('found')), pipe(string(), email())),
+          'title'
+        )
+      ).toBe('found');
+    });
   });
 });

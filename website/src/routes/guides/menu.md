@@ -34,8 +34,11 @@
 
 - [Naming](/guides/naming-convention/)
 - [Async](/guides/async-validation/)
-- [JSON Schema](/guides/json-schema/)
 - [i18n](/guides/internationalization/)
+- [JSON Schema](/guides/json-schema/)
+- [Internals](/guides/internal-architecture/)
+- [Integration](/guides/integrate-valibot/)
+- [Extension](/guides/extend-valibot/)
 
 ## Migration
 
