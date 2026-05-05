@@ -14,7 +14,7 @@ export const head: DocumentHead = {
 };
 
 export default component$(() => (
-  <main class="max-w-(--breakpoint-lg) flex w-full flex-1 flex-col self-center py-12 md:py-20 lg:py-32">
+  <main class="flex w-full max-w-(--breakpoint-lg) flex-1 flex-col self-center py-12 md:py-20 lg:py-32">
     <div class="mdx">
       <h1>Page not found</h1>
       <p>
@@ -29,7 +29,7 @@ export default component$(() => (
         variant="primary"
         label="Create issue"
         type="link"
-        href="https://github.com/fabian-hiller/valibot/issues/new"
+        href="https://github.com/open-circle/valibot/issues/new"
         target="_blank"
       />
       <ActionButton

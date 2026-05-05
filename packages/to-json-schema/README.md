@@ -1,12 +1,12 @@
 # Valibot to JSON Schema
 
-Utility to convert [Valibot](https://valibot.dev) schemas to JSON schema (draft 07).
+Utility to convert [Valibot](https://valibot.dev) schemas to JSON Schema. Supports JSON Schema draft-07, draft-2020-12, and OpenAPI 3.0 Schema Object formats.
 
 ```js
 import { toJsonSchema } from '@valibot/to-json-schema';
 import * as v from 'valibot';
 
-toJsonSchema(v.string()); // { type: "string" }
+toJsonSchema(v.string()); // { $schema: "http://json-schema.org/draft-07/schema#", type: "string" }
 ```
 
 This package is particularly popular for:
@@ -22,88 +22,136 @@ This package is particularly popular for:
 
 **Note**: Converted schemas may behave slightly differently in JSON schema validators (especially for string format) because their implementation is different from Valibot's.
 
-| Schema           | Status | Note                                                                |
-| ---------------- | ------ | ------------------------------------------------------------------- |
-| `any`            | ✅     |                                                                     |
-| `array`          | ✅     |                                                                     |
-| `boolean`        | ✅     |                                                                     |
-| `enum`           | ✅     |                                                                     |
-| `exactOptional`  | ✅     |                                                                     |
-| `intersect`      | ✅     |                                                                     |
-| `lazy`           | ⚠️     | The `.getter` function is always executed with `undefined` as input |
-| `literal`        | ⚠️     | Only JSON compatible values are supported                           |
-| `looseObject`    | ✅     |                                                                     |
-| `looseTuple`     | ✅     |                                                                     |
-| `null`           | ✅     |                                                                     |
-| `nullable`       | ✅     |                                                                     |
-| `nullish`        | ✅     |                                                                     |
-| `number`         | ✅     |                                                                     |
-| `objectWithRest` | ✅     |                                                                     |
-| `object`         | ✅     |                                                                     |
-| `optional`       | ✅     |                                                                     |
-| `picklist`       | ⚠️     | Only JSON compatible values are supported                           |
-| `record`         | ⚠️     | Only plain `string` schemas for the key of the record are supported |
-| `strictObject`   | ✅     |                                                                     |
-| `strictTuple`    | ✅     |                                                                     |
-| `string`         | ✅     |                                                                     |
-| `tupleWithRest`  | ✅     |                                                                     |
-| `tuple`          | ✅     |                                                                     |
-| `union`          | ✅     |                                                                     |
-| `undefinedable`  | ✅     |                                                                     |
-| `unknown`        | ✅     |                                                                     |
-| `variant`        | ⚠️     | The discriminator key will be ignored                               |
+| Schema           | Status | Note                                                                                                                                  |
+| ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `any`            | ✅     |                                                                                                                                       |
+| `array`          | ✅     |                                                                                                                                       |
+| `boolean`        | ✅     |                                                                                                                                       |
+| `enum`           | ✅     |                                                                                                                                       |
+| `exactOptional`  | ✅     |                                                                                                                                       |
+| `intersect`      | ✅     |                                                                                                                                       |
+| `lazy`           | ⚠️     | The `.getter` function is always executed with `undefined` as input                                                                   |
+| `literal`        | ⚠️     | Only JSON compatible values are supported                                                                                             |
+| `looseObject`    | ✅     |                                                                                                                                       |
+| `looseTuple`     | ✅     |                                                                                                                                       |
+| `never`          | ✅     |                                                                                                                                       |
+| `null`           | ✅     |                                                                                                                                       |
+| `nullable`       | ✅     |                                                                                                                                       |
+| `nullish`        | ✅     |                                                                                                                                       |
+| `number`         | ✅     |                                                                                                                                       |
+| `objectWithRest` | ✅     |                                                                                                                                       |
+| `object`         | ✅     |                                                                                                                                       |
+| `optional`       | ✅     |                                                                                                                                       |
+| `picklist`       | ⚠️     | Only JSON compatible values are supported                                                                                             |
+| `record`         | ⚠️     | Only `string` schemas for the key of the record are supported. Adds `propertyNames` for key validation (not available in OpenAPI 3.0) |
+| `strictObject`   | ✅     |                                                                                                                                       |
+| `strictTuple`    | ✅     |                                                                                                                                       |
+| `string`         | ✅     |                                                                                                                                       |
+| `tupleWithRest`  | ✅     |                                                                                                                                       |
+| `tuple`          | ✅     |                                                                                                                                       |
+| `union`          | ✅     |                                                                                                                                       |
+| `undefinedable`  | ✅     |                                                                                                                                       |
+| `unknown`        | ✅     |                                                                                                                                       |
+| `variant`        | ⚠️     | The discriminator key will be ignored                                                                                                 |
 
-| Actions        | Status | Note                                                        |
-| -------------- | ------ | ----------------------------------------------------------- |
-| `base64`       | ✅     |                                                             |
-| `bic`          | ✅     |                                                             |
-| `cuid2`        | ✅     |                                                             |
-| `decimal`      | ✅     |                                                             |
-| `description`  | ✅     |                                                             |
-| `digits`       | ✅     |                                                             |
-| `email`        | ✅     |                                                             |
-| `emoji`        | ✅     |                                                             |
-| `empty`        | ✅     |                                                             |
-| `entries`      | ✅     |                                                             |
-| `hexadecimal`  | ✅     |                                                             |
-| `hexColor`     | ✅     |                                                             |
-| `integer`      | ✅     |                                                             |
-| `ipv4`         | ✅     |                                                             |
-| `ipv6`         | ✅     |                                                             |
-| `isoDate`      | ✅     |                                                             |
-| `isoDateTime`  | ✅     |                                                             |
-| `isoTime`      | ✅     |                                                             |
-| `isoTimestamp` | ✅     |                                                             |
-| `length`       | ⚠️     | Only in combination with `string` and `array` schema        |
-| `maxEntries`   | ✅     |                                                             |
-| `maxLength`    | ⚠️     | Only in combination with `string` and `array` schema        |
-| `maxValue`     | ⚠️     | Only in combination with `number` schema                    |
-| `metadata`     | ⚠️     | Only for valid `title`, `description` and `examples` values |
-| `minEntries`   | ✅     |                                                             |
-| `minLength`    | ⚠️     | Only in combination with `string` and `array` schemas       |
-| `minValue`     | ⚠️     | Only in combination with `number` schema                    |
-| `multipleOf`   | ✅     |                                                             |
-| `nanoid`       | ✅     |                                                             |
-| `nonEmpty`     | ✅     |                                                             |
-| `octal`        | ✅     |                                                             |
-| `regex`        | ⚠️     | RexExp flags are not supported in JSON schema               |
-| `title`        | ✅     |                                                             |
-| `ulid`         | ✅     |                                                             |
-| `url`          | ✅     |                                                             |
-| `uuid`         | ✅     |                                                             |
-| `value`        | ✅     |                                                             |
+| Actions         | Status | Note                                                        |
+| --------------- | ------ | ----------------------------------------------------------- |
+| `base64`        | ✅     |                                                             |
+| `bic`           | ✅     |                                                             |
+| `cuid2`         | ✅     |                                                             |
+| `decimal`       | ✅     |                                                             |
+| `description`   | ✅     |                                                             |
+| `digits`        | ✅     |                                                             |
+| `domain`        | ✅     |                                                             |
+| `email`         | ✅     |                                                             |
+| `emoji`         | ✅     |                                                             |
+| `empty`         | ✅     |                                                             |
+| `endsWith`      | ✅     |                                                             |
+| `entries`       | ✅     |                                                             |
+| `examples`      | ✅     |                                                             |
+| `gtValue`       | ⚠️     | Only in combination with `number` and `integer` schema      |
+| `hash`          | ✅     |                                                             |
+| `hexadecimal`   | ✅     |                                                             |
+| `hexColor`      | ✅     |                                                             |
+| `includes`      | ✅     |                                                             |
+| `integer`       | ✅     |                                                             |
+| `ipv4`          | ✅     |                                                             |
+| `ipv6`          | ✅     |                                                             |
+| `isoDate`       | ✅     |                                                             |
+| `isoDateTime`   | ✅     |                                                             |
+| `isoTime`       | ✅     |                                                             |
+| `isoTimeSecond` | ✅     |                                                             |
+| `isoTimestamp`  | ✅     |                                                             |
+| `isoWeek`       | ✅     |                                                             |
+| `isrc`          | ✅     |                                                             |
+| `jwsCompact`    | ✅     |                                                             |
+| `length`        | ⚠️     | Only in combination with `string` and `array` schema        |
+| `ltValue`       | ⚠️     | Only in combination with `number` and `integer` schema      |
+| `mac`           | ✅     |                                                             |
+| `mac48`         | ✅     |                                                             |
+| `mac64`         | ✅     |                                                             |
+| `maxEntries`    | ✅     |                                                             |
+| `maxLength`     | ⚠️     | Only in combination with `string` and `array` schema        |
+| `maxValue`      | ⚠️     | Only in combination with `number` schema                    |
+| `metadata`      | ⚠️     | Only for valid `title`, `description` and `examples` values |
+| `minEntries`    | ✅     |                                                             |
+| `minLength`     | ⚠️     | Only in combination with `string` and `array` schema        |
+| `minValue`      | ⚠️     | Only in combination with `number` schema                    |
+| `multipleOf`    | ✅     |                                                             |
+| `nanoid`        | ✅     |                                                             |
+| `nonEmpty`      | ✅     |                                                             |
+| `notValue`      | ⚠️     | Only JSON compatible values are supported                   |
+| `notValues`     | ⚠️     | Only JSON compatible values are supported                   |
+| `octal`         | ✅     |                                                             |
+| `regex`         | ⚠️     | RegExp flags are not supported in JSON Schema               |
+| `rfcEmail`      | ✅     |                                                             |
+| `safeInteger`   | ✅     |                                                             |
+| `slug`          | ✅     |                                                             |
+| `startsWith`    | ✅     |                                                             |
+| `title`         | ✅     |                                                             |
+| `ulid`          | ✅     |                                                             |
+| `url`           | ✅     |                                                             |
+| `uuid`          | ✅     |                                                             |
+| `value`         | ⚠️     | Only JSON compatible values are supported                   |
+| `values`        | ⚠️     | Only JSON compatible values are supported                   |
 
 ## Configurations
 
-| Option         | Type                                                                   | Note                                                                                                                      |
-| -------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| typeMode       | `'ignore' \| 'input' \| 'output'`                                      | Whether to convert the input or output type of the Valibot schema to JSON Schema.                                         |
-| errorMode      | `'throw' \| 'warn' \| 'ignore'`                                        | The policy for handling incompatible schemas and actions.                                                                 |
-| definitions    | `Record<string, GenericSchema>`                                        | The schema definitions for constructing recursive schemas. If not specified, the definitions are generated automatically. |
-| overrideSchema | `(context: OverrideSchemaContext) => JSONSchema7 \| null \| undefined` | Overrides the JSON Schema conversion for a specific Valibot schema.                                                       |
-| ignoreActions  | `string[]`                                                             | The actions that should be ignored during the conversion.                                                                 |
-| overrideAction | `(context: OverrideActionContext) => JSONSchema7 \| null \| undefined` | Overrides the JSON Schema reference for a specific Valibot action.                                                        |
-| overrideRef    | `(context: OverrideRefContext) => string \| null \| undefined`         | Overrides the JSON Schema reference for a specific reference ID.                                                          |
+| Option         | Type                                                                  | Note                                                                                                                      |
+| -------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| target         | `'draft-07' \| 'draft-2020-12' \| 'openapi-3.0'`                      | The target JSON Schema format. Defaults to `'draft-07'`.                                                                  |
+| typeMode       | `'ignore' \| 'input' \| 'output'`                                     | Whether to convert the input or output type of the Valibot schema to JSON Schema.                                         |
+| errorMode      | `'throw' \| 'warn' \| 'ignore'`                                       | The policy for handling incompatible schemas and actions.                                                                 |
+| definitions    | `Record<string, GenericSchema>`                                       | The schema definitions for constructing recursive schemas. If not specified, the definitions are generated automatically. |
+| overrideSchema | `(context: OverrideSchemaContext) => JsonSchema \| null \| undefined` | Overrides the JSON Schema conversion for a specific Valibot schema.                                                       |
+| ignoreActions  | `string[]`                                                            | The actions that should be ignored during the conversion.                                                                 |
+| overrideAction | `(context: OverrideActionContext) => JsonSchema \| null \| undefined` | Overrides the JSON Schema reference for a specific Valibot action.                                                        |
+| overrideRef    | `(context: OverrideRefContext) => string \| null \| undefined`        | Overrides the JSON Schema reference for a specific reference ID.                                                          |
+
+### Target format
+
+The `target` configuration allows you to specify which JSON Schema format to generate. Different targets have different capabilities and syntax:
+
+```js
+import { toJsonSchema } from '@valibot/to-json-schema';
+import * as v from 'valibot';
+
+const schema = v.nullable(v.string());
+
+// JSON Schema draft-07 (default)
+toJsonSchema(schema);
+// { $schema: "http://json-schema.org/draft-07/schema#", anyOf: [{ type: "string" }, { type: "null" }] }
+
+// JSON Schema draft-2020-12
+toJsonSchema(schema, { target: 'draft-2020-12' });
+// { $schema: "https://json-schema.org/draft/2020-12/schema", anyOf: [{ type: "string" }, { type: "null" }] }
+
+// OpenAPI 3.0 Schema Object
+toJsonSchema(schema, { target: 'openapi-3.0' });
+// { type: "string", nullable: true }
+```
+
+**Note**: Some features like `propertyNames` for record schemas are not available in OpenAPI 3.0.
 
 ### Type mode
 
@@ -295,6 +343,23 @@ toJsonSchema(v.object({ key: v.lazy(() => StringSchema) }));
 ```
 
 ## Additional functions
+
+### `toStandardJsonSchema`
+
+Converts a Valibot schema to the [Standard JSON Schema](https://standardschema.dev/) format. This format is useful when working with tools and libraries that support the Standard JSON Schema specification.
+
+```js
+import { toStandardJsonSchema } from '@valibot/to-json-schema';
+import * as v from 'valibot';
+
+const schema = toStandardJsonSchema(
+  v.object({
+    id: v.pipe(v.string(), v.uuid()),
+    name: v.pipe(v.string(), v.nonEmpty()),
+    age: v.optional(v.number()),
+  })
+);
+```
 
 ### `toJsonSchemaDefs`
 

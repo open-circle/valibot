@@ -12,7 +12,7 @@
 // @__NO_SIDE_EFFECTS__
 export function _isValidObjectKey(object: object, key: string): boolean {
   return (
-    Object.hasOwn(object, key) &&
+    Object.prototype.hasOwnProperty.call(object, key) &&
     key !== '__proto__' &&
     key !== 'prototype' &&
     key !== 'constructor'

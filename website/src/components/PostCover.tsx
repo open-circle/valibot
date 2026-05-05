@@ -12,7 +12,7 @@ type PostCoverProps = {
 export const PostCover = component$<PostCoverProps>(({ variant, label }) => (
   <div
     class={clsx(
-      'relative flex aspect-video select-none items-center justify-center overflow-hidden rounded-xl border-2 border-slate-200 dark:border-slate-800',
+      'relative flex aspect-video items-center justify-center overflow-hidden rounded-xl border-2 border-slate-200 select-none dark:border-slate-800',
       variant === 'blog' &&
         'duration-100 will-change-transform hover:-translate-y-1 lg:rounded-2xl',
       variant === 'post' &&
@@ -21,7 +21,7 @@ export const PostCover = component$<PostCoverProps>(({ variant, label }) => (
     role="img"
     aria-label="Post cover image"
   >
-    <div class="absolute -right-[20%] -top-[60%] h-[150%] w-[60%] bg-[radial-gradient(theme(--color-yellow-500/.06),transparent_70%)] dark:bg-[radial-gradient(theme(--color-yellow-300/.05),transparent_70%)]" />
+    <div class="absolute -top-[60%] -right-[20%] h-[150%] w-[60%] bg-[radial-gradient(theme(--color-yellow-500/.06),transparent_70%)] dark:bg-[radial-gradient(theme(--color-yellow-300/.05),transparent_70%)]" />
     <div class="absolute -bottom-[60%] -left-[20%] h-[150%] w-[60%] bg-[radial-gradient(theme(--color-sky-600/.08),transparent_70%)] dark:bg-[radial-gradient(theme(--color-sky-400/.08),transparent_70%)]" />
     <div
       class={clsx(

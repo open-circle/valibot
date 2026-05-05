@@ -1,0 +1,29 @@
+---
+title: ParseBooleanAction
+description: Parse boolean action interface.
+contributors:
+  - alexilyaev
+  - fabian-hiller
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# ParseBooleanAction
+
+Parse boolean action interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TConfig` <Property {...properties.TConfig} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Definition
+
+- `ParseBooleanAction` <Property {...properties.BaseTransformation} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `config` <Property {...properties.config} />
+  - `message` <Property {...properties.message} />

@@ -4,12 +4,12 @@ import {
   AlgoliaLogo,
   BoltLogo,
   BuilderLogo,
-  DailyDevLogo,
   DigitalOceanLogo,
   HdmLogo,
   MotionLogo,
   PaceLogo,
   StainlessLogo,
+  TestMuAiLogo,
   VercelLogo,
 } from '~/logos';
 
@@ -65,8 +65,11 @@ export const Credits = component$(() => {
           { Logo: BoltLogo, href: 'https://bolt.new/' },
           { Logo: MotionLogo, href: 'https://www.usemotion.com/' },
           { Logo: VercelLogo, href: 'https://vercel.com' },
-          { Logo: DailyDevLogo, href: 'https://daily.dev/' },
           { Logo: StainlessLogo, href: 'https://www.stainless.com/' },
+          {
+            Logo: TestMuAiLogo,
+            href: 'https://www.testmuai.com/?utm_medium=sponsor&utm_source=valibot',
+          },
           { Logo: AlgoliaLogo, href: 'https://www.algolia.com' },
           { Logo: DigitalOceanLogo, href: 'https://www.digitalocean.com/' },
           { Logo: BuilderLogo, href: 'https://www.builder.io' },
@@ -87,16 +90,17 @@ export const Credits = component$(() => {
       </p>
       <ul class="mt-4 flex flex-wrap gap-2 md:mt-5 lg:mt-6 lg:gap-3">
         {[
-          'antfu',
+          'stefanmaric',
           'vasilii-kovalev',
-          'saturnonearth',
+          'UpwayShop',
           'ruiaraujo012',
           'hyunbinseo',
           'nickytonline',
-          'KubaJastrz',
-          'andrewmd5',
-          'Thanaen',
+          'kibertoad',
           'caegdeveloper',
+          'Thanaen',
+          'bmoyroud',
+          't-lander',
           'dslatkin',
         ].map((sponsor) => (
           <li key={sponsor}>

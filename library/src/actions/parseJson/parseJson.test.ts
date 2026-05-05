@@ -151,4 +151,17 @@ describe('parseJson', () => {
       });
     });
   });
+
+  describe('should throw non-Error exceptions', () => {
+    test('for non-Error thrown by reviver', () => {
+      const action = parseJson({
+        reviver: () => {
+          throw 'custom string error';
+        },
+      });
+      expect(() => action['~run']({ typed: true, value: '{}' }, {})).toThrow(
+        'custom string error'
+      );
+    });
+  });
 });
