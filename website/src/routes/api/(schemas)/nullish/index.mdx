@@ -72,6 +72,16 @@ const NullishEntrySchema = v.object({
 });
 ```
 
+### Default to `undefined`
+
+By default, when an object input is missing a nullish entry, the corresponding key is omitted from the output. To always include the key in the output with an `undefined` value, pass a function that returns `undefined` as the `default_` parameter.
+
+```ts
+const NullishEntrySchema = v.object({
+  key: v.nullish(v.string(), () => undefined),
+});
+```
+
 ### Unwrap nullish schema
 
 Use <Link href="../unwrap/">`unwrap`</Link> to undo the effect of `nullish`.
