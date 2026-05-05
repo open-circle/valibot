@@ -2,7 +2,7 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v1.4.0 (May 05, 2026)
 
 - Add `isoDateTimeSecond` validation action to validate ISO date times with seconds (pull request #1418)
 - Add `toCamelCase`, `toKebabCase`, `toPascalCase` and `toSnakeCase` transformation actions to convert strings between common naming conventions (pull request #1457)
