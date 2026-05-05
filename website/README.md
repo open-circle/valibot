@@ -7,7 +7,7 @@ Our [website](https://valibot.dev/) contains guides, an API reference and a play
 Step 1: Clone repository
 
 ```bash
-git clone git@github.com:fabian-hiller/valibot.git
+git clone git@github.com:open-circle/valibot.git
 ```
 
 Step 2: Install dependencies

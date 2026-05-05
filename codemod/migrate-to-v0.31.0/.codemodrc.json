@@ -6,7 +6,7 @@
   "engine": "workflow",
   "meta": {
     "tags": ["valibot", "v0.31.0", "pipeline", "pipe"],
-    "git": "https://github.com/fabian-hiller/valibot/tree/main/codemod/migrate-to-v0.31.0"
+    "git": "https://github.com/open-circle/valibot/tree/main/codemod/migrate-to-v0.31.0"
   },
   "applicability": {
     "from": [["valibot", "<=", "0.30.0"]]

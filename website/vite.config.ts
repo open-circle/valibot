@@ -7,7 +7,7 @@ import { defineConfig } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-export default defineConfig(() => {
+export default defineConfig(({ isSsrBuild }) => {
   return {
     plugins: [
       qwikCity({
@@ -27,7 +27,7 @@ export default defineConfig(() => {
       }),
       qwikVite(),
       tsconfigPaths(),
-      nodePolyfills(),
+      !isSsrBuild && nodePolyfills(),
       tailwindcss(),
     ],
     preview: {

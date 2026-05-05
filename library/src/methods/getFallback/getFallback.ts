@@ -5,6 +5,7 @@ import type {
   Config,
   InferIssue,
   InferOutput,
+  MaybeDeepReadonly,
   MaybePromise,
   OutputDataset,
 } from '../../types/index.ts';
@@ -30,9 +31,11 @@ export type InferFallback<
       | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
       infer TFallback
     >
-  ? TFallback extends InferOutput<TSchema>
+  ? TFallback extends MaybeDeepReadonly<InferOutput<TSchema>>
     ? TFallback
-    : TFallback extends () => MaybePromise<InferOutput<TSchema>>
+    : TFallback extends () => MaybePromise<
+          MaybeDeepReadonly<InferOutput<TSchema>>
+        >
       ? ReturnType<TFallback>
       : never
   : undefined;

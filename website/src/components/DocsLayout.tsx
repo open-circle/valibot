@@ -16,6 +16,7 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   GitHubIcon,
+  MarkdownIcon,
   MenuIcon,
   PenIcon,
 } from '~/icons';
@@ -27,6 +28,8 @@ import { Credits } from './Credits';
 import { IconButton } from './IconButton';
 import { Navigation } from './Navigation';
 import { SideBar, useSideBarToggle } from './SideBar';
+
+const MDX_PATH_REGEX = /^\/(?:[\w-]+\/){2}$/;
 
 type NavItem = ContentMenu & { group: string };
 
@@ -77,6 +80,13 @@ export const DocsLayout = component$(() => {
     chaptersToggle.isRunning ? !chapters.value : chapters.value
   );
 
+  // Compute Markdown path from current location
+  const markdownPath = useComputed$(() =>
+    MDX_PATH_REGEX.test(location.url.pathname)
+      ? `${location.url.pathname.replace(/\/$/, '')}.md`
+      : undefined
+  );
+
   return (
     <div
       class={clsx(
@@ -92,13 +102,14 @@ export const DocsLayout = component$(() => {
           <NavButtons
             pageIndex={navIndex.value}
             sourcePath={documentHead.frontmatter.source}
+            markdownPath={markdownPath.value}
             prevPage={prevPage.value}
             nextPage={nextPage.value}
           />
         </div>
         <Navigation
           class={clsx(
-            'px-8 py-9 lg:w-60 lg:py-32',
+            'px-8 py-9 lg:w-60 lg:py-24 xl:py-32',
             showChapters.value ? '2xl:w-64' : '2xl:w-72'
           )}
         />
@@ -106,7 +117,7 @@ export const DocsLayout = component$(() => {
 
       <main
         class={clsx(
-          'relative flex-1 py-12 md:py-20 lg:w-px lg:py-32',
+          'relative flex-1 py-12 md:py-14 lg:w-px lg:py-24 xl:py-32',
           showChapters.value ? 'lg:px-9' : 'lg:pl-9'
         )}
       >
@@ -120,6 +131,7 @@ export const DocsLayout = component$(() => {
           <NavButtons
             pageIndex={navIndex.value}
             sourcePath={documentHead.frontmatter.source}
+            markdownPath={markdownPath.value}
             prevPage={prevPage.value}
             nextPage={nextPage.value}
             chapters={chapters}
@@ -138,7 +150,7 @@ export const DocsLayout = component$(() => {
             <IconButton
               variant="secondary"
               type="link"
-              href={`https://github.com/fabian-hiller/valibot/blob/main/website/src/routes${currentPage.value.href.replace(
+              href={`https://github.com/open-circle/valibot/blob/main/website/src/routes${currentPage.value.href.replace(
                 /^(\/.+)\/(.+\/)$/,
                 `$1/(${currentPage.value.group
                   .toLowerCase()
@@ -183,6 +195,7 @@ export const DocsLayout = component$(() => {
 type NavButtonsProps = {
   pageIndex: number;
   sourcePath: string | undefined;
+  markdownPath: string | undefined;
   prevPage: ContentMenu | undefined;
   nextPage: ContentMenu | undefined;
   chapters?: ReadonlySignal<boolean>;
@@ -193,7 +206,15 @@ type NavButtonsProps = {
  * Buttons to navigate to the previous or next page.
  */
 export const NavButtons = component$<NavButtonsProps>(
-  ({ pageIndex, sourcePath, prevPage, nextPage, chapters, chaptersToggle }) => (
+  ({
+    pageIndex,
+    sourcePath,
+    markdownPath,
+    prevPage,
+    nextPage,
+    chapters,
+    chaptersToggle,
+  }) => (
     <>
       {pageIndex !== -1 && (
         <>
@@ -247,12 +268,24 @@ export const NavButtons = component$<NavButtonsProps>(
         <IconButton
           variant="secondary"
           type="link"
-          href={`https://github.com/fabian-hiller/valibot/blob/main/library/src${sourcePath}`}
+          href={`https://github.com/open-circle/valibot/blob/main/library/src${sourcePath}`}
           target="_blank"
           label="Source code"
           hideLabel
         >
           <GitHubIcon class="h-[18px]" />
+        </IconButton>
+      )}
+      {markdownPath && (
+        <IconButton
+          variant="secondary"
+          type="link"
+          href={markdownPath}
+          target="_blank"
+          label="View as Markdown"
+          hideLabel
+        >
+          <MarkdownIcon class="h-[18px]" />
         </IconButton>
       )}
     </>

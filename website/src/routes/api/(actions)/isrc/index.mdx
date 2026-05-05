@@ -1,0 +1,69 @@
+---
+title: isrc
+description: Creates an ISRC validation action.
+source: /actions/isrc/isrc.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# isrc
+
+Creates an [ISRC](https://en.wikipedia.org/wiki/International_Standard_Recording_Code) validation action.
+
+```ts
+const Action = v.isrc<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `isrc` you can validate the formatting of a string. If the input is not an ISRC, you can use `message` to customize the error message.
+
+This action supports both compact (`CCXXXYYNNNNN`) and hyphenated (`CC-XXX-YY-NNNNN`) formats.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `isrc` can be used.
+
+### ISRC schema
+
+Schema to validate an ISRC.
+
+```ts
+const IsrcSchema = v.pipe(v.string(), v.isrc('The ISRC is badly formatted.'));
+
+// Valid ISRC formats:
+// 'USRC17607839'
+// 'US-RC1-76-07839'
+```
+
+## Related
+
+The following APIs can be combined with `isrc`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

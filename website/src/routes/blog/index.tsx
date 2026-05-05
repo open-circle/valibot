@@ -2,10 +2,9 @@ import { component$ } from '@builder.io/qwik';
 import {
   type DocumentHead,
   type DocumentHeadValue,
-  Link,
   routeLoader$,
 } from '@builder.io/qwik-city';
-import { PostCover, PostMeta } from '~/components';
+import { PostList } from '~/components';
 
 export const head: DocumentHead = {
   title: 'Blog',
@@ -18,21 +17,31 @@ export const head: DocumentHead = {
   ],
 };
 
-type PostData = {
+type PostFrontmatter = {
   cover: string;
   title: string;
   published: string;
   authors: string[];
 };
 
+type PostData = PostFrontmatter & {
+  href: string;
+};
+
+interface PostSection {
+  heading: string;
+  posts: PostData[];
+}
+
 /**
  * Loads the required data for each blog post.
  */
-export const usePosts = routeLoader$(async () =>
-  (
+export const usePosts = routeLoader$(async () => {
+  // Dynamically import all blog post metadata from the file system
+  const posts: PostData[] = (
     await Promise.all(
       Object.entries(
-        import.meta.glob<DocumentHeadValue<PostData>>('./**/index.mdx')
+        import.meta.glob<DocumentHeadValue<PostFrontmatter>>('./**/index.mdx')
       ).map(async ([path, readFile]) => {
         const { frontmatter } = await readFile();
         return {
@@ -44,13 +53,48 @@ export const usePosts = routeLoader$(async () =>
         };
       })
     )
-  ).sort((a, b) => (a.published < b.published ? 1 : -1))
-);
+  ).sort((a, b) => (a.published < b.published ? 1 : -1));
+
+  // Create variables for latest posts and posts by year
+  const latestCutoff = new Date(Date.now() - 7776000000); // 3 months
+  const latestPosts: PostData[] = [];
+  const postsByYear: Record<string, PostData[]> = {};
+
+  // Add posts to latest or by year based on published date
+  for (const post of posts) {
+    if (new Date(post.published) >= latestCutoff) {
+      latestPosts.push(post);
+    } else {
+      const year = post.published.slice(0, 4);
+      if (postsByYear[year]) {
+        postsByYear[year].push(post);
+      } else {
+        postsByYear[year] = [post];
+      }
+    }
+  }
+
+  // Convert posts by year into a post sections array
+  const postSections: PostSection[] = Object.entries(postsByYear)
+    .sort(([yearA], [yearB]) => (yearA < yearB ? 1 : -1))
+    .map(([year, posts]) => ({
+      heading: `Posts of ${year}`,
+      posts,
+    }));
+
+  // Add latest posts section to beginning if there are any
+  if (latestPosts.length > 0) {
+    postSections.unshift({ heading: 'Latest posts', posts: latestPosts });
+  }
+
+  // Return final post sections array
+  return postSections;
+});
 
 export default component$(() => {
   const posts = usePosts();
   return (
-    <main class="max-w-(--breakpoint-lg) flex w-full flex-1 flex-col self-center py-12 md:py-20 lg:py-32">
+    <main class="flex w-full max-w-(--breakpoint-lg) flex-1 flex-col gap-12 self-center py-12 md:gap-14 md:py-14 lg:gap-16 lg:py-24 xl:py-32">
       <div class="mdx">
         <h1>Blog</h1>
         <p>
@@ -58,27 +102,15 @@ export default component$(() => {
           directly from the Valibot core team. We're excited to share our
           journey with you! Let's validate together!
         </p>
-        <h2>Latest posts</h2>
       </div>
-      <ol class="mx-3 mt-6 flex flex-wrap lg:mx-2 lg:mt-10">
-        {posts.value.map((post) => (
-          <li class="w-full px-5 py-6 md:w-1/2 lg:p-8" key={post.href}>
-            <Link class="flex flex-col gap-8" href={post.href}>
-              <PostCover variant="blog" label={post.cover} />
-              <div class="flex flex-col gap-5">
-                <h3 class="text-lg font-medium leading-normal text-slate-900 md:text-xl lg:text-2xl dark:text-slate-200">
-                  {post.title}
-                </h3>
-                <PostMeta
-                  variant="blog"
-                  authors={post.authors}
-                  published={post.published}
-                />
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ol>
+      {posts.value.map((section) => (
+        <section key={section.heading}>
+          <div class="mdx">
+            <h2>{section.heading}</h2>
+          </div>
+          <PostList posts={section.posts} />
+        </section>
+      ))}
     </main>
   );
 });

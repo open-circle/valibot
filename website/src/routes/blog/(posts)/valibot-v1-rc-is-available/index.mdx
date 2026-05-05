@@ -10,7 +10,7 @@ authors:
   - EltonLobo07
 ---
 
-import { Link } from '@builder.io/qwik-city';
+import { Link } from '~/components';
 import ChapterNavDark from './chapter-nav-dark.jpg?jsx';
 import ChapterNavLight from './chapter-nav-light.jpg?jsx';
 import MentalModelDark from './mental-model-dark.jpg?jsx';
@@ -72,7 +72,7 @@ Over the past few weeks, we have fixed these issues and are now able to fully su
 
 ## Better tree shaking
 
-[@antfu](https://github.com/antfu) himself created [a PR](https://github.com/fabian-hiller/valibot/pull/995) in December 2024 to further improve Valibot's tree shaking capabilities. If you use some of your schemas only for their TypeScript type but not at runtime, for example to validate unknown data, they can now be fully tree-shaken and excluded from your production build, reducing the bundle size of your application even further.
+[@antfu](https://github.com/antfu) himself created [a PR](https://github.com/open-circle/valibot/pull/995) in December 2024 to further improve Valibot's tree shaking capabilities. If you use some of your schemas only for their TypeScript type but not at runtime, for example to validate unknown data, they can now be fully tree-shaken and excluded from your production build, reducing the bundle size of your application even further.
 
 ## Better documentation
 
@@ -112,7 +112,7 @@ const UserTableSchema = v.pipe(
 );
 ```
 
-There are many more new exciting functions like <Link href="/api/assert/">`assert`</Link>, <Link href="/api/rfcEmail/">`rfcEmail`</Link> and <Link href="/api/maxWords/">`maxWords`</Link>. Please have a look at [the release on GitHub](https://github.com/fabian-hiller/valibot/releases/tag/v1.0.0-rc.0) and our <Link href="/api/">API reference</Link> for more details.
+There are many more new exciting functions like <Link href="/api/assert/">`assert`</Link>, <Link href="/api/rfcEmail/">`rfcEmail`</Link> and <Link href="/api/maxWords/">`maxWords`</Link>. Please have a look at [the release on GitHub](https://github.com/open-circle/valibot/releases/tag/v1.0.0-rc.0) and our <Link href="/api/">API reference</Link> for more details.
 
 ## What's next?
 

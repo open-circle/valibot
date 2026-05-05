@@ -5,6 +5,7 @@ description: >-
   files to help the AI better understand the library.
 contributors:
   - fabian-hiller
+  - flySewa
 ---
 
 # LLMs.txt
@@ -24,12 +25,18 @@ We provide several LLMs.txt routes. Use the route that works best with your AI t
 - [`llms-guides.txt`](/llms-guides.txt) contains the Markdown content of the guides
 - [`llms-api.txt`](/llms-api.txt) contains the Markdown content of the API reference
 
+> We also provide a Markdown version of every documentation page. You can access it by replacing the trailing slash (`/`) in the URL with `.md`. For example, `/guides/installation/` becomes `/guides/installation.md`.
+
+## For AI Agents
+
+Our [`SKILL.md`](https://github.com/open-circle/agent-skills/blob/main/skills/valibot/SKILL.md) contains specialized instructions for AI agents to write, migrate, and optimize Valibot schemas according to the latest best practices.
+
 ## How to use it
 
 To help you get started, here are some examples of how the LLMs.txt files can be used with various AI tools.
 
-> Please help us by adding more examples of other AI tools. If you use a tool that supports LLMs.txt files, please [open a pull request](https://github.com/fabian-hiller/valibot/pulls) to add it to this page.
+> Please help us by adding more examples of other AI tools. If you use a tool that supports LLMs.txt files, please [open a pull request](https://github.com/open-circle/valibot/pulls) to add it to this page.
 
 ### Cursor
 
-You can add a custom documentation as context in Cursor using the `@Docs` feature. Read more about it in the [here](https://docs.cursor.com/context/@-symbols/@-docs).
+You can add a custom documentation as context in Cursor using the `@Docs` feature. Read more about it [here](https://docs.cursor.com/context/@-symbols/@-docs).

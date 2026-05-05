@@ -1,6 +1,6 @@
 import type { BaseValidation } from '../../types/index.ts';
 import { _addIssue } from '../../utils/index.ts';
-import type { Context, RawCheckIssue } from './types.ts';
+import type { RawCheckContext, RawCheckIssue } from './types.ts';
 
 /**
  * Raw check action interface.
@@ -30,7 +30,7 @@ export interface RawCheckAction<TInput>
  */
 // @__NO_SIDE_EFFECTS__
 export function rawCheck<TInput>(
-  action: (context: Context<TInput>) => void
+  action: (context: RawCheckContext<TInput>) => void
 ): RawCheckAction<TInput> {
   return {
     kind: 'validation',

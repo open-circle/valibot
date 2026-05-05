@@ -42,7 +42,7 @@ async function updateContributors() {
 
     // Create API URL and add query parameters
     const url = new URL(
-      'https://api.github.com/repos/fabian-hiller/valibot/commits'
+      'https://api.github.com/repos/open-circle/valibot/commits'
     );
     url.searchParams.set('since', '2023-07-13T00:00:00.000Z');
     url.searchParams.set('path', `website/${filePath.replace(/\\/g, '/')}`);

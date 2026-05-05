@@ -1,0 +1,142 @@
+---
+cover: Valibot v1.3
+title: 'Valibot v1.3: Smarter pipelines, result caching, and new validators'
+description: >-
+  Valibot v1.3 adds new pipeline tools for type refinement and boolean parsing,
+  introduces schema result caching, and expands string validation with domain,
+  JWS compact, and ISRC checks.
+published: 2026-03-17
+authors:
+  - fabian-hiller
+---
+
+import { Link } from '~/components';
+
+Valibot v1.3 adds new tools for building smarter pipelines, avoiding repeated validation work, and validating more real-world string formats. With <Link href="/api/guard/">`guard`</Link> and <Link href="/api/parseBoolean/">`parseBoolean`</Link> you can refine types and parse boolish input directly in a pipeline, while <Link href="/api/cache/">`cache`</Link> helps you reuse schema results for repeated inputs. This release also adds <Link href="/api/domain/">`domain`</Link>, <Link href="/api/jwsCompact/">`jwsCompact`</Link>, and <Link href="/api/isrc/">`isrc`</Link>, plus a few important compatibility fixes.
+
+## TL;DR
+
+- New pipeline tools: <Link href="/api/guard/">`guard`</Link> for type refinement and <Link href="/api/parseBoolean/">`parseBoolean`</Link> for boolish input.
+- New caching APIs: <Link href="/api/cache/">`cache`</Link> and <Link href="/api/cacheAsync/">`cacheAsync`</Link>.
+- New validators: <Link href="/api/domain/">`domain`</Link>, <Link href="/api/jwsCompact/">`jwsCompact`</Link>, and <Link href="/api/isrc/">`isrc`</Link>.
+- Compatibility fixes for <Link href="/api/creditCard/">`creditCard`</Link>, <Link href="/api/isoTimestamp/">`isoTimestamp`</Link>, and deeply readonly defaults and fallbacks.
+
+Huge thanks to [@EskiMojo14](https://github.com/EskiMojo14), [@yslpn](https://github.com/yslpn), [@alexilyaev](https://github.com/alexilyaev), [@idleberg](https://github.com/idleberg), [@BerkliumBirb](https://github.com/BerkliumBirb), and [@frenzzy](https://github.com/frenzzy) for their contributions to this release.
+
+## Smarter pipelines
+
+Two new additions make it easier to refine and transform data directly inside a pipeline. <Link href="/api/guard/">`guard`</Link> lets you narrow values using an existing type predicate (a function that checks and confirms a more specific type), and <Link href="/api/parseBoolean/">`parseBoolean`</Link> turns common boolish input into a real boolean.
+
+This is especially useful when your input starts as a broad type and becomes more precise step by step.
+
+```ts
+import * as v from 'valibot';
+
+type PixelString = `${number}px`;
+
+const SizeSchema = v.pipe(
+  v.string(),
+  v.guard((input): input is PixelString => /^\d+px$/u.test(input))
+);
+
+// Output type: `${number}px`
+const size = v.parse(SizeSchema, '320px');
+```
+
+`parseBoolean` is built for the kind of values you often get from environment variables, query strings, and forms. By default, it accepts values like `"true"`, `"1"`, `"yes"`, `"on"`, `"enabled"`, `"false"`, `"0"`, `"no"`, `"off"`, and `"disabled"`. String matching is case-insensitive, and you can define your own truthy and falsy values when needed.
+
+```ts
+import * as v from 'valibot';
+
+const EnvSchema = v.object({
+  PROD: v.pipe(v.string(), v.parseBoolean()),
+  LOG_MODE: v.pipe(
+    v.string(),
+    v.parseBoolean({
+      truthy: ['verbose', 'chatty'],
+      falsy: ['silent', 'quiet'],
+    })
+  ),
+});
+```
+
+Together, these APIs make it easier to keep transformation, validation, and type refinement inside a single pipeline instead of splitting logic across helper functions.
+
+## Schema result caching
+
+If you validate or transform the same input more than once, <Link href="/api/cache/">`cache`</Link> can save work by caching the output of a schema. This is useful when parsing is expensive, when the same value appears repeatedly, or when a pipeline is reused in hot paths.
+
+```ts
+import * as v from 'valibot';
+import { isUsernameAvailable } from '~/api';
+
+const UsernameSchema = v.cacheAsync(
+  v.pipe(
+    v.string(),
+    v.minLength(3),
+    v.checkAsync(isUsernameAvailable, 'This username is already taken.')
+  ),
+  { maxSize: 500, maxAge: 10_000 }
+);
+```
+
+For async workflows, <Link href="/api/cacheAsync/">`cacheAsync`</Link> can also deduplicate matching concurrent runs, which is especially useful when validation involves a network request.
+
+One important detail from the implementation: primitive values like strings and numbers are cached by value, while objects and functions are cached by their reference, meaning the exact instance in memory. That means mutating an input object and reusing the same reference can return a stale cached result. For best results, use caching with immutable inputs and avoid mutating cached output objects.
+
+## New validators
+
+Valibot v1.3 expands its built-in string validation with three new actions: <Link href="/api/domain/">`domain`</Link>, <Link href="/api/jwsCompact/">`jwsCompact`</Link>, and <Link href="/api/isrc/">`isrc`</Link>.
+
+The new <Link href="/api/domain/">`domain`</Link> action validates domain names without requiring a full URL. This is useful when users enter a host name such as `example.com` and you explicitly do not want to accept protocols, paths, or query strings.
+
+```ts
+import * as v from 'valibot';
+
+const DomainSchema = v.pipe(
+  v.string(),
+  v.nonEmpty('Please enter your domain.'),
+  v.domain('The domain is badly formatted.')
+);
+```
+
+The validation is intentionally focused on ASCII domains. Internationalized domain names and Punycode-encoded labels are not supported here, so if you need full URL validation you should continue using <Link href="/api/url/">`url`</Link> or add your own preprocessing step.
+
+For authentication flows, <Link href="/api/jwsCompact/">`jwsCompact`</Link> checks whether a string matches the three-part JWS compact serialization shape with unpadded Base64URL-like segments. This is a lightweight structural check and does not verify the token's authenticity.
+
+```ts
+const AccessTokenSchema = v.pipe(
+  v.string(),
+  v.nonEmpty('Provide an access token.'),
+  v.jwsCompact('The token must be a valid JWS compact string.')
+);
+```
+
+And for music-related applications, <Link href="/api/isrc/">`isrc`</Link> validates International Standard Recording Codes in both compact and hyphenated form.
+
+```ts
+const RecordingSchema = v.object({
+  title: v.pipe(v.string(), v.nonEmpty()),
+  isrc: v.pipe(v.string(), v.isrc('The ISRC is badly formatted.')),
+});
+
+// Valid formats:
+// 'USRC17607839'
+// 'US-RC1-76-07839'
+```
+
+## Compatibility fixes
+
+This release also includes a few targeted fixes that improve compatibility with existing data.
+
+The <Link href="/api/creditCard/">`creditCard`</Link> action now accepts legacy 13-digit Visa card numbers, which were previously rejected even though they are valid card numbers.
+
+We also updated <Link href="/api/isoTimestamp/">`isoTimestamp`</Link> to allow an optional space before the UTC offset. This improves compatibility with PostgreSQL `timestamptz` output such as `2025-05-13 14:15:41.123904 +00:00`.
+
+Finally, the type system now handles deeply readonly default and fallback values correctly, which makes schemas with nested readonly data structures easier to use without type workarounds.
+
+## What's next?
+
+We will continue to improve integrations, and refine the developer experience around common validation workflows. If there is a validator, transformation, or guide you would like to see next, let us know on [Discord](https://discord.gg/Jwf9vjvReZ) or open a discussion on [GitHub](https://github.com/open-circle/valibot/discussions).
+
+New to Valibot? Check our [quick start guide](/guides/quick-start/). Coming from Zod? Check our [migration guide](/guides/migrate-from-zod/).

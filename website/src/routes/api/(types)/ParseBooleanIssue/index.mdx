@@ -1,0 +1,25 @@
+---
+title: ParseBooleanIssue
+description: Parse boolean issue interface.
+contributors:
+  - alexilyaev
+  - fabian-hiller
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# ParseBooleanIssue
+
+Parse boolean issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `ParseBooleanIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
