@@ -4,10 +4,11 @@ description: Creates an unknown schema.
 source: /schemas/unknown/unknown.ts
 contributors:
   - fabian-hiller
+  - EltonLobo07
+  - vladshcherbin
+  - jasperteo
   - morinokami
   - mwskwong
-  - jasperteo
-  - EltonLobo07
 ---
 
 import { ApiList, Property } from '~/components';
@@ -73,6 +74,7 @@ The following APIs can be combined with `unknown`.
     'getFallback',
     'getFallbacks',
     'is',
+    'message',
     'parse',
     'parser',
     'pipe',
@@ -97,15 +99,18 @@ The following APIs can be combined with `unknown`.
     'decimal',
     'description',
     'digits',
+    'domain',
     'email',
     'emoji',
     'empty',
     'endsWith',
+    'entries',
     'everyItem',
     'excludes',
     'filterItems',
     'findItem',
     'finite',
+    'flavor',
     'graphemes',
     'gtValue',
     'hash',
@@ -117,8 +122,11 @@ The following APIs can be combined with `unknown`.
     'ip',
     'ipv4',
     'ipv6',
+    'isbn',
+    'isrc',
     'isoDate',
     'isoDateTime',
+    'isoDateTimeSecond',
     'isoTime',
     'isoTimeSecond',
     'isoTimestamp',
@@ -130,6 +138,7 @@ The following APIs can be combined with `unknown`.
     'mac64',
     'mapItems',
     'maxBytes',
+    'maxEntries',
     'maxGraphemes',
     'maxLength',
     'maxSize',
@@ -138,6 +147,7 @@ The following APIs can be combined with `unknown`.
     'metadata',
     'mimeType',
     'minBytes',
+    'minEntries',
     'minGraphemes',
     'minLength',
     'minSize',
@@ -147,6 +157,7 @@ The following APIs can be combined with `unknown`.
     'nanoid',
     'nonEmpty',
     'notBytes',
+    'notEntries',
     'notGraphemes',
     'notLength',
     'notSize',
@@ -154,6 +165,7 @@ The following APIs can be combined with `unknown`.
     'notValues',
     'notWords',
     'octal',
+    'parseJson',
     'partialCheck',
     'rawCheck',
     'rawTransform',
@@ -168,10 +180,20 @@ The following APIs can be combined with `unknown`.
     'someItem',
     'sortItem',
     'startsWith',
+    'stringifyJson',
     'title',
+    'toBigint',
+    'toBoolean',
+    'toCamelCase',
+    'toDate',
+    'toKebabCase',
     'toLowerCase',
     'toMaxValue',
     'toMinValue',
+    'toNumber',
+    'toPascalCase',
+    'toSnakeCase',
+    'toString',
     'toUpperCase',
     'transform',
     'trim',

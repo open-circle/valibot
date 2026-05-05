@@ -8,8 +8,7 @@ contributors:
   - fabian-hiller
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # partial
@@ -119,8 +118,9 @@ The following APIs can be combined with `partial`.
     'getFallback',
     'getFallbacks',
     'is',
-    'omit',
     'keyof',
+    'message',
+    'omit',
     'parse',
     'parser',
     'pick',
@@ -138,7 +138,13 @@ The following APIs can be combined with `partial`.
     'check',
     'brand',
     'description',
+    'entries',
+    'flavor',
+    'guard',
+    'maxEntries',
     'metadata',
+    'minEntries',
+    'notEntries',
     'partialCheck',
     'rawCheck',
     'rawTransform',

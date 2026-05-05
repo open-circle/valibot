@@ -4,11 +4,11 @@ description: Creates a loose object schema.
 source: /schemas/looseObject/looseObject.ts
 contributors:
   - fabian-hiller
+  - muningis
   - kazizi55
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # looseObject
@@ -163,6 +163,7 @@ The following APIs can be combined with `looseObject`.
     'getFallbacks',
     'is',
     'keyof',
+    'message',
     'omit',
     'parse',
     'parser',
@@ -182,7 +183,13 @@ The following APIs can be combined with `looseObject`.
     'check',
     'brand',
     'description',
+    'entries',
+    'flavor',
+    'guard',
+    'maxEntries',
     'metadata',
+    'minEntries',
+    'notEntries',
     'partialCheck',
     'rawCheck',
     'rawTransform',

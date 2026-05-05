@@ -17,12 +17,23 @@ export const CUID2_REGEX: RegExp = /^[a-z][\da-z]*$/u;
 /**
  * [Decimal](https://en.wikipedia.org/wiki/Decimal) regex.
  */
-export const DECIMAL_REGEX: RegExp = /^[+-]?\d+(?:\.\d+)?$/u;
+// eslint-disable-next-line redos-detector/no-unsafe-regex -- false positive
+export const DECIMAL_REGEX: RegExp = /^[+-]?(?:\d*\.)?\d+$/u;
 
 /**
  * [Digits](https://en.wikipedia.org/wiki/Numerical_digit) regex.
  */
 export const DIGITS_REGEX: RegExp = /^\d+$/u;
+
+/**
+ * [Domain name](https://en.wikipedia.org/wiki/Domain_name) regex.
+ *
+ * Hint: We decided against the `i` flag for better JSON Schema compatibility.
+ * ASCII-only validation. Internationalized domain names (IDNs) are not
+ * supported, including Punycode-encoded labels.
+ */
+export const DOMAIN_REGEX: RegExp =
+  /^(?=.{1,253}$)(?:(?![Xx][Nn]--)[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/u;
 
 /**
  * [Email address](https://en.wikipedia.org/wiki/Email_address) regex.
@@ -37,8 +48,8 @@ export const EMAIL_REGEX: RegExp =
  * not supported in older runtimes and does not match all emoji.
  */
 export const EMOJI_REGEX: RegExp =
-  // eslint-disable-next-line redos-detector/no-unsafe-regex, regexp/no-dupe-disjunctions -- false positives
-  /^(?:[\u{1F1E6}-\u{1F1FF}]{2}|\u{1F3F4}[\u{E0061}-\u{E007A}]{2}[\u{E0030}-\u{E0039}\u{E0061}-\u{E007A}]{1,3}\u{E007F}|(?:\p{Emoji}\uFE0F\u20E3?|\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|\p{Emoji_Presentation})(?:\u200D(?:\p{Emoji}\uFE0F\u20E3?|\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|\p{Emoji_Presentation}))*)+$/u;
+  // eslint-disable-next-line redos-detector/no-unsafe-regex -- false positives
+  /^(?:[\u{1F1E6}-\u{1F1FF}]{2}|\u{1F3F4}[\u{E0061}-\u{E007A}]{2}[\u{E0030}-\u{E0039}\u{E0061}-\u{E007A}]{1,3}\u{E007F}|(?:\p{Emoji}\uFE0F\u20E3?|\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|(?![\p{Emoji_Modifier_Base}\u{1F1E6}-\u{1F1FF}])\p{Emoji_Presentation})(?:\u200D(?:\p{Emoji}\uFE0F\u20E3?|\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|(?![\p{Emoji_Modifier_Base}\u{1F1E6}-\u{1F1FF}])\p{Emoji_Presentation}))*)+$/u;
 
 /**
  * [Hexadecimal](https://en.wikipedia.org/wiki/Hexadecimal) regex.
@@ -92,6 +103,12 @@ export const ISO_DATE_TIME_REGEX: RegExp =
   /^\d{4}-(?:0[1-9]|1[0-2])-(?:[12]\d|0[1-9]|3[01])[T ](?:0\d|1\d|2[0-3]):[0-5]\d$/u;
 
 /**
+ * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time with seconds regex.
+ */
+export const ISO_DATE_TIME_SECOND_REGEX: RegExp =
+  /^\d{4}-(?:0[1-9]|1[0-2])-(?:[12]\d|0[1-9]|3[01])[T ](?:0\d|1\d|2[0-3])(?::[0-5]\d){2}$/u;
+
+/**
  * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time regex.
  */
 export const ISO_TIME_REGEX: RegExp = /^(?:0\d|1\d|2[0-3]):[0-5]\d$/u;
@@ -103,10 +120,11 @@ export const ISO_TIME_SECOND_REGEX: RegExp =
   /^(?:0\d|1\d|2[0-3])(?::[0-5]\d){2}$/u;
 
 /**
- * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp regex.
+ * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp regex. Allows a
+ * space as a date/time separator and an optional space before the UTC offset.
  */
 export const ISO_TIMESTAMP_REGEX: RegExp =
-  /^\d{4}-(?:0[1-9]|1[0-2])-(?:[12]\d|0[1-9]|3[01])[T ](?:0\d|1\d|2[0-3])(?::[0-5]\d){2}(?:\.\d{1,9})?(?:Z|[+-](?:0\d|1\d|2[0-3])(?::?[0-5]\d)?)$/u;
+  /^\d{4}-(?:0[1-9]|1[0-2])-(?:[12]\d|0[1-9]|3[01])[T ](?:0\d|1\d|2[0-3])(?::[0-5]\d){2}(?:\.\d{1,9})?(?:Z| ?[+-](?:0\d|1\d|2[0-3])(?::?[0-5]\d)?)$/u;
 
 /**
  * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) week regex.
@@ -114,22 +132,45 @@ export const ISO_TIMESTAMP_REGEX: RegExp =
 export const ISO_WEEK_REGEX: RegExp = /^\d{4}-W(?:0[1-9]|[1-4]\d|5[0-3])$/u;
 
 /**
+ * [JWS compact serialization](https://datatracker.ietf.org/doc/html/rfc7515#section-3.1)
+ * regex.
+ *
+ * Hint: Empty payload and signature segments are allowed because the
+ * Base64URL-encoded representation of an empty octet sequence is an empty
+ * string.
+ */
+export const JWS_COMPACT_REGEX: RegExp =
+  /^(?:[\w-]{2,3}|(?:[\w-]{4})+(?:[\w-]{2,3})?)\.(?:[\w-]{2,3}|(?:[\w-]{4})+(?:[\w-]{2,3})?)?\.(?:[\w-]{2,3}|(?:[\w-]{4})+(?:[\w-]{2,3})?)?$/u;
+
+/**
+ * [ISRC](https://en.wikipedia.org/wiki/International_Standard_Recording_Code) regex.
+ */
+export const ISRC_REGEX: RegExp =
+  /^(?:[A-Z]{2}[A-Z\d]{3}\d{7}|[A-Z]{2}-[A-Z\d]{3}-\d{2}-\d{5})$/u;
+
+/**
  * [MAC](https://en.wikipedia.org/wiki/MAC_address) 48 bit regex.
+ *
+ * Hint: We decided against the `i` flag for better JSON Schema compatibility.
  */
 export const MAC48_REGEX: RegExp =
-  /^(?:[\da-f]{2}:){5}[\da-f]{2}$|^(?:[\da-f]{2}-){5}[\da-f]{2}$|^(?:[\da-f]{4}\.){2}[\da-f]{4}$/iu;
+  /^(?:[\da-fA-F]{2}:){5}[\da-fA-F]{2}$|^(?:[\da-fA-F]{2}-){5}[\da-fA-F]{2}$|^(?:[\da-fA-F]{4}\.){2}[\da-fA-F]{4}$/u;
 
 /**
  * [MAC](https://en.wikipedia.org/wiki/MAC_address) 64 bit regex.
+ *
+ * Hint: We decided against the `i` flag for better JSON Schema compatibility.
  */
 export const MAC64_REGEX: RegExp =
-  /^(?:[\da-f]{2}:){7}[\da-f]{2}$|^(?:[\da-f]{2}-){7}[\da-f]{2}$|^(?:[\da-f]{4}\.){3}[\da-f]{4}$|^(?:[\da-f]{4}:){3}[\da-f]{4}$/iu;
+  /^(?:[\da-fA-F]{2}:){7}[\da-fA-F]{2}$|^(?:[\da-fA-F]{2}-){7}[\da-fA-F]{2}$|^(?:[\da-fA-F]{4}\.){3}[\da-fA-F]{4}$|^(?:[\da-fA-F]{4}:){3}[\da-fA-F]{4}$/u;
 
 /**
  * [MAC](https://en.wikipedia.org/wiki/MAC_address) regex.
+ *
+ * Hint: We decided against the `i` flag for better JSON Schema compatibility.
  */
 export const MAC_REGEX: RegExp =
-  /^(?:[\da-f]{2}:){5}[\da-f]{2}$|^(?:[\da-f]{2}-){5}[\da-f]{2}$|^(?:[\da-f]{4}\.){2}[\da-f]{4}$|^(?:[\da-f]{2}:){7}[\da-f]{2}$|^(?:[\da-f]{2}-){7}[\da-f]{2}$|^(?:[\da-f]{4}\.){3}[\da-f]{4}$|^(?:[\da-f]{4}:){3}[\da-f]{4}$/iu;
+  /^(?:[\da-fA-F]{2}:){5}[\da-fA-F]{2}$|^(?:[\da-fA-F]{2}-){5}[\da-fA-F]{2}$|^(?:[\da-fA-F]{4}\.){2}[\da-fA-F]{4}$|^(?:[\da-fA-F]{2}:){7}[\da-fA-F]{2}$|^(?:[\da-fA-F]{2}-){7}[\da-fA-F]{2}$|^(?:[\da-fA-F]{4}\.){3}[\da-fA-F]{4}$|^(?:[\da-fA-F]{4}:){3}[\da-fA-F]{4}$/u;
 
 /**
  * [Nano ID](https://github.com/ai/nanoid) regex.

@@ -1,0 +1,118 @@
+---
+title: stringifyJson
+description: JSON stringify transformation action.
+source: /actions/stringifyJson/stringifyJson.ts
+contributors:
+  - EskiMojo14
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# stringifyJson
+
+Creates a JSON stringify transformation action.
+
+```ts
+const Action = v.stringifyJson<TInput, TConfig, TMessage>(config, message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TConfig` <Property {...properties.TConfig} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `config` <Property {...properties.config} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `stringifyJson` you can stringify a JSON object. If the input is unable to be stringified, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `stringifyJson` can be used.
+
+### Stringify JSON
+
+Stringify a JSON object.
+
+```ts
+const StringifiedObjectSchema = v.pipe(
+  v.object({ key: v.string() }),
+  v.stringifyJson()
+);
+```
+
+### Stringify JSON with replacer
+
+Stringify a JSON object with a replacer function.
+
+```ts
+const StringifiedObjectSchema = v.pipe(
+  v.object({ key: v.string() }),
+  v.stringifyJson({
+    replacer: (key, value) =>
+      typeof value === 'string' ? value.toUpperCase() : value,
+  })
+);
+```
+
+## Related
+
+The following APIs can be combined with `stringifyJson`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'array',
+    'boolean',
+    'custom',
+    'date',
+    'enum',
+    'exactOptional',
+    'instance',
+    'intersect',
+    'lazy',
+    'literal',
+    'looseObject',
+    'looseTuple',
+    'nonNullable',
+    'nonNullish',
+    'nonOptional',
+    'null',
+    'nullable',
+    'nullish',
+    'number',
+    'object',
+    'objectWithRest',
+    'picklist',
+    'record',
+    'strictObject',
+    'strictTuple',
+    'string',
+    'tuple',
+    'tupleWithRest',
+    'union',
+    'unknown',
+    'variant',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

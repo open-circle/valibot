@@ -10,7 +10,7 @@ contributors:
 
 # Use cases
 
-Next, we would like to point out some use cases for which Valibot is particularly well suited. We welcome [ideas](https://github.com/fabian-hiller/valibot/issues/new) for other use cases that we may not have thought of yet.
+Next, we would like to point out some use cases for which Valibot is particularly well suited. We welcome [ideas](https://github.com/open-circle/valibot/issues/new) for other use cases that we may not have thought of yet.
 
 ## Server requests
 
@@ -22,7 +22,7 @@ This works particularly well with a schema, compared to if/else conditions, as e
 
 A schema can also be used for form validation. Due to Valibot's small bundle size and the possibility to individualize the error messages, the library is particularly well suited for this. Also, fullstack frameworks like Next.js, Remix, and Nuxt allow the same schema to be used for validation in the browser as well as on the server, which reduces your code to the minimum.
 
-[Modular Forms](https://modularforms.dev/react/guides/validate-your-fields#schema-validation), for example, offers validation based on a schema at form and field level. In addition, the form can be made type-safe using the schema, which also enables autocompletion during development. In combination with the right framework, a fully type-safe and progressively enhanced form can be created with few lines of code and a great experience for developers and end-users.
+[Formisch](https://formisch.dev/react/guides/introduction/), for example, offers validation based on a schema at form and field level. In addition, the form can be made type-safe using the schema, which also enables autocompletion during development. In combination with the right framework, a fully type-safe and progressively enhanced form can be created with few lines of code and a great experience for developers and end-users.
 
 ## Browser state
 
@@ -31,3 +31,11 @@ The browser state, which is stored using cookies, search parameters or the local
 ## Config files
 
 Library authors can also make use of Valibot, for example, to match configuration files with a schema and, in the event of an error, provide clear indications of the cause and how to fix the problem. The same applies to environment variables to quickly detect configuration errors.
+
+## Schema builder
+
+Our schemas are plain JavaScript objects with a well-defined and fully type-safe structure. This makes Valibot a great choice for defining data structures that can be further processed by third-party code. For example, it is possible to build an ORM with custom metadata actions on top of Valibot to generate database schemas. Another example is our official `toJsonSchema` function, which uses Valibot's object API to output a JSON Schema that can be used for documentation purposes or to generate structured output with LLMs.
+
+## Data migration
+
+Valibot can also be used to migrate data from one form to another in a type-safe way. The advantage of a schema library like Valibot is that transformations can be defined for individual properties instead of for the entire dataset. This can make data migrations more readable and maintainable. In addition, the schema can be used to validate the data before the migration, which increases the reliability of the migration process.

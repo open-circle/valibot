@@ -35,6 +35,11 @@ export type ContentRequirement<TInput extends ContentInput> =
   TInput extends readonly unknown[] ? TInput[number] : TInput;
 
 /**
+ * Entries input type.
+ */
+export type EntriesInput = Record<string | number, unknown>;
+
+/**
  * Length input type.
  */
 export type LengthInput = string | ArrayLike<unknown>;

@@ -19,12 +19,12 @@ import { _getStandardProps } from '../../utils/index.ts';
  * Schema with pipe type.
  */
 export type SchemaWithPipe<
-  TPipe extends [
+  TPipe extends readonly [
     BaseSchema<unknown, unknown, BaseIssue<unknown>>,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ...PipeItem<any, unknown, BaseIssue<unknown>>[],
   ],
-> = Omit<FirstTupleItem<TPipe>, '~standard' | '~run' | '~types'> & {
+> = Omit<FirstTupleItem<TPipe>, 'pipe' | '~standard' | '~run' | '~types'> & {
   /**
    * The pipe items.
    */
@@ -89,7 +89,7 @@ export function pipe<
   item1:
     | TItem1
     | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
-): SchemaWithPipe<[TSchema, TItem1]>;
+): SchemaWithPipe<readonly [TSchema, TItem1]>;
 
 /**
  * Adds a pipeline to a schema, that can validate and transform its input.
@@ -120,7 +120,7 @@ export function pipe<
   item2:
     | TItem2
     | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
-): SchemaWithPipe<[TSchema, TItem1, TItem2]>;
+): SchemaWithPipe<readonly [TSchema, TItem1, TItem2]>;
 
 /**
  * Adds a pipeline to a schema, that can validate and transform its input.
@@ -160,7 +160,7 @@ export function pipe<
   item3:
     | TItem3
     | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
-): SchemaWithPipe<[TSchema, TItem1, TItem2, TItem3]>;
+): SchemaWithPipe<readonly [TSchema, TItem1, TItem2, TItem3]>;
 
 /**
  * Adds a pipeline to a schema, that can validate and transform its input.
@@ -209,7 +209,7 @@ export function pipe<
   item4:
     | TItem4
     | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
-): SchemaWithPipe<[TSchema, TItem1, TItem2, TItem3, TItem4]>;
+): SchemaWithPipe<readonly [TSchema, TItem1, TItem2, TItem3, TItem4]>;
 
 /**
  * Adds a pipeline to a schema, that can validate and transform its input.
@@ -267,7 +267,7 @@ export function pipe<
   item5:
     | TItem5
     | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
-): SchemaWithPipe<[TSchema, TItem1, TItem2, TItem3, TItem4, TItem5]>;
+): SchemaWithPipe<readonly [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5]>;
 
 /**
  * Adds a pipeline to a schema, that can validate and transform its input.
@@ -334,7 +334,9 @@ export function pipe<
   item6:
     | TItem6
     | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
-): SchemaWithPipe<[TSchema, TItem1, TItem2, TItem3, TItem4, TItem5, TItem6]>;
+): SchemaWithPipe<
+  readonly [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5, TItem6]
+>;
 
 /**
  * Adds a pipeline to a schema, that can validate and transform its input.
@@ -411,7 +413,7 @@ export function pipe<
     | TItem7
     | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
 ): SchemaWithPipe<
-  [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5, TItem6, TItem7]
+  readonly [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5, TItem6, TItem7]
 >;
 
 /**
@@ -498,7 +500,17 @@ export function pipe<
     | TItem8
     | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
 ): SchemaWithPipe<
-  [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5, TItem6, TItem7, TItem8]
+  readonly [
+    TSchema,
+    TItem1,
+    TItem2,
+    TItem3,
+    TItem4,
+    TItem5,
+    TItem6,
+    TItem7,
+    TItem8,
+  ]
 >;
 
 /**
@@ -594,7 +606,7 @@ export function pipe<
     | TItem9
     | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
 ): SchemaWithPipe<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -710,7 +722,7 @@ export function pipe<
     | TItem10
     | PipeAction<InferOutput<TItem9>, InferOutput<TItem10>, InferIssue<TItem10>>
 ): SchemaWithPipe<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -844,7 +856,7 @@ export function pipe<
         InferIssue<TItem11>
       >
 ): SchemaWithPipe<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -992,7 +1004,7 @@ export function pipe<
         InferIssue<TItem12>
       >
 ): SchemaWithPipe<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -1154,7 +1166,7 @@ export function pipe<
         InferIssue<TItem13>
       >
 ): SchemaWithPipe<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -1330,7 +1342,7 @@ export function pipe<
         InferIssue<TItem14>
       >
 ): SchemaWithPipe<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -1520,7 +1532,7 @@ export function pipe<
         InferIssue<TItem15>
       >
 ): SchemaWithPipe<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -1724,7 +1736,7 @@ export function pipe<
         InferIssue<TItem16>
       >
 ): SchemaWithPipe<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -1929,7 +1941,7 @@ export function pipe<
         InferIssue<TItem16>
       >
 ): SchemaWithPipe<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -2147,7 +2159,7 @@ export function pipe<
         InferIssue<TItem17>
       >
 ): SchemaWithPipe<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -2379,7 +2391,7 @@ export function pipe<
         InferIssue<TItem18>
       >
 ): SchemaWithPipe<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -2625,7 +2637,7 @@ export function pipe<
         InferIssue<TItem19>
       >
 ): SchemaWithPipe<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -2659,18 +2671,27 @@ export function pipe<
  */
 export function pipe<
   const TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-  const TItems extends PipeItem<
+  const TItems extends readonly PipeItem<
     InferOutput<TSchema>,
     InferOutput<TSchema>,
     BaseIssue<unknown>
   >[],
->(schema: TSchema, ...items: TItems): SchemaWithPipe<[TSchema, ...TItems]>;
+>(
+  schema: TSchema,
+  ...items: TItems
+): SchemaWithPipe<readonly [TSchema, ...TItems]>;
 
 // @__NO_SIDE_EFFECTS__
 export function pipe<
   const TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-  const TItems extends PipeItem<unknown, unknown, BaseIssue<unknown>>[],
->(...pipe: [TSchema, ...TItems]): SchemaWithPipe<[TSchema, ...TItems]> {
+  const TItems extends readonly PipeItem<
+    unknown,
+    unknown,
+    BaseIssue<unknown>
+  >[],
+>(
+  ...pipe: [TSchema, ...TItems]
+): SchemaWithPipe<readonly [TSchema, ...TItems]> {
   return {
     ...pipe[0],
     pipe,

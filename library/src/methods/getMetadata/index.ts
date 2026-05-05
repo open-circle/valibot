@@ -1,0 +1,1 @@
+export * from './getMetadata.ts';

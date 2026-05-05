@@ -4,13 +4,12 @@ description: Creates an union schema.
 source: /schemas/union/union.ts
 contributors:
   - fabian-hiller
+  - EltonLobo07
   - morinokami
   - thundermiracle
-  - EltonLobo07
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # union
@@ -140,6 +139,7 @@ The following APIs can be combined with `union`.
     'getFallback',
     'getFallbacks',
     'is',
+    'message',
     'parse',
     'parser',
     'pipe',
@@ -164,17 +164,21 @@ The following APIs can be combined with `union`.
     'decimal',
     'description',
     'digits',
+    'domain',
     'email',
     'emoji',
     'empty',
     'endsWith',
+    'entries',
     'everyItem',
     'excludes',
     'filterItems',
     'findItem',
     'finite',
+    'flavor',
     'graphemes',
     'gtValue',
+    'guard',
     'hash',
     'hexadecimal',
     'hexColor',
@@ -184,8 +188,11 @@ The following APIs can be combined with `union`.
     'ip',
     'ipv4',
     'ipv6',
+    'isbn',
+    'isrc',
     'isoDate',
     'isoDateTime',
+    'isoDateTimeSecond',
     'isoTime',
     'isoTimeSecond',
     'isoTimestamp',
@@ -197,6 +204,7 @@ The following APIs can be combined with `union`.
     'mac64',
     'mapItems',
     'maxBytes',
+    'maxEntries',
     'maxGraphemes',
     'maxLength',
     'maxSize',
@@ -205,6 +213,7 @@ The following APIs can be combined with `union`.
     'metadata',
     'mimeType',
     'minBytes',
+    'minEntries',
     'minGraphemes',
     'minLength',
     'minSize',
@@ -214,6 +223,7 @@ The following APIs can be combined with `union`.
     'nanoid',
     'nonEmpty',
     'notBytes',
+    'notEntries',
     'notGraphemes',
     'notLength',
     'notSize',
@@ -221,6 +231,7 @@ The following APIs can be combined with `union`.
     'notValues',
     'notWords',
     'octal',
+    'parseJson',
     'partialCheck',
     'rawCheck',
     'rawTransform',
@@ -235,10 +246,15 @@ The following APIs can be combined with `union`.
     'someItem',
     'sortItem',
     'startsWith',
+    'stringifyJson',
     'title',
+    'toCamelCase',
+    'toKebabCase',
     'toLowerCase',
     'toMaxValue',
     'toMinValue',
+    'toPascalCase',
+    'toSnakeCase',
     'toUpperCase',
     'transform',
     'trim',

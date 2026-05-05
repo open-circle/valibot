@@ -33,8 +33,6 @@ type Schema =
 
 /**
  * Args action type.
- *
- * @beta
  */
 export interface ArgsAction<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -65,8 +63,6 @@ export interface ArgsAction<
  * @param schema The arguments schema.
  *
  * @returns An args action.
- *
- * @beta
  */
 export function args<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

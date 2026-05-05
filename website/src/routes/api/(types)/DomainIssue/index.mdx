@@ -1,0 +1,26 @@
+---
+title: DomainIssue
+description: Domain issue interface.
+contributors:
+  - yslpn
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# DomainIssue
+
+Domain issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `DomainIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `received` <Property {...properties.received} />
+  - `requirement` <Property {...properties.requirement} />

@@ -64,6 +64,10 @@ export interface DigitsAction<
 /**
  * Creates a [digits](https://en.wikipedia.org/wiki/Numerical_digit) validation action.
  *
+ * The difference between `digits` and `decimal` is that `digits` accepts only
+ * the digits 0-9, while `decimal` accepts floating point numbers and negative
+ * numbers.
+ *
  * @returns An digits action.
  */
 export function digits<TInput extends string>(): DigitsAction<
@@ -73,6 +77,10 @@ export function digits<TInput extends string>(): DigitsAction<
 
 /**
  * Creates a [digits](https://en.wikipedia.org/wiki/Numerical_digit) validation action.
+ *
+ * The difference between `digits` and `decimal` is that `digits` accepts only
+ * the digits 0-9, while `decimal` accepts floating point numbers and negative
+ * numbers.
  *
  * @param message The error message.
  *

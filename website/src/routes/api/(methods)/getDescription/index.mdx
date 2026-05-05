@@ -1,0 +1,78 @@
+---
+title: getDescription
+description: Returns the description of the schema.
+source: /methods/getDescription/getDescription.ts
+contributors:
+  - EskiMojo14
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# getDescription
+
+Returns the description of the schema.
+
+> If multiple descriptions are defined, the last one of the highest level is returned. If no description is defined, `undefined` is returned.
+
+```ts
+const description = v.getDescription<TSchema>(schema);
+```
+
+## Generics
+
+- `TSchema` <Property {...properties.TSchema} />
+
+## Parameters
+
+- `schema` <Property {...properties.schema} />
+
+## Returns
+
+- `description` <Property {...properties.description} />
+
+## Examples
+
+The following examples show how `getDescription` can be used.
+
+### Get description of schema
+
+Get the description of a username schema.
+
+```ts
+const UsernameSchema = v.pipe(
+  v.string(),
+  v.regex(/^[a-z0-9_-]{4,16}$/iu),
+  v.title('Username'),
+  v.description(
+    'A username must be between 4 and 16 characters long and can only contain letters, numbers, underscores and hyphens.'
+  )
+);
+
+const description = v.getDescription(UsernameSchema);
+```
+
+### Overriding inherited descriptions
+
+Get the description of a Gmail schema with an overridden description.
+
+```ts
+const EmailSchema = v.pipe(v.string(), v.email(), v.description('Email'));
+
+const GmailSchema = v.pipe(
+  EmailSchema,
+  v.endsWith('@gmail.com'),
+  v.description('Gmail')
+);
+
+const description = v.getDescription(GmailSchema); // 'Gmail'
+```
+
+## Related
+
+The following APIs can be combined with `getDescription`.
+
+### Actions
+
+<ApiList items={['description']} />

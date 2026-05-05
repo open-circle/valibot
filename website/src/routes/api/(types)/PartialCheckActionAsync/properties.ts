@@ -9,12 +9,30 @@ export const properties: Record<string, PropertyProps> = {
       href: '../PartialInput/',
     },
   },
+  TPaths: {
+    modifier: 'extends',
+    type: {
+      type: 'custom',
+      name: 'Paths',
+      href: '../Paths/',
+    },
+  },
   TSelection: {
     modifier: 'extends',
     type: {
       type: 'custom',
-      name: 'PartialInput',
-      href: '../PartialInput/',
+      name: 'DeepPickN',
+      href: '../DeepPickN/',
+      generics: [
+        {
+          type: 'custom',
+          name: 'TInput',
+        },
+        {
+          type: 'custom',
+          name: 'TPaths',
+        },
+      ],
     },
   },
   TMessage: {
@@ -89,6 +107,12 @@ export const properties: Record<string, PropertyProps> = {
   },
   expects: {
     type: 'null',
+  },
+  paths: {
+    type: {
+      type: 'custom',
+      name: 'TPaths',
+    },
   },
   requirement: {
     type: {

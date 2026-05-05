@@ -9,22 +9,12 @@ export const properties: Record<string, PropertyProps> = {
       href: '../PartialInput/',
     },
   },
-  TPathList: {
+  TPaths: {
     modifier: 'extends',
     type: {
-      type: 'array',
-      modifier: 'readonly',
-      item: {
-        type: 'custom',
-        name: 'PathKeys',
-        href: '../PathKeys/',
-        generics: [
-          {
-            type: 'custom',
-            name: 'TInput',
-          },
-        ],
-      },
+      type: 'custom',
+      name: 'RequiredPaths',
+      href: '../RequiredPaths/',
     },
   },
   TSelection: {
@@ -40,7 +30,7 @@ export const properties: Record<string, PropertyProps> = {
         },
         {
           type: 'custom',
-          name: 'TPathList',
+          name: 'TPaths',
         },
       ],
     },
@@ -72,10 +62,21 @@ export const properties: Record<string, PropertyProps> = {
       ],
     },
   },
-  pathList: {
+  paths: {
     type: {
       type: 'custom',
-      name: 'TPathList',
+      name: 'ValidPaths',
+      href: '../partialCheck/ValidPaths/',
+      generics: [
+        {
+          type: 'custom',
+          name: 'TInput',
+        },
+        {
+          type: 'custom',
+          name: 'TPaths',
+        },
+      ],
     },
   },
   requirement: {
@@ -113,6 +114,10 @@ export const properties: Record<string, PropertyProps> = {
         {
           type: 'custom',
           name: 'TInput',
+        },
+        {
+          type: 'custom',
+          name: 'TPaths',
         },
         {
           type: 'custom',

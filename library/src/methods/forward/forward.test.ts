@@ -11,9 +11,10 @@ describe('forward', () => {
   test('should forward issues to end of path list', () => {
     const input = { nested: [{ key: 'value_1' }, { key: 'value_2' }] };
     type Input = typeof input;
+    type Path = ['nested', 1, 'key'];
     const requirement = () => false;
     expect(
-      forward<Input, CheckIssue<Input>>(check(requirement, 'message'), [
+      forward<Input, CheckIssue<Input>, Path>(check(requirement, 'message'), [
         'nested',
         1,
         'key',
@@ -65,9 +66,10 @@ describe('forward', () => {
   test('should stop forwarding if path input is undefined', () => {
     const input = { nested: [{ key: 'value_1' }, { key: 'value_2' }] };
     type Input = typeof input;
+    type Path = ['nested', 6, 'key'];
     const requirement = () => false;
     expect(
-      forward<Input, CheckIssue<Input>>(check(requirement, 'message'), [
+      forward<Input, CheckIssue<Input>, Path>(check(requirement, 'message'), [
         'nested',
         6,
         'key',
@@ -112,6 +114,7 @@ describe('forward', () => {
   test('should only forward issues of wrapped action', () => {
     const input = { nested: [{ key: 'value_1' }, { key: 'value_2' }] };
     type Input = typeof input;
+    type Path = ['nested', 1, 'key'];
     const requirement = () => false;
     const prevIssue: MinLengthIssue<Input['nested'], 3> = {
       kind: 'validation',
@@ -136,7 +139,7 @@ describe('forward', () => {
       abortPipeEarly: undefined,
     };
     expect(
-      forward<Input, CheckIssue<Input>>(check(requirement, 'message'), [
+      forward<Input, CheckIssue<Input>, Path>(check(requirement, 'message'), [
         'nested',
         1,
         'key',
@@ -201,9 +204,10 @@ describe('forward', () => {
   test('should do nothing if there are no issues', () => {
     const input = { nested: [{ key: 'value_1' }, { key: 'value_2' }] };
     type Input = typeof input;
+    type Path = ['nested', 6, 'key'];
     const requirement = () => true;
     expect(
-      forward<Input, CheckIssue<Input>>(check(requirement, 'message'), [
+      forward<Input, CheckIssue<Input>, Path>(check(requirement, 'message'), [
         'nested',
         6,
         'key',

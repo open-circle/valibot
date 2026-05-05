@@ -6,16 +6,15 @@ description: >-
   type.
 contributors:
   - fabian-hiller
+  - EltonLobo07
   - BastiDood
   - morinokami
   - jasperteo
   - daxeh
   - ariskemper
-  - EltonLobo07
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList } from '~/components';
+import { ApiList, Link } from '~/components';
 
 # Pipelines
 
@@ -44,7 +43,7 @@ const EmailSchema = v.pipe(
 
 Pipeline validation actions examine the input and, if the input does not meet a certain condition, return an issue. If the input is valid, it is returned as the output and, if present, picked up by the next action in the pipeline.
 
-> Whenever possible, pipelines are run completely, even if an issue has occurred, to collect all possible issues. If you want to abort the pipeline early after the first issue, you need to set the `abortPipeEarly` option to `true`. Learn more about this <Link href="/guides/parse-data/#configuration">here</Link>.
+> Whenever possible, pipelines are run completely, even if an issue has occurred, to collect all possible issues. If you want to abort the pipeline early after the first issue, you need to set the `abortPipeEarly` option to `true`. Learn more about <Link href="/guides/parse-data/#configuration">parsing configuration</Link>, or use the <Link href="/api/config/">`config`</Link> method for more granular control over individual pipelines.
 
 <ApiList
   label="Validation actions"
@@ -58,10 +57,12 @@ Pipeline validation actions examine the input and, if the input does not meet a 
     'cuid2',
     'decimal',
     'digits',
+    'domain',
     'email',
     'emoji',
     'empty',
     'endsWith',
+    'entries',
     'everyItem',
     'excludes',
     'finite',
@@ -75,8 +76,11 @@ Pipeline validation actions examine the input and, if the input does not meet a 
     'ip',
     'ipv4',
     'ipv6',
+    'isbn',
+    'isrc',
     'isoDate',
     'isoDateTime',
+    'isoDateTimeSecond',
     'isoTime',
     'isoTimeSecond',
     'isoTimestamp',
@@ -87,6 +91,7 @@ Pipeline validation actions examine the input and, if the input does not meet a 
     'mac48',
     'mac64',
     'maxBytes',
+    'maxEntries',
     'maxGraphemes',
     'maxLength',
     'maxSize',
@@ -94,6 +99,7 @@ Pipeline validation actions examine the input and, if the input does not meet a 
     'maxWords',
     'mimeType',
     'minBytes',
+    'minEntries',
     'minGraphemes',
     'minLength',
     'minSize',
@@ -103,6 +109,7 @@ Pipeline validation actions examine the input and, if the input does not meet a 
     'nanoid',
     'nonEmpty',
     'notBytes',
+    'notEntries',
     'notGraphemes',
     'notLength',
     'notSize',
@@ -110,6 +117,7 @@ Pipeline validation actions examine the input and, if the input does not meet a 
     'notValues',
     'notWords',
     'octal',
+    'parseJson',
     'partialCheck',
     'rawCheck',
     'regex',
@@ -165,14 +173,25 @@ Pipeline transformation actions allow to change the value and data type of the i
     'brand',
     'filterItems',
     'findItem',
+    'flavor',
+    'guard',
     'mapItems',
     'rawTransform',
     'readonly',
     'reduceItems',
     'sortItems',
+    'toBigint',
+    'toBoolean',
+    'toCamelCase',
+    'toDate',
+    'toKebabCase',
     'toLowerCase',
     'toMaxValue',
     'toMinValue',
+    'toNumber',
+    'toPascalCase',
+    'toSnakeCase',
+    'toString',
     'toUpperCase',
     'transform',
     'trim',

@@ -11,7 +11,8 @@ import { forwardAsync } from './forwardAsync.ts';
 describe('forwardAsync', () => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   type Input = { nested: { key: string }[] };
-  const action = forwardAsync<Input, CheckIssue<Input>>(
+  type Path = ['nested', 1, 'key'];
+  const action = forwardAsync<Input, CheckIssue<Input>, Path>(
     check((input) => Boolean(input), 'message'),
     ['nested', 1, 'key']
   );

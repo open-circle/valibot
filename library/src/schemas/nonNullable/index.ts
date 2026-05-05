@@ -1,3 +1,3 @@
 export * from './nonNullable.ts';
 export * from './nonNullableAsync.ts';
-export * from './types.ts';
+export type { NonNullableIssue } from './types.ts';

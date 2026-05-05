@@ -55,8 +55,6 @@ type Schema =
 
 /**
  * Args action async type.
- *
- * @beta
  */
 export interface ArgsActionAsync<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,8 +85,6 @@ export interface ArgsActionAsync<
  * @param schema The arguments schema.
  *
  * @returns An args action.
- *
- * @beta
  */
 export function argsAsync<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

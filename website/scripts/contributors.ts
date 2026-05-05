@@ -42,7 +42,7 @@ async function updateContributors() {
 
     // Create API URL and add query parameters
     const url = new URL(
-      'https://api.github.com/repos/fabian-hiller/valibot/commits'
+      'https://api.github.com/repos/open-circle/valibot/commits'
     );
     url.searchParams.set('since', '2023-07-13T00:00:00.000Z');
     url.searchParams.set('path', `website/${filePath.replace(/\\/g, '/')}`);
@@ -59,7 +59,7 @@ async function updateContributors() {
       // Get commits from response
       const commits = (await response.json()) as {
         sha: string;
-        author: { login: string };
+        author: { login: string } | null;
       }[];
 
       // Create contributors list
@@ -67,10 +67,10 @@ async function updateContributors() {
 
       // Count commits of each author
       for (const commit of commits) {
-        if (!EXCLUDED_COMMITS.includes(commit.sha)) {
+        if (!EXCLUDED_COMMITS.includes(commit.sha) && commit.author) {
           const author = commit.author.login;
           const contributor = contributors.find(
-            (contributor) => contributor.author === commit.author.login
+            (contributor) => contributor.author === author
           );
           if (contributor) {
             contributor.count++;

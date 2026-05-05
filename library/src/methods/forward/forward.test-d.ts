@@ -11,7 +11,8 @@ import { forward } from './forward.ts';
 describe('forward', () => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   type Input = { nested: { key: string }[] };
-  const action = forward<Input, CheckIssue<Input>>(
+  type Path = ['nested', 1, 'key'];
+  const action = forward<Input, CheckIssue<Input>, Path>(
     check((input) => Boolean(input), 'message'),
     ['nested', 1, 'key']
   );

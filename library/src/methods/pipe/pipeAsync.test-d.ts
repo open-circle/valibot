@@ -42,7 +42,7 @@ describe('pipeAsync', () => {
   test('should return schema object', () => {
     expectTypeOf(schema).toEqualTypeOf<
       SchemaWithPipeAsync<
-        [
+        readonly [
           StringSchema<undefined>,
           DescriptionAction<string, 'text'>,
           TrimAction,

@@ -96,7 +96,7 @@ describe('digits', () => {
       expectActionIssue(action, baseIssue, [' 1', '1 ', ' 1 ', '1 2']);
     });
 
-    test('for number seperators', () => {
+    test('for number separators', () => {
       expectActionIssue(action, baseIssue, ['1,000', '1_000', '1 000']);
     });
 

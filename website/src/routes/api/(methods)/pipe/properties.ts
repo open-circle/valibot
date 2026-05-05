@@ -23,6 +23,7 @@ export const properties: Record<string, PropertyProps> = {
     modifier: 'extends',
     type: {
       type: 'array',
+      modifier: 'readonly',
       item: {
         type: 'custom',
         name: 'PipeItem',
@@ -60,6 +61,7 @@ export const properties: Record<string, PropertyProps> = {
       generics: [
         {
           type: 'tuple',
+          modifier: 'readonly',
           items: [
             {
               type: 'custom',

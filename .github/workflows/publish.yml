@@ -18,19 +18,17 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
-      - name: Build
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Build library
         run: pnpm build
         working-directory: library
-      - name: Publish
-        run: pnpm publish --provenance --access public --no-git-checks
+      - name: Publish library
+        run: npm publish --access public
         working-directory: library
         continue-on-error: true
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   library_jsr:
     name: Publish library to JSR
@@ -40,9 +38,9 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Publish
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Publish library
         run: npx jsr publish
         working-directory: library
 
@@ -54,19 +52,17 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
-      - name: Build
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Build i18n
         run: pnpm build.npm
         working-directory: packages/i18n
-      - name: Publish
-        run: pnpm publish --provenance --access public --no-git-checks
+      - name: Publish i18n
+        run: npm publish --access public
         working-directory: packages/i18n
         continue-on-error: true
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   i18n_jsr:
     name: Publish i18n to JSR
@@ -76,14 +72,14 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
-      - name: Build
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Build i18n
         run: pnpm build.jsr
         working-directory: packages/i18n
-      - name: Publish
+      - name: Publish i18n
         run: npx jsr publish --allow-dirty
         working-directory: packages/i18n
 
@@ -95,19 +91,17 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
-      - name: Build
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Build to-json-schema
         run: pnpm build
         working-directory: packages/to-json-schema
-      - name: Publish
-        run: pnpm publish --provenance --access public --no-git-checks
+      - name: Publish to-json-schema
+        run: npm publish --access public
         working-directory: packages/to-json-schema
         continue-on-error: true
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   to_json_schema_jsr:
     name: Publish to-json-schema to JSR
@@ -117,13 +111,10 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
-      - name: Build
-        run: pnpm build
-        working-directory: library
-      - name: Publish
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Publish to-json-schema
         run: npx jsr publish
         working-directory: packages/to-json-schema

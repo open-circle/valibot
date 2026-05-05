@@ -1,11 +1,13 @@
-import type {
-  BaseValidation,
-  DeepPickN,
-  ErrorMessage,
-  PathKeys,
-} from '../../types/index.ts';
+import type { BaseValidation, ErrorMessage } from '../../types/index.ts';
 import { _addIssue } from '../../utils/index.ts';
-import type { PartialCheckIssue, PartialInput } from './types.ts';
+import type {
+  DeepPickN,
+  PartialCheckIssue,
+  PartialInput,
+  Paths,
+  RequiredPaths,
+  ValidPaths,
+} from './types.ts';
 import { _isPartiallyTyped } from './utils/index.ts';
 
 /**
@@ -13,8 +15,8 @@ import { _isPartiallyTyped } from './utils/index.ts';
  */
 export interface PartialCheckAction<
   TInput extends PartialInput,
-  TPathList extends readonly PathKeys<TInput>[],
-  TSelection extends DeepPickN<TInput, TPathList>,
+  TPaths extends Paths,
+  TSelection extends DeepPickN<TInput, TPaths>,
   TMessage extends ErrorMessage<PartialCheckIssue<TSelection>> | undefined,
 > extends BaseValidation<TInput, TInput, PartialCheckIssue<TSelection>> {
   /**
@@ -32,7 +34,7 @@ export interface PartialCheckAction<
   /**
    * The selected paths.
    */
-  readonly pathList: TPathList;
+  readonly paths: TPaths;
   /**
    * The validation function.
    */
@@ -46,24 +48,24 @@ export interface PartialCheckAction<
 /**
  * Creates a partial check validation action.
  *
- * @param pathList The selected paths.
+ * @param paths The selected paths.
  * @param requirement The validation function.
  *
  * @returns A partial check action.
  */
 export function partialCheck<
   TInput extends PartialInput,
-  const TPathList extends readonly PathKeys<TInput>[],
-  const TSelection extends DeepPickN<TInput, TPathList>,
+  const TPaths extends RequiredPaths,
+  const TSelection extends DeepPickN<TInput, TPaths>,
 >(
-  pathList: TPathList,
+  paths: ValidPaths<TInput, TPaths>,
   requirement: (input: TSelection) => boolean
-): PartialCheckAction<TInput, TPathList, TSelection, undefined>;
+): PartialCheckAction<TInput, TPaths, TSelection, undefined>;
 
 /**
  * Creates a partial check validation action.
  *
- * @param pathList The selected paths.
+ * @param paths The selected paths.
  * @param requirement The validation function.
  * @param message The error message.
  *
@@ -71,25 +73,25 @@ export function partialCheck<
  */
 export function partialCheck<
   TInput extends PartialInput,
-  const TPathList extends readonly PathKeys<TInput>[],
-  const TSelection extends DeepPickN<TInput, TPathList>,
+  const TPaths extends RequiredPaths,
+  const TSelection extends DeepPickN<TInput, TPaths>,
   const TMessage extends
     | ErrorMessage<PartialCheckIssue<TSelection>>
     | undefined,
 >(
-  pathList: TPathList,
+  paths: ValidPaths<TInput, TPaths>,
   requirement: (input: TSelection) => boolean,
   message: TMessage
-): PartialCheckAction<TInput, TPathList, TSelection, TMessage>;
+): PartialCheckAction<TInput, TPaths, TSelection, TMessage>;
 
 // @__NO_SIDE_EFFECTS__
 export function partialCheck(
-  pathList: PathKeys<PartialInput>[],
+  paths: Paths,
   requirement: (input: PartialInput) => boolean,
   message?: ErrorMessage<PartialCheckIssue<PartialInput>>
 ): PartialCheckAction<
   PartialInput,
-  PathKeys<PartialInput>[],
+  Paths,
   PartialInput,
   ErrorMessage<PartialCheckIssue<PartialInput>> | undefined
 > {
@@ -99,12 +101,12 @@ export function partialCheck(
     reference: partialCheck,
     async: false,
     expects: null,
-    pathList,
+    paths,
     requirement,
     message,
     '~run'(dataset, config) {
       if (
-        (dataset.typed || _isPartiallyTyped(dataset, pathList)) &&
+        (dataset.typed || _isPartiallyTyped(dataset, paths)) &&
         // @ts-expect-error
         !this.requirement(dataset.value)
       ) {

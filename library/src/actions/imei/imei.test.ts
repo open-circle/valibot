@@ -63,7 +63,7 @@ describe('imei', () => {
       });
     });
 
-    test('for valid IMEI without seperators', () => {
+    test('for valid IMEI without separators', () => {
       expectNoActionIssue(action, [
         '861812069402168',
         '536498459191226',
@@ -72,7 +72,7 @@ describe('imei', () => {
       ]);
     });
 
-    test('for valid IMEI with seperators', () => {
+    test('for valid IMEI with separators', () => {
       expectNoActionIssue(action, [
         '86-181206-940216-8',
         '53-649845-919122-6',
@@ -104,7 +104,7 @@ describe('imei', () => {
       ]);
     });
 
-    test('for missing seperators', () => {
+    test('for missing separators', () => {
       expectActionIssue(action, baseIssue, [
         '86181206-940216-8',
         '86-181206940216-8',
@@ -112,7 +112,7 @@ describe('imei', () => {
       ]);
     });
 
-    test('for double seperators', () => {
+    test('for double separators', () => {
       expectActionIssue(action, baseIssue, [
         '86--181206-940216-8',
         '86-181206--940216-8',
@@ -121,7 +121,7 @@ describe('imei', () => {
       ]);
     });
 
-    test('for invalid seperators', () => {
+    test('for invalid separators', () => {
       expectActionIssue(action, baseIssue, [
         '86 181206 940216 8',
         '86/181206/940216/8',

@@ -5,7 +5,6 @@ import type {
   StringIssue,
 } from '../../schemas/index.ts';
 import type {
-  DeepPickN,
   FailureDataset,
   PartialDataset,
   SuccessDataset,
@@ -15,17 +14,17 @@ import {
   type PartialCheckActionAsync,
   partialCheckAsync,
 } from './partialCheckAsync.ts';
-import type { PartialCheckIssue } from './types.ts';
+import type { DeepPickN, PartialCheckIssue } from './types.ts';
 
 describe('partialCheckAsync', () => {
   describe('should return action object', () => {
     // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-    type Input = { nested: { key: string } };
-    const pathList = [['nested', 'key']] as const;
-    type PathList = typeof pathList;
+    type Input = { nested: { key1: number; key2: string; key3: boolean } };
+    const paths = [['nested', 'key2']] as const;
+    type PathList = typeof paths;
     type Selection = DeepPickN<Input, PathList>;
     const requirement = async (input: Selection) =>
-      input.nested.key.includes('foo');
+      input.nested.key2.includes('foo');
     const baseAction: Omit<
       PartialCheckActionAsync<Input, PathList, Selection, never>,
       'message'
@@ -34,7 +33,7 @@ describe('partialCheckAsync', () => {
       type: 'partial_check',
       reference: partialCheckAsync,
       expects: null,
-      pathList,
+      paths,
       requirement,
       async: true,
       '~run': expect.any(Function),
@@ -51,11 +50,11 @@ describe('partialCheckAsync', () => {
         message: undefined,
       };
       expect(
-        partialCheckAsync<Input, PathList, Selection>(pathList, requirement)
+        partialCheckAsync<Input, PathList, Selection>(paths, requirement)
       ).toStrictEqual(action);
       expect(
         partialCheckAsync<Input, PathList, Selection, undefined>(
-          pathList,
+          paths,
           requirement,
           undefined
         )
@@ -66,7 +65,7 @@ describe('partialCheckAsync', () => {
       const message = 'message';
       expect(
         partialCheckAsync<Input, PathList, Selection, 'message'>(
-          pathList,
+          paths,
           requirement,
           message
         )
@@ -85,7 +84,7 @@ describe('partialCheckAsync', () => {
       const message = () => 'message';
       expect(
         partialCheckAsync<Input, PathList, Selection, typeof message>(
-          pathList,
+          paths,
           requirement,
           message
         )

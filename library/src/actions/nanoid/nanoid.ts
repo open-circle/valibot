@@ -9,7 +9,7 @@ import { _addIssue } from '../../utils/index.ts';
 /**
  * Nano ID issue interface.
  */
-export interface NanoIDIssue<TInput extends string> extends BaseIssue<TInput> {
+export interface NanoIdIssue<TInput extends string> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */
@@ -33,12 +33,19 @@ export interface NanoIDIssue<TInput extends string> extends BaseIssue<TInput> {
 }
 
 /**
+ * Nano ID issue type.
+ *
+ * @deprecated Use `NanoIdIssue` instead.
+ */
+export type NanoIDIssue<TInput extends string> = NanoIdIssue<TInput>;
+
+/**
  * Nano ID action interface.
  */
-export interface NanoIDAction<
+export interface NanoIdAction<
   TInput extends string,
-  TMessage extends ErrorMessage<NanoIDIssue<TInput>> | undefined,
-> extends BaseValidation<TInput, TInput, NanoIDIssue<TInput>> {
+  TMessage extends ErrorMessage<NanoIdIssue<TInput>> | undefined,
+> extends BaseValidation<TInput, TInput, NanoIdIssue<TInput>> {
   /**
    * The action type.
    */
@@ -62,11 +69,21 @@ export interface NanoIDAction<
 }
 
 /**
+ * Nano ID action type.
+ *
+ * @deprecated Use `NanoIdAction` instead.
+ */
+export type NanoIDAction<
+  TInput extends string,
+  TMessage extends ErrorMessage<NanoIdIssue<TInput>> | undefined,
+> = NanoIdAction<TInput, TMessage>;
+
+/**
  * Creates a [Nano ID](https://github.com/ai/nanoid) validation action.
  *
  * @returns A Nano ID action.
  */
-export function nanoid<TInput extends string>(): NanoIDAction<
+export function nanoid<TInput extends string>(): NanoIdAction<
   TInput,
   undefined
 >;
@@ -80,13 +97,13 @@ export function nanoid<TInput extends string>(): NanoIDAction<
  */
 export function nanoid<
   TInput extends string,
-  const TMessage extends ErrorMessage<NanoIDIssue<TInput>> | undefined,
->(message: TMessage): NanoIDAction<TInput, TMessage>;
+  const TMessage extends ErrorMessage<NanoIdIssue<TInput>> | undefined,
+>(message: TMessage): NanoIdAction<TInput, TMessage>;
 
 // @__NO_SIDE_EFFECTS__
 export function nanoid(
-  message?: ErrorMessage<NanoIDIssue<string>>
-): NanoIDAction<string, ErrorMessage<NanoIDIssue<string>> | undefined> {
+  message?: ErrorMessage<NanoIdIssue<string>>
+): NanoIdAction<string, ErrorMessage<NanoIdIssue<string>> | undefined> {
   return {
     kind: 'validation',
     type: 'nanoid',

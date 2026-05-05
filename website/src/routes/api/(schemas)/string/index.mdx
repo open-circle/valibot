@@ -4,10 +4,10 @@ description: Creates a string schema.
 source: /schemas/string/string.ts
 contributors:
   - fabian-hiller
+  - EltonLobo07
   - morinokami
   - jasperteo
   - kazizi55
-  - EltonLobo07
 ---
 
 import { ApiList, Property } from '~/components';
@@ -126,6 +126,7 @@ The following APIs can be combined with `string`.
     'getFallback',
     'getFallbacks',
     'is',
+    'message',
     'parse',
     'parser',
     'pipe',
@@ -148,13 +149,16 @@ The following APIs can be combined with `string`.
     'decimal',
     'description',
     'digits',
+    'domain',
     'email',
     'emoji',
     'empty',
     'endsWith',
     'excludes',
+    'flavor',
     'graphemes',
     'gtValue',
+    'guard',
     'hash',
     'hexadecimal',
     'hexColor',
@@ -163,12 +167,16 @@ The following APIs can be combined with `string`.
     'ip',
     'ipv4',
     'ipv6',
+    'isbn',
+    'isrc',
     'isoDate',
     'isoDateTime',
+    'isoDateTimeSecond',
     'isoTime',
     'isoTimeSecond',
     'isoTimestamp',
     'isoWeek',
+    'json',
     'length',
     'ltValue',
     'mac',
@@ -188,12 +196,14 @@ The following APIs can be combined with `string`.
     'nanoid',
     'nonEmpty',
     'notBytes',
+    'notEntries',
     'notGraphemes',
     'notLength',
     'notValue',
     'notValues',
     'notWords',
     'octal',
+    'parseJson',
     'rawCheck',
     'rawTransform',
     'readonly',
@@ -201,10 +211,19 @@ The following APIs can be combined with `string`.
     'rfcEmail',
     'slug',
     'startsWith',
+    'stringifyJson',
     'title',
+    'toBigint',
+    'toBoolean',
+    'toCamelCase',
+    'toDate',
+    'toKebabCase',
     'toLowerCase',
     'toMaxValue',
     'toMinValue',
+    'toNumber',
+    'toPascalCase',
+    'toSnakeCase',
     'toUpperCase',
     'transform',
     'trim',

@@ -17,6 +17,7 @@ import type {
   BaseSchema,
   BaseSchemaAsync,
   ErrorMessage,
+  Merge,
   ObjectEntries,
   ObjectEntriesAsync,
   Prettify,
@@ -54,23 +55,6 @@ type Schema =
     >;
 
 /**
- * Merge entries type.
- */
-type MergeEntries<
-  TFirstEntries extends ObjectEntries | ObjectEntriesAsync,
-  TRestEntries extends ObjectEntries | ObjectEntriesAsync,
-> = Prettify<
-  {
-    [TKey in keyof TFirstEntries as TKey extends Exclude<
-      keyof TFirstEntries,
-      keyof TRestEntries
-    >
-      ? TKey
-      : never]: TFirstEntries[TKey];
-  } & TRestEntries
->;
-
-/**
  * Recursive merge type.
  */
 type RecursiveMerge<TSchemas extends readonly [Schema, ...Schema[]]> =
@@ -80,7 +64,7 @@ type RecursiveMerge<TSchemas extends readonly [Schema, ...Schema[]]> =
           infer TFirstSchema extends Schema,
           ...infer TRestSchemas extends readonly [Schema, ...Schema[]],
         ]
-      ? MergeEntries<TFirstSchema['entries'], RecursiveMerge<TRestSchemas>>
+      ? Merge<TFirstSchema['entries'], RecursiveMerge<TRestSchemas>>
       : never;
 
 /**
@@ -96,8 +80,6 @@ type MergedEntries<TSchemas extends readonly [Schema, ...Schema[]]> = Prettify<
  * @param schemas The schemas to merge the entries from.
  *
  * @returns The object entries from the schemas.
- *
- * @beta
  */
 export function entriesFromObjects<
   const TSchemas extends readonly [Schema, ...Schema[]],

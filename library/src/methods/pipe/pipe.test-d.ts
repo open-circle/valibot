@@ -42,7 +42,7 @@ describe('pipe', () => {
   test('should return schema object', () => {
     expectTypeOf(schema).toEqualTypeOf<
       SchemaWithPipe<
-        [
+        readonly [
           StringSchema<undefined>,
           DescriptionAction<string, 'text'>,
           TrimAction,

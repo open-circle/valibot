@@ -1,0 +1,77 @@
+---
+title: Entries
+description: Creates an entries validation action.
+source: /actions/entries/entries.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# entries
+
+Creates an entries validation action.
+
+```ts
+const Action = v.entries<TInput, TRequirement, TMessage>(requirement, message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `entries` you can validate the number of entries of an object. If the input does not match the `requirement`, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `entries` can be used.
+
+### Exact object entries
+
+Schema to validate an object that does have 5 entries.
+
+```ts
+const EntriesSchema = v.pipe(
+  v.record(v.string(), v.number()),
+  v.entries(5, 'Object must have 5 entries')
+);
+```
+
+## Related
+
+The following APIs can be combined with `entries`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'looseObject',
+    'object',
+    'objectWithRest',
+    'record',
+    'strictObject',
+    'variant',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

@@ -5,23 +5,22 @@ import type {
   StringIssue,
 } from '../../schemas/index.ts';
 import type {
-  DeepPickN,
   FailureDataset,
   PartialDataset,
   SuccessDataset,
 } from '../../types/index.ts';
 import type { MinLengthIssue } from '../minLength/index.ts';
 import { partialCheck, type PartialCheckAction } from './partialCheck.ts';
-import type { PartialCheckIssue } from './types.ts';
+import type { DeepPickN, PartialCheckIssue } from './types.ts';
 
 describe('partialCheck', () => {
   describe('should return action object', () => {
     // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-    type Input = { nested: { key: string } };
-    const pathList = [['nested', 'key']] as const;
-    type PathList = typeof pathList;
+    type Input = { nested: { key1: number; key2: string; key3: boolean } };
+    const paths = [['nested', 'key2']] as const;
+    type PathList = typeof paths;
     type Selection = DeepPickN<Input, PathList>;
-    const requirement = (input: Selection) => input.nested.key.includes('foo');
+    const requirement = (input: Selection) => input.nested.key2.includes('foo');
     const baseAction: Omit<
       PartialCheckAction<Input, PathList, Selection, never>,
       'message'
@@ -30,7 +29,7 @@ describe('partialCheck', () => {
       type: 'partial_check',
       reference: partialCheck,
       expects: null,
-      pathList,
+      paths,
       requirement,
       async: false,
       '~run': expect.any(Function),
@@ -43,11 +42,11 @@ describe('partialCheck', () => {
           message: undefined,
         };
       expect(
-        partialCheck<Input, PathList, Selection>(pathList, requirement)
+        partialCheck<Input, PathList, Selection>(paths, requirement)
       ).toStrictEqual(action);
       expect(
         partialCheck<Input, PathList, Selection, undefined>(
-          pathList,
+          paths,
           requirement,
           undefined
         )
@@ -58,7 +57,7 @@ describe('partialCheck', () => {
       const message = 'message';
       expect(
         partialCheck<Input, PathList, Selection, 'message'>(
-          pathList,
+          paths,
           requirement,
           message
         )
@@ -72,7 +71,7 @@ describe('partialCheck', () => {
       const message = () => 'message';
       expect(
         partialCheck<Input, PathList, Selection, typeof message>(
-          pathList,
+          paths,
           requirement,
           message
         )

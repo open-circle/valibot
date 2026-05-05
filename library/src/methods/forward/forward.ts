@@ -2,8 +2,8 @@ import type {
   BaseIssue,
   BaseValidation,
   IssuePathItem,
-  PathKeys,
 } from '../../types/index.ts';
+import type { RequiredPath, ValidPath } from './types.ts';
 
 // TODO: We should try to find a better way to type this function without
 // breaking the type inference, as the current implementation loses some type
@@ -16,7 +16,7 @@ import type {
  * Forwards the issues of the passed validation action.
  *
  * @param action The validation action.
- * @param pathKeys The path keys.
+ * @param path The path to forward the issues to.
  *
  * @returns The modified action.
  */
@@ -24,9 +24,10 @@ import type {
 export function forward<
   TInput extends Record<string, unknown> | ArrayLike<unknown>,
   TIssue extends BaseIssue<unknown>,
+  const TPath extends RequiredPath,
 >(
   action: BaseValidation<TInput, TInput, TIssue>,
-  pathKeys: PathKeys<TInput>
+  path: ValidPath<TInput, TPath>
 ): BaseValidation<TInput, TInput, TIssue> {
   return {
     ...action,
@@ -45,7 +46,7 @@ export function forward<
             let pathInput: unknown = dataset.value;
 
             // Try to forward issue to end of path list
-            for (const key of pathKeys) {
+            for (const key of path) {
               // Create path value variable
               // @ts-expect-error
               const pathValue: unknown = pathInput[key];

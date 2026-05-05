@@ -108,7 +108,7 @@ describe('isoDateTime', () => {
       ]);
     });
 
-    test('for missing seperators', () => {
+    test('for missing separators', () => {
       expectActionIssue(action, baseIssue, [
         '000001-01T00:00',
         '0000-0101T00:00',

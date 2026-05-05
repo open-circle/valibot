@@ -1,3 +1,3 @@
 export * from './nonOptional.ts';
 export * from './nonOptionalAsync.ts';
-export * from './types.ts';
+export type { NonOptionalIssue } from './types.ts';

@@ -6,12 +6,14 @@ contributors:
   - fabian-hiller
 ---
 
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # decimal
 
 Creates a [decimal](https://en.wikipedia.org/wiki/Decimal) validation action.
+
+> The difference between `decimal` and <Link href="../digits/">`digits`</Link> is that `decimal` accepts floating point numbers and negative numbers, while <Link href="../digits/">`digits`</Link> accepts only the digits 0-9.
 
 ```ts
 const Action = v.decimal<TInput, TMessage>(message);
@@ -55,7 +57,7 @@ The following APIs can be combined with `decimal`.
 
 ### Schemas
 
-<ApiList items={['any', 'custom', 'string', 'unknown']} />
+<ApiList items={['any', 'custom', 'string']} />
 
 ### Methods
 

@@ -1,0 +1,131 @@
+---
+title: flavor
+description: Creates a flavor transformation action.
+source: /actions/flavor/flavor.ts
+contributors:
+  - vktrl
+  - fabian-hiller
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# flavor
+
+Creates a flavor transformation action.
+
+```ts
+const Action = v.flavor<TInput, TName>(name);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TName` <Property {...properties.TName} />
+
+## Parameters
+
+- `name` <Property {...properties.name} />
+
+### Explanation
+
+`flavor` is a less strict version of <Link href='../brand/'>`brand`</Link> that allows you to flavor the output type of a schema with a `name`. Data is considered valid if it's type is unflavored or has been validated by a schema that has the same flavor.
+
+> `flavor` can also be used as a TypeScript DX hack to improve the editor's autocompletion by displaying only literal types, but still allowing the unflavored root type to be passed.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `flavor` can be used.
+
+### Flavored ID schemas
+
+Schema to ensure that different types of IDs are not mixed up.
+
+```ts
+// Create user ID and order ID schema
+const UserIdSchema = v.pipe(v.string(), v.flavor('UserId'));
+const OrderIdSchema = v.pipe(v.string(), v.flavor('OrderId'));
+
+// Infer output types of both schemas
+type UserId = v.InferOutput<typeof UserIdSchema>;
+type OrderId = v.InferOutput<typeof OrderIdSchema>;
+
+// This works because output is flavored
+const userId: UserId = v.parse(UserIdSchema, 'c28443ef...');
+const orderId: OrderId = v.parse(OrderIdSchema, '4b717520...');
+
+// You can also use unflavored strings
+const newUserId1: UserId = '2d80cd94...';
+
+// But this will result in a type error
+const newUserId2: UserId = orderId;
+```
+
+## Related
+
+The following APIs can be combined with `flavor`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'array',
+    'bigint',
+    'blob',
+    'boolean',
+    'custom',
+    'date',
+    'enum',
+    'exactOptional',
+    'file',
+    'function',
+    'instance',
+    'intersect',
+    'lazy',
+    'literal',
+    'looseObject',
+    'looseTuple',
+    'map',
+    'nan',
+    'never',
+    'nonNullable',
+    'nonNullish',
+    'nonOptional',
+    'null',
+    'nullable',
+    'nullish',
+    'number',
+    'object',
+    'objectWithRest',
+    'optional',
+    'picklist',
+    'promise',
+    'record',
+    'set',
+    'strictObject',
+    'strictTuple',
+    'string',
+    'symbol',
+    'tuple',
+    'tupleWithRest',
+    'undefined',
+    'undefinedable',
+    'union',
+    'unknown',
+    'variant',
+    'void',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

@@ -53,13 +53,25 @@ const IsoDateSchema = v.pipe(
 );
 ```
 
+### Minimum value schema
+
+Schema to validate an ISO date is after a certain date.
+
+```ts
+const MinValueSchema = v.pipe(
+  v.string(),
+  v.isoDate(),
+  v.minValue('2000-01-01', 'The date must be after the year 1999.')
+);
+```
+
 ## Related
 
 The following APIs can be combined with `isoDate`.
 
 ### Schemas
 
-<ApiList items={['any', 'custom', 'string', 'unknown']} />
+<ApiList items={['any', 'custom', 'string']} />
 
 ### Methods
 

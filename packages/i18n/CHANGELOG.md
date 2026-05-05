@@ -2,17 +2,33 @@
 
 All notable changes to the library will be documented in this file.
 
-## v1.0.0 (Month DD, YYYY)
+## vX.X.X (Month DD, YYYY)
+
+- Add Uzbek (uz) translations (pull request #1452)
+
+## v1.1.0 (March 17, 2026)
+
+- Add Greek (el) translations (pull request #1311)
+- Add Slovak (sk) translations (pull request #1334)
+- Add Finnish (fi) translations (pull request #1318)
+- Add Azerbaijani (az) translations (pull request #1409)
+- Add Mongolian (mn) translations (pull request #1224)
+- Add new and missing actions to translations (pull request #1306)
+- Change Valibot peer dependency to `^1.3.0`
+- Fix ISO 639-1 code for Korean (`ko`) (pull request #1306)
+
+## v1.0.0 (March 19, 2025)
 
 - Add new and missing actions to translations
 - Add Farsi (fa) translations (pull request #838)
 - Add Czech (cs) translations (pull request #886)
 - Add Vietnamese (vi) translations (pull request #951)
+- Change Romanian (ro) translations (pull request #1070)
 - Change Valibot peer dependency to v1.0.0
 
 ## v0.17.0 (July 26, 2024)
 
-- Add Indonesia (id) translations (pull request #683)
+- Add Indonesian (id) translations (pull request #683)
 
 ## v0.16.0 (June 19, 2024)
 

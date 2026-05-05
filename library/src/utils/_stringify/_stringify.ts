@@ -13,6 +13,7 @@ export function _stringify(input: unknown): string {
   if (type === 'string') {
     return `"${input}"`;
   }
+  // TODO: Should we add "n" suffix to bigints?
   if (type === 'number' || type === 'bigint' || type === 'boolean') {
     return `${input}`;
   }

@@ -6,7 +6,7 @@ contributors:
   - fabian-hiller
 ---
 
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # is
@@ -27,6 +27,10 @@ const result = v.is<TSchema>(schema, input);
 
 - `schema` <Property {...properties.schema} />
 - `input` <Property {...properties.input} />
+
+### Explanation
+
+`is` does not modify the `input`. Therefore, transformations have no effect and unknown keys of an object are not removed. That is why this approach is not as safe and powerful as <Link href='../parse/'>`parse`</Link> and <Link href='../safeParse/'>`safeParse`</Link>.
 
 ## Returns
 
@@ -110,6 +114,7 @@ The following APIs can be combined with `is`.
     'config',
     'fallback',
     'keyof',
+    'message',
     'omit',
     'partial',
     'pick',

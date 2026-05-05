@@ -11,9 +11,10 @@ describe('forwardAsync', () => {
   test('should forward issues to end of path list', async () => {
     const input = { nested: [{ key: 'value_1' }, { key: 'value_2' }] };
     type Input = typeof input;
+    type Path = ['nested', 1, 'key'];
     const requirement = () => false;
     expect(
-      await forwardAsync<Input, CheckIssue<Input>>(
+      await forwardAsync<Input, CheckIssue<Input>, Path>(
         check(requirement, 'message'),
         ['nested', 1, 'key']
       )['~run']({ typed: true, value: input }, {})
@@ -64,9 +65,10 @@ describe('forwardAsync', () => {
   test('should stop forwarding if path input is undefined', async () => {
     const input = { nested: [{ key: 'value_1' }, { key: 'value_2' }] };
     type Input = typeof input;
+    type Path = ['nested', 6, 'key'];
     const requirement = () => false;
     expect(
-      await forwardAsync<Input, CheckIssue<Input>>(
+      await forwardAsync<Input, CheckIssue<Input>, Path>(
         check(requirement, 'message'),
         ['nested', 6, 'key']
       )['~run']({ typed: true, value: input }, {})
@@ -110,6 +112,7 @@ describe('forwardAsync', () => {
   test('should only forward issues of wrapped action', async () => {
     const input = { nested: [{ key: 'value_1' }, { key: 'value_2' }] };
     type Input = typeof input;
+    type Path = ['nested', 1, 'key'];
     const requirement = () => false;
     const prevIssue: MinLengthIssue<Input['nested'], 3> = {
       kind: 'validation',
@@ -134,7 +137,7 @@ describe('forwardAsync', () => {
       abortPipeEarly: undefined,
     };
     expect(
-      await forwardAsync<Input, CheckIssue<Input>>(
+      await forwardAsync<Input, CheckIssue<Input>, Path>(
         check(requirement, 'message'),
         ['nested', 1, 'key']
       )['~run'](
@@ -198,9 +201,10 @@ describe('forwardAsync', () => {
   test('should do nothing if there are no issues', async () => {
     const input = { nested: [{ key: 'value_1' }, { key: 'value_2' }] };
     type Input = typeof input;
+    type Path = ['nested', 6, 'key'];
     const requirement = () => true;
     expect(
-      await forwardAsync<Input, CheckIssue<Input>>(
+      await forwardAsync<Input, CheckIssue<Input>, Path>(
         check(requirement, 'message'),
         ['nested', 6, 'key']
       )['~run']({ typed: true, value: input }, {})

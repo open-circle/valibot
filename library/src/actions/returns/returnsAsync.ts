@@ -10,8 +10,6 @@ import { ValiError } from '../../utils/index.ts';
 
 /**
  * Returns action async type.
- *
- * @beta
  */
 export interface ReturnsActionAsync<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,8 +42,6 @@ export interface ReturnsActionAsync<
  * @param schema The arguments schema.
  *
  * @returns An returns action.
- *
- * @beta
  */
 export function returnsAsync<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

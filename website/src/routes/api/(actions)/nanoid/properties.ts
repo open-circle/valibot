@@ -17,8 +17,8 @@ export const properties: Record<string, PropertyProps> = {
           generics: [
             {
               type: 'custom',
-              name: 'NanoIDIssue',
-              href: '../NanoIDIssue/',
+              name: 'NanoIdIssue',
+              href: '../NanoIdIssue/',
               generics: [
                 {
                   type: 'custom',
@@ -41,8 +41,8 @@ export const properties: Record<string, PropertyProps> = {
   Action: {
     type: {
       type: 'custom',
-      name: 'NanoIDAction',
-      href: '../NanoIDAction/',
+      name: 'NanoIdAction',
+      href: '../NanoIdAction/',
       generics: [
         {
           type: 'custom',

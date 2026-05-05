@@ -114,13 +114,13 @@ export const Chapters = component$(() => {
   });
 
   return (
-    <nav class="sticky top-32 space-y-6">
+    <nav class="sticky top-32 flex flex-col gap-6">
       <h5 class="text-lg font-medium text-slate-900 dark:text-slate-200">
         On this page
       </h5>
       <div class="relative">
         <ul
-          class="space-y-5 border-l-2 border-l-slate-200 dark:border-l-slate-800"
+          class="flex flex-col gap-5 border-l-2 border-l-slate-200 dark:border-l-slate-800"
           ref={listElement}
         >
           {headings.value.map(({ text, id }) => (
