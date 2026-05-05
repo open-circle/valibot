@@ -1,4 +1,6 @@
+import type { SchemaMapperHKT } from '../../methods/mapEntries/mapEntries.ts';
 import type {
+  BaseHKTable,
   BaseIssue,
   BaseSchema,
   ErrorMessage,
@@ -12,6 +14,10 @@ import type {
   NonNullishIssue,
 } from './types.ts';
 
+export interface NonNullishModifierHKT extends SchemaMapperHKT {
+  result: NonNullishSchema<this['wrapped'], undefined>;
+}
+
 /**
  * Non nullish schema interface.
  */
@@ -19,10 +25,11 @@ export interface NonNullishSchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<NonNullishIssue> | undefined,
 > extends BaseSchema<
-    InferNonNullishInput<TWrapped>,
-    InferNonNullishOutput<TWrapped>,
-    NonNullishIssue | InferNonNullishIssue<TWrapped>
-  > {
+      InferNonNullishInput<TWrapped>,
+      InferNonNullishOutput<TWrapped>,
+      NonNullishIssue | InferNonNullishIssue<TWrapped>
+    >,
+    BaseHKTable<NonNullishModifierHKT> {
   /**
    * The schema type.
    */
@@ -104,5 +111,6 @@ export function nonNullish(
       // @ts-expect-error
       return dataset as OutputDataset<unknown, BaseIssue<unknown>>;
     },
+    '~preferHkt': true,
   };
 }
