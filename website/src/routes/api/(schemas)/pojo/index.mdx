@@ -1,0 +1,130 @@
+---
+title: pojo
+description: Creates a POJO schema.
+source: /schemas/pojo/pojo.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# pojo
+
+Creates a POJO schema.
+
+```ts
+const Schema = v.pojo<TMessage>(message);
+```
+
+## Generics
+
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `pojo` you can validate that the input is a plain JavaScript object. If the input is not a plain object, you can use `message` to customize the error message.
+
+> Unlike <Link href="../object/">`object`</Link> and <Link href="../record/">`record`</Link>, this schema only checks the root type and does not validate entries. It also accepts plain objects with a `null` prototype.
+
+## Returns
+
+- `Schema` <Property {...properties.Schema} />
+
+## Examples
+
+The following examples show how `pojo` can be used. Please see the <Link href="/guides/objects/">object guide</Link> for more examples and explanations.
+
+### Plain object schema
+
+Schema to validate any plain object.
+
+```ts
+const PlainObjectSchema = v.pojo();
+```
+
+### Custom message
+
+POJO schema with a custom error message.
+
+```ts
+const PlainObjectSchema = v.pojo('A plain object is required.');
+```
+
+## Related
+
+The following APIs can be combined with `pojo`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'exactOptional',
+    'intersect',
+    'lazy',
+    'looseObject',
+    'nonNullable',
+    'nonNullish',
+    'nonOptional',
+    'nullable',
+    'nullish',
+    'object',
+    'objectWithRest',
+    'optional',
+    'record',
+    'strictObject',
+    'undefinedable',
+    'union',
+  ]}
+/>
+
+### Methods
+
+<ApiList
+  items={[
+    'assert',
+    'config',
+    'fallback',
+    'getDefault',
+    'getDefaults',
+    'getFallback',
+    'getFallbacks',
+    'is',
+    'message',
+    'parse',
+    'parser',
+    'pipe',
+    'safeParse',
+    'safeParser',
+  ]}
+/>
+
+### Actions
+
+<ApiList
+  items={[
+    'brand',
+    'check',
+    'description',
+    'entries',
+    'flavor',
+    'guard',
+    'maxEntries',
+    'metadata',
+    'minEntries',
+    'notEntries',
+    'rawCheck',
+    'rawTransform',
+    'readonly',
+    'title',
+    'transform',
+  ]}
+/>
+
+### Utils
+
+<ApiList items={['entriesFromList', 'isOfKind', 'isOfType']} />

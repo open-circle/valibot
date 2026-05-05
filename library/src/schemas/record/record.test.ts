@@ -116,11 +116,9 @@ describe('record', () => {
 
     // Complex types
 
-    // TODO: Enable this test again in case we find a reliable way to check for
-    // plain objects
-    // test('for arrays', () => {
-    //   expectSchemaIssue(schema, baseIssue, [[], ['value']]);
-    // });
+    test('for arrays', () => {
+      expectSchemaIssue(schema, baseIssue, [[], ['value']]);
+    });
 
     test('for functions', () => {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
