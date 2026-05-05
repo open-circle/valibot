@@ -11,6 +11,7 @@ All notable changes to the library will be documented in this file.
 - Change build target to ES2020 so distributed output stays compatible with environments that lack support for newer syntax (pull request #1455)
 - Change internal `_LruCache` to use a TypeScript `private` method instead of a `#private` class field to avoid runtime helpers in the transpiled output (pull request #1455)
 - Change internal `_isValidObjectKey` to use `Object.prototype.hasOwnProperty.call` instead of `Object.hasOwn` so the distributed output stays compatible with runtimes that lack the ES2022 `Object.hasOwn` builtin (pull request #1421)
+- Change `flatten` method to accept readonly issue arrays (pull request #1269)
 - Fix potential `RangeError` caused by spreading large issue arrays (pull request #1437)
 - Fix `creditCard` validation action to reject Mastercard numbers with invalid lengths (pull request #1462)
 - Fix `intersect` schema to no longer mutate input values, allowing frozen objects and arrays to be merged (pull request #1463)
