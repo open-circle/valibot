@@ -80,7 +80,6 @@ By default, when an object input is missing an optional entry, the corresponding
 const OptionalEntrySchema = v.object({
   key: v.optional(v.string(), () => undefined),
 });
-const output = v.parse(OptionalEntrySchema, {}); // { key: undefined }
 ```
 
 ### Unwrap optional schema
