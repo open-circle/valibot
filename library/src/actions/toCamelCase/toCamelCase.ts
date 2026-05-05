@@ -1,8 +1,10 @@
 import type { BaseTransformation } from '../../types/index.ts';
-import { _caseWords } from '../../utils/index.ts';
+import { _formatCase } from '../../utils/index.ts';
 
 /**
  * To camel case action interface.
+ *
+ * @beta
  */
 export interface ToCamelCaseAction
   extends BaseTransformation<string, string, never> {
@@ -19,7 +21,18 @@ export interface ToCamelCaseAction
 /**
  * Creates a to camel case transformation action.
  *
+ * Words are separated by `_`, `-` and ASCII whitespace, as well as by case
+ * and acronym boundaries.
+ *
+ * Hint: Acronym runs are normalized to lowercase (e.g. `parseURLValue` →
+ * `parseUrlValue`).
+ *
+ * Hint: Digits stay attached to the preceding token (e.g. `item2Name` →
+ * `item2Name`).
+ *
  * @returns A to camel case action.
+ *
+ * @beta
  */
 // @__NO_SIDE_EFFECTS__
 export function toCamelCase(): ToCamelCaseAction {
@@ -29,11 +42,7 @@ export function toCamelCase(): ToCamelCaseAction {
     reference: toCamelCase,
     async: false,
     '~run'(dataset) {
-      dataset.value = _caseWords(dataset.value)
-        .map((word, i) =>
-          i === 0 ? word : word[0].toUpperCase() + word.slice(1)
-        )
-        .join('');
+      dataset.value = _formatCase(dataset.value, '', false, true);
       return dataset;
     },
   };

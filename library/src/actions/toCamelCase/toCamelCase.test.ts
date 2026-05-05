@@ -23,12 +23,12 @@ describe('toCamelCase', () => {
     });
 
     test('for single word', () => {
-      expect(
-        action['~run']({ typed: true, value: 'hello' }, {})
-      ).toStrictEqual({
-        typed: true,
-        value: 'hello',
-      });
+      expect(action['~run']({ typed: true, value: 'hello' }, {})).toStrictEqual(
+        {
+          typed: true,
+          value: 'hello',
+        }
+      );
     });
 
     test('for snake_case', () => {

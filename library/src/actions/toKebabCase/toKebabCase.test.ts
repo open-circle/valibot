@@ -23,12 +23,12 @@ describe('toKebabCase', () => {
     });
 
     test('for single word', () => {
-      expect(
-        action['~run']({ typed: true, value: 'hello' }, {})
-      ).toStrictEqual({
-        typed: true,
-        value: 'hello',
-      });
+      expect(action['~run']({ typed: true, value: 'hello' }, {})).toStrictEqual(
+        {
+          typed: true,
+          value: 'hello',
+        }
+      );
     });
 
     test('for camelCase', () => {

@@ -1,8 +1,10 @@
 import type { BaseTransformation } from '../../types/index.ts';
-import { _caseWords } from '../../utils/index.ts';
+import { _formatCase } from '../../utils/index.ts';
 
 /**
  * To pascal case action interface.
+ *
+ * @beta
  */
 export interface ToPascalCaseAction
   extends BaseTransformation<string, string, never> {
@@ -19,7 +21,18 @@ export interface ToPascalCaseAction
 /**
  * Creates a to pascal case transformation action.
  *
+ * Words are separated by `_`, `-` and ASCII whitespace, as well as by case
+ * and acronym boundaries.
+ *
+ * Hint: Acronym runs are normalized to lowercase (e.g. `parseURLValue` →
+ * `ParseUrlValue`).
+ *
+ * Hint: Digits stay attached to the preceding token (e.g. `item2Name` →
+ * `Item2Name`).
+ *
  * @returns A to pascal case action.
+ *
+ * @beta
  */
 // @__NO_SIDE_EFFECTS__
 export function toPascalCase(): ToPascalCaseAction {
@@ -29,9 +42,7 @@ export function toPascalCase(): ToPascalCaseAction {
     reference: toPascalCase,
     async: false,
     '~run'(dataset) {
-      dataset.value = _caseWords(dataset.value)
-        .map((word) => word[0].toUpperCase() + word.slice(1))
-        .join('');
+      dataset.value = _formatCase(dataset.value, '', true, true);
       return dataset;
     },
   };

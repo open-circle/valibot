@@ -23,12 +23,12 @@ describe('toPascalCase', () => {
     });
 
     test('for single word', () => {
-      expect(
-        action['~run']({ typed: true, value: 'hello' }, {})
-      ).toStrictEqual({
-        typed: true,
-        value: 'Hello',
-      });
+      expect(action['~run']({ typed: true, value: 'hello' }, {})).toStrictEqual(
+        {
+          typed: true,
+          value: 'Hello',
+        }
+      );
     });
 
     test('for snake_case', () => {
