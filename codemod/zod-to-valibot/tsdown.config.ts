@@ -8,5 +8,6 @@ export default defineConfig([
     minify: false,
     dts: true,
     outDir: './dist',
+    target: 'es2020',
   },
 ]);
