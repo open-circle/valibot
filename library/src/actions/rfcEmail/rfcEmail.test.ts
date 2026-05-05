@@ -312,6 +312,7 @@ describe('rfcEmail', () => {
         'あいうえお@example.com',
         'email@あいうえお.com',
         'email@example.あいう',
+        'Kſ@example.com',
       ]);
     });
 
