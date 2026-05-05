@@ -278,6 +278,19 @@ describe('_formatCase', () => {
       expect(_formatCase('CAFÉ', '', true, true)).toBe('Café');
     });
 
+    test('should handle supplementary-plane letters with case mappings', () => {
+      // Deseret small letter long I (U+10428) → capital (U+10400)
+      expect(_formatCase('\u{10428}pple_world', '', true, true)).toBe(
+        '\u{10400}ppleWorld'
+      );
+      expect(_formatCase('\u{10428}pple_world', '', false, true)).toBe(
+        '\u{10428}ppleWorld'
+      );
+      expect(_formatCase('foo_\u{10428}pple', '', false, true)).toBe(
+        'foo\u{10400}pple'
+      );
+    });
+
     test('should handle complex mixed input', () => {
       expect(_formatCase('this_is-aTest_String', '_', false, false)).toBe(
         'this_is_a_test_string'

@@ -47,14 +47,20 @@ export function _formatCase(
 
       // If this word should be capitalized, uppercase its first char
       if (firstWord ? capFirst : capRest) {
-        // Hint: For ASCII lowercase letters (codes 97–122), subtract 32 to
-        // derive the uppercase code. This avoids `.toUpperCase()` for the
-        // common case.
         const firstCode = word.charCodeAt(0);
-        word =
-          (firstCode >= 97 && firstCode <= 122
-            ? String.fromCharCode(firstCode - 32)
-            : word.charAt(0).toUpperCase()) + word.slice(1);
+        if (firstCode >= 97 && firstCode <= 122) {
+          // Hint: For ASCII lowercase letters (codes 97–122), subtract 32
+          // to derive the uppercase code. This avoids `.toUpperCase()` for
+          // the common case.
+          word = String.fromCharCode(firstCode - 32) + word.slice(1);
+        } else {
+          // Hint: Codes 0xD800–0xDBFF are high surrogates that pair with
+          // the next code unit to form one supplementary-plane character
+          // (e.g. Deseret, Adlam). Slice both code units so `.toUpperCase()`
+          // sees the full character.
+          const charLen = firstCode >= 0xd800 && firstCode <= 0xdbff ? 2 : 1;
+          word = word.slice(0, charLen).toUpperCase() + word.slice(charLen);
+        }
       }
 
       result += firstWord ? word : separator + word;
