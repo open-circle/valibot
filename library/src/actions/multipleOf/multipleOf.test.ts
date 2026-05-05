@@ -69,11 +69,22 @@ describe('multipleOf', () => {
       expectNoActionIssue(multipleOf(0.01), [3, 0.1, 0.03, 1.5, -0.1, -1.5]);
       expectNoActionIssue(multipleOf(0.1), [0.3, -0.3]);
       expectNoActionIssue(multipleOf(0.25), [0.75, -0.75]);
+      expectNoActionIssue(multipleOf(0.5), [0, 1.5, -2.5]);
       expectNoActionIssue(multipleOf(1e-7), [0, 1e-7, 2e-7, -3e-7]);
+    });
+
+    test('for valid very large numbers', () => {
+      expectNoActionIssue(multipleOf(1e21), [0, 1e21, 2e21, -3e21]);
+    });
+
+    test('for valid negative requirement', () => {
+      expectNoActionIssue(multipleOf(-5), [-15, -5, 0, 5, 15]);
+      expectNoActionIssue(multipleOf(-0.1), [0, 0.3, -0.3]);
     });
 
     test('for valid bigints', () => {
       expectNoActionIssue(multipleOf(5n), [-15n, -10n, -5n, 0n, 5n, 10n, 15n]);
+      expectNoActionIssue(multipleOf(-5n), [-15n, 0n, 10n]);
     });
   });
 
@@ -151,6 +162,27 @@ describe('multipleOf', () => {
         multipleOf(1e-7, 'message'),
         { ...baseIssue, expected: '%1e-7', requirement: 1e-7 },
         [1e-8, 1.5e-7]
+      );
+    });
+
+    test('for invalid very large numbers', () => {
+      expectActionIssue(
+        multipleOf(1e21, 'message'),
+        { ...baseIssue, expected: '%1e+21', requirement: 1e21 },
+        [1.5e21, 5e20, -1.5e21]
+      );
+    });
+
+    test('for invalid negative requirement', () => {
+      expectActionIssue(
+        multipleOf(-5, 'message'),
+        { ...baseIssue, expected: '%-5', requirement: -5 },
+        [-14, 1, 3]
+      );
+      expectActionIssue(
+        multipleOf(-0.1, 'message'),
+        { ...baseIssue, expected: '%-0.1', requirement: -0.1 },
+        [0.05, 0.15, 1.234]
       );
     });
 
