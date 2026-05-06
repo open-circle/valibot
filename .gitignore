@@ -38,3 +38,6 @@ tmp
 .DS_Store
 Thumbs.db
 *.pem
+
+# whiterose cache
+.whiterose/cache/
