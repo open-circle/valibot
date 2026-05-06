@@ -1,6 +1,7 @@
 import eslint from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
 import jsdoc from 'eslint-plugin-jsdoc';
+import redos from 'eslint-plugin-redos';
 import redosDetector from 'eslint-plugin-redos-detector';
 import regexpPlugin from 'eslint-plugin-regexp';
 import pluginSecurity from 'eslint-plugin-security';
@@ -21,6 +22,7 @@ export default tseslint.config(
   tseslint.configs.stylistic,
   jsdoc.configs['flat/recommended'],
   pluginSecurity.configs.recommended,
+  redos.configs.flat.recommended,
   regexpPlugin.configs['flat/recommended'],
   {
     files: ['src/**/*.ts'],
