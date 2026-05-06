@@ -103,6 +103,12 @@ export const ISO_DATE_TIME_REGEX: RegExp =
   /^\d{4}-(?:0[1-9]|1[0-2])-(?:[12]\d|0[1-9]|3[01])[T ](?:0\d|1\d|2[0-3]):[0-5]\d$/u;
 
 /**
+ * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time with seconds regex.
+ */
+export const ISO_DATE_TIME_SECOND_REGEX: RegExp =
+  /^\d{4}-(?:0[1-9]|1[0-2])-(?:[12]\d|0[1-9]|3[01])[T ](?:0\d|1\d|2[0-3])(?::[0-5]\d){2}$/u;
+
+/**
  * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time regex.
  */
 export const ISO_TIME_REGEX: RegExp = /^(?:0\d|1\d|2[0-3]):[0-5]\d$/u;
@@ -149,21 +155,27 @@ export const KSUID_REGEX: RegExp = /^[a-zA-Z0-9]{27}$/u;
 
 /**
  * [MAC](https://en.wikipedia.org/wiki/MAC_address) 48 bit regex.
+ *
+ * Hint: We decided against the `i` flag for better JSON Schema compatibility.
  */
 export const MAC48_REGEX: RegExp =
-  /^(?:[\da-f]{2}:){5}[\da-f]{2}$|^(?:[\da-f]{2}-){5}[\da-f]{2}$|^(?:[\da-f]{4}\.){2}[\da-f]{4}$/iu;
+  /^(?:[\da-fA-F]{2}:){5}[\da-fA-F]{2}$|^(?:[\da-fA-F]{2}-){5}[\da-fA-F]{2}$|^(?:[\da-fA-F]{4}\.){2}[\da-fA-F]{4}$/u;
 
 /**
  * [MAC](https://en.wikipedia.org/wiki/MAC_address) 64 bit regex.
+ *
+ * Hint: We decided against the `i` flag for better JSON Schema compatibility.
  */
 export const MAC64_REGEX: RegExp =
-  /^(?:[\da-f]{2}:){7}[\da-f]{2}$|^(?:[\da-f]{2}-){7}[\da-f]{2}$|^(?:[\da-f]{4}\.){3}[\da-f]{4}$|^(?:[\da-f]{4}:){3}[\da-f]{4}$/iu;
+  /^(?:[\da-fA-F]{2}:){7}[\da-fA-F]{2}$|^(?:[\da-fA-F]{2}-){7}[\da-fA-F]{2}$|^(?:[\da-fA-F]{4}\.){3}[\da-fA-F]{4}$|^(?:[\da-fA-F]{4}:){3}[\da-fA-F]{4}$/u;
 
 /**
  * [MAC](https://en.wikipedia.org/wiki/MAC_address) regex.
+ *
+ * Hint: We decided against the `i` flag for better JSON Schema compatibility.
  */
 export const MAC_REGEX: RegExp =
-  /^(?:[\da-f]{2}:){5}[\da-f]{2}$|^(?:[\da-f]{2}-){5}[\da-f]{2}$|^(?:[\da-f]{4}\.){2}[\da-f]{4}$|^(?:[\da-f]{2}:){7}[\da-f]{2}$|^(?:[\da-f]{2}-){7}[\da-f]{2}$|^(?:[\da-f]{4}\.){3}[\da-f]{4}$|^(?:[\da-f]{4}:){3}[\da-f]{4}$/iu;
+  /^(?:[\da-fA-F]{2}:){5}[\da-fA-F]{2}$|^(?:[\da-fA-F]{2}-){5}[\da-fA-F]{2}$|^(?:[\da-fA-F]{4}\.){2}[\da-fA-F]{4}$|^(?:[\da-fA-F]{2}:){7}[\da-fA-F]{2}$|^(?:[\da-fA-F]{2}-){7}[\da-fA-F]{2}$|^(?:[\da-fA-F]{4}\.){3}[\da-fA-F]{4}$|^(?:[\da-fA-F]{4}:){3}[\da-fA-F]{4}$/u;
 
 /**
  * [Nano ID](https://github.com/ai/nanoid) regex.
