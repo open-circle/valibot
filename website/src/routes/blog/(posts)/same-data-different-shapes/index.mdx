@@ -1,0 +1,208 @@
+---
+cover: doba
+title: same data, different shapes
+description: >-
+  doba is a schema registry with type-safe migrations and automatic path
+  finding. here's how it works with valibot.
+published: 2026-05-12
+authors:
+  - karol-broda
+---
+
+_this is a guest post by [karol broda](https://karolbroda.com). i like building tools that solve problems i keep running into, and doba came out of one of those._
+
+most apps have the same data in multiple shapes. a database row has a password hash and internal metadata. the frontend gets a sanitized version without any of that.
+the AI endpoint needs a flat struct with just the fields the model cares about. a legacy API from two years ago returns something different entirely.
+
+the typical solution is a handful of functions. `toFrontendUser()`, `toAIUser()`, `fromLegacyV1()`. each one is fine on its own. the problem is that they don't know about each other.
+someone needs legacy-to-AI, there's no function for that, so they chain two together and hope the intermediate shape doesn't change. nobody writes tests for these because they're "just mapping."
+then a schema change ships and half your transforms silently produce wrong data.
+
+i wrote [doba](https://github.com/karol-broda/doba) to deal with this. it works with any [standard schema](https://github.com/standard-schema/standard-schema) library, including valibot. valibot's tree-shaking pairs well with it too. a registry with ten schema variants doesn't pull in validators that only two of them use.
+
+## schemas and migrations
+
+```typescript
+import * as v from 'valibot';
+import { createRegistry } from 'dobajs';
+
+const databaseUser = v.object({
+  id: v.string(),
+  email: v.pipe(v.string(), v.email()),
+  passwordHash: v.string(),
+  createdAt: v.pipe(v.string(), v.isoTimestamp()),
+  settings: v.object({
+    theme: v.picklist(['light', 'dark']),
+    notifications: v.object({
+      email: v.boolean(),
+      push: v.boolean(),
+    }),
+  }),
+});
+
+const frontendUser = v.object({
+  id: v.string(),
+  email: v.pipe(v.string(), v.email()),
+  createdAt: v.pipe(v.string(), v.isoTimestamp()),
+  settings: v.object({
+    theme: v.picklist(['light', 'dark']),
+    notifications: v.object({
+      email: v.boolean(),
+      push: v.boolean(),
+    }),
+  }),
+});
+
+const aiUser = v.object({
+  id: v.string(),
+  email: v.string(),
+  theme: v.string(),
+  hasNotifications: v.boolean(),
+});
+
+const registry = createRegistry({
+  schemas: { database: databaseUser, frontend: frontendUser, ai: aiUser },
+  migrations: {
+    'database->frontend': (user) => ({
+      id: user.id,
+      email: user.email,
+      createdAt: user.createdAt,
+      settings: user.settings,
+    }),
+    'frontend->ai': (user) => ({
+      id: user.id,
+      email: user.email,
+      theme: user.settings.theme,
+      hasNotifications:
+        user.settings.notifications.email ||
+        user.settings.notifications.push,
+    }),
+  },
+});
+```
+
+every migration function is typed against the schemas on both ends. rename a field in a valibot schema and forget to update the migration, it won't compile. add a new required field to the target and every migration pointing at it lights up red until you handle it.
+
+you don't need to write a migration for every possible pair of schemas either. if there's no direct path, doba walks the graph and chains through intermediate ones automatically:
+
+```typescript
+// we only defined database->frontend and frontend->ai,
+// but this still works. doba routes through frontend
+const result = await registry.transform(databaseData, 'database', 'ai');
+```
+
+## migration context
+
+legacy migrations are full of quiet decisions. defaulting an id because the old format didn't have one. guessing an email from a name field. mapping a boolean called `darkMode` to a theme enum.
+in a regular transform function, all of that disappears into the function body. you migrate 10k legacy users, three months later someone asks why half of them have `unknown@example.com` as their email,
+and nobody remembers what the migration assumed.
+
+doba passes a context object to every migration so you can record what you defaulted and why.
+
+```typescript
+const legacyUser = v.object({
+  name: v.optional(v.string()),
+  darkMode: v.optional(v.boolean()),
+});
+
+// a separate registry that also includes the legacy schema
+const extendedRegistry = createRegistry({
+  schemas: { database: databaseUser, frontend: frontendUser, ai: aiUser, legacy: legacyUser },
+  migrations: {
+    // ...previous migrations
+    'legacy->frontend': (user, ctx) => {
+      ctx.defaulted(['id'], 'generated new id');
+      ctx.defaulted(['createdAt'], 'set to current timestamp');
+
+      let email = 'unknown@example.com';
+      if (user.name && user.name.length > 0) {
+        email = `${user.name.toLowerCase().replace(/\s+/g, '.')}@legacy.example.com`;
+        ctx.warn(`converted name "${user.name}" to email`);
+      }
+
+      return {
+        id: `legacy-${Date.now()}`,
+        email,
+        createdAt: new Date().toISOString(),
+        settings: {
+          theme: user.darkMode === true ? 'dark' : 'light',
+          notifications: { email: false, push: false },
+        },
+      };
+    },
+  },
+});
+
+const result = await extendedRegistry.transform(
+  { name: 'Alice Johnson', darkMode: true },
+  'legacy',
+  'frontend'
+);
+
+if (result.ok) {
+  result.meta.defaults;   // [{ path: ['id'], message: 'generated new id', ... }]
+  result.meta.warnings;   // [{ message: 'converted name "Alice Johnson" to email', ... }]
+}
+```
+
+`result` is a discriminated union. `ok: true` with value and metadata, `ok: false` with typed validation errors. no try/catch.
+
+most migrations are mechanical. renaming a field, dropping another, adding a default. doba has a `pipe` builder for that so you don't have to write the boilerplate by hand:
+
+```typescript
+'database->frontend': {
+  pipe: (p) => p.drop('passwordHash'),
+},
+```
+
+the builder tracks the shape as you chain, so a `.rename('foo', 'bar')` followed by `.drop('foo')` is a type error.
+
+## identifying unknown data
+
+sometimes you get data and don't know which schema it came from. doba can figure that out and transform it:
+
+```typescript
+import { createRegistry, match } from 'dobajs';
+
+const registry = createRegistry({
+  schemas: { database: databaseUser, frontend: frontendUser, ai: aiUser },
+  migrations: {
+    // ...same as before
+  },
+  identify: {
+    database: match.field('passwordHash'),
+    frontend: match.fields('createdAt', 'settings'),
+    ai: match.field('hasNotifications'),
+  },
+});
+
+const result = await registry.identifyAndTransform(unknownData, 'ai');
+
+if (result.ok) {
+  result.value;      // transformed data
+  result.meta.from;  // which schema it detected
+  result.meta.path;  // the route it took, e.g. ['database', 'ai']
+}
+```
+
+guards run in definition order. if none match, you get a typed error, not a runtime crash.
+
+## where i use this
+
+the examples above are simplified, but the pattern shows up in a lot of places.
+
+API versioning is the obvious one. you ship v1, then v2 changes the shape, then v3 splits a field into two. clients are still sending all three versions. instead of writing v1-to-v3 and v2-to-v3 converters by hand, you define v1-to-v2 and v2-to-v3 and the registry chains them. when v4 ships, you add one migration and everything upstream still works.
+
+LLM pipelines have a similar problem. your database has a rich, nested user object, but the model prompt needs a flat struct with five fields. that transform is easy to write once. it's less easy to keep correct when the database schema evolves or when you need three different prompt formats for different models.
+
+legacy imports are where the migration context really pays off. if you're pulling records from an old system and half the fields are missing or renamed, every decision you make during that conversion ("defaulted email because the source didn't have one") is recorded. when someone asks about it six months later, the metadata is right there on the result.
+
+even something like a webhook handler fits. you receive payloads from a third party that's changed their format twice. you don't control when they migrate. `identifyAndTransform` figures out which version came in and normalizes it.
+
+if any of this sounds like a problem you have, take a look. feedback and issues welcome.
+
+thanks to [fabian hiller](https://github.com/fabian-hiller) and the valibot team for having me on the blog.
+
+- [doba docs](https://doba.karolbroda.com)
+- [valibot example](https://doba.karolbroda.com/docs/examples/with-valibot)
+- [github](https://github.com/karol-broda/doba)
