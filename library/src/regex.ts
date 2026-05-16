@@ -207,4 +207,4 @@ export const ULID_REGEX: RegExp = /^[\da-hjkmnp-tv-zA-HJKMNP-TV-Z]{26}$/u;
  * [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) regex.
  */
 export const UUID_REGEX: RegExp =
-  /^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/iu;
+  /^[\da-f]{8}-[\da-f]{4}-[1-8][\da-f]{3}-[\da-f]{4}-[\da-f]{12}$/iu;
