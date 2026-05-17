@@ -45,7 +45,7 @@ export interface StartsWithAction<
     | undefined,
 > extends BaseValidation<
     TInput,
-    TInput,
+    `${TRequirement}${string}`,
     StartsWithIssue<TInput, TRequirement>
   > {
   /**
