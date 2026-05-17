@@ -19,7 +19,7 @@ A big part of the answer lives in your dependencies.
 
 To put a concrete number on this, we built a minimal Cloudflare Worker to understand the cold start cost of our own library compared to Zod, using a single User schema covering name, email, age, and role.
 
-We built it twice using Wrangler 4.81.1 and TypeScript, keeping everything identical except for the validation library being imported. One build used Zod and the other used Valibot. Both builds were done in production mode using Wrangler's default bundling.
+We built it twice using Wrangler 4.81.1 and TypeScript, keeping everything identical except for the validation library being imported. This comparison uses the default zod package rather than zod/mini, and focuses on baseline installs and primary APIs rather than optimized variants. One build used Zod and the other used Valibot. Both builds were done in production mode using Wrangler's default bundling.
 
 Here's what came out of the bundler:
 
