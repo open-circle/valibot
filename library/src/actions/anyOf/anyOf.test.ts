@@ -76,13 +76,19 @@ describe('anyOf', () => {
     });
 
     test('for invalid options', () => {
-      expect(() => anyOf([email(), trim()] as never)).toThrow(TypeError);
-      expect(() => anyOf([email(), toNumber()] as never)).toThrow(TypeError);
-      expect(() => anyOf([email(), description('test')] as never)).toThrow(
-        TypeError
+      expect(() => anyOf([email(), trim()] as never)).toThrowError(
+        'The any of option at index 1 of type "trim" must be a sync validation or guard action.'
       );
-      expect(() => anyOf([email(), checkAsync(() => true)] as never)).toThrow(
-        TypeError
+      expect(() => anyOf([toNumber(), email()] as never)).toThrowError(
+        'The any of option at index 0 of type "to_number" must be a sync validation or guard action.'
+      );
+      expect(() => anyOf([email(), description('test')] as never)).toThrowError(
+        'The any of option at index 1 of type "description" must be a sync validation or guard action.'
+      );
+      expect(() =>
+        anyOf([email(), checkAsync(() => true)] as never)
+      ).toThrowError(
+        'The any of option at index 1 of type "check" must be a sync validation or guard action.'
       );
     });
   });

@@ -36,26 +36,20 @@ export const properties: Record<string, PropertyProps> = {
   },
   issues: {
     type: {
-      type: 'union',
-      options: [
+      type: 'tuple',
+      items: [
         {
-          type: 'tuple',
-          items: [
-            {
-              type: 'custom',
-              name: 'TSubIssue',
-            },
-            {
-              type: 'array',
-              spread: true,
-              item: {
-                type: 'custom',
-                name: 'TSubIssue',
-              },
-            },
-          ],
+          type: 'custom',
+          name: 'TSubIssue',
         },
-        'undefined',
+        {
+          type: 'array',
+          spread: true,
+          item: {
+            type: 'custom',
+            name: 'TSubIssue',
+          },
+        },
       ],
     },
   },

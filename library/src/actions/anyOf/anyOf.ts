@@ -140,7 +140,7 @@ export interface AnyOfIssue<TSubIssue extends BaseIssue<unknown>>
   /**
    * The subissues.
    */
-  readonly issues?: [TSubIssue, ...TSubIssue[]];
+  readonly issues: [TSubIssue, ...TSubIssue[]];
 }
 
 /**
@@ -226,29 +226,35 @@ export function anyOf(
     );
   }
 
-  for (const option of options) {
-    if (!option || typeof option !== 'object') {
-      throw new TypeError(
-        'The any of options must be sync validations or guard actions.'
-      );
-    }
-
-    const action = option as {
+  for (let index = 0; index < options.length; index++) {
+    const action = options[index] as {
       readonly async?: unknown;
       readonly kind?: unknown;
+      readonly expects?: unknown;
+      readonly reference?: unknown;
       readonly type?: unknown;
       readonly '~run'?: unknown;
-    };
+    } | null;
+    const type =
+      action && typeof action === 'object' && typeof action.type === 'string'
+        ? ` of type "${action.type}"`
+        : '';
 
     if (
+      !action ||
+      typeof action !== 'object' ||
       action.async !== false ||
       typeof action.type !== 'string' ||
+      typeof action.reference !== 'function' ||
       typeof action['~run'] !== 'function' ||
-      (action.kind !== 'validation' &&
-        (action.kind !== 'transformation' || action.type !== 'guard'))
+      !(
+        (action.kind === 'validation' &&
+          (action.expects === null || typeof action.expects === 'string')) ||
+        (action.kind === 'transformation' && action.type === 'guard')
+      )
     ) {
       throw new TypeError(
-        'The any of options must be sync validations or guard actions.'
+        `The any of option at index ${index}${type} must be a sync validation or guard action.`
       );
     }
   }
@@ -298,6 +304,12 @@ export function anyOf(
             issues = [...optionDataset.issues];
           }
         }
+      }
+
+      if (!issues) {
+        throw new TypeError(
+          'The any of options must return issues when they fail.'
+        );
       }
 
       _addIssue(this, 'input', dataset, config, { issues });

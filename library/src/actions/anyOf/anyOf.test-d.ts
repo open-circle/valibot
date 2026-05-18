@@ -1,7 +1,12 @@
 import { describe, expectTypeOf, test } from 'vitest';
 import { pipe } from '../../methods/index.ts';
 import { number, string, type StringIssue } from '../../schemas/index.ts';
-import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
+import type {
+  BaseIssue,
+  InferInput,
+  InferIssue,
+  InferOutput,
+} from '../../types/index.ts';
 import { guard, type GuardIssue } from '../guard/index.ts';
 import {
   brand,
@@ -76,6 +81,12 @@ describe('anyOf', () => {
       expectTypeOf<InferIssue<Action>>().toEqualTypeOf<
         | AnyOfIssue<InferIssue<EmailOption | UrlOption>>
         | InferIssue<EmailOption | UrlOption>
+      >();
+    });
+
+    test('of subissues', () => {
+      expectTypeOf<AnyOfIssue<BaseIssue<unknown>>['issues']>().toEqualTypeOf<
+        [BaseIssue<unknown>, ...BaseIssue<unknown>[]]
       >();
     });
   });
