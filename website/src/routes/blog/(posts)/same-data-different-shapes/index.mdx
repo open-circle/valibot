@@ -31,8 +31,8 @@ doba builds on [Standard Schema](https://github.com/standard-schema/standard-sch
 You register your Valibot schemas and define migrations between them. Each migration function is fully typed against the source and target schemas.
 
 ```typescript
-import * as v from 'valibot';
 import { createRegistry } from 'dobajs';
+import * as v from 'valibot';
 
 const databaseUser = v.object({
   id: v.string(),
@@ -82,8 +82,7 @@ const registry = createRegistry({
       email: user.email,
       theme: user.settings.theme,
       hasNotifications:
-        user.settings.notifications.email ||
-        user.settings.notifications.push,
+        user.settings.notifications.email || user.settings.notifications.push,
     }),
   },
 });
@@ -115,7 +114,12 @@ const legacyUser = v.object({
 
 // A separate registry that also includes the legacy schema
 const extendedRegistry = createRegistry({
-  schemas: { database: databaseUser, frontend: frontendUser, ai: aiUser, legacy: legacyUser },
+  schemas: {
+    database: databaseUser,
+    frontend: frontendUser,
+    ai: aiUser,
+    legacy: legacyUser,
+  },
   migrations: {
     // ...previous migrations
     'legacy->frontend': (user, ctx) => {
@@ -148,8 +152,8 @@ const result = await extendedRegistry.transform(
 );
 
 if (result.ok) {
-  result.meta.defaults;   // [{ path: ['id'], message: 'generated new id', ... }]
-  result.meta.warnings;   // [{ message: 'converted name "Alice Johnson" to email', ... }]
+  result.meta.defaults; // [{ path: ['id'], message: 'generated new id', ... }]
+  result.meta.warnings; // [{ message: 'converted name "Alice Johnson" to email', ... }]
 }
 ```
 
@@ -187,9 +191,9 @@ const registry = createRegistry({
 const result = await registry.identifyAndTransform(unknownData, 'ai');
 
 if (result.ok) {
-  result.value;      // transformed data
-  result.meta.from;  // which schema it detected
-  result.meta.path;  // the route it took, e.g. ['database', 'ai']
+  result.value; // transformed data
+  result.meta.from; // which schema it detected
+  result.meta.path; // the route it took, e.g. ['database', 'ai']
 }
 ```
 
