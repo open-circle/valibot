@@ -16,8 +16,18 @@ const highlighter = await getSingletonHighlighter();
 await Promise.all([
   highlighter.loadLanguage(shikiTypeScript, shikiBash, shikiJson),
   highlighter.loadTheme(
-    JSON.parse(readFileSync('shiki/pace-theme-light+.json', 'utf8')),
-    JSON.parse(readFileSync('shiki/pace-theme-dark.json', 'utf8'))
+    JSON.parse(
+      readFileSync(
+        new URL('./shiki/pace-theme-light+.json', import.meta.url),
+        'utf8'
+      )
+    ),
+    JSON.parse(
+      readFileSync(
+        new URL('./shiki/pace-theme-dark.json', import.meta.url),
+        'utf8'
+      )
+    )
   ),
 ]);
 

@@ -11,14 +11,10 @@ import { useResetSignal } from '~/hooks';
 import { CheckIcon, CopyIcon, PlayIcon } from '~/icons';
 import { trackEvent } from '~/utils';
 
-type PreProps = {
-  class: string;
-};
-
 /**
  * Pre component for rendering code snippets.
  */
-const Pre = component$<PreProps>((props) => {
+const Pre = component$(() => {
   // Use element and state signals
   const preElement = useSignal<HTMLPreElement>();
   const isValibotCode = useSignal(false);
@@ -26,10 +22,7 @@ const Pre = component$<PreProps>((props) => {
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(() => {
-    if (
-      props.class === 'language-ts' &&
-      preElement.value?.innerText.includes("import * as v from 'valibot'")
-    ) {
+    if (preElement.value?.innerText.includes("import * as v from 'valibot'")) {
       isValibotCode.value = true;
     }
   });
@@ -84,7 +77,7 @@ const Pre = component$<PreProps>((props) => {
             hideLabel
             onClick$={openPlayground}
           >
-            <PlayIcon class="h-[16px]" />
+            <PlayIcon class="h-4" />
           </IconButton>
         )}
       </div>
