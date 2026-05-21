@@ -22,7 +22,6 @@ import {
 } from '~/icons';
 import { useChapters, useChaptersToggle } from '~/routes/plugin@chapters';
 import { trackEvent } from '~/utils';
-import '../styles/pace.css';
 import { Chapters } from './Chapters';
 import { Credits } from './Credits';
 import { IconButton } from './IconButton';

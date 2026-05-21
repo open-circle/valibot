@@ -90,7 +90,7 @@ const Pre = component$<PreProps>((props) => {
       </div>
       <pre
         ref={preElement}
-        class="flex min-h-20 items-center overflow-x-auto p-5 leading-relaxed text-slate-700 md:text-lg lg:min-h-[120px] lg:p-10 lg:text-xl dark:text-slate-300"
+        class="shiki flex min-h-20 items-center overflow-x-auto p-5 leading-relaxed text-slate-700 md:text-lg lg:min-h-[120px] lg:p-10 lg:text-xl dark:text-slate-300"
       >
         <Slot />
       </pre>
