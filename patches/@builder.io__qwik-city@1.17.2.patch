@@ -1,0 +1,26 @@
+diff --git a/lib/static/node.cjs b/lib/static/node.cjs
+index 2c4b5cf2d108833633d6ec4877147124fb08b8e5..7e51a1c76c7a178707535f6a183fa8ccd7673b14 100644
+--- a/lib/static/node.cjs
++++ b/lib/static/node.cjs
+@@ -785,7 +785,7 @@ ${bold(red(`!!! ${result.pathname}: Error during SSG`))}`);
+               if (!pathname.endsWith("/")) {
+                 const segments = pathname.split("/");
+                 const lastSegment = segments[segments.length - 1];
+-                if (!lastSegment.includes(".")) {
++                if (!/\.(html?|xml|json|txt|pdf|js|mjs|cjs|css|svg|png|jpe?g|gif|webp|ico|woff2?|ttf|otf|eot|map|md)$/i.test(lastSegment)) {
+                   pathname += "/";
+                 }
+               }
+diff --git a/lib/static/node.mjs b/lib/static/node.mjs
+index f3211a7e07c58b2822ded5d8f4aacdea19a0f355..ae0b3142dd82a6980a8854e52f2bac2b0737e831 100644
+--- a/lib/static/node.mjs
++++ b/lib/static/node.mjs
+@@ -753,7 +753,7 @@ ${bold(red(`!!! ${result.pathname}: Error during SSG`))}`);
+               if (!pathname.endsWith("/")) {
+                 const segments = pathname.split("/");
+                 const lastSegment = segments[segments.length - 1];
+-                if (!lastSegment.includes(".")) {
++                if (!/\.(html?|xml|json|txt|pdf|js|mjs|cjs|css|svg|png|jpe?g|gif|webp|ico|woff2?|ttf|otf|eot|map|md)$/i.test(lastSegment)) {
+                   pathname += "/";
+                 }
+               }

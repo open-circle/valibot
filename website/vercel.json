@@ -5,6 +5,26 @@
   "trailingSlash": true,
   "redirects": [
     {
+      "source": "/guides",
+      "destination": "/guides/introduction/",
+      "statusCode": 302
+    },
+    {
+      "source": "/guides/",
+      "destination": "/guides/introduction/",
+      "statusCode": 302
+    },
+    {
+      "source": "/guides/errors",
+      "destination": "/guides/issues/",
+      "statusCode": 302
+    },
+    {
+      "source": "/guides/errors/",
+      "destination": "/guides/issues/",
+      "statusCode": 302
+    },
+    {
       "source": "/guides/migrate-from-v0.30.0",
       "destination": "/guides/migrate-to-v0.31.0/",
       "statusCode": 301

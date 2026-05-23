@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@builder.io/qwik-city@1.17.2':
+    hash: 80f35e5f4cf24d9b2519b4d8a83f220eec14471d11671efd380e55a2953b73b2
+    path: patches/@builder.io__qwik-city@1.17.2.patch
+
 importers:
 
   .:
@@ -219,7 +224,7 @@ importers:
         version: 1.17.2(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.19.2)(yaml@2.8.1))
       '@builder.io/qwik-city':
         specifier: ~1.17.2
-        version: 1.17.2(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(tsx@4.19.2)(typescript@5.9.3)(yaml@2.8.1)
+        version: 1.17.2(patch_hash=80f35e5f4cf24d9b2519b4d8a83f220eec14471d11671efd380e55a2953b73b2)(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(tsx@4.19.2)(typescript@5.9.3)(yaml@2.8.1)
       '@eslint/js':
         specifier: ^9.39.1
         version: 9.39.1
@@ -6405,7 +6410,7 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@builder.io/qwik-city@1.17.2(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(tsx@4.19.2)(typescript@5.9.3)(yaml@2.8.1)':
+  '@builder.io/qwik-city@1.17.2(patch_hash=80f35e5f4cf24d9b2519b4d8a83f220eec14471d11671efd380e55a2953b73b2)(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(tsx@4.19.2)(typescript@5.9.3)(yaml@2.8.1)':
     dependencies:
       '@mdx-js/mdx': 3.1.1
       '@types/mdx': 2.0.13
