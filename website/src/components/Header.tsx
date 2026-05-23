@@ -2,11 +2,10 @@ import {
   $,
   component$,
   type Signal,
-  useComputed$,
   useSignal,
   useTask$,
 } from '@builder.io/qwik';
-import { globalAction$, useLocation, z, zod$ } from '@builder.io/qwik-city';
+import { useLocation } from '@builder.io/qwik-city';
 import clsx from 'clsx';
 import { useFocusTrap } from '~/hooks';
 import { LogoIcon } from '~/icons';
@@ -16,14 +15,6 @@ import { Link } from './Link';
 import { MainMenuToggle } from './MainMenuToggle';
 import { SearchToggle } from './SearchToggle';
 import { ThemeToggle } from './ThemeToggle';
-
-/**
- * Toggles the open state of the main menu.
- */
-export const useMainMenuToggle = globalAction$(
-  (values) => values,
-  zod$({ state: z.enum(['opened', 'closed']) })
-);
 
 type HeaderProps = {
   searchOpen: Signal<boolean>;
@@ -38,14 +29,8 @@ export const Header = component$<HeaderProps>(({ searchOpen }) => {
   const rootElement = useSignal<HTMLElement>();
   const windowScrolled = useSignal(false);
 
-  // Use main menu toggle and compute open state
-  const toggle = useMainMenuToggle();
-  const isOpen = useComputed$(() =>
-    toggle.isRunning
-      ? // Optimistic UI
-        toggle.formData?.get('state') === 'opened'
-      : toggle.value?.state === 'opened'
-  );
+  // Main menu open state
+  const isOpen = useSignal(false);
 
   // Use focus trap for main menu
   useFocusTrap(rootElement, isOpen);
@@ -58,7 +43,7 @@ export const Header = component$<HeaderProps>(({ searchOpen }) => {
       location.prevUrl &&
       location.url.pathname !== location.prevUrl.pathname
     ) {
-      toggle.submit({ state: 'closed' });
+      isOpen.value = false;
     }
   });
 
@@ -116,7 +101,7 @@ export const Header = component$<HeaderProps>(({ searchOpen }) => {
           <GitHubIconLink />
           <ThemeToggle />
           <SearchToggle open={searchOpen} />
-          <MainMenuToggle action={toggle} open={isOpen.value} />
+          <MainMenuToggle toggle={isOpen} />
         </div>
 
         {/* Main menu */}
@@ -173,7 +158,9 @@ export const Header = component$<HeaderProps>(({ searchOpen }) => {
             ? 'delay-75 duration-300'
             : 'invisible opacity-0 duration-75'
         )}
-        onClick$={() => toggle.submit({ state: 'closed' })}
+        onClick$={() => {
+          isOpen.value = false;
+        }}
       />
     </header>
   );

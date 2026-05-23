@@ -1,12 +1,13 @@
 import {
+  $,
   component$,
+  type QRL,
   type ReadonlySignal,
   Slot,
   useComputed$,
 } from '@builder.io/qwik';
 import {
   type ContentMenu,
-  Form,
   useContent,
   useDocumentHead,
   useLocation,
@@ -74,10 +75,8 @@ export const DocsLayout = component$(() => {
     () => navItems.value[navIndex.value + 1]
   );
 
-  // Optimistically compute whether to show chapters
-  const showChapters = useComputed$(() =>
-    chaptersToggle.isRunning ? !chapters.value : chapters.value
-  );
+  // Whether to show chapters
+  const showChapters = useComputed$(() => chapters.value);
 
   // Compute Markdown path from current location
   const markdownPath = useComputed$(() =>
@@ -198,7 +197,7 @@ type NavButtonsProps = {
   prevPage: ContentMenu | undefined;
   nextPage: ContentMenu | undefined;
   chapters?: ReadonlySignal<boolean>;
-  chaptersToggle?: ReturnType<typeof useChaptersToggle>;
+  chaptersToggle?: QRL<() => void>;
 };
 
 /**
@@ -246,22 +245,20 @@ export const NavButtons = component$<NavButtonsProps>(
         </>
       )}
       {chaptersToggle && (
-        <Form
-          class="hidden xl:block"
-          action={chaptersToggle}
-          onSubmit$={() =>
-            trackEvent('change_chapters', { enabled: !chapters!.value })
-          }
-        >
+        <div class="hidden xl:block">
           <IconButton
             variant="secondary"
-            type="submit"
+            type="button"
             label={chapters!.value ? 'Hide chapters' : 'Show chapters'}
             hideLabel
+            onClick$={$(() => {
+              trackEvent('change_chapters', { enabled: !chapters!.value });
+              chaptersToggle();
+            })}
           >
             <MenuIcon class="h-[18px]" />
           </IconButton>
-        </Form>
+        </div>
       )}
       {sourcePath && (
         <IconButton

@@ -1,5 +1,4 @@
 import { $, component$, useComputed$ } from '@builder.io/qwik';
-import { Form } from '@builder.io/qwik-city';
 import { NightIcon, SunIcon } from '~/icons';
 import { useTheme, useThemeToggle } from '~/routes/plugin@theme';
 import { disableTransitions, trackEvent } from '~/utils';
@@ -26,20 +25,22 @@ export const ThemeToggle = component$<ThemeToggleProps>((props) => {
   /**
    * Handles client-side theme change actions.
    */
-  const changeTheme = $(() => {
-    // Disable CSS transitions
+  const onClick = $(() => {
     disableTransitions();
-
-    // Tracke change theme event
     trackEvent('change_theme', { theme: nextTheme.value });
+    themeToggle();
   });
 
   return (
-    <Form class={props.class} action={themeToggle} onSubmit$={changeTheme}>
-      <SystemIcon type="submit" label={`Change theme to ${nextTheme.value}`}>
+    <div class={props.class}>
+      <SystemIcon
+        type="button"
+        label={`Change theme to ${nextTheme.value}`}
+        onClick$={onClick}
+      >
         <SunIcon class="hidden h-full dark:block" />
         <NightIcon class="h-full dark:hidden" />
       </SystemIcon>
-    </Form>
+    </div>
   );
 });
