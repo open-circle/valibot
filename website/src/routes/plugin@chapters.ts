@@ -1,34 +1,55 @@
 import {
-  type RequestEventAction,
-  routeAction$,
-  routeLoader$,
-} from '@builder.io/qwik-city';
+  $,
+  createContextId,
+  type QRL,
+  type Signal,
+  useContext,
+  useContextProvider,
+  useSignal,
+  useVisibleTask$,
+} from '@builder.io/qwik';
 
-const COOKIE_NAME = 'chapters';
+const ChaptersContext = createContextId<Signal<boolean>>('chapters');
 
 /**
- * Returns the value of the chapters cookie.
+ * Provides the chapters signal. Mounted once near the root of the app.
  */
-function getCookie(request: RequestEventAction) {
-  return request.cookie.get(COOKIE_NAME)?.value ?? 'true';
-}
+export const useChaptersProvider = () => {
+  const chapters = useSignal(true);
+  useContextProvider(ChaptersContext, chapters);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(() => {
+    try {
+      const stored = localStorage.getItem('chapters');
+      if (stored === 'true' || stored === 'false') {
+        chapters.value = stored === 'true';
+      }
+    } catch {
+      // ignore
+    }
+  });
+
+  return chapters;
+};
 
 /**
  * Returns whether chapters are enabled.
  */
-export const useChapters = routeLoader$(
-  (request) => getCookie(request) === 'true'
-);
+export const useChapters = () => useContext(ChaptersContext);
 
 /**
- * Toggles the chapters by changing the chapters cookie.
+ * Returns a function that toggles the chapters visibility.
  */
-export const useChaptersToggle = routeAction$((_, request) => {
-  request.cookie.set(COOKIE_NAME, `${getCookie(request) !== 'true'}`, {
-    httpOnly: true,
-    maxAge: 31557600, // 1 year
-    path: '/',
-    sameSite: 'lax',
-    secure: import.meta.env.PROD,
+export const useChaptersToggle = (): QRL<() => void> => {
+  const chapters = useChapters();
+  return $(() => {
+    const next = !chapters.value;
+    chapters.value = next;
+    try {
+      localStorage.setItem('chapters', String(next));
+    } catch {
+      // ignore
+    }
   });
-});
+};

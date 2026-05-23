@@ -1,24 +1,25 @@
 import { component$, useComputed$ } from '@builder.io/qwik';
 import { useDocumentHead, useLocation } from '@builder.io/qwik-city';
-import { useTheme } from '~/routes/plugin@theme';
+
+const THEME_INIT_SCRIPT = `try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.classList.toggle('dark',t==='dark');}catch(e){}`;
+
+function ogImagePath(pathname: string): string {
+  if (pathname === '/') return '/og/index.png';
+  const slug = pathname.replace(/^\/+|\/+$/g, '').replace(/\//g, '_');
+  return `/og/${slug}.png`;
+}
 
 /**
  * Head with title, meta, link, script and style elements.
  */
 export const Head = component$(() => {
-  // Use document head, location and theme
+  // Use document head and location
   const head = useDocumentHead();
   const location = useLocation();
-  const theme = useTheme();
 
   // Compute document title
   const documentTitle = useComputed$(() =>
     location.url.pathname === '/' ? head.title : `${head.title} | Valibot`
-  );
-
-  // Compute theme color code
-  const themeColor = useComputed$(() =>
-    theme.value === 'dark' ? '#111827' : '#fff'
   );
 
   // Compute Open Graph type
@@ -33,36 +34,32 @@ export const Head = component$(() => {
     () => head.meta.find((item) => item.name === 'description')?.content
   );
 
-  // Compute Open Graph image URL
-  const imageUrl = useComputed$(() => {
-    // Create base URL
-    let imageUrl = `${location.url.origin}/og-image`;
-
-    // Add title and path to URL
-    if (location.url.pathname !== '/') {
-      imageUrl += `?title=${encodeURIComponent(head.title)}&path=${
-        location.url.pathname.split('/')[1]
-      }`;
-
-      // Add description to URL
-      if (description.value) {
-        imageUrl += `&description=${encodeURIComponent(description.value)}`;
-      }
-    }
-
-    // Return image URL
-    return imageUrl;
-  });
+  // Compute Open Graph image URL (points to pre-generated static PNG)
+  const imageUrl = useComputed$(
+    () => `${location.url.origin}${ogImagePath(location.url.pathname)}`
+  );
 
   return (
     <head>
+      {/* Pre-hydration theme + FOUC fix */}
+      <script dangerouslySetInnerHTML={THEME_INIT_SCRIPT} />
+
       {/* Document title */}
       <title>{documentTitle.value}</title>
 
       {/* Default metadata */}
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="theme-color" content={themeColor.value} />
+      <meta
+        name="theme-color"
+        media="(prefers-color-scheme: light)"
+        content="#fff"
+      />
+      <meta
+        name="theme-color"
+        media="(prefers-color-scheme: dark)"
+        content="#111827"
+      />
       <link rel="canonical" href={location.url.href} />
       <link rel="manifest" href="/manifest.json" />
 
@@ -117,13 +114,6 @@ export const Head = component$(() => {
         data-domains="valibot.dev"
         data-strip-search="true"
       />
-
-      {/* Temporary solution until attribute can be rendered dynamically */}
-      {theme.value === 'dark' ? (
-        <script dangerouslySetInnerHTML="document.documentElement.classList.add('dark')" />
-      ) : (
-        <script dangerouslySetInnerHTML="document.documentElement.classList.remove('dark')" />
-      )}
     </head>
   );
 });
