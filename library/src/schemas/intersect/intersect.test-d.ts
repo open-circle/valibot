@@ -1,10 +1,22 @@
 import { describe, expectTypeOf, test } from 'vitest';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
 import { array, type ArrayIssue } from '../array/index.ts';
-import { number, type NumberIssue, type NumberSchema } from '../number/index.ts';
-import { object, type ObjectIssue, type ObjectSchema } from '../object/index.ts';
+import {
+  number,
+  type NumberIssue,
+  type NumberSchema,
+} from '../number/index.ts';
+import {
+  object,
+  type ObjectIssue,
+  type ObjectSchema,
+} from '../object/index.ts';
 import { optional } from '../optional/optional.ts';
-import { string, type StringIssue, type StringSchema } from '../string/index.ts';
+import {
+  string,
+  type StringIssue,
+  type StringSchema,
+} from '../string/index.ts';
 import { intersect, type IntersectSchema } from './intersect.ts';
 import type { IntersectIssue } from './types.ts';
 
