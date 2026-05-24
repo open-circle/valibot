@@ -118,4 +118,42 @@ describe('_addPathIssues', () => {
       { ...issue2, path: [pathItem] },
     ]);
   });
+
+  test('should not mutate nested issues or paths', () => {
+    const existingIssue: BaseIssue<unknown> = {
+      ...baseInfo,
+      input: false,
+      received: 'false',
+    };
+    const dataset: PartialDataset<
+      Record<string, unknown>,
+      BaseIssue<unknown>
+    > = {
+      typed: true,
+      value: {},
+      issues: [existingIssue],
+    };
+    const nestedPathItem = {
+      type: 'array',
+      origin: 'value',
+      input: [123],
+      key: 0,
+      value: 123,
+    } as const;
+    const nestedPath: [typeof nestedPathItem] = [nestedPathItem];
+    const issue: BaseIssue<unknown> = {
+      ...baseInfo,
+      path: nestedPath,
+    };
+
+    _addPathIssues(dataset, pathItem, [issue]);
+
+    const nextIssue = dataset.issues[1]!;
+
+    expect(issue.path).toBe(nestedPath);
+    expect(issue.path).toStrictEqual([nestedPathItem]);
+    expect(nextIssue).not.toBe(issue);
+    expect(nextIssue.path).not.toBe(issue.path);
+    expect(nextIssue.path).toStrictEqual([pathItem, nestedPathItem]);
+  });
 });

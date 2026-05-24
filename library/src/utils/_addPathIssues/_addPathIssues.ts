@@ -6,7 +6,7 @@ import type {
 } from '../../types/index.ts';
 
 /**
- * Adds nested issues with a prepended path item to the dataset.
+ * Adds copies of nested issues with a prepended path item to the dataset.
  *
  * @param dataset The dataset to add issues to.
  * @param pathItem The path item to prepend.
@@ -20,19 +20,19 @@ export function _addPathIssues(
   issues: [BaseIssue<unknown>, ...BaseIssue<unknown>[]]
 ): void {
   const parentIssues = dataset.issues;
-  for (const issue of issues) {
-    if (issue.path) {
-      issue.path.unshift(pathItem);
-    } else {
-      // @ts-expect-error
-      issue.path = [pathItem];
-    }
-    if (parentIssues) {
-      parentIssues.push(issue);
-    }
-  }
-  if (!parentIssues) {
+  const getIssueWithPath = (issue: BaseIssue<unknown>): BaseIssue<unknown> => ({
+    ...issue,
+    path: issue.path ? [pathItem, ...issue.path] : [pathItem],
+  });
+  const nextIssues: [BaseIssue<unknown>, ...BaseIssue<unknown>[]] = [
+    getIssueWithPath(issues[0]),
+    ...issues.slice(1).map(getIssueWithPath),
+  ];
+
+  if (parentIssues) {
+    parentIssues.push(...nextIssues);
+  } else {
     // @ts-expect-error
-    dataset.issues = issues;
+    dataset.issues = nextIssues;
   }
 }
