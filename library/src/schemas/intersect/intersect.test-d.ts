@@ -69,6 +69,25 @@ describe('intersect', () => {
     });
   });
 
+  describe('should infer never for empty options', () => {
+    // `intersect([])` is a guaranteed runtime failure (it reports a `never`
+    // expectation), so its input and output types must stay `never`. The real
+    // call infers `never[]` for the options, not the empty tuple `[]`, so both
+    // shapes are asserted here.
+    type EmptyTupleSchema = IntersectSchema<[], undefined>;
+    type EmptyArraySchema = IntersectSchema<never[], undefined>;
+
+    test('of input', () => {
+      expectTypeOf<InferInput<EmptyTupleSchema>>().toEqualTypeOf<never>();
+      expectTypeOf<InferInput<EmptyArraySchema>>().toEqualTypeOf<never>();
+    });
+
+    test('of output', () => {
+      expectTypeOf<InferOutput<EmptyTupleSchema>>().toEqualTypeOf<never>();
+      expectTypeOf<InferOutput<EmptyArraySchema>>().toEqualTypeOf<never>();
+    });
+  });
+
   describe('should infer correct types for non-tuple array options', () => {
     // A general array of options (not a fixed tuple) — e.g. when building an
     // intersect dynamically or annotating `IntersectSchema<Schema[], ...>`.
