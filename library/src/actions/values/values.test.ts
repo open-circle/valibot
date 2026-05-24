@@ -211,6 +211,8 @@ describe('values', () => {
     test('for valid numbers', () => {
       expectNoActionIssue(values([-2, 3]), [-2, 3, 3.0, Number('3')]);
       expectNoActionIssue(values([0]), [0]);
+      // NaN in the allowlist must match NaN input.
+      expectNoActionIssue(values([NaN]), [NaN, Number('not-a-number')]);
     });
 
     test('for valid non-numbers', () => {
