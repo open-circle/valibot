@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Fix `intersect` schema to infer correct input and output types for non-tuple array options instead of `never` (pull request #1478)
+
 ## v1.4.0 (May 05, 2026)
 
 - Add `isoDateTimeSecond` validation action to validate ISO date times with seconds (pull request #1418)
