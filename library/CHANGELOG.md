@@ -2,7 +2,7 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v1.4.1 (May 24, 2026)
 
 - Fix `intersect` schema to infer correct input and output types for non-tuple array options instead of `never` (pull request #1478)
 
