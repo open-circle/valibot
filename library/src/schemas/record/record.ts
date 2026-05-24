@@ -3,11 +3,11 @@ import type {
   BaseSchema,
   ErrorMessage,
   InferIssue,
-  ObjectPathItem,
   OutputDataset,
 } from '../../types/index.ts';
 import {
   _addIssue,
+  _addPathIssues,
   _getStandardProps,
   _isValidObjectKey,
 } from '../../utils/index.ts';
@@ -141,26 +141,17 @@ export function record(
 
             // If there are issues, capture them
             if (keyDataset.issues) {
-              // Create record path item
-              const pathItem: ObjectPathItem = {
-                type: 'object',
-                origin: 'key',
-                input: input as Record<string, unknown>,
-                key: entryKey,
-                value: entryValue,
-              };
-
-              // Add modified item dataset issues to issues
-              for (const issue of keyDataset.issues) {
-                // @ts-expect-error
-                issue.path = [pathItem];
-                // @ts-expect-error
-                dataset.issues?.push(issue);
-              }
-              if (!dataset.issues) {
-                // @ts-expect-error
-                dataset.issues = keyDataset.issues;
-              }
+              _addPathIssues(
+                dataset,
+                {
+                  type: 'object',
+                  origin: 'key',
+                  input: input as Record<string, unknown>,
+                  key: entryKey,
+                  value: entryValue,
+                },
+                keyDataset.issues
+              );
 
               // If necessary, abort early
               if (config.abortEarly) {
@@ -177,30 +168,17 @@ export function record(
 
             // If there are issues, capture them
             if (valueDataset.issues) {
-              // Create record path item
-              const pathItem: ObjectPathItem = {
-                type: 'object',
-                origin: 'value',
-                input: input as Record<string, unknown>,
-                key: entryKey,
-                value: entryValue,
-              };
-
-              // Add modified item dataset issues to issues
-              for (const issue of valueDataset.issues) {
-                if (issue.path) {
-                  issue.path.unshift(pathItem);
-                } else {
-                  // @ts-expect-error
-                  issue.path = [pathItem];
-                }
-                // @ts-expect-error
-                dataset.issues?.push(issue);
-              }
-              if (!dataset.issues) {
-                // @ts-expect-error
-                dataset.issues = valueDataset.issues;
-              }
+              _addPathIssues(
+                dataset,
+                {
+                  type: 'object',
+                  origin: 'value',
+                  input: input as Record<string, unknown>,
+                  key: entryKey,
+                  value: entryValue,
+                },
+                valueDataset.issues
+              );
 
               // If necessary, abort early
               if (config.abortEarly) {

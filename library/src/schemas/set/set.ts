@@ -4,9 +4,12 @@ import type {
   ErrorMessage,
   InferIssue,
   OutputDataset,
-  SetPathItem,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import {
+  _addIssue,
+  _addPathIssues,
+  _getStandardProps,
+} from '../../utils/index.ts';
 import type { InferSetInput, InferSetOutput, SetIssue } from './types.ts';
 
 /**
@@ -105,30 +108,17 @@ export function set(
 
           // If there are issues, capture them
           if (valueDataset.issues) {
-            // Create set path item
-            const pathItem: SetPathItem = {
-              type: 'set',
-              origin: 'value',
-              input,
-              key: null,
-              value: inputValue,
-            };
-
-            // Add modified item dataset issues to issues
-            for (const issue of valueDataset.issues) {
-              if (issue.path) {
-                issue.path.unshift(pathItem);
-              } else {
-                // @ts-expect-error
-                issue.path = [pathItem];
-              }
-              // @ts-expect-error
-              dataset.issues?.push(issue);
-            }
-            if (!dataset.issues) {
-              // @ts-expect-error
-              dataset.issues = valueDataset.issues;
-            }
+            _addPathIssues(
+              dataset,
+              {
+                type: 'set',
+                origin: 'value',
+                input,
+                key: null,
+                value: inputValue,
+              },
+              valueDataset.issues
+            );
 
             // If necessary, abort early
             if (config.abortEarly) {

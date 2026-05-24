@@ -1,4 +1,3 @@
-import { getDefault, getFallback } from '../../methods/index.ts';
 import type {
   BaseSchemaAsync,
   ErrorMessage,
@@ -6,9 +5,9 @@ import type {
   InferObjectIssue,
   InferObjectOutput,
   ObjectEntriesAsync,
-  ObjectPathItem,
   OutputDataset,
 } from '../../types/index.ts';
+import { _parseObjectEntriesAsync } from '../../utils/_parseObjectEntries/index.ts';
 import { _addIssue, _getStandardProps } from '../../utils/index.ts';
 import type { strictObject } from './strictObject.ts';
 import type { StrictObjectIssue } from './types.ts';
@@ -98,128 +97,11 @@ export function strictObjectAsync(
 
       // If root type is valid, check nested types
       if (input && typeof input === 'object') {
-        // Set typed to `true` and value to blank object
-        // @ts-expect-error
-        dataset.typed = true;
-        dataset.value = {};
-
-        // If key is present or its an optional schema with a default value,
-        // parse input of key or default value asynchronously
-        const valueDatasets = await Promise.all(
-          Object.entries(this.entries).map(async ([key, valueSchema]) => {
-            if (
-              key in input ||
-              ((valueSchema.type === 'exact_optional' ||
-                valueSchema.type === 'optional' ||
-                valueSchema.type === 'nullish') &&
-                // @ts-expect-error
-                valueSchema.default !== undefined)
-            ) {
-              const value: unknown =
-                key in input
-                  ? // @ts-expect-error
-                    input[key]
-                  : await getDefault(valueSchema);
-              return [
-                key,
-                value,
-                valueSchema,
-                await valueSchema['~run']({ value }, config),
-              ] as const;
-            }
-            return [
-              key,
-              // @ts-expect-error
-              input[key] as unknown,
-              valueSchema,
-              null,
-            ] as const;
-          })
-        );
-
-        // Process each object entry of schema
-        for (const [key, value, valueSchema, valueDataset] of valueDatasets) {
-          // If key is present or its an optional schema with a default value,
-          // process its value dataset
-          if (valueDataset) {
-            // If there are issues, capture them
-            if (valueDataset.issues) {
-              // Create object path item
-              const pathItem: ObjectPathItem = {
-                type: 'object',
-                origin: 'value',
-                input: input as Record<string, unknown>,
-                key,
-                value,
-              };
-
-              // Add modified entry dataset issues to issues
-              for (const issue of valueDataset.issues) {
-                if (issue.path) {
-                  issue.path.unshift(pathItem);
-                } else {
-                  // @ts-expect-error
-                  issue.path = [pathItem];
-                }
-                // @ts-expect-error
-                dataset.issues?.push(issue);
-              }
-              if (!dataset.issues) {
-                // @ts-expect-error
-                dataset.issues = valueDataset.issues;
-              }
-
-              // If necessary, abort early
-              if (config.abortEarly) {
-                dataset.typed = false;
-                break;
-              }
-            }
-
-            // If not typed, set typed to `false`
-            if (!valueDataset.typed) {
-              dataset.typed = false;
-            }
-
-            // Add entry to dataset
-            // @ts-expect-error
-            dataset.value[key] = valueDataset.value;
-
-            // Otherwise, if key is missing but has a fallback, use it
-            // @ts-expect-error
-          } else if (valueSchema.fallback !== undefined) {
-            // @ts-expect-error
-            dataset.value[key] = await getFallback(valueSchema);
-
-            // Otherwise, if key is missing and required, add issue
-          } else if (
-            valueSchema.type !== 'exact_optional' &&
-            valueSchema.type !== 'optional' &&
-            valueSchema.type !== 'nullish'
-          ) {
-            _addIssue(this, 'key', dataset, config, {
-              input: undefined,
-              expected: `"${key}"`,
-              path: [
-                {
-                  type: 'object',
-                  origin: 'key',
-                  input: input as Record<string, unknown>,
-                  key,
-                  value,
-                },
-              ],
-            });
-
-            // If necessary, abort early
-            if (config.abortEarly) {
-              break;
-            }
-          }
-        }
+        await _parseObjectEntriesAsync(this, dataset, config, input);
 
         // Check input for unknown keys if necessary
         if (!dataset.issues || !config.abortEarly) {
+          const object = input as Record<string, unknown>;
           for (const key in input) {
             if (!(key in this.entries)) {
               _addIssue(this, 'key', dataset, config, {
@@ -231,8 +113,7 @@ export function strictObjectAsync(
                     origin: 'key',
                     input: input as Record<string, unknown>,
                     key,
-                    // @ts-expect-error
-                    value: input[key],
+                    value: object[key],
                   },
                 ],
               });
