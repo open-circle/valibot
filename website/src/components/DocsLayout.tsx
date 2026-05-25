@@ -190,7 +190,7 @@ export const DocsLayout = component$(() => {
   );
 });
 
-type NavButtonsProps = {
+interface NavButtonsProps {
   pageIndex: number;
   sourcePath: string | undefined;
   markdownPath: string | undefined;
@@ -198,7 +198,7 @@ type NavButtonsProps = {
   nextPage: ContentMenu | undefined;
   chapters?: ReadonlySignal<boolean>;
   chaptersToggle?: QRL<() => void>;
-};
+}
 
 /**
  * Buttons to navigate to the previous or next page.

@@ -63,13 +63,34 @@ function extractFromMdx(source: string): {
 const QUOTED_STRING = /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/
   .source;
 
+/**
+ * Returns the body of the `head: DocumentHead = { ... }` literal, or `null` if
+ * no such declaration is present. Uses brace counting so it tolerates any
+ * formatting (newlines, trailing semicolons, nested objects) around the closing
+ * brace.
+ */
+function findHeadBlock(source: string): string | null {
+  const start = source.match(/head:\s*DocumentHead\s*=\s*{/);
+  if (!start || start.index === undefined) return null;
+  const openIdx = start.index + start[0].length - 1; // index of the opening `{`
+  let depth = 0;
+  for (let i = openIdx; i < source.length; i++) {
+    const ch = source[i];
+    if (ch === '{') depth++;
+    else if (ch === '}') {
+      depth--;
+      if (depth === 0) return source.slice(openIdx + 1, i);
+    }
+  }
+  return null;
+}
+
 function extractFromTsx(source: string): {
   title?: string;
   description?: string;
 } {
-  const headMatch = source.match(/head:\s*DocumentHead\s*=\s*{([\s\S]*?)\n};/);
-  if (!headMatch) return {};
-  const block = headMatch[1];
+  const block = findHeadBlock(source);
+  if (block === null) return {};
   const titleMatch = block.match(new RegExp(`title:\\s*${QUOTED_STRING}`));
   const descMatch = block.match(
     new RegExp(`name:\\s*['"]description['"],?\\s*content:\\s*${QUOTED_STRING}`)
@@ -86,26 +107,25 @@ async function collectRoutes(): Promise<RouteInfo[]> {
     (fileName) => fileName === 'index.tsx' || fileName === 'index.mdx'
   );
 
-  const routes: RouteInfo[] = [];
-  for (const filePath of filePaths) {
-    const urlPath = urlPathFromFilePath(filePath);
-    const slug = slugFromUrlPath(urlPath);
-    const pathLabel = urlPath.replace(/\/+$/, '').split('/')[0] ?? '';
+  return Promise.all(
+    filePaths.map(async (filePath) => {
+      const urlPath = urlPathFromFilePath(filePath);
+      const slug = slugFromUrlPath(urlPath);
+      const pathLabel = urlPath.replace(/\/+$/, '').split('/')[0] ?? '';
 
-    const source = await fsp.readFile(filePath, 'utf8');
-    const extracted = filePath.endsWith('.mdx')
-      ? extractFromMdx(source)
-      : extractFromTsx(source);
+      const source = await fsp.readFile(filePath, 'utf8');
+      const extracted = filePath.endsWith('.mdx')
+        ? extractFromMdx(source)
+        : extractFromTsx(source);
 
-    routes.push({
-      slug,
-      pathLabel,
-      title: extracted.title ?? 'Valibot',
-      description: extracted.description,
-    });
-  }
-
-  return routes;
+      return {
+        slug,
+        pathLabel,
+        title: extracted.title ?? 'Valibot',
+        description: extracted.description,
+      };
+    })
+  );
 }
 
 async function fetchFonts(publicDir: string) {

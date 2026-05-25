@@ -16,11 +16,11 @@ import { AngleUpIcon } from '~/icons';
  */
 export const useSideBarToggle = () => useSignal(false);
 
-type SideBarProps = {
+interface SideBarProps {
   ref?: Signal<HTMLElement | undefined>;
   class?: string;
   toggle: ReturnType<typeof useSideBarToggle>;
-};
+}
 
 /**
  * Sidebar that can be extended from the bottom on smaller devices and

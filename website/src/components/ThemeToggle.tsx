@@ -4,9 +4,9 @@ import { useTheme, useThemeToggle } from '~/routes/plugin@theme';
 import { disableTransitions, trackEvent } from '~/utils';
 import { SystemIcon } from './SystemIcon';
 
-type ThemeToggleProps = {
+interface ThemeToggleProps {
   class?: string;
-};
+}
 
 /**
  * Button for switching the color theme. Depending on the status, a sun or

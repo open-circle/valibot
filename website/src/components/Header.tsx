@@ -16,9 +16,9 @@ import { MainMenuToggle } from './MainMenuToggle';
 import { SearchToggle } from './SearchToggle';
 import { ThemeToggle } from './ThemeToggle';
 
-type HeaderProps = {
+interface HeaderProps {
   searchOpen: Signal<boolean>;
-};
+}
 
 /**
  * Fixed header with logo, main navigation and theme toogle.

@@ -6,6 +6,10 @@ import { useThemeProvider } from './routes/plugin@theme';
 import './styles/root.css';
 import { disableTransitions } from './utils';
 
+/**
+ * Root application component. Mounts global state providers (theme, chapters)
+ * and renders the routed page tree.
+ */
 export default component$(() => {
   useThemeProvider();
   useChaptersProvider();

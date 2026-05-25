@@ -1,9 +1,9 @@
 import { component$, type Signal } from '@builder.io/qwik';
 import clsx from 'clsx';
 
-type MainMenuToggleProps = {
+interface MainMenuToggleProps {
   toggle: Signal<boolean>;
-};
+}
 
 /**
  * Button for opening and closing the main menu. Depending on the status, a
