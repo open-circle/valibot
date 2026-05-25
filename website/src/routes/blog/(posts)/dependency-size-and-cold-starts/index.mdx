@@ -116,7 +116,7 @@ import { InferOutput } from 'valibot';
 type User = InferOutput<typeof UserSchema>;
 ```
 
-If your existing codebase is heavily Zod, migration doesn't have to be a full rewrite. Most teams move validation schema-by-schema at the edges of their system, at API boundaries, form handlers, and environment config, where the cold start impact is most direct.
+If your existing codebase is heavily Zod, migration doesn't have to be a full rewrite. Most teams move validation schema-by-schema at the edges of their system, at API boundaries, form handlers, and environment config, where the cold start impact is most direct. If you want to speed that process up, the [Zod to Valibot migration guide](https://valibot.dev/guides/migrate-from-zod/) covers the key differences and includes a codemod to handle much of the conversion automatically.
 
 ## Where Bundle Size Actually Matters
 
