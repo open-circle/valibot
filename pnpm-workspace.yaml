@@ -3,3 +3,15 @@ packages:
   - 'library'
   - 'packages/*'
   - 'website'
+
+# Supply-chain hardening (pnpm v11+).
+# pnpm v11 enables `minimumReleaseAge` (1 day), `blockExoticSubdeps`, and
+# `strictDepBuilds` by default. We extend the release-age window to 7 days
+# for a larger detection buffer against malicious releases.
+#minimumReleaseAge: 10080  # minutes — 7 days
+
+# Allowlist of packages whose install / postinstall scripts are permitted to
+# run. Under v11 defaults, every other package's build scripts are denied.
+# Add entries here only after auditing what the script does.
+allowBuilds:
+  sharp: true  # website only — fetches/builds native image-processing binaries
