@@ -11,11 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
       - name: Scan for vulnerabilities
-        uses: OWASP/cve-lite-cli@b2b60c7739dfc65c48c0396bf8eab4f8c5f9b3c5
+        uses: OWASP/cve-lite-cli@v1
         with:
           path: .
           fail-on: critical
+          verbose: 'true'
+          sarif: 'true'
+      - name: Upload SARIF to GitHub
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: ${{ github.workspace }}
