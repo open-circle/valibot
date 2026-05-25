@@ -14,17 +14,8 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           persist-credentials: false
-      - name: Setup pnpm
-        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
-        with:
-          version: 9
-          run_install: false
-      - name: Setup Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-        with:
-          node-version: 24
-          cache: pnpm
-      - name: Install dependencies
-        run: pnpm install
       - name: Scan for vulnerabilities
-        run: pnpm exec cve-lite . --fail-on critical
+        uses: OWASP/cve-lite-cli@b2b60c7739dfc65c48c0396bf8eab4f8c5f9b3c5
+        with:
+          path: .
+          fail-on: critical
