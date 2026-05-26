@@ -328,6 +328,7 @@
 - [CreditCardAction](/api/CreditCardAction/)
 - [CreditCardIssue](/api/CreditCardIssue/)
 - [CronAction](/api/CronAction/)
+- [CronDialect](/api/CronDialect/)
 - [CronIssue](/api/CronIssue/)
 - [Cuid2Action](/api/Cuid2Action/)
 - [Cuid2Issue](/api/Cuid2Issue/)

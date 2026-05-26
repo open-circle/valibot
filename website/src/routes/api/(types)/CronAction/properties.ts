@@ -78,18 +78,6 @@ export const properties: Record<string, PropertyProps> = {
   expects: {
     type: 'null',
   },
-  requirement: {
-    type: {
-      type: 'function',
-      params: [
-        {
-          name: 'input',
-          type: 'string',
-        },
-      ],
-      return: 'boolean',
-    },
-  },
   message: {
     type: {
       type: 'custom',

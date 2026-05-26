@@ -50,16 +50,4 @@ export const properties: Record<string, PropertyProps> = {
       ],
     },
   },
-  requirement: {
-    type: {
-      type: 'function',
-      params: [
-        {
-          name: 'input',
-          type: 'string',
-        },
-      ],
-      return: 'boolean',
-    },
-  },
 };
