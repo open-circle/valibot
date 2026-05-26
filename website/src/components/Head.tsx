@@ -42,7 +42,7 @@ export const Head = component$(() => {
     if (location.url.pathname !== '/') {
       imageUrl += `?title=${encodeURIComponent(head.title)}&path=${
         location.url.pathname.split('/')[1]
-      }`;
+        }`;
 
       // Add description to URL
       if (description.value) {
@@ -116,6 +116,16 @@ export const Head = component$(() => {
         data-website-id="1fe7c3d9-66cb-43db-bb9c-dd86128e828c"
         data-domains="valibot.dev"
         data-strip-search="true"
+      />
+
+      {/* Guru Widget script */}
+      <script
+        async
+        src="https://guru-widget.pages.dev/guru_widget.latest.min.js"
+        data-text="Ask AI"
+        data-link="https://gurubase.io/g/valibot"
+        data-bg-color="#FACC13"
+        data-icon-url="https://gurubase.io/_next/image?url=https%3A%2F%2Fvalibot.dev%2Ficon-180px.jpg&w=96&q=75"
       />
 
       {/* Temporary solution until attribute can be rendered dynamically */}
