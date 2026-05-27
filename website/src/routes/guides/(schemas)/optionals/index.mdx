@@ -69,6 +69,8 @@ const NullableDateSchema = v.nullable(v.date(), () => new Date());
 
 The previous example thus creates a new instance of the [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) class for each validation with `null` as input, which is then used as the default value.
 
+> If you want missing object entries to default to an `undefined` value, pass a function that returns `undefined` as the second argument: `v.optional(v.string(), () => undefined)`. This ensures the key is always included in the output, since omitting the default would cause missing keys to be skipped entirely.
+
 ### Dependent default values
 
 In rare cases, a default value for an optional entry may depend on the values of another entries in the same object. This can be achieved by using <Link href="/api/transform/">`transform`</Link> in the <Link href="/api/pipe/">`pipe`</Link> of the object.

@@ -31,6 +31,7 @@ export type Language = {
     | 'sv'
     | 'tr'
     | 'uk'
+    | 'uz'
     | 'vi'
     | 'zh-CN'
     | 'zh-TW';

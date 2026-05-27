@@ -48,6 +48,13 @@
     scrollbar-color: var(--color-slate-700) transparent;
   }
 
+  /* Shiki dual-theme: promote dark CSS vars under .dark ancestor */
+  .dark .shiki,
+  .dark .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+  }
+
   /* Monaco editor */
   .monaco-editor,
   .monaco-editor > div {

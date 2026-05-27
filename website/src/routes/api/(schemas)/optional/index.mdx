@@ -72,6 +72,16 @@ const OptionalEntrySchema = v.object({
 });
 ```
 
+### Default to `undefined`
+
+By default, when an object input is missing an optional entry, the corresponding key is omitted from the output. To always include the key in the output with an `undefined` value, pass a function that returns `undefined` as the `default_` parameter.
+
+```ts
+const OptionalEntrySchema = v.object({
+  key: v.optional(v.string(), () => undefined),
+});
+```
+
 ### Unwrap optional schema
 
 Use <Link href="../unwrap/">`unwrap`</Link> to undo the effect of `optional`.
