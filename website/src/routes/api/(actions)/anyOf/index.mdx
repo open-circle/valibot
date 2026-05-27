@@ -60,12 +60,15 @@ const WebsiteSchema = v.pipe(
 Schema to validate a CSS size with a narrowing output type.
 
 ```ts
+const isPixelString = (input: string): input is `${number}px` =>
+  /^\d+px$/u.test(input);
+
+const isRemString = (input: string): input is `${number}rem` =>
+  /^\d+rem$/u.test(input);
+
 const CssSizeSchema = v.pipe(
   v.string(),
-  v.anyOf([
-    v.guard((input): input is `${number}px` => /^\d+px$/.test(input)),
-    v.guard((input): input is `${number}rem` => /^\d+rem$/.test(input)),
-  ])
+  v.anyOf([v.guard(isPixelString), v.guard(isRemString)])
 );
 ```
 
