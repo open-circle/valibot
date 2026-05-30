@@ -5,9 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  '@builder.io/qwik-city@1.17.2':
-    hash: 80f35e5f4cf24d9b2519b4d8a83f220eec14471d11671efd380e55a2953b73b2
-    path: patches/@builder.io__qwik-city@1.17.2.patch
+  '@builder.io/qwik-city@1.17.2': 80f35e5f4cf24d9b2519b4d8a83f220eec14471d11671efd380e55a2953b73b2
 
 importers:
 
