@@ -1,4 +1,5 @@
 {
+  "installCommand": "corepack enable pnpm && pnpm install --frozen-lockfile",
   "buildCommand": "cd ../library && npm run build && cd ../packages/to-json-schema && npm run build && cd ../../codemod/zod-to-valibot && pnpm build && cd ../../website && npm run sitemap && npm run llms && npm run og && npm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
