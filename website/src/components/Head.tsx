@@ -1,7 +1,7 @@
 import { component$, useComputed$ } from '@builder.io/qwik';
 import { useDocumentHead, useLocation } from '@builder.io/qwik-city';
-import { CHAPTERS_HIDDEN_CLASS, CHAPTERS_KEY } from '~/routes/plugin@chapters';
-import { THEME_KEY } from '~/routes/plugin@theme';
+import { CHAPTERS_HIDDEN_CLASS, CHAPTERS_KEY } from '../routes/plugin@chapters';
+import { THEME_KEY } from '../routes/plugin@theme';
 
 // Keys and classes are imported from the plugins so these pre-hydration
 // scripts cannot drift from the runtime stores that read the same values.
