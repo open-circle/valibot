@@ -75,9 +75,6 @@ export const DocsLayout = component$(() => {
     () => navItems.value[navIndex.value + 1]
   );
 
-  // Whether to show chapters
-  const showChapters = useComputed$(() => chapters.value);
-
   // Compute Markdown path from current location
   const markdownPath = useComputed$(() =>
     MDX_PATH_REGEX.test(location.url.pathname)
@@ -89,9 +86,7 @@ export const DocsLayout = component$(() => {
     <div
       class={clsx(
         'flex w-full flex-1 flex-col-reverse self-center lg:flex-row',
-        showChapters.value
-          ? 'max-w-(--breakpoint-2xl)'
-          : 'max-w-(--breakpoint-xl)'
+        'no-chapters:max-w-(--breakpoint-xl) max-w-(--breakpoint-2xl)'
       )}
     >
       {/* Side bar navigation */}
@@ -108,7 +103,7 @@ export const DocsLayout = component$(() => {
         <Navigation
           class={clsx(
             'px-8 py-9 lg:w-60 lg:py-24 xl:py-32',
-            showChapters.value ? '2xl:w-64' : '2xl:w-72'
+            'no-chapters:2xl:w-72 2xl:w-64'
           )}
         />
       </SideBar>
@@ -116,14 +111,14 @@ export const DocsLayout = component$(() => {
       <main
         class={clsx(
           'relative flex-1 py-12 md:py-14 lg:w-px lg:py-24 xl:py-32',
-          showChapters.value ? 'lg:px-9' : 'lg:pl-9'
+          'no-chapters:lg:pr-0 lg:pr-9 lg:pl-9'
         )}
       >
         {/* Navigation buttons */}
         <nav
           class={clsx(
             'hidden px-8 lg:absolute lg:flex lg:gap-6 lg:px-10',
-            showChapters.value ? 'lg:right-9' : 'lg:right-0'
+            'no-chapters:lg:right-0 lg:right-9'
           )}
         >
           <NavButtons
@@ -181,24 +176,36 @@ export const DocsLayout = component$(() => {
         <Credits />
       </main>
 
-      {showChapters.value && (
-        <aside class="hidden xl:block xl:w-60 xl:px-8 xl:py-32 2xl:w-64">
-          <Chapters />
-        </aside>
-      )}
+      {/* Always rendered so the root `.no-chapters` class can hide it before
+          paint without a layout shift. */}
+      <aside class="no-chapters:xl:hidden hidden xl:block xl:w-60 xl:px-8 xl:py-32 2xl:w-64">
+        <Chapters />
+      </aside>
     </div>
   );
 });
 
-interface NavButtonsProps {
+interface NavButtonsBaseProps {
   pageIndex: number;
   sourcePath: string | undefined;
   markdownPath: string | undefined;
   prevPage: ContentMenu | undefined;
   nextPage: ContentMenu | undefined;
-  chapters?: ReadonlySignal<boolean>;
-  chaptersToggle?: QRL<() => void>;
 }
+
+interface NavButtonsWithChaptersProps extends NavButtonsBaseProps {
+  chapters: ReadonlySignal<boolean>;
+  chaptersToggle: QRL<() => void>;
+}
+
+interface NavButtonsWithoutChaptersProps extends NavButtonsBaseProps {
+  chapters?: undefined;
+  chaptersToggle?: undefined;
+}
+
+type NavButtonsProps =
+  | NavButtonsWithChaptersProps
+  | NavButtonsWithoutChaptersProps;
 
 /**
  * Buttons to navigate to the previous or next page.
@@ -244,15 +251,15 @@ export const NavButtons = component$<NavButtonsProps>(
           )}
         </>
       )}
-      {chaptersToggle && (
+      {chapters && chaptersToggle && (
         <div class="hidden xl:block">
           <IconButton
             variant="secondary"
             type="button"
-            label={chapters!.value ? 'Hide chapters' : 'Show chapters'}
+            label={chapters.value ? 'Hide chapters' : 'Show chapters'}
             hideLabel
             onClick$={$(() => {
-              trackEvent('change_chapters', { enabled: !chapters!.value });
+              trackEvent('change_chapters', { enabled: !chapters.value });
               chaptersToggle();
             })}
           >

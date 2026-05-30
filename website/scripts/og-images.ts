@@ -9,7 +9,8 @@ import matter from 'gray-matter';
 import { promises as fsp } from 'node:fs';
 import path from 'node:path';
 import { html } from 'satori-html';
-import { findNestedFiles } from './utils/index';
+import sharp from 'sharp';
+import { findNestedFiles } from './utils/index.ts';
 
 interface RouteInfo {
   /** Path component (e.g. "guides_quick-start") or "index" for "/". */
@@ -245,7 +246,12 @@ async function main() {
     const image = isHome
       ? renderLogoOg(iconData, fonts)
       : renderTitledOg(route, iconData, fonts);
-    const buffer = Buffer.from(await image.arrayBuffer());
+    // The cards use only a handful of flat colors, so a palette-quantized PNG
+    // is much smaller than the 24-bit output from `@vercel/og` while staying
+    // crisp and compatible with social crawlers.
+    const buffer = await sharp(Buffer.from(await image.arrayBuffer()))
+      .png({ palette: true, quality: 90, effort: 8 })
+      .toBuffer();
     const outPath = path.join(OUT_DIR, `${route.slug}.png`);
     await fsp.writeFile(outPath, buffer);
     process.stdout.write(`og: ${route.slug}\n`);

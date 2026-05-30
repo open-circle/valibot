@@ -1,7 +1,13 @@
 import { component$, useComputed$ } from '@builder.io/qwik';
 import { useDocumentHead, useLocation } from '@builder.io/qwik-city';
+import { CHAPTERS_HIDDEN_CLASS, CHAPTERS_KEY } from '~/routes/plugin@chapters';
+import { THEME_KEY } from '~/routes/plugin@theme';
 
-const THEME_INIT_SCRIPT = `try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.classList.toggle('dark',t==='dark');}catch(e){}`;
+// Keys and classes are imported from the plugins so these pre-hydration
+// scripts cannot drift from the runtime stores that read the same values.
+const THEME_INIT_SCRIPT = `try{var t=localStorage.getItem('${THEME_KEY}');document.documentElement.classList.toggle('dark',t==='dark'||t!=='light'&&!matchMedia('(prefers-color-scheme:light)').matches);}catch(e){}`;
+
+const CHAPTERS_INIT_SCRIPT = `try{document.documentElement.classList.toggle('${CHAPTERS_HIDDEN_CLASS}',localStorage.getItem('${CHAPTERS_KEY}')==='false');}catch(e){}`;
 
 function ogImagePath(pathname: string): string {
   if (pathname === '/') return '/og/index.png';
@@ -43,6 +49,9 @@ export const Head = component$(() => {
     <head>
       {/* Pre-hydration theme + FOUC fix */}
       <script dangerouslySetInnerHTML={THEME_INIT_SCRIPT} />
+
+      {/* Pre-hydration chapters visibility to avoid a layout shift */}
+      <script dangerouslySetInnerHTML={CHAPTERS_INIT_SCRIPT} />
 
       {/* Document title */}
       <title>{documentTitle.value}</title>

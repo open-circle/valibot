@@ -37,6 +37,15 @@
   ],
   "headers": [
     {
+      "source": "/(.*)?service-worker.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
       "source": "/build/(.*)",
       "headers": [
         {
@@ -82,6 +91,24 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=86400, s-maxage=86400"
+        }
+      ]
+    },
+    {
+      "source": "/q-data.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, s-maxage=31536000, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)/q-data.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, s-maxage=31536000, stale-while-revalidate=604800"
         }
       ]
     }
