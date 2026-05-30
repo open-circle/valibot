@@ -49,11 +49,14 @@
     "lint.fix": "eslint \"src/**/*.ts*\" --fix",
     "format": "prettier --write ./src",
     "format.check": "prettier --check ./src",
-    "build": "tsdown"
+    "build": "tsdown",
+    "size": "size-limit"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@size-limit/preset-small-lib": "^12.0.0",
     "@vitest/coverage-v8": "^4.0.13",
+    "dedent": "^1.7.0",
     "eslint": "^9.39.1",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsdoc": "^61.4.0",
@@ -62,6 +65,7 @@
     "eslint-plugin-security": "^3.0.1",
     "jsdom": "^27.2.0",
     "tsdown": "^0.16.6",
+    "size-limit": "^12.0.0",
     "tsm": "^2.3.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.47.0",

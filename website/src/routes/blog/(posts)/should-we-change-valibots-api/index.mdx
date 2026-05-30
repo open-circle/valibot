@@ -105,10 +105,7 @@ const NumberSchema = pipe(
 );
 
 // With Valibot's current API
-const NumberSchema = transform(
-  string([toTrimmed(), decimal()]),
-  parseInt
-);
+const NumberSchema = transform(string([toTrimmed(), decimal()]), parseInt);
 ```
 
 Besides that, the `pipe` function would also allow us to easily add a [metadata feature](https://github.com/open-circle/valibot/issues/373) to Valibot. This could be interesting when working with databases to define SQL properties like `PRIMARY KEY`.
