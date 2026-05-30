@@ -1,5 +1,5 @@
 {
-  "installCommand": "corepack enable pnpm && pnpm install --frozen-lockfile",
+  "installCommand": "COREPACK_ENABLE_DOWNLOAD_PROMPT=0 corepack pnpm@11.5.0 install --frozen-lockfile",
   "buildCommand": "cd ../library && npm run build && cd ../packages/to-json-schema && npm run build && cd ../../codemod/zod-to-valibot && pnpm build && cd ../../website && npm run sitemap && npm run llms && npm run og && npm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
