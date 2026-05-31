@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { isAbsolute, resolve } from 'node:path';
 import * as v from 'valibot';
 import type { LoadConfigOptions } from '../../types/index.ts';
 import { loadFile } from '../../utils/loadFile.ts';
@@ -18,6 +18,10 @@ const BUILTIN_EXTENSIONS = ['.json', '.js', '.mjs', '.cjs'] as const;
  * entries override earlier ones. Missing files are silently skipped, so
  * passing only `defaults` (with no matching file on disk) is valid.
  *
+ * `name` must contain at least one entry, and each `name` must be a
+ * non-empty literal base name; empty values, or values that are absolute
+ * or contain a path separator, are rejected to prevent escaping `cwd`.
+ *
  * @param options The load options.
  *
  * @returns The parsed configuration object.
@@ -32,6 +36,10 @@ export async function loadConfig<
   const names =
     typeof options.name === 'string' ? [options.name] : options.name;
 
+  if (names.length === 0) {
+    throw new Error('Invalid config name: expected at least one name.');
+  }
+
   const userExtensions = options.parsers ? Object.keys(options.parsers) : [];
   const extensions = [
     ...BUILTIN_EXTENSIONS.filter((ext) => !userExtensions.includes(ext)),
@@ -40,6 +48,14 @@ export async function loadConfig<
 
   let data: unknown = options.defaults ?? {};
   for (const name of names) {
+    if (name === '') {
+      throw new Error('Invalid config name: name must not be empty.');
+    }
+    if (isAbsolute(name) || name.includes('/') || name.includes('\\')) {
+      throw new Error(
+        `Invalid config name "${name}": expected a base name without path separators.`
+      );
+    }
     for (const ext of extensions) {
       const file = resolve(cwd, `${name}${ext}`);
       if (!existsSync(file)) continue;

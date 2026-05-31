@@ -305,4 +305,80 @@ describe('loadConfig', () => {
 
     expect(config).toStrictEqual({ port: 1111 });
   });
+
+  test('rejects a name containing a path separator', async () => {
+    await expect(
+      loadConfig({
+        schema: v.object({ port: v.number() }),
+        name: '../app.config',
+        cwd,
+      })
+    ).rejects.toThrow('Invalid config name');
+  });
+
+  test('rejects an absolute name', async () => {
+    await expect(
+      loadConfig({
+        schema: v.object({ port: v.number() }),
+        name: join(cwd, 'app.config'),
+        cwd,
+      })
+    ).rejects.toThrow('Invalid config name');
+  });
+
+  test('rejects a backslash separator in a name', async () => {
+    await expect(
+      loadConfig({
+        schema: v.object({ port: v.number() }),
+        name: 'nested\\app.config',
+        cwd,
+      })
+    ).rejects.toThrow('Invalid config name');
+  });
+
+  test('rejects an empty name array', async () => {
+    await expect(
+      loadConfig({
+        schema: v.object({ port: v.number() }),
+        name: [],
+        cwd,
+        defaults: { port: 3000 },
+      })
+    ).rejects.toThrow('expected at least one name');
+  });
+
+  test('rejects an empty string name', async () => {
+    await expect(
+      loadConfig({
+        schema: v.object({ port: v.number() }),
+        name: '',
+        cwd,
+      })
+    ).rejects.toThrow('must not be empty');
+  });
+
+  test('rejects an empty string within a name array', async () => {
+    await expect(
+      loadConfig({
+        schema: v.object({ port: v.number() }),
+        name: ['app.config', ''],
+        cwd,
+      })
+    ).rejects.toThrow('must not be empty');
+  });
+
+  test('allows a base name that contains dots', async () => {
+    writeFileSync(
+      join(cwd, 'app.config.production.json'),
+      JSON.stringify({ port: 6060 })
+    );
+
+    const config = await loadConfig({
+      schema: v.object({ port: v.number() }),
+      name: 'app.config.production',
+      cwd,
+    });
+
+    expect(config).toStrictEqual({ port: 6060 });
+  });
 });
