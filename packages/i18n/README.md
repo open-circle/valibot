@@ -40,6 +40,7 @@ Valibot ships English messages by default, so this package publishes translated 
 | Ukrainian (uk)   | [#423][pr-423-url]   | ✅     |
 | Uzbek (uz)       | [#1452][pr-1452-url] | ✅     |
 | Vietnamese (vi)  | [#951][pr-951-url]   | ✅     |
+| Kinyarwanda (rw-RW) | [#] | ✅     |
 
 The deprecated `kr` submodule remains available as an alias of `ko` for compatibility, but new integrations should use `ko`.
 
