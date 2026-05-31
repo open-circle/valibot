@@ -99,5 +99,3 @@ Pass a custom `merge` to opt into deep merging (for example `defu` or `lodash.me
 
 - [`cosmiconfig`](https://github.com/cosmiconfig/cosmiconfig) — broader discovery rules, but Valibot integration is manual.
 - [`c12`](https://github.com/unjs/c12) — richer feature set tied to the unjs ecosystem.
-</content>
-</invoke>
