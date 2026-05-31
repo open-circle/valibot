@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { statSync } from 'node:fs';
 import { isAbsolute, resolve } from 'node:path';
 import * as v from 'valibot';
 import type { LoadConfigOptions } from '../../types/index.ts';
@@ -56,7 +56,10 @@ export async function loadConfig<
     }
     for (const ext of extensions) {
       const file = resolve(cwd, `${name}${ext}`);
-      if (!existsSync(file)) continue;
+      // Skip missing paths as well as directories and other non-regular
+      // files, so a directory named like a config file is ignored rather
+      // than crashing the loader with EISDIR.
+      if (!statSync(file, { throwIfNoEntry: false })?.isFile()) continue;
       const value = await loadFile(file, options.parsers);
       data = merge(data, value);
       break;

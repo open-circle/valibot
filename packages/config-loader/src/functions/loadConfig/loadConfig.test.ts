@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import * as v from 'valibot';
@@ -365,6 +365,36 @@ describe('loadConfig', () => {
         cwd,
       })
     ).rejects.toThrow('must not be empty');
+  });
+
+  test('skips a directory matching a config name and keeps searching', async () => {
+    // A directory named like a `.json` config must not crash the loader.
+    mkdirSync(join(cwd, 'app.config.json'));
+    writeFileSync(
+      join(cwd, 'app.config.js'),
+      'export default { port: 7070 };\n'
+    );
+
+    const config = await loadConfig({
+      schema: v.object({ port: v.number() }),
+      name: 'app.config',
+      cwd,
+    });
+
+    expect(config).toStrictEqual({ port: 7070 });
+  });
+
+  test('skips a directory match and falls back to defaults', async () => {
+    mkdirSync(join(cwd, 'app.config.json'));
+
+    const config = await loadConfig({
+      schema: v.object({ port: v.number() }),
+      name: 'app.config',
+      cwd,
+      defaults: { port: 3000 },
+    });
+
+    expect(config).toStrictEqual({ port: 3000 });
   });
 
   test('allows a base name that contains dots', async () => {
