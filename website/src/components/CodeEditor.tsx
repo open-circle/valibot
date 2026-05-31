@@ -422,6 +422,13 @@ async function setupMonaco() {
     'file:///node_modules/@valibot/to-json-schema/dist/index.d.mts'
   );
 
+  // Add i18n to context of editor. Its translations are registered as a side
+  // effect, so we only declare the modules to keep the imports type-safe.
+  monaco.typescript.typescriptDefaults.addExtraLib(
+    "declare module '@valibot/i18n';\ndeclare module '@valibot/i18n/*';\n",
+    'file:///node_modules/@valibot/i18n/index.d.ts'
+  );
+
   // Set TypeScript compiler options
   monaco.typescript.typescriptDefaults.setCompilerOptions({
     strict: true,

@@ -22,8 +22,14 @@ Step 3: Build library
 cd ./library && pnpm build
 ```
 
-Step 4: Start website
+Step 4: Build i18n translations (required for the playground)
 
 ```bash
-cd ../website && pnpm start
+cd ../packages/i18n && pnpm build.playground
+```
+
+Step 5: Start website
+
+```bash
+cd ../../website && pnpm start
 ```

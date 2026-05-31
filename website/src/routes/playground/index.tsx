@@ -28,9 +28,87 @@ import { useResetSignal } from '~/hooks';
 import { BinIcon, CheckIcon, CopyIcon, PlayIcon, ShareIcon } from '~/icons';
 import { trackEvent } from '~/utils';
 import valibotCode from '../../../../library/dist/index.min.mjs?url';
+// Self-contained playground bundles of `@valibot/i18n`. Each language registers
+// all of its messages and keeps `valibot` as an external bare import, so it
+// shares the same instance as the user code via the import map below. These are
+// produced by `pnpm build.playground` in `packages/i18n`; run it before
+// building or starting the website (see website/README.md).
+import i18nAr from '../../../../packages/i18n/dist/playground/ar/index.mjs?url';
+import i18nAz from '../../../../packages/i18n/dist/playground/az/index.mjs?url';
+import i18nCa from '../../../../packages/i18n/dist/playground/ca/index.mjs?url';
+import i18nCs from '../../../../packages/i18n/dist/playground/cs/index.mjs?url';
+import i18nDe from '../../../../packages/i18n/dist/playground/de/index.mjs?url';
+import i18nEl from '../../../../packages/i18n/dist/playground/el/index.mjs?url';
+import i18nEs from '../../../../packages/i18n/dist/playground/es/index.mjs?url';
+import i18nFa from '../../../../packages/i18n/dist/playground/fa/index.mjs?url';
+import i18nFi from '../../../../packages/i18n/dist/playground/fi/index.mjs?url';
+import i18nFr from '../../../../packages/i18n/dist/playground/fr/index.mjs?url';
+import i18nHu from '../../../../packages/i18n/dist/playground/hu/index.mjs?url';
+import i18nId from '../../../../packages/i18n/dist/playground/id/index.mjs?url';
+import i18nIt from '../../../../packages/i18n/dist/playground/it/index.mjs?url';
+import i18nJa from '../../../../packages/i18n/dist/playground/ja/index.mjs?url';
+import i18nKo from '../../../../packages/i18n/dist/playground/ko/index.mjs?url';
+import i18nKr from '../../../../packages/i18n/dist/playground/kr/index.mjs?url';
+import i18nMn from '../../../../packages/i18n/dist/playground/mn/index.mjs?url';
+import i18nNb from '../../../../packages/i18n/dist/playground/nb/index.mjs?url';
+import i18nNl from '../../../../packages/i18n/dist/playground/nl/index.mjs?url';
+import i18nPl from '../../../../packages/i18n/dist/playground/pl/index.mjs?url';
+import i18nPt from '../../../../packages/i18n/dist/playground/pt/index.mjs?url';
+import i18nRo from '../../../../packages/i18n/dist/playground/ro/index.mjs?url';
+import i18nRu from '../../../../packages/i18n/dist/playground/ru/index.mjs?url';
+import i18nSk from '../../../../packages/i18n/dist/playground/sk/index.mjs?url';
+import i18nSl from '../../../../packages/i18n/dist/playground/sl/index.mjs?url';
+import i18nSv from '../../../../packages/i18n/dist/playground/sv/index.mjs?url';
+import i18nTr from '../../../../packages/i18n/dist/playground/tr/index.mjs?url';
+import i18nUk from '../../../../packages/i18n/dist/playground/uk/index.mjs?url';
+import i18nUz from '../../../../packages/i18n/dist/playground/uz/index.mjs?url';
+import i18nVi from '../../../../packages/i18n/dist/playground/vi/index.mjs?url';
+import i18nZhCN from '../../../../packages/i18n/dist/playground/zh-CN/index.mjs?url';
+import i18nZhTW from '../../../../packages/i18n/dist/playground/zh-TW/index.mjs?url';
 import valibotToJsonSchemaCode from '../../../../packages/to-json-schema/dist/index.min.mjs?url';
 import editorCode from './editorCode.ts?raw';
 import iframeCode from './iframeCode.js?raw';
+
+// Serialize the iframe import map with Valibot, to-json-schema and i18n. Each
+// language is exposed as `@valibot/i18n/<lang>` (the whole-language entry).
+const importMap = JSON.stringify({
+  imports: {
+    valibot: valibotCode,
+    '@valibot/to-json-schema': valibotToJsonSchemaCode,
+    '@valibot/i18n/ar': i18nAr,
+    '@valibot/i18n/az': i18nAz,
+    '@valibot/i18n/ca': i18nCa,
+    '@valibot/i18n/cs': i18nCs,
+    '@valibot/i18n/de': i18nDe,
+    '@valibot/i18n/el': i18nEl,
+    '@valibot/i18n/es': i18nEs,
+    '@valibot/i18n/fa': i18nFa,
+    '@valibot/i18n/fi': i18nFi,
+    '@valibot/i18n/fr': i18nFr,
+    '@valibot/i18n/hu': i18nHu,
+    '@valibot/i18n/id': i18nId,
+    '@valibot/i18n/it': i18nIt,
+    '@valibot/i18n/ja': i18nJa,
+    '@valibot/i18n/ko': i18nKo,
+    '@valibot/i18n/kr': i18nKr,
+    '@valibot/i18n/mn': i18nMn,
+    '@valibot/i18n/nb': i18nNb,
+    '@valibot/i18n/nl': i18nNl,
+    '@valibot/i18n/pl': i18nPl,
+    '@valibot/i18n/pt': i18nPt,
+    '@valibot/i18n/ro': i18nRo,
+    '@valibot/i18n/ru': i18nRu,
+    '@valibot/i18n/sk': i18nSk,
+    '@valibot/i18n/sl': i18nSl,
+    '@valibot/i18n/sv': i18nSv,
+    '@valibot/i18n/tr': i18nTr,
+    '@valibot/i18n/uk': i18nUk,
+    '@valibot/i18n/uz': i18nUz,
+    '@valibot/i18n/vi': i18nVi,
+    '@valibot/i18n/zh-CN': i18nZhCN,
+    '@valibot/i18n/zh-TW': i18nZhTW,
+  },
+});
 
 type LogLevel = 'log' | 'info' | 'debug' | 'warn' | 'error';
 
@@ -303,12 +381,7 @@ export default component$(() => {
           <html>
             <head>
               <script type="importmap">
-                {
-                  "imports": {
-                    "valibot": "${valibotCode}",
-                    "@valibot/to-json-schema": "${valibotToJsonSchemaCode}"
-                  }
-                }
+                ${importMap}
               </script>
               <script>
                 ${iframeCode}

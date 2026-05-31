@@ -62,6 +62,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
+    "@valibot/i18n": "workspace:*",
     "@valibot/zod-to-valibot": "workspace:*",
     "@vercel/speed-insights": "^1.2.0",
     "clsx": "^2.1.1",
