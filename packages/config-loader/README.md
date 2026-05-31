@@ -37,7 +37,7 @@ const config = await loadConfig({
 
 For every entry in `name`, the loader searches `cwd` (defaults to `process.cwd()`) for `<name><ext>`. The set of extensions is the union of:
 
-1. The built-in extensions — `.json`, `.js`, `.mjs`, `.cjs` — always searched and handled natively.
+The built-in extensions — `.json`, `.js`, `.mjs`, `.cjs` — are searched and handled natively by default.
 2. The extensions you registered via `parsers` (the map keys).
 
 The extensions are searched in this order: the built-in extensions first (in the order above), followed by your registered parser extensions (in the order of the `parsers` keys). The **first matching file per name wins** — so if both `myapp.config.json` and `myapp.config.yaml` exist, the `.json` file is used because built-ins are searched first. Missing files are silently skipped — `defaults` alone is a valid configuration.
