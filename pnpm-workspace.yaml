@@ -7,5 +7,7 @@ allowBuilds:
   '@ast-grep/cli': true
   '@vercel/speed-insights': true
   esbuild: true
-  sharp: set this to true or false
+  sharp: true
   unrs-resolver: true
+patchedDependencies:
+  '@builder.io/qwik-city@1.17.2': patches/@builder.io__qwik-city@1.17.2.patch
