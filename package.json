@@ -10,7 +10,7 @@
     "url": "https://github.com/open-circle/valibot"
   },
   "private": true,
-  "packageManager": "pnpm@11.3.0",
+  "packageManager": "pnpm@11.5.0",
   "scripts": {
     "test": "pnpm -r run test",
     "lint": "pnpm -r run lint",

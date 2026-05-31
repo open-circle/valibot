@@ -1,11 +1,5 @@
-import { component$, useComputed$ } from '@builder.io/qwik';
-import {
-  type DocumentHead,
-  Form,
-  routeAction$,
-  z,
-  zod$,
-} from '@builder.io/qwik-city';
+import { component$, useSignal } from '@builder.io/qwik';
+import { type DocumentHead } from '@builder.io/qwik-city';
 import clsx from 'clsx';
 import { ActionButton, ButtonGroup, Expandable, TextLink } from '~/components';
 import { PlayIcon, PlusIcon } from '~/icons';
@@ -22,26 +16,9 @@ export const head: DocumentHead = {
   ],
 };
 
-/**
- * Toggles the index of the FAQ.
- */
-export const useFaqToggle = routeAction$(
-  (values) => values,
-  zod$({ index: z.coerce.number() })
-);
-
 export default component$(() => {
-  // Use FAQ toggle and compute its index
-  const faqToggle = useFaqToggle();
-  const faqIndex = useComputed$(
-    () =>
-      +(
-        (faqToggle.isRunning
-          ? // Optimistic UI
-            faqToggle.formData?.get('index')
-          : faqToggle.value?.index) || 0
-      )
-  );
+  // Index of the currently open FAQ entry
+  const faqIndex = useSignal(0);
 
   return (
     <main class="flex flex-1 flex-col items-center gap-24 py-24 md:gap-36 md:py-36 xl:gap-52 xl:py-52">
@@ -252,32 +229,32 @@ export default component$(() => {
             const isOpen = index === faqIndex.value;
             return (
               <li key={heading} class="flex flex-col px-8">
-                <Form action={faqToggle}>
-                  <input type="hidden" name="index" value={index} />
-                  <button
+                <button
+                  class={clsx(
+                    'focus-ring flex w-full justify-between gap-4 rounded-md transition-colors focus-visible:ring-offset-8 focus-visible:outline-offset-[6px]',
+                    isOpen
+                      ? 'text-sky-600 dark:text-sky-400'
+                      : 'text-slate-800 hover:text-slate-700 dark:text-slate-300 hover:dark:text-slate-400'
+                  )}
+                  type="button"
+                  disabled={isOpen}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-${index}`}
+                  onClick$={() => {
+                    faqIndex.value = index;
+                  }}
+                >
+                  <span class="text-left leading-relaxed font-medium md:text-xl lg:text-2xl">
+                    {heading}
+                  </span>
+                  <PlusIcon
                     class={clsx(
-                      'focus-ring flex w-full justify-between gap-4 rounded-md transition-colors focus-visible:ring-offset-8 focus-visible:outline-offset-[6px]',
-                      isOpen
-                        ? 'text-sky-600 dark:text-sky-400'
-                        : 'text-slate-800 hover:text-slate-700 dark:text-slate-300 hover:dark:text-slate-400'
+                      'mt-1.5 h-4 shrink-0 transition-transform lg:h-5',
+                      isOpen && 'rotate-45'
                     )}
-                    type="submit"
-                    disabled={isOpen}
-                    aria-expanded={isOpen}
-                    aria-controls={`faq-${index}`}
-                  >
-                    <span class="text-left leading-relaxed font-medium md:text-xl lg:text-2xl">
-                      {heading}
-                    </span>
-                    <PlusIcon
-                      class={clsx(
-                        'mt-1.5 h-4 shrink-0 transition-transform lg:h-5',
-                        isOpen && 'rotate-45'
-                      )}
-                      stroke-width={6}
-                    />
-                  </button>
-                </Form>
+                    stroke-width={6}
+                  />
+                </button>
                 <Expandable
                   id={`faq-${index}`}
                   class="overflow-hidden"
