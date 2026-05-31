@@ -3,13 +3,8 @@
   "description": "The official typed config file loader for Valibot",
   "version": "0.0.1",
   "license": "MIT",
-  "author": "Fabian Hiller",
+  "author": "Kanon",
   "homepage": "https://valibot.dev",
-  "contributors": [
-    {
-      "name": "Kanon"
-    }
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/open-circle/valibot"
