@@ -38,7 +38,10 @@ export async function loadFile(
 
   if (ext === '.json') {
     const raw = await readFile(path, 'utf8');
-    return JSON.parse(raw);
+    // Node's readFile preserves a leading UTF-8 BOM, which JSON.parse
+    // rejects with a SyntaxError; strip it so BOM-prefixed JSON files
+    // (common from some Windows editors) parse correctly.
+    return JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
   }
 
   if ((NATIVE_IMPORT_EXTENSIONS as readonly string[]).includes(ext)) {

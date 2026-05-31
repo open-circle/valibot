@@ -22,6 +22,13 @@ describe('loadFile', () => {
     expect(await loadFile(path, undefined)).toStrictEqual({ port: 8080 });
   });
 
+  test('parses a .json file prefixed with a UTF-8 BOM', async () => {
+    const path = join(cwd, 'app.json');
+    writeFileSync(path, `\uFEFF${JSON.stringify({ port: 8080 })}`);
+
+    expect(await loadFile(path, undefined)).toStrictEqual({ port: 8080 });
+  });
+
   test('returns the default export of a .mjs module', async () => {
     const path = join(cwd, 'app.mjs');
     writeFileSync(path, 'export default { port: 5050 };\n');
