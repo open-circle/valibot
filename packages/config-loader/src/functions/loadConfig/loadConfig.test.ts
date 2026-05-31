@@ -241,7 +241,7 @@ describe('loadConfig', () => {
     expect(config).toStrictEqual({ port: 3000 });
   });
 
-  test('loads a CommonJS-style module with a default export', async () => {
+  test('loads an ESM module with a default export', async () => {
     writeFileSync(
       join(cwd, 'app.config.mjs'),
       'export default { port: 5050, host: "from-mjs" };\n'
