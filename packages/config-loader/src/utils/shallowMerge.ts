@@ -26,6 +26,7 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
  *
  * @returns The merged value.
  */
+// @__NO_SIDE_EFFECTS__
 export function shallowMerge(defaults: unknown, override: unknown): unknown {
   if (!isPlainObject(defaults) || !isPlainObject(override)) {
     return override;

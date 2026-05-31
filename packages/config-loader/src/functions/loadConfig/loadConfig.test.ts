@@ -336,7 +336,10 @@ describe('loadConfig', () => {
     // Both files exist for the same base name; `.json` must keep winning
     // over `.js` even when its parser is overridden.
     writeFileSync(join(cwd, 'app.config.json'), JSON.stringify({ port: 1111 }));
-+    writeFileSync(join(cwd, 'app.config.js'), 'module.exports = { port: 2222 };');
+    writeFileSync(
+      join(cwd, 'app.config.js'),
+      'module.exports = { port: 2222 };'
+    );
 
     const tolerantJsonParser = (raw: string): unknown => JSON.parse(raw);
 
