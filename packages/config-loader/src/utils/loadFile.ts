@@ -4,6 +4,15 @@ import { pathToFileURL } from 'node:url';
 import type { ConfigParser } from '../types/options.ts';
 
 /**
+ * The file extensions handled natively by {@link loadFile}, in the order
+ * they are searched on disk. Reused by the config loader so the set of
+ * built-in extensions is declared in a single place.
+ */
+export const BUILTIN_EXTENSIONS = ['.json', '.js', '.mjs', '.cjs'] as const;
+
+const NATIVE_IMPORT_EXTENSIONS = BUILTIN_EXTENSIONS.slice(1);
+
+/**
  * Reads a configuration file from disk and returns the parsed value.
  *
  * Handles `.json`, `.js`, `.mjs`, and `.cjs` natively. A user-supplied
@@ -32,7 +41,7 @@ export async function loadFile(
     return JSON.parse(raw);
   }
 
-  if (ext === '.js' || ext === '.mjs' || ext === '.cjs') {
+  if ((NATIVE_IMPORT_EXTENSIONS as readonly string[]).includes(ext)) {
     const mod: { default?: unknown } = await import(pathToFileURL(path).href);
     return mod.default ?? mod;
   }

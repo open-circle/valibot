@@ -2,10 +2,8 @@ import { existsSync } from 'node:fs';
 import { isAbsolute, resolve } from 'node:path';
 import * as v from 'valibot';
 import type { LoadConfigOptions } from '../../types/index.ts';
-import { loadFile } from '../../utils/loadFile.ts';
+import { BUILTIN_EXTENSIONS, loadFile } from '../../utils/loadFile.ts';
 import { shallowMerge } from '../../utils/shallowMerge.ts';
-
-const BUILTIN_EXTENSIONS = ['.json', '.js', '.mjs', '.cjs'] as const;
 
 /**
  * Loads one or more configuration files from disk, applies optional
