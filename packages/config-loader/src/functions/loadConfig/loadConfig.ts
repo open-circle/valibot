@@ -38,10 +38,16 @@ export async function loadConfig<
     throw new Error('Invalid config name: expected at least one name.');
   }
 
+  // Always search built-in extensions in their fixed precedence order;
+  // overriding a built-in parser only changes how that extension is
+  // parsed (see `loadFile`), not where it sits in the lookup order. Only
+  // genuinely new user extensions are appended after the built-ins.
   const userExtensions = options.parsers ? Object.keys(options.parsers) : [];
   const extensions = [
-    ...BUILTIN_EXTENSIONS.filter((ext) => !userExtensions.includes(ext)),
-    ...userExtensions,
+    ...BUILTIN_EXTENSIONS,
+    ...userExtensions.filter(
+      (ext) => !(BUILTIN_EXTENSIONS as readonly string[]).includes(ext)
+    ),
   ];
 
   let data: unknown = options.defaults ?? {};

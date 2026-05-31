@@ -306,6 +306,24 @@ describe('loadConfig', () => {
     expect(config).toStrictEqual({ port: 1111 });
   });
 
+  test('overriding a built-in parser keeps the built-in extension precedence', async () => {
+    // Both files exist for the same base name; `.json` must keep winning
+    // over `.js` even when its parser is overridden.
+    writeFileSync(join(cwd, 'app.config.json'), JSON.stringify({ port: 1111 }));
+    writeFileSync(join(cwd, 'app.config.js'), 'export default { port: 2222 };');
+
+    const tolerantJsonParser = (raw: string): unknown => JSON.parse(raw);
+
+    const config = await loadConfig({
+      schema: v.object({ port: v.number() }),
+      name: 'app.config',
+      cwd,
+      parsers: { '.json': tolerantJsonParser },
+    });
+
+    expect(config).toStrictEqual({ port: 1111 });
+  });
+
   test('rejects a name containing a path separator', async () => {
     await expect(
       loadConfig({
