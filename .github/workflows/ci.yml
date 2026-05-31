@@ -107,6 +107,45 @@ jobs:
         run: pnpm test
         working-directory: packages/to-json-schema
 
+  config_loader_prettier:
+    name: Run Prettier in packages/config-loader
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Prettier check
+        run: pnpm format.check
+        working-directory: packages/config-loader
+
+  config_loader_eslint:
+    name: Run ESLint in packages/config-loader
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: ESLint check
+        run: pnpm lint
+        working-directory: packages/config-loader
+
+  config_loader_vitest:
+    name: Run Vitest in packages/config-loader
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Vitest tests
+        run: pnpm test
+        working-directory: packages/config-loader
+
   website_prettier:
     name: Run Prettier in website
     needs: install
