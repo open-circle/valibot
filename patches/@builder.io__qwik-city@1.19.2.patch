@@ -1,8 +1,8 @@
 diff --git a/lib/static/node.cjs b/lib/static/node.cjs
-index 2c4b5cf2d108833633d6ec4877147124fb08b8e5..7e51a1c76c7a178707535f6a183fa8ccd7673b14 100644
+index 6904dd955f2ceea5ea5ec490de482445fe81ce00..57deee032a310ca29c52a3ea15b1d6f9778a0256 100644
 --- a/lib/static/node.cjs
 +++ b/lib/static/node.cjs
-@@ -785,7 +785,7 @@ ${bold(red(`!!! ${result.pathname}: Error during SSG`))}`);
+@@ -797,7 +797,7 @@ ${bold(red(`!!! ${result.pathname}: Error during SSG`))}`);
                if (!pathname.endsWith("/")) {
                  const segments = pathname.split("/");
                  const lastSegment = segments[segments.length - 1];
@@ -12,10 +12,10 @@ index 2c4b5cf2d108833633d6ec4877147124fb08b8e5..7e51a1c76c7a178707535f6a183fa8cc
                  }
                }
 diff --git a/lib/static/node.mjs b/lib/static/node.mjs
-index f3211a7e07c58b2822ded5d8f4aacdea19a0f355..ae0b3142dd82a6980a8854e52f2bac2b0737e831 100644
+index a486bb5fc369121e5ae31bc50f10f4d4dc275891..c8fae2a8818cbdfd203fbe76604e4bfe3f35ccfb 100644
 --- a/lib/static/node.mjs
 +++ b/lib/static/node.mjs
-@@ -753,7 +753,7 @@ ${bold(red(`!!! ${result.pathname}: Error during SSG`))}`);
+@@ -765,7 +765,7 @@ ${bold(red(`!!! ${result.pathname}: Error during SSG`))}`);
                if (!pathname.endsWith("/")) {
                  const segments = pathname.split("/");
                  const lastSegment = segments[segments.length - 1];

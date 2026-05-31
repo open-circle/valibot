@@ -11,4 +11,4 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
 patchedDependencies:
-  '@builder.io/qwik-city@1.17.2': patches/@builder.io__qwik-city@1.17.2.patch
+  '@builder.io/qwik-city@1.19.2': patches/@builder.io__qwik-city@1.19.2.patch
