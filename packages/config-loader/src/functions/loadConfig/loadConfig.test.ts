@@ -291,8 +291,34 @@ describe('loadConfig', () => {
     }
   });
 
-  test('searches every registered extension and picks the first match', async () => {
+  test('searches built-ins before a registered custom extension', async () => {
+    // Both a built-in (`.json`) and a custom (`.yaml`) file exist for the
+    // same base name. Built-ins are searched first, so the `.json` file
+    // must win and the custom parser must never run.
     writeFileSync(join(cwd, 'app.config.json'), JSON.stringify({ port: 1111 }));
+    writeFileSync(join(cwd, 'app.config.yaml'), 'port: 2222\n');
+
+    let yamlParserCalled = false;
+    const fakeYamlParser = (): unknown => {
+      yamlParserCalled = true;
+      return { port: 2222 };
+    };
+
+    const config = await loadConfig({
+      schema: v.object({ port: v.number() }),
+      name: 'app.config',
+      cwd,
+      parsers: { '.yaml': fakeYamlParser },
+    });
+
+    expect(config).toStrictEqual({ port: 1111 });
+    expect(yamlParserCalled).toBe(false);
+  });
+
+  test('falls back to a registered custom extension when no built-in matches', async () => {
+    // Only the custom `.yaml` file exists, proving the registered
+    // extension is actually discovered and its parser invoked.
+    writeFileSync(join(cwd, 'app.config.yaml'), 'port: 2222\n');
 
     const fakeYamlParser = (): unknown => ({ port: 2222 });
 
@@ -303,7 +329,7 @@ describe('loadConfig', () => {
       parsers: { '.yaml': fakeYamlParser },
     });
 
-    expect(config).toStrictEqual({ port: 1111 });
+    expect(config).toStrictEqual({ port: 2222 });
   });
 
   test('overriding a built-in parser keeps the built-in extension precedence', async () => {
