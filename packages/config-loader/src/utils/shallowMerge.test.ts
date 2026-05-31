@@ -3,15 +3,17 @@ import { shallowMerge } from './shallowMerge.ts';
 
 describe('shallowMerge', () => {
   test('merges top-level keys of two plain objects with override taking precedence', () => {
-    expect(
-      shallowMerge({ a: 1, b: 2 }, { b: 3, c: 4 })
-    ).toStrictEqual({ a: 1, b: 3, c: 4 });
+    expect(shallowMerge({ a: 1, b: 2 }, { b: 3, c: 4 })).toStrictEqual({
+      a: 1,
+      b: 3,
+      c: 4,
+    });
   });
 
   test('does not recurse into nested objects', () => {
-    expect(
-      shallowMerge({ a: { x: 1, y: 2 } }, { a: { y: 99 } })
-    ).toStrictEqual({ a: { y: 99 } });
+    expect(shallowMerge({ a: { x: 1, y: 2 } }, { a: { y: 99 } })).toStrictEqual(
+      { a: { y: 99 } }
+    );
   });
 
   test('returns the override when defaults is not a plain object', () => {

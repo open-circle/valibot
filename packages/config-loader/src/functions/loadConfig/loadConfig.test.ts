@@ -292,10 +292,7 @@ describe('loadConfig', () => {
   });
 
   test('searches every registered extension and picks the first match', async () => {
-    writeFileSync(
-      join(cwd, 'app.config.json'),
-      JSON.stringify({ port: 1111 })
-    );
+    writeFileSync(join(cwd, 'app.config.json'), JSON.stringify({ port: 1111 }));
 
     const fakeYamlParser = (): unknown => ({ port: 2222 });
 

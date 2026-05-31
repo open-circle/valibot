@@ -29,7 +29,8 @@ export async function loadConfig<
 >(options: LoadConfigOptions<TSchema>): Promise<v.InferOutput<TSchema>> {
   const cwd = options.cwd ?? process.cwd();
   const merge = options.merge ?? shallowMerge;
-  const names = typeof options.name === 'string' ? [options.name] : options.name;
+  const names =
+    typeof options.name === 'string' ? [options.name] : options.name;
 
   const userExtensions = options.parsers ? Object.keys(options.parsers) : [];
   const extensions = [

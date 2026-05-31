@@ -52,7 +52,7 @@ export interface LoadConfigOptions<
    * and `.cjs` are always searched and handled natively, but can be
    * overridden by supplying an entry with the same key.
    */
-  readonly parsers?: Readonly<Record<string, ConfigParser>>;
+  readonly parsers?: Readonly<Record<`.${string}`, ConfigParser>>;
   /**
    * Default values that are merged with the loaded configuration before
    * validation.
