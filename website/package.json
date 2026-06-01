@@ -16,6 +16,7 @@
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.server": "vite build -c adapters/static/vite.config.ts",
     "build.types": "tsc --incremental --noEmit",
+    "build.vercel": "npm run sitemap && npm run llms && npm run og && npm run build",
     "contributors": "tsm ./scripts/contributors.ts",
     "deploy": "vercel deploy",
     "dev": "vite --mode ssr",
