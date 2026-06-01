@@ -18,13 +18,11 @@ The typical solution is a handful of functions. `toFrontendUser()`, `toAIUser()`
 Someone needs legacy-to-AI, there's no function for that, so they chain two together and hope the intermediate shape doesn't change. Nobody writes tests for these because they're "just mapping."
 Then a schema change ships and half your transforms silently produce wrong data.
 
-I wrote [doba](https://doba.karolbroda.com) to deal with this ([source](https://github.com/karol-broda/doba)). It's a schema registry that works with Valibot, and the two pair well for a few reasons.
+I wrote [doba](https://doba.karolbroda.com) to deal with this ([source](https://github.com/karol-broda/doba)). It's a schema registry that works with any [Standard Schema](https://github.com/standard-schema/standard-schema) compatible library, but I use it with Valibot, and the two pair well for a few reasons.
 
 Valibot's modular architecture means your bundle only includes what you actually use. A registry with ten schema variants doesn't pull in validators that only two of them use. With most other schema libraries, you'd import the whole thing regardless.
 
 Valibot's type inference is also what makes doba's typed migrations work. When you define a schema with `v.object()`, the inferred type flows straight into the migration function signature. Rename a field in the Valibot schema and the migration won't compile until you fix it. That feedback loop is the core of what makes this useful.
-
-doba builds on [Standard Schema](https://github.com/standard-schema/standard-schema), so it works with any library that implements the spec.
 
 ## Schemas and migrations
 
