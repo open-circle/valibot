@@ -14,7 +14,7 @@
     "build": "qwik build",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
-    "build.server": "vite build -c adapters/vercel-edge/vite.config.ts",
+    "build.server": "vite build -c adapters/static/vite.config.ts",
     "build.types": "tsc --incremental --noEmit",
     "contributors": "tsm ./scripts/contributors.ts",
     "deploy": "vercel deploy",
@@ -26,25 +26,28 @@
     "preview": "qwik build preview && vite preview --open",
     "sitemap": "tsm ./scripts/sitemap.ts",
     "llms": "tsm ./scripts/llms.ts",
+    "og": "tsm ./scripts/og-images.ts",
     "sources": "tsm ./scripts/sources.ts",
     "start": "vite --open --mode ssr",
     "qwik": "qwik"
   },
   "devDependencies": {
-    "@builder.io/qwik": "~1.17.2",
-    "@builder.io/qwik-city": "~1.17.2",
+    "@builder.io/qwik": "~1.19.2",
+    "@builder.io/qwik-city": "~1.19.2",
     "@eslint/js": "^9.39.1",
     "@shikijs/rehype": "^4.1.0",
     "@tailwindcss/vite": "^4.1.17",
     "@types/jscodeshift": "17.3.0",
     "@types/node": "^24.10.1",
+    "@vercel/og": "0.7.2",
     "dotenv": "^17.2.3",
     "eslint": "^9.39.1",
-    "eslint-plugin-qwik": "~1.17.2",
+    "eslint-plugin-qwik": "~1.19.2",
     "globals": "^16.5.0",
     "gray-matter": "^4.0.3",
     "prettier": "^3.6.2",
     "rehype-external-links": "^3.0.0",
+    "satori-html": "^0.3.2",
     "sharp": "^0.34.5",
     "shiki": "^4.1.0",
     "tailwindcss": "^4.1.17",
@@ -56,12 +59,10 @@
     "vite": "^7.2.4",
     "vite-imagetools": "^9.0.0",
     "vite-plugin-node-polyfills": "^0.24.0",
-    "vite-plugin-static-copy": "^3.1.4",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
     "@valibot/zod-to-valibot": "workspace:*",
-    "@vercel/og": "0.7.2",
     "@vercel/speed-insights": "^1.2.0",
     "clsx": "^2.1.1",
     "jscodeshift": "^17.3.0",
@@ -70,11 +71,10 @@
     "monaco-editor-textmate": "^4.0.0",
     "monaco-textmate": "^3.0.1",
     "onigasm": "^2.2.5",
-    "satori-html": "^0.3.2",
     "sucrase": "^3.35.1",
     "valibot": "workspace:*"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=24.0.0"
   }
 }
