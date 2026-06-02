@@ -65,13 +65,14 @@ const i18nSources = import.meta.glob('../../../../packages/i18n/src/*.ts');
  * `public` URL the playground iframe loads.
  */
 const i18nImports = Object.fromEntries(
-  Object.keys(i18nSources)
-    .map((path) => path.match(/\/src\/(.+)\.ts$/)![1])
-    .filter((lang) => lang !== 'en' && lang !== 'types')
-    .map((lang) => [
-      `@valibot/i18n/${lang}`,
-      `/playground/i18n/${lang}/index.mjs`,
-    ])
+  Object.keys(i18nSources).flatMap((path) => {
+    // Derive the language code from the file name (e.g. `ja`, `zh-CN`). Skip
+    // any path that does not look like a language module so an unexpected glob
+    // result can never throw and crash the page at module init.
+    const lang = path.match(/\/([^/]+)\.ts$/)?.[1];
+    if (!lang || lang === 'en' || lang === 'types') return [];
+    return [[`@valibot/i18n/${lang}`, `/playground/i18n/${lang}/index.mjs`]];
+  })
 );
 
 /**
