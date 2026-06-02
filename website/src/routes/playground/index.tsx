@@ -38,26 +38,40 @@ import iframeCode from './iframeCode.js?raw';
  * shares the same instance as the user code via the import map below. These are
  * produced by `pnpm build.playground` in `packages/i18n`; run it before
  * building or starting the website (see website/README.md).
- * 
- * The bundles are collected with a glob so that adding, renaming or removing a
- * language in `packages/i18n` requires no changes here. `en` is intentionally
- * absent from the build output (Valibot's default messages are already in
- * English), so it is naturally excluded.
+ *
+ * The bundles are served as static files from the website's `public` directory
+ * (`/playground/i18n/<lang>/index.mjs`). This is important: a bundle's bare
+ * `import ... from "valibot"` must reach the browser untouched so the iframe
+ * import map can resolve it to the same Valibot instance as the user code.
+ * Files served through Vite's module pipeline (e.g. via a `?url` import) get
+ * their bare specifiers rewritten to a pre-bundled dependency, which would load
+ * a *second* Valibot instance and silently break i18n (registered messages
+ * would never be seen by the user code's `safeParse`). Static `public` files
+ * are delivered verbatim, avoiding that rewrite in both dev and build.
+ *
+ * The language list is derived from the `@valibot/i18n` source files (Vite does
+ * not include `public` in `import.meta.glob`, so we enumerate from `src` and
+ * point the import map at the served `public` copy). The glob is lazy: only the
+ * matched keys are read, never imported. Adding, renaming or removing a
+ * language in `packages/i18n` therefore requires no changes here. `en` (default
+ * English messages) and `types` (not a language) are excluded, mirroring the
+ * languages emitted by `build.playground`.
  */
-const i18nBundles = import.meta.glob(
-  '../../../../packages/i18n/dist/playground/*/index.mjs',
-  { query: '?url', import: 'default', eager: true }
-) as Record<string, string>;
+const i18nSources = import.meta.glob('../../../../packages/i18n/src/*.ts');
 
 /**
- * Map each bundle to its `@valibot/i18n/<lang>` import specifier, derived from
- * the language directory name (e.g. `ja`, `zh-CN`) in the bundle path.
+ * Map each language to its `@valibot/i18n/<lang>` import specifier, derived from
+ * the source file name (e.g. `ja`, `zh-CN`), and point it at the static
+ * `public` URL the playground iframe loads.
  */
 const i18nImports = Object.fromEntries(
-  Object.entries(i18nBundles).map(([path, url]) => {
-    const lang = path.match(/\/playground\/([^/]+)\/index\.mjs$/)![1];
-    return [`@valibot/i18n/${lang}`, url];
-  })
+  Object.keys(i18nSources)
+    .map((path) => path.match(/\/src\/(.+)\.ts$/)![1])
+    .filter((lang) => lang !== 'en' && lang !== 'types')
+    .map((lang) => [
+      `@valibot/i18n/${lang}`,
+      `/playground/i18n/${lang}/index.mjs`,
+    ])
 );
 
 /**
