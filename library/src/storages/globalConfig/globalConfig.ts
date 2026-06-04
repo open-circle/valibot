@@ -7,7 +7,7 @@ export type GlobalConfig = Omit<Config<never>, 'lang' | 'message'> & {
   /**
    * The selected language or a function that returns it.
    */
-  readonly lang?: Config<never>['lang'] | (() => Config<never>['lang']);
+  readonly lang?: string | (() => string);
 };
 
 // Create global configuration store
