@@ -41,6 +41,28 @@ describe('config', () => {
     });
   });
 
+  test('should set and resolve lang function', () => {
+    setGlobalConfig({ lang: () => 'fr' });
+    expect(getGlobalConfig()).toStrictEqual({
+      ...initialConfig,
+      ...customConfig,
+      lang: 'fr',
+    });
+  });
+
+  test('should call lang function each time', () => {
+    let count = 0;
+    setGlobalConfig({ lang: () => `lang-${++count}` });
+    expect(getGlobalConfig().lang).toBe('lang-1');
+    expect(getGlobalConfig().lang).toBe('lang-2');
+    expect(getGlobalConfig().lang).toBe('lang-3');
+  });
+
+  test('should allow local lang to override function lang', () => {
+    setGlobalConfig({ lang: () => 'de' });
+    expect(getGlobalConfig({ lang: 'en' }).lang).toBe('en');
+  });
+
   test('should delete global config', () => {
     deleteGlobalConfig();
     expect(getGlobalConfig()).toStrictEqual(initialConfig);
