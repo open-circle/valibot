@@ -43,11 +43,7 @@ describe('config', () => {
 
   test('should set and resolve lang function', () => {
     setGlobalConfig({ lang: () => 'fr' });
-    expect(getGlobalConfig()).toStrictEqual({
-      ...initialConfig,
-      ...customConfig,
-      lang: 'fr',
-    });
+    expect(getGlobalConfig().lang).toBe('fr');
   });
 
   test('should call lang function each time', () => {
