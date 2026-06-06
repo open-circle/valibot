@@ -2,7 +2,7 @@ import type { Language } from './types';
 
 // prettier-ignore
 const language: Language = {
-  code:               'rw-RW',
+  code:               'rw',
   schema:             (issue) => `Ubwoko butemewe: hari hitezwe ${issue.expected} ariko hakiriwe ${issue.received}`,
   specific: {
     base64:           (issue) => `Base64 itemewe: hakiriwe ${issue.received}`,

@@ -25,6 +25,7 @@ Valibot ships English messages by default, so this package publishes translated 
 | Indonesian (id)  | [#683][pr-683-url]   | ✅     |
 | Italian (it)     | [#605][pr-605-url]   | ✅     |
 | Japanese (ja)    | [#431][pr-431-url]   | ✅     |
+| Kinyarwanda (rw) | [#1489][pr-1489-url] | ✅     |
 | Korean (ko)      | [#1306][pr-1306-url] | ✅     |
 | Mongolian (mn)   | [#1224][pr-1224-url] | ✅     |
 | Norwegian (nb)   | [#439][pr-439-url]   | ✅     |
@@ -40,7 +41,6 @@ Valibot ships English messages by default, so this package publishes translated 
 | Ukrainian (uk)   | [#423][pr-423-url]   | ✅     |
 | Uzbek (uz)       | [#1452][pr-1452-url] | ✅     |
 | Vietnamese (vi)  | [#951][pr-951-url]   | ✅     |
-| Kinyarwanda (rw-RW) | [#] | ✅     |
 
 The deprecated `kr` submodule remains available as an alias of `ko` for compatibility, but new integrations should use `ko`.
 
@@ -75,6 +75,7 @@ The deprecated `kr` submodule remains available as an alias of `ko` for compatib
 [pr-1334-url]: https://github.com/open-circle/valibot/pull/1334
 [pr-1409-url]: https://github.com/open-circle/valibot/pull/1409
 [pr-1452-url]: https://github.com/open-circle/valibot/pull/1452
+[pr-1489-url]: https://github.com/open-circle/valibot/pull/1489
 
 ## Getting started
 
