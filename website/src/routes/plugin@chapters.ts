@@ -1,34 +1,72 @@
 import {
-  type RequestEventAction,
-  routeAction$,
-  routeLoader$,
-} from '@builder.io/qwik-city';
+  $,
+  createContextId,
+  type QRL,
+  type Signal,
+  useContext,
+  useContextProvider,
+  useSignal,
+  useVisibleTask$,
+} from '@builder.io/qwik';
 
-const COOKIE_NAME = 'chapters';
+export const CHAPTERS_KEY = 'chapters';
 
 /**
- * Returns the value of the chapters cookie.
+ * Class added to `<html>` while chapters are hidden. The docs layout reacts to
+ * it via the `no-chapters` Tailwind variant, and an inline script in the
+ * document head sets it before first paint to avoid layout shift.
  */
-function getCookie(request: RequestEventAction) {
-  return request.cookie.get(COOKIE_NAME)?.value ?? 'true';
-}
+export const CHAPTERS_HIDDEN_CLASS = 'no-chapters';
+
+const ChaptersContext = createContextId<Signal<boolean>>(CHAPTERS_KEY);
+
+/**
+ * Provides the chapters signal. Mounted once near the root of the app.
+ */
+export const useChaptersProvider = () => {
+  const chapters = useSignal(true);
+  useContextProvider(ChaptersContext, chapters);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(() => {
+    try {
+      const stored = localStorage.getItem(CHAPTERS_KEY);
+      if (stored === 'true' || stored === 'false') {
+        chapters.value = stored === 'true';
+      }
+    } catch {
+      // ignore
+    }
+
+    // Keep the signal and the root class in sync. The inline head script has
+    // already applied the class before paint.
+    document.documentElement.classList.toggle(
+      CHAPTERS_HIDDEN_CLASS,
+      !chapters.value
+    );
+  });
+
+  return chapters;
+};
 
 /**
  * Returns whether chapters are enabled.
  */
-export const useChapters = routeLoader$(
-  (request) => getCookie(request) === 'true'
-);
+export const useChapters = () => useContext(ChaptersContext);
 
 /**
- * Toggles the chapters by changing the chapters cookie.
+ * Returns a function that toggles the chapters visibility.
  */
-export const useChaptersToggle = routeAction$((_, request) => {
-  request.cookie.set(COOKIE_NAME, `${getCookie(request) !== 'true'}`, {
-    httpOnly: true,
-    maxAge: 31557600, // 1 year
-    path: '/',
-    sameSite: 'lax',
-    secure: import.meta.env.PROD,
+export const useChaptersToggle = (): QRL<() => void> => {
+  const chapters = useChapters();
+  return $(() => {
+    const next = !chapters.value;
+    chapters.value = next;
+    try {
+      localStorage.setItem(CHAPTERS_KEY, String(next));
+    } catch {
+      // ignore
+    }
+    document.documentElement.classList.toggle(CHAPTERS_HIDDEN_CLASS, !next);
   });
-});
+};

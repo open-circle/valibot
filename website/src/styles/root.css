@@ -3,6 +3,11 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Drives the docs layout from a root `.no-chapters` class so the chapters
+   panel can be shown/hidden before first paint without a layout shift. The
+   default (no class) is "shown"; `no-chapters:` overrides the hidden state. */
+@custom-variant no-chapters (&:where(html.no-chapters *));
+
 @theme {
   --font-lexend: 'Lexend', ui-sans-serif, system-ui, sans-serif;
   --font-lexend-exa: 'Lexend Exa', ui-sans-serif, system-ui, sans-serif;
@@ -46,6 +51,13 @@
   .dark,
   .dark * {
     scrollbar-color: var(--color-slate-700) transparent;
+  }
+
+  /* Shiki dual-theme: promote dark CSS vars under .dark ancestor */
+  .dark .shiki,
+  .dark .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
   }
 
   /* Monaco editor */
