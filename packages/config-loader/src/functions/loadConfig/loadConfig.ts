@@ -1,9 +1,30 @@
-import { statSync } from 'node:fs';
+import { stat } from 'node:fs/promises';
 import { isAbsolute, resolve } from 'node:path';
 import * as v from 'valibot';
 import type { LoadConfigOptions } from '../../types/index.ts';
 import { BUILTIN_EXTENSIONS, loadFile } from '../../utils/loadFile.ts';
 import { shallowMerge } from '../../utils/shallowMerge.ts';
+
+/**
+ * Returns whether `path` points to an existing regular file. Missing paths
+ * resolve to `false` instead of throwing, mirroring `statSync`'s
+ * `throwIfNoEntry: false`, while real errors (e.g. permission denied) are
+ * left to propagate.
+ *
+ * @param path The path to check.
+ *
+ * @returns Whether the path points to an existing regular file.
+ *
+ * @throws {Error} If an unexpected error occurs while checking the path.
+ */
+async function isFile(path: string): Promise<boolean> {
+  try {
+    return (await stat(path)).isFile();
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return false;
+    throw error;
+  }
+}
 
 /**
  * Loads one or more configuration files from disk, applies optional
@@ -16,9 +37,17 @@ import { shallowMerge } from '../../utils/shallowMerge.ts';
  * entries override earlier ones. Missing files are silently skipped, so
  * passing only `defaults` (with no matching file on disk) is valid.
  *
+ * Discovery is limited to `cwd` itself: parent directories are not
+ * traversed and `name` must be a base name (see below), so nested layouts
+ * such as `.config/app.json` require pointing `cwd` at that directory.
+ *
  * `name` must contain at least one entry, and each `name` must be a
  * non-empty literal base name; empty values, or values that are absolute
  * or contain a path separator, are rejected to prevent escaping `cwd`.
+ *
+ * JavaScript configs are loaded with dynamic `import()`, which Node.js
+ * caches per resolved URL; a file edited after its first load keeps
+ * returning the originally imported value until the process restarts.
  *
  * @param options The load options.
  *
@@ -65,7 +94,7 @@ export async function loadConfig<
       // Skip missing paths as well as directories and other non-regular
       // files, so a directory named like a config file is ignored rather
       // than crashing the loader with EISDIR.
-      if (!statSync(file, { throwIfNoEntry: false })?.isFile()) continue;
+      if (!(await isFile(file))) continue;
       const value = await loadFile(file, options.parsers);
       data = merge(data, value);
       break;

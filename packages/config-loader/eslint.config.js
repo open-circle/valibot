@@ -89,6 +89,7 @@ export default tseslint.config(
 
       // Security
       'security/detect-object-injection': 'off', // Too many false positives
+      'security/detect-non-literal-fs-filename': 'off', // Reading user-provided config paths is the core purpose of this package
     },
   }
 );

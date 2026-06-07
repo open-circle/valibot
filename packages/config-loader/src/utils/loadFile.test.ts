@@ -43,6 +43,22 @@ describe('loadFile', () => {
     expect(await loadFile(path, undefined)).toMatchObject({ port: 6060 });
   });
 
+  test('returns an explicit null default export instead of the namespace object', async () => {
+    const path = join(cwd, 'app.mjs');
+    writeFileSync(path, 'export default null;\n');
+
+    expect(await loadFile(path, undefined)).toBeNull();
+  });
+
+  test('throws when a .mjs module exports a function as its default', async () => {
+    const path = join(cwd, 'app.mjs');
+    writeFileSync(path, 'export default () => ({ port: 9090 });\n');
+
+    await expect(loadFile(path, undefined)).rejects.toThrow(
+      /exports a function, which is not supported/
+    );
+  });
+
   test('returns the default export of a .cjs module', async () => {
     const path = join(cwd, 'app.cjs');
     writeFileSync(path, 'module.exports = { port: 7070 };\n');
