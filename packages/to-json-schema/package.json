@@ -54,7 +54,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",
-    "@vitest/coverage-v8": "^4.0.13",
+    "@vitest/coverage-v8": "^4.1.8",
     "eslint": "^9.39.1",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
@@ -67,7 +67,7 @@
     "valibot": "^1.4.0",
     "vite": "^7.2.4",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "4.0.13"
+    "vitest": "4.1.8"
   },
   "peerDependencies": {
     "valibot": "^1.4.0"
