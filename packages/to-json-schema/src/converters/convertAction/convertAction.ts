@@ -12,6 +12,10 @@ import {
  * Action type.
  */
 type Action =
+  | v.AnyOfAction<
+      v.AnyOfOptions,
+      v.ErrorMessage<v.AnyOfIssue<v.BaseIssue<unknown>>> | undefined
+    >
   | v.Base64Action<string, v.ErrorMessage<v.Base64Issue<string>> | undefined>
   | v.BicAction<string, v.ErrorMessage<v.BicIssue<string>> | undefined>
   | v.Cuid2Action<string, v.ErrorMessage<v.Cuid2Issue<string>> | undefined>
@@ -197,6 +201,29 @@ export function convertAction(
 
   // Convert Valibot action to JSON Schema
   switch (valibotAction.type) {
+    case 'any_of': {
+      const anyOf = valibotAction.options.map((option: unknown) =>
+        convertAction(
+          jsonSchema.type ? { type: jsonSchema.type } : {},
+          option as Action,
+          config
+        )
+      );
+
+      if (jsonSchema.anyOf) {
+        const { anyOf: existingAnyOf } = jsonSchema;
+        delete jsonSchema.anyOf;
+        jsonSchema.allOf = [
+          ...(jsonSchema.allOf ?? []),
+          { anyOf: existingAnyOf },
+          { anyOf },
+        ];
+      } else {
+        jsonSchema.anyOf = anyOf;
+      }
+      break;
+    }
+
     case 'base64': {
       jsonSchema.contentEncoding = 'base64';
       break;

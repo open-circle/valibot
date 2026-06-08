@@ -15,6 +15,35 @@ describe('toJsonSchema', () => {
       });
     });
 
+    test('for any of action', () => {
+      expect(
+        toJsonSchema(v.pipe(v.string(), v.anyOf([v.domain(), v.url()])))
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'string',
+        anyOf: [
+          { type: 'string', pattern: v.DOMAIN_REGEX.source },
+          { type: 'string', format: 'uri' },
+        ],
+      });
+    });
+
+    test('for any of action after existing constraints', () => {
+      expect(
+        toJsonSchema(
+          v.pipe(v.string(), v.minLength(5), v.anyOf([v.domain(), v.url()]))
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'string',
+        minLength: 5,
+        anyOf: [
+          { type: 'string', pattern: v.DOMAIN_REGEX.source },
+          { type: 'string', format: 'uri' },
+        ],
+      });
+    });
+
     test('for complex schema with definitions', () => {
       const stringSchema = v.string();
       const complexSchema = v.pipe(
