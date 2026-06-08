@@ -95,6 +95,29 @@ describe('toJsonSchema', () => {
       }
     });
 
+    test('for definition key containing JSON Pointer special characters', () => {
+      const UserSchema = v.object({ name: v.string() });
+      expect(
+        toJsonSchema(v.object({ user: UserSchema }), {
+          definitions: { 'Shared/User~': UserSchema },
+        })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          user: { $ref: '#/$defs/Shared~1User~0' },
+        },
+        required: ['user'],
+        $defs: {
+          'Shared/User~': {
+            type: 'object',
+            properties: { name: { type: 'string' } },
+            required: ['name'],
+          },
+        },
+      });
+    });
+
     test('for recursive schema', () => {
       const ul = v.object({
         type: v.literal('ul'),

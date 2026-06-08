@@ -4,7 +4,11 @@ import type {
   ConversionContext,
   JsonSchema,
 } from '../../types/index.ts';
-import { addError, handleError } from '../../utils/index.ts';
+import {
+  addError,
+  encodePointerToken,
+  handleError,
+} from '../../utils/index.ts';
 import { convertAction } from '../convertAction/index.ts';
 
 /**
@@ -148,7 +152,7 @@ export function convertSchema(
     // If schema is in reference map use reference and skip conversion
     const referenceId = context.referenceMap.get(valibotSchema);
     if (referenceId) {
-      jsonSchema.$ref = `#/$defs/${referenceId}`;
+      jsonSchema.$ref = `#/$defs/${encodePointerToken(referenceId)}`;
       if (config?.overrideRef) {
         const refOverride = config.overrideRef({
           ...context,
@@ -631,7 +635,7 @@ export function convertSchema(
       }
 
       // Add reference to JSON Schema object
-      jsonSchema.$ref = `#/$defs/${referenceId}`;
+      jsonSchema.$ref = `#/$defs/${encodePointerToken(referenceId)}`;
 
       // Override reference, if necessary
       if (config?.overrideRef) {
