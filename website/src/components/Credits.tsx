@@ -2,15 +2,14 @@ import { component$ } from '@builder.io/qwik';
 import { useDocumentHead } from '@builder.io/qwik-city';
 import {
   AlgoliaLogo,
+  AnthropicLogo,
   BoltLogo,
   BuilderLogo,
   DigitalOceanLogo,
   HdmLogo,
-  MotionLogo,
+  OpenAILogo,
   PaceLogo,
   StainlessLogo,
-  TestMuAiLogo,
-  VercelLogo,
 } from '~/logos';
 
 /**
@@ -63,15 +62,11 @@ export const Credits = component$(() => {
           { Logo: PaceLogo, href: 'https://www.pace.edu' },
           { Logo: HdmLogo, href: 'https://www.hdm-stuttgart.de' },
           { Logo: BoltLogo, href: 'https://bolt.new/' },
-          { Logo: MotionLogo, href: 'https://www.usemotion.com/' },
-          { Logo: VercelLogo, href: 'https://vercel.com' },
           { Logo: StainlessLogo, href: 'https://www.stainless.com/' },
-          {
-            Logo: TestMuAiLogo,
-            href: 'https://www.testmuai.com/?utm_medium=sponsor&utm_source=valibot',
-          },
-          { Logo: AlgoliaLogo, href: 'https://www.algolia.com' },
+          { Logo: AnthropicLogo, href: 'https://www.anthropic.com' },
+          { Logo: OpenAILogo, href: 'https://www.openai.com' },
           { Logo: DigitalOceanLogo, href: 'https://www.digitalocean.com/' },
+          { Logo: AlgoliaLogo, href: 'https://www.algolia.com' },
           { Logo: BuilderLogo, href: 'https://www.builder.io' },
         ].map(({ Logo, href }) => (
           <li key={href}>
@@ -90,7 +85,6 @@ export const Credits = component$(() => {
       </p>
       <ul class="mt-4 flex flex-wrap gap-2 md:mt-5 lg:mt-6 lg:gap-3">
         {[
-          'stefanmaric',
           'vasilii-kovalev',
           'UpwayShop',
           'ruiaraujo012',
@@ -100,7 +94,7 @@ export const Credits = component$(() => {
           'caegdeveloper',
           'Thanaen',
           'bmoyroud',
-          't-lander',
+          'ysknsid25',
           'dslatkin',
         ].map((sponsor) => (
           <li key={sponsor}>

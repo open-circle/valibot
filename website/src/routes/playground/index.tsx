@@ -136,11 +136,8 @@ export default component$(() => {
    */
   const executeCode = $(() => {
     // Open side bar on smaller devices if it's closed
-    if (
-      window.innerWidth < 1024 &&
-      (!toggle.value || toggle.value.state === 'closed')
-    ) {
-      toggle.submit({ state: 'opened' });
+    if (window.innerWidth < 1024 && !toggle.value) {
+      toggle.value = true;
     }
 
     // Update code of iframe
