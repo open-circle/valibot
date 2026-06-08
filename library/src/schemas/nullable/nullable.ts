@@ -1,5 +1,7 @@
 import { getDefault } from '../../methods/index.ts';
+import type { SchemaMapperHKT } from '../../methods/mapEntries/mapEntries.ts';
 import type {
+  BaseHKTable,
   BaseIssue,
   BaseSchema,
   Default,
@@ -10,6 +12,10 @@ import type {
 import { _getStandardProps } from '../../utils/index.ts';
 import type { InferNullableOutput } from './types.ts';
 
+export interface NullableModifierHKT extends SchemaMapperHKT {
+  result: NullableSchema<this['wrapped'], undefined>;
+}
+
 /**
  * Nullable schema interface.
  */
@@ -17,10 +23,11 @@ export interface NullableSchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TDefault extends Default<TWrapped, null>,
 > extends BaseSchema<
-    InferInput<TWrapped> | null,
-    InferNullableOutput<TWrapped, TDefault>,
-    InferIssue<TWrapped>
-  > {
+      InferInput<TWrapped> | null,
+      InferNullableOutput<TWrapped, TDefault>,
+      InferIssue<TWrapped>
+    >,
+    BaseHKTable<NullableModifierHKT> {
   /**
    * The schema type.
    */
@@ -103,5 +110,6 @@ export function nullable(
       // Otherwise, return dataset of wrapped schema
       return this.wrapped['~run'](dataset, config);
     },
+    '~preferHkt': true,
   };
 }

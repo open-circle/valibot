@@ -1,5 +1,7 @@
 import { getDefault } from '../../methods/index.ts';
+import type { SchemaMapperHKT } from '../../methods/mapEntries/mapEntries.ts';
 import type {
+  BaseHKTable,
   BaseIssue,
   BaseSchema,
   Default,
@@ -10,6 +12,10 @@ import type {
 import { _getStandardProps } from '../../utils/index.ts';
 import type { InferOptionalOutput } from './types.ts';
 
+export interface OptionalModifierHKT extends SchemaMapperHKT {
+  result: OptionalSchema<this['wrapped'], undefined>;
+}
+
 /**
  * Optional schema interface.
  */
@@ -17,10 +23,11 @@ export interface OptionalSchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TDefault extends Default<TWrapped, undefined>,
 > extends BaseSchema<
-    InferInput<TWrapped> | undefined,
-    InferOptionalOutput<TWrapped, TDefault>,
-    InferIssue<TWrapped>
-  > {
+      InferInput<TWrapped> | undefined,
+      InferOptionalOutput<TWrapped, TDefault>,
+      InferIssue<TWrapped>
+    >,
+    BaseHKTable<OptionalModifierHKT> {
   /**
    * The schema type.
    */
@@ -103,5 +110,6 @@ export function optional(
       // Otherwise, return dataset of wrapped schema
       return this.wrapped['~run'](dataset, config);
     },
+    '~preferHkt': true,
   };
 }
