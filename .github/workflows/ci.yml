@@ -107,6 +107,79 @@ jobs:
         run: pnpm test
         working-directory: packages/to-json-schema
 
+  config_loader_prettier:
+    name: Run Prettier in packages/config-loader
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Prettier check
+        run: pnpm format.check
+        working-directory: packages/config-loader
+
+  config_loader_eslint:
+    name: Run ESLint in packages/config-loader
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: ESLint check
+        run: pnpm lint
+        working-directory: packages/config-loader
+
+  config_loader_vitest:
+    name: Run Vitest in packages/config-loader
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Vitest tests
+        run: pnpm test
+        working-directory: packages/config-loader
+
+  config_loader_bun:
+    name: Run Vitest with Bun in packages/config-loader
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        run: bun install
+        working-directory: packages/config-loader
+      - name: Vitest tests
+        run: bunx vitest run
+        working-directory: packages/config-loader
+
+  config_loader_deno:
+    name: Run Vitest with Deno in packages/config-loader
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+        working-directory: packages/config-loader
+      - name: Vitest tests
+        run: deno run -A --node-modules-dir npm:vitest run
+        working-directory: packages/config-loader
+
   website_prettier:
     name: Run Prettier in website
     needs: install
