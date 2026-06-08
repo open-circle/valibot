@@ -1,0 +1,477 @@
+import { getDefault, getFallback } from '../../methods/index.ts';
+import type {
+  BaseIssue,
+  BaseSchema,
+  BaseSchemaAsync,
+  Config,
+  ObjectEntries,
+  ObjectEntriesAsync,
+  OutputDataset,
+  UnknownDataset,
+} from '../../types/index.ts';
+import { _addIssue } from '../_addIssue/index.ts';
+import { _addPathIssues } from '../_addPathIssues/index.ts';
+
+/**
+ * Object entries context type.
+ */
+interface ObjectEntriesContext<
+  TEntries extends ObjectEntries | ObjectEntriesAsync,
+> extends BaseSchema<unknown, unknown, BaseIssue<unknown>> {
+  /**
+   * The entries schema.
+   */
+  readonly entries: TEntries;
+}
+
+/**
+ * Object entries context async type.
+ */
+interface ObjectEntriesContextAsync<TEntries extends ObjectEntriesAsync>
+  extends BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>> {
+  /**
+   * The entries schema.
+   */
+  readonly entries: TEntries;
+}
+
+/**
+ * Object entry schema type.
+ */
+type ObjectEntrySchema = ObjectEntries[string] | ObjectEntriesAsync[string];
+
+/**
+ * Object entry result type.
+ */
+type ObjectEntryResult = readonly [
+  key: string,
+  value: unknown,
+  schema: ObjectEntrySchema,
+  dataset: OutputDataset<unknown, BaseIssue<unknown>> | null,
+];
+
+/**
+ * Checks if an object entry schema accepts missing input.
+ *
+ * @param schema The object entry schema.
+ *
+ * @returns Whether the schema accepts missing input.
+ *
+ * @internal
+ */
+// @__NO_SIDE_EFFECTS__
+function _isOptionalEntry(schema: ObjectEntrySchema): boolean {
+  return (
+    schema.type === 'exact_optional' ||
+    schema.type === 'optional' ||
+    schema.type === 'nullish'
+  );
+}
+
+/**
+ * Checks if an object entry schema has a defined default.
+ *
+ * @param schema The object entry schema.
+ *
+ * @returns Whether the schema has a defined default.
+ *
+ * @internal
+ */
+// @__NO_SIDE_EFFECTS__
+function _hasDefault(schema: ObjectEntrySchema): boolean {
+  return (
+    _isOptionalEntry(schema) &&
+    'default' in schema &&
+    schema.default !== undefined
+  );
+}
+
+/**
+ * Checks if an object entry schema has a defined fallback.
+ *
+ * @param schema The object entry schema.
+ *
+ * @returns Whether the schema has a defined fallback.
+ *
+ * @internal
+ */
+// @__NO_SIDE_EFFECTS__
+function _hasFallback(
+  schema: ObjectEntrySchema
+): schema is ObjectEntrySchema & { readonly fallback: unknown } {
+  return 'fallback' in schema && schema.fallback !== undefined;
+}
+
+/**
+ * Processes the output dataset of an object entry.
+ *
+ * @param dataset The parent dataset.
+ * @param config The configuration.
+ * @param input The input object.
+ * @param key The object entry key.
+ * @param value The object entry value.
+ * @param valueDataset The object entry dataset.
+ *
+ * @returns Whether parsing must abort.
+ *
+ * @internal
+ */
+function _processObjectEntryDataset(
+  dataset: UnknownDataset | OutputDataset<unknown, BaseIssue<unknown>>,
+  config: Config<BaseIssue<unknown>>,
+  input: Record<string, unknown>,
+  key: string,
+  value: unknown,
+  valueDataset: OutputDataset<unknown, BaseIssue<unknown>>
+): boolean {
+  // If there are issues, capture them
+  if (valueDataset.issues) {
+    _addPathIssues(
+      dataset,
+      {
+        type: 'object',
+        origin: 'value',
+        input,
+        key,
+        value,
+      },
+      valueDataset.issues
+    );
+
+    // If necessary, abort early
+    if (config.abortEarly) {
+      dataset.typed = false;
+      return true;
+    }
+  }
+
+  // If not typed, set typed to `false`
+  if (!valueDataset.typed) {
+    dataset.typed = false;
+  }
+
+  // Add entry to dataset
+  (dataset.value as Record<string, unknown>)[key] = valueDataset.value;
+  return false;
+}
+
+/**
+ * Processes an object entry without an output dataset.
+ *
+ * @param context The object entries context.
+ * @param dataset The parent dataset.
+ * @param config The configuration.
+ * @param input The input object.
+ * @param key The object entry key.
+ * @param value The missing object entry value.
+ * @param valueSchema The object entry schema.
+ *
+ * @returns Whether parsing must abort.
+ *
+ * @internal
+ */
+function _processMissingObjectEntry(
+  context: ObjectEntriesContext<ObjectEntries | ObjectEntriesAsync>,
+  dataset: UnknownDataset | OutputDataset<unknown, BaseIssue<unknown>>,
+  config: Config<BaseIssue<unknown>>,
+  input: Record<string, unknown>,
+  key: string,
+  value: unknown,
+  valueSchema: ObjectEntrySchema
+): boolean {
+  // Otherwise, if key is missing but has a fallback, use it
+  if (_hasFallback(valueSchema)) {
+    (dataset.value as Record<string, unknown>)[key] = getFallback(valueSchema);
+
+    // Otherwise, if key is missing and required, add issue
+  } else if (!_isOptionalEntry(valueSchema)) {
+    _addIssue(context, 'key', dataset, config, {
+      input: undefined,
+      expected: `"${key}"`,
+      path: [
+        {
+          type: 'object',
+          origin: 'key',
+          input,
+          key,
+          value,
+        },
+      ],
+    });
+
+    // If necessary, abort early
+    if (config.abortEarly) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Processes an object entry without an output dataset asynchronously.
+ *
+ * @param context The object entries context.
+ * @param dataset The parent dataset.
+ * @param config The configuration.
+ * @param input The input object.
+ * @param key The object entry key.
+ * @param value The missing object entry value.
+ * @param valueSchema The object entry schema.
+ *
+ * @returns Whether parsing must abort.
+ *
+ * @internal
+ */
+async function _processMissingObjectEntryAsync(
+  context: ObjectEntriesContextAsync<ObjectEntriesAsync>,
+  dataset: UnknownDataset | OutputDataset<unknown, BaseIssue<unknown>>,
+  config: Config<BaseIssue<unknown>>,
+  input: Record<string, unknown>,
+  key: string,
+  value: unknown,
+  valueSchema: ObjectEntrySchema
+): Promise<boolean> {
+  // Otherwise, if key is missing but has a fallback, use it
+  if (_hasFallback(valueSchema)) {
+    (dataset.value as Record<string, unknown>)[key] =
+      await getFallback(valueSchema);
+
+    // Otherwise, if key is missing and required, add issue
+  } else if (!_isOptionalEntry(valueSchema)) {
+    _addIssue(context, 'key', dataset, config, {
+      input: undefined,
+      expected: `"${key}"`,
+      path: [
+        {
+          type: 'object',
+          origin: 'key',
+          input,
+          key,
+          value,
+        },
+      ],
+    });
+
+    // If necessary, abort early
+    if (config.abortEarly) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Processes object entry results asynchronously.
+ *
+ * @param context The object entries context.
+ * @param dataset The parent dataset.
+ * @param config The configuration.
+ * @param input The input object.
+ * @param results The object entry results.
+ *
+ * @returns Whether parsing aborted early.
+ *
+ * @internal
+ */
+async function _processObjectEntryResultsAsync(
+  context: ObjectEntriesContextAsync<ObjectEntriesAsync>,
+  dataset: UnknownDataset | OutputDataset<unknown, BaseIssue<unknown>>,
+  config: Config<BaseIssue<unknown>>,
+  input: Record<string, unknown>,
+  results: ObjectEntryResult[]
+): Promise<boolean> {
+  // Process each object entry result
+  for (const [key, value, valueSchema, valueDataset] of results) {
+    // If entry has a dataset, process it
+    if (valueDataset) {
+      if (
+        _processObjectEntryDataset(
+          dataset,
+          config,
+          input,
+          key,
+          value,
+          valueDataset
+        )
+      ) {
+        return true;
+      }
+
+      // Otherwise, process missing entry
+    } else if (
+      await _processMissingObjectEntryAsync(
+        context,
+        dataset,
+        config,
+        input,
+        key,
+        value,
+        valueSchema
+      )
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Parses declared object entries.
+ *
+ * @param context The object entries context.
+ * @param dataset The parent dataset.
+ * @param config The configuration.
+ * @param input The input object.
+ *
+ * @returns Whether parsing aborted early.
+ *
+ * @internal
+ */
+export function _parseObjectEntries(
+  context: ObjectEntriesContext<ObjectEntries>,
+  dataset: UnknownDataset | OutputDataset<unknown, BaseIssue<unknown>>,
+  config: Config<BaseIssue<unknown>>,
+  input: object
+): boolean {
+  const object = input as Record<string, unknown>;
+
+  // Set typed to `true` and value to blank object
+  dataset.typed = true;
+  dataset.value = {};
+
+  // Process each object entry of schema
+  for (const key in context.entries) {
+    const valueSchema = context.entries[key];
+
+    // If key is present or its an optional schema with a default value,
+    // parse input of key or default value
+    if (key in input || _hasDefault(valueSchema)) {
+      const value: unknown =
+        key in input ? object[key] : getDefault(valueSchema);
+      const valueDataset = valueSchema['~run']({ value }, config);
+      if (
+        _processObjectEntryDataset(
+          dataset,
+          config,
+          object,
+          key,
+          value,
+          valueDataset
+        )
+      ) {
+        return true;
+      }
+
+      // Otherwise, process missing entry
+    } else if (
+      _processMissingObjectEntry(
+        context,
+        dataset,
+        config,
+        object,
+        key,
+        object[key],
+        valueSchema
+      )
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Collects declared object entry datasets asynchronously.
+ *
+ * @param context The object entries context.
+ * @param config The configuration.
+ * @param input The input object.
+ *
+ * @returns The object entry results.
+ *
+ * @internal
+ */
+export async function _collectObjectEntriesAsync(
+  context: ObjectEntriesContextAsync<ObjectEntriesAsync>,
+  config: Config<BaseIssue<unknown>>,
+  input: object
+): Promise<ObjectEntryResult[]> {
+  const object = input as Record<string, unknown>;
+  return Promise.all(
+    Object.entries(context.entries).map(async ([key, valueSchema]) => {
+      if (key in input || _hasDefault(valueSchema)) {
+        const value: unknown =
+          key in input ? object[key] : await getDefault(valueSchema);
+        return [
+          key,
+          value,
+          valueSchema,
+          await valueSchema['~run']({ value }, config),
+        ] as const;
+      }
+      return [key, object[key], valueSchema, null] as const;
+    })
+  );
+}
+
+/**
+ * Applies declared object entry datasets asynchronously.
+ *
+ * @param context The object entries context.
+ * @param dataset The parent dataset.
+ * @param config The configuration.
+ * @param input The input object.
+ * @param results The object entry results.
+ *
+ * @returns Whether parsing aborted early.
+ *
+ * @internal
+ */
+export async function _applyObjectEntriesAsync(
+  context: ObjectEntriesContextAsync<ObjectEntriesAsync>,
+  dataset: UnknownDataset | OutputDataset<unknown, BaseIssue<unknown>>,
+  config: Config<BaseIssue<unknown>>,
+  input: object,
+  results: ObjectEntryResult[]
+): Promise<boolean> {
+  const object = input as Record<string, unknown>;
+
+  // Set typed to `true` and value to blank object
+  dataset.typed = true;
+  dataset.value = {};
+
+  return _processObjectEntryResultsAsync(
+    context,
+    dataset,
+    config,
+    object,
+    results
+  );
+}
+
+/**
+ * Parses declared object entries asynchronously.
+ *
+ * @param context The object entries context.
+ * @param dataset The parent dataset.
+ * @param config The configuration.
+ * @param input The input object.
+ *
+ * @returns Whether parsing aborted early.
+ *
+ * @internal
+ */
+export async function _parseObjectEntriesAsync(
+  context: ObjectEntriesContextAsync<ObjectEntriesAsync>,
+  dataset: UnknownDataset | OutputDataset<unknown, BaseIssue<unknown>>,
+  config: Config<BaseIssue<unknown>>,
+  input: object
+): Promise<boolean> {
+  return _applyObjectEntriesAsync(
+    context,
+    dataset,
+    config,
+    input,
+    await _collectObjectEntriesAsync(context, config, input)
+  );
+}

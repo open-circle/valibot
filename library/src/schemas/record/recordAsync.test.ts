@@ -1,4 +1,6 @@
 import { describe, expect, test } from 'vitest';
+import { rawCheckAsync } from '../../actions/index.ts';
+import { pipeAsync } from '../../methods/index.ts';
 import type { FailureDataset, InferIssue } from '../../types/index.ts';
 import {
   expectNoSchemaIssueAsync,
@@ -216,6 +218,48 @@ describe('recordAsync', () => {
           },
         ],
       } satisfies FailureDataset<InferIssue<typeof schema>>);
+    });
+
+    test('with nested key issue path', async () => {
+      const nestedPathItem = {
+        type: 'unknown',
+        origin: 'value',
+        input: 'invalid',
+        key: 'nested',
+        value: 'invalid',
+      } as const;
+      const keySchema = pipeAsync(
+        string(),
+        rawCheckAsync<string>(({ addIssue }) => {
+          addIssue({ path: [nestedPathItem] });
+        })
+      );
+      const schema = recordAsync(keySchema, number());
+      const input = { invalid: 1 };
+
+      expect(await schema['~run']({ value: input }, {})).toStrictEqual({
+        typed: true,
+        value: input,
+        issues: [
+          {
+            ...baseInfo,
+            kind: 'validation',
+            type: 'raw_check',
+            input: 'invalid',
+            expected: null,
+            received: '"invalid"',
+            path: [
+              {
+                type: 'object',
+                origin: 'key',
+                input,
+                key: 'invalid',
+                value: 1,
+              },
+            ],
+          },
+        ],
+      });
     });
 
     test('with abort early for invalid key', async () => {

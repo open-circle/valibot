@@ -1,4 +1,6 @@
 import { describe, expect, test } from 'vitest';
+import { rawCheck } from '../../actions/index.ts';
+import { pipe } from '../../methods/index.ts';
 import type { FailureDataset, InferIssue } from '../../types/index.ts';
 import { expectNoSchemaIssue, expectSchemaIssue } from '../../vitest/index.ts';
 import { number, type NumberIssue } from '../number/index.ts';
@@ -223,6 +225,48 @@ describe('record', () => {
             type: 'picklist',
             input: 'invalid',
             expected: '("foo" | "bar")',
+            received: '"invalid"',
+            path: [
+              {
+                type: 'object',
+                origin: 'key',
+                input,
+                key: 'invalid',
+                value: 1,
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    test('with nested key issue path', () => {
+      const nestedPathItem = {
+        type: 'unknown',
+        origin: 'value',
+        input: 'invalid',
+        key: 'nested',
+        value: 'invalid',
+      } as const;
+      const keySchema = pipe(
+        string(),
+        rawCheck<string>(({ addIssue }) => {
+          addIssue({ path: [nestedPathItem] });
+        })
+      );
+      const schema = record(keySchema, number());
+      const input = { invalid: 1 };
+
+      expect(schema['~run']({ value: input }, {})).toStrictEqual({
+        typed: true,
+        value: input,
+        issues: [
+          {
+            ...baseInfo,
+            kind: 'validation',
+            type: 'raw_check',
+            input: 'invalid',
+            expected: null,
             received: '"invalid"',
             path: [
               {
