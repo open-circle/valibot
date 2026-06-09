@@ -1,0 +1,108 @@
+---
+title: cron
+description: Creates a cron expression validation action.
+source: /actions/cron/cron.ts
+contributors:
+  - ysknsid25
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# cron
+
+Creates a cron expression validation action.
+
+```ts
+const Action = v.cron<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `cron` you can validate the formatting of a string against a cron grammar. The grammar is selected via the `cronDialect` option of the parser config (defaults to `'VIXIE'`). If the input does not conform to the selected dialect, you can use `message` to customize the error message.
+
+When a particular field of the expression is invalid, the issue carries a path identifying which field failed, so that `flatten(issues, 'nested')` yields per-field error messages.
+
+See [`CronDialect`](../CronDialect/) for the list of supported dialects.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `cron` can be used.
+
+### Default (VIXIE) dialect
+
+Schema to validate a cron expression using the default dialect.
+
+```ts
+const CronSchema = v.pipe(
+  v.string(),
+  v.cron('The cron expression is badly formatted.')
+);
+
+// Valid cron expressions:
+// '* * * * *'       (every minute)
+// '*/5 * * * *'     (every 5 minutes)
+// '0 9-17 * * 1-5'  (every hour from 9–17, weekdays only)
+// '0 0 1,15 * *'    (midnight on the 1st and 15th)
+```
+
+### Selecting a dialect
+
+Pass `cronDialect` in the parser config to select a different grammar.
+
+```ts
+const CronSchema = v.pipe(v.string(), v.cron());
+
+v.parse(CronSchema, '0 0 * * 1-5'); // VIXIE default
+v.parse(CronSchema, '0 0 * * MON-FRI', { cronDialect: 'NODE_CRON' });
+v.parse(CronSchema, '@hourly', { cronDialect: 'Croner' });
+v.parse(CronSchema, '*/5 * * * *', { cronDialect: 'POSIX' });
+//      ~~~ rejected: POSIX does not include the `/` step operator
+```
+
+### Per-field error messages via flatten
+
+Issues carry an object path keyed by the field name, so `flatten` produces nested per-field errors.
+
+```ts
+const result = v.safeParse(v.pipe(v.string(), v.cron()), '60 0 32 13 8');
+if (!result.success) {
+  const flat = v.flatten(result.issues);
+  // flat.nested = {
+  //   minute:  ['Invalid cron expression: ...'],
+  //   day:     ['Invalid cron expression: ...'],
+  //   month:   ['Invalid cron expression: ...'],
+  //   weekday: ['Invalid cron expression: ...'],
+  // }
+}
+```
+
+## Related
+
+The following APIs can be combined with `cron`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['flatten', 'parse', 'pipe', 'safeParse']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
