@@ -25,7 +25,8 @@
   "scripts": {
     "lint": "tsc --noEmit",
     "build.npm": "tsm ./scripts/build-npm.ts",
-    "build.jsr": "tsm ./scripts/build-jsr.ts"
+    "build.jsr": "tsm ./scripts/build-jsr.ts",
+    "build.playground": "tsm ./scripts/build-playground.ts"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",

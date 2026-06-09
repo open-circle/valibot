@@ -186,6 +186,9 @@ importers:
 
   website:
     dependencies:
+      '@valibot/i18n':
+        specifier: workspace:*
+        version: link:../packages/i18n
       '@valibot/zod-to-valibot':
         specifier: workspace:*
         version: link:../codemod/zod-to-valibot

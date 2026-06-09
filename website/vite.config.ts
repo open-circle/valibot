@@ -62,6 +62,16 @@ export default defineConfig(({ isSsrBuild }) => {
       !isSsrBuild && nodePolyfills(),
       tailwindcss(),
     ],
+    // The playground runs user code inside a sandboxed iframe (opaque origin),
+    // which loads the Valibot, to-json-schema and i18n bundles via an import
+    // map. Those cross-origin module requests require CORS headers, which Vercel
+    // adds in production (see vercel.json). Mirror that during local dev so the
+    // playground can execute code with `pnpm start`.
+    server: {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
+    },
     preview: {
       headers: {
         'Cache-Control': 'public, max-age=600',

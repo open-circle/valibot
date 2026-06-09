@@ -32,6 +32,61 @@ import valibotToJsonSchemaCode from '../../../../packages/to-json-schema/dist/in
 import editorCode from './editorCode.ts?raw';
 import iframeCode from './iframeCode.js?raw';
 
+/**
+ * Self-contained playground bundles of `@valibot/i18n`. Each language registers
+ * all of its messages and keeps `valibot` as an external bare import, so it
+ * shares the same instance as the user code via the import map below. These are
+ * produced by `pnpm build.playground` in `packages/i18n`; run it before
+ * building or starting the website (see website/README.md).
+ *
+ * The bundles are served as static files from the website's `public` directory
+ * (`/playground/i18n/<lang>/index.mjs`). This is important: a bundle's bare
+ * `import ... from "valibot"` must reach the browser untouched so the iframe
+ * import map can resolve it to the same Valibot instance as the user code.
+ * Files served through Vite's module pipeline (e.g. via a `?url` import) get
+ * their bare specifiers rewritten to a pre-bundled dependency, which would load
+ * a *second* Valibot instance and silently break i18n (registered messages
+ * would never be seen by the user code's `safeParse`). Static `public` files
+ * are delivered verbatim, avoiding that rewrite in both dev and build.
+ *
+ * The language list is derived from the `@valibot/i18n` source files (Vite does
+ * not include `public` in `import.meta.glob`, so we enumerate from `src` and
+ * point the import map at the served `public` copy). The glob is lazy: only the
+ * matched keys are read, never imported. Adding, renaming or removing a
+ * language in `packages/i18n` therefore requires no changes here. `en` (default
+ * English messages) and `types` (not a language) are excluded, mirroring the
+ * languages emitted by `build.playground`.
+ */
+const i18nSources = import.meta.glob('../../../../packages/i18n/src/*.ts');
+
+/**
+ * Map each language to its `@valibot/i18n/<lang>` import specifier, derived from
+ * the source file name (e.g. `ja`, `zh-CN`), and point it at the static
+ * `public` URL the playground iframe loads.
+ */
+const i18nImports = Object.fromEntries(
+  Object.keys(i18nSources).flatMap((path) => {
+    // Derive the language code from the file name (e.g. `ja`, `zh-CN`). Skip
+    // any path that does not look like a language module so an unexpected glob
+    // result can never throw and crash the page at module init.
+    const lang = path.match(/\/([^/]+)\.ts$/)?.[1];
+    if (!lang || lang === 'en' || lang === 'types') return [];
+    return [[`@valibot/i18n/${lang}`, `/playground/i18n/${lang}/index.mjs`]];
+  })
+);
+
+/**
+ * Serialize the iframe import map with Valibot, to-json-schema and i18n. Each
+ * language is exposed as `@valibot/i18n/<lang>` (the whole-language entry).
+ */
+const importMap = JSON.stringify({
+  imports: {
+    valibot: valibotCode,
+    '@valibot/to-json-schema': valibotToJsonSchemaCode,
+    ...i18nImports,
+  },
+});
+
 type LogLevel = 'log' | 'info' | 'debug' | 'warn' | 'error';
 
 type MessageEventData = {
@@ -303,12 +358,7 @@ export default component$(() => {
           <html>
             <head>
               <script type="importmap">
-                {
-                  "imports": {
-                    "valibot": "${valibotCode}",
-                    "@valibot/to-json-schema": "${valibotToJsonSchemaCode}"
-                  }
-                }
+                ${importMap}
               </script>
               <script>
                 ${iframeCode}
