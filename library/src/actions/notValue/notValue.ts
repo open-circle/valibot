@@ -117,8 +117,9 @@ export function notValue(
     '~run'(dataset, config) {
       if (
         dataset.typed &&
-        this.requirement <= dataset.value &&
-        this.requirement >= dataset.value
+        (Object.is(this.requirement, dataset.value) ||
+          (this.requirement <= dataset.value &&
+            this.requirement >= dataset.value))
       ) {
         _addIssue(this, 'value', dataset, config, {
           received:
