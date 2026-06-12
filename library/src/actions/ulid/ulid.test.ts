@@ -69,7 +69,7 @@ describe('ulid', () => {
         '01ARZ3NDEKTSV4RRFFQ69G5FAV',
         '01bx5zzkbkactav9wevgemmvry',
         '0123456789abcdefghjkmnpqrs',
-        'ABCDEFGHJKMNPQRSTVWXYZ0123',
+        '7ZZZZZZZZZZZZZZZZZZZZZZZZZ',
       ]);
     });
   });
@@ -120,6 +120,18 @@ describe('ulid', () => {
         '01bx5zzkbkactav9wevgemmory',
         '01ARZ3NDEKTSV4RRFFQ69G5FAU',
         '01bx5zzkbkactav9wevgemmvru',
+      ]);
+    });
+
+    test('for overflowed timestamp (first character above 7)', () => {
+      // The ULID spec states that the most significant bit of the timestamp is
+      // always 0, so the largest valid ULID is 7ZZZZZZZZZZZZZZZZZZZZZZZZZ.
+      // Any ULID whose first character is 8 or above encodes a timestamp
+      // that exceeds 2^48-1 and must be rejected.
+      expectActionIssue(action, baseIssue, [
+        '8ARZ3NDEKTSV4RRFFQ69G5FAV0',
+        '9ARZ3NDEKTSV4RRFFQ69G5FAV0',
+        'ABCDEFGHJKMNPQRSTVWXYZ0123',
       ]);
     });
   });
