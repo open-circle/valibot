@@ -80,9 +80,6 @@ export default tseslint.config(
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
 
-      // Imports
-      'no-duplicate-imports': 'off',
-
       // JSDoc
       'jsdoc/require-param-type': 'off',
       'jsdoc/require-returns-type': 'off',
