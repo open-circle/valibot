@@ -617,22 +617,35 @@ export function convertSchema(
     }
 
     case 'recursive': {
+      const recursiveSchema: v.GenericRecursiveSchema = valibotSchema;
+
       // Get reference ID of recursive Valibot schema
-      let referenceId = context.referenceMap.get(valibotSchema);
+      let referenceId = context.referenceMap.get(recursiveSchema);
 
       // Add recursive Valibot schema to reference map, if necessary
       if (!referenceId) {
-        referenceId = `${refCount++}`;
-        context.referenceMap.set(valibotSchema, referenceId);
+        do {
+          referenceId = `${refCount++}`;
+        } while (
+          Object.prototype.hasOwnProperty.call(
+            context.definitions,
+            referenceId
+          ) ||
+          Array.from(context.referenceMap.values()).includes(referenceId)
+        );
+        context.referenceMap.set(recursiveSchema, referenceId);
       }
 
       // Add recursive Valibot schema to definitions, if necessary
       if (
         !Object.prototype.hasOwnProperty.call(context.definitions, referenceId)
       ) {
+        const recursiveSelfSchema = recursiveSchema as Parameters<
+          typeof recursiveSchema.getter
+        >[0];
         context.definitions[referenceId] = convertSchema(
           {},
-          valibotSchema.getter(valibotSchema as never) as SchemaOrPipe,
+          recursiveSchema.getter(recursiveSelfSchema) as SchemaOrPipe,
           config,
           context,
           true
@@ -652,7 +665,7 @@ export function convertSchema(
           const refOverride = config.overrideRef({
             ...context,
             referenceId,
-            valibotSchema,
+            valibotSchema: recursiveSchema,
             jsonSchema,
           });
           if (refOverride) {

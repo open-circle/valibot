@@ -1526,6 +1526,52 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should convert recursive schema without colliding with existing definitions', () => {
+      const schema = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const definitions = Object.fromEntries(
+        Array.from({ length: 100 }, (_, index) => [
+          `${index}`,
+          { type: 'string' as const },
+        ])
+      );
+      const expectedDefinitions = { ...definitions };
+      const existingReferenceIds = new Set([
+        '100',
+        ...Object.keys(definitions),
+      ]);
+      const context = createContext({
+        definitions,
+        referenceMap: new Map().set(v.string(), '100'),
+      });
+
+      const jsonSchema = convertSchema({}, schema, undefined, context);
+      const referenceId = context.referenceMap.get(schema);
+
+      expect(referenceId).toBeDefined();
+      expect(existingReferenceIds.has(referenceId!)).toBe(false);
+      expect(context.definitions).toMatchObject(expectedDefinitions);
+      expect(context.definitions['100']).toBeUndefined();
+      expect(jsonSchema).toStrictEqual({
+        $ref: `#/$defs/${referenceId}`,
+      });
+      expect(context.definitions[referenceId!]).toStrictEqual({
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          subcategories: {
+            type: 'array',
+            items: { $ref: `#/$defs/${referenceId}` },
+          },
+        },
+        required: ['name', 'subcategories'],
+      });
+    });
+
     test('should convert recursive schema as definition', () => {
       const schema = v.recursive((self) =>
         v.object({
