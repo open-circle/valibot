@@ -118,7 +118,9 @@ describe('recursiveAsync', () => {
       return string();
     });
     const schema = recursiveAsync(getter);
+    expect(getter).not.toHaveBeenCalled();
     await schema['~run']({ value: 'foo' }, {});
+    expect(getter).toHaveBeenCalledTimes(1);
     expect(getter).toHaveBeenCalledWith(schema);
   });
 

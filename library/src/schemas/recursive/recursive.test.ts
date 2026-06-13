@@ -162,7 +162,9 @@ describe('recursive', () => {
       return string();
     });
     const schema = recursive(getter);
+    expect(getter).not.toHaveBeenCalled();
     schema['~run']({ value: 'foo' }, {});
+    expect(getter).toHaveBeenCalledTimes(1);
     expect(getter).toHaveBeenCalledWith(schema);
   });
 });
