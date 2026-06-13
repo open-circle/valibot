@@ -6,6 +6,7 @@ contributors:
   - fabian-hiller
   - EltonLobo07
   - morinokami
+  - yslpn
 ---
 
 import { ApiList, Link, Property } from '~/components';
@@ -29,9 +30,9 @@ const Schema = v.lazy<TWrapped>(getter);
 
 ### Explanation
 
-The `getter` function is called lazily to retrieve the schema. This is necessary to be able to access the input through the first argument of the `getter` function and to avoid a circular dependency for recursive schemas.
+The `getter` function is called lazily to retrieve the schema. This is useful when you need to choose a schema based on the input value.
 
-> Due to a TypeScript limitation, the input and output types of recursive schemas cannot be inferred automatically. Therefore, you must explicitly specify these types using <Link href="/api/GenericSchema/">`GenericSchema`</Link>. Please see the examples below.
+> For recursive schemas with inferred input and output types, use <Link href="/api/recursive/">`recursive`</Link> instead.
 
 ## Returns
 
@@ -41,9 +42,11 @@ The `getter` function is called lazily to retrieve the schema. This is necessary
 
 The following examples show how `lazy` can be used.
 
-### Binary tree schema
+### Legacy binary tree schema
 
 Recursive schema to validate a binary tree.
+
+> In most cases, <Link href="/api/recursive/">`recursive`</Link> is the better choice for recursive schemas because it can infer input and output types automatically.
 
 ```ts
 type BinaryTree = {
@@ -62,6 +65,8 @@ const BinaryTreeSchema: v.GenericSchema<BinaryTree> = v.object({
 ### JSON data schema
 
 Schema to validate all possible `JSON` values.
+
+> In most cases, <Link href="/api/recursive/">`recursive`</Link> is the better choice for recursive schemas because it can infer input and output types automatically.
 
 ```ts
 import * as v from 'valibot';
@@ -157,6 +162,7 @@ The following APIs can be combined with `lazy`.
     'picklist',
     'promise',
     'record',
+    'recursive',
     'set',
     'strictObject',
     'strictTuple',

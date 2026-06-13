@@ -1,0 +1,89 @@
+---
+title: recursiveAsync
+description: Creates a recursive schema.
+source: /schemas/recursive/recursiveAsync.ts
+contributors:
+  - yslpn
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# recursiveAsync
+
+Creates a recursive schema.
+
+```ts
+const Schema = v.recursiveAsync<TWrapped>(getter);
+```
+
+## Generics
+
+- `TWrapped` <Property {...properties.TWrapped} />
+
+## Parameters
+
+- `getter` <Property {...properties.getter} />
+
+### Explanation
+
+The `getter` function receives a `self` schema that can be used inside the schema returned by `getter`. This allows Valibot to infer recursive input and output types automatically.
+
+> When you nest `self`, use async-compatible schemas such as <Link href="/api/objectAsync/">`objectAsync`</Link> and <Link href="/api/arrayAsync/">`arrayAsync`</Link>.
+
+## Returns
+
+- `Schema` <Property {...properties.Schema} />
+
+## Examples
+
+The following examples show how `recursiveAsync` can be used.
+
+### Category schema
+
+Recursive schema to validate nested categories asynchronously.
+
+```ts
+const CategorySchema = v.recursiveAsync((self) =>
+  v.objectAsync({
+    name: v.string(),
+    subcategories: v.arrayAsync(self),
+  })
+);
+```
+
+### Async getter schema
+
+Recursive schema with an async getter.
+
+```ts
+const CategorySchema = v.recursiveAsync(async (self) =>
+  v.objectAsync({
+    name: v.string(),
+    subcategories: v.arrayAsync(self),
+  })
+);
+```
+
+## Related
+
+The following APIs can be combined with `recursiveAsync`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'arrayAsync',
+    'lazyAsync',
+    'nullableAsync',
+    'nullishAsync',
+    'objectAsync',
+    'optionalAsync',
+    'recordAsync',
+    'unionAsync',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['parseAsync', 'pipeAsync', 'safeParseAsync']} />

@@ -1,0 +1,25 @@
+---
+title: RecursiveSchemaAsync
+description: Recursive schema async interface.
+contributors:
+  - yslpn
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# RecursiveSchemaAsync
+
+Recursive schema async interface.
+
+## Generics
+
+- `TWrapped` <Property {...properties.TWrapped} />
+
+## Definition
+
+- `RecursiveSchemaAsync` <Property {...properties.BaseSchemaAsync} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `getter` <Property {...properties.getter} />

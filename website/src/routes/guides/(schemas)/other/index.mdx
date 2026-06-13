@@ -2,16 +2,18 @@
 title: Other
 description: >-
   This guide explains other special schema functions such as `literal`,
-  `instance`, `custom` and `lazy` that are not covered in the other guides.
+  `instance`, `custom`, `recursive` and `lazy` that are not covered in the
+  other guides.
 contributors:
   - fabian-hiller
+  - yslpn
 ---
 
 import { Link } from '~/components';
 
 # Other
 
-This guide explains other special schema functions such as <Link href="/api/literal/">`literal`</Link>, <Link href="/api/instance/">`instance`</Link>, <Link href="/api/custom/">`custom`</Link> and <Link href="/api/lazy/">`lazy`</Link> that are not covered in the other guides.
+This guide explains other special schema functions such as <Link href="/api/literal/">`literal`</Link>, <Link href="/api/instance/">`instance`</Link>, <Link href="/api/custom/">`custom`</Link>, <Link href="/api/recursive/">`recursive`</Link> and <Link href="/api/lazy/">`lazy`</Link> that are not covered in the other guides.
 
 ## Literal schema
 
@@ -50,51 +52,52 @@ const PixelStringSchema = v.custom<`${number}px`>((input) =>
 );
 ```
 
-## Lazy schema
+## Recursive schema
 
-The <Link href="/api/lazy/">`lazy`</Link> schema function allows you to define recursive schemas. A recursive schema is a schema that references itself. For example, you can use it to define a schema for a tree-like data structure.
-
-> Due to a TypeScript limitation, the input and output types cannot be inferred automatically in this case. Therefore, you must explicitly specify these types using the <Link href="/api/GenericSchema/">`GenericSchema`</Link> type.
+The <Link href="/api/recursive/">`recursive`</Link> schema function allows you to define schemas that reference themselves. The `self` argument can be used inside the returned schema, and Valibot can infer the recursive input and output types automatically.
 
 ```ts
 import * as v from 'valibot';
 
-type BinaryTree = {
-  element: string;
-  left: BinaryTree | null;
-  right: BinaryTree | null;
-};
-
-const BinaryTreeSchema: v.GenericSchema<BinaryTree> = v.object({
-  element: v.string(),
-  left: v.nullable(v.lazy(() => BinaryTreeSchema)),
-  right: v.nullable(v.lazy(() => BinaryTreeSchema)),
-});
+const CategorySchema = v.recursive((self) =>
+  v.object({
+    name: v.string(),
+    subcategories: v.array(self),
+  })
+);
 ```
 
 ### JSON schema
 
-Another practical use case for `lazy` is a schema for all possible `JSON` values. These are all values that can be serialized and deserialized using `JSON.stringify()` and `JSON.parse()`.
+Another practical use case for `recursive` is a schema for all possible `JSON` values. These are all values that can be serialized and deserialized using `JSON.stringify()` and `JSON.parse()`.
 
 ```ts
 import * as v from 'valibot';
 
-type JsonData =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: JsonData }
-  | JsonData[];
-
-const JsonSchema: v.GenericSchema<JsonData> = v.lazy(() =>
+const JsonSchema = v.recursive((self) =>
   v.union([
     v.string(),
     v.number(),
     v.boolean(),
     v.null(),
-    v.record(v.string(), JsonSchema),
-    v.array(JsonSchema),
+    v.record(v.string(), self),
+    v.array(self),
   ])
+);
+```
+
+## Lazy schema
+
+The <Link href="/api/lazy/">`lazy`</Link> schema function calls a getter when parsing an input value. Use it when you need to choose a schema based on the input value.
+
+> For ordinary recursive schemas, <Link href="/api/recursive/">`recursive`</Link> is usually a better choice because it can infer input and output types automatically.
+
+```ts
+import * as v from 'valibot';
+
+const EmailOrUrlSchema = v.lazy((input) =>
+  typeof input === 'string' && input.startsWith('https://')
+    ? v.pipe(v.string(), v.url())
+    : v.pipe(v.string(), v.email())
 );
 ```
