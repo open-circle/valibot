@@ -44,6 +44,7 @@ This package is particularly popular for:
 | `optional`       | ✅     |                                                                                                                                       |
 | `picklist`       | ⚠️     | Only JSON compatible values are supported                                                                                             |
 | `record`         | ⚠️     | Only `string` schemas for the key of the record are supported. Adds `propertyNames` for key validation (not available in OpenAPI 3.0) |
+| `recursive`      | ✅     | Missing definitions will be generated automatically                                                                                   |
 | `strictObject`   | ✅     |                                                                                                                                       |
 | `strictTuple`    | ✅     |                                                                                                                                       |
 | `string`         | ✅     |                                                                                                                                       |

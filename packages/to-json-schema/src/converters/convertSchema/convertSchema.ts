@@ -97,6 +97,7 @@ type Schema =
       v.ErrorMessage<v.ArrayIssue> | undefined
     >
   | v.NeverSchema<v.ErrorMessage<v.NeverIssue> | undefined>
+  | v.GenericRecursiveSchema
   | v.LazySchema<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>>;
 
 /**
@@ -612,6 +613,54 @@ export function convertSchema(
       jsonSchema.allOf = valibotSchema.options.map((option) =>
         convertSchema({}, option as SchemaOrPipe, config, context)
       );
+      break;
+    }
+
+    case 'recursive': {
+      // Get reference ID of recursive Valibot schema
+      let referenceId = context.referenceMap.get(valibotSchema);
+
+      // Add recursive Valibot schema to reference map, if necessary
+      if (!referenceId) {
+        referenceId = `${refCount++}`;
+        context.referenceMap.set(valibotSchema, referenceId);
+      }
+
+      // Add recursive Valibot schema to definitions, if necessary
+      if (
+        !Object.prototype.hasOwnProperty.call(context.definitions, referenceId)
+      ) {
+        context.definitions[referenceId] = convertSchema(
+          {},
+          valibotSchema.getter(valibotSchema as never) as SchemaOrPipe,
+          config,
+          context,
+          true
+        );
+      }
+
+      // Return definition directly, if reference is skipped
+      if (skipRef) {
+        Object.assign(jsonSchema, context.definitions[referenceId]);
+
+        // Otherwise, add reference to JSON Schema object
+      } else {
+        jsonSchema.$ref = getDefinitionRef(referenceId);
+
+        // Override reference, if necessary
+        if (config?.overrideRef) {
+          const refOverride = config.overrideRef({
+            ...context,
+            referenceId,
+            valibotSchema,
+            jsonSchema,
+          });
+          if (refOverride) {
+            jsonSchema.$ref = refOverride;
+          }
+        }
+      }
+
       break;
     }
 
