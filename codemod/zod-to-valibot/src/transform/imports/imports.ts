@@ -1,5 +1,8 @@
 import j, { type Collection } from 'jscodeshift';
 
+const ZOD_IMPORT_SOURCES = new Set(['zod', 'zod/v4', 'zod/v4-mini']);
+const ZOD_IMPORT_SOURCES_LABEL = '"zod", "zod/v4", or "zod/v4-mini"';
+
 type TransformImportsReturn =
   | {
       conclusion: 'skip' | 'unsuccessful';
@@ -14,14 +17,16 @@ export function transformImports(
   // Find all Zod import statements
   const zodImports = root.find(
     j.ImportDeclaration,
-    (name) => name.source.value === 'zod' || name.source.value === 'zod/v4'
+    (name) =>
+      typeof name.source.value === 'string' &&
+      ZOD_IMPORT_SOURCES.has(name.source.value)
   );
   // Check the number of statements is exactly one
   const importNodes = zodImports.nodes();
   if (importNodes.length !== 1) {
     return {
       conclusion: importNodes.length === 0 ? 'skip' : 'unsuccessful',
-      cause: 'Expected exactly one import statement from "zod" or "zod/v4".',
+      cause: `Expected exactly one import statement from ${ZOD_IMPORT_SOURCES_LABEL}.`,
     };
   }
   // Check the number of specifiers is exactly one
@@ -29,7 +34,7 @@ export function transformImports(
   if (importSpecifiers?.length !== 1) {
     return {
       conclusion: 'unsuccessful',
-      cause: 'Expected exactly one import specifier from "zod" or "zod/v4".',
+      cause: `Expected exactly one import specifier from ${ZOD_IMPORT_SOURCES_LABEL}.`,
     };
   }
   // Obtain the identifier

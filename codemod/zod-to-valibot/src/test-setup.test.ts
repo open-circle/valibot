@@ -74,4 +74,5 @@ defineTests(transform, [
   'validation-error-msg',
   'void-schema',
   'zod-enum',
+  'zod-v4-mini-import',
 ]);
