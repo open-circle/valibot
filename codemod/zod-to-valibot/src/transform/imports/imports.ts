@@ -1,7 +1,12 @@
 import j, { type Collection } from 'jscodeshift';
 
-const ZOD_IMPORT_SOURCES = new Set(['zod', 'zod/v4', 'zod/v4-mini']);
-const ZOD_IMPORT_SOURCES_LABEL = '"zod", "zod/v4", or "zod/v4-mini"';
+const ZOD_IMPORT_SOURCES_LIST = ['zod', 'zod/v4', 'zod/v4-mini'] as const;
+const ZOD_IMPORT_SOURCES = new Set<string>(ZOD_IMPORT_SOURCES_LIST);
+const LAST_ZOD_IMPORT_SOURCE =
+  ZOD_IMPORT_SOURCES_LIST[ZOD_IMPORT_SOURCES_LIST.length - 1];
+const ZOD_IMPORT_SOURCES_LABEL = `${ZOD_IMPORT_SOURCES_LIST.slice(0, -1)
+  .map((source) => `"${source}"`)
+  .join(', ')}, or "${LAST_ZOD_IMPORT_SOURCE}"`;
 
 type TransformImportsReturn =
   | {
