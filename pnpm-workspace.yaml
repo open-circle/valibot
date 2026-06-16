@@ -10,5 +10,15 @@ allowBuilds:
   esbuild: true
   sharp: true
   unrs-resolver: true
+  workerd: true
+minimumReleaseAgeExclude:
+  - '@cloudflare/workerd-darwin-64@1.20260616.1'
+  - '@cloudflare/workerd-darwin-arm64@1.20260616.1'
+  - '@cloudflare/workerd-linux-64@1.20260616.1'
+  - '@cloudflare/workerd-linux-arm64@1.20260616.1'
+  - '@cloudflare/workerd-windows-64@1.20260616.1'
+  - miniflare@4.20260616.0
+  - workerd@1.20260616.1
+  - wrangler@4.101.0
 patchedDependencies:
   '@builder.io/qwik-city@1.19.2': patches/@builder.io__qwik-city@1.19.2.patch

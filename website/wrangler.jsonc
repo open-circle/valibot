@@ -1,0 +1,20 @@
+/**
+ * Cloudflare Workers configuration for hosting the website as a static site.
+ *
+ * https://developers.cloudflare.com/workers/static-assets/
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "valibot-website",
+  "compatibility_date": "2026-06-16",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+  },
+  // Serve production via the custom domain only, but keep
+  // workers.dev preview URLs for branch deployments
+  "routes": [{ "pattern": "valibot.dev", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": true,
+}
