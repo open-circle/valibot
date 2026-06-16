@@ -1,0 +1,20 @@
+# https://developers.cloudflare.com/workers/static-assets/headers/
+
+/build/*
+  Cache-Control: public, max-age=31536000, s-maxage=31536000, immutable
+# Bundles imported by the playground's sandboxed iframe are fetched cross-origin,
+# so they need CORS enabled. Cloudflare applies every matching rule, so these
+# files also inherit Cache-Control from the /assets/* rule below; we only add the
+# extra header here to avoid duplicating Cache-Control.
+/assets/*-index.min.mjs
+  Access-Control-Allow-Origin: *
+/assets/*
+  Cache-Control: public, max-age=31536000, s-maxage=31536000, immutable
+/fonts/*
+  Cache-Control: public, max-age=31536000, s-maxage=31536000, immutable
+/og/*
+  Cache-Control: public, max-age=86400, s-maxage=86400
+
+# The splat greedily matches any path prefix at any depth, including none
+/*q-data.json
+  Cache-Control: public, max-age=60, stale-while-revalidate=604800
