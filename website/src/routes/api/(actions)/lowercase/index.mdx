@@ -28,7 +28,7 @@ const Action = v.lowercase<TInput, TMessage>(message);
 
 ### Explanation
 
-With `lowercase` you can validate that a string is lowercase. If the string does not contain only lowercase characters, you can use `message` to customize the error message.
+With `lowercase` you can validate that a string contains no uppercase ASCII characters. If the string contains an uppercase letter from `A` to `Z`, you can use `message` to customize the error message.
 
 ## Returns
 
