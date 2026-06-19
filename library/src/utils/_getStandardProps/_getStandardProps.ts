@@ -5,12 +5,33 @@ import type {
   BaseSchemaAsync,
   InferInput,
   InferOutput,
+  OutputDataset,
   StandardProps,
   StandardResult,
 } from '../../types/index.ts';
 
 // Cache to avoid allocating a new StandardProps object on every `~standard` access
 const _standardCache = new WeakMap<object, StandardProps<unknown, unknown>>();
+
+/**
+ * Converts a Valibot output dataset into a Standard Schema result. The Standard
+ * Schema contract requires a discriminated union: a success result exposes only
+ * `value` and a failure result exposes only `issues`. Valibot's dataset always
+ * carries `typed` and `value`, so it must be mapped explicitly to avoid leaking
+ * `value`/`typed` next to `issues` on failure.
+ *
+ * @param dataset The Valibot output dataset.
+ *
+ * @returns The Standard Schema result.
+ */
+// @__NO_SIDE_EFFECTS__
+function _toStandardResult<TOutput>(
+  dataset: OutputDataset<TOutput, BaseIssue<unknown>>
+): StandardResult<TOutput> {
+  return dataset.issues
+    ? { issues: dataset.issues }
+    : { value: dataset.value };
+}
 
 /**
  * Returns the Standard Schema properties.
@@ -31,9 +52,10 @@ export function _getStandardProps<
       version: 1,
       vendor: 'valibot',
       validate(value) {
-        return context['~run']({ value }, getGlobalConfig()) as
-          | StandardResult<InferOutput<TSchema>>
-          | Promise<StandardResult<InferOutput<TSchema>>>;
+        const dataset = context['~run']({ value }, getGlobalConfig());
+        return dataset instanceof Promise
+          ? dataset.then(_toStandardResult)
+          : _toStandardResult(dataset);
       },
     };
     _standardCache.set(context, cached);

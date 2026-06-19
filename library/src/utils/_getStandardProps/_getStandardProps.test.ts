@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { email, endsWith } from '../../actions/index.ts';
-import { pipe } from '../../methods/index.ts';
+import { checkAsync, email, endsWith, nonEmpty } from '../../actions/index.ts';
+import { pipe, pipeAsync } from '../../methods/index.ts';
 import { array, object, string } from '../../schemas/index.ts';
 import { deleteGlobalConfig, setGlobalConfig } from '../../storages/index.ts';
 import type {
@@ -57,6 +57,41 @@ describe('_getStandardProps', () => {
         },
       ],
     } satisfies StandardFailureResult);
+  });
+
+  test('should return mutually exclusive result (#1343)', () => {
+    // The Standard Schema contract requires a discriminated union: a failure
+    // result must expose only `issues`, never `value` or Valibot's `typed`.
+    const props = _getStandardProps(
+      object({ first: string(), second: pipe(string(), nonEmpty()) })
+    );
+
+    const failure = props.validate({ first: '', second: '' });
+    expect(failure).not.toHaveProperty('value');
+    expect(failure).not.toHaveProperty('typed');
+    expect(failure).toHaveProperty('issues');
+
+    const success = props.validate({ first: 'a', second: 'b' });
+    expect(success).not.toHaveProperty('issues');
+    expect(success).not.toHaveProperty('typed');
+    expect(success).toStrictEqual({ value: { first: 'a', second: 'b' } });
+  });
+
+  test('should return mutually exclusive result for async schema (#1343)', async () => {
+    const props = _getStandardProps(
+      pipeAsync(
+        string(),
+        checkAsync(async (input) => input.length > 0)
+      )
+    );
+
+    const failure = await props.validate('');
+    expect(failure).not.toHaveProperty('value');
+    expect(failure).not.toHaveProperty('typed');
+    expect(failure).toHaveProperty('issues');
+
+    const success = await props.validate('foo');
+    expect(success).toStrictEqual({ value: 'foo' });
   });
 
   test('should use global config', () => {
