@@ -73,17 +73,40 @@ The following APIs can be combined with `recursiveAsync`.
 
 <ApiList
   items={[
+    'array',
+    'lazy',
+    'nullable',
+    'nullish',
+    'object',
+    'optional',
+    'record',
+    'union',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['parse', 'pipe', 'safeParse']} />
+
+### Actions
+
+<ApiList items={['transform']} />
+
+### Async
+
+<ApiList
+  items={[
     'arrayAsync',
     'lazyAsync',
     'nullableAsync',
     'nullishAsync',
     'objectAsync',
     'optionalAsync',
+    'parseAsync',
+    'pipeAsync',
     'recordAsync',
+    'safeParseAsync',
+    'transformAsync',
     'unionAsync',
   ]}
 />
-
-### Methods
-
-<ApiList items={['parseAsync', 'pipeAsync', 'safeParseAsync']} />
