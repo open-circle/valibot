@@ -13,11 +13,13 @@
   "scripts": {
     "build": "qwik build",
     "build.client": "vite build",
+    "build.cloudflare": "cd ../library && pnpm build && cd ../packages/to-json-schema && pnpm build && cd ../../codemod/zod-to-valibot && pnpm build && cd ../../website && pnpm sitemap && pnpm llms && pnpm og && pnpm build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.server": "vite build -c adapters/static/vite.config.ts",
     "build.types": "tsc --incremental --noEmit",
     "contributors": "tsm ./scripts/contributors.ts",
-    "deploy": "vercel deploy",
+    "deploy.cloudflare": "wrangler deploy",
+    "deploy.vercel": "vercel deploy",
     "dev": "vite --mode ssr",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
     "format": "prettier --write .",
@@ -59,7 +61,8 @@
     "vite": "^7.2.4",
     "vite-imagetools": "^9.0.0",
     "vite-plugin-node-polyfills": "^0.24.0",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "wrangler": "^4.101.0"
   },
   "dependencies": {
     "@valibot/zod-to-valibot": "workspace:*",

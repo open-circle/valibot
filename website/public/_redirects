@@ -1,0 +1,8 @@
+# https://developers.cloudflare.com/workers/static-assets/redirects/
+
+/guides /guides/introduction/ 302
+/guides/ /guides/introduction/ 302
+/guides/errors /guides/issues/ 302
+/guides/errors/ /guides/issues/ 302
+/guides/migrate-from-v0.30.0 /guides/migrate-to-v0.31.0/ 301
+/guides/migrate-from-v0.30.0/ /guides/migrate-to-v0.31.0/ 301
