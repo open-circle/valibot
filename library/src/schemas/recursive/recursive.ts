@@ -79,15 +79,21 @@ type ResolveRecursiveArray<
   TValue extends readonly unknown[],
   TRoot,
 > = number extends TValue['length']
-  ? TValue extends (infer TItem)[]
-    ? RecursiveMarker extends TItem
-      ? RecursiveArray<TItem, TRoot>
-      : ResolveRecursiveValue<TItem, TRoot>[]
-    : TValue extends readonly (infer TItem)[]
+  ? TValue extends
+      | readonly [unknown, ...unknown[]]
+      | readonly [...unknown[], unknown]
+    ? {
+        [TKey in keyof TValue]: ResolveRecursiveValue<TValue[TKey], TRoot>;
+      }
+    : TValue extends (infer TItem)[]
       ? RecursiveMarker extends TItem
-        ? RecursiveReadonlyArray<TItem, TRoot>
-        : readonly ResolveRecursiveValue<TItem, TRoot>[]
-      : never
+        ? RecursiveArray<TItem, TRoot>
+        : ResolveRecursiveValue<TItem, TRoot>[]
+      : TValue extends readonly (infer TItem)[]
+        ? RecursiveMarker extends TItem
+          ? RecursiveReadonlyArray<TItem, TRoot>
+          : readonly ResolveRecursiveValue<TItem, TRoot>[]
+        : never
   : {
       [TKey in keyof TValue]: ResolveRecursiveValue<TValue[TKey], TRoot>;
     };
