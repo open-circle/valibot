@@ -18,6 +18,7 @@ import {
   type StringSchema,
 } from '../string/index.ts';
 import { tuple } from '../tuple/index.ts';
+import { tupleWithRest } from '../tupleWithRest/index.ts';
 import { union, type UnionIssue, type UnionSchema } from '../union/index.ts';
 import {
   type GenericRecursiveSchema,
@@ -142,6 +143,24 @@ describe('recursive', () => {
       childrenByName: Map<string, Category>;
       related: Set<Category>;
       pair: [string, Category];
+    }
+
+    expectTypeOf<InferInput<typeof Category>>().toEqualTypeOf<Category>();
+    expectTypeOf<InferOutput<typeof Category>>().toEqualTypeOf<Category>();
+  });
+
+  test('should infer recursive tuple with rest', () => {
+    const Category = recursive((self) =>
+      object({
+        name: string(),
+        // Variadic tuple: a fixed leading element followed by a recursive rest
+        children: tupleWithRest([string()], self),
+      })
+    );
+
+    interface Category {
+      name: string;
+      children: [string, ...Category[]];
     }
 
     expectTypeOf<InferInput<typeof Category>>().toEqualTypeOf<Category>();
