@@ -156,6 +156,56 @@ function _processObjectEntryDataset(
 }
 
 /**
+ * Adds a missing object entry issue to the dataset if the entry is required.
+ *
+ * @param context The object entries context.
+ * @param dataset The parent dataset.
+ * @param config The configuration.
+ * @param input The input object.
+ * @param key The object entry key.
+ * @param value The missing object entry value.
+ * @param valueSchema The object entry schema.
+ *
+ * @returns Whether parsing must abort.
+ *
+ * @internal
+ */
+function _addMissingObjectEntryIssue(
+  context:
+    | ObjectEntriesContext<ObjectEntries | ObjectEntriesAsync>
+    | ObjectEntriesContextAsync<ObjectEntriesAsync>,
+  dataset: UnknownDataset | OutputDataset<unknown, BaseIssue<unknown>>,
+  config: Config<BaseIssue<unknown>>,
+  input: Record<string, unknown>,
+  key: string,
+  value: unknown,
+  valueSchema: ObjectEntrySchema
+): boolean {
+  // If key is missing and required, add issue
+  if (!_isOptionalEntry(valueSchema)) {
+    _addIssue(context, 'key', dataset, config, {
+      input: undefined,
+      expected: `"${key}"`,
+      path: [
+        {
+          type: 'object',
+          origin: 'key',
+          input,
+          key,
+          value,
+        },
+      ],
+    });
+
+    // If necessary, abort early
+    if (config.abortEarly) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
  * Processes an object entry without an output dataset.
  *
  * @param context The object entries context.
@@ -179,32 +229,22 @@ function _processMissingObjectEntry(
   value: unknown,
   valueSchema: ObjectEntrySchema
 ): boolean {
-  // Otherwise, if key is missing but has a fallback, use it
+  // If key is missing but has a fallback, use it
   if (_hasFallback(valueSchema)) {
     (dataset.value as Record<string, unknown>)[key] = getFallback(valueSchema);
-
-    // Otherwise, if key is missing and required, add issue
-  } else if (!_isOptionalEntry(valueSchema)) {
-    _addIssue(context, 'key', dataset, config, {
-      input: undefined,
-      expected: `"${key}"`,
-      path: [
-        {
-          type: 'object',
-          origin: 'key',
-          input,
-          key,
-          value,
-        },
-      ],
-    });
-
-    // If necessary, abort early
-    if (config.abortEarly) {
-      return true;
-    }
+    return false;
   }
-  return false;
+
+  // Otherwise, add issue if entry is required
+  return _addMissingObjectEntryIssue(
+    context,
+    dataset,
+    config,
+    input,
+    key,
+    value,
+    valueSchema
+  );
 }
 
 /**
@@ -231,33 +271,23 @@ async function _processMissingObjectEntryAsync(
   value: unknown,
   valueSchema: ObjectEntrySchema
 ): Promise<boolean> {
-  // Otherwise, if key is missing but has a fallback, use it
+  // If key is missing but has a fallback, use it
   if (_hasFallback(valueSchema)) {
     (dataset.value as Record<string, unknown>)[key] =
       await getFallback(valueSchema);
-
-    // Otherwise, if key is missing and required, add issue
-  } else if (!_isOptionalEntry(valueSchema)) {
-    _addIssue(context, 'key', dataset, config, {
-      input: undefined,
-      expected: `"${key}"`,
-      path: [
-        {
-          type: 'object',
-          origin: 'key',
-          input,
-          key,
-          value,
-        },
-      ],
-    });
-
-    // If necessary, abort early
-    if (config.abortEarly) {
-      return true;
-    }
+    return false;
   }
-  return false;
+
+  // Otherwise, add issue if entry is required
+  return _addMissingObjectEntryIssue(
+    context,
+    dataset,
+    config,
+    input,
+    key,
+    value,
+    valueSchema
+  );
 }
 
 /**
