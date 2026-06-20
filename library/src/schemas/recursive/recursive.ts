@@ -75,16 +75,23 @@ interface RecursiveReadonlyArray<TItem, TRoot>
 
 /* eslint-enable @typescript-eslint/no-empty-object-type */
 
+// Maps each element of a tuple through the resolver, preserving the tuple's
+// positional structure (fixed slots, labels, optionality, readonly).
+type ResolveRecursiveTuple<TValue extends readonly unknown[], TRoot> = {
+  [TKey in keyof TValue]: ResolveRecursiveValue<TValue[TKey], TRoot>;
+};
+
 type ResolveRecursiveArray<
   TValue extends readonly unknown[],
   TRoot,
 > = number extends TValue['length']
-  ? TValue extends
+  ? // Variadic tuples (e.g. `[string, ...self[]]`) also have a `number` length,
+    // but unlike plain arrays carry fixed leading or trailing elements, so map
+    // element-wise to keep those slots intact.
+    TValue extends
       | readonly [unknown, ...unknown[]]
       | readonly [...unknown[], unknown]
-    ? {
-        [TKey in keyof TValue]: ResolveRecursiveValue<TValue[TKey], TRoot>;
-      }
+    ? ResolveRecursiveTuple<TValue, TRoot>
     : TValue extends (infer TItem)[]
       ? RecursiveMarker extends TItem
         ? RecursiveArray<TItem, TRoot>
@@ -94,10 +101,14 @@ type ResolveRecursiveArray<
           ? RecursiveReadonlyArray<TItem, TRoot>
           : readonly ResolveRecursiveValue<TItem, TRoot>[]
         : never
-  : {
-      [TKey in keyof TValue]: ResolveRecursiveValue<TValue[TKey], TRoot>;
-    };
+  : ResolveRecursiveTuple<TValue, TRoot>;
 
+// Rebuilds a container with its type arguments resolved. TypeScript cannot
+// reconstruct an arbitrary generic with substituted type arguments, so each
+// container kind must be enumerated explicitly. This list must cover every
+// container a Valibot schema can infer; an unlisted generic (e.g. `WeakMap`)
+// falls through to the object branch, which maps over its methods and leaves
+// the marker in its type arguments unresolved.
 type ResolveRecursiveContainer<TValue, TRoot> =
   TValue extends Map<infer TKey, infer TItem>
     ? Map<
