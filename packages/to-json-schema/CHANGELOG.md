@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## v1.7.1 (June 08, 2026)
+
+- Fix `$ref` generation to encode definition keys containing `/` or `~` as JSON Pointer tokens (pull request #1482)
+
 ## v1.7.0 (May 05, 2026)
 
 - Change build target to ES2020 so distributed output stays compatible with environments that lack support for newer syntax (pull request #1455)

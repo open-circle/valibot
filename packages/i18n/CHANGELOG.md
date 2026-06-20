@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Add Kinyarwanda (rw) translations (pull request #1489)
+
 ## v1.2.0 (May 05, 2026)
 
 - Add Uzbek (uz) translations (pull request #1452)
