@@ -60,6 +60,25 @@ describe('_merge', () => {
         value: [1, 2, 3],
       });
     });
+
+    test('for NaN primitives', () => {
+      // NaN === NaN is false in JavaScript, but Object.is(NaN, NaN) is true.
+      // Two NaN values represent the same "not a number" state and must merge.
+      const result = _merge(NaN, NaN);
+      expect(result.issue).toBeUndefined();
+      expect(Number.isNaN((result as { value: unknown }).value)).toBe(true);
+    });
+
+    test('for invalid Date objects with NaN timestamp', () => {
+      // new Date(NaN) is an invalid date. Two invalid dates are equal under
+      // Object.is(+invalidDate, +invalidDate) === Object.is(NaN, NaN) === true.
+      const invalidDate = new Date(NaN);
+      const result = _merge(invalidDate, new Date(NaN));
+      expect(result.issue).toBeUndefined();
+      expect(
+        Number.isNaN(+(result as { value: unknown }).value as number)
+      ).toBe(true);
+    });
   });
 
   describe('should return dataset with issue', () => {
@@ -67,6 +86,13 @@ describe('_merge', () => {
       expect(_merge(1, 2)).toStrictEqual({ issue: true });
       expect(_merge('foo', 'bar')).toStrictEqual({ issue: true });
       expect(_merge(1, 'foo')).toStrictEqual({ issue: true });
+    });
+
+    test('for mismatched zero values', () => {
+      // Object.is(-0, +0) is false, so -0 and +0 are distinct values that
+      // cannot be merged without losing information.
+      expect(_merge(-0, 0)).toStrictEqual({ issue: true });
+      expect(_merge(0, -0)).toStrictEqual({ issue: true });
     });
 
     test('for invalid dates', () => {
