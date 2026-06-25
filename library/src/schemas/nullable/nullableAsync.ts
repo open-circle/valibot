@@ -48,7 +48,7 @@ export interface NullableSchemaAsync<
 }
 
 /**
- * Creates a nullable schema.
+ * Creates a nullable schema that allows null values.
  *
  * @param wrapped The wrapped schema.
  *
@@ -61,7 +61,7 @@ export function nullableAsync<
 >(wrapped: TWrapped): NullableSchemaAsync<TWrapped, undefined>;
 
 /**
- * Creates a nullable schema.
+ * Creates a nullable schema that allows null values.
  *
  * @param wrapped The wrapped schema.
  * @param default_ The default value.
