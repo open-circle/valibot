@@ -21,6 +21,7 @@ export type Language = {
     | 'kr'
     | 'mn'
     | 'nb'
+    | 'nn'
     | 'nl'
     | 'pl'
     | 'pt'

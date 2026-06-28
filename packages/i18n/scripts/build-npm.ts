@@ -19,6 +19,7 @@ import ko from '../src/ko';
 import kr from '../src/kr';
 import mn from '../src/mn';
 import nb from '../src/nb';
+import nn from '../src/nn';
 import nl from '../src/nl';
 import pl from '../src/pl';
 import pt from '../src/pt';
@@ -57,6 +58,7 @@ const languages = [
   kr,
   mn,
   nb,
+  nn,
   nl,
   pl,
   pt,
