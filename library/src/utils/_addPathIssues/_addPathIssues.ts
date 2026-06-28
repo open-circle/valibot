@@ -28,22 +28,19 @@ export function _addPathIssues(
   issues: Issues,
   pathMode: PathMode = 'prepend'
 ): void {
-  const parentIssues = dataset.issues;
-  const getIssueWithPath = (issue: BaseIssue<unknown>): BaseIssue<unknown> => ({
-    ...issue,
-    path:
-      pathMode === 'prepend' && issue.path
-        ? [pathItem, ...issue.path]
-        : [pathItem],
-  });
-  const nextIssues: Issues = [
-    getIssueWithPath(issues[0]),
-    ...issues.slice(1).map(getIssueWithPath),
-  ];
+  for (const issue of issues) {
+    const issueWithPath: BaseIssue<unknown> = {
+      ...issue,
+      path:
+        pathMode === 'prepend' && issue.path
+          ? [pathItem, ...issue.path]
+          : [pathItem],
+    };
 
-  if (parentIssues) {
-    parentIssues.push(...nextIssues);
-  } else {
-    dataset.issues = nextIssues;
+    if (dataset.issues) {
+      dataset.issues.push(issueWithPath);
+    } else {
+      dataset.issues = [issueWithPath];
+    }
   }
 }
