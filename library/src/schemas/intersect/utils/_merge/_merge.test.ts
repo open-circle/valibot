@@ -36,7 +36,7 @@ describe('_merge', () => {
     test('for keys colliding with object prototype', () => {
       // Own keys that collide with `Object.prototype` members must be merged
       // as regular entries instead of resolving to the inherited member via
-      // the `in` operator (related to GHSA-5qjj-4xww-7phc).
+      // the `in` operator.
       expect(_merge({}, { toString: 'foo' })).toStrictEqual({
         value: { toString: 'foo' },
       });
