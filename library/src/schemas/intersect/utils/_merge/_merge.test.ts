@@ -33,6 +33,21 @@ describe('_merge', () => {
       });
     });
 
+    test('for keys colliding with object prototype', () => {
+      // Own keys that collide with `Object.prototype` members must be merged
+      // as regular entries instead of resolving to the inherited member via
+      // the `in` operator (related to GHSA-5qjj-4xww-7phc).
+      expect(_merge({}, { toString: 'foo' })).toStrictEqual({
+        value: { toString: 'foo' },
+      });
+      expect(_merge({ valueOf: 1 }, { valueOf: 1 })).toStrictEqual({
+        value: { valueOf: 1 },
+      });
+      expect(
+        _merge({ hasOwnProperty: 1 }, { hasOwnProperty: '1' })
+      ).toStrictEqual({ issue: true });
+    });
+
     test('for valid frozen object', () => {
       expect(_merge(Object.freeze({ key: 1 }), { key: 1 })).toStrictEqual({
         value: { key: 1 },
