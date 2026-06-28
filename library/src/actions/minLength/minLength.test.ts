@@ -68,7 +68,12 @@ describe('minLength', () => {
     });
 
     test('for valid strings', () => {
-      expectNoActionIssue(action, ['12345', '123456', 'foobarbaz123']);
+      expectNoActionIssue(action, [
+        '12345',
+        '123456',
+        'foobarbaz123',
+        '😀😀😀',
+      ]);
     });
 
     test('for valid arrays', () => {
@@ -90,7 +95,7 @@ describe('minLength', () => {
       expectActionIssue(
         action,
         baseIssue,
-        ['', 'foo', '1234'],
+        ['', 'foo', '1234', '😀😀'],
         (value) => `${value.length}`
       );
     });
