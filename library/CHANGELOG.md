@@ -2,7 +2,7 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v1.4.2 (June 28, 2026)
 
 - Fix word count actions to cache the `Intl.Segmenter` for non-primitive locales, preventing it from being recreated on every `words`, `minWords`, `maxWords` and `notWords` validation (pull request #1521)
 - Fix `flatten` method to handle issue path keys that collide with `Object.prototype` members like `toString` instead of throwing a `TypeError` (pull request #1522)
