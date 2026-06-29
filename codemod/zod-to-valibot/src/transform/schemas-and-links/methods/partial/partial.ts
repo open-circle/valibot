@@ -17,12 +17,13 @@ function toValiPartialArg(partialArg: j.CallExpression['arguments'][number]) {
 export function transformPartial(
   valibotIdentifier: string,
   schemaExp: j.CallExpression | j.MemberExpression | j.Identifier,
-  inputArgs: j.CallExpression['arguments']
+  inputArgs: j.CallExpression['arguments'],
+  isStandaloneCall = false
 ) {
   // Function-call form: z.partial(Schema, options?) — Zod v4 standalone API.
   // inputArgs[0] is the schema itself (not a key-selector object), so use it
   // as the first argument and pull the optional key selector from inputArgs[1].
-  if (inputArgs.length > 0 && inputArgs[0].type !== 'ObjectExpression') {
+  if (isStandaloneCall && inputArgs.length > 0) {
     const schemaArg = inputArgs[0] as j.CallExpression | j.MemberExpression | j.Identifier;
     const optionsArg = inputArgs.length > 1 ? inputArgs[1] : null;
     const args: any[] = [schemaArg];

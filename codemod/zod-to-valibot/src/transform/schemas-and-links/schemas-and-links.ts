@@ -374,7 +374,8 @@ function toValibotMethodExp(
   valibotIdentifier: string,
   zodMethodName: ZodMethodName,
   schemaExp: j.CallExpression | j.MemberExpression | j.Identifier,
-  inputArgs: j.CallExpression['arguments']
+  inputArgs: j.CallExpression['arguments'],
+  isStandaloneCall = false
 ) {
   const args = [valibotIdentifier, schemaExp, inputArgs] as const;
   switch (zodMethodName) {
@@ -411,7 +412,7 @@ function toValibotMethodExp(
     case 'parseAsync':
       return transformParseAsync(...args);
     case 'partial':
-      return transformPartial(...args);
+      return transformPartial(valibotIdentifier, schemaExp, inputArgs, isStandaloneCall);
     case 'passthrough':
       return transformPassthrough(valibotIdentifier, schemaExp);
     case 'pick':
@@ -585,11 +586,13 @@ function transformSchemasAndLinksHelper(
           objectModifier
         );
       } else if (isZodMethodName(propertyName)) {
+        const isStandaloneCall = transformedExp === null;
         transformedExp = toValibotMethodExp(
           valibotIdentifier,
           propertyName,
           transformedExp ?? j.identifier(identifier),
-          cur.value.arguments
+          cur.value.arguments,
+          isStandaloneCall
         );
       } else if (isZodValidatorName(propertyName)) {
         if (curSchemaType === null) {
