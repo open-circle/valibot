@@ -586,7 +586,7 @@ function transformSchemasAndLinksHelper(
           objectModifier
         );
       } else if (isZodMethodName(propertyName)) {
-        const isStandaloneCall = transformedExp === null;
++        const isStandaloneCall = transformedExp === null && identifier === valibotIdentifier;
         transformedExp = toValibotMethodExp(
           valibotIdentifier,
           propertyName,
