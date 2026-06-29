@@ -1,0 +1,28 @@
+---
+title: AnyOfAction
+description: Any of action interface.
+contributors:
+  - yslpn
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# AnyOfAction
+
+Any of action interface.
+
+## Generics
+
+- `TOptions` <Property {...properties.TOptions} />
+- `TMessage` <Property {...properties.TMessage} />
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `AnyOfAction` <Property {...properties.BaseValidation} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `options` <Property {...properties.options} />
+  - `message` <Property {...properties.message} />

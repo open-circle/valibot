@@ -1,4 +1,4 @@
-import type { BaseIssue, OutputDataset } from '../../../../types/index.ts';
+import type { BaseIssue, OutputDataset } from '../../types/index.ts';
 
 /**
  * Returns the sub issues of the provided datasets for the union issue.
