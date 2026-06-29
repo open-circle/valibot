@@ -47,4 +47,17 @@ export const properties: Record<string, PropertyProps> = {
       options: ['boolean', 'undefined'],
     },
   },
+  cronDialect: {
+    type: {
+      type: 'union',
+      options: [
+        {
+          type: 'custom',
+          name: 'CronDialect',
+          href: '../CronDialect/',
+        },
+        'undefined',
+      ],
+    },
+  },
 };
