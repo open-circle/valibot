@@ -120,6 +120,14 @@ export const ISO_TIME_SECOND_REGEX: RegExp =
   /^(?:0\d|1\d|2[0-3])(?::[0-5]\d){2}$/u;
 
 /**
+ * [RFC 3339 full-time](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6)
+ * regex. Requires seconds, optional fractional seconds, and a mandatory `Z`
+ * (case-insensitive) or `±hh:mm` time offset.
+ */
+export const RFC_3339_TIME_REGEX: RegExp =
+  /^(?:0\d|1\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,9})?(?:[Zz]|[+-](?:0\d|1\d|2[0-3]):[0-5]\d)$/u;
+
+/**
  * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp regex. Allows a
  * space as a date/time separator and an optional space before the UTC offset.
  */
