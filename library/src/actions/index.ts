@@ -91,6 +91,7 @@ export * from './reduceItems/index.ts';
 export * from './regex/index.ts';
 export * from './returns/index.ts';
 export * from './rfcEmail/index.ts';
+export * from './rfcTime/index.ts';
 export * from './safeInteger/index.ts';
 export * from './size/index.ts';
 export * from './slug/index.ts';
