@@ -672,4 +672,16 @@ describe('looseObject', () => {
       } satisfies FailureDataset<InferIssue<typeof schema>>);
     });
   });
+
+  describe('should pass through keys colliding with the object prototype', () => {
+    const schema = looseObject({ key: string() });
+
+    test('for unknown key named like an object prototype member', () => {
+      const input = { key: 'foo', toString: 'bar' };
+      expect(schema['~run']({ value: input }, {})).toStrictEqual({
+        typed: true,
+        value: { key: 'foo', toString: 'bar' },
+      });
+    });
+  });
 });
