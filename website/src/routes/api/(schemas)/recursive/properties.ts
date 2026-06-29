@@ -28,6 +28,7 @@ export const properties: Record<string, PropertyProps> = {
           type: {
             type: 'custom',
             name: 'RecursiveSelfSchema',
+            href: '../RecursiveSelfSchema/',
           },
         },
       ],

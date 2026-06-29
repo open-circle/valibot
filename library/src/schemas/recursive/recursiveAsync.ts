@@ -18,8 +18,6 @@ import type {
 
 /**
  * Recursive self schema async interface.
- *
- * @internal
  */
 export interface RecursiveSelfSchemaAsync
   extends BaseSchemaAsync<RecursiveMarker, RecursiveMarker, never> {

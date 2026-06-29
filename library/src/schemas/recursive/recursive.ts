@@ -10,22 +10,16 @@ import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Recursive marker symbol.
- *
- * @internal
  */
 export declare const RecursiveMarkerSymbol: unique symbol;
 
 /**
  * Recursive marker type.
- *
- * @internal
  */
 export type RecursiveMarker = typeof RecursiveMarkerSymbol;
 
 /**
  * Recursive self schema interface.
- *
- * @internal
  */
 export interface RecursiveSelfSchema
   extends BaseSchema<RecursiveMarker, RecursiveMarker, never> {
@@ -67,10 +61,16 @@ type ContainsRecursiveMarker<
 // type aliases while preserving normal array behavior.
 /* eslint-disable @typescript-eslint/no-empty-object-type -- These interfaces provide named recursive array indirection for TypeScript. */
 
-interface RecursiveArray<TItem, TRoot>
+/**
+ * Recursive array interface.
+ */
+export interface RecursiveArray<TItem, TRoot>
   extends Array<ResolveRecursiveValue<TItem, TRoot>> {}
 
-interface RecursiveReadonlyArray<TItem, TRoot>
+/**
+ * Recursive readonly array interface.
+ */
+export interface RecursiveReadonlyArray<TItem, TRoot>
   extends ReadonlyArray<ResolveRecursiveValue<TItem, TRoot>> {}
 
 /* eslint-enable @typescript-eslint/no-empty-object-type */
