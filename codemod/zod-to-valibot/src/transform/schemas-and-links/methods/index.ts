@@ -1,4 +1,5 @@
 export * from './array';
+export * from './catch';
 export * from './catchall';
 export * from './default';
 export * from './deepPartial';
@@ -17,6 +18,7 @@ export * from './parseAsync';
 export * from './partial';
 export * from './passthrough';
 export * from './pick';
+export * from './pipe';
 export * from './refine';
 export * from './required';
 export * from './rest';
