@@ -26,6 +26,7 @@ export * from './nullable/index.ts';
 export * from './nullish/index.ts';
 export * from './number/index.ts';
 export * from './object/index.ts';
+export * from './recordWithPatterns/index.ts';
 export * from './objectWithRest/index.ts';
 export * from './optional/index.ts';
 export * from './picklist/index.ts';
