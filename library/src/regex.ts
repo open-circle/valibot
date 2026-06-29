@@ -183,6 +183,14 @@ export const NANO_ID_REGEX: RegExp = /^[\w-]+$/u;
 export const OCTAL_REGEX: RegExp = /^(?:0o)?[0-7]+$/u;
 
 /**
+ * [RFC 3339 duration](https://datatracker.ietf.org/doc/html/rfc3339#appendix-A)
+ * regex. Requires at least one component, enforces the `Y M D T H M S` order,
+ * and treats the `W` (week) form as exclusive.
+ */
+export const RFC_3339_DURATION_REGEX: RegExp =
+  /^P(?:\d+W|(?=\d|T\d)(?:\d+Y)?(?:\d+M)?(?:\d+D)?(?:T(?=\d)(?:\d+H)?(?:\d+M)?(?:\d+S)?)?)$/u;
+
+/**
  * [RFC 5322 email address](https://datatracker.ietf.org/doc/html/rfc5322#section-3.4.1) regex.
  *
  * Hint: This regex was taken from the [HTML Living Standard Specification](https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address) and does not perfectly represent RFC 5322.
