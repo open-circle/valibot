@@ -68,7 +68,7 @@ describe('maxLength', () => {
     });
 
     test('for valid strings', () => {
-      expectNoActionIssue(action, ['', 'foo', '12345']);
+      expectNoActionIssue(action, ['', 'foo', '12345', '😀😀']);
     });
 
     test('for valid arrays', () => {
@@ -90,7 +90,7 @@ describe('maxLength', () => {
       expectActionIssue(
         action,
         baseIssue,
-        ['123456', 'foobarbaz123'],
+        ['123456', 'foobarbaz123', '😀😀😀'],
         (value) => `${value.length}`
       );
     });
