@@ -200,7 +200,7 @@ export function strictObject(
         // Check input for unknown keys if necessary
         if (!dataset.issues || !config.abortEarly) {
           for (const key in input) {
-            if (!(key in this.entries)) {
+            if (!Object.prototype.hasOwnProperty.call(this.entries, key)) {
               _addIssue(this, 'key', dataset, config, {
                 input: key,
                 expected: 'never',

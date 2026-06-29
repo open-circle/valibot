@@ -857,4 +857,16 @@ describe('looseObjectAsync', () => {
       } satisfies FailureDataset<InferIssue<typeof schema>>);
     });
   });
+
+  describe('should pass through keys colliding with the object prototype', () => {
+    const schema = looseObjectAsync({ key: string() });
+
+    test('for unknown key named like an object prototype member', async () => {
+      const input = { key: 'foo', toString: 'bar' };
+      expect(await schema['~run']({ value: input }, {})).toStrictEqual({
+        typed: true,
+        value: { key: 'foo', toString: 'bar' },
+      });
+    });
+  });
 });

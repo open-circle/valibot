@@ -873,4 +873,44 @@ describe('strictObjectAsync', () => {
       } satisfies FailureDataset<InferIssue<typeof schema>>);
     });
   });
+
+  describe('should reject keys colliding with the object prototype', () => {
+    const schema = strictObjectAsync({ key: string() });
+
+    const baseInfo = {
+      message: expect.any(String),
+      requirement: undefined,
+      issues: undefined,
+      lang: undefined,
+      abortEarly: undefined,
+      abortPipeEarly: undefined,
+    };
+
+    test('for unknown key named like an object prototype member', async () => {
+      const input = { key: 'foo', toString: 'bar' };
+      expect(await schema['~run']({ value: input }, {})).toStrictEqual({
+        typed: false,
+        value: { key: 'foo' },
+        issues: [
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'strict_object',
+            input: 'toString',
+            expected: 'never',
+            received: '"toString"',
+            path: [
+              {
+                type: 'object',
+                origin: 'key',
+                input,
+                key: 'toString',
+                value: input.toString,
+              },
+            ],
+          },
+        ],
+      } satisfies FailureDataset<InferIssue<typeof schema>>);
+    });
+  });
 });
