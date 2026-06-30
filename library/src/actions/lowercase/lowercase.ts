@@ -63,7 +63,12 @@ export interface LowercaseAction<
 }
 
 /**
- * Creates a lowercase validation action.
+ * Creates a [lowercase](https://en.wikipedia.org/wiki/Letter_case) validation
+ * action that rejects strings containing any Unicode uppercase letter.
+ *
+ * Unlike a simple ASCII-only check, this action uses the `\p{Lu}` Unicode
+ * property escape to also detect non-ASCII uppercase letters like `Ñ`, `É`,
+ * `Σ`, or `ẞ` as invalid.
  *
  * @returns A lowercase action.
  */
@@ -73,7 +78,12 @@ export function lowercase<TInput extends string>(): LowercaseAction<
 >;
 
 /**
- * Creates a lowercase validation action.
+ * Creates a [lowercase](https://en.wikipedia.org/wiki/Letter_case) validation
+ * action that rejects strings containing any Unicode uppercase letter.
+ *
+ * Unlike a simple ASCII-only check, this action uses the `\p{Lu}` Unicode
+ * property escape to also detect non-ASCII uppercase letters like `Ñ`, `É`,
+ * `Σ`, or `ẞ` as invalid.
  *
  * @param message The error message.
  *

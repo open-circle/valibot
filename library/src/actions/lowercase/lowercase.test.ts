@@ -73,7 +73,16 @@ describe('lowercase', () => {
     });
 
     test('for lowercase strings', () => {
-      expectNoActionIssue(action, ['hello', 'abc', 'lowercase', 'ñ']);
+      expectNoActionIssue(action, [
+        'hello',
+        'abc',
+        'lowercase',
+        'ñ',
+        'café',
+        'über',
+        'привет',
+        'καλημέρα',
+      ]);
     });
 
     test('for strings with numbers', () => {
@@ -115,6 +124,20 @@ describe('lowercase', () => {
         'helloWorld',
         'Hello World!',
         'abc123Def',
+      ]);
+    });
+
+    test('for Unicode uppercase characters', () => {
+      expectActionIssue(action, baseIssue, [
+        'Ñ',
+        'É',
+        'Σ',
+        'Д',
+        'ẞ',
+        'CAFÉ',
+        'ñÑ',
+        'HÉLLO',
+        'café Ελληνικά',
       ]);
     });
   });
