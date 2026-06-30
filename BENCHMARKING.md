@@ -32,9 +32,8 @@ The suite lives in `library/bench/` and targets the runtime hot paths:
 
 ## Results
 
-Measured before/after numbers and the speedups they prove are kept in
-[`library/bench/RESULTS.md`](./library/bench/RESULTS.md). Update that file when an optimization
-changes the numbers, recording both the baseline and the optimized run on the same machine.
+Record before/after numbers and the speedups they prove when an optimization changes the numbers,
+capturing both the baseline and the optimized run on the same machine.
 
 ## Adding a benchmark
 
