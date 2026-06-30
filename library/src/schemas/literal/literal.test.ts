@@ -63,6 +63,10 @@ describe('literal', () => {
       expectNoSchemaIssue(literal(45.67), [45.67]);
     });
 
+    test('for valid NaN literal', () => {
+      expectNoSchemaIssue(literal(NaN), [NaN]);
+    });
+
     test('for valid string literal', () => {
       expectNoSchemaIssue(literal(''), ['']);
       expectNoSchemaIssue(literal('foo'), ['foo']);
