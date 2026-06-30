@@ -27,8 +27,8 @@ The suite lives in `library/bench/` and targets the runtime hot paths:
   last option, and miss).
 - `enum.bench.ts` / `picklist.bench.ts` — membership against a large option list (hit and miss).
 - `object.bench.ts` — object validation (all keys present, and a missing required key).
-- `array.bench.ts`, `string-pipe.bench.ts` — baseline references for paths not currently being
-  optimized; they should stay flat and signal a regression if they don't.
+- `array.bench.ts`, `string-pipe.bench.ts` — regression guards for the array and pipe paths; they
+  should stay flat and signal a regression if they don't.
 
 ## Results
 

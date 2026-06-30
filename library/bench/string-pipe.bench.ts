@@ -1,7 +1,7 @@
 import { bench, describe } from 'vitest';
 import * as v from '../src/index.ts';
 
-// Baseline coverage (not optimized in this task).
+// Regression guard for pipe execution throughput.
 const schema = v.pipe(
   v.string(),
   v.minLength(3),
