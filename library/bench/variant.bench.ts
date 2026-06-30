@@ -19,18 +19,18 @@ const missInput = { type: 'option_x', value: 1, label: 'a' };
 
 describe('variant (10 options)', () => {
   bench('hit first option', () => {
-    v.safeParse(schema, firstInput);
+    return v.safeParse(schema, firstInput);
   });
 
   bench('hit middle option', () => {
-    v.safeParse(schema, middleInput);
+    return v.safeParse(schema, middleInput);
   });
 
   bench('hit last option', () => {
-    v.safeParse(schema, lastInput);
+    return v.safeParse(schema, lastInput);
   });
 
   bench('miss (invalid discriminator)', () => {
-    v.safeParse(schema, missInput);
+    return v.safeParse(schema, missInput);
   });
 });

@@ -67,7 +67,7 @@ function _buildDiscriminatorMap(
       // `NaN` is excluded because `Map` lookups use SameValueZero (NaN matches
       // NaN) whereas a `literal` discriminator compares with `===` (NaN never
       // matches), so a NaN discriminator must use the slow path for parity
-      if (value !== value) {
+      if (Number.isNaN(value)) {
         return null;
       }
       // Colliding discriminator values are ambiguous
@@ -195,7 +195,7 @@ export function variant(
         // Fast path: dispatch directly to the single option whose discriminator
         // matches the input. On a miss, fall through to the slow path so the
         // discriminator issue and message are produced identically.
-        if (discriminatorMap) {
+        if (discriminatorMap && this.key in input) {
           // @ts-expect-error
           const option = discriminatorMap.get(input[this.key]);
           if (option) {

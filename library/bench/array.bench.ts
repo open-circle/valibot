@@ -11,6 +11,6 @@ const input = Array.from({ length: 100 }, (_, i) => ({
 
 describe('array (100 objects)', () => {
   bench('valid', () => {
-    v.safeParse(schema, input);
+    return v.safeParse(schema, input);
   });
 });

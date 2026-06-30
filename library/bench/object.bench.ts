@@ -1,39 +1,41 @@
 import { bench, describe } from 'vitest';
 import * as v from '../src/index.ts';
 
+// Flat schema of primitive entries so the measurement isolates the top-level
+// object entry loop, not array or nested-object validation.
 const schema = v.object({
   id: v.number(),
   name: v.string(),
   active: v.boolean(),
-  tags: v.array(v.string()),
-  nested: v.object({
-    a: v.number(),
-    b: v.string(),
-  }),
+  count: v.number(),
+  label: v.string(),
+  enabled: v.boolean(),
 });
 
 const fullInput = {
   id: 1,
   name: 'test',
   active: true,
-  tags: ['a', 'b', 'c'],
-  nested: { a: 1, b: 'x' },
+  count: 2,
+  label: 'x',
+  enabled: false,
 };
 
 const missingKeyInput = {
   id: 1,
   name: 'test',
   active: true,
-  tags: ['a', 'b', 'c'],
-  // `nested` missing -> required-key path
+  count: 2,
+  label: 'x',
+  // `enabled` missing -> required-key path
 };
 
 describe('object', () => {
   bench('all keys present (happy path)', () => {
-    v.safeParse(schema, fullInput);
+    return v.safeParse(schema, fullInput);
   });
 
   bench('missing required key', () => {
-    v.safeParse(schema, missingKeyInput);
+    return v.safeParse(schema, missingKeyInput);
   });
 });

@@ -68,7 +68,7 @@ function _buildDiscriminatorMap(
     }
     for (const value of values) {
       // `NaN` would match under SameValueZero but never under `===`
-      if (value !== value) {
+      if (Number.isNaN(value)) {
         return null;
       }
       // Colliding discriminator values are ambiguous
@@ -196,7 +196,7 @@ export function variantAsync(
         // Fast path: dispatch directly to the single option whose discriminator
         // matches the input. On a miss, fall through to the slow path so the
         // discriminator issue and message are produced identically.
-        if (discriminatorMap) {
+        if (discriminatorMap && this.key in input) {
           // @ts-expect-error
           const option = discriminatorMap.get(input[this.key]);
           if (option) {

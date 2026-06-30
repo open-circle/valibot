@@ -103,7 +103,11 @@ export function picklist(
     '~run'(dataset, config) {
       // Lazily cache the options as a set for O(1) membership checks. This is
       // faster than `Array.includes` for large option lists and uses
-      // SameValueZero comparison, so behavior is identical.
+      // SameValueZero comparison, so behavior is identical. The set is built
+      // once and assumes `options` is not mutated after schema creation, which
+      // matches the existing contract: `expects` is already precomputed from
+      // `options` above, so a post-creation mutation would desync the error
+      // message regardless.
       // @ts-expect-error
       const optionsSet: Set<unknown> = (this._optionsSet ??= new Set(
         this.options

@@ -11,7 +11,7 @@ cd library
 pnpm bench
 ```
 
-This runs every `library/bench/*.bench.ts` file once and prints throughput per case (`hz`,
+This runs every `library/bench/*.bench.ts` file and prints throughput per case (`hz`,
 operations per second, higher is better) along with latency percentiles. To run a single file,
 pass a filter:
 
@@ -50,7 +50,7 @@ const input = { id: 1, name: 'test' };
 
 describe('object', () => {
   bench('valid', () => {
-    v.safeParse(schema, input);
+    return v.safeParse(schema, input);
   });
 });
 ```
@@ -59,5 +59,6 @@ Guidelines:
 
 - Build schemas and inputs once outside `bench()` so you measure validation, not setup.
 - Use `safeParse` / `safeParseAsync` rather than `parse` to avoid throw overhead skewing results.
-- Absolute `hz` values depend on hardware, so compare baseline vs. optimized within one machine and
-  one run, not across machines.
+- Return the parse result from `bench()` so the engine cannot drop the call as dead code.
+- Absolute `hz` values depend on hardware, so compare the baseline and optimized numbers on the same
+  machine, not across machines.

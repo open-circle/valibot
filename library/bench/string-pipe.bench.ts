@@ -13,6 +13,6 @@ const input = 'hello world';
 
 describe('string pipe', () => {
   bench('valid', () => {
-    v.safeParse(schema, input);
+    return v.safeParse(schema, input);
   });
 });

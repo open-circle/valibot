@@ -14,14 +14,14 @@ const miss = 'value_missing';
 
 describe('enum (200 members)', () => {
   bench('hit first', () => {
-    v.safeParse(schema, hitFirst);
+    return v.safeParse(schema, hitFirst);
   });
 
   bench('hit last', () => {
-    v.safeParse(schema, hitLast);
+    return v.safeParse(schema, hitLast);
   });
 
   bench('miss', () => {
-    v.safeParse(schema, miss);
+    return v.safeParse(schema, miss);
   });
 });

@@ -20,18 +20,18 @@ const missInput = { type: 'option_x', value: 1, label: 'a' };
 
 describe('variantAsync (10 options)', () => {
   bench('hit first option', async () => {
-    await v.safeParseAsync(schema, firstInput);
+    return await v.safeParseAsync(schema, firstInput);
   });
 
   bench('hit middle option', async () => {
-    await v.safeParseAsync(schema, middleInput);
+    return await v.safeParseAsync(schema, middleInput);
   });
 
   bench('hit last option', async () => {
-    await v.safeParseAsync(schema, lastInput);
+    return await v.safeParseAsync(schema, lastInput);
   });
 
   bench('miss (invalid discriminator)', async () => {
-    await v.safeParseAsync(schema, missInput);
+    return await v.safeParseAsync(schema, missInput);
   });
 });
