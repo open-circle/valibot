@@ -101,8 +101,14 @@ export function picklist(
       return _getStandardProps(this);
     },
     '~run'(dataset, config) {
+      // Lazily cache the options as a set for O(1) membership checks. This is
+      // faster than `Array.includes` for large option lists and uses
+      // SameValueZero comparison, so behavior is identical.
       // @ts-expect-error
-      if (this.options.includes(dataset.value)) {
+      const optionsSet: Set<unknown> = (this._optionsSet ??= new Set(
+        this.options
+      ));
+      if (optionsSet.has(dataset.value)) {
         // @ts-expect-error
         dataset.typed = true;
       } else {

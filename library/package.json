@@ -44,6 +44,7 @@
   "scripts": {
     "play": "tsm ./playground.ts",
     "test": "vitest --typecheck",
+    "bench": "vitest bench --run",
     "coverage": "vitest run --coverage --isolate",
     "lint": "eslint \"src/**/*.ts*\" && tsc --noEmit && deno check ./src/index.ts",
     "lint.fix": "eslint \"src/**/*.ts*\" --fix",
