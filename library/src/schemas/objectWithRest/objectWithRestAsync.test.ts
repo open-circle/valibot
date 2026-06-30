@@ -9,6 +9,7 @@ import { any } from '../any/index.ts';
 import { array } from '../array/array.ts';
 import type { ArrayIssue } from '../array/types.ts';
 import { boolean } from '../boolean/index.ts';
+import { customAsync } from '../custom/index.ts';
 import { exactOptional, exactOptionalAsync } from '../exactOptional/index.ts';
 import { never } from '../never/index.ts';
 import { nullish, nullishAsync } from '../nullish/index.ts';
@@ -840,6 +841,46 @@ describe('objectWithRestAsync', () => {
           },
         ],
       } satisfies FailureDataset<InferIssue<typeof schema>>);
+    });
+
+    test('should start rest parsing before declared abort early is applied', async () => {
+      let restRuns = 0;
+      const schema = objectWithRestAsync(
+        { key: string() },
+        customAsync(async () => {
+          restRuns++;
+          return false;
+        })
+      );
+      const input = { key: 123, other: 'foo' };
+
+      expect(
+        await schema['~run']({ value: input }, { abortEarly: true })
+      ).toStrictEqual({
+        typed: false,
+        value: {},
+        issues: [
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'string',
+            input: 123,
+            expected: 'string',
+            received: '123',
+            path: [
+              {
+                type: 'object',
+                origin: 'value',
+                input,
+                key: 'key',
+                value: input.key,
+              },
+            ],
+            abortEarly: true,
+          },
+        ],
+      } satisfies FailureDataset<InferIssue<typeof schema>>);
+      expect(restRuns).toBe(1);
     });
 
     test('for invalid exact optional entry', async () => {

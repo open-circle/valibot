@@ -1,5 +1,4 @@
 import type {
-  ArrayPathItem,
   BaseIssue,
   BaseSchema,
   BaseSchemaAsync,
@@ -9,7 +8,11 @@ import type {
   InferOutput,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import {
+  _addIssue,
+  _addPathIssues,
+  _getStandardProps,
+} from '../../utils/index.ts';
 import type { array } from './array.ts';
 import type { ArrayIssue } from './types.ts';
 
@@ -121,30 +124,17 @@ export function arrayAsync(
 
           // If there are issues, capture them
           if (itemDataset.issues) {
-            // Create array path item
-            const pathItem: ArrayPathItem = {
-              type: 'array',
-              origin: 'value',
-              input,
-              key,
-              value: input[key],
-            };
-
-            // Add modified item dataset issues to issues
-            for (const issue of itemDataset.issues) {
-              if (issue.path) {
-                issue.path.unshift(pathItem);
-              } else {
-                // @ts-expect-error
-                issue.path = [pathItem];
-              }
-              // @ts-expect-error
-              dataset.issues?.push(issue);
-            }
-            if (!dataset.issues) {
-              // @ts-expect-error
-              dataset.issues = itemDataset.issues;
-            }
+            _addPathIssues(
+              dataset,
+              {
+                type: 'array',
+                origin: 'value',
+                input,
+                key,
+                value: input[key],
+              },
+              itemDataset.issues
+            );
 
             // If necessary, abort early
             if (config.abortEarly) {
