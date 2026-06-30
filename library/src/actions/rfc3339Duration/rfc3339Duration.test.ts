@@ -1,53 +1,53 @@
 import { describe, expect, test } from 'vitest';
-import { ISO_DURATION_REGEX } from '../../regex.ts';
+import { RFC_3339_DURATION_REGEX } from '../../regex.ts';
 import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue } from '../../vitest/expectActionIssue.ts';
 import { expectNoActionIssue } from '../../vitest/expectNoActionIssue.ts';
 import {
-  isoDuration,
-  type IsoDurationAction,
-  type IsoDurationIssue,
-} from './isoDuration.ts';
+  rfc3339Duration,
+  type Rfc3339DurationAction,
+  type Rfc3339DurationIssue,
+} from './rfc3339Duration.ts';
 
-describe('isoDuration', () => {
+describe('rfc3339Duration', () => {
   describe('should return action object', () => {
-    const baseAction: Omit<IsoDurationAction<string, never>, 'message'> = {
+    const baseAction: Omit<Rfc3339DurationAction<string, never>, 'message'> = {
       kind: 'validation',
-      type: 'iso_duration',
-      reference: isoDuration,
+      type: 'rfc3339_duration',
+      reference: rfc3339Duration,
       expects: null,
-      requirement: ISO_DURATION_REGEX,
+      requirement: RFC_3339_DURATION_REGEX,
       async: false,
       '~run': expect.any(Function),
     };
 
     test('with undefined message', () => {
-      const action: IsoDurationAction<string, undefined> = {
+      const action: Rfc3339DurationAction<string, undefined> = {
         ...baseAction,
         message: undefined,
       };
-      expect(isoDuration()).toStrictEqual(action);
-      expect(isoDuration(undefined)).toStrictEqual(action);
+      expect(rfc3339Duration()).toStrictEqual(action);
+      expect(rfc3339Duration(undefined)).toStrictEqual(action);
     });
 
     test('with string message', () => {
-      expect(isoDuration('message')).toStrictEqual({
+      expect(rfc3339Duration('message')).toStrictEqual({
         ...baseAction,
         message: 'message',
-      } satisfies IsoDurationAction<string, string>);
+      } satisfies Rfc3339DurationAction<string, string>);
     });
 
     test('with function message', () => {
       const message = () => 'message';
-      expect(isoDuration(message)).toStrictEqual({
+      expect(rfc3339Duration(message)).toStrictEqual({
         ...baseAction,
         message,
-      } satisfies IsoDurationAction<string, typeof message>);
+      } satisfies Rfc3339DurationAction<string, typeof message>);
     });
   });
 
   describe('should return dataset without issues', () => {
-    const action = isoDuration();
+    const action = rfc3339Duration();
 
     test('for untyped inputs', () => {
       const issues: [StringIssue] = [
@@ -69,7 +69,7 @@ describe('isoDuration', () => {
       });
     });
 
-    test('for valid ISO durations', () => {
+    test('for valid RFC 3339 durations', () => {
       expectNoActionIssue(action, [
         'P1D',
         'P1M',
@@ -85,13 +85,16 @@ describe('isoDuration', () => {
   });
 
   describe('should return dataset with issues', () => {
-    const action = isoDuration('message');
-    const baseIssue: Omit<IsoDurationIssue<string>, 'input' | 'received'> = {
+    const action = rfc3339Duration('message');
+    const baseIssue: Omit<
+      Rfc3339DurationIssue<string>,
+      'input' | 'received'
+    > = {
       kind: 'validation',
-      type: 'iso_duration',
+      type: 'rfc3339_duration',
       expected: null,
       message: 'message',
-      requirement: ISO_DURATION_REGEX,
+      requirement: RFC_3339_DURATION_REGEX,
     };
 
     test('for empty strings', () => {

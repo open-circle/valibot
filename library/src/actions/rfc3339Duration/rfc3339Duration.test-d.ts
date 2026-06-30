@@ -1,36 +1,36 @@
 import { describe, expectTypeOf, test } from 'vitest';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
 import {
-  isoDuration,
-  type IsoDurationAction,
-  type IsoDurationIssue,
-} from './isoDuration.ts';
+  rfc3339Duration,
+  type Rfc3339DurationAction,
+  type Rfc3339DurationIssue,
+} from './rfc3339Duration.ts';
 
-describe('isoDuration', () => {
+describe('rfc3339Duration', () => {
   describe('should return action object', () => {
     test('with undefined message', () => {
-      type Action = IsoDurationAction<string, undefined>;
-      expectTypeOf(isoDuration<string>()).toEqualTypeOf<Action>();
+      type Action = Rfc3339DurationAction<string, undefined>;
+      expectTypeOf(rfc3339Duration<string>()).toEqualTypeOf<Action>();
       expectTypeOf(
-        isoDuration<string, undefined>(undefined)
+        rfc3339Duration<string, undefined>(undefined)
       ).toEqualTypeOf<Action>();
     });
 
     test('with string message', () => {
-      expectTypeOf(isoDuration<string, 'message'>('message')).toEqualTypeOf<
-        IsoDurationAction<string, 'message'>
+      expectTypeOf(rfc3339Duration<string, 'message'>('message')).toEqualTypeOf<
+        Rfc3339DurationAction<string, 'message'>
       >();
     });
 
     test('with function message', () => {
       expectTypeOf(
-        isoDuration<string, () => string>(() => 'message')
-      ).toEqualTypeOf<IsoDurationAction<string, () => string>>();
+        rfc3339Duration<string, () => string>(() => 'message')
+      ).toEqualTypeOf<Rfc3339DurationAction<string, () => string>>();
     });
   });
 
   describe('should infer correct types', () => {
-    type Action = IsoDurationAction<string, undefined>;
+    type Action = Rfc3339DurationAction<string, undefined>;
 
     test('of input', () => {
       expectTypeOf<InferInput<Action>>().toEqualTypeOf<string>();
@@ -42,7 +42,7 @@ describe('isoDuration', () => {
 
     test('of issue', () => {
       expectTypeOf<InferIssue<Action>>().toEqualTypeOf<
-        IsoDurationIssue<string>
+        Rfc3339DurationIssue<string>
       >();
     });
   });

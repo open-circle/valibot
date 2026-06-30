@@ -1,4 +1,4 @@
-import { ISO_DURATION_REGEX } from '../../regex.ts';
+import { RFC_3339_DURATION_REGEX } from '../../regex.ts';
 import type {
   BaseIssue,
   BaseValidation,
@@ -7,9 +7,9 @@ import type {
 import { _addIssue } from '../../utils/index.ts';
 
 /**
- * ISO duration issue interface.
+ * RFC 3339 duration issue interface.
  */
-export interface IsoDurationIssue<TInput extends string>
+export interface Rfc3339DurationIssue<TInput extends string>
   extends BaseIssue<TInput> {
   /**
    * The issue kind.
@@ -18,7 +18,7 @@ export interface IsoDurationIssue<TInput extends string>
   /**
    * The issue type.
    */
-  readonly type: 'iso_duration';
+  readonly type: 'rfc3339_duration';
   /**
    * The expected property.
    */
@@ -28,32 +28,32 @@ export interface IsoDurationIssue<TInput extends string>
    */
   readonly received: `"${string}"`;
   /**
-   * The ISO duration regex.
+   * The RFC 3339 duration regex.
    */
   readonly requirement: RegExp;
 }
 
 /**
- * ISO duration action interface.
+ * RFC 3339 duration action interface.
  */
-export interface IsoDurationAction<
+export interface Rfc3339DurationAction<
   TInput extends string,
-  TMessage extends ErrorMessage<IsoDurationIssue<TInput>> | undefined,
-> extends BaseValidation<TInput, TInput, IsoDurationIssue<TInput>> {
+  TMessage extends ErrorMessage<Rfc3339DurationIssue<TInput>> | undefined,
+> extends BaseValidation<TInput, TInput, Rfc3339DurationIssue<TInput>> {
   /**
    * The action type.
    */
-  readonly type: 'iso_duration';
+  readonly type: 'rfc3339_duration';
   /**
    * The action reference.
    */
-  readonly reference: typeof isoDuration;
+  readonly reference: typeof rfc3339Duration;
   /**
    * The expected property.
    */
   readonly expects: null;
   /**
-   * The ISO duration regex.
+   * The RFC 3339 duration regex.
    */
   readonly requirement: RegExp;
   /**
@@ -63,22 +63,22 @@ export interface IsoDurationAction<
 }
 
 /**
- * Creates an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration validation action.
+ * Creates an [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#appendix-A) duration validation action.
  *
  * Format: PnW | PnYnMnDTnHnMnS
  *
  * Hint: This action intentionally does not accept negative or fractional
  * values.
  *
- * @returns An ISO duration action.
+ * @returns An RFC 3339 duration action.
  */
-export function isoDuration<TInput extends string>(): IsoDurationAction<
+export function rfc3339Duration<TInput extends string>(): Rfc3339DurationAction<
   TInput,
   undefined
 >;
 
 /**
- * Creates an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration validation action.
+ * Creates an [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#appendix-A) duration validation action.
  *
  * Format: PnW | PnYnMnDTnHnMnS
  *
@@ -87,27 +87,27 @@ export function isoDuration<TInput extends string>(): IsoDurationAction<
  *
  * @param message The error message.
  *
- * @returns An ISO duration action.
+ * @returns An RFC 3339 duration action.
  */
-export function isoDuration<
+export function rfc3339Duration<
   TInput extends string,
-  const TMessage extends ErrorMessage<IsoDurationIssue<TInput>> | undefined,
->(message: TMessage): IsoDurationAction<TInput, TMessage>;
+  const TMessage extends ErrorMessage<Rfc3339DurationIssue<TInput>> | undefined,
+>(message: TMessage): Rfc3339DurationAction<TInput, TMessage>;
 
 // @__NO_SIDE_EFFECTS__
-export function isoDuration(
-  message?: ErrorMessage<IsoDurationIssue<string>>
-): IsoDurationAction<
+export function rfc3339Duration(
+  message?: ErrorMessage<Rfc3339DurationIssue<string>>
+): Rfc3339DurationAction<
   string,
-  ErrorMessage<IsoDurationIssue<string>> | undefined
+  ErrorMessage<Rfc3339DurationIssue<string>> | undefined
 > {
   return {
     kind: 'validation',
-    type: 'iso_duration',
-    reference: isoDuration,
+    type: 'rfc3339_duration',
+    reference: rfc3339Duration,
     async: false,
     expects: null,
-    requirement: ISO_DURATION_REGEX,
+    requirement: RFC_3339_DURATION_REGEX,
     message,
     '~run'(dataset, config) {
       if (dataset.typed && !this.requirement.test(dataset.value)) {

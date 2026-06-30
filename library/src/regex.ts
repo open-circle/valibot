@@ -109,14 +109,6 @@ export const ISO_DATE_TIME_SECOND_REGEX: RegExp =
   /^\d{4}-(?:0[1-9]|1[0-2])-(?:[12]\d|0[1-9]|3[01])[T ](?:0\d|1\d|2[0-3])(?::[0-5]\d){2}$/u;
 
 /**
- * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration regex from
- * [ajv-formats](https://github.com/ajv-validator/ajv-formats) (MIT license).
- */
-export const ISO_DURATION_REGEX: RegExp =
-  // eslint-disable-next-line redos-detector/no-unsafe-regex -- false positive
-  /^P(?!$)((\d+Y)?(\d+M)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+S)?)?|(\d+W)?)$/u;
-
-/**
  * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time regex.
  */
 export const ISO_TIME_REGEX: RegExp = /^(?:0\d|1\d|2[0-3]):[0-5]\d$/u;
@@ -189,6 +181,14 @@ export const NANO_ID_REGEX: RegExp = /^[\w-]+$/u;
  * [Octal](https://en.wikipedia.org/wiki/Octal) regex.
  */
 export const OCTAL_REGEX: RegExp = /^(?:0o)?[0-7]+$/u;
+
+/**
+ * [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#appendix-A) duration regex from
+ * [ajv-formats](https://github.com/ajv-validator/ajv-formats) (MIT license).
+ */
+export const RFC_3339_DURATION_REGEX: RegExp =
+  // eslint-disable-next-line redos-detector/no-unsafe-regex -- false positive
+  /^P(?!$)((\d+Y)?(\d+M)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+S)?)?|(\d+W)?)$/u;
 
 /**
  * [RFC 5322 email address](https://datatracker.ietf.org/doc/html/rfc5322#section-3.4.1) regex.
