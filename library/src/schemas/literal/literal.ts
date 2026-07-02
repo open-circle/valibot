@@ -95,7 +95,13 @@ export function literal(
       return _getStandardProps(this);
     },
     '~run'(dataset, config) {
-      if (Object.is(dataset.value, this.literal)) {
+      // Use SameValueZero equality so that `literal(NaN)` matches NaN while
+      // `-0` and `+0` still compare as equal, matching how `picklist` compares.
+      if (
+        dataset.value === this.literal ||
+         
+        (dataset.value !== dataset.value && this.literal !== this.literal)
+      ) {
         // @ts-expect-error
         dataset.typed = true;
       } else {
