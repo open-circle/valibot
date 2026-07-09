@@ -4,10 +4,13 @@ import type {
   BaseSchemaAsync,
   ErrorMessage,
   InferIssue,
-  MapPathItem,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import {
+  _addIssue,
+  _addPathIssues,
+  _getStandardProps,
+} from '../../utils/index.ts';
 import type { map } from './map.ts';
 import type { InferMapInput, InferMapOutput, MapIssue } from './types.ts';
 
@@ -153,30 +156,17 @@ export function mapAsync(
         ] of datasets) {
           // If there are issues, capture them
           if (keyDataset.issues) {
-            // Create map path item
-            const pathItem: MapPathItem = {
-              type: 'map',
-              origin: 'key',
-              input,
-              key: inputKey,
-              value: inputValue,
-            };
-
-            // Add modified item dataset issues to issues
-            for (const issue of keyDataset.issues) {
-              if (issue.path) {
-                issue.path.unshift(pathItem);
-              } else {
-                // @ts-expect-error
-                issue.path = [pathItem];
-              }
-              // @ts-expect-error
-              dataset.issues?.push(issue);
-            }
-            if (!dataset.issues) {
-              // @ts-expect-error
-              dataset.issues = keyDataset.issues;
-            }
+            _addPathIssues(
+              dataset,
+              {
+                type: 'map',
+                origin: 'key',
+                input,
+                key: inputKey,
+                value: inputValue,
+              },
+              keyDataset.issues
+            );
 
             // If necessary, abort early
             if (config.abortEarly) {
@@ -187,30 +177,17 @@ export function mapAsync(
 
           // If there are issues, capture them
           if (valueDataset.issues) {
-            // Create map path item
-            const pathItem: MapPathItem = {
-              type: 'map',
-              origin: 'value',
-              input,
-              key: inputKey,
-              value: inputValue,
-            };
-
-            // Add modified item dataset issues to issues
-            for (const issue of valueDataset.issues) {
-              if (issue.path) {
-                issue.path.unshift(pathItem);
-              } else {
-                // @ts-expect-error
-                issue.path = [pathItem];
-              }
-              // @ts-expect-error
-              dataset.issues?.push(issue);
-            }
-            if (!dataset.issues) {
-              // @ts-expect-error
-              dataset.issues = valueDataset.issues;
-            }
+            _addPathIssues(
+              dataset,
+              {
+                type: 'map',
+                origin: 'value',
+                input,
+                key: inputKey,
+                value: inputValue,
+              },
+              valueDataset.issues
+            );
 
             // If necessary, abort early
             if (config.abortEarly) {

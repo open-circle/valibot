@@ -1,5 +1,4 @@
 import type {
-  ArrayPathItem,
   BaseIssue,
   BaseSchema,
   BaseSchemaAsync,
@@ -13,7 +12,11 @@ import type {
   OutputDataset,
   TupleItemsAsync,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import {
+  _addIssue,
+  _addPathIssues,
+  _getStandardProps,
+} from '../../utils/index.ts';
 import type { tupleWithRest } from './tupleWithRest.ts';
 import type { TupleWithRestIssue } from './types.ts';
 
@@ -162,30 +165,17 @@ export function tupleWithRestAsync(
         for (const [key, value, itemDataset] of normalDatasets) {
           // If there are issues, capture them
           if (itemDataset.issues) {
-            // Create tuple path item
-            const pathItem: ArrayPathItem = {
-              type: 'array',
-              origin: 'value',
-              input,
-              key,
-              value,
-            };
-
-            // Add modified item dataset issues to issues
-            for (const issue of itemDataset.issues) {
-              if (issue.path) {
-                issue.path.unshift(pathItem);
-              } else {
-                // @ts-expect-error
-                issue.path = [pathItem];
-              }
-              // @ts-expect-error
-              dataset.issues?.push(issue);
-            }
-            if (!dataset.issues) {
-              // @ts-expect-error
-              dataset.issues = itemDataset.issues;
-            }
+            _addPathIssues(
+              dataset,
+              {
+                type: 'array',
+                origin: 'value',
+                input,
+                key,
+                value,
+              },
+              itemDataset.issues
+            );
 
             // If necessary, abort early
             if (config.abortEarly) {
@@ -209,30 +199,17 @@ export function tupleWithRestAsync(
           for (const [key, value, itemDataset] of restDatasets) {
             // If there are issues, capture them
             if (itemDataset.issues) {
-              // Create tuple path item
-              const pathItem: ArrayPathItem = {
-                type: 'array',
-                origin: 'value',
-                input,
-                key,
-                value,
-              };
-
-              // Add modified item dataset issues to issues
-              for (const issue of itemDataset.issues) {
-                if (issue.path) {
-                  issue.path.unshift(pathItem);
-                } else {
-                  // @ts-expect-error
-                  issue.path = [pathItem];
-                }
-                // @ts-expect-error
-                dataset.issues?.push(issue);
-              }
-              if (!dataset.issues) {
-                // @ts-expect-error
-                dataset.issues = itemDataset.issues;
-              }
+              _addPathIssues(
+                dataset,
+                {
+                  type: 'array',
+                  origin: 'value',
+                  input,
+                  key,
+                  value,
+                },
+                itemDataset.issues
+              );
 
               // If necessary, abort early
               if (config.abortEarly) {
