@@ -6,6 +6,7 @@ export * from './_getGraphemeCount/index.ts';
 export * from './_getLastMetadata/index.ts';
 export * from './_getStandardProps/index.ts';
 export * from './_getWordCount/index.ts';
+export * from './_hasOwnProperty/index.ts';
 export * from './_isLuhnAlgo/index.ts';
 export * from './_isValidObjectKey/index.ts';
 export * from './_joinExpects/index.ts';

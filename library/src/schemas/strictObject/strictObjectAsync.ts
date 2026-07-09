@@ -9,7 +9,7 @@ import type {
   ObjectPathItem,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _getStandardProps, _hasOwnProperty } from '../../utils/index.ts';
 import type { strictObject } from './strictObject.ts';
 import type { StrictObjectIssue } from './types.ts';
 
@@ -221,7 +221,7 @@ export function strictObjectAsync(
         // Check input for unknown keys if necessary
         if (!dataset.issues || !config.abortEarly) {
           for (const key in input) {
-            if (!(key in this.entries)) {
+            if (!_hasOwnProperty(this.entries, key)) {
               _addIssue(this, 'key', dataset, config, {
                 input: key,
                 expected: 'never',

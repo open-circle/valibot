@@ -17,6 +17,7 @@ import type {
 import {
   _addIssue,
   _getStandardProps,
+  _hasOwnProperty,
   _isValidObjectKey,
 } from '../../utils/index.ts';
 import type { objectWithRest } from './objectWithRest.ts';
@@ -179,7 +180,7 @@ export function objectWithRestAsync(
             Object.entries(input)
               .filter(
                 ([key]) =>
-                  _isValidObjectKey(input, key) && !(key in this.entries)
+                  _isValidObjectKey(input, key) && !_hasOwnProperty(this.entries, key)
               )
               .map(
                 async ([key, value]) =>

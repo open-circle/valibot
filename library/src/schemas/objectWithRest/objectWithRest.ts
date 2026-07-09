@@ -16,6 +16,7 @@ import type {
 import {
   _addIssue,
   _getStandardProps,
+  _hasOwnProperty,
   _isValidObjectKey,
 } from '../../utils/index.ts';
 import type { ObjectWithRestIssue } from './types.ts';
@@ -228,7 +229,7 @@ export function objectWithRest(
         // Hint: We exclude specific keys for security reasons
         if (!dataset.issues || !config.abortEarly) {
           for (const key in input) {
-            if (_isValidObjectKey(input, key) && !(key in this.entries)) {
+            if (_isValidObjectKey(input, key) && !_hasOwnProperty(this.entries, key)) {
               const valueDataset = this.rest['~run'](
                 // @ts-expect-error
                 { value: input[key] },
