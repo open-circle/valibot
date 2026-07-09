@@ -107,42 +107,46 @@ export function looseObjectAsync(
         dataset.typed = true;
         dataset.value = {};
 
-        // If key is present or its an optional schema with a default value,
-        // parse input of key or default value asynchronously
-        const valueDatasets = await Promise.all(
-          Object.entries(this.entries).map(async ([key, valueSchema]) => {
-            if (
-              key in input ||
-              ((valueSchema.type === 'exact_optional' ||
-                valueSchema.type === 'optional' ||
-                valueSchema.type === 'nullish') &&
-                // @ts-expect-error
-                valueSchema.default !== undefined)
-            ) {
-              const value: unknown =
-                key in input
-                  ? // @ts-expect-error
-                    input[key]
-                  : await getDefault(valueSchema);
-              return [
-                key,
-                value,
-                valueSchema,
-                await valueSchema['~run']({ value }, config),
-              ] as const;
-            }
+        const parseEntry = async ([key, valueSchema]: [
+          string,
+          (typeof this.entries)[string],
+        ]) => {
+          // If key is present or its an optional schema with a default value,
+          // parse input of key or default value asynchronously
+          if (
+            key in input ||
+            ((valueSchema.type === 'exact_optional' ||
+              valueSchema.type === 'optional' ||
+              valueSchema.type === 'nullish') &&
+              // @ts-expect-error
+              valueSchema.default !== undefined)
+          ) {
+            const value: unknown =
+              key in input
+                ? // @ts-expect-error
+                  input[key]
+                : await getDefault(valueSchema);
             return [
               key,
-              // @ts-expect-error
-              input[key] as unknown,
+              value,
               valueSchema,
-              null,
+              await valueSchema['~run']({ value }, config),
             ] as const;
-          })
-        );
-
-        // Process each object entry of schema
-        for (const [key, value, valueSchema, valueDataset] of valueDatasets) {
+          }
+          return [
+            key,
+            // @ts-expect-error
+            input[key] as unknown,
+            valueSchema,
+            null,
+          ] as const;
+        };
+        const processEntry = async ([
+          key,
+          value,
+          valueSchema,
+          valueDataset,
+        ]: Awaited<ReturnType<typeof parseEntry>>) => {
           // If key is present or its an optional schema with a default value,
           // process its value dataset
           if (valueDataset) {
@@ -176,7 +180,7 @@ export function looseObjectAsync(
               // If necessary, abort early
               if (config.abortEarly) {
                 dataset.typed = false;
-                break;
+                return true;
               }
             }
 
@@ -217,8 +221,26 @@ export function looseObjectAsync(
 
             // If necessary, abort early
             if (config.abortEarly) {
+              return true;
+            }
+          }
+          return false;
+        };
+
+        // Use sequential parsing if we need to abort before starting the next
+        // asynchronous validator.
+        if (config.abortEarly) {
+          for (const entry of Object.entries(this.entries)) {
+            if (await processEntry(await parseEntry(entry))) {
               break;
             }
+          }
+        } else {
+          const valueDatasets = await Promise.all(
+            Object.entries(this.entries).map(parseEntry)
+          );
+          for (const valueDataset of valueDatasets) {
+            await processEntry(valueDataset);
           }
         }
 
