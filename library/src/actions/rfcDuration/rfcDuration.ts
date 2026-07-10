@@ -65,7 +65,7 @@ export interface RfcDurationAction<
 /**
  * Creates an [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#appendix-A) duration validation action.
  *
- * Format: PnYnMnDTnHnMnS
+ * Format: PnYnMnDTnHnMnS or PnW
  *
  * @returns An RFC duration action.
  */
@@ -77,7 +77,7 @@ export function rfcDuration<TInput extends string>(): RfcDurationAction<
 /**
  * Creates an [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#appendix-A) duration validation action.
  *
- * Format: PnYnMnDTnHnMnS
+ * Format: PnYnMnDTnHnMnS or PnW
  *
  * @param message The error message.
  *
