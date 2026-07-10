@@ -71,7 +71,7 @@ export function pojo(): PojoSchema<undefined>;
  * @returns A POJO schema.
  */
 export function pojo<TMessage extends ErrorMessage<PojoIssue> | undefined>(
-  message?: TMessage
+  message: TMessage
 ): PojoSchema<TMessage>;
 
 // @__NO_SIDE_EFFECTS__
