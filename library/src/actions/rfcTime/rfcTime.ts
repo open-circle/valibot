@@ -73,15 +73,6 @@ export function rfcTime<TInput extends string>(): RfcTimeAction<
   undefined
 >;
 
-/**
- * Creates an [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) time validation action.
- *
- * Format: hh:mm:ss[.sss](Z|±hh:mm)
- *
- * @param message The error message.
- *
- * @returns An RFC time action.
- */
 export function rfcTime<
   TInput extends string,
   const TMessage extends ErrorMessage<RfcTimeIssue<TInput>> | undefined,
