@@ -200,8 +200,12 @@ export const SLUG_REGEX: RegExp = /^[\da-z]+(?:[-_][\da-z]+)*$/u;
  * [ULID](https://github.com/ulid/spec) regex.
  *
  * Hint: We decided against the `i` flag for better JSON Schema compatibility.
+ * Hint: The first character is restricted to `[0-7]` because the 48-bit
+ * timestamp cannot exceed 2^48-1, making the maximum valid ULID
+ * `7ZZZZZZZZZZZZZZZZZZZZZZZZZ` in Crockford's Base32 encoding.
  */
-export const ULID_REGEX: RegExp = /^[\da-hjkmnp-tv-zA-HJKMNP-TV-Z]{26}$/u;
+export const ULID_REGEX: RegExp =
+  /^[0-7][\da-hjkmnp-tv-zA-HJKMNP-TV-Z]{25}$/u;
 
 /**
  * [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) regex.
