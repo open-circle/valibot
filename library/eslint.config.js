@@ -14,6 +14,7 @@ export default tseslint.config(
       'vitest.config.ts',
       'mod.ts',
       'playground.ts',
+      '.size-limit.ts',
     ],
   },
   eslint.configs.recommended,

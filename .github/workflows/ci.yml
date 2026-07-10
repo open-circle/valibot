@@ -22,6 +22,9 @@ jobs:
     name: Publish library via pkg.pr.new
     needs: install
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -156,9 +159,16 @@ jobs:
     env:
       CI_JOB_NUMBER: 1
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup environment
-        uses: ./.github/actions/environment
+      - uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
       - uses: EskiMojo14/size-limit-action@v2
         with:
           directory: library

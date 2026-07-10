@@ -19,8 +19,8 @@ const isInternal = (name: string) => name.startsWith('_');
 
 /**
  * Build a config for an individual export's size.
- * @param {string} exportName Name of the export.
- * @returns {Check} The config.
+ * @param exportName Name of the export.
+ * @returns The config.
  */
 function individualExportConfig(exportName: string): Check {
   return {
@@ -40,9 +40,9 @@ const vRegex = /v\.(\w+)\(/g;
 
 /**
  * Build a config for a TypeScript example's size.
- * @param {TemplateStringsArray} strings Template strings.
- * @param {...unknown} values Template values.
- * @returns {Check} The config.
+ * @param strings Template strings.
+ * @param values Template values.
+ * @returns The config.
  */
 function ts(strings: TemplateStringsArray, ...values: unknown[]): Check {
   const snippet = dedent(strings, ...values);
