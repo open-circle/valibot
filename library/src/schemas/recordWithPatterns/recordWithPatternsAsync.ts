@@ -10,7 +10,11 @@ import type {
   OutputDataset,
   Prettify,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import {
+  _addIssue,
+  _getStandardProps,
+  _isValidObjectKey,
+} from '../../utils/index.ts';
 import type { recordWithPatterns } from './recordWithPatterns.ts';
 import type { RecordWithPatternsIssue } from './types.ts';
 
@@ -108,12 +112,12 @@ export interface RecordWithPatternsSchemaAsync<
 }
 
 /**
- * Creates an object schema that matches patterns.
+ * Creates a record schema that matches patterns.
  *
  * @param patterns Pairs of key and value schemas.
  * @param rest Schema to use when no pattern matches.
  *
- * @returns A object schema.
+ * @returns A record schema.
  */
 export function recordWithPatternsAsync<
   const TPatterns extends PatternTuplesAsync,
@@ -126,13 +130,13 @@ export function recordWithPatternsAsync<
 ): RecordWithPatternsSchemaAsync<TPatterns, TRest, undefined>;
 
 /**
- * Creates an object schema that matches patterns.
+ * Creates a record schema that matches patterns.
  *
  * @param patterns Pairs of key and value schemas.
  * @param rest Schema to use when no pattern matches.
  * @param message The error message.
  *
- * @returns A object schema.
+ * @returns A record schema.
  */
 export function recordWithPatternsAsync<
   const TPatterns extends PatternTuplesAsync,
@@ -184,33 +188,35 @@ export function recordWithPatternsAsync(
 
         // Parse schema of each pattern
         const datasets = await Promise.all(
-          Object.entries(input).map(async ([key, value]) => {
-            // Get pattern schema and new key
-            let valueSchema:
-              | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-              | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
-              | undefined;
-            let newKey = key;
-            for (const [keySchema, valueSchema_] of patterns) {
-              const keyDataset = await keySchema['~run'](
-                { value: key },
-                config
-              );
-              if (keyDataset.typed) {
-                valueSchema = valueSchema_;
-                newKey = keyDataset.value;
-                break;
+          Object.entries(input)
+            .filter(([key]) => _isValidObjectKey(input, key))
+            .map(async ([key, value]) => {
+              // Get pattern schema and new key
+              let valueSchema:
+                | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+                | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
+                | undefined;
+              let newKey = key;
+              for (const [keySchema, valueSchema_] of patterns) {
+                const keyDataset = await keySchema['~run'](
+                  { value: key },
+                  config
+                );
+                if (keyDataset.typed) {
+                  valueSchema = valueSchema_;
+                  newKey = keyDataset.value;
+                  break;
+                }
               }
-            }
 
-            // If no pattern matches, use rest schema
-            if (!valueSchema) {
-              valueSchema = rest;
-            }
+              // If no pattern matches, use rest schema
+              if (!valueSchema) {
+                valueSchema = rest;
+              }
 
-            const valueDataset = await valueSchema['~run']({ value }, config);
-            return [key, newKey, valueDataset] as const;
-          })
+              const valueDataset = await valueSchema['~run']({ value }, config);
+              return [key, newKey, valueDataset] as const;
+            })
         );
         for (const [key, newKey, valueDataset] of datasets) {
           // If there are issues, capture them
@@ -221,7 +227,7 @@ export function recordWithPatternsAsync(
               origin: 'value',
               input: input as Record<string, unknown>,
               key,
-              value: valueDataset.value,
+              value: (input as Record<string, unknown>)[key],
             };
 
             // Add modified entry dataset issues to issues

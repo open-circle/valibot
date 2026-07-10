@@ -14,8 +14,8 @@ import {
   recordWithPatternsAsync,
   string,
 } from '../../schemas/index.ts';
-import { FailureDataset } from '../../types/dataset.ts';
-import { InferIssue } from '../../types/infer.ts';
+import type { FailureDataset } from '../../types/dataset.ts';
+import type { InferIssue } from '../../types/infer.ts';
 import {
   expectNoSchemaIssueAsync,
   expectSchemaIssueAsync,
@@ -159,6 +159,8 @@ describe('recordWithPatternsAsync', () => {
 
     // complex types
 
+    // TODO: Enable this test again in case we find a reliable way to check for
+    // plain objects
     // test('for arrays', async () => {
     //   await expectSchemaIssueAsync(schema, baseIssue, [[], ['value']]);
     // });
