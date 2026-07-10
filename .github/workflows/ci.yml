@@ -160,6 +160,8 @@ jobs:
       CI_JOB_NUMBER: 1
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
