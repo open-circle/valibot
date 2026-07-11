@@ -12,5 +12,5 @@ export interface RecordWithPatternsIssue extends BaseIssue<unknown> {
   /**
    * The expected property.
    */
-  readonly expected: 'Object' | `"${string}"`;
+  readonly expected: 'Object';
 }

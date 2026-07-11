@@ -1,0 +1,23 @@
+---
+title: InferPatternsOutput
+description: Infer patterns output type.
+contributors:
+  - EskiMojo14
+---
+
+# InferPatternsOutput
+
+Infer patterns output type.
+
+> This type is too complex to display. Please refer to the [source code](https://github.com/open-circle/valibot/blob/main/library/src/schemas/recordWithPatterns/recordWithPatterns.ts).
+
+```ts
+// Create pattern tuples
+const patterns = [
+  [v.picklist(['id']), v.pipe(v.string(), v.transform(Number))],
+  [v.picklist(['name']), v.string()],
+] as const;
+
+// Infer patterns output type
+type PatternsOutput = v.InferPatternsOutput<typeof patterns>; // { id?: number } & { name?: string }
+```

@@ -1,0 +1,23 @@
+---
+title: InferPatternsInputAsync
+description: Infer patterns input async type.
+contributors:
+  - EskiMojo14
+---
+
+# InferPatternsInputAsync
+
+Infer patterns input async type.
+
+> This type is too complex to display. Please refer to the [source code](https://github.com/open-circle/valibot/blob/main/library/src/schemas/recordWithPatterns/recordWithPatternsAsync.ts).
+
+```ts
+// Create async-compatible pattern tuples
+const patterns = [
+  [v.picklist(['id']), v.pipe(v.string(), v.transform(Number))],
+  [v.picklist(['name']), v.string()],
+] as const;
+
+// Infer patterns input async type
+type PatternsInputAsync = v.InferPatternsInputAsync<typeof patterns>; // { id?: string } & { name?: string }
+```

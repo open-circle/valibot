@@ -12,8 +12,8 @@ export const properties: Record<string, PropertyProps> = {
           name: 'BaseSchema',
           href: '../BaseSchema/',
           generics: [
-            'unknown',
-            'unknown',
+            'string',
+            'string',
             {
               type: 'custom',
               name: 'BaseIssue',
