@@ -4,7 +4,7 @@ All notable changes to the library will be documented in this file.
 
 ## vX.X.X (Month DD, YYYY)
 
-- Add `isoDuration` validation action to validate ISO 8601 / RFC 3339 duration strings (issue #1497)
+- Add `isoDuration` validation action to validate ISO 8601 / RFC 3339 duration strings (pull request #1540)
 
 ## v1.4.2 (June 28, 2026)
 
