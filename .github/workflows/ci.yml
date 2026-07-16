@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
   workflow_call:
+    
+permissions:
+  contents: read
 
 jobs:
   install:
@@ -20,6 +23,9 @@ jobs:
     name: Publish library via pkg.pr.new
     needs: install
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
