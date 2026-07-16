@@ -11,6 +11,7 @@ import {
 import { addToPipe } from './helpers';
 import {
   transformArray as transformArrayMethod,
+  transformBrand,
   transformCatchall,
   transformDeepPartial,
   transformDefault,
@@ -379,6 +380,8 @@ function toValibotMethodExp(
   switch (zodMethodName) {
     case 'array':
       return transformArrayMethod(...args);
+    case 'brand':
+      return transformBrand(...args);
     case 'catchall':
       return transformCatchall(valibotIdentifier, schemaExp, inputArgs);
     case 'default':
