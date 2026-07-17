@@ -9,26 +9,9 @@ const option = {
       href: '../GenericValidation/',
     },
     {
-      type: 'intersect',
-      options: [
-        {
-          type: 'custom',
-          name: 'GenericTransformation',
-          href: '../GenericTransformation/',
-        },
-        {
-          type: 'object',
-          entries: [
-            {
-              key: 'type',
-              value: {
-                type: 'string',
-                value: 'guard',
-              },
-            },
-          ],
-        },
-      ],
+      type: 'custom',
+      name: 'GenericTransformation',
+      href: '../GenericTransformation/',
     },
   ],
 } satisfies PropertyProps['type'];

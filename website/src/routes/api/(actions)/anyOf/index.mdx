@@ -30,11 +30,11 @@ const Action = v.anyOf<TOptions, TMessage, TInput>(options, message);
 
 ### Explanation
 
-With `anyOf` you can combine alternative constraints for a value that was already typed earlier in a `pipe`. The input is accepted if at least one option succeeds. If all options fail, `anyOf` returns one top-level issue with the option issues as subissues.
+With `anyOf` you can combine alternative constraints for a value that was already typed earlier in a `pipe`. The options are tried in order and the first one that succeeds decides the result. If all options fail, `anyOf` returns one top-level issue with the option issues as subissues.
 
-The `options` array must contain at least two actions. `anyOf` only supports sync validation actions and the sync `guard` action. It does not select transformed outputs or adopt changed option values, so async actions, metadata actions, always-success transformations, and type-changing or value-changing transformations are intentionally not supported.
+The `options` array must contain at least two sync validation or transformation actions (including the sync `guard` action). The output type is the union of every option's output: value-preserving validations keep the input type, while guards and transformations contribute their own output type. Since a transformation always succeeds, place transformations last so earlier validations and guards can act as gates — an always-succeeding option short-circuits the rest. Async and metadata actions are not supported.
 
-Use <Link href="../union/">`union`</Link> when alternatives have different input data types or different transformations. Use <Link href="../variant/">`variant`</Link> for discriminated object unions.
+Use <Link href="../union/">`union`</Link> when alternatives have different input data types. Use <Link href="../variant/">`variant`</Link> for discriminated object unions.
 
 ## Returns
 
@@ -72,15 +72,18 @@ const CssSizeSchema = v.pipe(
 );
 ```
 
-### Transformed alternatives
+### Transform fallback
 
-Use `union` when alternatives transform values differently.
+Keep the value when a guard matches, otherwise coerce it. The transformation is placed last so the guard acts as a fast path, and the output type becomes the union of both branches.
 
 ```ts
-const NumberSchema = v.union([
-  v.number(),
-  v.pipe(v.string(), v.toNumber(), v.integer()),
-]);
+const isNumeric = (input: string): input is `${number}` => /^\d+$/u.test(input);
+
+// InferOutput: `${number}` | number
+const NumberSchema = v.pipe(
+  v.string(),
+  v.anyOf([v.guard(isNumeric), v.toNumber()])
+);
 ```
 
 ## Related

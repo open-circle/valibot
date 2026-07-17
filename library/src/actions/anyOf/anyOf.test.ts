@@ -76,19 +76,11 @@ describe('anyOf', () => {
     });
 
     test('for invalid options', () => {
-      expect(() => anyOf([email(), trim()] as never)).toThrowError(
-        'The any of option at index 1 of type "trim" must be a sync validation or guard action.'
+      expect(() => anyOf([email(), description('test')] as never)).toThrow(
+        'The any of option at index 1 of type "description" must be a sync validation or transformation action.'
       );
-      expect(() => anyOf([toNumber(), email()] as never)).toThrowError(
-        'The any of option at index 0 of type "to_number" must be a sync validation or guard action.'
-      );
-      expect(() => anyOf([email(), description('test')] as never)).toThrowError(
-        'The any of option at index 1 of type "description" must be a sync validation or guard action.'
-      );
-      expect(() =>
-        anyOf([email(), checkAsync(() => true)] as never)
-      ).toThrowError(
-        'The any of option at index 1 of type "check" must be a sync validation or guard action.'
+      expect(() => anyOf([email(), checkAsync(() => true)] as never)).toThrow(
+        'The any of option at index 1 of type "check" must be a sync validation or transformation action.'
       );
     });
   });
@@ -145,6 +137,24 @@ describe('anyOf', () => {
       ).toStrictEqual({
         typed: true,
         value: '123rem',
+      });
+    });
+
+    test('for transform option fallback', () => {
+      const action = anyOf([email(), toNumber()]);
+      expect(action['~run']({ typed: true, value: '123' }, {})).toStrictEqual({
+        typed: true,
+        value: 123,
+      });
+    });
+
+    test('for first matching transform', () => {
+      const action = anyOf([trim(), toNumber()]);
+      expect(
+        action['~run']({ typed: true, value: '  foo  ' }, {})
+      ).toStrictEqual({
+        typed: true,
+        value: 'foo',
       });
     });
   });

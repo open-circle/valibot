@@ -13,11 +13,8 @@ import type {
   UnionToIntersect,
 } from '../../types/index.ts';
 import { _addIssue, _joinExpects, _subIssues } from '../../utils/index.ts';
-import type { ValueInput } from '../types.ts';
 
-type AnyOfGuardOption = GenericTransformation & { readonly type: 'guard' };
-
-type AnyOfOption = GenericValidation | AnyOfGuardOption;
+type AnyOfOption = GenericValidation | GenericTransformation;
 
 /**
  * Any of options type.
@@ -38,84 +35,58 @@ interface RuntimeAnyOfOption {
 }
 
 /**
- * Widens literal value requirements to their base `ValueInput` member.
+ * Infers the input type shared by all options.
+ *
+ * All options receive the same value, so the input must satisfy every option,
+ * i.e. the intersection of their inputs. Each option input is boxed in
+ * `{ input: ... }` *before* `UnionToIntersect` so that a union-typed input like
+ * `ValueInput` (`string | number | ...`) is intersected as a whole rather than
+ * distributed member-by-member — the latter would collapse it to `never`.
+ * Genuinely incompatible inputs (e.g. `string` vs `number`) still resolve to
+ * `never`, which the pipe rejects.
  */
-type WidenValueInput<
-  TInput extends ValueInput,
-  TBaseInput extends ValueInput = ValueInput,
-> = TBaseInput extends unknown
-  ? TInput extends TBaseInput
-    ? TBaseInput
-    : never
-  : never;
-
-type InferRequirementItem<TRequirement> =
-  TRequirement extends readonly (infer TItem)[] ? TItem : TRequirement;
-
-type InferValueRequirementInput<
-  TRequirement,
-  TInput,
-  TValue = InferRequirementItem<TRequirement>,
-> = TValue extends ValueInput
-  ? TValue extends TInput
-    ? WidenValueInput<TValue>
-    : TInput
-  : TInput;
-
 type InferAnyOfOptionInput<TOption> = TOption extends AnyOfOption
-  ? TOption extends {
-      readonly requirement: infer TRequirement;
-    }
-    ? InferValueRequirementInput<TRequirement, InferInput<TOption>>
-    : InferInput<TOption>
-  : unknown;
+  ? { input: InferInput<TOption> }
+  : { input: unknown };
 
-type InferAnyOfInput<TOptions extends readonly unknown[]> = UnionToIntersect<
-  InferAnyOfOptionInput<TOptions[number]>
->;
+type InferAnyOfInput<TOptions extends readonly unknown[]> =
+  UnionToIntersect<InferAnyOfOptionInput<TOptions[number]>> extends {
+    input: infer TInput;
+  }
+    ? TInput
+    : never;
 
 type ExtractAnyOfOption<TOptions extends AnyOfOptionsConstraint> = Extract<
   TOptions[number],
   AnyOfOption
 >;
 
-type ExtractAnyOfGuard<TOptions extends AnyOfOptionsConstraint> = Extract<
-  TOptions[number],
-  AnyOfGuardOption
->;
-
-type ExtractAnyOfValidation<TOptions extends AnyOfOptionsConstraint> = Extract<
-  TOptions[number],
-  GenericValidation
->;
-
-type InferAnyOfOutput<TOptions extends AnyOfOptionsConstraint, TInput> =
-  IsNever<ExtractAnyOfOption<TOptions>> extends true
+/**
+ * Infers the output type, which is the union of every option's output because
+ * the first option that succeeds decides the result. Value-preserving
+ * validations contribute the shared (narrowed) input, whereas guards and
+ * transforms contribute their own output type.
+ */
+type InferAnyOfOutput<TOptions extends AnyOfOptionsConstraint, TInput> = {
+  readonly [TKey in keyof TOptions]: TOptions[TKey] extends GenericValidation
     ? TInput
-    : IsNever<ExtractAnyOfValidation<TOptions>> extends true
-      ? TInput & InferOutput<ExtractAnyOfGuard<TOptions>>
-      : TInput;
+    : TOptions[TKey] extends AnyOfOption
+      ? InferOutput<TOptions[TKey]>
+      : never;
+}[number];
 
 type InferAnyOfIssue<TOptions extends AnyOfOptionsConstraint> =
   IsNever<ExtractAnyOfOption<TOptions>> extends true
     ? BaseIssue<unknown>
     : InferIssue<ExtractAnyOfOption<TOptions>>;
 
-type ValidAnyOfOption<TOption> = TOption extends AnyOfOption
-  ? IsNever<InferIssue<TOption>> extends true
-    ? never
-    : TOption extends AnyOfGuardOption
-      ? InferOutput<TOption> extends InferInput<TOption>
-        ? TOption
-        : never
-      : TOption
-  : never;
-
 type ValidAnyOfOptions<TOptions extends AnyOfOptionsConstraint> =
   IsNever<InferAnyOfInput<TOptions>> extends true
     ? never
     : TOptions extends {
-          readonly [TKey in keyof TOptions]: ValidAnyOfOption<TOptions[TKey]>;
+          readonly [TKey in keyof TOptions]: TOptions[TKey] extends AnyOfOption
+            ? TOptions[TKey]
+            : never;
         }
       ? unknown
       : never;
@@ -182,6 +153,13 @@ export interface AnyOfAction<
 /**
  * Creates an any of validation action.
  *
+ * The options (sync validations, guards, or transformations) are tried in
+ * order and the first one that succeeds decides the result, returning its
+ * output. Since a transformation always succeeds, place transformations last
+ * so earlier validations and guards act as gates — an always-succeeding option
+ * short-circuits the rest. If every option fails, the option issues are
+ * collected as subissues of a single any of issue.
+ *
  * @param options The any of options.
  *
  * @returns An any of action.
@@ -246,13 +224,13 @@ export function anyOf(
       !(
         (action.kind === 'validation' &&
           (action.expects === null || typeof action.expects === 'string')) ||
-        (action.kind === 'transformation' && action.type === 'guard')
+        action.kind === 'transformation'
       )
     ) {
       const type =
         typeof action?.type === 'string' ? ` of type "${action.type}"` : '';
       throw new TypeError(
-        `The any of option at index ${index}${type} must be a sync validation or guard action.`
+        `The any of option at index ${index}${type} must be a sync validation or transformation action.`
       );
     }
   }
@@ -286,7 +264,9 @@ export function anyOf(
         );
 
         if (optionDataset.typed && !optionDataset.issues) {
-          return dataset;
+          // Return the matching option's output so value-changing transforms
+          // take effect; validations and guards leave the value unchanged.
+          return optionDataset;
         }
 
         if (optionDataset.typed) {
