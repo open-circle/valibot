@@ -330,6 +330,44 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert any of action with existing $ref schema', () => {
+    // Hint: A `$ref` (e.g. set by a preceding `lazy` schema) must not stay a
+    // sibling of `anyOf` — draft-07 and earlier ignore sibling keywords next
+    // to `$ref`, which would silently drop the `anyOf` constraint.
+    expect(
+      convertAction(
+        { $ref: '#/$defs/0' },
+        v.anyOf([v.domain(), v.url()]),
+        undefined
+      )
+    ).toStrictEqual({
+      allOf: [
+        { $ref: '#/$defs/0' },
+        {
+          anyOf: [{ pattern: v.DOMAIN_REGEX.source }, { format: 'uri' }],
+        },
+      ],
+    });
+  });
+
+  test('should convert any of action with existing $ref and anyOf schema', () => {
+    expect(
+      convertAction(
+        { $ref: '#/$defs/0', anyOf: [{ const: 'foo' }] },
+        v.anyOf([v.domain(), v.url()]),
+        undefined
+      )
+    ).toStrictEqual({
+      allOf: [
+        { $ref: '#/$defs/0' },
+        { anyOf: [{ const: 'foo' }] },
+        {
+          anyOf: [{ pattern: v.DOMAIN_REGEX.source }, { format: 'uri' }],
+        },
+      ],
+    });
+  });
+
   test('should ignore any of action', () => {
     expect(
       convertAction({ type: 'string' }, v.anyOf([v.domain(), v.url()]), {

@@ -210,12 +210,25 @@ export function convertAction(
         )
       );
 
+      // Hint: A `$ref` (e.g. set by a preceding `lazy` schema) or an
+      // existing `anyOf` cannot stay as a sibling of the new `anyOf` — for
+      // `$ref`, draft-07 and earlier ignore sibling keywords entirely, which
+      // would silently drop the new `anyOf` constraint. Both are moved into
+      // `allOf` instead, where each keeps evaluating independently.
+      const conflictingParts: JsonSchema[] = [];
+      if (jsonSchema.$ref) {
+        conflictingParts.push({ $ref: jsonSchema.$ref });
+        delete jsonSchema.$ref;
+      }
       if (jsonSchema.anyOf) {
-        const { anyOf: existingAnyOf } = jsonSchema;
+        conflictingParts.push({ anyOf: jsonSchema.anyOf });
         delete jsonSchema.anyOf;
+      }
+
+      if (conflictingParts.length) {
         jsonSchema.allOf = [
           ...(jsonSchema.allOf ?? []),
-          { anyOf: existingAnyOf },
+          ...conflictingParts,
           { anyOf },
         ];
       } else {

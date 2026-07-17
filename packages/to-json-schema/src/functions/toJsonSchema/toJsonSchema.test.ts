@@ -44,6 +44,30 @@ describe('toJsonSchema', () => {
       });
     });
 
+    test('for any of action after lazy schema', () => {
+      // Hint: `lazy` always sets `$ref`, which draft-07 (the default target)
+      // treats as replacing the whole schema — any sibling keyword, like the
+      // `anyOf` added here, would otherwise be silently ignored by
+      // conforming validators unless moved into `allOf`.
+      expect(
+        toJsonSchema(
+          v.pipe(
+            v.lazy(() => v.string()),
+            v.anyOf([v.domain(), v.url()])
+          )
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        allOf: [
+          { $ref: '#/$defs/0' },
+          {
+            anyOf: [{ pattern: v.DOMAIN_REGEX.source }, { format: 'uri' }],
+          },
+        ],
+        $defs: { '0': { type: 'string' } },
+      });
+    });
+
     test('for complex schema with definitions', () => {
       const stringSchema = v.string();
       const complexSchema = v.pipe(
