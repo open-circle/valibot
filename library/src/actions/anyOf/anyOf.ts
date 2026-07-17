@@ -62,18 +62,24 @@ type ExtractAnyOfOption<TOptions extends AnyOfOptionsConstraint> = Extract<
 >;
 
 /**
- * Infers the output type, which is the union of every option's output because
- * the first option that succeeds decides the result. Value-preserving
+ * Infers a single option's contribution to the output union. Value-preserving
  * validations contribute the shared (narrowed) input, whereas guards and
  * transforms contribute their own output type.
  */
-type InferAnyOfOutput<TOptions extends AnyOfOptionsConstraint, TInput> = {
-  readonly [TKey in keyof TOptions]: TOptions[TKey] extends GenericValidation
-    ? TInput
-    : TOptions[TKey] extends AnyOfOption
-      ? InferOutput<TOptions[TKey]>
-      : never;
-}[number];
+type InferAnyOfOptionOutput<TOption, TInput> = TOption extends GenericValidation
+  ? TInput
+  : TOption extends AnyOfOption
+    ? InferOutput<TOption>
+    : never;
+
+/**
+ * Infers the output type, which is the union of every option's output because
+ * the first option that succeeds decides the result.
+ */
+type InferAnyOfOutput<
+  TOptions extends AnyOfOptionsConstraint,
+  TInput,
+> = InferAnyOfOptionOutput<TOptions[number], TInput>;
 
 type InferAnyOfIssue<TOptions extends AnyOfOptionsConstraint> =
   IsNever<ExtractAnyOfOption<TOptions>> extends true
@@ -83,11 +89,7 @@ type InferAnyOfIssue<TOptions extends AnyOfOptionsConstraint> =
 type ValidAnyOfOptions<TOptions extends AnyOfOptionsConstraint> =
   IsNever<InferAnyOfInput<TOptions>> extends true
     ? never
-    : TOptions extends {
-          readonly [TKey in keyof TOptions]: TOptions[TKey] extends AnyOfOption
-            ? TOptions[TKey]
-            : never;
-        }
+    : TOptions[number] extends AnyOfOption
       ? unknown
       : never;
 
