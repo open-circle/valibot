@@ -266,9 +266,12 @@ export function anyOf(
         );
 
         if (optionDataset.typed && !optionDataset.issues) {
-          // Return the matching option's output so value-changing transforms
-          // take effect; validations and guards leave the value unchanged.
-          return optionDataset;
+          // Copy the matching option's value onto the incoming dataset so
+          // value-changing transforms take effect, but keep returning the
+          // incoming dataset so issues already present on it (added earlier
+          // in the pipe) aren't discarded.
+          dataset.value = optionDataset.value;
+          return dataset as typeof optionDataset;
         }
 
         if (optionDataset.typed) {

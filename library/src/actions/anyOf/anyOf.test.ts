@@ -157,6 +157,28 @@ describe('anyOf', () => {
         value: 'foo',
       });
     });
+
+    test('for a matching option, preserves issues already on the dataset', () => {
+      const existingIssue: BaseIssue<string> = {
+        kind: 'validation',
+        type: 'check',
+        input: 'foo',
+        expected: null,
+        received: '"foo"',
+        message: 'message',
+      };
+      const action = anyOf([toNumber(), trim()]);
+      expect(
+        action['~run'](
+          { typed: true, value: '123', issues: [existingIssue] },
+          {}
+        )
+      ).toStrictEqual({
+        typed: true,
+        value: 123,
+        issues: [existingIssue],
+      });
+    });
   });
 
   describe('should return dataset with issues', () => {
