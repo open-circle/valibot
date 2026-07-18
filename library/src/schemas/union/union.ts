@@ -11,11 +11,7 @@ import type {
   PartialDataset,
   SuccessDataset,
 } from '../../types/index.ts';
-import {
-  _addIssue,
-  _addStandardProp,
-  _joinExpects,
-} from '../../utils/index.ts';
+import { _addIssue, _joinExpects, _standardSchema } from '../../utils/index.ts';
 import type { UnionIssue } from './types.ts';
 import { _subIssues } from './utils/index.ts';
 
@@ -91,7 +87,7 @@ export function union(
   UnionOptions,
   ErrorMessage<UnionIssue<BaseIssue<unknown>>> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     UnionSchema<
       UnionOptions,
       ErrorMessage<UnionIssue<BaseIssue<unknown>>> | undefined

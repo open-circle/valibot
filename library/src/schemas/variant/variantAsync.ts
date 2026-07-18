@@ -7,11 +7,7 @@ import type {
   InferOutput,
   OutputDataset,
 } from '../../types/index.ts';
-import {
-  _addIssue,
-  _addStandardProp,
-  _joinExpects,
-} from '../../utils/index.ts';
+import { _addIssue, _joinExpects, _standardSchema } from '../../utils/index.ts';
 import type {
   InferVariantIssue,
   VariantIssue,
@@ -101,7 +97,7 @@ export function variantAsync(
   VariantOptionsAsync<string>,
   ErrorMessage<VariantIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     VariantSchemaAsync<
       string,
       VariantOptionsAsync<string>,

@@ -15,8 +15,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _addStandardProp,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type { ObjectWithRestIssue } from './types.ts';
 
@@ -103,7 +103,7 @@ export function objectWithRest(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ObjectWithRestIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     ObjectWithRestSchema<
       ObjectEntries,
       BaseSchema<unknown, unknown, BaseIssue<unknown>>,

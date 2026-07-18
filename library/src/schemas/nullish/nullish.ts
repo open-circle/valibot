@@ -7,7 +7,7 @@ import type {
   InferIssue,
   SuccessDataset,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 import type { InferNullishOutput } from './types.ts';
 
 /**
@@ -72,7 +72,7 @@ export function nullish(
   wrapped: BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   default_?: unknown
 ): NullishSchema<BaseSchema<unknown, unknown, BaseIssue<unknown>>, unknown> {
-  return _addStandardProp<
+  return _standardSchema<
     NullishSchema<BaseSchema<unknown, unknown, BaseIssue<unknown>>, unknown>
   >({
     kind: 'schema',

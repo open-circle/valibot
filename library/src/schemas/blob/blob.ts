@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Blob issue interface.
@@ -70,7 +70,7 @@ export function blob<
 export function blob(
   message?: ErrorMessage<BlobIssue>
 ): BlobSchema<ErrorMessage<BlobIssue> | undefined> {
-  return _addStandardProp<BlobSchema<ErrorMessage<BlobIssue> | undefined>>({
+  return _standardSchema<BlobSchema<ErrorMessage<BlobIssue> | undefined>>({
     kind: 'schema',
     type: 'blob',
     reference: blob,

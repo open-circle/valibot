@@ -28,7 +28,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Schema type.
@@ -293,7 +293,7 @@ export function partialAsync(
   }
 
   // Return modified copy of schema
-  return _addStandardProp<
+  return _standardSchema<
     SchemaWithPartialAsync<Schema, ObjectKeys<Schema> | undefined>
   >({
     ...schema,

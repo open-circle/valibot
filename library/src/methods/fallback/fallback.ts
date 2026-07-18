@@ -7,7 +7,7 @@ import type {
   MaybeDeepReadonly,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 import { getFallback } from '../getFallback/index.ts';
 
 /**
@@ -51,7 +51,7 @@ export function fallback<
   schema: TSchema,
   fallback: TFallback
 ): SchemaWithFallback<TSchema, TFallback> {
-  return _addStandardProp<SchemaWithFallback<TSchema, TFallback>>({
+  return _standardSchema<SchemaWithFallback<TSchema, TFallback>>({
     ...schema,
     fallback,
     '~run'(this: SchemaWithFallback<TSchema, TFallback>, dataset, config) {

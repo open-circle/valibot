@@ -5,11 +5,7 @@ import type {
   InferIssue,
   OutputDataset,
 } from '../../types/index.ts';
-import {
-  _addIssue,
-  _addStandardProp,
-  _joinExpects,
-} from '../../utils/index.ts';
+import { _addIssue, _joinExpects, _standardSchema } from '../../utils/index.ts';
 import type { intersect } from './intersect.ts';
 import type {
   InferIntersectInput,
@@ -83,7 +79,7 @@ export function intersectAsync(
   IntersectOptionsAsync,
   ErrorMessage<IntersectIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     IntersectSchemaAsync<
       IntersectOptionsAsync,
       ErrorMessage<IntersectIssue> | undefined

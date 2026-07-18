@@ -14,7 +14,7 @@ import type {
  *
  * @internal
  */
-export function _addStandardProp<
+export function _standardSchema<
   TSchema extends
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
@@ -23,8 +23,7 @@ export function _addStandardProp<
   schema['~standard'] = {
     version: 1,
     vendor: 'valibot',
-    validate: (value: unknown) =>
-      (schema as TSchema)['~run']({ value }, getGlobalConfig()),
+    validate: (value: unknown) => schema['~run']({ value }, getGlobalConfig()),
   };
   return schema as TSchema;
 }

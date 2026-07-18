@@ -9,7 +9,7 @@ import type {
   ObjectPathItem,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { object } from './object.ts';
 import type { ObjectIssue } from './types.ts';
 
@@ -88,7 +88,7 @@ export function objectAsync(
   ObjectEntriesAsync,
   ErrorMessage<ObjectIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     ObjectSchemaAsync<ObjectEntriesAsync, ErrorMessage<ObjectIssue> | undefined>
   >({
     kind: 'schema',

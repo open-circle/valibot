@@ -8,7 +8,7 @@ import type {
   InferIssue,
   SuccessDataset,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 import type { InferUndefinedableOutput } from './types.ts';
 import type { undefinedable } from './undefinedable.ts';
 
@@ -89,7 +89,7 @@ export function undefinedableAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   unknown
 > {
-  return _addStandardProp<
+  return _standardSchema<
     UndefinedableSchemaAsync<
       | BaseSchema<unknown, unknown, BaseIssue<unknown>>
       | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,

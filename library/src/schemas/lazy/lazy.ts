@@ -5,7 +5,7 @@ import type {
   InferIssue,
   InferOutput,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Lazy schema interface.
@@ -46,7 +46,7 @@ export interface LazySchema<
 export function lazy<
   const TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
 >(getter: (input: unknown) => TWrapped): LazySchema<TWrapped> {
-  return _addStandardProp<LazySchema<TWrapped>>({
+  return _standardSchema<LazySchema<TWrapped>>({
     kind: 'schema',
     type: 'lazy',
     reference: lazy,

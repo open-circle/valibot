@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Number issue interface.
@@ -70,7 +70,7 @@ export function number<
 export function number(
   message?: ErrorMessage<NumberIssue>
 ): NumberSchema<ErrorMessage<NumberIssue> | undefined> {
-  return _addStandardProp<NumberSchema<ErrorMessage<NumberIssue> | undefined>>({
+  return _standardSchema<NumberSchema<ErrorMessage<NumberIssue> | undefined>>({
     kind: 'schema',
     type: 'number',
     reference: number,

@@ -8,7 +8,7 @@ import type {
   InferOutput,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { ArrayIssue } from './types.ts';
 
 /**
@@ -76,7 +76,7 @@ export function array(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ArrayIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     ArraySchema<
       BaseSchema<unknown, unknown, BaseIssue<unknown>>,
       ErrorMessage<ArrayIssue> | undefined

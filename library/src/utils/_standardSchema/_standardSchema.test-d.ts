@@ -4,7 +4,7 @@ import { pipe } from '../../methods/index.ts';
 import { object, string } from '../../schemas/index.ts';
 import type { StandardProps } from '../../types/index.ts';
 
-describe('_addStandardProp', () => {
+describe('_standardSchema', () => {
   test('should return spec properties', () => {
     expectTypeOf(string()['~standard']).toEqualTypeOf<
       StandardProps<string, string>

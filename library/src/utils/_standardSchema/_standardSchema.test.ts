@@ -9,7 +9,7 @@ import type {
   StandardSuccessResult,
 } from '../../types/index.ts';
 
-describe('_addStandardProp', () => {
+describe('_standardSchema', () => {
   test('should return spec properties', () => {
     expect(string()['~standard']).toStrictEqual({
       version: 1,

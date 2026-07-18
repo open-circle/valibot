@@ -16,8 +16,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _addStandardProp,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type { objectWithRest } from './objectWithRest.ts';
 import type { ObjectWithRestIssue } from './types.ts';
@@ -114,7 +114,7 @@ export function objectWithRestAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ObjectWithRestIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     ObjectWithRestSchemaAsync<
       ObjectEntriesAsync,
       | BaseSchema<unknown, unknown, BaseIssue<unknown>>

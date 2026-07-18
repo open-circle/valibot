@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp, _stringify } from '../../utils/index.ts';
+import { _addIssue, _standardSchema, _stringify } from '../../utils/index.ts';
 
 /**
  * Literal type.
@@ -83,7 +83,7 @@ export function literal(
   literal_: Literal,
   message?: ErrorMessage<LiteralIssue>
 ): LiteralSchema<Literal, ErrorMessage<LiteralIssue> | undefined> {
-  return _addStandardProp<
+  return _standardSchema<
     LiteralSchema<Literal, ErrorMessage<LiteralIssue> | undefined>
   >({
     kind: 'schema',

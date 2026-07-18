@@ -7,7 +7,7 @@ import type {
   InferIssue,
   InferOutput,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 import type { exactOptional } from './exactOptional.ts';
 
 /**
@@ -87,7 +87,7 @@ export function exactOptionalAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   unknown
 > {
-  return _addStandardProp<
+  return _standardSchema<
     ExactOptionalSchemaAsync<
       | BaseSchema<unknown, unknown, BaseIssue<unknown>>
       | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,

@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Date issue interface.
@@ -70,7 +70,7 @@ export function date<
 export function date(
   message?: ErrorMessage<DateIssue>
 ): DateSchema<ErrorMessage<DateIssue> | undefined> {
-  return _addStandardProp<DateSchema<ErrorMessage<DateIssue> | undefined>>({
+  return _standardSchema<DateSchema<ErrorMessage<DateIssue> | undefined>>({
     kind: 'schema',
     type: 'date',
     reference: date,

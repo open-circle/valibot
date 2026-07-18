@@ -13,7 +13,7 @@ import type {
   OutputDataset,
   TupleItemsAsync,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { tupleWithRest } from './tupleWithRest.ts';
 import type { TupleWithRestIssue } from './types.ts';
 
@@ -109,7 +109,7 @@ export function tupleWithRestAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<TupleWithRestIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     TupleWithRestSchemaAsync<
       TupleItemsAsync,
       | BaseSchema<unknown, unknown, BaseIssue<unknown>>

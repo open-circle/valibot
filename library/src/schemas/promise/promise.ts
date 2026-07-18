@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Promise issue interface.
@@ -70,28 +70,28 @@ export function promise<
 export function promise(
   message?: ErrorMessage<PromiseIssue>
 ): PromiseSchema<ErrorMessage<PromiseIssue> | undefined> {
-  return _addStandardProp<
-    PromiseSchema<ErrorMessage<PromiseIssue> | undefined>
-  >({
-    kind: 'schema',
-    type: 'promise',
-    reference: promise,
-    expects: 'Promise',
-    async: false,
-    message,
-    '~run'(
-      this: PromiseSchema<ErrorMessage<PromiseIssue> | undefined>,
-      dataset,
-      config
-    ) {
-      if (dataset.value instanceof Promise) {
+  return _standardSchema<PromiseSchema<ErrorMessage<PromiseIssue> | undefined>>(
+    {
+      kind: 'schema',
+      type: 'promise',
+      reference: promise,
+      expects: 'Promise',
+      async: false,
+      message,
+      '~run'(
+        this: PromiseSchema<ErrorMessage<PromiseIssue> | undefined>,
+        dataset,
+        config
+      ) {
+        if (dataset.value instanceof Promise) {
+          // @ts-expect-error
+          dataset.typed = true;
+        } else {
+          _addIssue(this, 'type', dataset, config);
+        }
         // @ts-expect-error
-        dataset.typed = true;
-      } else {
-        _addIssue(this, 'type', dataset, config);
-      }
-      // @ts-expect-error
-      return dataset as OutputDataset<Promise<unknown>, PromiseIssue>;
-    },
-  });
+        return dataset as OutputDataset<Promise<unknown>, PromiseIssue>;
+      },
+    }
+  );
 }

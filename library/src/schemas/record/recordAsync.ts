@@ -9,8 +9,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _addStandardProp,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type { record } from './record.ts';
 import type {
@@ -117,7 +117,7 @@ export function recordAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<RecordIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     RecordSchemaAsync<
       | BaseSchema<string, string | number | symbol, BaseIssue<unknown>>
       | BaseSchemaAsync<string, string | number | symbol, BaseIssue<unknown>>,

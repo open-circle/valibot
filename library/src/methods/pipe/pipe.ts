@@ -13,7 +13,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Schema with pipe type.
@@ -2692,7 +2692,7 @@ export function pipe<
 >(
   ...pipe: [TSchema, ...TItems]
 ): SchemaWithPipe<readonly [TSchema, ...TItems]> {
-  return _addStandardProp<SchemaWithPipe<readonly [TSchema, ...TItems]>>({
+  return _standardSchema<SchemaWithPipe<readonly [TSchema, ...TItems]>>({
     ...pipe[0],
     pipe,
     '~run'(dataset, config) {

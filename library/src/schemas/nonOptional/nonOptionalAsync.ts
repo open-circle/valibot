@@ -5,7 +5,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { nonOptional } from './nonOptional.ts';
 import type {
   InferNonOptionalInput,
@@ -91,7 +91,7 @@ export function nonOptionalAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<NonOptionalIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     NonOptionalSchemaAsync<
       | BaseSchema<unknown, unknown, BaseIssue<unknown>>
       | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,

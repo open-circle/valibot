@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Symbol issue interface.
@@ -70,7 +70,7 @@ export function symbol<
 export function symbol(
   message?: ErrorMessage<SymbolIssue>
 ): SymbolSchema<ErrorMessage<SymbolIssue> | undefined> {
-  return _addStandardProp<SymbolSchema<ErrorMessage<SymbolIssue> | undefined>>({
+  return _standardSchema<SymbolSchema<ErrorMessage<SymbolIssue> | undefined>>({
     kind: 'schema',
     type: 'symbol',
     reference: symbol,

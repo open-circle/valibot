@@ -11,8 +11,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _addStandardProp,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type { looseObject } from './looseObject.ts';
 import type { LooseObjectIssue } from './types.ts';
@@ -85,7 +85,7 @@ export function looseObjectAsync(
   ObjectEntriesAsync,
   ErrorMessage<LooseObjectIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     LooseObjectSchemaAsync<
       ObjectEntriesAsync,
       ErrorMessage<LooseObjectIssue> | undefined

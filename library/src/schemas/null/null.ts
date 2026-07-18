@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Null issue interface.
@@ -70,7 +70,7 @@ export function null_<
 export function null_(
   message?: ErrorMessage<NullIssue>
 ): NullSchema<ErrorMessage<NullIssue> | undefined> {
-  return _addStandardProp<NullSchema<ErrorMessage<NullIssue> | undefined>>({
+  return _standardSchema<NullSchema<ErrorMessage<NullIssue> | undefined>>({
     kind: 'schema',
     type: 'null',
     reference: null_,

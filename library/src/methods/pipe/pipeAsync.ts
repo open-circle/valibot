@@ -16,7 +16,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Schema with pipe async type.
@@ -3081,7 +3081,7 @@ export function pipeAsync<
 >(
   ...pipe: [TSchema, ...TItems]
 ): SchemaWithPipeAsync<readonly [TSchema, ...TItems]> {
-  return _addStandardProp<SchemaWithPipeAsync<readonly [TSchema, ...TItems]>>({
+  return _standardSchema<SchemaWithPipeAsync<readonly [TSchema, ...TItems]>>({
     ...pipe[0],
     pipe,
     async: true,

@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Class type.
@@ -88,7 +88,7 @@ export function instance(
   class_: Class,
   message?: ErrorMessage<InstanceIssue>
 ): InstanceSchema<Class, ErrorMessage<InstanceIssue> | undefined> {
-  return _addStandardProp<
+  return _standardSchema<
     InstanceSchema<Class, ErrorMessage<InstanceIssue> | undefined>
   >({
     kind: 'schema',

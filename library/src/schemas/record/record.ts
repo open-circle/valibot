@@ -8,8 +8,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _addStandardProp,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type {
   InferRecordInput,
@@ -105,7 +105,7 @@ export function record(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<RecordIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     RecordSchema<
       BaseSchema<string, string | number | symbol, BaseIssue<unknown>>,
       BaseSchema<unknown, unknown, BaseIssue<unknown>>,

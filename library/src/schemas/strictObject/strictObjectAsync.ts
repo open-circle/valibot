@@ -9,7 +9,7 @@ import type {
   ObjectPathItem,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { strictObject } from './strictObject.ts';
 import type { StrictObjectIssue } from './types.ts';
 
@@ -81,7 +81,7 @@ export function strictObjectAsync(
   ObjectEntriesAsync,
   ErrorMessage<StrictObjectIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     StrictObjectSchemaAsync<
       ObjectEntriesAsync,
       ErrorMessage<StrictObjectIssue> | undefined

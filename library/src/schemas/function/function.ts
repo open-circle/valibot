@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Function issue interface.
@@ -74,7 +74,7 @@ export function function_<
 export function function_(
   message?: ErrorMessage<FunctionIssue>
 ): FunctionSchema<ErrorMessage<FunctionIssue> | undefined> {
-  return _addStandardProp<
+  return _standardSchema<
     FunctionSchema<ErrorMessage<FunctionIssue> | undefined>
   >({
     kind: 'schema',

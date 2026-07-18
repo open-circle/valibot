@@ -5,7 +5,7 @@ import type {
   ErrorMessage,
   InferIssue,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Changes the local message configuration of a schema.
@@ -21,7 +21,7 @@ export function message<
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
 >(schema: TSchema, message_: ErrorMessage<InferIssue<TSchema>>): TSchema {
-  return _addStandardProp<TSchema>({
+  return _standardSchema<TSchema>({
     ...schema,
     '~run'(dataset, config) {
       return schema['~run'](dataset, { ...config, message: message_ });

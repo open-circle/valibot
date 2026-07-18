@@ -6,7 +6,7 @@ import type {
   InferIssue,
   InferOutput,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Exact optional schema interface.
@@ -76,7 +76,7 @@ export function exactOptional(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   unknown
 > {
-  return _addStandardProp<
+  return _standardSchema<
     ExactOptionalSchema<
       BaseSchema<unknown, unknown, BaseIssue<unknown>>,
       unknown

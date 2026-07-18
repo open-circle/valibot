@@ -4,7 +4,7 @@ import type {
   MaybePromise,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { custom } from './custom.ts';
 import type { CustomIssue } from './types.ts';
 
@@ -73,7 +73,7 @@ export function customAsync<TInput>(
   check: CheckAsync,
   message?: ErrorMessage<CustomIssue>
 ): CustomSchemaAsync<TInput, ErrorMessage<CustomIssue> | undefined> {
-  return _addStandardProp<
+  return _standardSchema<
     CustomSchemaAsync<TInput, ErrorMessage<CustomIssue> | undefined>
   >({
     kind: 'schema',

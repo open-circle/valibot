@@ -32,7 +32,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * The schema type.
@@ -478,7 +478,7 @@ export function pick<
 
   // Return modified copy of schema
   // @ts-expect-error
-  return _addStandardProp<SchemaWithPick<TSchema, TKeys>>({
+  return _standardSchema<SchemaWithPick<TSchema, TKeys>>({
     ...schema,
     entries,
   });

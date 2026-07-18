@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * NaN issue interface.
@@ -69,7 +69,7 @@ export function nan<const TMessage extends ErrorMessage<NanIssue> | undefined>(
 export function nan(
   message?: ErrorMessage<NanIssue>
 ): NanSchema<ErrorMessage<NanIssue> | undefined> {
-  return _addStandardProp<NanSchema<ErrorMessage<NanIssue> | undefined>>({
+  return _standardSchema<NanSchema<ErrorMessage<NanIssue> | undefined>>({
     kind: 'schema',
     type: 'nan',
     reference: nan,

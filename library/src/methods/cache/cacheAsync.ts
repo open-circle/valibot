@@ -10,7 +10,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _addStandardProp, _cloneDataset } from '../../utils/index.ts';
+import { _cloneDataset, _standardSchema } from '../../utils/index.ts';
 import { _LruCache } from './_LruCache.ts';
 import type { Cache, CacheConfig } from './types.ts';
 
@@ -128,7 +128,7 @@ export function cacheAsync(
   let activeRuns:
     | Map<string, Promise<OutputDataset<unknown, BaseIssue<unknown>>>>
     | undefined;
-  return _addStandardProp<
+  return _standardSchema<
     SchemaWithCacheAsync<
       | BaseSchema<unknown, unknown, BaseIssue<unknown>>
       | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,

@@ -7,7 +7,7 @@ import type {
   MapPathItem,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { map } from './map.ts';
 import type { InferMapInput, InferMapOutput, MapIssue } from './types.ts';
 
@@ -109,7 +109,7 @@ export function mapAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<MapIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     MapSchemaAsync<
       | BaseSchema<unknown, unknown, BaseIssue<unknown>>
       | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,

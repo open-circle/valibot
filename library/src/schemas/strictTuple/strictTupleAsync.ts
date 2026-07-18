@@ -9,7 +9,7 @@ import type {
   OutputDataset,
   TupleItemsAsync,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { strictTuple } from './strictTuple.ts';
 import type { StrictTupleIssue } from './types.ts';
 
@@ -78,7 +78,7 @@ export function strictTupleAsync(
   TupleItemsAsync,
   ErrorMessage<StrictTupleIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     StrictTupleSchemaAsync<
       TupleItemsAsync,
       ErrorMessage<StrictTupleIssue> | undefined

@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Bigint issue interface.
@@ -70,7 +70,7 @@ export function bigint<
 export function bigint(
   message?: ErrorMessage<BigintIssue>
 ): BigintSchema<ErrorMessage<BigintIssue> | undefined> {
-  return _addStandardProp<BigintSchema<ErrorMessage<BigintIssue> | undefined>>({
+  return _standardSchema<BigintSchema<ErrorMessage<BigintIssue> | undefined>>({
     kind: 'schema',
     type: 'bigint',
     reference: bigint,

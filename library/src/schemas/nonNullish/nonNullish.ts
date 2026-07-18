@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type {
   InferNonNullishInput,
   InferNonNullishIssue,
@@ -77,7 +77,7 @@ export function nonNullish(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<NonNullishIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     NonNullishSchema<
       BaseSchema<unknown, unknown, BaseIssue<unknown>>,
       ErrorMessage<NonNullishIssue> | undefined

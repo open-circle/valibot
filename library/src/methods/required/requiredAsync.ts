@@ -29,7 +29,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Schema type.
@@ -356,7 +356,7 @@ export function requiredAsync(
   }
 
   // Return modified copy of schema
-  return _addStandardProp<
+  return _standardSchema<
     SchemaWithRequiredAsync<
       Schema,
       ObjectKeys<Schema> | undefined,

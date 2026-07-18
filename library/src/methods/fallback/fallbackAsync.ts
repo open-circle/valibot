@@ -12,7 +12,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 import { getFallback } from '../getFallback/index.ts';
 
 /**
@@ -89,7 +89,7 @@ export function fallbackAsync<
   schema: TSchema,
   fallback: TFallback
 ): SchemaWithFallbackAsync<TSchema, TFallback> {
-  return _addStandardProp<SchemaWithFallbackAsync<TSchema, TFallback>>({
+  return _standardSchema<SchemaWithFallbackAsync<TSchema, TFallback>>({
     ...schema,
     fallback,
     async: true,

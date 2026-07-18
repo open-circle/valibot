@@ -1,5 +1,5 @@
 import type { BaseSchema, SuccessDataset } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Unknown schema interface.
@@ -26,7 +26,7 @@ export interface UnknownSchema extends BaseSchema<unknown, unknown, never> {
  */
 // @__NO_SIDE_EFFECTS__
 export function unknown(): UnknownSchema {
-  return _addStandardProp<UnknownSchema>({
+  return _standardSchema<UnknownSchema>({
     kind: 'schema',
     type: 'unknown',
     reference: unknown,

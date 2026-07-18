@@ -7,8 +7,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _addStandardProp,
   _joinExpects,
+  _standardSchema,
   _stringify,
 } from '../../utils/index.ts';
 
@@ -89,7 +89,7 @@ export function picklist(
   options: PicklistOptions,
   message?: ErrorMessage<PicklistIssue>
 ): PicklistSchema<PicklistOptions, ErrorMessage<PicklistIssue> | undefined> {
-  return _addStandardProp<
+  return _standardSchema<
     PicklistSchema<PicklistOptions, ErrorMessage<PicklistIssue> | undefined>
   >({
     kind: 'schema',

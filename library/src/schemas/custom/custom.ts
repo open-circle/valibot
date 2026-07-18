@@ -3,7 +3,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { CustomIssue } from './types.ts';
 
 /**
@@ -69,7 +69,7 @@ export function custom<TInput>(
   check: Check,
   message?: ErrorMessage<CustomIssue>
 ): CustomSchema<TInput, ErrorMessage<CustomIssue> | undefined> {
-  return _addStandardProp<
+  return _standardSchema<
     CustomSchema<TInput, ErrorMessage<CustomIssue> | undefined>
   >({
     kind: 'schema',

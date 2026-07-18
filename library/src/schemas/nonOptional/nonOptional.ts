@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type {
   InferNonOptionalInput,
   InferNonOptionalIssue,
@@ -77,7 +77,7 @@ export function nonOptional(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<NonOptionalIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     NonOptionalSchema<
       BaseSchema<unknown, unknown, BaseIssue<unknown>>,
       ErrorMessage<NonOptionalIssue> | undefined

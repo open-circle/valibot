@@ -9,7 +9,7 @@ import type {
   OutputDataset,
   TupleItems,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { TupleIssue } from './types.ts';
 
 /**
@@ -84,7 +84,7 @@ export function tuple(
   items: TupleItems,
   message?: ErrorMessage<TupleIssue>
 ): TupleSchema<TupleItems, ErrorMessage<TupleIssue> | undefined> {
-  return _addStandardProp<
+  return _standardSchema<
     TupleSchema<TupleItems, ErrorMessage<TupleIssue> | undefined>
   >({
     kind: 'schema',

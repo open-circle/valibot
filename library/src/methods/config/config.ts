@@ -5,7 +5,7 @@ import type {
   Config,
   InferIssue,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Changes the local configuration of a schema.
@@ -21,7 +21,7 @@ export function config<
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
 >(schema: TSchema, config: Config<InferIssue<TSchema>>): TSchema {
-  return _addStandardProp<TSchema>({
+  return _standardSchema<TSchema>({
     ...schema,
     '~run'(dataset, config_) {
       return schema['~run'](dataset, { ...config_, ...config });

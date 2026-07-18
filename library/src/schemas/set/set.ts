@@ -6,7 +6,7 @@ import type {
   OutputDataset,
   SetPathItem,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { InferSetInput, InferSetOutput, SetIssue } from './types.ts';
 
 /**
@@ -74,7 +74,7 @@ export function set(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<SetIssue> | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     SetSchema<
       BaseSchema<unknown, unknown, BaseIssue<unknown>>,
       ErrorMessage<SetIssue> | undefined

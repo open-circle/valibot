@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   FailureDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Never issue interface.
@@ -70,7 +70,7 @@ export function never<
 export function never(
   message?: ErrorMessage<NeverIssue>
 ): NeverSchema<ErrorMessage<NeverIssue> | undefined> {
-  return _addStandardProp<NeverSchema<ErrorMessage<NeverIssue> | undefined>>({
+  return _standardSchema<NeverSchema<ErrorMessage<NeverIssue> | undefined>>({
     kind: 'schema',
     type: 'never',
     reference: never,

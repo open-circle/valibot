@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * String issue interface.
@@ -70,7 +70,7 @@ export function string<
 export function string(
   message?: ErrorMessage<StringIssue>
 ): StringSchema<ErrorMessage<StringIssue> | undefined> {
-  return _addStandardProp<StringSchema<ErrorMessage<StringIssue> | undefined>>({
+  return _standardSchema<StringSchema<ErrorMessage<StringIssue> | undefined>>({
     kind: 'schema',
     type: 'string',
     reference: string,

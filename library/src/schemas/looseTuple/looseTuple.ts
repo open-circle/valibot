@@ -9,7 +9,7 @@ import type {
   OutputDataset,
   TupleItems,
 } from '../../types/index.ts';
-import { _addIssue, _addStandardProp } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { LooseTupleIssue } from './types.ts';
 
 /**
@@ -74,7 +74,7 @@ export function looseTuple(
   items: TupleItems,
   message?: ErrorMessage<LooseTupleIssue>
 ): LooseTupleSchema<TupleItems, ErrorMessage<LooseTupleIssue> | undefined> {
-  return _addStandardProp<
+  return _standardSchema<
     LooseTupleSchema<TupleItems, ErrorMessage<LooseTupleIssue> | undefined>
   >({
     kind: 'schema',

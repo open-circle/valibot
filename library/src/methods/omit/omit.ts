@@ -32,7 +32,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _addStandardProp } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Schema type.
@@ -481,7 +481,7 @@ export function omit<
 
   // Rerturn modified copy of schema
   // @ts-expect-error
-  return _addStandardProp<SchemaWithOmit<TSchema, TKeys>>({
+  return _standardSchema<SchemaWithOmit<TSchema, TKeys>>({
     ...schema,
     entries,
   });

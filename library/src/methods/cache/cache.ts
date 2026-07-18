@@ -5,7 +5,7 @@ import type {
   InferIssue,
   InferOutput,
 } from '../../types/index.ts';
-import { _addStandardProp, _cloneDataset } from '../../utils/index.ts';
+import { _cloneDataset, _standardSchema } from '../../utils/index.ts';
 import { _LruCache } from './_LruCache.ts';
 import type { Cache, CacheConfig } from './types.ts';
 
@@ -79,7 +79,7 @@ export function cache(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   CacheConfig | undefined
 > {
-  return _addStandardProp<
+  return _standardSchema<
     SchemaWithCache<
       BaseSchema<unknown, unknown, BaseIssue<unknown>>,
       CacheConfig | undefined
