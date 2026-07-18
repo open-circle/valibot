@@ -5,9 +5,10 @@ source: /actions/maxLength/maxLength.ts
 contributors:
   - fabian-hiller
   - depsimon
+  - yslpn
 ---
 
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # maxLength
@@ -34,7 +35,9 @@ const Action = v.maxLength<TInput, TRequirement, TMessage>(
 
 ### Explanation
 
-With `maxLength` you can validate the length of a string or array. If the input does not match the `requirement`, you can use `message` to customize the error message.
+With `maxLength` you can validate the length of a string or array. For strings, length is measured like JavaScript's `value.length`, i.e. by UTF-16 code units. For arrays, length is measured by the number of items. If the input does not match the `requirement`, you can use `message` to customize the error message.
+
+> If you need to validate the maximum number of user-perceived characters, use <Link href="../maxGraphemes/">`maxGraphemes`</Link> instead.
 
 ## Returns
 
@@ -46,12 +49,12 @@ The following examples show how `maxLength` can be used.
 
 ### Maximum string length
 
-Schema to validate a string with a maximum length of 32 characters.
+Schema to validate a string with a maximum length of 32 UTF-16 code units.
 
 ```ts
 const MaxStringSchema = v.pipe(
   v.string(),
-  v.maxLength(32, 'The string must not exceed 32 characters.')
+  v.maxLength(32, 'The string must not exceed 32 UTF-16 code units.')
 );
 ```
 
@@ -79,6 +82,10 @@ The following APIs can be combined with `maxLength`.
 ### Methods
 
 <ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['maxGraphemes']} />
 
 ### Utils
 

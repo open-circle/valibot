@@ -72,6 +72,7 @@ describe('length', () => {
         'ABC',
         '123',
         'あああ', // 'あ' is 3 bytes but the total length of the string is 3
+        '😀a',
         '@#$',
       ]);
     });
@@ -109,6 +110,10 @@ describe('length', () => {
           '\n',
           '\n\t',
           'あ', // 'あ' is 3 bytes
+          '😀',
+          '😀😀',
+          '😀😀😀',
+          '👨‍👩‍👧‍👦',
           'ab',
           'abcd',
           '1',
