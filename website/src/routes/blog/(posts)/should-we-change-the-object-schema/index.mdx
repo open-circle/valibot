@@ -11,9 +11,9 @@ authors:
   - EltonLobo07
 ---
 
-import { Link } from '@builder.io/qwik-city';
+import { Link } from '~/components';
 
-Great news! Valibot v1 RC is just around the corner. There are only a few issues holding us back. One of them is [issue #983](https://github.com/fabian-hiller/valibot/issues/983), which may lead to a breaking change. That's why I want to discuss this with you before making a final decision. This blog post will explain the current situation and the reasons for the proposed changes.
+Great news! Valibot v1 RC is just around the corner. There are only a few issues holding us back. One of them is [issue #983](https://github.com/open-circle/valibot/issues/983), which may lead to a breaking change. That's why I want to discuss this with you before making a final decision. This blog post will explain the current situation and the reasons for the proposed changes.
 
 ## The problem
 
@@ -35,7 +35,7 @@ if ('key' in output) {
 
 ## The solution
 
-The solution to this mismatch is to finalize [PR #1013](https://github.com/fabian-hiller/valibot/pull/1013) and change the implementation of <Link href="/api/object/">`object`</Link> and <Link href="/api/optional/">`optional`</Link> to distinguish between missing and undefined object entries. To allow missing entries, <Link href="/api/optional/">`optional`</Link> must be used as the outermost schema of an object entry. To explicitly allow `undefined` as a value, another schema function called <Link href="/api/undefinedable/">`undefinedable`</Link> must be used.
+The solution to this mismatch is to finalize [PR #1013](https://github.com/open-circle/valibot/pull/1013) and change the implementation of <Link href="/api/object/">`object`</Link> and <Link href="/api/optional/">`optional`</Link> to distinguish between missing and undefined object entries. To allow missing entries, <Link href="/api/optional/">`optional`</Link> must be used as the outermost schema of an object entry. To explicitly allow `undefined` as a value, another schema function called <Link href="/api/undefinedable/">`undefinedable`</Link> must be used.
 
 {/* prettier-ignore */}
 ```ts
@@ -66,4 +66,4 @@ To fix this, we could add a new function that covers both. The problem is that t
 
 What do you think? Should we distinguish between missing and undefined object entries and fully support TypeScript's `exactOptionalPropertyTypes` configuration? If so, should we remove <Link href="/api/nullish/">`nullish`</Link> and only provide 3 strong primitives with <Link href="/api/optional/">`optional`</Link>, <Link href="/api/undefinedable/">`undefinedable`</Link> and <Link href="/api/nullable/">`nullable`</Link>? Or should we add 4 more functions to cover all possible combinations? If so, what names would you use?
 
-Your opinion matters to me. I encourage everyone to share their thoughts. Even quick feedback like "I like this ... and I don't like that ..." is welcome and will help to shape Valibot's future API design. Please discuss with us on [GitHub](https://github.com/fabian-hiller/valibot/discussions/1022) or share your thoughts on social media.
+Your opinion matters to me. I encourage everyone to share their thoughts. Even quick feedback like "I like this ... and I don't like that ..." is welcome and will help to shape Valibot's future API design. Please discuss with us on [GitHub](https://github.com/open-circle/valibot/discussions/1022) or share your thoughts on social media.

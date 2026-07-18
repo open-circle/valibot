@@ -1,0 +1,77 @@
+---
+cover: Valibot v1.4
+title: 'Valibot v1.4: String case transforms, local timestamps, and perf improvements'
+description: >-
+  Valibot v1.4 adds four string case transformation actions, a new validation
+  action for local ISO timestamps, and a round of performance and compatibility
+  improvements.
+published: 2026-05-05
+authors:
+  - fabian-hiller
+---
+
+import { Link } from '~/components';
+
+Valibot v1.4 adds four string case transformation actions for converting between common naming conventions, a new validation action for local ISO timestamps without timezone, and a round of performance and compatibility improvements.
+
+Huge thanks to [@ksaurav24](https://github.com/ksaurav24), [@heiwen](https://github.com/heiwen), [@compulim](https://github.com/compulim), [@ysknsid25](https://github.com/ysknsid25), [@alaycock-stripe](https://github.com/alaycock-stripe), [@IlyaSemenov](https://github.com/IlyaSemenov), and [@wszgrcy](https://github.com/wszgrcy) for their contributions to this release.
+
+## String case transformations
+
+Four new transformation actions handle the most common naming convention conversions: <Link href="/api/toCamelCase/">`toCamelCase`</Link>, <Link href="/api/toKebabCase/">`toKebabCase`</Link>, <Link href="/api/toPascalCase/">`toPascalCase`</Link>, and <Link href="/api/toSnakeCase/">`toSnakeCase`</Link>.
+
+These actions split words on `_`, `-`, ASCII whitespace, and case or acronym boundaries, so they work on a wide range of inputs without preprocessing.
+
+```ts
+import * as v from 'valibot';
+
+const SlugSchema = v.pipe(v.string(), v.toKebabCase());
+
+v.parse(SlugSchema, 'My Blog Post'); // 'my-blog-post'
+v.parse(SlugSchema, 'getUserByID'); // 'get-user-by-id'
+v.parse(SlugSchema, 'first_name'); // 'first-name'
+```
+
+This is especially useful at API boundaries: normalizing form fields before persisting, or converting incoming JSON keys before passing them to a typed service.
+
+## Local ISO timestamps
+
+<Link href="/api/isoTimestamp/">`isoTimestamp`</Link> requires a timezone
+designator and <Link href="/api/isoDateTime/">`isoDateTime`</Link> only
+validates `hh:mm`, leaving a gap for local date-times that include seconds, such
+as `1995-03-31T00:00:00`. The new
+<Link href="/api/isoDateTimeSecond/">`isoDateTimeSecond`</Link> action fills
+that gap.
+
+```ts
+import * as v from 'valibot';
+
+const EventSchema = v.object({
+  startsAt: v.pipe(v.string(), v.isoDateTimeSecond()),
+});
+
+v.parse(EventSchema, { startsAt: '1995-03-31T00:00:00' }); // ok
+v.parse(EventSchema, { startsAt: '1995-03-31 00:00:00' }); // ok
+```
+
+This is useful for local-only events, schedules, and database columns like PostgreSQL's `timestamp` (without timezone), where attaching a UTC offset would be incorrect.
+
+## Performance improvements
+
+Hot validation paths now allocate fewer objects, and a long-standing `RangeError` that could occur when spreading very large issue arrays has been fixed. Together, this makes validating large schemas both faster and safer.
+
+TypeScript performance has also improved significantly. The internal types behind <Link href="/api/object/">`object`</Link> and <Link href="/api/record/">`record`</Link> schemas — particularly when combined with <Link href="/api/pipe/">`pipe`</Link> and the <Link href="/api/readonly/">`readonly`</Link> action — have been simplified, making type inference and autocomplete noticeably faster on large codebases.
+
+If you have ever hit a `RangeError` with a large schema, noticed allocation pressure in a validation hot path, or felt sluggish autocomplete on large object schemas, this release should resolve it.
+
+## Compatibility fixes
+
+The build target has been changed to ES2020 so the distributed output stays compatible with environments that lack newer syntax. As part of the same effort, `Object.hasOwn` (ES2022) was replaced with `Object.prototype.hasOwnProperty.call` to keep Valibot working on runtimes that have not yet shipped the newer builtin.
+
+The <Link href="/api/intersect/">`intersect`</Link> schema no longer mutates input values, so frozen objects and arrays can now be merged without throwing. The <Link href="/api/creditCard/">`creditCard`</Link> action also rejects Mastercard numbers with invalid lengths instead of accepting them.
+
+## What's next?
+
+We will continue to focus on performance, broader runtime compatibility, and refining the developer experience around common validation workflows. If there is a validator, transformation, or guide you would like to see next, let us know on [Discord](https://discord.gg/Jwf9vjvReZ) or open a discussion on [GitHub](https://github.com/open-circle/valibot/discussions).
+
+New to Valibot? Check our [quick start guide](/guides/quick-start/). Coming from Zod? Check our [migration guide](/guides/migrate-from-zod/).

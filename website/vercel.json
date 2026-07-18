@@ -1,5 +1,41 @@
 {
-  "buildCommand": "cd ../library && npm run build && cd ../packages/to-json-schema && npm run build && cd ../../website && npm run sitemap && npm run llms && npm run build",
+  "installCommand": "COREPACK_ENABLE_DOWNLOAD_PROMPT=0 corepack pnpm@11.5.0 install --frozen-lockfile",
+  "buildCommand": "cd ../library && npm run build && cd ../packages/to-json-schema && npm run build && cd ../../codemod/zod-to-valibot && pnpm build && cd ../../website && npm run sitemap && npm run llms && npm run og && npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/guides",
+      "destination": "/guides/introduction/",
+      "statusCode": 302
+    },
+    {
+      "source": "/guides/",
+      "destination": "/guides/introduction/",
+      "statusCode": 302
+    },
+    {
+      "source": "/guides/errors",
+      "destination": "/guides/issues/",
+      "statusCode": 302
+    },
+    {
+      "source": "/guides/errors/",
+      "destination": "/guides/issues/",
+      "statusCode": 302
+    },
+    {
+      "source": "/guides/migrate-from-v0.30.0",
+      "destination": "/guides/migrate-to-v0.31.0/",
+      "statusCode": 301
+    },
+    {
+      "source": "/guides/migrate-from-v0.30.0/",
+      "destination": "/guides/migrate-to-v0.31.0/",
+      "statusCode": 301
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)?service-worker.js",
@@ -20,6 +56,19 @@
       ]
     },
     {
+      "source": "/assets/(.*)-index.min.mjs",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, s-maxage=31536000, immutable"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
       "source": "/assets/(.*)",
       "headers": [
         {
@@ -29,11 +78,38 @@
       ]
     },
     {
-      "source": "/assets/(.*)-index.min.js",
+      "source": "/fonts/(.*)",
       "headers": [
         {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, s-maxage=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/og/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, s-maxage=86400"
+        }
+      ]
+    },
+    {
+      "source": "/q-data.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, s-maxage=31536000, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)/q-data.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, s-maxage=31536000, stale-while-revalidate=604800"
         }
       ]
     }

@@ -34,13 +34,13 @@
 
 - [Naming](/guides/naming-convention/)
 - [Async](/guides/async-validation/)
-- [JSON Schema](/guides/json-schema/)
 - [i18n](/guides/internationalization/)
+- [JSON Schema](/guides/json-schema/)
+- [Internals](/guides/internal-architecture/)
+- [Integration](/guides/integrate-valibot/)
+- [Extension](/guides/extend-valibot/)
 
 ## Migration
 
 - [To v0.31.0](/guides/migrate-to-v0.31.0/)
 - [From Zod](/guides/migrate-from-zod/)
-- [From Ajv](/guides/migrate-from-ajv/)
-- [From Joi](/guides/migrate-from-joi/)
-- [From Yup](/guides/migrate-from-yup/)

@@ -1,3 +1,4 @@
+import { ABORT_EARLY_CONFIG } from '../../const.ts';
 import type { BaseIssue, BaseSchema, InferInput } from '../../types/index.ts';
 
 /**
@@ -13,5 +14,5 @@ import type { BaseIssue, BaseSchema, InferInput } from '../../types/index.ts';
 export function is<
   const TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
 >(schema: TSchema, input: unknown): input is InferInput<TSchema> {
-  return !schema['~run']({ value: input }, { abortEarly: true }).issues;
+  return !schema['~run']({ value: input }, ABORT_EARLY_CONFIG).issues;
 }

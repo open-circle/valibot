@@ -9,7 +9,7 @@ contributors:
   - lesleh
 ---
 
-import { Link } from '@builder.io/qwik-city';
+import { Link } from '~/components';
 
 # Migrate to v0.31.0
 
@@ -17,7 +17,7 @@ Migrating Valibot from an older version to v0.31.0 isn't complicated. Except for
 
 ## Automatic upgrade
 
-We worked together with [Codemod](https://codemod.com/registry/valibot-migrate-to-v0-31-0) and [Grit](https://docs.grit.io/registry/github.com/fabian-hiller/valibot/migrate_to_v0_31_0) to automatically upgrade your schemas to the new version with a single CLI command. Both codemods are similar. You can use one or the other. Simply run the command in the directory of your project.
+We worked together with [Codemod](https://codemod.com/registry/valibot-migrate-to-v0-31-0) and [Grit](https://docs.grit.io/registry/github.com/open-circle/valibot/migrate_to_v0_31_0) to automatically upgrade your schemas to the new version with a single CLI command. Both codemods are similar. You can use one or the other. Simply run the command in the directory of your project.
 
 > We recommend using a version control system like [Git](https://git-scm.com/) so that you can revert changes if the codemod screws something up.
 
@@ -26,10 +26,10 @@ We worked together with [Codemod](https://codemod.com/registry/valibot-migrate-t
 npx codemod valibot/migrate-to-v0.31.0
 
 # Grit
-npx @getgrit/cli apply github.com/fabian-hiller/valibot#migrate_to_v0_31_0
+npx @getgrit/cli apply github.com/open-circle/valibot#migrate_to_v0_31_0
 ```
 
-Please create an [issue](https://github.com/fabian-hiller/valibot/issues/new) if you encounter any problems or unexpected behavior with the provided codemods.
+Please create an [issue](https://github.com/open-circle/valibot/issues/new) if you encounter any problems or unexpected behavior with the provided codemods.
 
 ## Restructure code
 
@@ -43,7 +43,7 @@ const Schema = v.string([v.email()]);
 const Schema = v.pipe(v.string(), v.email());
 ```
 
-We will be publishing a [blog post](/blog/valibot-v0.31.0-is-finally-available/) soon explaining all the benefits of this change. In the meantime, you can read the description of discussion [#463](https://github.com/fabian-hiller/valibot/discussions/463) and PR [#502](https://github.com/fabian-hiller/valibot/pull/502), which introduced this change.
+We will be publishing a [blog post](/blog/valibot-v0.31.0-is-finally-available/) soon explaining all the benefits of this change. In the meantime, you can read the description of discussion [#463](https://github.com/open-circle/valibot/discussions/463) and PR [#502](https://github.com/open-circle/valibot/pull/502), which introduced this change.
 
 ## Change names
 

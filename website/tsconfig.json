@@ -9,7 +9,8 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "incremental": true,
@@ -21,6 +22,6 @@
       "~/*": ["./src/*"]
     }
   },
-  "files": ["./.eslintrc.cjs"],
-  "include": ["scripts", "src", "./*.d.ts", "./*.config.ts"]
+  "include": ["scripts", "src", "./*.d.ts", "./*.config.ts"],
+  "exclude": ["src/routes/guides/(migration)/migrate-from-zod/zod"]
 }

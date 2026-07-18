@@ -66,8 +66,10 @@ export interface RfcEmailAction<
  * Creates a [RFC email](https://datatracker.ietf.org/doc/html/rfc5322#section-3.4.1)
  * validation action.
  *
- * Hint: This validation action intentionally validates the entire RFC 5322
- * specification. If you are interested in an action that only covers common
+ * Hint: This validation action uses the regex defined by the HTML Living
+ * Standard for `<input type="email">`, which covers most of RFC 5322 but
+ * not all of it. For example, quoted local parts and comments are not
+ * supported. If you are interested in an action that only validates common
  * email addresses, please use the `email` action instead.
  *
  * @returns A RFC email action.
@@ -81,8 +83,10 @@ export function rfcEmail<TInput extends string>(): RfcEmailAction<
  * Creates a [RFC email](https://datatracker.ietf.org/doc/html/rfc5322#section-3.4.1)
  * validation action.
  *
- * Hint: This validation action intentionally validates the entire RFC 5322
- * specification. If you are interested in an action that only covers common
+ * Hint: This validation action uses the regex defined by the HTML Living
+ * Standard for `<input type="email">`, which covers most of RFC 5322 but
+ * not all of it. For example, quoted local parts and comments are not
+ * supported. If you are interested in an action that only validates common
  * email addresses, please use the `email` action instead.
  *
  * @param message The error message.

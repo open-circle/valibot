@@ -6,8 +6,7 @@ contributors:
   - fabian-hiller
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # email
@@ -31,7 +30,7 @@ const Action = v.email<TInput, TMessage>(message);
 
 With `email` you can validate the formatting of a string. If the input is not an email, you can use `message` to customize the error message.
 
-> This validation action intentionally only validates common email addresses. If you are interested in an action that covers the entire specification, please use the <Link href="../rfcEmail/">`rfcEmail`</Link> action instead.
+> This validation action intentionally only validates common email addresses. If you are interested in an action that covers a broader subset of RFC 5322 addresses, please use the <Link href="../rfcEmail/">`rfcEmail`</Link> action instead.
 
 ## Returns
 

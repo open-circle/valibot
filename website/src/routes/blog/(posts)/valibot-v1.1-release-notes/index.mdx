@@ -10,7 +10,7 @@ authors:
   - EltonLobo07
 ---
 
-import { Link } from '@builder.io/qwik-city';
+import { Link } from '~/components';
 
 Valibot v1.1 is out! This version comes with many new actions and methods to simplify your code even more! For example, you can now define a custom error message with our new <Link href="/api/message/">`message`</Link> method for multiple schemas and actions at once, or use our new <Link href="/api/summarize/">`summarize`</Link> method to summarize your validation errors into a pretty-printable multi-line string.
 
@@ -72,7 +72,7 @@ Using the new <Link href="/api/summarize/">`summarize`</Link> method, you can no
   → at password
 ```
 
-We will consider using <Link href="/api/summarize/">`summarize`</Link> for the default error message when throwing a <Link href="/api/ValiError/">`ValiError`</Link> for Valibot's next major release. Please join [this issue](https://github.com/fabian-hiller/valibot/issues/1139) on GitHub to discuss with us.
+We will consider using <Link href="/api/summarize/">`summarize`</Link> for the default error message when throwing a <Link href="/api/ValiError/">`ValiError`</Link> for Valibot's next major release. Please join [this issue](https://github.com/open-circle/valibot/issues/1139) on GitHub to discuss with us.
 
 ## Extract metadata with one line
 
@@ -119,10 +119,10 @@ const ProductSchema = v.pipe(
 );
 ```
 
-For a full list of new features and changes, please see [the release notes](https://github.com/fabian-hiller/valibot/releases/tag/v1.1.0) on GitHub.
+For a full list of new features and changes, please see [the release notes](https://github.com/open-circle/valibot/releases/tag/v1.1.0) on GitHub.
 
 ## The future is bright!
 
 [@EltonLobo07](https://github.com/EltonLobo07) has started working on an official Zod-to-Valibot codemod! We will be releasing some updates and demos soon. We also plan to focus a bit more on educating developers on the benefits of choosing Valibot. Stay tuned for more content on social media and this blog in the coming weeks and months!
 
-We have also started using [milestones on GitHub](https://github.com/fabian-hiller/valibot/milestones) to keep track of our progress and give you a better overview of what we are currently working on. Feel free to take a look at what's coming in Valibot v1.2 and beyond and please contact us if you have any questions or suggestions. We are always happy to hear from you!
+We have also started using [milestones on GitHub](https://github.com/open-circle/valibot/milestones) to keep track of our progress and give you a better overview of what we are currently working on. Feel free to take a look at what's coming in Valibot v1.2 and beyond and please contact us if you have any questions or suggestions. We are always happy to hear from you!

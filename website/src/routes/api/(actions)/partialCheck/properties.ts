@@ -76,7 +76,7 @@ export const properties: Record<string, PropertyProps> = {
     type: {
       type: 'custom',
       name: 'ValidPaths',
-      href: '../ValidPaths/',
+      href: './ValidPaths/',
       generics: [
         {
           type: 'custom',

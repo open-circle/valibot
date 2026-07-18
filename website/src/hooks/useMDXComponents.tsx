@@ -1,23 +1,31 @@
-import { $, component$, Slot, useSignal } from '@builder.io/qwik';
-import { useLocation } from '@builder.io/qwik-city';
+import {
+  $,
+  component$,
+  Slot,
+  useSignal,
+  useVisibleTask$,
+} from '@builder.io/qwik';
 import lz from 'lz-string';
 import { IconButton } from '~/components';
 import { useResetSignal } from '~/hooks';
 import { CheckIcon, CopyIcon, PlayIcon } from '~/icons';
 import { trackEvent } from '~/utils';
 
-type PreProps = {
-  class: string;
-};
-
 /**
  * Pre component for rendering code snippets.
  */
-const Pre = component$<PreProps>((props) => {
-  // Use location and signals
-  const location = useLocation();
+const Pre = component$(() => {
+  // Use element and state signals
   const preElement = useSignal<HTMLPreElement>();
+  const isValibotCode = useSignal(false);
   const copied = useResetSignal(false);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(() => {
+    if (preElement.value?.innerText.includes("import * as v from 'valibot'")) {
+      isValibotCode.value = true;
+    }
+  });
 
   /**
    * Copies the current code of the <pre /> element to the clipboard.
@@ -47,7 +55,7 @@ const Pre = component$<PreProps>((props) => {
 
   return (
     <div class="code-wrapper group/code relative overflow-hidden rounded-2xl border-2 border-slate-200 lg:rounded-3xl lg:border-[3px] dark:border-slate-800">
-      <div class="absolute right-5 top-5 hidden space-x-5 group-hover/code:flex lg:right-10 lg:top-10">
+      <div class="absolute top-5 right-5 hidden gap-5 group-hover/code:flex lg:top-10 lg:right-10">
         <IconButton
           type="button"
           variant="secondary"
@@ -61,22 +69,21 @@ const Pre = component$<PreProps>((props) => {
             <CopyIcon class="h-[18px]" />
           )}
         </IconButton>
-        {props.class === 'language-ts' &&
-          location.url.pathname.startsWith('/guides/') && (
-            <IconButton
-              type="button"
-              variant="secondary"
-              label="Execute code"
-              hideLabel
-              onClick$={openPlayground}
-            >
-              <PlayIcon class="h-[16px]" />
-            </IconButton>
-          )}
+        {isValibotCode.value && (
+          <IconButton
+            type="button"
+            variant="secondary"
+            label="Execute code"
+            hideLabel
+            onClick$={openPlayground}
+          >
+            <PlayIcon class="h-4" />
+          </IconButton>
+        )}
       </div>
       <pre
         ref={preElement}
-        class="flex min-h-20 items-center overflow-x-auto p-5 leading-relaxed text-slate-700 md:text-lg md:leading-relaxed lg:min-h-[120px] lg:p-10 lg:text-xl lg:leading-relaxed dark:text-slate-300"
+        class="shiki flex min-h-20 items-center overflow-x-auto p-5 leading-relaxed text-slate-700 md:text-lg lg:min-h-[120px] lg:p-10 lg:text-xl dark:text-slate-300"
       >
         <Slot />
       </pre>

@@ -27,8 +27,8 @@ import {
 import { useResetSignal } from '~/hooks';
 import { BinIcon, CheckIcon, CopyIcon, PlayIcon, ShareIcon } from '~/icons';
 import { trackEvent } from '~/utils';
-import valibotCode from '../../../../library/dist/index.min.js?url';
-import valibotToJsonSchemaCode from '../../../../packages/to-json-schema/dist/index.min.js?url';
+import valibotCode from '../../../../library/dist/index.min.mjs?url';
+import valibotToJsonSchemaCode from '../../../../packages/to-json-schema/dist/index.min.mjs?url';
 import editorCode from './editorCode.ts?raw';
 import iframeCode from './iframeCode.js?raw';
 
@@ -136,11 +136,8 @@ export default component$(() => {
    */
   const executeCode = $(() => {
     // Open side bar on smaller devices if it's closed
-    if (
-      window.innerWidth < 1024 &&
-      (!toggle.value || toggle.value.state === 'closed')
-    ) {
-      toggle.submit({ state: 'opened' });
+    if (window.innerWidth < 1024 && !toggle.value) {
+      toggle.value = true;
     }
 
     // Update code of iframe
@@ -171,7 +168,6 @@ export default component$(() => {
    * Captures logs from the iframe.
    */
   const captureLogs = $((event: MessageEvent<MessageEventData>) => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (event.data.type === 'log') {
       logs.value = [...logs.value, event.data.log];
     }
@@ -224,15 +220,20 @@ export default component$(() => {
 
   return (
     <main
-      class="flex w-full flex-1 flex-col lg:flex-row lg:space-x-5 lg:px-10 lg:py-20 2xl:max-w-[1700px] 2xl:space-x-7 2xl:self-center"
+      class="flex w-full flex-1 flex-col lg:flex-row lg:gap-5 lg:px-10 lg:py-20 2xl:max-w-[1700px] 2xl:gap-7 2xl:self-center"
       window:onMessage$={captureLogs}
       window:onKeyDown$={[preventDefault, handleKeyDown]}
       window:onResize$={resetSideBarWidth}
     >
       <div ref={editorElement} class="flex flex-1 overflow-visible lg:relative">
-        <CodeEditor value={initialCode} model={model} onSave$={saveCode} />
+        <CodeEditor
+          class="lg:rounded-3xl lg:border-[3px] lg:border-slate-200 lg:dark:border-slate-800"
+          value={initialCode}
+          model={model}
+          onSave$={saveCode}
+        />
         <EditorButtons
-          class="!hidden lg:!absolute lg:right-10 lg:top-10 lg:z-10 lg:!flex"
+          class="hidden! lg:absolute! lg:top-10 lg:right-10 lg:z-10 lg:flex!"
           model={model}
           executeCode$={executeCode}
         />
@@ -257,7 +258,7 @@ export default component$(() => {
           executeCode$={executeCode}
         />
         <IconButton
-          class="!absolute right-8 top-8 z-10 lg:right-10 lg:top-10"
+          class="absolute! top-8 right-8 z-10 lg:top-10 lg:right-10"
           type="button"
           variant="secondary"
           label="Clear logs"
@@ -363,7 +364,6 @@ const EditorButtons = component$<EditorButtonsProps>(
       const url = location.url.href;
 
       // Share URL or copy it to clipboard
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (navigator.share) {
         navigator.share({ title: 'Playground', url });
       } else {
@@ -376,7 +376,7 @@ const EditorButtons = component$<EditorButtonsProps>(
     });
 
     return (
-      <div class={clsx('flex space-x-6', props.class)}>
+      <div class={clsx('flex gap-6', props.class)}>
         <IconButton
           type="button"
           variant="secondary"
