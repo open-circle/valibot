@@ -24,6 +24,9 @@ export default tseslint.config(
     },
     plugins: { jsdoc },
     settings: {
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx'],
+      },
       'import/resolver': {
         typescript: {
           project: './tsconfig.json',
@@ -39,6 +42,7 @@ export default tseslint.config(
 
       // Import
       'import/extensions': ['error', 'always'], // Require file extensions
+      'import/no-cycle': 'error', // Prevent circular dependencies, which can corrupt module state under Vitest's `isolate: false` and cause flaky tests
 
       // JSDoc
       'jsdoc/tag-lines': ['error', 'any', { startLines: 1 }],
