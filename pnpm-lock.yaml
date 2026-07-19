@@ -189,6 +189,9 @@ importers:
 
   website:
     dependencies:
+      '@valibot/to-json-schema':
+        specifier: workspace:*
+        version: link:../packages/to-json-schema
       '@valibot/zod-to-valibot':
         specifier: workspace:*
         version: link:../codemod/zod-to-valibot
@@ -5884,6 +5887,7 @@ packages:
 
   stream-to-promise@2.2.0:
     resolution: {integrity: sha512-HAGUASw8NT0k8JvIVutB2Y/9iBk7gpgEyAudXwNJmZERdMITGdajOa4VJfD/kNiA3TppQpTP4J+CtcHwdzKBAw==}
+    deprecated: Deprecated. Use node:stream/promises and node:stream/consumers instead.
 
   string-width@4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}

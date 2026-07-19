@@ -1,0 +1,24 @@
+/**
+ * Constants of our MCP server that are shared between the Worker runtime and
+ * our build scripts (e.g. the generation of the MCP server card). This module
+ * is intentionally free of imports so that build scripts can use it without
+ * pulling in runtime dependencies.
+ */
+
+// Protocol versions supported by our MCP server with the latest one first
+export const SUPPORTED_VERSIONS = ['2025-06-18', '2025-03-26'] as const;
+export const LATEST_VERSION = SUPPORTED_VERSIONS[0];
+
+// Capabilities of our MCP server
+export const CAPABILITIES = { tools: { listChanged: false } } as const;
+
+// Info about our MCP server shared with clients and our MCP server card
+export const SERVER_INFO = {
+  name: 'valibot-docs',
+  title: 'Valibot Documentation',
+  version: '1.0.0',
+} as const;
+
+// Instructions to help clients use our MCP server effectively
+export const INSTRUCTIONS =
+  'Valibot is the modular and type safe schema library for validating structural data. Its API is divided between schemas (data types like v.string and v.object), methods (operate on schemas like v.parse and v.pipe) and actions (validations and transformations like v.email and v.minLength that are used inside v.pipe). Import everything with `import * as v from \'valibot\'`. Do not confuse Valibot with Zod: Valibot uses functions and pipelines instead of chained methods. Use search_docs to find relevant pages, get_doc to read a page and list_docs for a complete overview. For migration from Zod, read the page at path "guides/migrate-from-zod".';

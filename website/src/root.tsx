@@ -29,8 +29,10 @@ export default component$(() => {
           Every documentation page is available as Markdown by replacing the
           trailing slash of its URL with ".md" (e.g. "/guides/introduction/"
           becomes "/guides/introduction.md") or by requesting it with the
-          "Accept: text/markdown" header. We also provide a machine-readable
-          index of all Markdown resources at <a href="/llms.txt">/llms.txt</a>.
+          "Accept: text/markdown" header. An MCP server with tools to search and
+          read this documentation is available at "/mcp". We also provide a
+          machine-readable index of all Markdown resources at{' '}
+          <a href="/llms.txt">/llms.txt</a>.
         </div>
         <Providers />
       </body>
