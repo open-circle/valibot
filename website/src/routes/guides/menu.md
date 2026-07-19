@@ -44,3 +44,9 @@
 
 - [To v0.31.0](/guides/migrate-to-v0.31.0/)
 - [From Zod](/guides/migrate-from-zod/)
+- [From TypeBox](/guides/migrate-from-typebox/)
+- [From Joi](/guides/migrate-from-joi/)
+- [From Yup](/guides/migrate-from-yup/)
+- [From class-validator](/guides/migrate-from-class-validator/)
+- [From Superstruct](/guides/migrate-from-superstruct/)
+- [From io-ts](/guides/migrate-from-io-ts/)
