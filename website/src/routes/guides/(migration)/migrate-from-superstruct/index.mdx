@@ -1,0 +1,150 @@
+---
+title: Migrate from Superstruct
+description: >-
+  Migrating from Superstruct to Valibot is particularly easy since both
+  libraries share the same functional and composable design.
+contributors:
+  - fabian-hiller
+---
+
+import { Link } from '~/components';
+
+# Migrate from Superstruct
+
+Migrating from [Superstruct](https://github.com/ianstormtaylor/superstruct) to Valibot is particularly easy since both libraries share the same functional and composable design. Most structs map directly to a Valibot schema. The following guide will help you migrate step by step and also point out important differences.
+
+## Replace imports
+
+The first thing to do after <Link href="../installation/">installing</Link> Valibot is to update your imports. We recommend importing Valibot with a wildcard, which gives you access to the entire API through a single variable while remaining fully tree-shakable.
+
+```ts
+// Change this
+import { object, string, assert } from 'superstruct';
+const Schema = object({ key: string() });
+
+// To this
+import * as v from 'valibot';
+const Schema = v.strictObject({ key: v.string() });
+```
+
+There is one detail to watch out for. Superstruct's methods expect the value as the first argument and the struct as the second. In Valibot, the schema always comes first.
+
+```ts
+// Change this
+assert(input, Schema);
+
+// To this
+v.assert(Schema, input);
+```
+
+## Restructure code
+
+Superstruct wraps structs with refinement functions like `size` and `pattern`. In Valibot you use <Link href="../pipelines/">pipelines</Link> to do the same thing. This is a function that starts with a schema and is followed by up to 19 validation or transformation actions.
+
+```ts
+// Change this
+const Schema = size(pattern(string(), /^[a-z]+$/), 3, 30);
+
+// To this
+const Schema = v.pipe(
+  v.string(),
+  v.regex(/^[a-z]+$/),
+  v.minLength(3),
+  v.maxLength(30)
+);
+```
+
+The validation methods map almost one-to-one. `assert` keeps its name, `is` keeps its name with flipped arguments, `validate` returns a result object with <Link href="/api/safeParse/">`safeParse`</Link>, and `create` becomes <Link href="/api/parse/">`parse`</Link>.
+
+```ts
+// Change this
+const [error, value] = validate(input, Schema);
+
+// To this
+const result = v.safeParse(Schema, input);
+if (result.success) {
+  console.log(result.output);
+} else {
+  console.log(result.issues);
+}
+```
+
+We recommend that you read our <Link href="../mental-model/">mental model</Link> guide to understand how the individual functions of Valibot's modular API work together.
+
+## Coercion and defaults
+
+Superstruct separates validation from coercion. Coercions and defaults defined with `coerce`, `defaulted` and `trimmed` are only applied when calling `create`, but not when calling `assert` or `is`. Valibot does not make this distinction. Transformations and default values are part of the schema and are always applied when parsing.
+
+```ts
+// Change this
+const Schema = defaulted(trimmed(string()), 'foo');
+const value = create(input, Schema);
+
+// To this
+const Schema = v.optional(v.pipe(v.string(), v.trim()), 'foo');
+const value = v.parse(Schema, input);
+```
+
+For type coercions defined with `coerce`, use a pipeline with an explicit <Link href="/api/transform/">`transform`</Link> action or one of the dedicated transformation actions like <Link href="/api/toNumber/">`toNumber`</Link> or <Link href="/api/toDate/">`toDate`</Link>.
+
+```ts
+// Change this
+const Schema = coerce(number(), string(), (value) => parseFloat(value));
+
+// To this
+const Schema = v.pipe(v.string(), v.decimal(), v.toNumber());
+```
+
+## Change names
+
+Most of the names are the same as in Superstruct. However, there are some exceptions. The following table shows all names that have changed.
+
+| Superstruct    | Valibot                                                                                                                                                                                                   |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `assign`       | <Link href="../intersections/#merge-objects">Object merging</Link>                                                                                                                                        |
+| `coerce`       | <Link href="/api/pipe/">`pipe`</Link> and <Link href="/api/transform/">`transform`</Link>                                                                                                                 |
+| `create`       | <Link href="/api/parse/">`parse`</Link>                                                                                                                                                                   |
+| `defaulted`    | <Link href="/api/optional/">`optional`</Link>                                                                                                                                                             |
+| `define`       | <Link href="/api/custom/">`custom`</Link>                                                                                                                                                                 |
+| `dynamic`      | <Link href="/api/lazy/">`lazy`</Link>                                                                                                                                                                     |
+| `enums`        | <Link href="/api/picklist/">`picklist`</Link>                                                                                                                                                             |
+| `func`         | <Link href="/api/function/">`function`</Link>                                                                                                                                                             |
+| `Infer`        | <Link href="/api/InferOutput/">`InferOutput`</Link>                                                                                                                                                       |
+| `integer`      | <Link href="/api/number/">`number`</Link> with <Link href="/api/integer/">`integer`</Link>                                                                                                                |
+| `intersection` | <Link href="/api/intersect/">`intersect`</Link>                                                                                                                                                           |
+| `mask`         | <Link href="/api/parse/">`parse`</Link> with <Link href="/api/object/">`object`</Link>                                                                                                                    |
+| `max`          | <Link href="/api/maxValue/">`maxValue`</Link>, <Link href="/api/ltValue/">`ltValue`</Link>                                                                                                                |
+| `min`          | <Link href="/api/minValue/">`minValue`</Link>, <Link href="/api/gtValue/">`gtValue`</Link>                                                                                                                |
+| `nonempty`     | <Link href="/api/nonEmpty/">`nonEmpty`</Link>                                                                                                                                                             |
+| `object`       | <Link href="/api/strictObject/">`strictObject`</Link>                                                                                                                                                     |
+| `pattern`      | <Link href="/api/regex/">`regex`</Link>                                                                                                                                                                   |
+| `refine`       | <Link href="/api/check/">`check`</Link>                                                                                                                                                                   |
+| `size`         | <Link href="/api/minLength/">`minLength`</Link>, <Link href="/api/maxLength/">`maxLength`</Link>, <Link href="/api/minValue/">`minValue`</Link>, <Link href="/api/maxValue/">`maxValue`</Link> and others |
+| `StructError`  | <Link href="/api/ValiError/">`ValiError`</Link>                                                                                                                                                           |
+| `trimmed`      | <Link href="/api/trim/">`trim`</Link>                                                                                                                                                                     |
+| `type`         | <Link href="/api/looseObject/">`looseObject`</Link>                                                                                                                                                       |
+| `validate`     | <Link href="/api/safeParse/">`safeParse`</Link>                                                                                                                                                           |
+
+## Other details
+
+Below are some more details that may be helpful when migrating from Superstruct to Valibot.
+
+### Unknown object keys
+
+Superstruct provides three behaviors for unknown object keys, and each of them has a direct equivalent in Valibot. `object` rejects unknown keys, which matches <Link href="/api/strictObject/">`strictObject`</Link>. `type` allows and keeps unknown keys, which matches <Link href="/api/looseObject/">`looseObject`</Link>. The `mask` method removes unknown keys, which matches the default behavior of <Link href="/api/object/">`object`</Link> when parsing. See the <Link href="../objects/">objects</Link> guide for more details.
+
+```ts
+// Change this
+const value = mask(input, object({ key: string() }));
+
+// To this
+const value = v.parse(v.object({ key: v.string() }), input);
+```
+
+### Error details
+
+Superstruct's `StructError` provides a `failures` method that returns all validation failures. In Valibot, the issues are directly available on the result of <Link href="/api/safeParse/">`safeParse`</Link> or via the `issues` property of a <Link href="/api/ValiError/">`ValiError`</Link>. The <Link href="/api/flatten/">`flatten`</Link>, <Link href="/api/summarize/">`summarize`</Link> and <Link href="/api/getDotPath/">`getDotPath`</Link> methods help you work with them. See the <Link href="../issues/">issues</Link> guide for more details.
+
+### Async validation
+
+Superstruct does not support asynchronous validation. With Valibot, you get it for free. Functions like <Link href="/api/pipeAsync/">`pipeAsync`</Link> and <Link href="/api/checkAsync/">`checkAsync`</Link> allow you to run asynchronous logic, such as database checks, as part of your schema. See the <Link href="../async-validation/">async guide</Link> for more details.

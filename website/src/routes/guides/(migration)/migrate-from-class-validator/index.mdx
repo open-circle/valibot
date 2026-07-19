@@ -1,0 +1,204 @@
+---
+title: Migrate from class-validator
+description: >-
+  Migrating from class-validator to Valibot means switching from decorated
+  classes to schemas, which removes a lot of boilerplate.
+contributors:
+  - fabian-hiller
+---
+
+import { Link } from '~/components';
+
+# Migrate from class-validator
+
+Migrating from [class-validator](https://github.com/typestack/class-validator) to Valibot is a bigger paradigm shift than for other libraries, since you are switching from decorated classes to schemas. In return, it removes a lot of boilerplate. You no longer need experimental decorators, `reflect-metadata` or class-transformer, and your schemas validate plain data directly, with the TypeScript type inferred automatically. The following guide will help you migrate step by step.
+
+## Replace classes with schemas
+
+Each decorated class becomes a schema, and each decorator becomes a schema function or an action within a <Link href="../pipelines/">pipeline</Link>. Since the class no longer exists, you infer the TypeScript type from the schema with <Link href="/api/InferOutput/">`InferOutput`</Link>.
+
+```ts
+// Change this
+import { IsEmail, IsInt, IsString, Min } from 'class-validator';
+
+class User {
+  @IsString()
+  name: string;
+
+  @IsEmail()
+  email: string;
+
+  @IsInt()
+  @Min(0)
+  age: number;
+}
+
+// To this
+import * as v from 'valibot';
+
+const UserSchema = v.object({
+  name: v.string(),
+  email: v.pipe(v.string(), v.email()),
+  age: v.pipe(v.number(), v.integer(), v.minValue(0)),
+});
+
+type User = v.InferOutput<typeof UserSchema>;
+```
+
+## Restructure code
+
+With class-validator, you first convert plain data to a class instance, for example with class-transformer's `plainToInstance`, and then validate it. With Valibot, you validate plain data directly. The `validate` method, which resolves to an array of validation errors, is replaced by <Link href="/api/safeParse/">`safeParse`</Link>, which returns a result object. Since Valibot is synchronous by default, there is no need for a separate `validateSync` method.
+
+```ts
+// Change this
+const user = plainToInstance(User, input);
+const errors = await validate(user);
+if (errors.length === 0) {
+  console.log(user);
+} else {
+  console.log(errors);
+}
+
+// To this
+const result = v.safeParse(UserSchema, input);
+if (result.success) {
+  console.log(result.output);
+} else {
+  console.log(result.issues);
+}
+```
+
+If you prefer an exception to be thrown on invalid input, as with `validateOrReject`, use <Link href="/api/parse/">`parse`</Link> instead.
+
+```ts
+// Change this
+await validateOrReject(user);
+
+// To this
+const output = v.parse(UserSchema, input);
+```
+
+We recommend that you read our <Link href="../mental-model/">mental model</Link> guide to understand how the individual functions of Valibot's modular API work together.
+
+## Optional properties
+
+The `@IsOptional` decorator skips validation when the value is `null` or `undefined`. This matches Valibot's <Link href="/api/nullish/">`nullish`</Link> schema. If a property can only be `undefined` but not `null`, use <Link href="/api/optional/">`optional`</Link> instead.
+
+```ts
+// Change this
+class Profile {
+  @IsOptional()
+  @IsString()
+  bio?: string;
+}
+
+// To this
+const ProfileSchema = v.object({
+  bio: v.nullish(v.string()),
+});
+```
+
+## Nested objects and arrays
+
+Instead of `@ValidateNested` in combination with class-transformer's `@Type` decorator, you nest schemas directly. For arrays, the `{ each: true }` option is replaced by wrapping the item schema with <Link href="/api/array/">`array`</Link>.
+
+```ts
+// Change this
+class Order {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Item)
+  items: Item[];
+}
+
+// To this
+const OrderSchema = v.object({
+  items: v.array(ItemSchema),
+});
+```
+
+## Change names
+
+The following table shows how the most common decorators and methods map to Valibot's API.
+
+| class-validator    | Valibot                                                                                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@Contains`        | <Link href="/api/includes/">`includes`</Link>                                                                                                           |
+| `@IsArray`         | <Link href="/api/array/">`array`</Link>                                                                                                                 |
+| `@IsBase64`        | <Link href="/api/base64/">`base64`</Link>                                                                                                               |
+| `@IsBoolean`       | <Link href="/api/boolean/">`boolean`</Link>                                                                                                             |
+| `@IsCreditCard`    | <Link href="/api/creditCard/">`creditCard`</Link>                                                                                                       |
+| `@IsDateString`    | <Link href="/api/isoDate/">`isoDate`</Link>, <Link href="/api/isoDateTime/">`isoDateTime`</Link>, <Link href="/api/isoTimestamp/">`isoTimestamp`</Link> |
+| `@IsDefined`       | Default behavior of every schema                                                                                                                        |
+| `@IsEmail`         | <Link href="/api/email/">`email`</Link>                                                                                                                 |
+| `@IsEnum`          | <Link href="/api/enum/">`enum`</Link>                                                                                                                   |
+| `@IsHexadecimal`   | <Link href="/api/hexadecimal/">`hexadecimal`</Link>                                                                                                     |
+| `@IsIn`            | <Link href="/api/picklist/">`picklist`</Link>                                                                                                           |
+| `@IsInt`           | <Link href="/api/number/">`number`</Link> with <Link href="/api/integer/">`integer`</Link>                                                              |
+| `@IsIP`            | <Link href="/api/ip/">`ip`</Link>, <Link href="/api/ipv4/">`ipv4`</Link>, <Link href="/api/ipv6/">`ipv6`</Link>                                         |
+| `@IsNegative`      | <Link href="/api/ltValue/">`ltValue`</Link>                                                                                                             |
+| `@IsNotEmpty`      | <Link href="/api/nonEmpty/">`nonEmpty`</Link>                                                                                                           |
+| `@IsNotIn`         | <Link href="/api/notValues/">`notValues`</Link>                                                                                                         |
+| `@IsNumber`        | <Link href="/api/number/">`number`</Link>                                                                                                               |
+| `@IsOptional`      | <Link href="/api/nullish/">`nullish`</Link>                                                                                                             |
+| `@IsPositive`      | <Link href="/api/gtValue/">`gtValue`</Link>                                                                                                             |
+| `@IsString`        | <Link href="/api/string/">`string`</Link>                                                                                                               |
+| `@IsUrl`           | <Link href="/api/url/">`url`</Link>                                                                                                                     |
+| `@IsUUID`          | <Link href="/api/uuid/">`uuid`</Link>                                                                                                                   |
+| `@Length`          | <Link href="/api/minLength/">`minLength`</Link> with <Link href="/api/maxLength/">`maxLength`</Link>                                                    |
+| `@Matches`         | <Link href="/api/regex/">`regex`</Link>                                                                                                                 |
+| `@Max`             | <Link href="/api/maxValue/">`maxValue`</Link>                                                                                                           |
+| `@MaxLength`       | <Link href="/api/maxLength/">`maxLength`</Link>                                                                                                         |
+| `@Min`             | <Link href="/api/minValue/">`minValue`</Link>                                                                                                           |
+| `@MinLength`       | <Link href="/api/minLength/">`minLength`</Link>                                                                                                         |
+| `@Validate`        | <Link href="/api/check/">`check`</Link>, <Link href="/api/checkAsync/">`checkAsync`</Link>                                                              |
+| `@ValidateNested`  | Nested schema                                                                                                                                           |
+| `validate`         | <Link href="/api/safeParse/">`safeParse`</Link>                                                                                                         |
+| `validateOrReject` | <Link href="/api/parse/">`parse`</Link>                                                                                                                 |
+| `validateSync`     | <Link href="/api/safeParse/">`safeParse`</Link>                                                                                                         |
+
+Many more specific decorators like `@IsMobilePhone` are backed by [validator.js](https://github.com/validatorjs/validator.js). For those without a direct Valibot equivalent, you can use <Link href="/api/check/">`check`</Link> or <Link href="/api/regex/">`regex`</Link> to implement the same validation.
+
+## Other details
+
+Below are some more details that may be helpful when migrating from class-validator to Valibot.
+
+### Unknown properties
+
+By default, class-validator keeps properties without decorators on the instance. This matches <Link href="/api/looseObject/">`looseObject`</Link>. The `whitelist: true` option, which strips unknown properties, matches the default behavior of <Link href="/api/object/">`object`</Link>. The `forbidNonWhitelisted: true` option, which rejects them, matches <Link href="/api/strictObject/">`strictObject`</Link>. See the <Link href="../objects/">objects</Link> guide for more details.
+
+```ts
+// Change this
+const errors = await validate(post, {
+  whitelist: true,
+  forbidNonWhitelisted: true,
+});
+
+// To this
+const result = v.safeParse(v.strictObject({ title: v.string() }), input);
+```
+
+### Custom error messages
+
+Instead of the `message` property in the decorator options, you pass a single string as the first argument to schemas and as the last argument to actions. See the <Link href="../quick-start/#error-messages">quick start</Link> guide for more details.
+
+```ts
+// Change this
+class Login {
+  @MinLength(8, { message: 'Password is too short' })
+  password: string;
+}
+
+// To this
+const LoginSchema = v.object({
+  password: v.pipe(v.string(), v.minLength(8, 'Password is too short')),
+});
+```
+
+### Validation options
+
+Some validation options map to Valibot as follows. The `skipMissingProperties` option corresponds to wrapping your schema with <Link href="/api/partial/">`partial`</Link>. The `stopAtFirstError` option corresponds to the `abortEarly` configuration of <Link href="/api/parse/">`parse`</Link> and <Link href="/api/safeParse/">`safeParse`</Link>. Validation groups have no direct equivalent. Instead, we recommend deriving multiple schemas from a shared object with methods like <Link href="/api/pick/">`pick`</Link>, <Link href="/api/omit/">`omit`</Link> and <Link href="/api/partial/">`partial`</Link>.
+
+### Framework integration
+
+If you use class-validator through a framework like NestJS, you can replace its validation pipe with a custom pipe that calls <Link href="/api/parse/">`parse`</Link> with your schema. See the <Link href="../integrate-valibot/">integration</Link> guide for an overview of ecosystem integrations.

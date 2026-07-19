@@ -1,0 +1,196 @@
+---
+title: Migrate from TypeBox
+description: >-
+  Migrating from TypeBox to Valibot is straightforward in most cases since
+  both libraries are type-safe and share the same basic concepts.
+contributors:
+  - fabian-hiller
+---
+
+import { Link } from '~/components';
+
+# Migrate from TypeBox
+
+Migrating from [TypeBox](https://github.com/sinclairzx81/typebox) to Valibot is straightforward in most cases since both libraries are type-safe and share the same basic concepts. Like Valibot, TypeBox schemas are required by default, which makes the structure of your schemas easy to map. The following guide will help you migrate step by step and also point out important differences.
+
+## Replace imports
+
+The first thing to do after <Link href="../installation/">installing</Link> Valibot is to update your imports. Since Valibot validates your data itself, the separate imports for the `Value` module or the `TypeCompiler` are no longer needed. To infer the type of a schema, replace `Static` with <Link href="/api/InferOutput/">`InferOutput`</Link>.
+
+```ts
+// Change this
+import { Type, type Static } from '@sinclair/typebox';
+import { Value } from '@sinclair/typebox/value';
+const Schema = Type.Object({ key: Type.String() });
+type Data = Static<typeof Schema>;
+
+// To this
+import * as v from 'valibot';
+const Schema = v.object({ key: v.string() });
+type Data = v.InferOutput<typeof Schema>;
+```
+
+## Restructure code
+
+TypeBox describes constraints with a JSON Schema options object as the last argument. In Valibot you use <Link href="../pipelines/">pipelines</Link> to do the same thing. This is a function that starts with a schema and is followed by up to 19 validation or transformation actions.
+
+```ts
+// Change this
+const Schema = Type.String({ minLength: 3, maxLength: 30 });
+
+// To this
+const Schema = v.pipe(v.string(), v.minLength(3), v.maxLength(30));
+```
+
+To validate or parse data, you pass the schema as the first argument to methods like <Link href="/api/is/">`is`</Link>, <Link href="/api/parse/">`parse`</Link> or <Link href="/api/safeParse/">`safeParse`</Link>.
+
+```ts
+// Change this
+const valid = Value.Check(Schema, input);
+
+// To this
+const valid = v.is(Schema, input);
+```
+
+We recommend that you read our <Link href="../mental-model/">mental model</Link> guide to understand how the individual functions of Valibot's modular API work together.
+
+## String formats
+
+In TypeBox, string formats like `email` must be registered with the `FormatRegistry` before they can be used, or they will fail validation. Valibot ships these validations as actions that work out of the box.
+
+```ts
+// Change this
+FormatRegistry.Set('email', (value) => isEmail(value));
+const Schema = Type.String({ format: 'email' });
+
+// To this
+const Schema = v.pipe(v.string(), v.email());
+```
+
+## No implicit type conversion
+
+TypeBox's `Value.Parse` runs the `Clean`, `Default` and `Convert` operations before asserting the type. This means that it removes unknown object keys and converts values to the expected type. For example, the string `'24'` is converted to the number `24`. In Valibot, this behavior is not controlled by the parsing method, but by the schema itself. The <Link href="/api/object/">`object`</Link> schema removes unknown keys and <Link href="/api/optional/">`optional`</Link> applies default values, but no schema ever converts types implicitly. If you rely on type conversion, use a pipeline with an explicit <Link href="/api/transform/">`transform`</Link> action or one of the dedicated transformation actions like <Link href="/api/toNumber/">`toNumber`</Link> or <Link href="/api/toDate/">`toDate`</Link>. This forces you to explicitly define the input, resulting in safer code.
+
+```ts
+// Change this
+const value = Value.Parse(Type.Number(), input);
+
+// To this
+const value = v.parse(v.pipe(v.string(), v.toNumber()), input);
+```
+
+Similarly, `Type.Transform` with its `Decode` and `Encode` functions is replaced by a pipeline with a <Link href="/api/transform/">`transform`</Link> action. Note that Valibot only transforms in one direction and does not provide an equivalent to `Value.Encode`.
+
+```ts
+// Change this
+const Schema = Type.Transform(Type.String())
+  .Decode((value) => new Date(value))
+  .Encode((value) => value.toISOString());
+const date = Value.Decode(Schema, input);
+
+// To this
+const Schema = v.pipe(v.string(), v.toDate());
+const date = v.parse(Schema, input);
+```
+
+For stricter validation, we recommend adding actions like <Link href="/api/decimal/">`decimal`</Link> or <Link href="/api/isoTimestamp/">`isoTimestamp`</Link> to validate the formatting of the string before converting it.
+
+```ts
+const NumberSchema = v.pipe(v.string(), v.decimal(), v.toNumber());
+const DateSchema = v.pipe(v.string(), v.isoTimestamp(), v.toDate());
+```
+
+## Change names
+
+Many type builder functions just change to lowercase, such as `Type.String` to <Link href="/api/string/">`string`</Link> or `Type.Object` to <Link href="/api/object/">`object`</Link>. However, there are some exceptions. The following table shows all names that have changed beyond that.
+
+| TypeBox          | Valibot                                                                                      |
+| ---------------- | -------------------------------------------------------------------------------------------- |
+| `Static`         | <Link href="/api/InferOutput/">`InferOutput`</Link>                                          |
+| `StaticDecode`   | <Link href="/api/InferOutput/">`InferOutput`</Link>                                          |
+| `StaticEncode`   | <Link href="/api/InferInput/">`InferInput`</Link>                                            |
+| `Type.Composite` | <Link href="../intersections/#merge-objects">Object merging</Link>                           |
+| `Type.Integer`   | <Link href="/api/number/">`number`</Link> with <Link href="/api/integer/">`integer`</Link>   |
+| `Type.KeyOf`     | <Link href="/api/keyof/">`keyof`</Link>                                                      |
+| `Type.Recursive` | <Link href="/api/lazy/">`lazy`</Link>                                                        |
+| `Type.Transform` | <Link href="/api/pipe/">`pipe`</Link> with <Link href="/api/transform/">`transform`</Link>   |
+| `Type.Unsafe`    | <Link href="/api/custom/">`custom`</Link>                                                    |
+| `TypeCompiler`   | <Link href="/api/parser/">`parser`</Link>, <Link href="/api/safeParser/">`safeParser`</Link> |
+| `Value.Check`    | <Link href="/api/is/">`is`</Link>                                                            |
+| `Value.Decode`   | <Link href="/api/parse/">`parse`</Link>                                                      |
+| `Value.Default`  | <Link href="/api/optional/">`optional`</Link>                                                |
+| `Value.Errors`   | <Link href="/api/safeParse/">`safeParse`</Link>                                              |
+| `Value.Parse`    | <Link href="/api/parse/">`parse`</Link>                                                      |
+
+The same applies to the constraint options. The following table shows how they map to Valibot's actions.
+
+| TypeBox                       | Valibot                                                                                                                        |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `additionalProperties: false` | <Link href="/api/strictObject/">`strictObject`</Link>                                                                          |
+| `additionalProperties: T`     | <Link href="/api/objectWithRest/">`objectWithRest`</Link>                                                                      |
+| `default`                     | <Link href="/api/optional/">`optional`</Link>                                                                                  |
+| `exclusiveMaximum`            | <Link href="/api/ltValue/">`ltValue`</Link>                                                                                    |
+| `exclusiveMinimum`            | <Link href="/api/gtValue/">`gtValue`</Link>                                                                                    |
+| `format`                      | <Link href="/api/email/">`email`</Link>, <Link href="/api/url/">`url`</Link>, <Link href="/api/uuid/">`uuid`</Link> and others |
+| `maximum`                     | <Link href="/api/maxValue/">`maxValue`</Link>                                                                                  |
+| `maxItems`                    | <Link href="/api/maxLength/">`maxLength`</Link>                                                                                |
+| `maxProperties`               | <Link href="/api/maxEntries/">`maxEntries`</Link>                                                                              |
+| `minimum`                     | <Link href="/api/minValue/">`minValue`</Link>                                                                                  |
+| `minItems`                    | <Link href="/api/minLength/">`minLength`</Link>                                                                                |
+| `minProperties`               | <Link href="/api/minEntries/">`minEntries`</Link>                                                                              |
+| `multipleOf`                  | <Link href="/api/multipleOf/">`multipleOf`</Link>                                                                              |
+| `pattern`                     | <Link href="/api/regex/">`regex`</Link>                                                                                        |
+| `uniqueItems`                 | <Link href="/api/checkItems/">`checkItems`</Link>                                                                              |
+
+## Other details
+
+Below are some more details that may be helpful when migrating from TypeBox to Valibot.
+
+### Unknown object keys
+
+Following JSON Schema semantics, TypeBox allows and keeps unknown keys when validating objects by default. Valibot's <Link href="/api/object/">`object`</Link> schema removes them instead, similar to `Value.Clean`. If you rely on TypeBox's behavior, use <Link href="/api/looseObject/">`looseObject`</Link>. To reject unknown keys, as with `additionalProperties: false`, use <Link href="/api/strictObject/">`strictObject`</Link>. See the <Link href="../objects/">objects</Link> guide for more details.
+
+```ts
+// Change this
+const ObjectSchema = Type.Object(
+  { key: Type.String() },
+  { additionalProperties: false }
+);
+
+// To this
+const ObjectSchema = v.strictObject({ key: v.string() });
+```
+
+### Reusable parsers
+
+TypeBox's `TypeCompiler` generates optimized JavaScript code for a schema at runtime. Valibot's schemas are executed directly and do not require a compile step. This also means that Valibot does not evaluate generated code, which allows it to run in environments with a strict Content Security Policy. If you like the ergonomics of a compiled validator, <Link href="/api/parser/">`parser`</Link> and <Link href="/api/safeParser/">`safeParser`</Link> create a reusable function bound to your schema.
+
+```ts
+// Change this
+const Compiled = TypeCompiler.Compile(Schema);
+const valid = Compiled.Check(input);
+
+// To this
+const parseSchema = v.safeParser(Schema);
+const result = parseSchema(input);
+```
+
+### JSON Schema
+
+TypeBox schemas are JSON Schema objects. Valibot schemas are plain JavaScript objects with their own structure. If you need JSON Schema output, for example for OpenAPI definitions or LLM structured outputs, you can use the official `@valibot/to-json-schema` package to convert your Valibot schemas to JSON Schema. See the <Link href="../json-schema/">JSON Schema</Link> guide for more details.
+
+```ts
+import { toJsonSchema } from '@valibot/to-json-schema';
+import * as v from 'valibot';
+
+const ValibotSchema = v.object({
+  name: v.string(),
+  email: v.pipe(v.string(), v.email()),
+});
+
+const jsonSchema = toJsonSchema(ValibotSchema);
+```
+
+### Async validation
+
+Unlike TypeBox, Valibot also supports asynchronous validation, for example for database checks. See the <Link href="../async-validation/">async guide</Link> for more details.

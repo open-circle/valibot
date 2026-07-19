@@ -1,0 +1,214 @@
+---
+title: Migrate from Yup
+description: >-
+  Migrating from Yup to Valibot is straightforward in most cases since both
+  APIs share the same basic concepts.
+contributors:
+  - fabian-hiller
+---
+
+import { Link } from '~/components';
+
+# Migrate from Yup
+
+Migrating from [Yup](https://github.com/jquense/yup) to Valibot is straightforward in most cases since both APIs share the same basic concepts. The following guide will help you migrate step by step and also point out important differences.
+
+## Replace imports
+
+The first thing to do after <Link href="../installation/">installing</Link> Valibot is to update your imports. Just change your Yup imports to Valibot's and replace all occurrences of `yup.` with `v.`.
+
+```ts
+// Change this
+import * as yup from 'yup';
+const Schema = yup.object({ key: yup.string().required() });
+
+// To this
+import * as v from 'valibot';
+const Schema = v.object({ key: v.string() });
+```
+
+## Restructure code
+
+One of the biggest differences between Yup and Valibot is the way you further validate a given type. In Yup, you chain methods like `.email` and `.max`. In Valibot you use <Link href="../pipelines/">pipelines</Link> to do the same thing. This is a function that starts with a schema and is followed by up to 19 validation or transformation actions.
+
+```ts
+// Change this
+const Schema = yup.string().email().max(30);
+
+// To this
+const Schema = v.pipe(v.string(), v.email(), v.maxLength(30));
+```
+
+Due to the modular design of Valibot, also all other methods like `.validate` or `.isValid` have to be used a little bit differently. Instead of chaining them, you usually pass the schema as the first argument and move any existing arguments one position to the right. Note that Yup's `.validate` method is asynchronous by default, whereas <Link href="/api/parse/">`parse`</Link> is synchronous.
+
+```ts
+// Change this
+const value = yup.string().validateSync('foo');
+
+// To this
+const value = v.parse(v.string(), 'foo');
+```
+
+We recommend that you read our <Link href="../mental-model/">mental model</Link> guide to understand how the individual functions of Valibot's modular API work together.
+
+## Required by default
+
+Yup schemas are optional by default. To reject `undefined`, you have to append `.required()` to each schema. Valibot works the other way around. Every schema is required by default, and you explicitly mark schemas as optional by wrapping them with <Link href="/api/optional/">`optional`</Link>, <Link href="/api/nullable/">`nullable`</Link> or <Link href="/api/nullish/">`nullish`</Link>.
+
+```ts
+// Change this
+const Schema = yup.object({
+  name: yup.string().required(),
+  email: yup.string(),
+});
+
+// To this
+const Schema = v.object({
+  name: v.string(),
+  email: v.optional(v.string()),
+});
+```
+
+There is one detail to watch out for. For string schemas, Yup's `.required()` also rejects empty strings. If you rely on this behavior, add the <Link href="/api/nonEmpty/">`nonEmpty`</Link> action to your pipeline.
+
+```ts
+// Change this
+const Schema = yup.string().required();
+
+// To this
+const Schema = v.pipe(v.string(), v.nonEmpty());
+```
+
+## No implicit type coercion
+
+Before validating a value, Yup casts it to the expected type. For example, `yup.number()` accepts the string `'24'` and converts it to the number `24`. This even applies to `.isValid` checks. Valibot never changes your data implicitly. If you rely on type coercion, use a pipeline with an explicit <Link href="/api/transform/">`transform`</Link> action or one of the dedicated transformation actions like <Link href="/api/toNumber/">`toNumber`</Link> or <Link href="/api/toDate/">`toDate`</Link>. This forces you to explicitly define the input, resulting in safer code.
+
+```ts
+// Change this
+const NumberSchema = yup.number();
+
+// To this
+const NumberSchema = v.pipe(v.string(), v.toNumber());
+```
+
+The same applies to dates. Yup's `.cast` method converts ISO strings to `Date` objects. In Valibot, you define this conversion explicitly.
+
+```ts
+// Change this
+const DateSchema = yup.date();
+
+// To this
+const DateSchema = v.pipe(v.string(), v.toDate());
+```
+
+For stricter validation, we recommend adding actions like <Link href="/api/decimal/">`decimal`</Link> or <Link href="/api/isoTimestamp/">`isoTimestamp`</Link> to validate the formatting of the string before converting it.
+
+```ts
+const NumberSchema = v.pipe(v.string(), v.decimal(), v.toNumber());
+const DateSchema = v.pipe(v.string(), v.isoTimestamp(), v.toDate());
+```
+
+## Change names
+
+Most of the names are the same as in Yup. However, there are some exceptions. The following table shows all names that have changed.
+
+| Yup            | Valibot                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------ |
+| `bool`         | <Link href="/api/boolean/">`boolean`</Link>                                                                  |
+| `concat`       | <Link href="../intersections/#merge-objects">Object merging</Link>                                           |
+| `default`      | <Link href="/api/optional/">`optional`</Link>                                                                |
+| `InferType`    | <Link href="/api/InferOutput/">`InferOutput`</Link>                                                          |
+| `isValid`      | <Link href="/api/is/">`is`</Link>                                                                            |
+| `json`         | <Link href="/api/parseJson/">`parseJson`</Link>                                                              |
+| `lessThan`     | <Link href="/api/ltValue/">`ltValue`</Link>                                                                  |
+| `matches`      | <Link href="/api/regex/">`regex`</Link>                                                                      |
+| `max`          | <Link href="/api/maxLength/">`maxLength`</Link>, <Link href="/api/maxValue/">`maxValue`</Link>               |
+| `min`          | <Link href="/api/minLength/">`minLength`</Link>, <Link href="/api/minValue/">`minValue`</Link>               |
+| `mixed`        | <Link href="/api/any/">`any`</Link>, <Link href="/api/unknown/">`unknown`</Link>                             |
+| `moreThan`     | <Link href="/api/gtValue/">`gtValue`</Link>                                                                  |
+| `negative`     | <Link href="/api/ltValue/">`ltValue`</Link>                                                                  |
+| `noUnknown`    | <Link href="/api/strictObject/">`strictObject`</Link>                                                        |
+| `notOneOf`     | <Link href="/api/notValues/">`notValues`</Link>                                                              |
+| `notRequired`  | <Link href="/api/nullish/">`nullish`</Link>                                                                  |
+| `of`           | Item argument of <Link href="/api/array/">`array`</Link>                                                     |
+| `oneOf`        | <Link href="/api/picklist/">`picklist`</Link>                                                                |
+| `positive`     | <Link href="/api/gtValue/">`gtValue`</Link>                                                                  |
+| `shape`        | `entries`                                                                                                    |
+| `strip`        | <Link href="/api/omit/">`omit`</Link>                                                                        |
+| `test`         | <Link href="/api/check/">`check`</Link>, <Link href="/api/rawCheck/">`rawCheck`</Link>                       |
+| `typeError`    | Error message argument of schema                                                                             |
+| `validate`     | <Link href="/api/parseAsync/">`parseAsync`</Link>, <Link href="/api/safeParseAsync/">`safeParseAsync`</Link> |
+| `validateSync` | <Link href="/api/parse/">`parse`</Link>, <Link href="/api/safeParse/">`safeParse`</Link>                     |
+
+## Other details
+
+Below are some more details that may be helpful when migrating from Yup to Valibot.
+
+### Unknown object keys
+
+By default, Yup keeps unknown keys when validating objects. Valibot's <Link href="/api/object/">`object`</Link> schema removes them instead. If you rely on Yup's behavior, use <Link href="/api/looseObject/">`looseObject`</Link>. If you use the `stripUnknown` option, <Link href="/api/object/">`object`</Link> is the right choice. To reject unknown keys, as with `.noUnknown()` in combination with `.strict()`, use <Link href="/api/strictObject/">`strictObject`</Link>. See the <Link href="../objects/">objects</Link> guide for more details.
+
+```ts
+// Change this
+const ObjectSchema = yup.object({ key: yup.string().required() });
+
+// To this
+const ObjectSchema = v.looseObject({ key: v.string() });
+```
+
+### Cross-field validation
+
+Yup uses `ref` to reference the value of another field, for example to check that two passwords match. In Valibot, you use a pipeline on the object schema with <Link href="/api/forward/">`forward`</Link> and <Link href="/api/partialCheck/">`partialCheck`</Link> instead.
+
+```ts
+// Change this
+const RegisterSchema = yup.object({
+  password: yup.string().required(),
+  confirmPassword: yup
+    .string()
+    .required()
+    .oneOf([yup.ref('password')], 'The two passwords do not match.'),
+});
+
+// To this
+const RegisterSchema = v.pipe(
+  v.object({
+    password: v.pipe(v.string(), v.nonEmpty()),
+    confirmPassword: v.pipe(v.string(), v.nonEmpty()),
+  }),
+  v.forward(
+    v.partialCheck(
+      [['password'], ['confirmPassword']],
+      (input) => input.password === input.confirmPassword,
+      'The two passwords do not match.'
+    ),
+    ['confirmPassword']
+  )
+);
+```
+
+### Conditional schemas
+
+There is no direct equivalent to Yup's `.when()` method. For discriminated unions, we recommend <Link href="/api/variant/">`variant`</Link>. For other conditional validations, you can use <Link href="/api/check/">`check`</Link> or <Link href="/api/rawCheck/">`rawCheck`</Link> on the parent object, or select the schema dynamically with <Link href="/api/lazy/">`lazy`</Link>, which receives the current input as an argument.
+
+### Error messages
+
+Instead of `.typeError()` and per-validation message arguments, you pass a single string as the first argument to schemas and as the last argument to actions. See the <Link href="../quick-start/#error-messages">quick start</Link> guide for more details.
+
+```ts
+// Change this
+const Schema = yup
+  .number()
+  .typeError('Must be a number')
+  .min(10, 'Number is too small');
+
+// To this
+const Schema = v.pipe(
+  v.number('Must be a number'),
+  v.minValue(10, 'Number is too small')
+);
+```
+
+### Async validation
+
+In Yup, `.validate` is always asynchronous. Valibot is synchronous by default and provides dedicated async functions like <Link href="/api/parseAsync/">`parseAsync`</Link>, <Link href="/api/pipeAsync/">`pipeAsync`</Link> and <Link href="/api/checkAsync/">`checkAsync`</Link> for schemas that require asynchronous logic, such as database checks. See the <Link href="../async-validation/">async guide</Link> for more details.

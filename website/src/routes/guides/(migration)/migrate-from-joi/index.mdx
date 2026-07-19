@@ -1,0 +1,285 @@
+---
+title: Migrate from Joi
+description: >-
+  Migrating from Joi to Valibot is straightforward in most cases since both
+  APIs share the same basic concepts.
+contributors:
+  - fabian-hiller
+---
+
+import { Link } from '~/components';
+
+# Migrate from Joi
+
+Migrating from [Joi](https://joi.dev/) to Valibot is straightforward in most cases since both APIs share the same basic concepts. Beyond a much smaller bundle size, one of the biggest benefits of migrating is that Valibot infers the TypeScript type of your data from your schema, which eliminates the need to maintain separate type definitions. The following guide will help you migrate step by step and also point out important differences.
+
+## Replace imports
+
+The first thing to do after <Link href="../installation/">installing</Link> Valibot is to update your imports. Just change your Joi imports to Valibot's and replace all occurrences of `Joi.` with `v.`.
+
+```ts
+// Change this
+import Joi from 'joi';
+const Schema = Joi.object({ key: Joi.string().required() });
+
+// To this
+import * as v from 'valibot';
+const Schema = v.object({ key: v.string() });
+```
+
+## Restructure code
+
+One of the biggest differences between Joi and Valibot is the way you further validate a given type. In Joi, you chain methods like `.email` and `.max`. In Valibot you use <Link href="../pipelines/">pipelines</Link> to do the same thing. This is a function that starts with a schema and is followed by up to 19 validation or transformation actions.
+
+```ts
+// Change this
+const Schema = Joi.string().email().max(30);
+
+// To this
+const Schema = v.pipe(v.string(), v.email(), v.maxLength(30));
+```
+
+Due to the modular design of Valibot, also all other methods like `.validate` have to be used a little bit differently. Instead of chaining them, you usually pass the schema as the first argument and move any existing arguments one position to the right. Where Joi returns an object with `value` and `error`, <Link href="/api/safeParse/">`safeParse`</Link> returns a result object with `output` and `issues`.
+
+```ts
+// Change this
+const { value, error } = Joi.string().validate('foo');
+
+// To this
+const result = v.safeParse(v.string(), 'foo');
+if (result.success) {
+  console.log(result.output);
+} else {
+  console.log(result.issues);
+}
+```
+
+If you prefer an exception to be thrown on invalid input, as with `Joi.attempt` or `Joi.assert`, use <Link href="/api/parse/">`parse`</Link> instead.
+
+```ts
+// Change this
+const value = Joi.attempt('foo', Joi.string());
+
+// To this
+const value = v.parse(v.string(), 'foo');
+```
+
+We recommend that you read our <Link href="../mental-model/">mental model</Link> guide to understand how the individual functions of Valibot's modular API work together.
+
+## Infer types
+
+Joi does not infer TypeScript types from your schemas, which usually forces you to maintain separate type definitions. With Valibot, you can remove these duplicate definitions and infer the types directly from your schemas. See the <Link href="../infer-types/">infer types</Link> guide for more details.
+
+```ts
+const UserSchema = v.object({
+  name: v.string(),
+  email: v.pipe(v.string(), v.email()),
+});
+
+type User = v.InferOutput<typeof UserSchema>;
+// { name: string; email: string }
+```
+
+## Required by default
+
+Joi schemas are optional by default. To reject `undefined`, you have to append `.required()` to each schema. Valibot works the other way around. Every schema is required by default, and you explicitly mark schemas as optional by wrapping them with <Link href="/api/optional/">`optional`</Link>, <Link href="/api/nullable/">`nullable`</Link> or <Link href="/api/nullish/">`nullish`</Link>.
+
+```ts
+// Change this
+const Schema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string(),
+});
+
+// To this
+const Schema = v.object({
+  name: v.string(),
+  email: v.optional(v.string()),
+});
+```
+
+There is one detail to watch out for. Joi's string schema rejects empty strings by default. If you rely on this behavior, add the <Link href="/api/nonEmpty/">`nonEmpty`</Link> action to your pipeline.
+
+```ts
+// Change this
+const Schema = Joi.string().required();
+
+// To this
+const Schema = v.pipe(v.string(), v.nonEmpty());
+```
+
+## No implicit type conversion
+
+By default, Joi converts values to the expected type before validating them. For example, `Joi.number()` accepts the string `'24'` and converts it to the number `24`, and `Joi.date()` converts ISO strings to `Date` objects. Valibot never changes your data implicitly. If you rely on type conversion, use a pipeline with an explicit <Link href="/api/transform/">`transform`</Link> action or one of the dedicated transformation actions like <Link href="/api/toNumber/">`toNumber`</Link> or <Link href="/api/toDate/">`toDate`</Link>. This forces you to explicitly define the input, resulting in safer code.
+
+```ts
+// Change this
+const NumberSchema = Joi.number();
+
+// To this
+const NumberSchema = v.pipe(v.string(), v.toNumber());
+```
+
+```ts
+// Change this
+const DateSchema = Joi.date().iso();
+
+// To this
+const DateSchema = v.pipe(v.string(), v.toDate());
+```
+
+For stricter validation, we recommend adding actions like <Link href="/api/decimal/">`decimal`</Link> or <Link href="/api/isoTimestamp/">`isoTimestamp`</Link> to validate the formatting of the string before converting it.
+
+```ts
+const NumberSchema = v.pipe(v.string(), v.decimal(), v.toNumber());
+const DateSchema = v.pipe(v.string(), v.isoTimestamp(), v.toDate());
+```
+
+## Collect all issues
+
+Another difference is that Joi stops validation after the first error by default. Valibot collects all issues instead. If you prefer Joi's behavior for performance reasons, you can pass a configuration object with `abortEarly: true` as the third argument to <Link href="/api/parse/">`parse`</Link> or <Link href="/api/safeParse/">`safeParse`</Link>.
+
+```ts
+// Change this
+const { error } = Schema.validate(input);
+
+// To this
+const result = v.safeParse(Schema, input, { abortEarly: true });
+```
+
+## Change names
+
+Most of the names are similar to Joi. However, there are some exceptions. The following table shows all names that have changed.
+
+| Joi             | Valibot                                                                                                                                                 |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `allow(null)`   | <Link href="/api/nullable/">`nullable`</Link>                                                                                                           |
+| `alphanum`      | <Link href="/api/regex/">`regex`</Link>                                                                                                                 |
+| `alternatives`  | <Link href="/api/union/">`union`</Link>, <Link href="/api/variant/">`variant`</Link>                                                                    |
+| `append`        | <Link href="../intersections/#merge-objects">Object merging</Link>                                                                                      |
+| `assert`        | <Link href="/api/parse/">`parse`</Link>                                                                                                                 |
+| `attempt`       | <Link href="/api/parse/">`parse`</Link>                                                                                                                 |
+| `concat`        | <Link href="../intersections/#merge-objects">Object merging</Link>                                                                                      |
+| `custom`        | <Link href="/api/check/">`check`</Link>, <Link href="/api/rawCheck/">`rawCheck`</Link>, <Link href="/api/rawTransform/">`rawTransform`</Link>           |
+| `default`       | <Link href="/api/optional/">`optional`</Link>                                                                                                           |
+| `equal`         | <Link href="/api/literal/">`literal`</Link>, <Link href="/api/picklist/">`picklist`</Link>                                                              |
+| `external`      | <Link href="/api/checkAsync/">`checkAsync`</Link>                                                                                                       |
+| `forbidden`     | <Link href="/api/optional/">`optional`</Link> with <Link href="/api/never/">`never`</Link>                                                              |
+| `greater`       | <Link href="/api/gtValue/">`gtValue`</Link>                                                                                                             |
+| `guid`          | <Link href="/api/uuid/">`uuid`</Link>                                                                                                                   |
+| `hex`           | <Link href="/api/hexadecimal/">`hexadecimal`</Link>                                                                                                     |
+| `invalid`       | <Link href="/api/notValue/">`notValue`</Link>, <Link href="/api/notValues/">`notValues`</Link>                                                          |
+| `isoDate`       | <Link href="/api/isoDate/">`isoDate`</Link>, <Link href="/api/isoDateTime/">`isoDateTime`</Link>, <Link href="/api/isoTimestamp/">`isoTimestamp`</Link> |
+| `items`         | Item argument of <Link href="/api/array/">`array`</Link>                                                                                                |
+| `keys`          | <Link href="../intersections/#merge-objects">Object merging</Link>                                                                                      |
+| `length`        | <Link href="/api/length/">`length`</Link>, <Link href="/api/size/">`size`</Link>, <Link href="/api/entries/">`entries`</Link>                           |
+| `less`          | <Link href="/api/ltValue/">`ltValue`</Link>                                                                                                             |
+| `link`          | <Link href="/api/lazy/">`lazy`</Link>                                                                                                                   |
+| `lowercase`     | <Link href="/api/toLowerCase/">`toLowerCase`</Link>                                                                                                     |
+| `max`           | <Link href="/api/maxLength/">`maxLength`</Link>, <Link href="/api/maxValue/">`maxValue`</Link>, <Link href="/api/maxEntries/">`maxEntries`</Link>       |
+| `min`           | <Link href="/api/minLength/">`minLength`</Link>, <Link href="/api/minValue/">`minValue`</Link>, <Link href="/api/minEntries/">`minEntries`</Link>       |
+| `multiple`      | <Link href="/api/multipleOf/">`multipleOf`</Link>                                                                                                       |
+| `negative`      | <Link href="/api/ltValue/">`ltValue`</Link>                                                                                                             |
+| `ordered`       | <Link href="/api/tuple/">`tuple`</Link>, <Link href="/api/tupleWithRest/">`tupleWithRest`</Link>                                                        |
+| `pattern`       | <Link href="/api/regex/">`regex`</Link>, <Link href="/api/record/">`record`</Link>, <Link href="/api/objectWithRest/">`objectWithRest`</Link>           |
+| `positive`      | <Link href="/api/gtValue/">`gtValue`</Link>                                                                                                             |
+| `try`           | <Link href="/api/union/">`union`</Link>, <Link href="/api/variant/">`variant`</Link>                                                                    |
+| `unique`        | <Link href="/api/checkItems/">`checkItems`</Link>                                                                                                       |
+| `unknown`       | <Link href="/api/looseObject/">`looseObject`</Link>                                                                                                     |
+| `uppercase`     | <Link href="/api/toUpperCase/">`toUpperCase`</Link>                                                                                                     |
+| `uri`           | <Link href="/api/url/">`url`</Link>                                                                                                                     |
+| `valid`         | <Link href="/api/literal/">`literal`</Link>, <Link href="/api/picklist/">`picklist`</Link>                                                              |
+| `validate`      | <Link href="/api/parse/">`parse`</Link>, <Link href="/api/safeParse/">`safeParse`</Link>                                                                |
+| `validateAsync` | <Link href="/api/parseAsync/">`parseAsync`</Link>, <Link href="/api/safeParseAsync/">`safeParseAsync`</Link>                                            |
+
+## Other details
+
+Below are some more details that may be helpful when migrating from Joi to Valibot.
+
+### Unknown object keys
+
+By default, Joi rejects unknown keys when validating objects. This matches Valibot's <Link href="/api/strictObject/">`strictObject`</Link> schema. If you use `.unknown()` to keep unknown keys, use <Link href="/api/looseObject/">`looseObject`</Link> instead. If you use the `stripUnknown` option to remove them, <Link href="/api/object/">`object`</Link> is the right choice. See the <Link href="../objects/">objects</Link> guide for more details.
+
+```ts
+// Change this
+const ObjectSchema = Joi.object({ key: Joi.string().required() });
+
+// To this
+const ObjectSchema = v.strictObject({ key: v.string() });
+```
+
+### Cross-field validation
+
+Joi uses `Joi.ref` to reference the value of another field, for example to check that two passwords match. In Valibot, you use a pipeline on the object schema with <Link href="/api/forward/">`forward`</Link> and <Link href="/api/partialCheck/">`partialCheck`</Link> instead.
+
+```ts
+// Change this
+const RegisterSchema = Joi.object({
+  password: Joi.string().required(),
+  confirmPassword: Joi.string()
+    .required()
+    .valid(Joi.ref('password'))
+    .messages({ 'any.only': 'The two passwords do not match.' }),
+});
+
+// To this
+const RegisterSchema = v.pipe(
+  v.object({
+    password: v.pipe(v.string(), v.nonEmpty()),
+    confirmPassword: v.pipe(v.string(), v.nonEmpty()),
+  }),
+  v.forward(
+    v.partialCheck(
+      [['password'], ['confirmPassword']],
+      (input) => input.password === input.confirmPassword,
+      'The two passwords do not match.'
+    ),
+    ['confirmPassword']
+  )
+);
+```
+
+### Conditional schemas
+
+There is no direct equivalent to Joi's `.when()` method. For discriminated unions, we recommend <Link href="/api/variant/">`variant`</Link>. For other conditional validations, you can use <Link href="/api/check/">`check`</Link> or <Link href="/api/rawCheck/">`rawCheck`</Link> on the parent object, or select the schema dynamically with <Link href="/api/lazy/">`lazy`</Link>, which receives the current input as an argument.
+
+### Error messages
+
+Instead of `.messages()`, `.message()` and `.label()`, you pass a single string as the first argument to schemas and as the last argument to actions. See the <Link href="../quick-start/#error-messages">quick start</Link> and <Link href="../internationalization/">internationalization</Link> guide for more details.
+
+```ts
+// Change this
+const Schema = Joi.string().min(10).messages({
+  'string.base': 'Must be a string',
+  'string.min': 'String is too short',
+});
+
+// To this
+const Schema = v.pipe(
+  v.string('Must be a string'),
+  v.minLength(10, 'String is too short')
+);
+```
+
+### Async validation
+
+Joi's `.external()` method allows asynchronous validation rules. Valibot provides dedicated async functions like <Link href="/api/parseAsync/">`parseAsync`</Link>, <Link href="/api/pipeAsync/">`pipeAsync`</Link> and <Link href="/api/checkAsync/">`checkAsync`</Link> for this purpose. See the <Link href="../async-validation/">async guide</Link> for more details.
+
+```ts
+// Change this
+const Schema = Joi.string().external(async (value) => {
+  if (await isUsernameTaken(value)) {
+    throw new Error('Username is already taken');
+  }
+  return value;
+});
+
+// To this
+const Schema = v.pipeAsync(
+  v.string(),
+  v.checkAsync(
+    async (input) => !(await isUsernameTaken(input)),
+    'Username is already taken'
+  )
+);
+```
