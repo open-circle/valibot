@@ -122,13 +122,13 @@ const NumberSchema = v.pipe(v.string(), v.toNumber());
 
 ```ts
 // Change this
-const DateSchema = Joi.date().iso();
+const DateSchema = Joi.date();
 
 // To this
 const DateSchema = v.pipe(v.string(), v.toDate());
 ```
 
-For stricter validation, we recommend adding actions like <Link href="/api/decimal/">`decimal`</Link> or <Link href="/api/isoTimestamp/">`isoTimestamp`</Link> to validate the formatting of the string before converting it.
+Keep in mind that <Link href="/api/toNumber/">`toNumber`</Link> behaves like JavaScript's `Number` function and therefore converts empty strings to `0`, and that <Link href="/api/toDate/">`toDate`</Link> accepts any string that the `Date` constructor can parse. For stricter validation, we recommend adding actions like <Link href="/api/decimal/">`decimal`</Link> or <Link href="/api/isoTimestamp/">`isoTimestamp`</Link> to validate the formatting of the string before converting it.
 
 ```ts
 const NumberSchema = v.pipe(v.string(), v.decimal(), v.toNumber());

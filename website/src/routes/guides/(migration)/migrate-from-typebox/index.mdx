@@ -93,7 +93,7 @@ const Schema = v.pipe(v.string(), v.toDate());
 const date = v.parse(Schema, input);
 ```
 
-For stricter validation, we recommend adding actions like <Link href="/api/decimal/">`decimal`</Link> or <Link href="/api/isoTimestamp/">`isoTimestamp`</Link> to validate the formatting of the string before converting it.
+Keep in mind that <Link href="/api/toNumber/">`toNumber`</Link> behaves like JavaScript's `Number` function and therefore converts empty strings to `0`, and that <Link href="/api/toDate/">`toDate`</Link> accepts any string that the `Date` constructor can parse. For stricter validation, we recommend adding actions like <Link href="/api/decimal/">`decimal`</Link> or <Link href="/api/isoTimestamp/">`isoTimestamp`</Link> to validate the formatting of the string before converting it.
 
 ```ts
 const NumberSchema = v.pipe(v.string(), v.decimal(), v.toNumber());
@@ -159,6 +159,24 @@ const ObjectSchema = Type.Object(
 
 // To this
 const ObjectSchema = v.strictObject({ key: v.string() });
+```
+
+### Unique items
+
+Valibot does not provide a dedicated action for JSON Schema's `uniqueItems` keyword. Instead, you can use the <Link href="/api/checkItems/">`checkItems`</Link> action. Its requirement function receives the entire array as its third argument, which allows you to compare each item against the others.
+
+```ts
+// Change this
+const Schema = Type.Array(Type.Number(), { uniqueItems: true });
+
+// To this
+const Schema = v.pipe(
+  v.array(v.number()),
+  v.checkItems(
+    (item, index, array) => array.indexOf(item) === index,
+    'Duplicate items are not allowed'
+  )
+);
 ```
 
 ### Reusable parsers
