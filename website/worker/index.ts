@@ -11,13 +11,10 @@ interface Env {
   ASSETS: { fetch: typeof fetch };
 }
 
-// Path of documentation pages with an available Markdown version
-const DOCS_PATH_REGEX = /^\/(guides|api)\/([\w.-]+?)\/?$/;
-
-// Path of the Markdown version of documentation pages. Also matches the
-// naive "/.md" suffix that agents produce by appending ".md" to a page URL
-// that ends with a trailing slash.
-const MD_FILE_REGEX = /^\/(guides|api)\/([\w.-]+?)(?:\.md|\/\.md)$/;
+// Path of documentation pages and their Markdown version. The third group
+// captures the ".md" suffix, including the naive "/.md" suffix that agents
+// produce by appending ".md" to a page URL that ends with a trailing slash.
+const DOCS_PATH_REGEX = /^\/(guides|api)\/([\w.-]+?)(\.md|\/\.md)?\/?$/;
 
 /**
  * Returns the quality value of a media type within an `Accept` header.
@@ -61,23 +58,26 @@ function prefersMarkdown(request: Request): boolean {
 }
 
 /**
- * Fetches a static asset with the method and headers of the given request.
+ * Sets a header on the given headers object. Appends the value to multi-value
+ * headers (e.g. `Vary` and `Link`) to not overwrite existing values.
  *
- * @param env The environment of the Worker.
- * @param request The incoming request.
- * @param path The path of the static asset.
- *
- * @returns The response of the static asset.
+ * @param headers The headers object to modify.
+ * @param key The key of the header.
+ * @param value The value of the header.
  */
-function fetchAsset(
-  env: Env,
-  request: Request,
-  path: string
-): Promise<Response> {
-  return env.ASSETS.fetch(new URL(path, request.url).href, {
-    method: request.method,
-    headers: request.headers,
-  });
+function setHeader(headers: Headers, key: string, value: string): void {
+  const lowerKey = key.toLowerCase();
+  const prevValue = headers.get(key);
+  if (prevValue && (lowerKey === 'vary' || lowerKey === 'link')) {
+    const isDuplicate = prevValue
+      .split(',')
+      .some((part) => part.trim().toLowerCase() === value.toLowerCase());
+    if (!isDuplicate) {
+      headers.append(key, value);
+    }
+  } else {
+    headers.set(key, value);
+  }
 }
 
 /**
@@ -94,7 +94,7 @@ function withHeaders(
 ): Response {
   const newResponse = new Response(response.body, response);
   for (const [key, value] of Object.entries(headers)) {
-    newResponse.headers.set(key, value);
+    setHeader(newResponse.headers, key, value);
   }
   return newResponse;
 }
@@ -114,10 +114,12 @@ async function serveMarkdown(
   request: Request,
   path: string
 ): Promise<Response | undefined> {
-  // Fetch asset with GET so that the response of HEAD requests contains the
-  // body needed to compute our token count estimate
+  // Always fetch the complete asset with GET and without a Range header, as
+  // the full body is needed to compute our token count estimate
+  const assetHeaders = new Headers(request.headers);
+  assetHeaders.delete('Range');
   const response = await env.ASSETS.fetch(new URL(path, request.url).href, {
-    headers: request.headers,
+    headers: assetHeaders,
   });
 
   // Pass revalidation responses through with our negotiation headers
@@ -136,7 +138,7 @@ async function serveMarkdown(
     headers.delete('Content-Length');
     headers.set('Content-Type', 'text/markdown; charset=utf-8');
     headers.set('Content-Location', path);
-    headers.set('Vary', 'Accept');
+    setHeader(headers, 'Vary', 'Accept');
 
     // Add rough estimate of the token count of the Markdown content
     const markdown = await response.text();
@@ -156,42 +158,37 @@ export default {
 
     // Serve API catalog with its official media type (RFC 9727)
     if (url.pathname === '/.well-known/api-catalog') {
-      const response = await fetchAsset(
-        env,
-        request,
-        '/.well-known/api-catalog.json'
+      const response = await env.ASSETS.fetch(
+        new URL('/.well-known/api-catalog.json', request.url).href,
+        { method: request.method, headers: request.headers }
       );
       if (response.ok) {
         return withHeaders(response, {
           'Content-Type': 'application/linkset+json',
+          // Required for HEAD requests by RFC 9727
+          Link: '</.well-known/api-catalog>; rel="api-catalog"',
         });
       }
       return response;
     }
 
-    // Serve Markdown files with appropriate headers for AI agents. Return
-    // early on failures to not process the path as a documentation page.
-    const mdFileMatch = MD_FILE_REGEX.exec(url.pathname);
-    if (mdFileMatch) {
-      const response = await serveMarkdown(
-        env,
-        request,
-        `/${mdFileMatch[1]}/${mdFileMatch[2]}.md`
-      );
-      return response ?? env.ASSETS.fetch(request);
-    }
-
-    // Detect requests to documentation pages with a Markdown version
+    // Detect requests to documentation pages and their Markdown version
     const docsMatch = DOCS_PATH_REGEX.exec(url.pathname);
     if (docsMatch) {
       const markdownPath = `/${docsMatch[1]}/${docsMatch[2]}.md`;
+      const isMarkdownRequest = Boolean(docsMatch[3]);
 
-      // Serve its Markdown version if the request prefers it
-      if (prefersMarkdown(request)) {
+      // Serve Markdown to Markdown file requests and negotiating agents
+      if (isMarkdownRequest || prefersMarkdown(request)) {
         const response = await serveMarkdown(env, request, markdownPath);
         if (response) {
           return response;
         }
+      }
+
+      // Serve missing Markdown files directly from our static assets
+      if (isMarkdownRequest) {
+        return env.ASSETS.fetch(request);
       }
 
       // Otherwise, serve HTML page with a link to its Markdown version
