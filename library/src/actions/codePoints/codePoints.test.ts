@@ -8,7 +8,7 @@ import {
   type CodePointsIssue,
 } from './codePoints.ts';
 
-describe('graphemes', () => {
+describe('codePoints', () => {
   describe('should return action object', () => {
     const baseAction: Omit<CodePointsAction<string, 5, never>, 'message'> = {
       kind: 'validation',

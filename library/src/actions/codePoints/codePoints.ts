@@ -121,7 +121,7 @@ export function codePoints(
       if (dataset.typed) {
         const count = _getCodePointCount(dataset.value);
         if (count !== this.requirement) {
-          _addIssue(this, 'codePoints', dataset, config, {
+          _addIssue(this, 'code_points', dataset, config, {
             received: `${count}`,
           });
         }

@@ -7,6 +7,7 @@
  *
  * @internal
  */
+// @__NO_SIDE_EFFECTS__
 export function _getCodePointCount(input: string): number {
   let count = input.length;
   for (let i = 0; i < input.length; ) {

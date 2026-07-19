@@ -103,6 +103,7 @@ export function minCodePoints<
   message: TMessage
 ): MinCodePointsAction<TInput, TRequirement, TMessage>;
 
+// @__NO_SIDE_EFFECTS__
 export function minCodePoints(
   requirement: number,
   message?: ErrorMessage<MinCodePointsIssue<string, number>>

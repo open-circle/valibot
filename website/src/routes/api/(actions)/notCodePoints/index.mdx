@@ -10,7 +10,7 @@ contributors:
 import { ApiList, Property } from '~/components';
 import { properties } from './properties';
 
-# notGraphemes
+# notCodePoints
 
 Creates a not [code points](https://developer.mozilla.org/en-US/docs/Glossary/Code_point) validation action.
 
@@ -49,15 +49,15 @@ The following examples show how `notCodePoints` can be used.
 Schema to validate a string with more or less than 8 code points.
 
 ```ts
-const NotGraphemesSchema = v.pipe(
+const NotCodePointsSchema = v.pipe(
   v.string(),
-  v.notGraphemes(8, 'The string must not have 8 code points.')
+  v.notCodePoints(8, 'The string must not have 8 code points.')
 );
 ```
 
 ## Related
 
-The following APIs can be combined with `notGraphemes`.
+The following APIs can be combined with `notCodePoints`.
 
 ### Schemas
 

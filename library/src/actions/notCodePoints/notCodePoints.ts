@@ -3,7 +3,7 @@ import type {
   BaseValidation,
   ErrorMessage,
 } from '../../types/index.ts';
-import { _addIssue, _getGraphemeCount } from '../../utils/index.ts';
+import { _addIssue, _getCodePointCount } from '../../utils/index.ts';
 
 /**
  * Not code points issue interface.
@@ -122,7 +122,7 @@ export function notCodePoints(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getGraphemeCount(dataset.value);
+        const count = _getCodePointCount(dataset.value);
         if (count === this.requirement) {
           _addIssue(this, 'code_points', dataset, config, {
             received: `${count}`,

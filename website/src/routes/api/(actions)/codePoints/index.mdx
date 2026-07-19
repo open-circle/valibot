@@ -49,7 +49,7 @@ The following examples show how `codePoints` can be used.
 Schema to validate a string with 8 code points.
 
 ```ts
-const GraphemesSchema = v.pipe(
+const CodePointsSchema = v.pipe(
   v.string(),
   v.codePoints(8, 'Exactly 8 code points are required.')
 );
