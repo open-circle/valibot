@@ -1,0 +1,27 @@
+---
+title: BtcAddressBase58Action
+description: Bitcoin Base58 address action interface.
+contributors:
+  - shuaixr
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# BtcAddressBase58Action
+
+Bitcoin Base58 address action interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Definition
+
+- `BtcAddressBase58Action` <Property {...properties.BaseValidation} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `requirement` <Property {...properties.requirement} />
+  - `message` <Property {...properties.message} />

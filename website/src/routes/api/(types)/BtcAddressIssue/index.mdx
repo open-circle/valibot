@@ -1,0 +1,26 @@
+---
+title: BtcAddressIssue
+description: Bitcoin address issue interface.
+contributors:
+  - shuaixr
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# BtcAddressIssue
+
+Bitcoin address issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `BtcAddressIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `received` <Property {...properties.received} />
+  - `requirement` <Property {...properties.requirement} />
