@@ -197,7 +197,7 @@ const LoginSchema = v.object({
 
 ### Validation options
 
-Some validation options map to Valibot as follows. The `skipMissingProperties` option corresponds to wrapping your schema with <Link href="/api/partial/">`partial`</Link>. The `stopAtFirstError` option corresponds to the `abortEarly` configuration of <Link href="/api/parse/">`parse`</Link> and <Link href="/api/safeParse/">`safeParse`</Link>. Validation groups have no direct equivalent. Instead, we recommend deriving multiple schemas from a shared object with methods like <Link href="/api/pick/">`pick`</Link>, <Link href="/api/omit/">`omit`</Link> and <Link href="/api/partial/">`partial`</Link>.
+Some validation options map only approximately to Valibot and require attention to details. The `skipMissingProperties` option skips properties that are `null` or `undefined`, except for those marked with `@IsDefined`. Wrapping your schema with <Link href="/api/partial/">`partial`</Link> comes close, but only allows `undefined` and affects every entry. For full parity, wrap the individual entries with <Link href="/api/nullish/">`nullish`</Link> instead. The `stopAtFirstError` option stops after the first error of each property, but still reports every invalid property. Valibot's `abortEarly` configuration is stricter and stops after the first issue overall. Validation groups have no direct equivalent. Instead, we recommend deriving multiple schemas from a shared object with methods like <Link href="/api/pick/">`pick`</Link>, <Link href="/api/omit/">`omit`</Link> and <Link href="/api/partial/">`partial`</Link>.
 
 ### Framework integration
 
