@@ -4,9 +4,10 @@ description: Creates a min graphemes validation action.
 source: /actions/minGraphemes/minGraphemes.ts
 contributors:
   - fabian-hiller
+  - yslpn
 ---
 
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # minGraphemes
@@ -34,6 +35,8 @@ const Action = v.minGraphemes<TInput, TRequirement, TMessage>(
 ### Explanation
 
 With `minGraphemes` you can validate the graphemes of a string. If the input does not match the `requirement`, you can use `message` to customize the error message.
+
+> If you are looking for an equivalent of JavaScript's `.length` for minimum length checks, use <Link href="../minLength/">`minLength`</Link> instead.
 
 ## Returns
 
@@ -65,6 +68,10 @@ The following APIs can be combined with `minGraphemes`.
 ### Methods
 
 <ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['minLength']} />
 
 ### Utils
 

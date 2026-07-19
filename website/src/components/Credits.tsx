@@ -5,11 +5,11 @@ import {
   AnthropicLogo,
   BoltLogo,
   BuilderLogo,
+  CodeRabbitLogo,
   DigitalOceanLogo,
   HdmLogo,
   OpenAILogo,
   PaceLogo,
-  StainlessLogo,
 } from '~/logos';
 
 /**
@@ -62,7 +62,7 @@ export const Credits = component$(() => {
           { Logo: PaceLogo, href: 'https://www.pace.edu' },
           { Logo: HdmLogo, href: 'https://www.hdm-stuttgart.de' },
           { Logo: BoltLogo, href: 'https://bolt.new/' },
-          { Logo: StainlessLogo, href: 'https://www.stainless.com/' },
+          { Logo: CodeRabbitLogo, href: 'https://coderabbit.link/valibot' },
           { Logo: AnthropicLogo, href: 'https://www.anthropic.com' },
           { Logo: OpenAILogo, href: 'https://www.openai.com' },
           { Logo: DigitalOceanLogo, href: 'https://www.digitalocean.com/' },
