@@ -1,0 +1,67 @@
+---
+title: lowercase
+description: Creates a lowercase validation action.
+source: /actions/lowercase/lowercase.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# lowercase
+
+Creates a lowercase validation action.
+
+```ts
+const Action = v.lowercase<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `lowercase` you can validate that a string contains no uppercase ASCII characters. If the string contains an uppercase letter from `A` to `Z`, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `lowercase` can be used.
+
+### Lowercase slug schema
+
+Schema to validate a lowercase slug.
+
+```ts
+const SlugSchema = v.pipe(
+  v.string(),
+  v.slug(),
+  v.lowercase('The slug must be lowercase.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `lowercase`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

@@ -149,6 +149,15 @@ export const ISRC_REGEX: RegExp =
   /^(?:[A-Z]{2}[A-Z\d]{3}\d{7}|[A-Z]{2}-[A-Z\d]{3}-\d{2}-\d{5})$/u;
 
 /**
+ * [Lowercase](https://en.wikipedia.org/wiki/Letter_case) regex.
+ *
+ * Hint: We use the `\P{Lu}` Unicode property escape to match any character
+ * that is not a Unicode uppercase letter. This means that values like `Ñ`,
+ * `É`, `Σ`, or `ẞ` are correctly detected as having uppercase characters.
+ */
+export const LOWERCASE_REGEX: RegExp = /^\P{Lu}*$/u;
+
+/**
  * [MAC](https://en.wikipedia.org/wiki/MAC_address) 48 bit regex.
  *
  * Hint: We decided against the `i` flag for better JSON Schema compatibility.
