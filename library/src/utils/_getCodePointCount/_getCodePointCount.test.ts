@@ -3,6 +3,7 @@ import { _getCodePointCount } from './_getCodePointCount.ts';
 
 describe('_getCodePointCount', () => {
   test('should return code points count', () => {
+    expect(_getCodePointCount('')).toBe(0);
     expect(_getCodePointCount('hello world')).toBe(11);
     expect(_getCodePointCount('😀')).toBe(1);
     expect(_getCodePointCount('👨🏽‍👩🏽‍👧🏽‍👦🏽')).toBe(11);
@@ -12,5 +13,7 @@ describe('_getCodePointCount', () => {
     expect(_getCodePointCount('𛁟゙ん𛀸゙')).toBe(5);
     expect(_getCodePointCount('奈良県葛󠄀城市')).toBe(7);
     expect(_getCodePointCount('𠮷野家で𩸽')).toBe(5);
+    expect(_getCodePointCount('\ud800\udbff')).toBe(2);
+    expect(_getCodePointCount('\udc00\udfff')).toBe(2);
   });
 });
