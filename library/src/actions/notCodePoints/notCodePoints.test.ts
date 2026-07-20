@@ -93,16 +93,16 @@ describe('notCodePoints', () => {
 
     test('for valid non-latin', () => {
       expectNoActionIssue(action, [
-          '𠮷野家', // signboard notation
-          '葛飾区',
-          '𠮷田太郎',
-          '葛󠄀城市',
-          '天𛂱゚𛃭', // 天ぷら (tempura)
-          '奈良葛󠄀城市',
-          '奈良県葛城市',
-          '奈良県葛󠄀城市',
-          '竈門禰󠄀豆子', // valid thanks to U+E0100
-          '𛁟゙ん𛀸゙🍡',
+        '𠮷野家', // signboard notation
+        '葛飾区',
+        '𠮷田太郎',
+        '葛󠄀城市',
+        '天𛂱゚𛃭', // 天ぷら (tempura)
+        '奈良葛󠄀城市',
+        '奈良県葛城市',
+        '奈良県葛󠄀城市',
+        '竈門禰󠄀豆子', // valid thanks to U+E0100
+        '𛁟゙ん𛀸゙🍡',
       ]);
     });
   });
