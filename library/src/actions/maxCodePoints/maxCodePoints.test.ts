@@ -135,12 +135,12 @@ describe('maxCodePoints', () => {
         action,
         baseIssue,
         [
-          // The culprit is E+0100
+          // The culprit is U+E0100
           '奈良葛󠄀城市',
           '奈良県葛城市',
           '奈良県葛󠄀城市',
           '竈門禰󠄀豆子',
-          // 🍡: 1 code point emoji & U+3099 consumes one more code points
+          // 🍡: 1 code point emoji & U+3099 consumes one more code point
           '𛁟゙ん𛀸゙🍡',
         ],
         (value) => `${_getCodePointCount(value)}`
