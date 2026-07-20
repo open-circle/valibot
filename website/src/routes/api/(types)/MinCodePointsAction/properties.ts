@@ -22,7 +22,7 @@ export const properties: Record<string, PropertyProps> = {
             {
               type: 'custom',
               name: 'MinCodePointsIssue',
-              href: '../MinCodePointsAction/',
+              href: '../MinCodePointsIssue/',
               generics: [
                 {
                   type: 'custom',
@@ -58,7 +58,7 @@ export const properties: Record<string, PropertyProps> = {
         {
           type: 'custom',
           name: 'MinCodePointsIssue',
-          href: '../MinCodePointsAction/',
+          href: '../MinCodePointsIssue/',
           generics: [
             {
               type: 'custom',
