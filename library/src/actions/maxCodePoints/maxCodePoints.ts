@@ -124,7 +124,7 @@ export function maxCodePoints(
       if (dataset.typed) {
         const count = _getCodePointCount(dataset.value);
         if (count > this.requirement) {
-          _addIssue(this, 'code_points', dataset, config, {
+          _addIssue(this, 'code points', dataset, config, {
             received: `${count}`,
           });
         }
