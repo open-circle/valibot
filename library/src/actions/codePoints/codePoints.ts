@@ -6,7 +6,7 @@ import type {
 import { _addIssue, _getCodePointCount } from '../../utils/index.ts';
 
 /**
- * CodePoints issue type.
+ * Code points issue interface.
  */
 export interface CodePointsIssue<
   TInput extends string,
@@ -35,7 +35,7 @@ export interface CodePointsIssue<
 }
 
 /**
- * CodePoints action type.
+ * Code points action interface.
  */
 export interface CodePointsAction<
   TInput extends string,

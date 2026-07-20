@@ -6,7 +6,7 @@ import type {
 import { _addIssue, _getCodePointCount } from '../../utils/index.ts';
 
 /**
- * Min code points issue type.
+ * Min code points issue interface.
  */
 export interface MinCodePointsIssue<
   TInput extends string,
