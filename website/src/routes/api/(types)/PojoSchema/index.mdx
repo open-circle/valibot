@@ -1,0 +1,25 @@
+---
+title: PojoSchema
+description: POJO schema interface.
+contributors:
+  - fabian-hiller
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# PojoSchema
+
+POJO schema interface.
+
+## Generics
+
+- `TMessage` <Property {...properties.TMessage} />
+
+## Definition
+
+- `PojoSchema` <Property {...properties.BaseSchema} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `message` <Property {...properties.message} />
