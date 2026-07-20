@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { _getCodePointCount } from './_getCodePointCountCount.ts';
+import { _getCodePointCount } from './_getCodePointCount.ts';
 
 describe('_getCodePointCount', () => {
   test('should return code points count', () => {

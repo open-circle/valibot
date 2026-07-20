@@ -1,1 +1,1 @@
-export * from './_getCodePointCountCount.ts';
+export * from './_getCodePointCount.ts';
