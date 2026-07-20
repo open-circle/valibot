@@ -105,6 +105,7 @@ export * from './toCamelCase/index.ts';
 export * from './toDate/index.ts';
 export * from './toKebabCase/index.ts';
 export * from './toLowerCase/index.ts';
+export * from './toCamelCase/index.ts';
 export * from './toMaxValue/index.ts';
 export * from './toMinValue/index.ts';
 export * from './toNumber/index.ts';
