@@ -35,7 +35,7 @@ export interface MinCodePointsIssue<
 }
 
 /**
- * Min code points action type.
+ * Min code points action interface.
  */
 export interface MinCodePointsAction<
   TInput extends string,

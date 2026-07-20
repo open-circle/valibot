@@ -35,7 +35,7 @@ export interface MaxCodePointsIssue<
 }
 
 /**
- * Max code points action type.
+ * Max code points action interface.
  */
 export interface MaxCodePointsAction<
   TInput extends string,
