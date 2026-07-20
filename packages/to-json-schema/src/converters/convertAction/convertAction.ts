@@ -12,6 +12,10 @@ import {
  * Action type.
  */
 type Action =
+  | v.AnyOfAction<
+      v.AnyOfOptions,
+      v.ErrorMessage<v.AnyOfIssue<v.BaseIssue<unknown>>> | undefined
+    >
   | v.Base64Action<string, v.ErrorMessage<v.Base64Issue<string>> | undefined>
   | v.BicAction<string, v.ErrorMessage<v.BicIssue<string>> | undefined>
   | v.Cuid2Action<string, v.ErrorMessage<v.Cuid2Issue<string>> | undefined>
@@ -197,6 +201,42 @@ export function convertAction(
 
   // Convert Valibot action to JSON Schema
   switch (valibotAction.type) {
+    case 'any_of': {
+      const anyOf = valibotAction.options.map((option: unknown) =>
+        convertAction(
+          jsonSchema.type ? { type: jsonSchema.type } : {},
+          option as Action,
+          config
+        )
+      );
+
+      // Hint: A `$ref` (e.g. set by a preceding `lazy` schema) or an
+      // existing `anyOf` cannot stay as a sibling of the new `anyOf` — for
+      // `$ref`, draft-07 and earlier ignore sibling keywords entirely, which
+      // would silently drop the new `anyOf` constraint. Both are moved into
+      // `allOf` instead, where each keeps evaluating independently.
+      const conflictingParts: JsonSchema[] = [];
+      if (jsonSchema.$ref) {
+        conflictingParts.push({ $ref: jsonSchema.$ref });
+        delete jsonSchema.$ref;
+      }
+      if (jsonSchema.anyOf) {
+        conflictingParts.push({ anyOf: jsonSchema.anyOf });
+        delete jsonSchema.anyOf;
+      }
+
+      if (conflictingParts.length) {
+        jsonSchema.allOf = [
+          ...(jsonSchema.allOf ?? []),
+          ...conflictingParts,
+          { anyOf },
+        ];
+      } else {
+        jsonSchema.anyOf = anyOf;
+      }
+      break;
+    }
+
     case 'base64': {
       jsonSchema.contentEncoding = 'base64';
       break;

@@ -276,6 +276,138 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert any of action', () => {
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.anyOf([v.domain(), v.url()]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      anyOf: [
+        { type: 'string', pattern: v.DOMAIN_REGEX.source },
+        { type: 'string', format: 'uri' },
+      ],
+    });
+  });
+
+  test('should convert any of action without overwriting existing constraints', () => {
+    expect(
+      convertAction(
+        { type: 'string', minLength: 5 },
+        v.anyOf([v.domain(), v.url()]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      minLength: 5,
+      anyOf: [
+        { type: 'string', pattern: v.DOMAIN_REGEX.source },
+        { type: 'string', format: 'uri' },
+      ],
+    });
+  });
+
+  test('should convert any of action with existing anyOf schema', () => {
+    expect(
+      convertAction(
+        { type: 'string', anyOf: [{ const: 'foo' }] },
+        v.anyOf([v.domain(), v.url()]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      allOf: [
+        { anyOf: [{ const: 'foo' }] },
+        {
+          anyOf: [
+            { type: 'string', pattern: v.DOMAIN_REGEX.source },
+            { type: 'string', format: 'uri' },
+          ],
+        },
+      ],
+    });
+  });
+
+  test('should convert any of action with existing $ref schema', () => {
+    // Hint: A `$ref` (e.g. set by a preceding `lazy` schema) must not stay a
+    // sibling of `anyOf` — draft-07 and earlier ignore sibling keywords next
+    // to `$ref`, which would silently drop the `anyOf` constraint.
+    expect(
+      convertAction(
+        { $ref: '#/$defs/0' },
+        v.anyOf([v.domain(), v.url()]),
+        undefined
+      )
+    ).toStrictEqual({
+      allOf: [
+        { $ref: '#/$defs/0' },
+        {
+          anyOf: [{ pattern: v.DOMAIN_REGEX.source }, { format: 'uri' }],
+        },
+      ],
+    });
+  });
+
+  test('should convert any of action with existing $ref and anyOf schema', () => {
+    expect(
+      convertAction(
+        { $ref: '#/$defs/0', anyOf: [{ const: 'foo' }] },
+        v.anyOf([v.domain(), v.url()]),
+        undefined
+      )
+    ).toStrictEqual({
+      allOf: [
+        { $ref: '#/$defs/0' },
+        { anyOf: [{ const: 'foo' }] },
+        {
+          anyOf: [{ pattern: v.DOMAIN_REGEX.source }, { format: 'uri' }],
+        },
+      ],
+    });
+  });
+
+  test('should ignore any of action', () => {
+    expect(
+      convertAction({ type: 'string' }, v.anyOf([v.domain(), v.url()]), {
+        ignoreActions: ['any_of'],
+      })
+    ).toStrictEqual({ type: 'string' });
+  });
+
+  test('should ignore nested any of options', () => {
+    expect(
+      convertAction({ type: 'string' }, v.anyOf([v.domain(), v.url()]), {
+        ignoreActions: ['domain'],
+      })
+    ).toStrictEqual({
+      type: 'string',
+      anyOf: [{ type: 'string' }, { type: 'string', format: 'uri' }],
+    });
+  });
+
+  test('should handle unsupported nested any of options', () => {
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.anyOf([
+          v.guard((input: string): input is `${number}px` =>
+            /^\d+px$/u.test(input)
+          ),
+          v.email(),
+        ]),
+        { errorMode: 'warn' }
+      )
+    ).toStrictEqual({
+      type: 'string',
+      anyOf: [{ type: 'string' }, { type: 'string', format: 'email' }],
+    });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The "guard" action cannot be converted to JSON Schema.'
+    );
+  });
+
   test('should convert rfc email action', () => {
     expect(convertAction({}, v.rfcEmail<string>(), undefined)).toStrictEqual({
       format: 'email',

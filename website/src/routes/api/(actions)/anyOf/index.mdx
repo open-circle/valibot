@@ -1,0 +1,105 @@
+---
+title: anyOf
+description: Creates an any of validation action.
+source: /actions/anyOf/anyOf.ts
+contributors:
+  - yslpn
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# anyOf
+
+Creates an any of validation action.
+
+```ts
+const Action = v.anyOf<TOptions, TMessage, TInput>(options, message);
+```
+
+## Generics
+
+- `TOptions` <Property {...properties.TOptions} />
+- `TMessage` <Property {...properties.TMessage} />
+- `TInput` <Property {...properties.TInput} />
+
+## Parameters
+
+- `options` <Property {...properties.options} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `anyOf` you can combine alternative constraints for a value that was already typed earlier in a `pipe`. The options are tried in order and the first one that succeeds decides the result. If all options fail, `anyOf` returns one top-level issue with the option issues as subissues.
+
+The `options` array must contain at least two sync validation or transformation actions (including the sync `guard` action). The output type is the union of every option's output: value-preserving validations keep the input type, while guards and transformations contribute their own output type. Guards and other conditional transformations (like `toNumber`) can still fail and contribute their issues like validations do — only transformations that always succeed (like `trim`) are guaranteed to short-circuit the rest, so place those last. Async and metadata actions are not supported.
+
+<Link href="../readonly/">`readonly`</Link>, <Link href="../brand/">`brand`</Link> and <Link href="../flavor/">`flavor`</Link> take no other argument that ties their input to a concrete type, so calling them bare (e.g. `v.readonly()`) inside `anyOf` is rejected — their input would silently default to `unknown` and corrupt the output type. Pass an explicit type argument instead, e.g. `v.readonly<string>()`, `v.brand<string, 'id'>('id')`.
+
+Use <Link href="../union/">`union`</Link> when alternatives have different input data types. Use <Link href="../variant/">`variant`</Link> for discriminated object unions.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `anyOf` can be used.
+
+### Website schema
+
+Schema to validate a domain or URL.
+
+```ts
+const WebsiteSchema = v.pipe(
+  v.string(),
+  v.anyOf([v.domain(), v.url()], 'Please enter a domain or URL.')
+);
+```
+
+### CSS size schema
+
+Schema to validate a CSS size with a narrowing output type.
+
+```ts
+const isPixelString = (input: string): input is `${number}px` =>
+  /^\d+px$/u.test(input);
+
+const isRemString = (input: string): input is `${number}rem` =>
+  /^\d+rem$/u.test(input);
+
+const CssSizeSchema = v.pipe(
+  v.string(),
+  v.anyOf([v.guard(isPixelString), v.guard(isRemString)])
+);
+```
+
+### Transform fallback
+
+Keep the value when a guard matches, otherwise try to coerce it. The guard is placed first so it acts as a fast path; `toNumber` still runs on non-matching input and can itself fail (e.g. on non-numeric input), in which case both issues are collected. The output type becomes the union of both branches.
+
+```ts
+const isNumeric = (input: string): input is `${number}` => /^\d+$/u.test(input);
+
+// InferOutput: `${number}` | number
+const NumberSchema = v.pipe(
+  v.string(),
+  v.anyOf([v.guard(isNumeric), v.toNumber()])
+);
+```
+
+## Related
+
+The following APIs can be combined with `anyOf`.
+
+### Schemas
+
+<ApiList items={['string', 'union', 'variant']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['check', 'domain', 'guard', 'url']} />
