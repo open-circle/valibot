@@ -119,6 +119,7 @@ export * from './trimStart/index.ts';
 export * from './types.ts';
 export * from './ulid/index.ts';
 export * from './url/index.ts';
+export * from './urlRelative/index.ts';
 export * from './uuid/index.ts';
 export * from './value/index.ts';
 export * from './values/index.ts';
