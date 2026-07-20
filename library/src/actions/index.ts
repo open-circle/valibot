@@ -34,6 +34,7 @@ export * from './imei/index.ts';
 export * from './includes/index.ts';
 export * from './integer/index.ts';
 export * from './ip/index.ts';
+export * from './cidr/index.ts';
 export * from './ipv4/index.ts';
 export * from './ipv6/index.ts';
 export * from './isbn/index.ts';
