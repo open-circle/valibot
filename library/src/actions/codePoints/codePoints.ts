@@ -77,7 +77,6 @@ export interface CodePointsAction<
  *
  * @returns A code points action.
  */
-// @__NO_SIDE_EFFECTS__
 export function codePoints<
   TInput extends string,
   const TRequirement extends number,
@@ -102,6 +101,7 @@ export function codePoints<
   message: TMessage
 ): CodePointsAction<TInput, TRequirement, TMessage>;
 
+// @__NO_SIDE_EFFECTS__
 export function codePoints(
   requirement: number,
   message?: ErrorMessage<CodePointsIssue<string, number>>
