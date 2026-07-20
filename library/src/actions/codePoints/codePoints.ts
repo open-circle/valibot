@@ -29,7 +29,7 @@ export interface CodePointsIssue<
    */
   readonly received: `${number}`;
   /**
-   * The required codePoints.
+   * The required code points.
    */
   readonly requirement: TRequirement;
 }
