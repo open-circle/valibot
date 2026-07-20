@@ -558,6 +558,23 @@ export async function handleMcpRequest(
     return response;
   }
 
+  // Reject unsupported protocol versions as required by the specification.
+  // A missing header is allowed and treated as the oldest supported version.
+  const protocolVersion = request.headers.get('MCP-Protocol-Version');
+  if (
+    protocolVersion &&
+    !(SUPPORTED_VERSIONS as readonly string[]).includes(protocolVersion)
+  ) {
+    return jsonResponse(
+      createError(
+        null,
+        -32600,
+        `Unsupported protocol version: ${protocolVersion}`
+      ),
+      400
+    );
+  }
+
   // Parse JSON body of request
   let body: unknown;
   try {
@@ -575,19 +592,26 @@ export async function handleMcpRequest(
   const messages = Array.isArray(body) ? body : [body];
   const responses: Record<string, unknown>[] = [];
   for (const message of messages) {
+    // Validate structure of message including the type of its ID
+    const isObject = typeof message === 'object' && message !== null;
+    const id =
+      isObject && 'id' in message ? (message as JsonRpcMessage).id : undefined;
+    const isValidId =
+      id === undefined ||
+      id === null ||
+      typeof id === 'string' ||
+      typeof id === 'number';
     if (
-      typeof message !== 'object' ||
-      message === null ||
+      !isObject ||
+      !isValidId ||
       (message as JsonRpcMessage).jsonrpc !== '2.0' ||
       typeof (message as JsonRpcMessage).method !== 'string'
     ) {
-      // Preserve ID of invalid message if available so that the client can
-      // correlate the error with its request
-      const errorId =
-        typeof message === 'object' && message !== null && 'id' in message
-          ? (message as JsonRpcMessage).id
-          : null;
-      responses.push(createError(errorId, -32600, 'Invalid request'));
+      // Preserve valid IDs so that the client can correlate the error with
+      // its request, but never echo IDs of an invalid type
+      responses.push(
+        createError(isValidId ? id : null, -32600, 'Invalid request')
+      );
       continue;
     }
     const response = await processMessage(

@@ -7,6 +7,7 @@ import {
   INSTRUCTIONS,
   LATEST_VERSION,
   SERVER_INFO,
+  SUPPORTED_VERSIONS,
 } from '../worker/mcp-info';
 
 // URL of the official Valibot agent skill (our single source of truth)
@@ -89,6 +90,25 @@ fs.writeFileSync(
   path.join(mcpDir, 'server-card.json'),
   `${JSON.stringify(
     {
+      // Fields of the evolving SEP-1649 draft (Extensions track)
+      name: 'dev.valibot/docs',
+      title: SERVER_INFO.title,
+      description:
+        'Search and read the documentation of Valibot, the modular and type-safe schema library for validating structural data.',
+      version: SERVER_INFO.version,
+      websiteUrl: 'https://valibot.dev/',
+      repository: {
+        url: 'https://github.com/open-circle/valibot',
+        source: 'github',
+      },
+      remotes: [
+        {
+          type: 'streamable-http',
+          url: 'https://valibot.dev/mcp',
+          supportedProtocolVersions: SUPPORTED_VERSIONS,
+        },
+      ],
+      // Fields of the original SEP-1649 proposal for older consumers
       serverInfo: SERVER_INFO,
       protocolVersion: LATEST_VERSION,
       transport: {
@@ -96,8 +116,6 @@ fs.writeFileSync(
         endpoint: 'https://valibot.dev/mcp',
       },
       capabilities: CAPABILITIES,
-      description:
-        'Search and read the documentation of Valibot, the modular and type safe schema library for validating structural data.',
       instructions: INSTRUCTIONS,
       documentation: 'https://valibot.dev/guides/coding-agents/',
     },
