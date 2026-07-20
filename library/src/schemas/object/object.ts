@@ -109,22 +109,22 @@ export function object(
         // Process each object entry of schema
         for (const key in this.entries) {
           const valueSchema = this.entries[key];
+          const isKeyPresent = key in input;
 
           // If key is present or its an optional schema with a default value,
           // parse input of key or default value
           if (
-            key in input ||
+            isKeyPresent ||
             ((valueSchema.type === 'exact_optional' ||
               valueSchema.type === 'optional' ||
               valueSchema.type === 'nullish') &&
               // @ts-expect-error
               valueSchema.default !== undefined)
           ) {
-            const value: unknown =
-              key in input
-                ? // @ts-expect-error
-                  input[key]
-                : getDefault(valueSchema);
+            const value: unknown = isKeyPresent
+              ? // @ts-expect-error
+                input[key]
+              : getDefault(valueSchema);
             const valueDataset = valueSchema['~run']({ value }, config);
 
             // If there are issues, capture them
