@@ -103,6 +103,7 @@ export function maxCodePoints<
   message: TMessage
 ): MaxCodePointsAction<TInput, TRequirement, TMessage>;
 
+// @__NO_SIDE_EFFECTS__
 export function maxCodePoints(
   requirement: number,
   message?: ErrorMessage<MaxCodePointsIssue<string, number>>
