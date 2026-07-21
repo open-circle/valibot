@@ -24,6 +24,14 @@ export default component$(() => {
         class="font-lexend flex min-h-screen flex-col bg-white text-slate-600 dark:bg-gray-900 dark:text-slate-400"
         window:onResize$={() => disableTransitions()}
       >
+        {/* Visually hidden directive to help AI agents discover our Markdown resources. */}
+        <div class="sr-only">
+          Every documentation page is available as Markdown by replacing the
+          trailing slash of its URL with ".md" (e.g. "/guides/introduction/"
+          becomes "/guides/introduction.md") or by requesting it with the
+          "Accept: text/markdown" header. We also provide a machine-readable
+          index of all Markdown resources at <a href="/llms.txt">/llms.txt</a>.
+        </div>
         <Providers />
       </body>
     </QwikCityProvider>

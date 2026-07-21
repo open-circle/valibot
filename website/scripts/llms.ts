@@ -1,6 +1,9 @@
 import graymatter from 'gray-matter';
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+import type { PropertyProps } from '~/components';
+import { serializeProperty } from './utils/index';
 
 // Read menu.md of guides and API
 const menuOfGuides = fs.readFileSync(
@@ -29,12 +32,16 @@ function convertMenuToLlms(markdown: string): string {
   );
 }
 
-// Create llms.txt intro text
+// Create intro text with title and summary for llms files
 const introText =
-  '# Valibot\n\nThe modular and type safe schema library for validating structural data.\n';
+  '# Valibot\n\n> The modular and type safe schema library for validating structural data.\n';
+
+// Create details text with pointers to other resources for llms.txt file
+const detailsText =
+  'Every link below points to the Markdown version of a documentation page. The same page is served as HTML at the same URL without the `.md` extension. The whole documentation is also available as a single file at [llms-full.txt](https://valibot.dev/llms-full.txt), the guides at [llms-guides.txt](https://valibot.dev/llms-guides.txt) and the API reference at [llms-api.txt](https://valibot.dev/llms-api.txt).\n';
 
 // Create llms.txt file with content of guides and API menus
-const llmsTxt = `${introText}\n${convertMenuToLlms(menuOfGuides)}\n${convertMenuToLlms(menuOfApi)}`;
+const llmsTxt = `${introText}\n${detailsText}\n${convertMenuToLlms(menuOfGuides)}\n${convertMenuToLlms(menuOfApi)}`;
 
 // Write llms.txt file to public directory
 fs.writeFileSync(path.join('public', 'llms.txt'), llmsTxt);
@@ -95,6 +102,118 @@ function extractFilePathsOfMenu(
   });
 }
 
+/**
+ * Converts the MDX components of our docs to plain Markdown so that the
+ * content of the generated MD files matches the rendered HTML output.
+ *
+ * @param mdxContent The MDX content to convert.
+ * @param dirPath The directory path of the MDX file.
+ * @param pageUrl The URL of the documentation page.
+ *
+ * @returns A plain Markdown string.
+ */
+async function convertMdxToMd(
+  mdxContent: string,
+  dirPath: string,
+  pageUrl: string
+): Promise<string> {
+  // Import property data if MDX content uses spread Property components
+  let properties: Record<string, PropertyProps> = {};
+  if (mdxContent.includes('{...properties')) {
+    properties = (
+      await import(pathToFileURL(path.join(dirPath, 'properties.ts')).href)
+    ).properties;
+  }
+
+  return (
+    mdxContent
+      // Split content into code blocks and text to only transform the latter
+      .split(/(```[\s\S]*?```)/)
+      .map((segment) => {
+        // Return code blocks unchanged
+        if (segment.startsWith('```')) {
+          return segment;
+        }
+
+        return (
+          segment
+            // Replace spread Property components with serialized type
+            .replaceAll(
+              /<Property\s+\{\.\.\.properties(?:\.(\w+)|\['([^']+)'\])\}\s*\/>/g,
+              (match, dotName: string | undefined, bracketName: string) => {
+                const name = dotName ?? bracketName;
+                const data = properties[name];
+                if (!data) {
+                  throw new Error(`Missing property "${name}" in ${dirPath}`);
+                }
+                return serializeProperty(data);
+              }
+            )
+
+            // Replace literal Property components with inline code
+            .replaceAll(/<Property\s+type=["']([^"']+)["']\s*\/>/g, '`$1`')
+
+            // Replace Link components with Markdown links
+            .replaceAll(
+              /<Link\s+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/Link>/g,
+              '[$2]($1)'
+            )
+
+            // Replace ApiList components with a list of Markdown links
+            .replaceAll(/<ApiList\s+([\s\S]*?)\/>/g, (match, attrs: string) => {
+              const label = attrs.match(/label=["']([^"']+)["']/)?.[1];
+              const items = [...attrs.matchAll(/'([^']+)'/g)].map(
+                (itemMatch) => `[\`${itemMatch[1]}\`](/api/${itemMatch[1]}/)`
+              );
+              return `${label ? `${label}: ` : ''}${items.join(', ')}`;
+            })
+
+            // Resolve relative link paths to absolute link paths so that
+            // links work outside the HTML context of the page
+            .replaceAll(/\]\((\.\.?\/[^)]+)\)/g, (match, target: string) => {
+              const resolvedUrl = new URL(target, pageUrl);
+              return `](${resolvedUrl.pathname}${resolvedUrl.hash})`;
+            })
+
+            // Rewrite links to documentation pages to their Markdown version
+            // so that AI agents stay within the Markdown context
+            .replaceAll(
+              /\]\(\/(guides|api)\/([\w.-]+?)\/(#[^)]*)?\)/g,
+              '](/$1/$2.md$3)'
+            )
+
+            // Remove remaining components (e.g. images and interactive
+            // elements) as they cannot be converted to plain Markdown
+            .replaceAll(/^<[A-Z][\s\S]*?\/>\n?/gm, '')
+        );
+      })
+      .join('')
+  );
+}
+
+/**
+ * Warns about component markup that our MDX to Markdown conversion did not
+ * catch so that new components are noticed and handled.
+ *
+ * @param mdContent The converted Markdown content.
+ * @param filePath The path of the source MDX file.
+ */
+function warnAboutUnknownComponents(mdContent: string, filePath: string) {
+  for (const segment of mdContent.split(/(```[\s\S]*?```)/)) {
+    if (!segment.startsWith('```')) {
+      const componentMatch = segment
+        // Remove inline code as it can contain generic type arguments
+        .replaceAll(/(`+)[\s\S]*?\1/g, '')
+        .match(/<[A-Z]\w*[\s/]/);
+      if (componentMatch) {
+        console.warn(
+          `Unknown component "${componentMatch[0].trim()}" in Markdown output of ${filePath}`
+        );
+      }
+    }
+  }
+}
+
 // Create object to hold content for specific llms files
 const llms: Record<'full' | 'guides' | 'api', string> = {
   full: introText,
@@ -144,14 +263,42 @@ for (const contentArea of contentAreas) {
         frontmatter.content.indexOf('# ') // Index of first heading
       );
 
-      // Copy MDX content into public directory
-      fs.writeFileSync(
-        path.join(contentArea.publicDir, `${mdxFile.name}.md`),
-        mdxContent
+      // Create URL of documentation page
+      const pageUrl = `https://valibot.dev/${contentArea.id}/${mdxFile.name}/`;
+
+      // Convert MDX components of content to plain Markdown
+      const mdContent = await convertMdxToMd(
+        mdxContent,
+        path.dirname(mdxFile.path),
+        pageUrl
       );
 
-      // Change level of headings two levels down
-      const llmsContent = mdxContent.replaceAll(/^#/gm, '###');
+      // Warn about component markup that was not converted
+      warnAboutUnknownComponents(mdContent, mdxFile.path);
+
+      // Create agent directive with pointer to HTML page and llms.txt file
+      const directive = `> This document is the Markdown version of [valibot.dev/${contentArea.id}/${mdxFile.name}/](${pageUrl}). For the complete documentation index, see [llms.txt](https://valibot.dev/llms.txt).`;
+
+      // Add agent directive below first heading of MD content
+      const headingEnd = mdContent.indexOf('\n');
+      const pageContent = `${mdContent.slice(0, headingEnd)}\n\n${directive}${mdContent.slice(headingEnd)}`;
+
+      // Copy MD content with directive into public directory
+      fs.writeFileSync(
+        path.join(contentArea.publicDir, `${mdxFile.name}.md`),
+        pageContent
+      );
+
+      // Change level of headings two levels down without touching `#`
+      // comments within code blocks
+      const llmsContent = mdContent
+        .split(/(```[\s\S]*?```)/)
+        .map((segment) =>
+          segment.startsWith('```')
+            ? segment
+            : segment.replaceAll(/^#/gm, '###')
+        )
+        .join('');
 
       // Add content to specific llms files
       llms.full += `\n${llmsContent}`;
