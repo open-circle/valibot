@@ -21,8 +21,10 @@ export function _merge(value1: unknown, value2: unknown): MergeDataset {
   if (typeof value1 === typeof value2) {
     // Return first value if both are equal
     if (
-      value1 === value2 ||
-      (value1 instanceof Date && value2 instanceof Date && +value1 === +value2)
+      Object.is(value1, value2) ||
+      (value1 instanceof Date &&
+        value2 instanceof Date &&
+        Object.is(+value1, +value2))
     ) {
       return { value: value1 };
     }
