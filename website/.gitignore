@@ -1,5 +1,7 @@
 public/og/
 public/sitemap.xml
+public/skill.md
+public/.well-known/agent-skills/index.json
 public/llms.txt
 public/llms-full.txt
 public/llms-guides.txt
