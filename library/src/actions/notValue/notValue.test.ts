@@ -413,6 +413,13 @@ describe('notValue', () => {
         { ...baseInfo, expected: '!123', requirement: 123 },
         [123, 123.0, Number(123)]
       );
+      // notValue(NaN) must reject NaN: <= / >= comparisons return false for NaN,
+      // so without Object.is the validator incorrectly allows NaN through.
+      expectActionIssue(
+        notValue(NaN, 'message'),
+        { ...baseInfo, expected: '!NaN', requirement: NaN },
+        [NaN, Number('not-a-number')]
+      );
     });
 
     test('for invalid non-numbers', () => {
