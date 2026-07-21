@@ -25,7 +25,7 @@ export default tseslint.config(
     plugins: { jsdoc },
     settings: {
       'import/parsers': {
-        '@typescript-eslint/parser': ['.ts', '.tsx'],
+        '@typescript-eslint/parser': ['.ts'],
       },
       'import/resolver': {
         typescript: {
