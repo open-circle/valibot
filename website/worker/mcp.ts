@@ -323,6 +323,10 @@ async function executeGetDoc(
     };
   }
 
+  // Strip the `v.` namespace prefix so that lookups of API symbols in their
+  // documented form (e.g. "v.string") resolve to their page (e.g. "string")
+  pageName = pageName.replace(/^v\./i, '');
+
   // Fetch the Markdown file of each candidate area in parallel and return
   // the content of the first one that exists
   const responses = await Promise.all(
