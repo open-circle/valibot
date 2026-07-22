@@ -1,0 +1,25 @@
+/**
+ * Returns the code point count of the input.
+ *
+ * @param input The input to be measured.
+ *
+ * @returns The code point count.
+ *
+ * @internal
+ */
+// @__NO_SIDE_EFFECTS__
+export function _getCodePointCount(input: string): number {
+  let count = input.length;
+  // The last code unit of the input cannot be the start of a surrogate pair
+  const lengthMinus1 = input.length - 1;
+  for (let i = 0; i < lengthMinus1; ) {
+    // If codePointAt returned undefined here, we would have already exited the loop
+    if (input.codePointAt(i)! <= 65535) {
+      i++;
+    } else {
+      i += 2; // 2 characters (surrogate pair) in JS (UTF-16)
+      count--; // compensate for over-counting
+    }
+  }
+  return count;
+}
