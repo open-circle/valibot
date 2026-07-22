@@ -60,6 +60,7 @@
     "undici": "^7.16.0",
     "vercel": "^48.10.10",
     "vite": "^7.2.4",
+    "vite-font": "^0.3.1",
     "vite-imagetools": "^9.0.0",
     "vite-plugin-node-polyfills": "^0.24.0",
     "vite-tsconfig-paths": "^5.1.4",

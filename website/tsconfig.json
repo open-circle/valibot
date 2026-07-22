@@ -17,7 +17,7 @@
     "isolatedModules": true,
     "outDir": "tmp",
     "noEmit": true,
-    "types": ["node", "vite/client"],
+    "types": ["node", "vite/client", "vite-font/client"],
     "paths": {
       "~/*": ["./src/*"]
     }

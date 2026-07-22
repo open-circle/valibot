@@ -8,9 +8,14 @@
    default (no class) is "shown"; `no-chapters:` overrides the hidden state. */
 @custom-variant no-chapters (&:where(html.no-chapters *));
 
+/* Tailwind only mints the `font-lexend` / `font-lexend-exa` utilities from what it finds here, so
+   the stacks have to be declared in `@theme` even though the `vite-font` plugin (see vite.config.ts)
+   is what builds them. `--lexend` and `--lexend-exa` are the plugin's output: the web font, then its
+   metric-matched fallback, then the generic family — so text drawn before the font lands takes up
+   the same space and never shifts. */
 @theme {
-  --font-lexend: 'Lexend', ui-sans-serif, system-ui, sans-serif;
-  --font-lexend-exa: 'Lexend Exa', ui-sans-serif, system-ui, sans-serif;
+  --font-lexend: var(--lexend);
+  --font-lexend-exa: var(--lexend-exa);
 }
 
 /* Custom utils */
@@ -64,33 +69,6 @@
   .monaco-editor,
   .monaco-editor > div {
     @apply border-0 outline-none lg:rounded-3xl;
-  }
-
-  /* Lexend 400 */
-  @font-face {
-    font-family: 'Lexend';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url(/fonts/lexend-400.woff2) format('woff2');
-  }
-
-  /* Lexend 500 */
-  @font-face {
-    font-family: 'Lexend';
-    font-style: normal;
-    font-weight: 500;
-    font-display: swap;
-    src: url(/fonts/lexend-500.woff2) format('woff2');
-  }
-
-  /* Lexend Exa 500 */
-  @font-face {
-    font-family: 'Lexend Exa';
-    font-style: normal;
-    font-weight: 500;
-    font-display: swap;
-    src: url(/fonts/lexend-exa-500.woff2) format('woff2');
   }
 
   /* Typography */
