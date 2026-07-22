@@ -1,4 +1,4 @@
-import { getDefault } from '../../methods/index.ts';
+import { getDefault } from '../../methods/getDefault/index.ts';
 import type {
   BaseIssue,
   BaseSchema,
