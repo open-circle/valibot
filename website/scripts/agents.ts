@@ -6,8 +6,10 @@ import {
   CAPABILITIES,
   INSTRUCTIONS,
   LATEST_VERSION,
+  MCP_URL,
   SERVER_INFO,
   SUPPORTED_VERSIONS,
+  TRANSPORT_TYPE,
 } from '../worker/mcp-info';
 
 // URL of the official Valibot agent skill (our single source of truth)
@@ -103,8 +105,8 @@ fs.writeFileSync(
       },
       remotes: [
         {
-          type: 'streamable-http',
-          url: 'https://valibot.dev/mcp',
+          type: TRANSPORT_TYPE,
+          url: MCP_URL,
           supportedProtocolVersions: SUPPORTED_VERSIONS,
         },
       ],
@@ -112,8 +114,8 @@ fs.writeFileSync(
       serverInfo: SERVER_INFO,
       protocolVersion: LATEST_VERSION,
       transport: {
-        type: 'streamable-http',
-        endpoint: 'https://valibot.dev/mcp',
+        type: TRANSPORT_TYPE,
+        endpoint: MCP_URL,
       },
       capabilities: CAPABILITIES,
       instructions: INSTRUCTIONS,

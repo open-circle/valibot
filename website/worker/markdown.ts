@@ -80,9 +80,10 @@ export async function serveMarkdown(
   }
 
   // Pass redirects (e.g. from our `_redirects` file) through to the client
-  // so that it can request the Markdown file at its new location
+  // so that it can request the Markdown file at its new location. As the
+  // redirect target depends on the `Accept` header, caches must vary on it.
   if (response.status >= 300 && response.status < 400) {
-    return response;
+    return withHeaders(response, { Vary: 'Accept' });
   }
 
   if (response.ok) {

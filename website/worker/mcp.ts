@@ -8,7 +8,7 @@
  */
 import { toJsonSchema } from '@valibot/to-json-schema';
 import * as v from 'valibot';
-import { DOC_AREAS, getDocUrls, type SearchEntry } from './docs';
+import { DOC_AREAS, type DocArea, getDocUrls, type SearchEntry } from './docs';
 import type { Env } from './index';
 import {
   CAPABILITIES,
@@ -44,9 +44,11 @@ const ListDocsSchema = v.object({
  */
 function toInputSchema(schema: v.GenericSchema): Record<string, unknown> {
   // Ignore the `trim` transformation as it cannot be converted to JSON
-  // Schema but still runs when the arguments are validated with Valibot
+  // Schema but still runs when the arguments are validated with Valibot.
+  // Warn instead of throwing for other unconvertible actions so that a
+  // future addition cannot crash the entire Worker at module load.
   const jsonSchema: Record<string, unknown> = {
-    ...toJsonSchema(schema, { ignoreActions: ['trim'] }),
+    ...toJsonSchema(schema, { errorMode: 'warn', ignoreActions: ['trim'] }),
   };
   delete jsonSchema.$schema;
   return jsonSchema;
@@ -143,8 +145,13 @@ function searchDocs(
   index: IndexedEntry[],
   input: v.InferOutput<typeof SearchDocsSchema>
 ): { entry: IndexedEntry; score: number }[] {
-  // Split query into lowercase search terms
-  const terms = input.query.toLowerCase().split(/\s+/).filter(Boolean);
+  // Split query into lowercase search terms and strip the `v.` namespace
+  // prefix so that queries like "v.string" match the API name "string"
+  const terms = input.query
+    .toLowerCase()
+    .split(/\s+/)
+    .map((term) => term.replace(/^v\./, ''))
+    .filter(Boolean);
 
   // Score every entry of the selected area against the search terms
   const results: { entry: IndexedEntry; score: number }[] = [];
@@ -248,6 +255,36 @@ async function executeSearchDocs(
 }
 
 /**
+ * Computes the Levenshtein edit distance between two strings.
+ *
+ * @param string1 The first string.
+ * @param string2 The second string.
+ *
+ * @returns The edit distance.
+ */
+function getEditDistance(string1: string, string2: string): number {
+  let prevRow = Array.from({ length: string2.length + 1 }, (_, index) => index);
+  for (let index1 = 1; index1 <= string1.length; index1++) {
+    const nextRow = [index1];
+    for (let index2 = 1; index2 <= string2.length; index2++) {
+      nextRow.push(
+        Math.min(
+          prevRow[index2] + 1,
+          nextRow[index2 - 1] + 1,
+          prevRow[index2 - 1] +
+            (string1[index1 - 1] === string2[index2 - 1] ? 0 : 1)
+        )
+      );
+    }
+    prevRow = nextRow;
+  }
+  return prevRow[string2.length];
+}
+
+// Regex that matches a documentation page path like "api/string"
+const AREA_PATH_REGEX = new RegExp(`^(${DOC_AREAS.join('|')})/([\\w.-]+)$`);
+
+/**
  * Executes the get_doc tool.
  */
 async function executeGetDoc(
@@ -263,16 +300,17 @@ async function executeGetDoc(
     .replace(/\.md$/, '')
     .replace(/^\/|\/$/g, '');
 
-  // Create list of possible Markdown file paths. For bare names, we try the
-  // API area first as most bare lookups are API references.
-  let filePaths: string[];
-  const areaMatch = new RegExp(`^(${DOC_AREAS.join('|')})/([\\w.-]+)$`).exec(
-    cleanPath
-  );
+  // Split path into candidate areas and page name. For bare names, we try
+  // the API area first as most bare lookups are API references.
+  let areas: DocArea[];
+  let pageName: string;
+  const areaMatch = AREA_PATH_REGEX.exec(cleanPath);
   if (areaMatch) {
-    filePaths = [`/${areaMatch[1]}/${areaMatch[2]}.md`];
+    areas = [areaMatch[1] as DocArea];
+    pageName = areaMatch[2];
   } else if (/^[\w.-]+$/.test(cleanPath)) {
-    filePaths = [`/api/${cleanPath}.md`, `/guides/${cleanPath}.md`];
+    areas = ['api', 'guides'];
+    pageName = cleanPath;
   } else {
     return {
       content: [
@@ -285,28 +323,57 @@ async function executeGetDoc(
     };
   }
 
-  // Return content of first Markdown file that exists
-  for (const filePath of filePaths) {
-    const response = await env.ASSETS.fetch(new URL(filePath, requestUrl).href);
+  // Fetch the Markdown file of each candidate area in parallel and return
+  // the content of the first one that exists
+  const responses = await Promise.all(
+    areas.map((area) =>
+      env.ASSETS.fetch(new URL(`/${area}/${pageName}.md`, requestUrl).href)
+    )
+  );
+  for (const response of responses) {
     if (response.ok) {
       return { content: [{ type: 'text', text: await response.text() }] };
     }
   }
 
-  // Otherwise, search for the path to suggest similar pages. To catch typos,
-  // we shorten the query stepwise until a prefix produces results.
+  // Otherwise, resolve the name case-insensitively to its canonical page,
+  // as the paths of our static assets are case-sensitive
   const index = await getSearchIndex(env, requestUrl);
-  const name = cleanPath.split('/').pop() ?? cleanPath;
-  let suggestions = '';
-  for (
-    let length = Math.min(name.length, 24);
-    length >= 4 && !suggestions;
-    length--
-  ) {
-    suggestions = searchDocs(index, { query: name.slice(0, length), limit: 3 })
-      .map(({ entry }) => `${entry.area}/${entry.name}`)
-      .join('", "');
+  const name = pageName.toLowerCase();
+  for (const area of areas) {
+    const match = index.find(
+      (entry) => entry.area === area && entry.lower.name === name
+    );
+    if (match) {
+      const response = await env.ASSETS.fetch(
+        new URL(`/${match.area}/${match.name}.md`, requestUrl).href
+      );
+      if (response.ok) {
+        return { content: [{ type: 'text', text: await response.text() }] };
+      }
+    }
   }
+
+  // Otherwise, suggest the page names closest to the requested name to
+  // catch typos anywhere in the name
+  const threshold = name.length > 7 ? 3 : 2;
+  const suggestions = index
+    .filter(
+      (entry) => Math.abs(entry.lower.name.length - name.length) <= threshold
+    )
+    .map((entry) => ({
+      entry,
+      distance: getEditDistance(name, entry.lower.name),
+    }))
+    .filter(({ distance }) => distance <= threshold)
+    .sort(
+      (result1, result2) =>
+        result1.distance - result2.distance ||
+        result1.entry.name.localeCompare(result2.entry.name)
+    )
+    .slice(0, 3)
+    .map(({ entry }) => `${entry.area}/${entry.name}`)
+    .join('", "');
   return {
     content: [
       {
@@ -348,17 +415,9 @@ async function executeListDocs(
     text += `- ${entry.area}/${entry.name} — ${entry.title}\n`;
   }
 
-  return {
-    content: [{ type: 'text', text: text.trim() }],
-    structuredContent: {
-      docs: entries.map((entry) => ({
-        path: `${entry.area}/${entry.name}`,
-        title: entry.title,
-        group: entry.group,
-        area: entry.area,
-      })),
-    },
-  };
+  // Omit `structuredContent` as it would double the response size of this
+  // large listing without adding information over the text content
+  return { content: [{ type: 'text', text: text.trim() }] };
 }
 
 /**

@@ -9,6 +9,10 @@
 export const SUPPORTED_VERSIONS = ['2025-06-18', '2025-03-26'] as const;
 export const LATEST_VERSION = SUPPORTED_VERSIONS[0];
 
+// Public URL and transport type of our MCP server endpoint
+export const MCP_URL = 'https://valibot.dev/mcp';
+export const TRANSPORT_TYPE = 'streamable-http';
+
 // Capabilities of our MCP server
 export const CAPABILITIES = { tools: { listChanged: false } } as const;
 
