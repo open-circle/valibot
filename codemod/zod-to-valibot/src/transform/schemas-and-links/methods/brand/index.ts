@@ -1,1 +1,1 @@
-export * from './brand';
+export * from './brand.ts';

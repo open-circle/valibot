@@ -12,3 +12,6 @@ const Price = z.number().min(0).brand("Price");
 // Brand on linked schema
 const BaseSchema = z.string();
 const BrandedSchema = BaseSchema.brand("Branded");
+
+// Brand from a type-only string literal
+const TypeOnlyBrand = z.string().brand<"UserId">();
