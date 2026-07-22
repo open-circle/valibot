@@ -1,4 +1,5 @@
 export * from './array';
+export * from './brand/index.ts';
 export * from './catchall';
 export * from './default';
 export * from './deepPartial';

@@ -11,6 +11,7 @@ import {
 import { addToPipe } from './helpers';
 import {
   transformArray as transformArrayMethod,
+  transformBrand,
   transformCatchall,
   transformDeepPartial,
   transformDefault,
@@ -373,12 +374,15 @@ function toValibotMethodExp(
   valibotIdentifier: string,
   zodMethodName: ZodMethodName,
   schemaExp: j.CallExpression | j.MemberExpression | j.Identifier,
-  inputArgs: j.CallExpression['arguments']
+  inputArgs: j.CallExpression['arguments'],
+  typeParameters?: j.TSTypeParameterInstantiation | null
 ) {
   const args = [valibotIdentifier, schemaExp, inputArgs] as const;
   switch (zodMethodName) {
     case 'array':
       return transformArrayMethod(...args);
+    case 'brand':
+      return transformBrand(...args, typeParameters);
     case 'catchall':
       return transformCatchall(valibotIdentifier, schemaExp, inputArgs);
     case 'default':
@@ -586,7 +590,10 @@ function transformSchemasAndLinksHelper(
           valibotIdentifier,
           propertyName,
           transformedExp ?? j.identifier(identifier),
-          cur.value.arguments
+          cur.value.arguments,
+          // parser and types are not in sync
+          // @ts-expect-error
+          cur.value.typeParameters
         );
       } else if (isZodValidatorName(propertyName)) {
         if (curSchemaType === null) {

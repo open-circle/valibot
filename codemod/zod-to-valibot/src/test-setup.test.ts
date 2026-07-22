@@ -9,6 +9,7 @@ defineTests(transform, [
   'array-schema',
   'array-validation-methods',
   'bigint-validation-methods',
+  'brand',
   'coerce-bigint-schema',
   'coerce-boolean-schema',
   'coerce-date-schema',
