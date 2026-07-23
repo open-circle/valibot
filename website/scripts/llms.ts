@@ -3,7 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import type { PropertyProps } from '~/components';
-import { serializeProperty } from './utils/index';
+import type { SearchEntry } from '../worker/docs';
+import { serializeProperty, transformTextSegments } from './utils/index';
 
 // Read menu.md of guides and API
 const menuOfGuides = fs.readFileSync(
@@ -38,7 +39,7 @@ const introText =
 
 // Create details text with pointers to other resources for llms.txt file
 const detailsText =
-  'Every link below points to the Markdown version of a documentation page. The same page is served as HTML at the same URL without the `.md` extension. The whole documentation is also available as a single file at [llms-full.txt](https://valibot.dev/llms-full.txt), the guides at [llms-guides.txt](https://valibot.dev/llms-guides.txt) and the API reference at [llms-api.txt](https://valibot.dev/llms-api.txt).\n';
+  'Every link below points to the Markdown version of a documentation page. The same page is served as HTML at the same URL without the `.md` extension. The whole documentation is also available as a single file at [llms-full.txt](https://valibot.dev/llms-full.txt), the guides at [llms-guides.txt](https://valibot.dev/llms-guides.txt) and the API reference at [llms-api.txt](https://valibot.dev/llms-api.txt). An MCP server with tools to search and read this documentation is available at https://valibot.dev/mcp (see [server card](https://valibot.dev/.well-known/mcp/server-card.json) and [coding agents guide](https://valibot.dev/guides/coding-agents.md)).\n';
 
 // Create llms.txt file with content of guides and API menus
 const llmsTxt = `${introText}\n${detailsText}\n${convertMenuToLlms(menuOfGuides)}\n${convertMenuToLlms(menuOfApi)}`;
@@ -125,69 +126,57 @@ async function convertMdxToMd(
     ).properties;
   }
 
-  return (
-    mdxContent
-      // Split content into code blocks and text to only transform the latter
-      .split(/(```[\s\S]*?```)/)
-      .map((segment) => {
-        // Return code blocks unchanged
-        if (segment.startsWith('```')) {
-          return segment;
+  // Transform text outside of code blocks to plain Markdown
+  return transformTextSegments(mdxContent, (segment) =>
+    segment
+      // Replace spread Property components with serialized type
+      .replaceAll(
+        /<Property\s+\{\.\.\.properties(?:\.(\w+)|\['([^']+)'\])\}\s*\/>/g,
+        (match, dotName: string | undefined, bracketName: string) => {
+          const name = dotName ?? bracketName;
+          const data = properties[name];
+          if (!data) {
+            throw new Error(`Missing property "${name}" in ${dirPath}`);
+          }
+          return serializeProperty(data);
         }
+      )
 
-        return (
-          segment
-            // Replace spread Property components with serialized type
-            .replaceAll(
-              /<Property\s+\{\.\.\.properties(?:\.(\w+)|\['([^']+)'\])\}\s*\/>/g,
-              (match, dotName: string | undefined, bracketName: string) => {
-                const name = dotName ?? bracketName;
-                const data = properties[name];
-                if (!data) {
-                  throw new Error(`Missing property "${name}" in ${dirPath}`);
-                }
-                return serializeProperty(data);
-              }
-            )
+      // Replace literal Property components with inline code
+      .replaceAll(/<Property\s+type=["']([^"']+)["']\s*\/>/g, '`$1`')
 
-            // Replace literal Property components with inline code
-            .replaceAll(/<Property\s+type=["']([^"']+)["']\s*\/>/g, '`$1`')
+      // Replace Link components with Markdown links
+      .replaceAll(
+        /<Link\s+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/Link>/g,
+        '[$2]($1)'
+      )
 
-            // Replace Link components with Markdown links
-            .replaceAll(
-              /<Link\s+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/Link>/g,
-              '[$2]($1)'
-            )
-
-            // Replace ApiList components with a list of Markdown links
-            .replaceAll(/<ApiList\s+([\s\S]*?)\/>/g, (match, attrs: string) => {
-              const label = attrs.match(/label=["']([^"']+)["']/)?.[1];
-              const items = [...attrs.matchAll(/'([^']+)'/g)].map(
-                (itemMatch) => `[\`${itemMatch[1]}\`](/api/${itemMatch[1]}/)`
-              );
-              return `${label ? `${label}: ` : ''}${items.join(', ')}`;
-            })
-
-            // Resolve relative link paths to absolute link paths so that
-            // links work outside the HTML context of the page
-            .replaceAll(/\]\((\.\.?\/[^)]+)\)/g, (match, target: string) => {
-              const resolvedUrl = new URL(target, pageUrl);
-              return `](${resolvedUrl.pathname}${resolvedUrl.hash})`;
-            })
-
-            // Rewrite links to documentation pages to their Markdown version
-            // so that AI agents stay within the Markdown context
-            .replaceAll(
-              /\]\(\/(guides|api)\/([\w.-]+?)\/(#[^)]*)?\)/g,
-              '](/$1/$2.md$3)'
-            )
-
-            // Remove remaining components (e.g. images and interactive
-            // elements) as they cannot be converted to plain Markdown
-            .replaceAll(/^<[A-Z][\s\S]*?\/>\n?/gm, '')
+      // Replace ApiList components with a list of Markdown links
+      .replaceAll(/<ApiList\s+([\s\S]*?)\/>/g, (match, attrs: string) => {
+        const label = attrs.match(/label=["']([^"']+)["']/)?.[1];
+        const items = [...attrs.matchAll(/'([^']+)'/g)].map(
+          (itemMatch) => `[\`${itemMatch[1]}\`](/api/${itemMatch[1]}/)`
         );
+        return `${label ? `${label}: ` : ''}${items.join(', ')}`;
       })
-      .join('')
+
+      // Resolve relative link paths to absolute link paths so that
+      // links work outside the HTML context of the page
+      .replaceAll(/\]\((\.\.?\/[^)]+)\)/g, (match, target: string) => {
+        const resolvedUrl = new URL(target, pageUrl);
+        return `](${resolvedUrl.pathname}${resolvedUrl.hash})`;
+      })
+
+      // Rewrite links to documentation pages to their Markdown version
+      // so that AI agents stay within the Markdown context
+      .replaceAll(
+        /\]\(\/(guides|api)\/([\w.-]+?)\/(#[^)]*)?\)/g,
+        '](/$1/$2.md$3)'
+      )
+
+      // Remove remaining components (e.g. images and interactive
+      // elements) as they cannot be converted to plain Markdown
+      .replaceAll(/^<[A-Z][\s\S]*?\/>\n?/gm, '')
   );
 }
 
@@ -199,19 +188,18 @@ async function convertMdxToMd(
  * @param filePath The path of the source MDX file.
  */
 function warnAboutUnknownComponents(mdContent: string, filePath: string) {
-  for (const segment of mdContent.split(/(```[\s\S]*?```)/)) {
-    if (!segment.startsWith('```')) {
-      const componentMatch = segment
-        // Remove inline code as it can contain generic type arguments
-        .replaceAll(/(`+)[\s\S]*?\1/g, '')
-        .match(/<[A-Z]\w*[\s/]/);
-      if (componentMatch) {
-        console.warn(
-          `Unknown component "${componentMatch[0].trim()}" in Markdown output of ${filePath}`
-        );
-      }
+  transformTextSegments(mdContent, (segment) => {
+    const componentMatch = segment
+      // Remove inline code as it can contain generic type arguments
+      .replaceAll(/(`+)[\s\S]*?\1/g, '')
+      .match(/<[A-Z]\w*[\s/]/);
+    if (componentMatch) {
+      console.warn(
+        `Unknown component "${componentMatch[0].trim()}" in Markdown output of ${filePath}`
+      );
     }
-  }
+    return segment;
+  });
 }
 
 // Create object to hold content for specific llms files
@@ -220,6 +208,9 @@ const llms: Record<'full' | 'guides' | 'api', string> = {
   guides: introText,
   api: introText,
 };
+
+// Create list to hold search index entries for our MCP server
+const searchIndex: SearchEntry[] = [];
 
 // Define content areas with all necessary data
 const contentAreas = [
@@ -276,6 +267,27 @@ for (const contentArea of contentAreas) {
       // Warn about component markup that was not converted
       warnAboutUnknownComponents(mdContent, mdxFile.path);
 
+      // Extract headings of MD content outside of code blocks
+      const headings: string[] = [];
+      transformTextSegments(mdContent, (segment) => {
+        for (const regexMatch of segment.matchAll(/^#{2,3} (.+)$/gm)) {
+          headings.push(regexMatch[1]);
+        }
+        return segment;
+      });
+
+      // Add entry with metadata of page to search index. The excerpt is the
+      // intro paragraph of the page which directly follows its heading.
+      searchIndex.push({
+        area: contentArea.id,
+        group: areaGroup.title,
+        name: mdxFile.name,
+        title: frontmatter.data.title ?? mdxFile.name,
+        description: frontmatter.data.description ?? '',
+        excerpt: mdContent.split('\n\n')[1]?.slice(0, 400) ?? '',
+        headings,
+      });
+
       // Create agent directive with pointer to HTML page and llms.txt file
       const directive = `> This document is the Markdown version of [valibot.dev/${contentArea.id}/${mdxFile.name}/](${pageUrl}). For the complete documentation index, see [llms.txt](https://valibot.dev/llms.txt).`;
 
@@ -291,14 +303,9 @@ for (const contentArea of contentAreas) {
 
       // Change level of headings two levels down without touching `#`
       // comments within code blocks
-      const llmsContent = mdContent
-        .split(/(```[\s\S]*?```)/)
-        .map((segment) =>
-          segment.startsWith('```')
-            ? segment
-            : segment.replaceAll(/^#/gm, '###')
-        )
-        .join('');
+      const llmsContent = transformTextSegments(mdContent, (segment) =>
+        segment.replaceAll(/^#/gm, '###')
+      );
 
       // Add content to specific llms files
       llms.full += `\n${llmsContent}`;
@@ -311,3 +318,9 @@ for (const contentArea of contentAreas) {
 fs.writeFileSync(path.join('public', 'llms-full.txt'), llms.full);
 fs.writeFileSync(path.join('public', 'llms-guides.txt'), llms.guides);
 fs.writeFileSync(path.join('public', 'llms-api.txt'), llms.api);
+
+// Write search index for our MCP server to public directory
+fs.writeFileSync(
+  path.join('public', 'search-index.json'),
+  JSON.stringify(searchIndex)
+);
