@@ -1,5 +1,9 @@
 # https://developers.cloudflare.com/workers/static-assets/headers/
 
+# Discovery links for AI agents on the home page (RFC 8288)
+/
+  Link: </.well-known/api-catalog>; rel="api-catalog", </llms.txt>; rel="service-doc"; type="text/markdown"
+
 /build/*
   Cache-Control: public, max-age=31536000, s-maxage=31536000, immutable
 # Bundles imported by the playground's sandboxed iframe are fetched cross-origin,

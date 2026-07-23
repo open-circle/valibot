@@ -1,0 +1,33 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://valibot.dev/",
+      "service-doc": [
+        {
+          "href": "https://valibot.dev/api/",
+          "type": "text/html",
+          "title": "Valibot API reference"
+        },
+        {
+          "href": "https://valibot.dev/guides/introduction/",
+          "type": "text/html",
+          "title": "Valibot guides"
+        }
+      ],
+      "service-desc": [
+        {
+          "href": "https://valibot.dev/llms-api.txt",
+          "type": "text/markdown",
+          "title": "Valibot API reference as Markdown for LLMs"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://valibot.dev/llms.txt",
+          "type": "text/markdown",
+          "title": "Documentation index for AI agents and LLMs"
+        }
+      ]
+    }
+  ]
+}

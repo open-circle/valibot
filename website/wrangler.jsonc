@@ -7,10 +7,22 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "valibot-website",
   "compatibility_date": "2026-06-16",
+  // Worker that serves Markdown to AI agents via content negotiation
+  "main": "./worker/index.ts",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page",
+    // Only run the Worker for routes with special handling for AI agents and
+    // exclude Qwik City's q-data.json files to serve them asset-first
+    "run_worker_first": [
+      "/guides/*",
+      "/api/*",
+      "/.well-known/api-catalog",
+      "!/guides/*q-data.json",
+      "!/api/*q-data.json",
+    ],
   },
   // Serve production via the custom domain only, but keep
   // workers.dev preview URLs for branch deployments
