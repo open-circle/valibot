@@ -90,6 +90,7 @@ export * from './readonly/index.ts';
 export * from './reduceItems/index.ts';
 export * from './regex/index.ts';
 export * from './returns/index.ts';
+export * from './rfc3339Duration/index.ts';
 export * from './rfcEmail/index.ts';
 export * from './safeInteger/index.ts';
 export * from './size/index.ts';
