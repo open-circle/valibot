@@ -24,6 +24,22 @@ export default {
       return handleMcpRequest(request, env);
     }
 
+    // Serve our llms.txt file as the Markdown version of the homepage to
+    // negotiating agents, and add a link to it to the HTML homepage
+    if (url.pathname === '/') {
+      if (prefersMarkdown(request)) {
+        const response = await serveMarkdown(env, request, '/llms.txt');
+        if (response) {
+          return response;
+        }
+      }
+      const response = await env.ASSETS.fetch(request);
+      return withHeaders(response, {
+        Link: '</llms.txt>; rel="alternate"; type="text/markdown"',
+        Vary: 'Accept',
+      });
+    }
+
     // Serve API catalog with its official media type (RFC 9727)
     if (url.pathname === '/.well-known/api-catalog') {
       const response = await env.ASSETS.fetch(
