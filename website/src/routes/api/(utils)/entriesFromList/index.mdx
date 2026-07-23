@@ -39,6 +39,14 @@ The following example show how `entriesFromList` can be used.
 const ObjectSchema = v.object(
   v.entriesFromList(['foo', 'bar', 'baz'], v.string())
 );
+
+const ObjectSchemaWithSpread = v.object({
+  name: v.string(),
+  ...v.entriesFromList(
+    ['foo', 'bar', 'baz'],
+    v.pipe(v.string(), v.digits(), v.transform(Number))
+  ),
+});
 ```
 
 ## Related
