@@ -4,7 +4,12 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "dependabot"
     groups:
       github-actions:
         patterns:
           - '*'
+
