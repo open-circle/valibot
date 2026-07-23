@@ -6,7 +6,12 @@ import { setHeader, withHeaders } from './headers';
 import type { Env } from './index';
 
 /**
- * Returns the quality value of a media type within an `Accept` header.
+ * Returns the quality value (`q` parameter) of a media type within an
+ * `Accept` header. This value between 0 and 1 expresses how much the client
+ * prefers the media type. It defaults to 1 if the media type is listed
+ * without a `q` parameter, and is 0 if the media type is not listed at all.
+ * Wildcard ranges (e.g. `*` and `text/*`) are intentionally not matched so
+ * that only explicitly listed media types count.
  *
  * @param accept The value of the `Accept` header.
  * @param mediaType The media type to look for.

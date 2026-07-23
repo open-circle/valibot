@@ -96,7 +96,7 @@ fs.writeFileSync(
       name: 'dev.valibot/docs',
       title: SERVER_INFO.title,
       description:
-        'Search and read the documentation of Valibot, the modular and type-safe schema library for validating structural data.',
+        'Search and read the documentation of Valibot, the modular and type-safe TypeScript schema library for validating structural data.',
       version: SERVER_INFO.version,
       websiteUrl: 'https://valibot.dev/',
       repository: {

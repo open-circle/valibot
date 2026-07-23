@@ -200,11 +200,12 @@ function searchDocs(
 }
 
 /**
- * The result content of a tool call.
+ * The result content of a tool call. Our tools intentionally return text
+ * without the optional `structuredContent` field, as the text is what LLM
+ * clients consume and a structured duplicate would only bloat the response.
  */
 interface ToolResult {
   content: { type: 'text'; text: string }[];
-  structuredContent?: Record<string, unknown>;
   isError?: boolean;
 }
 
@@ -229,28 +230,18 @@ async function executeSearchDocs(
     };
   }
   const origin = new URL(requestUrl).origin;
-  const items = results.map(({ entry, score }) => ({
-    path: `${entry.area}/${entry.name}`,
-    title: entry.title,
-    group: entry.group,
-    area: entry.area,
-    description: entry.description,
-    ...getDocUrls(origin, entry.area, entry.name),
-    score,
-  }));
   return {
     content: [
       {
         type: 'text',
-        text: items
+        text: results
           .map(
-            (item, index_) =>
-              `${index_ + 1}. ${item.title} (${item.area}: ${item.group})\n   Path: ${item.path}\n   ${item.description}\n   ${item.markdownUrl}`
+            ({ entry }, index_) =>
+              `${index_ + 1}. ${entry.title} (${entry.area}: ${entry.group})\n   Path: ${entry.area}/${entry.name}\n   ${entry.description}\n   ${getDocUrls(origin, entry.area, entry.name).markdownUrl}`
           )
           .join('\n'),
       },
     ],
-    structuredContent: { results: items },
   };
 }
 
@@ -398,9 +389,9 @@ async function executeListDocs(
   input: v.InferOutput<typeof ListDocsSchema>
 ): Promise<ToolResult> {
   const index = await getSearchIndex(env, requestUrl);
-  const entries = index.filter(
-    (entry) => !input.area || entry.area === input.area
-  );
+  const entries = input.area
+    ? index.filter((entry) => entry.area === input.area)
+    : index;
 
   // Group pages by area and group while keeping their order
   let text = '';
@@ -419,8 +410,6 @@ async function executeListDocs(
     text += `- ${entry.area}/${entry.name} — ${entry.title}\n`;
   }
 
-  // Omit `structuredContent` as it would double the response size of this
-  // large listing without adding information over the text content
   return { content: [{ type: 'text', text: text.trim() }] };
 }
 

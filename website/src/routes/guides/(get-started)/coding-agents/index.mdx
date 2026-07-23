@@ -12,6 +12,16 @@ contributors:
 
 If you are using AI to generate Valibot schemas, our documentation provides several resources to help coding agents better understand the library. This page gives an overview of the available resources and how to use them.
 
+## Agent skill
+
+Our [`SKILL.md`](https://github.com/open-circle/agent-skills/blob/main/skills/valibot/SKILL.md) contains specialized instructions for AI agents to write, migrate, and optimize Valibot schemas according to the latest best practices. You can install it by running the following command in your terminal.
+
+```bash
+npx skills add open-circle/agent-skills --skill valibot
+```
+
+The skill is also published at [`/.well-known/agent-skills/valibot/SKILL.md`](/.well-known/agent-skills/valibot/SKILL.md) and discoverable via [`/.well-known/agent-skills/index.json`](/.well-known/agent-skills/index.json).
+
 ## MCP server
 
 Our MCP server (Model Context Protocol) provides tools to search and read this documentation. Instead of crawling the website, coding agents can look up the right schema, method, or action in a single tool call. The server is available at `https://valibot.dev/mcp` and provides the following tools.
@@ -54,17 +64,3 @@ We provide several LLMs.txt routes. Use the route that works best with your AI t
 We provide a Markdown version of every documentation page. You can access it by replacing the trailing slash (`/`) in the URL with `.md`. For example, `/guides/installation/` becomes `/guides/installation.md`.
 
 Alternatively, our server supports content negotiation. If a request to a documentation page contains the `Accept: text/markdown` header, the server responds with the Markdown version of the page instead of HTML.
-
-## Agent skill
-
-Our [`SKILL.md`](https://github.com/open-circle/agent-skills/blob/main/skills/valibot/SKILL.md) contains specialized instructions for AI agents to write, migrate, and optimize Valibot schemas according to the latest best practices. It is also published at [`/.well-known/agent-skills/valibot/SKILL.md`](/.well-known/agent-skills/valibot/SKILL.md) and discoverable via [`/.well-known/agent-skills/index.json`](/.well-known/agent-skills/index.json).
-
-## How to use it
-
-To help you get started, here are some examples of how these resources can be used with various AI tools.
-
-> Please help us by adding more examples of other AI tools. If you use a tool that supports these resources, please [open a pull request](https://github.com/open-circle/valibot/pulls) to add it to this page.
-
-### Cursor
-
-You can add a custom documentation as context in Cursor using the `@Docs` feature. Read more about it [here](https://docs.cursor.com/context/@-symbols/@-docs).

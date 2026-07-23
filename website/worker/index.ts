@@ -46,6 +46,12 @@ export default {
       const markdownPath = `/${docsMatch[1]}/${docsMatch[2]}.md`;
       const isMarkdownRequest = Boolean(docsMatch[3]);
 
+      // Redirect lenient Markdown URLs (e.g. with a "/.md" suffix or a
+      // trailing slash) to their canonical ".md" URL
+      if (isMarkdownRequest && url.pathname !== markdownPath) {
+        return Response.redirect(new URL(markdownPath, request.url).href, 301);
+      }
+
       // Serve Markdown to Markdown file requests and negotiating agents
       if (isMarkdownRequest || prefersMarkdown(request)) {
         const response = await serveMarkdown(env, request, markdownPath);
