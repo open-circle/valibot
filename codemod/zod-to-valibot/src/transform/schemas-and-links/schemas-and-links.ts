@@ -78,6 +78,7 @@ import {
 import { ObjectModifier, ZodSchemaType } from './types';
 import {
   transformBase64,
+  transformBrand,
   transformCUID2,
   transformDateTime,
   transformDate as transformDateValidator,
@@ -260,6 +261,8 @@ function toValibotActionExp(
       return transformBase64(...args);
     case 'base64url':
       return transformUnimplemented(...args, 'base64url');
+    case 'brand':
+      return transformBrand(...args);
     case 'cidr':
       return transformUnimplemented(...args, 'cidr');
     case 'cuid':
