@@ -1,0 +1,25 @@
+---
+title: RecursiveSchema
+description: Recursive schema interface.
+contributors:
+  - yslpn
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# RecursiveSchema
+
+Recursive schema interface.
+
+## Generics
+
+- `TWrapped` <Property {...properties.TWrapped} />
+
+## Definition
+
+- `RecursiveSchema` <Property {...properties.BaseSchema} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `getter` <Property {...properties.getter} />

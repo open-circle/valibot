@@ -121,6 +121,29 @@ describe('toJsonSchemaDefs', () => {
         },
       });
     });
+
+    test('for recursive schema definition', () => {
+      const category = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+
+      expect(toJsonSchemaDefs({ category })).toStrictEqual({
+        category: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            subcategories: {
+              type: 'array',
+              items: { $ref: '#/$defs/category' },
+            },
+          },
+          required: ['name', 'subcategories'],
+        },
+      });
+    });
   });
 
   describe('should throw error', () => {

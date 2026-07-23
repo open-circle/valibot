@@ -5,6 +5,7 @@ source: /schemas/lazy/lazyAsync.ts
 contributors:
   - fabian-hiller
   - EltonLobo07
+  - yslpn
 ---
 
 import { ApiList, Link, Property } from '~/components';
@@ -28,7 +29,9 @@ const Schema = v.lazyAsync<TWrapped>(getter);
 
 ### Explanation
 
-The `getter` function is called lazily to retrieve the schema. This is necessary to be able to access the input through the first argument of the `getter` function and to avoid a circular dependency for recursive schemas.
+The `getter` function is called lazily to retrieve the schema. This is useful when you need to choose a schema based on the input value.
+
+> For recursive schemas with inferred input and output types, use <Link href="/api/recursiveAsync/">`recursiveAsync`</Link> instead.
 
 ## Returns
 
@@ -42,7 +45,7 @@ The following examples show how `lazyAsync` can be used.
 
 Recursive schema to validate transactions.
 
-> Due to a TypeScript limitation, the input and output types of recursive schemas cannot be inferred automatically. Therefore, you must explicitly specify these types using <Link href="/api/GenericSchemaAsync/">`GenericSchemaAsync`</Link>.
+> In most cases, <Link href="/api/recursiveAsync/">`recursiveAsync`</Link> is the better choice for recursive schemas because it can infer input and output types automatically.
 
 ```ts
 import { isTransactionValid } from '~/api';
@@ -145,6 +148,7 @@ The following APIs can be combined with `lazyAsync`.
     'picklist',
     'promise',
     'record',
+    'recursiveAsync',
     'set',
     'strictObject',
     'strictTuple',
