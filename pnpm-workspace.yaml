@@ -21,9 +21,15 @@ minimumReleaseAgeExclude:
   - miniflare@4.20260616.0
   - workerd@1.20260616.1
   - wrangler@4.101.0
+  - tar@7.5.21
 overrides:
   # Security: pin vulnerable transitive deps to patched versions (CVE Lite findings).
   # Keyed by major so only the affected major line is moved to its fixed version.
   'shell-quote@1': '1.8.4'
+  # tar@6 has no patched 6.x release (all fixes landed in 7.5.19+). Its only
+  # consumer (@vercel/fun) uses tar APIs that are unchanged in v7, so both
+  # major lines are moved to the patched v7 version.
+  'tar@6': '7.5.21'
+  'tar@7': '7.5.21'
 patchedDependencies:
   '@builder.io/qwik-city@1.19.2': patches/@builder.io__qwik-city@1.19.2.patch
