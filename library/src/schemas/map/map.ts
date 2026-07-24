@@ -6,7 +6,7 @@ import type {
   MapPathItem,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { InferMapInput, InferMapOutput, MapIssue } from './types.ts';
 
 /**
@@ -89,7 +89,13 @@ export function map(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<MapIssue> | undefined
 > {
-  return {
+  return _standardSchema<
+    MapSchema<
+      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+      ErrorMessage<MapIssue> | undefined
+    >
+  >({
     kind: 'schema',
     type: 'map',
     reference: map,
@@ -98,10 +104,15 @@ export function map(
     key,
     value,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: MapSchema<
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<MapIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // Get input value from dataset
       const input = dataset.value;
 
@@ -213,5 +224,5 @@ export function map(
         MapIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

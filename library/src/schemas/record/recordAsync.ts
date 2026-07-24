@@ -9,8 +9,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _getStandardProps,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type { record } from './record.ts';
 import type {
@@ -117,7 +117,15 @@ export function recordAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<RecordIssue> | undefined
 > {
-  return {
+  return _standardSchema<
+    RecordSchemaAsync<
+      | BaseSchema<string, string | number | symbol, BaseIssue<unknown>>
+      | BaseSchemaAsync<string, string | number | symbol, BaseIssue<unknown>>,
+      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+      ErrorMessage<RecordIssue> | undefined
+    >
+  >({
     kind: 'schema',
     type: 'record',
     reference: recordAsync,
@@ -126,10 +134,17 @@ export function recordAsync(
     key,
     value,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    async '~run'(dataset, config) {
+    async '~run'(
+      this: RecordSchemaAsync<
+        | BaseSchema<string, string | number | symbol, BaseIssue<unknown>>
+        | BaseSchemaAsync<string, string | number | symbol, BaseIssue<unknown>>,
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<RecordIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // Get input value from dataset
       const input = dataset.value;
 
@@ -251,5 +266,5 @@ export function recordAsync(
         RecordIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

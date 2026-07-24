@@ -4,7 +4,7 @@ import type {
   MaybePromise,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { custom } from './custom.ts';
 import type { CustomIssue } from './types.ts';
 
@@ -73,7 +73,9 @@ export function customAsync<TInput>(
   check: CheckAsync,
   message?: ErrorMessage<CustomIssue>
 ): CustomSchemaAsync<TInput, ErrorMessage<CustomIssue> | undefined> {
-  return {
+  return _standardSchema<
+    CustomSchemaAsync<TInput, ErrorMessage<CustomIssue> | undefined>
+  >({
     kind: 'schema',
     type: 'custom',
     reference: customAsync,
@@ -81,10 +83,11 @@ export function customAsync<TInput>(
     async: true,
     check,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    async '~run'(dataset, config) {
+    async '~run'(
+      this: CustomSchemaAsync<TInput, ErrorMessage<CustomIssue> | undefined>,
+      dataset,
+      config
+    ) {
       if (await this.check(dataset.value)) {
         // @ts-expect-error
         dataset.typed = true;
@@ -94,5 +97,5 @@ export function customAsync<TInput>(
       // @ts-expect-error
       return dataset as OutputDataset<TInput, CustomIssue>;
     },
-  };
+  });
 }

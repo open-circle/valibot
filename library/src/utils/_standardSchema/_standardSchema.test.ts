@@ -8,30 +8,34 @@ import type {
   StandardProps,
   StandardSuccessResult,
 } from '../../types/index.ts';
-import { _getStandardProps } from './_getStandardProps.ts';
 
-describe('_getStandardProps', () => {
+describe('_standardSchema', () => {
   test('should return spec properties', () => {
-    expect(_getStandardProps(string())).toStrictEqual({
+    expect(string()['~standard']).toStrictEqual({
       version: 1,
       vendor: 'valibot',
       validate: expect.any(Function),
     } satisfies StandardProps<string, string>);
   });
 
+  test('should return same object on repeated access', () => {
+    const schema = string();
+    expect(schema['~standard']).toBe(schema['~standard']);
+  });
+
   test('should validate simple input', () => {
-    const props = _getStandardProps(string());
-    expect(props.validate('foo')).toMatchObject({
+    const { validate } = string()['~standard'];
+    expect(validate('foo')).toMatchObject({
       value: 'foo',
     } satisfies StandardSuccessResult<string>);
-    expect(props.validate(null)).toMatchObject({
+    expect(validate(null)).toMatchObject({
       issues: [
         {
           message: 'Invalid type: Expected string but received null',
         },
       ],
     } satisfies StandardFailureResult);
-    expect(props.validate(123)).toMatchObject({
+    expect(validate(123)).toMatchObject({
       issues: [
         {
           message: 'Invalid type: Expected string but received 123',
@@ -41,15 +45,15 @@ describe('_getStandardProps', () => {
   });
 
   test('should validate complex input', () => {
-    const props = _getStandardProps(
-      object({ nested: array(object({ key: string() })) })
-    );
+    const { validate } = object({
+      nested: array(object({ key: string() })),
+    })['~standard'];
     const input1 = { nested: [{ key: 'foo' }, { key: 'bar' }] };
-    expect(props.validate(input1)).toMatchObject({
+    expect(validate(input1)).toMatchObject({
       value: input1,
     } satisfies StandardSuccessResult<{ nested: { key: string }[] }>);
     const input2 = { nested: [{ key: 'foo' }, { key: 123 }] };
-    expect(props.validate(input2)).toMatchObject({
+    expect(validate(input2)).toMatchObject({
       issues: [
         {
           message: 'Invalid type: Expected string but received 123',
@@ -60,10 +64,10 @@ describe('_getStandardProps', () => {
   });
 
   test('should use global config', () => {
-    const props = _getStandardProps(
-      pipe(string(), email(), endsWith('@example.com'))
-    );
-    expect(props.validate('foo')).toMatchObject({
+    const { validate } = pipe(string(), email(), endsWith('@example.com'))[
+      '~standard'
+    ];
+    expect(validate('foo')).toMatchObject({
       issues: [
         {
           message: 'Invalid email: Received "foo"',
@@ -74,7 +78,7 @@ describe('_getStandardProps', () => {
       ],
     } satisfies StandardFailureResult);
     setGlobalConfig({ abortPipeEarly: true });
-    expect(props.validate('foo')).toMatchObject({
+    expect(validate('foo')).toMatchObject({
       issues: [
         {
           message: 'Invalid email: Received "foo"',

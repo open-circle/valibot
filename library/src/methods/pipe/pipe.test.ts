@@ -3,6 +3,7 @@ import {
   decimal,
   type DecimalIssue,
   description,
+  maxLength,
   minLength,
   type MinLengthIssue,
   minValue,
@@ -148,6 +149,30 @@ describe('pipe', () => {
         typed: false,
         value: '',
         issues: [minLengthIssue, decimalIssue],
+      });
+    });
+  });
+
+  describe('should have correct "~standard" props', () => {
+    test('should validate against the piped schema, not the source', () => {
+      const piped = pipe(string(), maxLength(3));
+      expect(piped['~standard'].validate('too long')).toMatchObject({
+        issues: [{ message: 'Invalid length: Expected <=3 but received 8' }],
+      });
+      expect(piped['~standard'].validate('ab')).toMatchObject({
+        value: 'ab',
+      });
+    });
+
+    test('should return same object on repeated access', () => {
+      expect(schema['~standard']).toBe(schema['~standard']);
+    });
+
+    test('should work when destructured', () => {
+      const piped = pipe(string(), maxLength(3));
+      const { validate } = piped['~standard'];
+      expect(validate('too long')).toMatchObject({
+        issues: [{ message: 'Invalid length: Expected <=3 but received 8' }],
       });
     });
   });

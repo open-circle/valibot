@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * File issue interface.
@@ -70,17 +70,18 @@ export function file<
 export function file(
   message?: ErrorMessage<FileIssue>
 ): FileSchema<ErrorMessage<FileIssue> | undefined> {
-  return {
+  return _standardSchema<FileSchema<ErrorMessage<FileIssue> | undefined>>({
     kind: 'schema',
     type: 'file',
     reference: file,
     expects: 'File',
     async: false,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: FileSchema<ErrorMessage<FileIssue> | undefined>,
+      dataset,
+      config
+    ) {
       if (dataset.value instanceof File) {
         // @ts-expect-error
         dataset.typed = true;
@@ -90,5 +91,5 @@ export function file(
       // @ts-expect-error
       return dataset as OutputDataset<File, FileIssue>;
     },
-  };
+  });
 }

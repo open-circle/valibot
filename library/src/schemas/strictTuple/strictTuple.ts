@@ -9,7 +9,7 @@ import type {
   OutputDataset,
   TupleItems,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { StrictTupleIssue } from './types.ts';
 
 /**
@@ -74,7 +74,9 @@ export function strictTuple(
   items: TupleItems,
   message?: ErrorMessage<StrictTupleIssue>
 ): StrictTupleSchema<TupleItems, ErrorMessage<StrictTupleIssue> | undefined> {
-  return {
+  return _standardSchema<
+    StrictTupleSchema<TupleItems, ErrorMessage<StrictTupleIssue> | undefined>
+  >({
     kind: 'schema',
     type: 'strict_tuple',
     reference: strictTuple,
@@ -82,10 +84,14 @@ export function strictTuple(
     async: false,
     items,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: StrictTupleSchema<
+        TupleItems,
+        ErrorMessage<StrictTupleIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // Get input value from dataset
       const input = dataset.value;
 
@@ -183,5 +189,5 @@ export function strictTuple(
         StrictTupleIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

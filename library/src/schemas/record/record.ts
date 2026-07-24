@@ -8,8 +8,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _getStandardProps,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type {
   InferRecordInput,
@@ -105,7 +105,13 @@ export function record(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<RecordIssue> | undefined
 > {
-  return {
+  return _standardSchema<
+    RecordSchema<
+      BaseSchema<string, string | number | symbol, BaseIssue<unknown>>,
+      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+      ErrorMessage<RecordIssue> | undefined
+    >
+  >({
     kind: 'schema',
     type: 'record',
     reference: record,
@@ -114,10 +120,15 @@ export function record(
     key,
     value,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: RecordSchema<
+        BaseSchema<string, string | number | symbol, BaseIssue<unknown>>,
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<RecordIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // Get input value from dataset
       const input = dataset.value;
 
@@ -234,5 +245,5 @@ export function record(
         RecordIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

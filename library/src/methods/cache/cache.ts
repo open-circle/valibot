@@ -5,7 +5,7 @@ import type {
   InferIssue,
   InferOutput,
 } from '../../types/index.ts';
-import { _cloneDataset, _getStandardProps } from '../../utils/index.ts';
+import { _cloneDataset, _standardSchema } from '../../utils/index.ts';
 import { _LruCache } from './_LruCache.ts';
 import type { Cache, CacheConfig } from './types.ts';
 
@@ -79,13 +79,15 @@ export function cache(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   CacheConfig | undefined
 > {
-  return {
+  return _standardSchema<
+    SchemaWithCache<
+      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+      CacheConfig | undefined
+    >
+  >({
     ...schema,
     cacheConfig: config,
     cache: new _LruCache(config),
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, runConfig) {
       const key = this.cache.key(dataset.value, runConfig);
       let outputDataset = this.cache.get(key);
@@ -99,5 +101,5 @@ export function cache(
       // do not mutate the cached dataset wrapper or issues array.
       return _cloneDataset(outputDataset);
     },
-  };
+  });
 }

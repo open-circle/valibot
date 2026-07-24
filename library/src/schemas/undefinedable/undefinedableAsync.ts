@@ -8,7 +8,7 @@ import type {
   InferIssue,
   SuccessDataset,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 import type { InferUndefinedableOutput } from './types.ts';
 import type { undefinedable } from './undefinedable.ts';
 
@@ -89,7 +89,13 @@ export function undefinedableAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   unknown
 > {
-  return {
+  return _standardSchema<
+    UndefinedableSchemaAsync<
+      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+      unknown
+    >
+  >({
     kind: 'schema',
     type: 'undefinedable',
     reference: undefinedableAsync,
@@ -97,10 +103,15 @@ export function undefinedableAsync(
     async: true,
     wrapped,
     default: default_,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    async '~run'(dataset, config) {
+    async '~run'(
+      this: UndefinedableSchemaAsync<
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        unknown
+      >,
+      dataset,
+      config
+    ) {
       // If value is `undefined`, override it with default or return dataset
       if (dataset.value === undefined) {
         // If default is specified, override value of dataset
@@ -120,5 +131,5 @@ export function undefinedableAsync(
       // Otherwise, return dataset of wrapped schema
       return this.wrapped['~run'](dataset, config);
     },
-  };
+  });
 }

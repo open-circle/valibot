@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps, _stringify } from '../../utils/index.ts';
+import { _addIssue, _standardSchema, _stringify } from '../../utils/index.ts';
 
 /**
  * Literal type.
@@ -83,7 +83,9 @@ export function literal(
   literal_: Literal,
   message?: ErrorMessage<LiteralIssue>
 ): LiteralSchema<Literal, ErrorMessage<LiteralIssue> | undefined> {
-  return {
+  return _standardSchema<
+    LiteralSchema<Literal, ErrorMessage<LiteralIssue> | undefined>
+  >({
     kind: 'schema',
     type: 'literal',
     reference: literal,
@@ -91,10 +93,11 @@ export function literal(
     async: false,
     literal: literal_,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: LiteralSchema<Literal, ErrorMessage<LiteralIssue> | undefined>,
+      dataset,
+      config
+    ) {
       if (dataset.value === this.literal) {
         // @ts-expect-error
         dataset.typed = true;
@@ -104,5 +107,5 @@ export function literal(
       // @ts-expect-error
       return dataset as OutputDataset<Literal, LiteralIssue>;
     },
-  };
+  });
 }

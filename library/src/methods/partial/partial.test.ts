@@ -171,6 +171,15 @@ describe('partial', () => {
         }
       });
     });
+
+    test('should validate against the partialed entries via "~standard"', () => {
+      expect(schema2['~standard'].validate({ key2: 123 })).toMatchObject({
+        value: { key2: 123, key4: 123 },
+      });
+      expect(schema2['~standard'].validate({})).toMatchObject({
+        issues: [{ path: [{ key: 'key2' }] }],
+      });
+    });
   });
 
   describe('objectWithRest', () => {

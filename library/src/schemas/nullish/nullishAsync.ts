@@ -8,7 +8,7 @@ import type {
   InferIssue,
   SuccessDataset,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 import type { nullish } from './nullish.ts';
 import type { InferNullishOutput } from './types.ts';
 
@@ -89,7 +89,13 @@ export function nullishAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   unknown
 > {
-  return {
+  return _standardSchema<
+    NullishSchemaAsync<
+      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+      unknown
+    >
+  >({
     kind: 'schema',
     type: 'nullish',
     reference: nullishAsync,
@@ -97,10 +103,15 @@ export function nullishAsync(
     async: true,
     wrapped,
     default: default_,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    async '~run'(dataset, config) {
+    async '~run'(
+      this: NullishSchemaAsync<
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        unknown
+      >,
+      dataset,
+      config
+    ) {
       // If value is `null` or `undefined`, override it with default or return
       // dataset
       if (dataset.value === null || dataset.value === undefined) {
@@ -121,5 +132,5 @@ export function nullishAsync(
       // Otherwise, return dataset of wrapped schema
       return this.wrapped['~run'](dataset, config);
     },
-  };
+  });
 }

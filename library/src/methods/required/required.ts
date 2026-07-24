@@ -28,7 +28,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Schema type.
@@ -342,11 +342,14 @@ export function required(
   }
 
   // Return modified copy of schema
-  return {
+  return _standardSchema<
+    SchemaWithRequired<
+      Schema,
+      ObjectKeys<Schema> | undefined,
+      ErrorMessage<NonOptionalIssue> | undefined
+    >
+  >({
     ...schema,
     entries,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-  };
+  });
 }

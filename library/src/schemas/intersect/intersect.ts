@@ -5,11 +5,7 @@ import type {
   InferIssue,
   OutputDataset,
 } from '../../types/index.ts';
-import {
-  _addIssue,
-  _getStandardProps,
-  _joinExpects,
-} from '../../utils/index.ts';
+import { _addIssue, _joinExpects, _standardSchema } from '../../utils/index.ts';
 import type {
   InferIntersectInput,
   InferIntersectOutput,
@@ -76,7 +72,9 @@ export function intersect(
   options: IntersectOptions,
   message?: ErrorMessage<IntersectIssue>
 ): IntersectSchema<IntersectOptions, ErrorMessage<IntersectIssue> | undefined> {
-  return {
+  return _standardSchema<
+    IntersectSchema<IntersectOptions, ErrorMessage<IntersectIssue> | undefined>
+  >({
     kind: 'schema',
     type: 'intersect',
     reference: intersect,
@@ -87,10 +85,14 @@ export function intersect(
     async: false,
     options,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: IntersectSchema<
+        IntersectOptions,
+        ErrorMessage<IntersectIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // Parse input with schema of options, if not empty
       if (this.options.length) {
         // Get input value from dataset
@@ -175,5 +177,5 @@ export function intersect(
         IntersectIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

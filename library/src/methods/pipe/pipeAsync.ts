@@ -16,7 +16,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Schema with pipe async type.
@@ -3081,14 +3081,14 @@ export function pipeAsync<
 >(
   ...pipe: [TSchema, ...TItems]
 ): SchemaWithPipeAsync<readonly [TSchema, ...TItems]> {
-  return {
+  return _standardSchema<SchemaWithPipeAsync<readonly [TSchema, ...TItems]>>({
     ...pipe[0],
     pipe,
     async: true,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    async '~run'(dataset, config) {
+    async '~run'(
+      dataset: UnknownDataset,
+      config: Config<BaseIssue<unknown>>
+    ): Promise<OutputDataset<unknown, BaseIssue<unknown>>> {
       // Execute pipeline items in sequence
       for (const item of pipe) {
         // Exclude metadata items from execution
@@ -3118,5 +3118,8 @@ export function pipeAsync<
       // @ts-expect-error
       return dataset as OutputDataset<unknown, BaseIssue<unknown>>;
     },
-  };
+  } as unknown as Omit<
+    SchemaWithPipeAsync<readonly [TSchema, ...TItems]>,
+    '~standard'
+  >);
 }

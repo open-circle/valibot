@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * NaN issue interface.
@@ -69,17 +69,18 @@ export function nan<const TMessage extends ErrorMessage<NanIssue> | undefined>(
 export function nan(
   message?: ErrorMessage<NanIssue>
 ): NanSchema<ErrorMessage<NanIssue> | undefined> {
-  return {
+  return _standardSchema<NanSchema<ErrorMessage<NanIssue> | undefined>>({
     kind: 'schema',
     type: 'nan',
     reference: nan,
     expects: 'NaN',
     async: false,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: NanSchema<ErrorMessage<NanIssue> | undefined>,
+      dataset,
+      config
+    ) {
       if (Number.isNaN(dataset.value)) {
         // @ts-expect-error
         dataset.typed = true;
@@ -89,5 +90,5 @@ export function nan(
       // @ts-expect-error
       return dataset as OutputDataset<number, NanIssue>;
     },
-  };
+  });
 }

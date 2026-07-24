@@ -542,6 +542,17 @@ describe('required', () => {
         } satisfies FailureDataset<InferIssue<typeof schema2>>);
       });
     });
+
+    test('should validate against the required entries via "~standard"', () => {
+      expect(schema1['~standard'].validate({})).toMatchObject({
+        issues: [
+          { path: [{ key: 'key1' }] },
+          { path: [{ key: 'key2' }] },
+          { path: [{ key: 'key3' }] },
+          { path: [{ key: 'key4' }] },
+        ],
+      });
+    });
   });
 
   describe('objectWithRest', () => {

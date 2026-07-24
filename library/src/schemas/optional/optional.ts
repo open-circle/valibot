@@ -7,7 +7,7 @@ import type {
   InferIssue,
   SuccessDataset,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 import type { InferOptionalOutput } from './types.ts';
 
 /**
@@ -72,7 +72,9 @@ export function optional(
   wrapped: BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   default_?: unknown
 ): OptionalSchema<BaseSchema<unknown, unknown, BaseIssue<unknown>>, unknown> {
-  return {
+  return _standardSchema<
+    OptionalSchema<BaseSchema<unknown, unknown, BaseIssue<unknown>>, unknown>
+  >({
     kind: 'schema',
     type: 'optional',
     reference: optional,
@@ -80,10 +82,14 @@ export function optional(
     async: false,
     wrapped,
     default: default_,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: OptionalSchema<
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        unknown
+      >,
+      dataset,
+      config
+    ) {
       // If value is `undefined`, override it with default or return dataset
       if (dataset.value === undefined) {
         // If default is specified, override value of dataset
@@ -103,5 +109,5 @@ export function optional(
       // Otherwise, return dataset of wrapped schema
       return this.wrapped['~run'](dataset, config);
     },
-  };
+  });
 }

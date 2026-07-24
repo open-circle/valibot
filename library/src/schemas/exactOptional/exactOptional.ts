@@ -6,7 +6,7 @@ import type {
   InferIssue,
   InferOutput,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Exact optional schema interface.
@@ -76,7 +76,12 @@ export function exactOptional(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   unknown
 > {
-  return {
+  return _standardSchema<
+    ExactOptionalSchema<
+      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+      unknown
+    >
+  >({
     kind: 'schema',
     type: 'exact_optional',
     reference: exactOptional,
@@ -84,11 +89,8 @@ export function exactOptional(
     async: false,
     wrapped,
     default: default_,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       return this.wrapped['~run'](dataset, config);
     },
-  };
+  });
 }

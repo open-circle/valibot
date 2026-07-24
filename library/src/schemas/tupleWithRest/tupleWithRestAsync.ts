@@ -13,7 +13,7 @@ import type {
   OutputDataset,
   TupleItemsAsync,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { tupleWithRest } from './tupleWithRest.ts';
 import type { TupleWithRestIssue } from './types.ts';
 
@@ -109,7 +109,14 @@ export function tupleWithRestAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<TupleWithRestIssue> | undefined
 > {
-  return {
+  return _standardSchema<
+    TupleWithRestSchemaAsync<
+      TupleItemsAsync,
+      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+      ErrorMessage<TupleWithRestIssue> | undefined
+    >
+  >({
     kind: 'schema',
     type: 'tuple_with_rest',
     reference: tupleWithRestAsync,
@@ -118,10 +125,16 @@ export function tupleWithRestAsync(
     items,
     rest,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    async '~run'(dataset, config) {
+    async '~run'(
+      this: TupleWithRestSchemaAsync<
+        TupleItemsAsync,
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<TupleWithRestIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // Get input value from dataset
       const input = dataset.value;
 
@@ -264,5 +277,5 @@ export function tupleWithRestAsync(
         TupleWithRestIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

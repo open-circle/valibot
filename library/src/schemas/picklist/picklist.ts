@@ -7,8 +7,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _getStandardProps,
   _joinExpects,
+  _standardSchema,
   _stringify,
 } from '../../utils/index.ts';
 
@@ -89,7 +89,9 @@ export function picklist(
   options: PicklistOptions,
   message?: ErrorMessage<PicklistIssue>
 ): PicklistSchema<PicklistOptions, ErrorMessage<PicklistIssue> | undefined> {
-  return {
+  return _standardSchema<
+    PicklistSchema<PicklistOptions, ErrorMessage<PicklistIssue> | undefined>
+  >({
     kind: 'schema',
     type: 'picklist',
     reference: picklist,
@@ -97,10 +99,14 @@ export function picklist(
     async: false,
     options,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: PicklistSchema<
+        PicklistOptions,
+        ErrorMessage<PicklistIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // @ts-expect-error
       if (this.options.includes(dataset.value)) {
         // @ts-expect-error
@@ -111,5 +117,5 @@ export function picklist(
       // @ts-expect-error
       return dataset as OutputDataset<PicklistOptions[number], PicklistIssue>;
     },
-  };
+  });
 }

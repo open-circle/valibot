@@ -17,8 +17,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _getStandardProps,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type { objectWithRest } from './objectWithRest.ts';
 import type { ObjectWithRestIssue } from './types.ts';
@@ -115,7 +115,14 @@ export function objectWithRestAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ObjectWithRestIssue> | undefined
 > {
-  return {
+  return _standardSchema<
+    ObjectWithRestSchemaAsync<
+      ObjectEntriesAsync,
+      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+      ErrorMessage<ObjectWithRestIssue> | undefined
+    >
+  >({
     kind: 'schema',
     type: 'object_with_rest',
     reference: objectWithRestAsync,
@@ -124,10 +131,16 @@ export function objectWithRestAsync(
     entries,
     rest,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    async '~run'(dataset, config) {
+    async '~run'(
+      this: ObjectWithRestSchemaAsync<
+        ObjectEntriesAsync,
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<ObjectWithRestIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // Get input value from dataset
       const input = dataset.value;
 
@@ -336,5 +349,5 @@ export function objectWithRestAsync(
         | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

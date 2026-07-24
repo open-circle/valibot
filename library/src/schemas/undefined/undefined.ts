@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Undefined issue interface.
@@ -70,17 +70,20 @@ export function undefined_<
 export function undefined_(
   message?: ErrorMessage<UndefinedIssue>
 ): UndefinedSchema<ErrorMessage<UndefinedIssue> | undefined> {
-  return {
+  return _standardSchema<
+    UndefinedSchema<ErrorMessage<UndefinedIssue> | undefined>
+  >({
     kind: 'schema',
     type: 'undefined',
     reference: undefined_,
     expects: 'undefined',
     async: false,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: UndefinedSchema<ErrorMessage<UndefinedIssue> | undefined>,
+      dataset,
+      config
+    ) {
       if (dataset.value === undefined) {
         // @ts-expect-error
         dataset.typed = true;
@@ -90,7 +93,7 @@ export function undefined_(
       // @ts-expect-error
       return dataset as OutputDataset<undefined, UndefinedIssue>;
     },
-  };
+  });
 }
 
 export { undefined_ as undefined };
