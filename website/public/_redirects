@@ -6,3 +6,6 @@
 /guides/errors/ /guides/issues/ 302
 /guides/migrate-from-v0.30.0 /guides/migrate-to-v0.31.0/ 301
 /guides/migrate-from-v0.30.0/ /guides/migrate-to-v0.31.0/ 301
+/guides/llms-txt /guides/coding-agents/ 301
+/guides/llms-txt/ /guides/coding-agents/ 301
+/guides/llms-txt.md /guides/coding-agents.md 301

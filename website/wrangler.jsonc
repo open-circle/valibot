@@ -17,11 +17,16 @@
     // Only run the Worker for routes with special handling for AI agents and
     // exclude Qwik City's q-data.json files to serve them asset-first
     "run_worker_first": [
+      "/",
+      "/mcp",
+      "/mcp/",
       "/guides/*",
       "/api/*",
+      "/blog/*",
       "/.well-known/api-catalog",
       "!/guides/*q-data.json",
       "!/api/*q-data.json",
+      "!/blog/*q-data.json",
     ],
   },
   // Serve production via the custom domain only, but keep
