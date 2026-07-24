@@ -69,7 +69,8 @@ export default {
       return response;
     }
 
-    // Detect requests to documentation pages and their Markdown version
+    // Detect requests to documentation pages and blog posts as well as
+    // their Markdown version
     const docsMatch = DOCS_PATH_REGEX.exec(url.pathname);
     if (docsMatch) {
       const markdownPath = `/${docsMatch[1]}/${docsMatch[2]}.md`;

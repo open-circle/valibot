@@ -3,9 +3,16 @@
  * that is used by the Worker and our build scripts.
  */
 
-// Areas of the documentation with a Markdown version for every page
-export const DOC_AREAS = ['guides', 'api'] as const;
+// Areas of the website with a Markdown version for every page
+export const DOC_AREAS = ['guides', 'api', 'blog'] as const;
 export type DocArea = (typeof DOC_AREAS)[number];
+
+// Titles of the areas as displayed in tool outputs
+export const AREA_TITLES: Record<DocArea, string> = {
+  guides: 'Guides',
+  api: 'API reference',
+  blog: 'Blog',
+};
 
 // Path of documentation pages and their Markdown version. The third group
 // captures the ".md" suffix, including the naive "/.md" suffix that agents

@@ -22,9 +22,11 @@
       "/mcp/",
       "/guides/*",
       "/api/*",
+      "/blog/*",
       "/.well-known/api-catalog",
       "!/guides/*q-data.json",
       "!/api/*q-data.json",
+      "!/blog/*q-data.json",
     ],
   },
   // Serve production via the custom domain only, but keep

@@ -8,7 +8,13 @@
  */
 import { toJsonSchema } from '@valibot/to-json-schema';
 import * as v from 'valibot';
-import { DOC_AREAS, type DocArea, getDocUrls, type SearchEntry } from './docs';
+import {
+  AREA_TITLES,
+  DOC_AREAS,
+  type DocArea,
+  getDocUrls,
+  type SearchEntry,
+} from './docs';
 import type { Env } from './index';
 import {
   CAPABILITIES,
@@ -60,21 +66,21 @@ const TOOL_DEFINITIONS = [
     name: 'search_docs',
     title: 'Search documentation',
     description:
-      'Searches the Valibot documentation (guides and API reference) and returns the most relevant pages with links to their Markdown version. Best for finding the right schema, method or action by name or topic.',
+      'Searches the Valibot documentation (guides, API reference and blog posts) and returns the most relevant pages with links to their Markdown version. Best for finding the right schema, method or action by name or topic.',
     inputSchema: toInputSchema(SearchDocsSchema),
   },
   {
     name: 'get_doc',
     title: 'Read documentation page',
     description:
-      'Reads a documentation page and returns its full content as Markdown. Accepts paths like "api/string" and "guides/quick-start" or a bare API name like "minLength".',
+      'Reads a documentation page or blog post and returns its full content as Markdown. Accepts paths like "api/string", "guides/quick-start" and "blog/valibot-v1-the-1-kb-schema-library" or a bare API name like "minLength".',
     inputSchema: toInputSchema(GetDocSchema),
   },
   {
     name: 'list_docs',
     title: 'List documentation pages',
     description:
-      'Lists all documentation pages grouped by area and category. Useful to get an overview of the available guides and API reference pages.',
+      'Lists all documentation pages and blog posts grouped by area and category. Useful to get an overview of the available guides, API reference pages and blog posts.',
     inputSchema: toInputSchema(ListDocsSchema),
   },
 ];
@@ -272,8 +278,13 @@ function getEditDistance(string1: string, string2: string): number {
   return prevRow[string2.length];
 }
 
-// Regex that matches a documentation page path like "api/string"
-const AREA_PATH_REGEX = new RegExp(`^(${DOC_AREAS.join('|')})/([\\w.-]+)$`);
+// Regex that matches a documentation page path like "api/string". The area
+// is matched case-insensitively, as page names are resolved to their
+// canonical casing anyway.
+const AREA_PATH_REGEX = new RegExp(
+  `^(${DOC_AREAS.join('|')})/([\\w.-]+)$`,
+  'i'
+);
 
 /**
  * Executes the get_doc tool.
@@ -292,12 +303,13 @@ async function executeGetDoc(
     .replace(/^\/|\/$/g, '');
 
   // Split path into candidate areas and page name. For bare names, we try
-  // the API area first as most bare lookups are API references.
+  // the API area first as most bare lookups are API references. Blog posts
+  // always require an explicit "blog/" path.
   let areas: DocArea[];
   let pageName: string;
   const areaMatch = AREA_PATH_REGEX.exec(cleanPath);
   if (areaMatch) {
-    areas = [areaMatch[1] as DocArea];
+    areas = [areaMatch[1].toLowerCase() as DocArea];
     pageName = areaMatch[2];
   } else if (/^[\w.-]+$/.test(cleanPath)) {
     areas = ['api', 'guides'];
@@ -307,7 +319,7 @@ async function executeGetDoc(
       content: [
         {
           type: 'text',
-          text: `Invalid path "${input.path}". Use a path like "api/string" or "guides/quick-start" or a bare API name like "minLength".`,
+          text: `Invalid path "${input.path}". Use a path like "api/string", "guides/quick-start" or "blog/valibot-v1-the-1-kb-schema-library" or a bare API name like "minLength".`,
         },
       ],
       isError: true,
@@ -399,7 +411,7 @@ async function executeListDocs(
   let prevGroup: string | undefined;
   for (const entry of entries) {
     if (entry.area !== prevArea) {
-      text += `# ${entry.area === 'guides' ? 'Guides' : 'API reference'}\n\n`;
+      text += `# ${AREA_TITLES[entry.area]}\n\n`;
       prevArea = entry.area;
       prevGroup = undefined;
     }
