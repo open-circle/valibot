@@ -3,6 +3,7 @@ packages:
   - 'library'
   - 'packages/*'
   - 'website'
+minimumReleaseAge: 10080  # minutes — 7 days
 allowBuilds:
   '@ast-grep/cli': true
   '@vercel/speed-insights': true
