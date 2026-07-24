@@ -174,6 +174,18 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert ksuid action', () => {
+    expect(convertAction({}, v.ksuid<string>(), undefined)).toStrictEqual({
+      pattern: v.KSUID_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.ksuid<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.KSUID_REGEX.source,
+    });
+  });
+
   test('should convert mac action', () => {
     expect(convertAction({}, v.mac<string>(), undefined)).toStrictEqual({
       pattern: v.MAC_REGEX.source,

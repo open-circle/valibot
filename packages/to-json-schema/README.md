@@ -85,6 +85,7 @@ This package is particularly popular for:
 | `isoWeek`       | ✅     |                                                             |
 | `isrc`          | ✅     |                                                             |
 | `jwsCompact`    | ✅     |                                                             |
+| `ksuid`         | ✅     |                                                             |
 | `length`        | ⚠️     | Only in combination with `string` and `array` schema        |
 | `ltValue`       | ⚠️     | Only in combination with `number` and `integer` schema      |
 | `mac`           | ✅     |                                                             |
