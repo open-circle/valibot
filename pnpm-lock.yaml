@@ -194,6 +194,9 @@ importers:
 
   website:
     dependencies:
+      '@valibot/to-json-schema':
+        specifier: workspace:*
+        version: link:../packages/to-json-schema
       '@valibot/zod-to-valibot':
         specifier: workspace:*
         version: link:../codemod/zod-to-valibot

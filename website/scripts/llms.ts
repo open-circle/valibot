@@ -3,7 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import type { PropertyProps } from '~/components';
-import { serializeProperty } from './utils/index';
+import type { SearchEntry } from '../worker/docs';
+import { serializeProperty, transformTextSegments } from './utils/index';
 
 // Read menu.md of guides and API
 const menuOfGuides = fs.readFileSync(
@@ -38,13 +39,7 @@ const introText =
 
 // Create details text with pointers to other resources for llms.txt file
 const detailsText =
-  'Every link below points to the Markdown version of a documentation page. The same page is served as HTML at the same URL without the `.md` extension. The whole documentation is also available as a single file at [llms-full.txt](https://valibot.dev/llms-full.txt), the guides at [llms-guides.txt](https://valibot.dev/llms-guides.txt) and the API reference at [llms-api.txt](https://valibot.dev/llms-api.txt).\n';
-
-// Create llms.txt file with content of guides and API menus
-const llmsTxt = `${introText}\n${detailsText}\n${convertMenuToLlms(menuOfGuides)}\n${convertMenuToLlms(menuOfApi)}`;
-
-// Write llms.txt file to public directory
-fs.writeFileSync(path.join('public', 'llms.txt'), llmsTxt);
+  'Every link below points to the Markdown version of a documentation page. The same page is served as HTML at the same URL without the `.md` extension. The whole documentation is also available as a single file at [llms-full.txt](https://valibot.dev/llms-full.txt), the guides at [llms-guides.txt](https://valibot.dev/llms-guides.txt), the API reference at [llms-api.txt](https://valibot.dev/llms-api.txt) and the blog posts at [llms-blog.txt](https://valibot.dev/llms-blog.txt). An MCP server with tools to search and read this documentation is available at https://valibot.dev/mcp (see [server card](https://valibot.dev/.well-known/mcp/server-card.json) and [coding agents guide](https://valibot.dev/guides/coding-agents.md)).\n';
 
 /**
  * Extracts grouped file paths from a markdown menu.
@@ -103,6 +98,93 @@ function extractFilePathsOfMenu(
 }
 
 /**
+ * Formats the publication date of a blog post the same way as our website.
+ *
+ * @param published The publication date of the post.
+ *
+ * @returns A formatted date string.
+ */
+function formatPublished(published: Date): string {
+  return published.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
+}
+
+/**
+ * Extracts grouped file paths of our blog posts from the file system. The
+ * posts are sorted by publication date and grouped by year, similar to the
+ * sections of our blog page.
+ *
+ * @returns A grouped array of file paths.
+ */
+function extractFilePathsOfBlog(): {
+  title: string;
+  files: { name: string; path: string; title: string; published: Date }[];
+}[] {
+  // Read metadata of every blog post from its frontmatter
+  const postsDir = path.join('src', 'routes', 'blog', '(posts)');
+  const posts = fs
+    .readdirSync(postsDir)
+    .map((dirName) => ({
+      name: dirName,
+      path: path.join(postsDir, dirName, 'index.mdx'),
+    }))
+    .filter((post) => fs.existsSync(post.path))
+    .map((post) => {
+      const frontmatter = graymatter.read(post.path);
+      return {
+        ...post,
+        title: frontmatter.data.title as string,
+        published: new Date(frontmatter.data.published),
+      };
+    })
+    .sort(
+      (post1, post2) => post2.published.getTime() - post1.published.getTime()
+    );
+
+  // Group posts by publication year with the latest year first
+  const blogGroups: {
+    title: string;
+    files: { name: string; path: string; title: string; published: Date }[];
+  }[] = [];
+  for (const post of posts) {
+    const groupTitle = `Posts of ${post.published.getUTCFullYear()}`;
+    let blogGroup = blogGroups.find((group) => group.title === groupTitle);
+    if (!blogGroup) {
+      blogGroup = { title: groupTitle, files: [] };
+      blogGroups.push(blogGroup);
+    }
+    blogGroup.files.push(post);
+  }
+  return blogGroups;
+}
+
+// Extract grouped file paths of our blog posts
+const groupsOfBlog = extractFilePathsOfBlog();
+
+// Create menu of our blog posts with links to their Markdown version
+const menuOfBlog = `## Blog\n${groupsOfBlog
+  .map(
+    (blogGroup) =>
+      `\n### ${blogGroup.title}\n\n${blogGroup.files
+        .map(
+          (file) =>
+            `- [${file.title}](https://valibot.dev/blog/${file.name}.md) (${formatPublished(file.published)})\n`
+        )
+        .join('')}`
+  )
+  .join('')}`;
+
+// Create llms.txt file with content of guides, API and blog menus
+const llmsTxt = `${introText}\n${detailsText}\n${convertMenuToLlms(menuOfGuides)}\n${convertMenuToLlms(menuOfApi)}\n${menuOfBlog}`;
+
+// Write llms.txt file to public directory
+fs.writeFileSync(path.join('public', 'llms.txt'), llmsTxt);
+
+/**
  * Converts the MDX components of our docs to plain Markdown so that the
  * content of the generated MD files matches the rendered HTML output.
  *
@@ -125,69 +207,71 @@ async function convertMdxToMd(
     ).properties;
   }
 
-  return (
-    mdxContent
-      // Split content into code blocks and text to only transform the latter
-      .split(/(```[\s\S]*?```)/)
-      .map((segment) => {
-        // Return code blocks unchanged
-        if (segment.startsWith('```')) {
-          return segment;
+  // Transform text outside of code blocks to plain Markdown
+  return transformTextSegments(mdxContent, (segment) =>
+    segment
+      // Replace spread Property components with serialized type
+      .replaceAll(
+        /<Property\s+\{\.\.\.properties(?:\.(\w+)|\['([^']+)'\])\}\s*\/>/g,
+        (match, dotName: string | undefined, bracketName: string) => {
+          const name = dotName ?? bracketName;
+          const data = properties[name];
+          if (!data) {
+            throw new Error(`Missing property "${name}" in ${dirPath}`);
+          }
+          return serializeProperty(data);
         }
+      )
 
-        return (
-          segment
-            // Replace spread Property components with serialized type
-            .replaceAll(
-              /<Property\s+\{\.\.\.properties(?:\.(\w+)|\['([^']+)'\])\}\s*\/>/g,
-              (match, dotName: string | undefined, bracketName: string) => {
-                const name = dotName ?? bracketName;
-                const data = properties[name];
-                if (!data) {
-                  throw new Error(`Missing property "${name}" in ${dirPath}`);
-                }
-                return serializeProperty(data);
-              }
-            )
+      // Replace literal Property components with inline code
+      .replaceAll(/<Property\s+type=["']([^"']+)["']\s*\/>/g, '`$1`')
 
-            // Replace literal Property components with inline code
-            .replaceAll(/<Property\s+type=["']([^"']+)["']\s*\/>/g, '`$1`')
+      // Replace Link components with Markdown links
+      .replaceAll(
+        /<Link\s+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/Link>/g,
+        '[$2]($1)'
+      )
 
-            // Replace Link components with Markdown links
-            .replaceAll(
-              /<Link\s+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/Link>/g,
-              '[$2]($1)'
-            )
+      // Replace inline HTML anchor elements with Markdown links
+      .replaceAll(
+        /<a\s+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/g,
+        '[$2]($1)'
+      )
 
-            // Replace ApiList components with a list of Markdown links
-            .replaceAll(/<ApiList\s+([\s\S]*?)\/>/g, (match, attrs: string) => {
-              const label = attrs.match(/label=["']([^"']+)["']/)?.[1];
-              const items = [...attrs.matchAll(/'([^']+)'/g)].map(
-                (itemMatch) => `[\`${itemMatch[1]}\`](/api/${itemMatch[1]}/)`
-              );
-              return `${label ? `${label}: ` : ''}${items.join(', ')}`;
-            })
-
-            // Resolve relative link paths to absolute link paths so that
-            // links work outside the HTML context of the page
-            .replaceAll(/\]\((\.\.?\/[^)]+)\)/g, (match, target: string) => {
-              const resolvedUrl = new URL(target, pageUrl);
-              return `](${resolvedUrl.pathname}${resolvedUrl.hash})`;
-            })
-
-            // Rewrite links to documentation pages to their Markdown version
-            // so that AI agents stay within the Markdown context
-            .replaceAll(
-              /\]\(\/(guides|api)\/([\w.-]+?)\/(#[^)]*)?\)/g,
-              '](/$1/$2.md$3)'
-            )
-
-            // Remove remaining components (e.g. images and interactive
-            // elements) as they cannot be converted to plain Markdown
-            .replaceAll(/^<[A-Z][\s\S]*?\/>\n?/gm, '')
+      // Replace ApiList components with a list of Markdown links
+      .replaceAll(/<ApiList\s+([\s\S]*?)\/>/g, (match, attrs: string) => {
+        const label = attrs.match(/label=["']([^"']+)["']/)?.[1];
+        const items = [...attrs.matchAll(/'([^']+)'/g)].map(
+          (itemMatch) => `[\`${itemMatch[1]}\`](/api/${itemMatch[1]}/)`
         );
+        return `${label ? `${label}: ` : ''}${items.join(', ')}`;
       })
-      .join('')
+
+      // Resolve relative link paths to absolute link paths so that
+      // links work outside the HTML context of the page
+      .replaceAll(/\]\((\.\.?\/[^)]+)\)/g, (match, target: string) => {
+        const resolvedUrl = new URL(target, pageUrl);
+        return `](${resolvedUrl.pathname}${resolvedUrl.hash})`;
+      })
+
+      // Rewrite links to documentation pages to their Markdown version
+      // so that AI agents stay within the Markdown context
+      .replaceAll(
+        /\]\(\/(guides|api|blog)\/([\w.-]+?)\/(#[^)]*)?\)/g,
+        '](/$1/$2.md$3)'
+      )
+
+      // Remove MDX comments (e.g. prettier-ignore) as they only matter for
+      // the source code
+      .replaceAll(/\{\/\*[\s\S]*?\*\/\}\n?/g, '')
+
+      // Remove raw HTML blocks (e.g. embedded images and logo lists) as
+      // they cannot be converted to plain Markdown
+      .replaceAll(/^<([a-z]+)[^>\n]*>[\s\S]*?^<\/\1>\n?/gm, '')
+
+      // Remove remaining components (e.g. images and interactive
+      // elements) as they cannot be converted to plain Markdown
+      .replaceAll(/^<[A-Z][\s\S]*?\/>\n?/gm, '')
   );
 }
 
@@ -199,27 +283,30 @@ async function convertMdxToMd(
  * @param filePath The path of the source MDX file.
  */
 function warnAboutUnknownComponents(mdContent: string, filePath: string) {
-  for (const segment of mdContent.split(/(```[\s\S]*?```)/)) {
-    if (!segment.startsWith('```')) {
-      const componentMatch = segment
-        // Remove inline code as it can contain generic type arguments
-        .replaceAll(/(`+)[\s\S]*?\1/g, '')
-        .match(/<[A-Z]\w*[\s/]/);
-      if (componentMatch) {
-        console.warn(
-          `Unknown component "${componentMatch[0].trim()}" in Markdown output of ${filePath}`
-        );
-      }
+  transformTextSegments(mdContent, (segment) => {
+    const componentMatch = segment
+      // Remove inline code as it can contain generic type arguments
+      .replaceAll(/(`+)[\s\S]*?\1/g, '')
+      .match(/<[A-Z]\w*[\s/]/);
+    if (componentMatch) {
+      console.warn(
+        `Unknown component "${componentMatch[0].trim()}" in Markdown output of ${filePath}`
+      );
     }
-  }
+    return segment;
+  });
 }
 
 // Create object to hold content for specific llms files
-const llms: Record<'full' | 'guides' | 'api', string> = {
+const llms: Record<'full' | 'guides' | 'api' | 'blog', string> = {
   full: introText,
   guides: introText,
   api: introText,
+  blog: introText,
 };
+
+// Create list to hold search index entries for our MCP server
+const searchIndex: SearchEntry[] = [];
 
 // Define content areas with all necessary data
 const contentAreas = [
@@ -235,6 +322,12 @@ const contentAreas = [
     publicDir: path.join('public', 'api'),
     groups: extractFilePathsOfMenu(menuOfApi),
   },
+  {
+    id: 'blog',
+    name: 'blog',
+    publicDir: path.join('public', 'blog'),
+    groups: groupsOfBlog,
+  },
 ] as const;
 
 // Copy content of MDX files to public dir and add it to llms files
@@ -249,8 +342,12 @@ for (const contentArea of contentAreas) {
     // Create level 2 heading for group
     const heading = `## ${areaGroup.title}`;
 
-    // Add heading to specific llms files
-    llms.full += `\n${heading} (${contentArea.name})\n`;
+    // Add heading to specific llms files. The blog is excluded from the
+    // full file, as its posts are dated announcements that may describe
+    // previous versions of the API.
+    if (contentArea.id !== 'blog') {
+      llms.full += `\n${heading} (${contentArea.name})\n`;
+    }
     llms[contentArea.id] += `\n${heading}\n`;
 
     // Copy content of MDX files to public dir and add content to llms files
@@ -258,10 +355,24 @@ for (const contentArea of contentAreas) {
       // Read MDX file and extract frontmatter
       const frontmatter = graymatter.read(mdxFile.path);
 
-      // Remove MDX import statements from MDX content
-      const mdxContent = frontmatter.content.slice(
-        frontmatter.content.indexOf('# ') // Index of first heading
-      );
+      // Remove MDX import statements from MDX content. Documentation pages
+      // start with a first-level heading, while blog posts render their
+      // title and meta data via the frontmatter, so we recreate both in
+      // Markdown the same way as our website.
+      let mdxContent: string;
+      if (contentArea.id === 'blog') {
+        const authors = (frontmatter.data.authors as string[])
+          .map((author) => `[${author}](https://github.com/${author})`)
+          .join(', ');
+        const postContent = frontmatter.content
+          .replace(/^\s*(?:import[\s\S]*?from\s+'[^']+';\s*)+/, '')
+          .trimStart();
+        mdxContent = `# ${frontmatter.data.title}\n\nPublished on ${formatPublished(new Date(frontmatter.data.published))} by ${authors}\n\n${postContent}`;
+      } else {
+        mdxContent = frontmatter.content.slice(
+          frontmatter.content.indexOf('# ') // Index of first heading
+        );
+      }
 
       // Create URL of documentation page
       const pageUrl = `https://valibot.dev/${contentArea.id}/${mdxFile.name}/`;
@@ -275,6 +386,30 @@ for (const contentArea of contentAreas) {
 
       // Warn about component markup that was not converted
       warnAboutUnknownComponents(mdContent, mdxFile.path);
+
+      // Extract headings of MD content outside of code blocks
+      const headings: string[] = [];
+      transformTextSegments(mdContent, (segment) => {
+        for (const regexMatch of segment.matchAll(/^#{2,3} (.+)$/gm)) {
+          headings.push(regexMatch[1]);
+        }
+        return segment;
+      });
+
+      // Add entry with metadata of page to search index. The excerpt is the
+      // intro paragraph of the page, which follows the heading of
+      // documentation pages and the publication meta line of blog posts.
+      const paragraphs = mdContent.split('\n\n');
+      searchIndex.push({
+        area: contentArea.id,
+        group: areaGroup.title,
+        name: mdxFile.name,
+        title: frontmatter.data.title ?? mdxFile.name,
+        description: frontmatter.data.description ?? '',
+        excerpt:
+          paragraphs[contentArea.id === 'blog' ? 2 : 1]?.slice(0, 400) ?? '',
+        headings,
+      });
 
       // Create agent directive with pointer to HTML page and llms.txt file
       const directive = `> This document is the Markdown version of [valibot.dev/${contentArea.id}/${mdxFile.name}/](${pageUrl}). For the complete documentation index, see [llms.txt](https://valibot.dev/llms.txt).`;
@@ -291,17 +426,14 @@ for (const contentArea of contentAreas) {
 
       // Change level of headings two levels down without touching `#`
       // comments within code blocks
-      const llmsContent = mdContent
-        .split(/(```[\s\S]*?```)/)
-        .map((segment) =>
-          segment.startsWith('```')
-            ? segment
-            : segment.replaceAll(/^#/gm, '###')
-        )
-        .join('');
+      const llmsContent = transformTextSegments(mdContent, (segment) =>
+        segment.replaceAll(/^#/gm, '###')
+      );
 
       // Add content to specific llms files
-      llms.full += `\n${llmsContent}`;
+      if (contentArea.id !== 'blog') {
+        llms.full += `\n${llmsContent}`;
+      }
       llms[contentArea.id] += `\n${llmsContent}`;
     }
   }
@@ -311,3 +443,10 @@ for (const contentArea of contentAreas) {
 fs.writeFileSync(path.join('public', 'llms-full.txt'), llms.full);
 fs.writeFileSync(path.join('public', 'llms-guides.txt'), llms.guides);
 fs.writeFileSync(path.join('public', 'llms-api.txt'), llms.api);
+fs.writeFileSync(path.join('public', 'llms-blog.txt'), llms.blog);
+
+// Write search index for our MCP server to public directory
+fs.writeFileSync(
+  path.join('public', 'search-index.json'),
+  JSON.stringify(searchIndex)
+);
