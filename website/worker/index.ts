@@ -7,9 +7,20 @@
  * https://developers.cloudflare.com/workers/static-assets/routing/worker-script/
  */
 import { DOCS_PATH_REGEX } from './docs';
-import { withHeaders } from './headers';
+import { setHeader, withHeaders } from './headers';
 import { prefersMarkdown, serveMarkdown } from './markdown';
 import { handleMcpRequest } from './mcp';
+
+// Discovery links of the homepage for AI agents (RFC 8288). The first two
+// mirror the `/` rule of our `_headers` file, which is documented to apply
+// to static asset responses but not to responses of Worker code. Setting
+// them here as well guarantees them in both cases, as duplicate values are
+// skipped when the headers are merged.
+const HOMEPAGE_LINKS = [
+  '</.well-known/api-catalog>; rel="api-catalog"',
+  '</llms.txt>; rel="service-doc"; type="text/markdown"',
+  '</llms.txt>; rel="alternate"; type="text/markdown"',
+];
 
 export interface Env {
   ASSETS: { fetch: typeof fetch };
@@ -25,19 +36,21 @@ export default {
     }
 
     // Serve our llms.txt file as the Markdown version of the homepage to
-    // negotiating agents, and add a link to it to the HTML homepage
+    // negotiating agents, and add discovery links to the HTML homepage
     if (url.pathname === '/') {
       if (prefersMarkdown(request)) {
-        const response = await serveMarkdown(env, request, '/llms.txt');
-        if (response) {
-          return response;
+        const markdownResponse = await serveMarkdown(env, request, '/llms.txt');
+        if (markdownResponse) {
+          return markdownResponse;
         }
       }
-      const response = await env.ASSETS.fetch(request);
-      return withHeaders(response, {
-        Link: '</llms.txt>; rel="alternate"; type="text/markdown"',
+      const response = withHeaders(await env.ASSETS.fetch(request), {
         Vary: 'Accept',
       });
+      for (const link of HOMEPAGE_LINKS) {
+        setHeader(response.headers, 'Link', link);
+      }
+      return response;
     }
 
     // Serve API catalog with its official media type (RFC 9727)
