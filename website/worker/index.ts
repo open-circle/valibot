@@ -36,17 +36,17 @@ export default {
     }
 
     // Serve our llms.txt file as the Markdown version of the homepage to
-    // negotiating agents, and add discovery links to the HTML homepage
+    // negotiating agents, and add discovery links to both representations
     if (url.pathname === '/') {
+      let response: Response | undefined;
       if (prefersMarkdown(request)) {
-        const markdownResponse = await serveMarkdown(env, request, '/llms.txt');
-        if (markdownResponse) {
-          return markdownResponse;
-        }
+        response = await serveMarkdown(env, request, '/llms.txt');
       }
-      const response = withHeaders(await env.ASSETS.fetch(request), {
-        Vary: 'Accept',
-      });
+      if (!response) {
+        response = withHeaders(await env.ASSETS.fetch(request), {
+          Vary: 'Accept',
+        });
+      }
       for (const link of HOMEPAGE_LINKS) {
         setHeader(response.headers, 'Link', link);
       }
