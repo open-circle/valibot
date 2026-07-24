@@ -397,8 +397,8 @@ for (const contentArea of contentAreas) {
       });
 
       // Add entry with metadata of page to search index. The excerpt is the
-      // intro paragraph of the page which directly follows its heading, or
-      // for blog posts the publication meta line.
+      // intro paragraph of the page, which follows the heading of
+      // documentation pages and the publication meta line of blog posts.
       const paragraphs = mdContent.split('\n\n');
       searchIndex.push({
         area: contentArea.id,
