@@ -2,6 +2,11 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Fix `strictObject` and `strictObjectAsync` to reject unknown input keys that collide with `Object.prototype` members like `toString` instead of accepting them silently (pull request #1523)
+- Fix `looseObject`, `looseObjectAsync`, `objectWithRest` and `objectWithRestAsync` to pass through or apply `rest` to input keys that collide with `Object.prototype` members instead of skipping them (pull request #1523)
+
 ## v1.4.2 (June 28, 2026)
 
 - Fix word count actions to cache the `Intl.Segmenter` for non-primitive locales, preventing it from being recreated on every `words`, `minWords`, `maxWords` and `notWords` validation (pull request #1521)

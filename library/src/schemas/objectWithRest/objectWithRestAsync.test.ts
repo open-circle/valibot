@@ -995,4 +995,44 @@ describe('objectWithRestAsync', () => {
       } satisfies FailureDataset<InferIssue<typeof schema>>);
     });
   });
+
+  describe('should apply rest to keys colliding with the object prototype', () => {
+    const schema = objectWithRestAsync({ key: string() }, number());
+
+    const baseInfo = {
+      message: expect.any(String),
+      requirement: undefined,
+      issues: undefined,
+      lang: undefined,
+      abortEarly: undefined,
+      abortPipeEarly: undefined,
+    };
+
+    test('for unknown key named like an object prototype member', async () => {
+      const input = { key: 'foo', toString: 'bar' };
+      expect(await schema['~run']({ value: input }, {})).toStrictEqual({
+        typed: false,
+        value: input,
+        issues: [
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'number',
+            input: 'bar',
+            expected: 'number',
+            received: '"bar"',
+            path: [
+              {
+                type: 'object',
+                origin: 'value',
+                input,
+                key: 'toString',
+                value: input.toString,
+              },
+            ],
+          },
+        ],
+      } satisfies FailureDataset<InferIssue<typeof schema>>);
+    });
+  });
 });
