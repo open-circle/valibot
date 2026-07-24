@@ -26,9 +26,9 @@ The skill is also published at [`/.well-known/agent-skills/valibot/SKILL.md`](/.
 
 Our MCP server (Model Context Protocol) provides tools to search and read this documentation. Instead of crawling the website, coding agents can look up the right schema, method, or action in a single tool call. The server is available at `https://valibot.dev/mcp` and provides the following tools.
 
-- `search_docs` searches the guides and API reference and returns the most relevant pages
-- `get_doc` reads a documentation page and returns its full content as Markdown
-- `list_docs` lists all documentation pages grouped by area and category
+- `search_docs` searches the guides, API reference and blog posts and returns the most relevant pages
+- `get_doc` reads a documentation page or blog post and returns its full content as Markdown
+- `list_docs` lists all documentation pages and blog posts grouped by area and category
 
 The server is free to use, requires no authentication, and its metadata is published at [`/.well-known/mcp/server-card.json`](/.well-known/mcp/server-card.json). To add it to Claude Code, run the following command.
 
@@ -58,9 +58,10 @@ We provide several LLMs.txt routes. Use the route that works best with your AI t
 - [`llms-full.txt`](/llms-full.txt) contains the Markdown content of the entire docs
 - [`llms-guides.txt`](/llms-guides.txt) contains the Markdown content of the guides
 - [`llms-api.txt`](/llms-api.txt) contains the Markdown content of the API reference
+- [`llms-blog.txt`](/llms-blog.txt) contains the Markdown content of the blog posts
 
 ## Markdown for agents
 
-We provide a Markdown version of every documentation page. You can access it by replacing the trailing slash (`/`) in the URL with `.md`. For example, `/guides/installation/` becomes `/guides/installation.md`.
+We provide a Markdown version of every documentation page and blog post. You can access it by replacing the trailing slash (`/`) in the URL with `.md`. For example, `/guides/installation/` becomes `/guides/installation.md`.
 
 Alternatively, our server supports content negotiation. If a request to a documentation page contains the `Accept: text/markdown` header, the server responds with the Markdown version of the page instead of HTML.
