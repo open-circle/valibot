@@ -99,7 +99,6 @@ export function literal(
       // `-0` and `+0` still compare as equal, matching how `picklist` compares.
       if (
         dataset.value === this.literal ||
-         
         (dataset.value !== dataset.value && this.literal !== this.literal)
       ) {
         // @ts-expect-error
