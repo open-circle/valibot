@@ -149,8 +149,10 @@ export function stringifyJson(
           _addIssue(this, 'JSON', dataset, config);
           // @ts-expect-error
           dataset.typed = false;
+        } else {
+          // Only assign value when serialization succeeds
+          dataset.value = output;
         }
-        dataset.value = output;
       } catch (error) {
         if (error instanceof Error) {
           _addIssue(this, 'JSON', dataset, config, {
