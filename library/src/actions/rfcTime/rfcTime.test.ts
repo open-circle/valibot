@@ -75,6 +75,8 @@ describe('rfcTime', () => {
         '14:30:45.1Z',
         '14:30:45.123Z',
         '14:30:45.123456789+14:00',
+        '23:59:60Z',
+        '23:59:60.123Z',
       ]);
     });
   });
@@ -128,7 +130,20 @@ describe('rfcTime', () => {
     });
 
     test('for invalid second', () => {
-      expectActionIssue(action, baseIssue, ['14:30:60Z', '14:30:99Z']);
+      expectActionIssue(action, baseIssue, [
+        '14:30:61Z',
+        '14:30:99Z',
+      ]);
+    });
+
+    test('for leap-second outside 23:59:60Z', () => {
+      expectActionIssue(action, baseIssue, [
+        '14:30:60Z',
+        '23:59:60+02:00',
+        '23:59:60-05:00',
+        '23:58:60Z',
+        '22:59:60Z',
+      ]);
     });
 
     test('for invalid fraction', () => {
