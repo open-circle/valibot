@@ -64,7 +64,9 @@ export interface RfcTimeAction<
 /**
  * Creates an [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) time validation action.
  *
- * Format: hh:mm:ss[.sss](Z|±hh:mm)
+ * Format: `hh:mm:ss[.fffffffff](Z|±hh:mm)`
+ *
+ * Supports leap-second `:60` (only valid at `23:59:60Z` per RFC 3339 §5.6).
  *
  * @returns An RFC time action.
  */
@@ -91,8 +93,33 @@ export function rfcTime(
     requirement: RFC_3339_TIME_REGEX,
     message,
     '~run'(dataset, config) {
-      if (dataset.typed && !this.requirement.test(dataset.value)) {
-        _addIssue(this, 'time', dataset, config);
+      if (dataset.typed) {
+        const value = dataset.value;
+        const match = RFC_3339_TIME_REGEX.exec(value);
+        if (!match) {
+          _addIssue(this, 'time', dataset, config);
+          return dataset;
+        }
+        const hr = Number(match[1]);
+        const min = Number(match[2]);
+        const sec = Number(match[3]);
+
+        if (hr > 23 || min > 59) {
+          _addIssue(this, 'time', dataset, config);
+          return dataset;
+        }
+
+        if (sec > 60) {
+          _addIssue(this, 'time', dataset, config);
+          return dataset;
+        }
+
+        if (sec === 60) {
+          if (hr !== 23 || min !== 59 || value.toUpperCase().indexOf('Z') === -1) {
+            _addIssue(this, 'time', dataset, config);
+            return dataset;
+          }
+        }
       }
       return dataset;
     },
