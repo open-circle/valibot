@@ -123,6 +123,17 @@ function flattenPipe(pipe: Pipe): Pipe {
   );
 }
 
+/**
+ * Returns the JSON Pointer reference for a definition key.
+ *
+ * @param referenceId The unescaped definition key.
+ *
+ * @returns The encoded JSON Pointer fragment.
+ */
+function getDefinitionRef(referenceId: string): string {
+  return `#/$defs/${referenceId.replaceAll('~', '~0').replaceAll('/', '~1')}`;
+}
+
 // Create global reference count
 let refCount = 0;
 
@@ -148,7 +159,7 @@ export function convertSchema(
     // If schema is in reference map use reference and skip conversion
     const referenceId = context.referenceMap.get(valibotSchema);
     if (referenceId) {
-      jsonSchema.$ref = `#/$defs/${referenceId}`;
+      jsonSchema.$ref = getDefinitionRef(referenceId);
       if (config?.overrideRef) {
         const refOverride = config.overrideRef({
           ...context,
@@ -631,7 +642,7 @@ export function convertSchema(
       }
 
       // Add reference to JSON Schema object
-      jsonSchema.$ref = `#/$defs/${referenceId}`;
+      jsonSchema.$ref = getDefinitionRef(referenceId);
 
       // Override reference, if necessary
       if (config?.overrideRef) {

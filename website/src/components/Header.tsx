@@ -2,11 +2,10 @@ import {
   $,
   component$,
   type Signal,
-  useComputed$,
   useSignal,
   useTask$,
 } from '@builder.io/qwik';
-import { globalAction$, useLocation, z, zod$ } from '@builder.io/qwik-city';
+import { useLocation } from '@builder.io/qwik-city';
 import clsx from 'clsx';
 import { useFocusTrap } from '~/hooks';
 import { LogoIcon } from '~/icons';
@@ -17,17 +16,9 @@ import { MainMenuToggle } from './MainMenuToggle';
 import { SearchToggle } from './SearchToggle';
 import { ThemeToggle } from './ThemeToggle';
 
-/**
- * Toggles the open state of the main menu.
- */
-export const useMainMenuToggle = globalAction$(
-  (values) => values,
-  zod$({ state: z.enum(['opened', 'closed']) })
-);
-
-type HeaderProps = {
+interface HeaderProps {
   searchOpen: Signal<boolean>;
-};
+}
 
 /**
  * Fixed header with logo, main navigation and theme toogle.
@@ -38,14 +29,8 @@ export const Header = component$<HeaderProps>(({ searchOpen }) => {
   const rootElement = useSignal<HTMLElement>();
   const windowScrolled = useSignal(false);
 
-  // Use main menu toggle and compute open state
-  const toggle = useMainMenuToggle();
-  const isOpen = useComputed$(() =>
-    toggle.isRunning
-      ? // Optimistic UI
-        toggle.formData?.get('state') === 'opened'
-      : toggle.value?.state === 'opened'
-  );
+  // Main menu open state
+  const isOpen = useSignal(false);
 
   // Use focus trap for main menu
   useFocusTrap(rootElement, isOpen);
@@ -58,7 +43,7 @@ export const Header = component$<HeaderProps>(({ searchOpen }) => {
       location.prevUrl &&
       location.url.pathname !== location.prevUrl.pathname
     ) {
-      toggle.submit({ state: 'closed' });
+      isOpen.value = false;
     }
   });
 
@@ -116,7 +101,7 @@ export const Header = component$<HeaderProps>(({ searchOpen }) => {
           <GitHubIconLink />
           <ThemeToggle />
           <SearchToggle open={searchOpen} />
-          <MainMenuToggle action={toggle} open={isOpen.value} />
+          <MainMenuToggle toggle={isOpen} />
         </div>
 
         {/* Main menu */}
@@ -132,17 +117,27 @@ export const Header = component$<HeaderProps>(({ searchOpen }) => {
           )}
           id="main-menu"
         >
+          {/* `href` points at the real landing page to avoid a redirect hop,
+              while `match` is the section prefix used for active highlighting. */}
           {[
-            { label: 'Guides', href: '/guides/' },
-            { label: 'API', href: '/api/' },
-            { label: 'Blog', href: '/blog/' },
-            { label: 'Playground', href: '/playground/' },
-          ].map(({ label, href }) => (
+            {
+              label: 'Guides',
+              href: '/guides/introduction/',
+              match: '/guides/',
+            },
+            { label: 'API', href: '/api/', match: '/api/' },
+            { label: 'Blog', href: '/blog/', match: '/blog/' },
+            {
+              label: 'Playground',
+              href: '/playground/',
+              match: '/playground/',
+            },
+          ].map(({ label, href, match }) => (
             <Link
               key={href}
               class={clsx(
                 'focus-ring mx-4 rounded-lg px-4 py-3 text-lg transition-colors hover:text-slate-900 lg:px-3 lg:py-2 lg:text-[17px] lg:font-medium dark:hover:text-slate-200',
-                location.url.pathname.startsWith(href) &&
+                location.url.pathname.startsWith(match) &&
                   'docsearch-lvl0 text-slate-900 dark:text-slate-200'
               )}
               href={href}
@@ -173,7 +168,9 @@ export const Header = component$<HeaderProps>(({ searchOpen }) => {
             ? 'delay-75 duration-300'
             : 'invisible opacity-0 duration-75'
         )}
-        onClick$={() => toggle.submit({ state: 'closed' })}
+        onClick$={() => {
+          isOpen.value = false;
+        }}
       />
     </header>
   );
