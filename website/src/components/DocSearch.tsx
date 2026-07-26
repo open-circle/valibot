@@ -356,7 +356,7 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
           >
             {/* Header */}
             <header class="flex h-14 shrink-0 items-center px-2 md:h-16 lg:h-[72px] lg:px-4">
-              <form class="flex flex-1" preventdefault:submit>
+              <div class="flex flex-1" role="search">
                 <SystemIcon
                   label={loading.value ? 'Search' : 'Focus search input'}
                   type="button"
@@ -370,11 +370,12 @@ export const DocSearch = component$<DocSearchProps>(({ open }) => {
                   ref={inputElement}
                   name="search"
                   type="search"
+                  autoComplete="off"
                   placeholder="Search docs"
                   value={input.value}
                   onInput$={(_, element) => (input.value = element.value)}
                 />
-              </form>
+              </div>
               <SystemIcon
                 class="lg:h-[22px]! lg:w-[22px]!"
                 label="Close search"
