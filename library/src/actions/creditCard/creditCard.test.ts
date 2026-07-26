@@ -188,5 +188,14 @@ describe('creditCard', () => {
         '371449635398434',
       ]);
     });
+
+    test('for Mastercard with invalid length', () => {
+      expectActionIssue(action, baseIssue, [
+        '5100000000003',
+        '510000000000003',
+        '51000000000000003',
+        '5100000000000000003',
+      ]);
+    });
   });
 });

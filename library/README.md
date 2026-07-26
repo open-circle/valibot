@@ -61,6 +61,8 @@ For example, this allows a bundler to use the import statements to remove code t
 
 In addition, it allows you to easily extend my functionality with external code and makes my source code more robust and secure because the functionality of the individual functions can be tested much more easily through unit tests.
 
+> Coming from [Zod](https://zod.dev/)? Read our [migration article](https://valibot.dev/blog/why-migrate-to-valibot/) to see the benefits of Valibot, and use our [migration guide](https://valibot.dev/guides/migrate-from-zod/) to migrate your schemas with confidence.
+
 ## Partners
 
 Thanks to our partners who support my development! [Join them](https://github.com/sponsors/fabian-hiller) and contribute to the sustainability of open source software!

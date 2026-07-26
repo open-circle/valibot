@@ -24,6 +24,23 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should encode definition key as JSON Pointer in reference', () => {
+      const schema = v.string();
+      expect(
+        convertSchema(
+          {},
+          schema,
+          undefined,
+          createContext({
+            definitions: { 'Shared/User~': { type: 'string' } },
+            referenceMap: new Map().set(schema, 'Shared/User~'),
+          })
+        )
+      ).toStrictEqual({
+        $ref: '#/$defs/Shared~1User~0',
+      });
+    });
+
     test('should skip definition if specified', () => {
       const stringSchema = v.string();
       expect(
@@ -857,6 +874,14 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should convert never schema', () => {
+      expect(
+        convertSchema({}, v.never(), undefined, createContext())
+      ).toStrictEqual({
+        not: {},
+      });
+    });
+
     test('should convert exact optional schema without default', () => {
       expect(
         convertSchema(
@@ -1081,7 +1106,96 @@ describe('convertSchema', () => {
           createContext()
         )
       ).toStrictEqual({
+        type: ['string', 'number'],
         enum: [0, 1, 'foo', 123],
+      });
+
+      enum TestOnlyNumbersEnum {
+        KEY1,
+        KEY2,
+      }
+      expect(
+        convertSchema(
+          {},
+          // @ts-expect-error
+          v.enum(TestOnlyNumbersEnum),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'number',
+        enum: [0, 1],
+      });
+
+      enum TestOnlyStringsEnum {
+        KEY1 = 'key1',
+        KEY2 = 'key2',
+      }
+      expect(
+        convertSchema(
+          {},
+          // @ts-expect-error
+          v.enum(TestOnlyStringsEnum),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'string',
+        enum: ['key1', 'key2'],
+      });
+    });
+
+    test('should convert enum schema for openapi-3.0', () => {
+      enum TestEnum {
+        KEY1,
+        KEY2,
+        KEY3 = 'foo',
+        KEY4 = 123,
+      }
+      expect(
+        convertSchema(
+          {},
+          // @ts-expect-error
+          v.enum(TestEnum),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        enum: [0, 1, 'foo', 123],
+      });
+
+      enum TestOnlyNumbersEnum {
+        KEY1,
+        KEY2,
+      }
+      expect(
+        convertSchema(
+          {},
+          // @ts-expect-error
+          v.enum(TestOnlyNumbersEnum),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'number',
+        enum: [0, 1],
+      });
+
+      enum TestOnlyStringsEnum {
+        KEY1 = 'key1',
+        KEY2 = 'key2',
+      }
+      expect(
+        convertSchema(
+          {},
+          // @ts-expect-error
+          v.enum(TestOnlyStringsEnum),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'string',
+        enum: ['key1', 'key2'],
       });
     });
 
@@ -1093,7 +1207,66 @@ describe('convertSchema', () => {
           undefined,
           createContext()
         )
-      ).toStrictEqual({ enum: ['foo', 123, 'bar', 456] });
+      ).toStrictEqual({
+        type: ['string', 'number'],
+        enum: ['foo', 123, 'bar', 456],
+      });
+
+      expect(
+        convertSchema(
+          {},
+          v.picklist(['foo', 'bar']),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'string',
+        enum: ['foo', 'bar'],
+      });
+
+      expect(
+        convertSchema({}, v.picklist([123, 456]), undefined, createContext())
+      ).toStrictEqual({
+        type: 'number',
+        enum: [123, 456],
+      });
+    });
+
+    test('should convert supported picklist schema for openapi-3.0', () => {
+      expect(
+        convertSchema(
+          {},
+          v.picklist(['foo', 123, 'bar', 456]),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        enum: ['foo', 123, 'bar', 456],
+      });
+
+      expect(
+        convertSchema(
+          {},
+          v.picklist(['foo', 'bar']),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'string',
+        enum: ['foo', 'bar'],
+      });
+
+      expect(
+        convertSchema(
+          {},
+          v.picklist([123, 456]),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'number',
+        enum: [123, 456],
+      });
     });
 
     test('should throw error for unsupported picklist schema', () => {

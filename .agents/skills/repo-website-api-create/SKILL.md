@@ -117,6 +117,29 @@ export const properties: Record<string, PropertyProps> = {
 };
 ```
 
+### Optional Object Keys
+
+For optional object keys from TypeScript source such as `key?: string`, do not append `?` to the property name in `properties.ts`.
+
+Use the plain key name and represent optionality in the value type with `undefined` as the last union option:
+
+```typescript
+payload: {
+  type: {
+    type: 'object',
+    entries: [
+      {
+        key: 'key',
+        value: {
+          type: 'union',
+          options: ['string', 'undefined'],
+        },
+      },
+    ],
+  },
+},
+```
+
 ### DefinitionData Types
 
 | Type            | Syntax                                                                         |
@@ -130,7 +153,7 @@ export const properties: Record<string, PropertyProps> = {
 | Intersect       | `{ type: 'intersect', options: [type1, type2] }`                               |
 | Array           | `{ type: 'array', item: elementType }`                                         |
 | Tuple           | `{ type: 'tuple', items: [type1, type2] }`                                     |
-| Object          | `{ type: 'object', entries: [{ key: 'name', optional?: true, value: type }] }` |
+| Object          | `{ type: 'object', entries: [{ key: 'name', value: type }] }`                   |
 | Function        | `{ type: 'function', params: [{ name: 'x', type: t }], return: retType }`      |
 | Template        | `{ type: 'template', parts: [{ type: 'string', value: '>=' }, otherType] }`    |
 

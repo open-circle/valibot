@@ -1,4 +1,4 @@
-import * as v from 'valibot';
+import type * as v from 'valibot';
 import type {
   ConversionConfig,
   ConversionContext,
@@ -96,6 +96,7 @@ type Schema =
       v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
       v.ErrorMessage<v.ArrayIssue> | undefined
     >
+  | v.NeverSchema<v.ErrorMessage<v.NeverIssue> | undefined>
   | v.LazySchema<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>>;
 
 /**
@@ -120,6 +121,17 @@ function flattenPipe(pipe: Pipe): Pipe {
   return pipe.flatMap((item) =>
     'pipe' in item ? flattenPipe(item.pipe as Pipe) : item
   );
+}
+
+/**
+ * Returns the JSON Pointer reference for a definition key.
+ *
+ * @param referenceId The unescaped definition key.
+ *
+ * @returns The encoded JSON Pointer fragment.
+ */
+function getDefinitionRef(referenceId: string): string {
+  return `#/$defs/${referenceId.replaceAll('~', '~0').replaceAll('/', '~1')}`;
 }
 
 // Create global reference count
@@ -147,7 +159,7 @@ export function convertSchema(
     // If schema is in reference map use reference and skip conversion
     const referenceId = context.referenceMap.get(valibotSchema);
     if (referenceId) {
-      jsonSchema.$ref = `#/$defs/${referenceId}`;
+      jsonSchema.$ref = getDefinitionRef(referenceId);
       if (config?.overrideRef) {
         const refOverride = config.overrideRef({
           ...context,
@@ -456,6 +468,11 @@ export function convertSchema(
       break;
     }
 
+    case 'never': {
+      jsonSchema.not = {};
+      break;
+    }
+
     case 'nullable':
     case 'nullish': {
       // If target is OpenAPI 3.0 use nullable property
@@ -484,8 +501,10 @@ export function convertSchema(
 
       // Add default value to JSON Schema, if available
       if (valibotSchema.default !== undefined) {
-        // @ts-expect-error
-        jsonSchema.default = v.getDefault(valibotSchema);
+        jsonSchema.default =
+          typeof valibotSchema.default === 'function'
+            ? valibotSchema.default()
+            : valibotSchema.default;
       }
 
       break;
@@ -504,8 +523,10 @@ export function convertSchema(
 
       // Add default value to JSON Schema, if available
       if (valibotSchema.default !== undefined) {
-        // @ts-expect-error
-        jsonSchema.default = v.getDefault(valibotSchema);
+        jsonSchema.default =
+          typeof valibotSchema.default === 'function'
+            ? valibotSchema.default()
+            : valibotSchema.default;
       }
 
       break;
@@ -535,15 +556,24 @@ export function convertSchema(
 
     case 'enum': {
       jsonSchema.enum = valibotSchema.options;
+      if (valibotSchema.options.every((option) => typeof option === 'string')) {
+        jsonSchema.type = 'string';
+      } else if (
+        valibotSchema.options.every((option) => typeof option === 'number')
+      ) {
+        jsonSchema.type = 'number';
+      } else if (config?.target !== 'openapi-3.0') {
+        // Hint: OpenAPI 3.0 does not support multi-type arrays.
+        jsonSchema.type = ['string', 'number'];
+      }
       break;
     }
 
     case 'picklist': {
-      if (
-        valibotSchema.options.some(
-          (option) => typeof option !== 'number' && typeof option !== 'string'
-        )
-      ) {
+      const hasInvalidOption = valibotSchema.options.some(
+        (option) => typeof option !== 'number' && typeof option !== 'string'
+      );
+      if (hasInvalidOption) {
         errors = addError(
           errors,
           'An option of the "picklist" schema is not JSON compatible.'
@@ -551,6 +581,16 @@ export function convertSchema(
       }
       // @ts-expect-error
       jsonSchema.enum = valibotSchema.options;
+      if (valibotSchema.options.every((option) => typeof option === 'string')) {
+        jsonSchema.type = 'string';
+      } else if (
+        valibotSchema.options.every((option) => typeof option === 'number')
+      ) {
+        jsonSchema.type = 'number';
+      } else if (!hasInvalidOption && config?.target !== 'openapi-3.0') {
+        // Hint: OpenAPI 3.0 does not support multi-type arrays.
+        jsonSchema.type = ['string', 'number'];
+      }
       break;
     }
 
@@ -602,7 +642,7 @@ export function convertSchema(
       }
 
       // Add reference to JSON Schema object
-      jsonSchema.$ref = `#/$defs/${referenceId}`;
+      jsonSchema.$ref = getDefinitionRef(referenceId);
 
       // Override reference, if necessary
       if (config?.overrideRef) {

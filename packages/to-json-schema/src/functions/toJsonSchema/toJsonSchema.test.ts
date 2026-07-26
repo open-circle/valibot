@@ -139,6 +139,31 @@ describe('toJsonSchema', () => {
         },
       });
     });
+
+    test('for definitions with JSON Pointer special characters', () => {
+      const sharedSchema = v.object({ name: v.string() });
+      expect(
+        toJsonSchema(v.object({ user: sharedSchema }), {
+          definitions: { 'Shared/User~': sharedSchema },
+        })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          user: { $ref: '#/$defs/Shared~1User~0' },
+        },
+        required: ['user'],
+        $defs: {
+          'Shared/User~': {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+            },
+            required: ['name'],
+          },
+        },
+      });
+    });
   });
 
   describe('should throw error', () => {

@@ -2,8 +2,6 @@ import type { ReadonlyAction } from '../actions/index.ts';
 import type {
   SchemaWithFallback,
   SchemaWithFallbackAsync,
-  SchemaWithPipe,
-  SchemaWithPipeAsync,
 } from '../methods/index.ts';
 import type {
   ExactOptionalSchema,
@@ -191,12 +189,18 @@ type OutputWithQuestionMarks<
 /**
  * Readonly output keys type.
  */
+
 type ReadonlyOutputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
-  [TKey in keyof TEntries]: TEntries[TKey] extends
-    | SchemaWithPipe<infer TPipe>
-    | SchemaWithPipeAsync<infer TPipe>
+  // NOTE: We use a structural `{ readonly pipe: readonly unknown[] }` check
+  // plus indexed access instead of `SchemaWithPipe<infer TPipe>` because
+  // `infer` forces TS to decompose the full `Omit + &` intersection of
+  // `SchemaWithPipe` for every entry, which dominates check time on large
+  // schemas (see issue #1374).
+  [TKey in keyof TEntries]: TEntries[TKey] extends {
+    readonly pipe: readonly unknown[];
+  }
     ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ReadonlyAction<any> extends TPipe[number]
+      ReadonlyAction<any> extends TEntries[TKey]['pipe'][number]
       ? TKey
       : never
     : never;
@@ -211,8 +215,14 @@ type OutputWithReadonly<
     TEntries,
     InferEntriesOutput<TEntries>
   >,
-> = Readonly<TObject> &
-  Pick<TObject, Exclude<keyof TObject, ReadonlyOutputKeys<TEntries>>>;
+> =
+  // NOTE: We short-circuit to `TObject` when no entry has a `ReadonlyAction`
+  // to avoid building the `Readonly<T> & Pick<T, ...>` intersection in the
+  // common case (see issue #1374).
+  ReadonlyOutputKeys<TEntries> extends never
+    ? TObject
+    : Readonly<TObject> &
+        Pick<TObject, Exclude<keyof TObject, ReadonlyOutputKeys<TEntries>>>;
 
 /**
  * Infer object input type.

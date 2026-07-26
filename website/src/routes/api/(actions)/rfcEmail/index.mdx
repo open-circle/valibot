@@ -30,7 +30,7 @@ const Action = v.rfcEmail<TInput, TMessage>(message);
 
 With `rfcEmail` you can validate the formatting of a string. If the input is not an email, you can use `message` to customize the error message.
 
-> This validation action intentionally validates the entire RFC 5322 specification. If you are interested in an action that only covers common email addresses, please use the <Link href="../email/">`email`</Link> action instead.
+> This validation action uses the regex defined by the HTML Living Standard for `<input type="email">`, which covers most of RFC 5322 but not all of it. For example, quoted local parts and comments are not supported. If you are interested in an action that only validates common email addresses, please use the <Link href="../email/">`email`</Link> action instead.
 
 ## Returns
 

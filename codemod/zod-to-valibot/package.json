@@ -43,7 +43,7 @@
     "typescript": "^5.9.3",
     "valibot": "workspace:*",
     "vite-plugin-node-polyfills": "^0.24.0",
-    "vitest": "^4.0.13",
+    "vitest": "^4.1.8",
     "zod": "^3.25.76"
   }
 }

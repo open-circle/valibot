@@ -56,25 +56,30 @@ v.parse(Schema, input, { lang: 'de' });
 
 ## Custom translations
 
-You can use the same APIs as [`@valibot/i18n`](https://github.com/open-circle/valibot/tree/main/packages/i18n) to add your own translations to the global storage. Alternatively, you can also pass them directly to a specific schema or validation function as the first optional argument.
+You can use the same APIs as [`@valibot/i18n`](https://github.com/open-circle/valibot/tree/main/packages/i18n) to add your own translations to the global storage. Alternatively, you can also pass them directly to a specific schema or validation function as the first optional argument. This can be useful if you want to customize an existing language or define a completely custom language yourself.
 
 > You can either enter the translations manually or use an i18n library like [Paraglide JS](https://inlang.com/m/gerre34r/library-inlang-paraglideJs).
 
 ### Set translations globally
 
-You can add translations with <Link href="/api/setGlobalMessage/">`setGlobalMessage`</Link>, <Link href="/api/setSchemaMessage/">`setSchemaMessage`</Link> and <Link href="/api/setSpecificMessage/">`setSpecificMessage`</Link> in three different hierarchy levels. When creating an issue, I first check if a specific translation is available, then the translation for schema functions, and finally the global translation.
+You can add translations with <Link href="/api/setGlobalMessage/">`setGlobalMessage`</Link>, <Link href="/api/setSchemaMessage/">`setSchemaMessage`</Link> and <Link href="/api/setSpecificMessage/">`setSpecificMessage`</Link> in three different hierarchy levels. When creating an issue, Valibot first checks if a specific translation is available, then the translation for schema functions, and finally the global translation.
+
+Unlike the official translations, you do not need to import an `@valibot/i18n` submodule for this. The `lang` value is just a key that Valibot uses to look up the registered translations. Therefore, it can be any string you want.
 
 ```ts
 import * as v from 'valibot';
 
 // Set the translation globally (can be used as a fallback)
-v.setGlobalMessage((issue) => `Invalid input: ...`, 'en');
+v.setGlobalMessage((issue) => `Invalid input: ...`, 'custom');
 
 // Set the translation globally for every schema functions
-v.setSchemaMessage((issue) => `Invalid type: ...`, 'en');
+v.setSchemaMessage((issue) => `Invalid type: ...`, 'custom');
 
 // Set the translation globally for a specific function
-v.setSpecificMessage(v.minLength, (issue) => `Invalid length: ...`, 'en');
+v.setSpecificMessage(v.minLength, (issue) => `Invalid length: ...`, 'custom');
+
+// Use the registered translations
+v.setGlobalConfig({ lang: 'custom' });
 ```
 
 ### Set translations locally

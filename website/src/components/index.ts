@@ -16,6 +16,7 @@ export * from './Link';
 export * from './MainMenuToggle';
 export * from './Navigation';
 export * from './PostCover';
+export * from './PostList';
 export * from './PostMeta';
 export * from './Property';
 export * from './RoutingIndicator';

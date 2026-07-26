@@ -21,6 +21,8 @@ Formats: `yyyy-mm-ddThh:mm:ss.sssZ`, `yyyy-mm-ddThh:mm:ss.sss±hh:mm`, `yyyy-mm-
 
 > The regex also allows a space as a separator between the date and time parts instead of the "T" character.
 
+> The regex also allows a space before the UTC offset (e.g., " +00:00") to support PostgreSQL's `timestamptz` output format.
+
 ```ts
 const Action = v.isoTimestamp<TInput, TMessage>(message);
 ```
