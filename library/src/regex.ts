@@ -109,6 +109,13 @@ export const ISO_DATE_TIME_SECOND_REGEX: RegExp =
   /^\d{4}-(?:0[1-9]|1[0-2])-(?:[12]\d|0[1-9]|3[01])[T ](?:0\d|1\d|2[0-3])(?::[0-5]\d){2}$/u;
 
 /**
+ * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) / [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#appendix-A) duration regex.
+ */
+export const ISO_DURATION_REGEX: RegExp =
+  // eslint-disable-next-line redos-detector/no-unsafe-regex -- false positive
+  /^P(?:(?:\d+Y(?:\d+M(?:\d+D)?)?|\d+M(?:\d+D)?|\d+D)(?:T(?:\d+H(?:\d+M(?:\d+S)?)?|\d+M(?:\d+S)?|\d+S))?|T(?:\d+H(?:\d+M(?:\d+S)?)?|\d+M(?:\d+S)?|\d+S)|\d+W)$/u;
+
+/**
  * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time regex.
  */
 export const ISO_TIME_REGEX: RegExp = /^(?:0\d|1\d|2[0-3]):[0-5]\d$/u;

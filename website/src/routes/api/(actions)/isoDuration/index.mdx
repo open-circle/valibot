@@ -1,0 +1,70 @@
+---
+title: isoDuration
+description: Creates an ISO duration validation action.
+source: /actions/isoDuration/isoDuration.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# isoDuration
+
+Creates an [ISO duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) validation action.
+
+Format: `PnYnMnDTnHnMnS`
+
+> The regex used cannot validate the semantic order or plausibility of the components. For example, "P0D" is valid although it represents a zero duration.
+
+```ts
+const Action = v.isoDuration<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `isoDuration` you can validate the formatting of a string. If the input is not an ISO duration, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `isoDuration` can be used.
+
+### ISO duration schema
+
+Schema to validate an ISO duration.
+
+```ts
+const IsoDurationSchema = v.pipe(
+  v.string(),
+  v.isoDuration('The duration is badly formatted.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `isoDuration`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
