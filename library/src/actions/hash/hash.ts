@@ -124,8 +124,8 @@ export function hash(
     expects: null,
     async: false,
     requirement: RegExp(
-      types.map((type) => `^[a-f0-9]{${HASH_LENGTHS[type]}}$`).join('|'),
-      'iu'
+      types.map((type) => `^[a-fA-F0-9]{${HASH_LENGTHS[type]}}$`).join('|'),
+      'u'
     ),
     message,
     '~run'(dataset, config) {

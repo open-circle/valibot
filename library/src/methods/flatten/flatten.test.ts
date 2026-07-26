@@ -219,6 +219,70 @@ describe('flatten', () => {
     });
   });
 
+  test('should handle keys that collide with object prototype', () => {
+    // Issue paths can contain keys (e.g. via `record`) that collide with
+    // `Object.prototype` members like `toString`. These must be treated as
+    // regular nested keys instead of resolving to the inherited member.
+    const keys = [
+      'toString',
+      'valueOf',
+      'hasOwnProperty',
+      'constructor',
+    ] as const;
+    const issues = keys.map(
+      (key): NumberIssue => ({
+        ...commonIssueInfo,
+        kind: 'schema',
+        type: 'number',
+        input: 'foo',
+        expected: 'number',
+        received: '"foo"',
+        message: 'Invalid type: Expected number but received "foo"',
+        path: [
+          {
+            type: 'object',
+            origin: 'value',
+            input: { [key]: 'foo' },
+            key,
+            value: 'foo',
+          } satisfies ObjectPathItem,
+        ],
+      })
+    ) as [NumberIssue, ...NumberIssue[]];
+    const flatErrors = flatten(issues);
+    for (const key of keys) {
+      expect(flatErrors.nested?.[key]).toEqual([
+        'Invalid type: Expected number but received "foo"',
+      ]);
+    }
+  });
+
+  test('should accumulate messages for prototype-colliding keys', () => {
+    const issue = (message: string): NumberIssue => ({
+      ...commonIssueInfo,
+      kind: 'schema',
+      type: 'number',
+      input: 'foo',
+      expected: 'number',
+      received: '"foo"',
+      message,
+      path: [
+        {
+          type: 'object',
+          origin: 'value',
+          input: { toString: 'foo' },
+          key: 'toString',
+          value: 'foo',
+        } satisfies ObjectPathItem,
+      ],
+    });
+    expect(flatten([issue('first'), issue('second')])).toStrictEqual({
+      nested: {
+        toString: ['first', 'second'],
+      },
+    });
+  });
+
   test('should return single other error', () => {
     const otherIssue: NumberIssue = {
       ...commonIssueInfo,

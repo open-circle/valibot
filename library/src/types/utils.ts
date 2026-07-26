@@ -31,6 +31,20 @@ export type NonOptional<TValue> = TValue extends undefined ? never : TValue;
 export type MaybeReadonly<TValue> = TValue | Readonly<TValue>;
 
 /**
+ * Constructs a type that is deeply readonly.
+ */
+export type DeepReadonly<TValue> = TValue extends
+  | Record<string, unknown>
+  | readonly unknown[]
+  ? { readonly [TKey in keyof TValue]: DeepReadonly<TValue[TKey]> }
+  : TValue;
+
+/**
+ * Constructs a type that is maybe deeply readonly.
+ */
+export type MaybeDeepReadonly<TValue> = TValue | DeepReadonly<TValue>;
+
+/**
  * Constructs a type that is maybe a promise.
  */
 export type MaybePromise<TValue> = TValue | Promise<TValue>;

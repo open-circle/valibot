@@ -1,8 +1,10 @@
 import j from 'jscodeshift';
 import {
   getDescription,
+  getOptions,
   getSchemaComps,
   getSchemaWithOptionalDescription,
+  getTransformedMsgs,
 } from '../helpers';
 
 export function transformBoolean(
@@ -18,6 +20,11 @@ export function transformBoolean(
     coerceSchema
   );
   if (coerce) {
+    const optionsArg =
+      args.length > 0 && args[args.length - 1]?.type === 'ObjectExpression'
+        ? args[args.length - 1]
+        : null;
+    const msgs = getTransformedMsgs(getOptions(optionsArg));
     return j.callExpression(
       j.memberExpression(j.identifier(valibotIdentifier), j.identifier('pipe')),
       [
@@ -31,11 +38,10 @@ export function transformBoolean(
         j.callExpression(
           j.memberExpression(
             j.identifier(valibotIdentifier),
-            j.identifier('transform')
+            j.identifier('toBoolean')
           ),
-          [j.identifier('Boolean')]
+          msgs.filter((m) => m !== null)
         ),
-        baseSchema,
         ...(description
           ? [getDescription(valibotIdentifier, description)]
           : []),

@@ -1,0 +1,27 @@
+---
+title: RawCheckIssueInfo
+description: Raw check issue info interface.
+contributors:
+  - fabian-hiller
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# RawCheckIssueInfo
+
+Raw check issue info interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `RawCheckIssueInfo`
+  - `label` <Property {...properties.label} />
+  - `input` <Property {...properties.input} />
+  - `expected` <Property {...properties.expected} />
+  - `received` <Property {...properties.received} />
+  - `message` <Property {...properties.message} />
+  - `path` <Property {...properties.path} />

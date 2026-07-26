@@ -78,6 +78,186 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert domain action', () => {
+    expect(convertAction({}, v.domain<string>(), undefined)).toStrictEqual({
+      pattern: v.DOMAIN_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.domain<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.DOMAIN_REGEX.source,
+    });
+  });
+
+  test('should convert emoji action', () => {
+    expect(convertAction({}, v.emoji<string>(), undefined)).toStrictEqual({
+      pattern: v.EMOJI_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.emoji<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.EMOJI_REGEX.source,
+    });
+  });
+
+  test('should convert hash action', () => {
+    const action = v.hash(['md5']);
+    expect(convertAction({ type: 'string' }, action, undefined)).toStrictEqual({
+      type: 'string',
+      pattern: action.requirement.source,
+    });
+  });
+
+  test('should convert hexadecimal action', () => {
+    expect(convertAction({}, v.hexadecimal<string>(), undefined)).toStrictEqual(
+      {
+        pattern: v.HEXADECIMAL_REGEX.source,
+      }
+    );
+    expect(
+      convertAction({ type: 'string' }, v.hexadecimal<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.HEXADECIMAL_REGEX.source,
+    });
+  });
+
+  test('should convert hex color action', () => {
+    expect(convertAction({}, v.hexColor<string>(), undefined)).toStrictEqual({
+      pattern: v.HEX_COLOR_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.hexColor<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.HEX_COLOR_REGEX.source,
+    });
+  });
+
+  test('should convert isrc action', () => {
+    expect(convertAction({}, v.isrc<string>(), undefined)).toStrictEqual({
+      pattern: v.ISRC_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.isrc<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.ISRC_REGEX.source,
+    });
+  });
+
+  test('should convert iso time second action', () => {
+    expect(
+      convertAction({}, v.isoTimeSecond<string>(), undefined)
+    ).toStrictEqual({
+      pattern: v.ISO_TIME_SECOND_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.isoTimeSecond<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.ISO_TIME_SECOND_REGEX.source,
+    });
+  });
+
+  test('should convert iso week action', () => {
+    expect(convertAction({}, v.isoWeek<string>(), undefined)).toStrictEqual({
+      pattern: v.ISO_WEEK_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.isoWeek<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.ISO_WEEK_REGEX.source,
+    });
+  });
+
+  test('should convert mac action', () => {
+    expect(convertAction({}, v.mac<string>(), undefined)).toStrictEqual({
+      pattern: v.MAC_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.mac<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.MAC_REGEX.source,
+    });
+  });
+
+  test('should convert mac48 action', () => {
+    expect(convertAction({}, v.mac48<string>(), undefined)).toStrictEqual({
+      pattern: v.MAC48_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.mac48<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.MAC48_REGEX.source,
+    });
+  });
+
+  test('should convert mac64 action', () => {
+    expect(convertAction({}, v.mac64<string>(), undefined)).toStrictEqual({
+      pattern: v.MAC64_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.mac64<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.MAC64_REGEX.source,
+    });
+  });
+
+  test('should convert Nano ID action', () => {
+    expect(convertAction({}, v.nanoid<string>(), undefined)).toStrictEqual({
+      pattern: v.NANO_ID_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.nanoid<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.NANO_ID_REGEX.source,
+    });
+  });
+
+  test('should convert octal action', () => {
+    expect(convertAction({}, v.octal<string>(), undefined)).toStrictEqual({
+      pattern: v.OCTAL_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.octal<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.OCTAL_REGEX.source,
+    });
+  });
+
+  test('should convert slug action', () => {
+    expect(convertAction({}, v.slug<string>(), undefined)).toStrictEqual({
+      pattern: v.SLUG_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.slug<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.SLUG_REGEX.source,
+    });
+  });
+
+  test('should convert ULID action', () => {
+    expect(convertAction({}, v.ulid<string>(), undefined)).toStrictEqual({
+      pattern: v.ULID_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.ulid<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.ULID_REGEX.source,
+    });
+  });
+
   test('should convert description action', () => {
     expect(convertAction({}, v.description('test'), undefined)).toStrictEqual({
       description: 'test',
@@ -96,16 +276,55 @@ describe('convertAction', () => {
     });
   });
 
-  test('should convert emoji action', () => {
-    expect(convertAction({}, v.emoji<string>(), undefined)).toStrictEqual({
-      pattern: v.EMOJI_REGEX.source,
+  test('should convert rfc email action', () => {
+    expect(convertAction({}, v.rfcEmail<string>(), undefined)).toStrictEqual({
+      format: 'email',
     });
     expect(
-      convertAction({ type: 'string' }, v.emoji<string>(), undefined)
+      convertAction({ type: 'string' }, v.rfcEmail<string>(), undefined)
     ).toStrictEqual({
       type: 'string',
-      pattern: v.EMOJI_REGEX.source,
+      format: 'email',
     });
+  });
+
+  test('should convert ends with action', () => {
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.endsWith<string, 'foo'>('foo'),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      pattern: 'foo$',
+    });
+  });
+
+  test('should convert ends with action with special characters', () => {
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.endsWith<string, '.com'>('.com'),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      pattern: '\\.com$',
+    });
+  });
+
+  test('should throw error for pattern action with existing pattern', () => {
+    const jsonSchema = convertAction(
+      { type: 'string' },
+      v.startsWith<string, 'pre'>('pre'),
+      undefined
+    );
+    const error =
+      'The "ends_with" action is not supported in combination with another regex action.';
+    expect(() =>
+      convertAction(jsonSchema, v.endsWith<string, 'suf'>('suf'), undefined)
+    ).toThrowError(error);
   });
 
   test('should convert empty action for strings', () => {
@@ -173,30 +392,118 @@ describe('convertAction', () => {
     });
   });
 
-  test('should convert hexadecimal action', () => {
-    expect(convertAction({}, v.hexadecimal<string>(), undefined)).toStrictEqual(
-      {
-        pattern: v.HEXADECIMAL_REGEX.source,
-      }
-    );
+  test('should convert examples action', () => {
     expect(
-      convertAction({ type: 'string' }, v.hexadecimal<string>(), undefined)
+      convertAction({}, v.examples(['foo', 'bar']), undefined)
     ).toStrictEqual({
-      type: 'string',
-      pattern: v.HEXADECIMAL_REGEX.source,
+      examples: ['foo', 'bar'],
+    });
+    expect(
+      convertAction(
+        { examples: ['baz'] },
+        v.examples(['foo', 'bar']),
+        undefined
+      )
+    ).toStrictEqual({
+      examples: ['baz', 'foo', 'bar'],
     });
   });
 
-  test('should convert hex color action', () => {
-    expect(convertAction({}, v.hexColor<string>(), undefined)).toStrictEqual({
-      pattern: v.HEX_COLOR_REGEX.source,
+  test('should merge examples from multiple actions', () => {
+    const jsonSchema = {};
+    convertAction(jsonSchema, v.examples(['foo']), undefined);
+    convertAction(jsonSchema, v.metadata({ examples: ['bar'] }), undefined);
+    expect(jsonSchema).toStrictEqual({
+      examples: ['foo', 'bar'],
     });
+  });
+
+  test('should convert gt value action for numbers', () => {
     expect(
-      convertAction({ type: 'string' }, v.hexColor<string>(), undefined)
+      convertAction(
+        { type: 'number' },
+        v.gtValue<v.ValueInput, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      exclusiveMinimum: 3,
+    });
+  });
+
+  test('should convert gt value action for integers', () => {
+    expect(
+      convertAction(
+        { type: 'integer' },
+        v.gtValue<v.ValueInput, 0>(0),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'integer',
+      exclusiveMinimum: 0,
+    });
+  });
+
+  test('should throw error for gt value action with invalid type', () => {
+    const action = v.gtValue<v.ValueInput, 3>(3);
+    const error1 =
+      'The "gt_value" action is not supported on type "undefined".';
+    expect(() => convertAction({}, action, undefined)).toThrowError(error1);
+    const error2 = 'The "gt_value" action is not supported on type "string".';
+    expect(() =>
+      convertAction({ type: 'string' }, action, undefined)
+    ).toThrowError(error2);
+  });
+
+  test('should throw error for gt value action with openapi-3.0', () => {
+    const error = 'The "gt_value" action is not supported for OpenAPI 3.0.';
+    expect(() =>
+      convertAction({ type: 'number' }, v.gtValue<v.ValueInput, 3>(3), {
+        target: 'openapi-3.0',
+      })
+    ).toThrowError(error);
+  });
+
+  test('should convert includes action', () => {
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.includes<string, 'foo'>('foo'),
+        undefined
+      )
     ).toStrictEqual({
       type: 'string',
-      pattern: v.HEX_COLOR_REGEX.source,
+      pattern: 'foo',
     });
+  });
+
+  test('should convert includes action with special characters', () => {
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.includes<string, 'foo.bar'>('foo.bar'),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      pattern: 'foo\\.bar',
+    });
+  });
+
+  test('should warn error for pattern action with existing pattern', () => {
+    expect(
+      convertAction(
+        { type: 'string', pattern: '^pre' },
+        v.includes<string, 'foo'>('foo'),
+        { errorMode: 'warn' }
+      )
+    ).toStrictEqual({
+      type: 'string',
+      pattern: '^pre',
+    });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The "includes" action is not supported in combination with another regex action.'
+    );
   });
 
   test('should convert integer action', () => {
@@ -260,6 +567,20 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert ISO timestamp action', () => {
+    expect(
+      convertAction({}, v.isoTimestamp<string>(), undefined)
+    ).toStrictEqual({
+      format: 'date-time',
+    });
+    expect(
+      convertAction({ type: 'string' }, v.isoTimestamp<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      format: 'date-time',
+    });
+  });
+
   test('should convert ISO time action', () => {
     expect(convertAction({}, v.isoTime<string>(), undefined)).toStrictEqual({
       format: 'time',
@@ -272,17 +593,15 @@ describe('convertAction', () => {
     });
   });
 
-  test('should convert ISO timestamp action', () => {
-    expect(
-      convertAction({}, v.isoTimestamp<string>(), undefined)
-    ).toStrictEqual({
-      format: 'date-time',
+  test('should convert jwsCompact action', () => {
+    expect(convertAction({}, v.jwsCompact<string>(), undefined)).toStrictEqual({
+      pattern: v.JWS_COMPACT_REGEX.source,
     });
     expect(
-      convertAction({ type: 'string' }, v.isoTimestamp<string>(), undefined)
+      convertAction({ type: 'string' }, v.jwsCompact<string>(), undefined)
     ).toStrictEqual({
       type: 'string',
-      format: 'date-time',
+      pattern: v.JWS_COMPACT_REGEX.source,
     });
   });
 
@@ -344,6 +663,65 @@ describe('convertAction', () => {
     expect(console.warn).toHaveBeenLastCalledWith(
       'The "length" action is not supported on type "object".'
     );
+  });
+
+  test('should convert lt value action for numbers', () => {
+    expect(
+      convertAction(
+        { type: 'number' },
+        v.ltValue<v.ValueInput, 10>(10),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      exclusiveMaximum: 10,
+    });
+  });
+
+  test('should convert lt value action for integers', () => {
+    expect(
+      convertAction(
+        { type: 'integer' },
+        v.ltValue<v.ValueInput, 100>(100),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'integer',
+      exclusiveMaximum: 100,
+    });
+  });
+
+  test('should throw error for lt value action with invalid type', () => {
+    const action = v.ltValue<v.ValueInput, 10>(10);
+    const error1 =
+      'The "lt_value" action is not supported on type "undefined".';
+    expect(() => convertAction({}, action, undefined)).toThrowError(error1);
+    const error2 = 'The "lt_value" action is not supported on type "string".';
+    expect(() =>
+      convertAction({ type: 'string' }, action, undefined)
+    ).toThrowError(error2);
+  });
+
+  test('should throw error for lt value action with openapi-3.0', () => {
+    const error = 'The "lt_value" action is not supported for OpenAPI 3.0.';
+    expect(() =>
+      convertAction({ type: 'number' }, v.ltValue<v.ValueInput, 10>(10), {
+        target: 'openapi-3.0',
+      })
+    ).toThrowError(error);
+  });
+
+  test('should convert max entries action', () => {
+    expect(
+      convertAction(
+        { type: 'object' },
+        v.maxEntries<v.EntriesInput, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'object',
+      maxProperties: 3,
+    });
   });
 
   test('should convert max length action for strings', () => {
@@ -408,19 +786,6 @@ describe('convertAction', () => {
     );
   });
 
-  test('should convert max entries action', () => {
-    expect(
-      convertAction(
-        { type: 'object' },
-        v.maxEntries<v.EntriesInput, 3>(3),
-        undefined
-      )
-    ).toStrictEqual({
-      type: 'object',
-      maxProperties: 3,
-    });
-  });
-
   test('should convert max value action for numbers', () => {
     expect(
       convertAction(
@@ -431,6 +796,19 @@ describe('convertAction', () => {
     ).toStrictEqual({
       type: 'number',
       maximum: 3,
+    });
+  });
+
+  test('should convert max value action for integers', () => {
+    expect(
+      convertAction(
+        { type: 'integer' },
+        v.maxValue<v.ValueInput, 100>(100),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'integer',
+      maximum: 100,
     });
   });
 
@@ -487,6 +865,17 @@ describe('convertAction', () => {
       description: 'description',
       examples: ['example'],
     });
+    expect(
+      convertAction(
+        { examples: ['existing'] },
+        v.metadata({
+          examples: ['new'],
+        }),
+        undefined
+      )
+    ).toStrictEqual({
+      examples: ['existing', 'new'],
+    });
   });
 
   test('should skip invalid metadata properties', () => {
@@ -502,6 +891,19 @@ describe('convertAction', () => {
         undefined
       )
     ).toStrictEqual({});
+  });
+
+  test('should convert min entries action', () => {
+    expect(
+      convertAction(
+        { type: 'object' },
+        v.minEntries<v.EntriesInput, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'object',
+      minProperties: 3,
+    });
   });
 
   test('should convert min length action for strings', () => {
@@ -566,19 +968,6 @@ describe('convertAction', () => {
     );
   });
 
-  test('should convert min entries action', () => {
-    expect(
-      convertAction(
-        { type: 'object' },
-        v.minEntries<v.EntriesInput, 3>(3),
-        undefined
-      )
-    ).toStrictEqual({
-      type: 'object',
-      minProperties: 3,
-    });
-  });
-
   test('should convert min value action for numbers', () => {
     expect(
       convertAction(
@@ -589,6 +978,19 @@ describe('convertAction', () => {
     ).toStrictEqual({
       type: 'number',
       minimum: 3,
+    });
+  });
+
+  test('should convert min value action for integers', () => {
+    expect(
+      convertAction(
+        { type: 'integer' },
+        v.minValue<v.ValueInput, 1>(1),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'integer',
+      minimum: 1,
     });
   });
 
@@ -639,18 +1041,6 @@ describe('convertAction', () => {
     ).toStrictEqual({
       type: 'number',
       multipleOf: 5,
-    });
-  });
-
-  test('should convert Nano ID action', () => {
-    expect(convertAction({}, v.nanoid<string>(), undefined)).toStrictEqual({
-      pattern: v.NANO_ID_REGEX.source,
-    });
-    expect(
-      convertAction({ type: 'string' }, v.nanoid<string>(), undefined)
-    ).toStrictEqual({
-      type: 'string',
-      pattern: v.NANO_ID_REGEX.source,
     });
   });
 
@@ -708,16 +1098,95 @@ describe('convertAction', () => {
     );
   });
 
-  test('should convert octal action', () => {
-    expect(convertAction({}, v.octal<string>(), undefined)).toStrictEqual({
-      pattern: v.OCTAL_REGEX.source,
-    });
+  test('should convert not value action', () => {
     expect(
-      convertAction({ type: 'string' }, v.octal<string>(), undefined)
+      convertAction(
+        { type: 'number' },
+        v.notValue<v.ValueInput, 0>(0),
+        undefined
+      )
     ).toStrictEqual({
-      type: 'string',
-      pattern: v.OCTAL_REGEX.source,
+      type: 'number',
+      not: { const: 0 },
     });
+  });
+
+  test('should convert not value action for openapi-3.0', () => {
+    expect(
+      convertAction({ type: 'number' }, v.notValue<v.ValueInput, 0>(0), {
+        target: 'openapi-3.0',
+      })
+    ).toStrictEqual({
+      type: 'number',
+      not: { enum: [0] },
+    });
+  });
+
+  test('should convert not values action', () => {
+    expect(
+      convertAction(
+        { type: 'number' },
+        v.notValues<v.ValueInput, [0, 1]>([0, 1]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      not: { enum: [0, 1] },
+    });
+  });
+
+  test('should throw error for unsupported not value action', () => {
+    const error =
+      'The requirement of the "not_value" action is not JSON compatible.';
+    expect(() =>
+      convertAction({}, v.notValue<v.ValueInput, 1n>(1n), undefined)
+    ).toThrowError(error);
+    expect(() =>
+      convertAction({}, v.notValue<v.ValueInput, Date>(new Date(0)), {
+        errorMode: 'throw',
+      })
+    ).toThrowError(error);
+  });
+
+  test('should warn error for unsupported not value action', () => {
+    expect(
+      convertAction({ type: 'number' }, v.notValue<v.ValueInput, 1n>(1n), {
+        errorMode: 'warn',
+      })
+    ).toStrictEqual({
+      type: 'number',
+    });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The requirement of the "not_value" action is not JSON compatible.'
+    );
+  });
+
+  test('should throw error for unsupported not values action', () => {
+    const error =
+      'A requirement of the "not_values" action is not JSON compatible.';
+    expect(() =>
+      convertAction({}, v.notValues<v.ValueInput, [1n]>([1n]), undefined)
+    ).toThrowError(error);
+    expect(() =>
+      convertAction(
+        {},
+        v.notValues<v.ValueInput, [Date, Date]>([new Date(0), new Date(1)]),
+        { errorMode: 'throw' }
+      )
+    ).toThrowError(error);
+  });
+
+  test('should warn error for unsupported not values action', () => {
+    expect(
+      convertAction({ type: 'number' }, v.notValues<v.ValueInput, [1n]>([1n]), {
+        errorMode: 'warn',
+      })
+    ).toStrictEqual({
+      type: 'number',
+    });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'A requirement of the "not_values" action is not JSON compatible.'
+    );
   });
 
   test('should convert supported regex action', () => {
@@ -752,21 +1221,94 @@ describe('convertAction', () => {
     );
   });
 
-  test('should convert title action', () => {
-    expect(convertAction({}, v.title('test'), undefined)).toStrictEqual({
-      title: 'test',
+  test('should convert safe integer action', () => {
+    expect(
+      convertAction({ type: 'number' }, v.safeInteger<number>(), undefined)
+    ).toStrictEqual({
+      type: 'integer',
+      minimum: Number.MIN_SAFE_INTEGER,
+      maximum: Number.MAX_SAFE_INTEGER,
     });
   });
 
-  test('should convert ULID action', () => {
-    expect(convertAction({}, v.ulid<string>(), undefined)).toStrictEqual({
-      pattern: v.ULID_REGEX.source,
+  test('should preserve stricter safe integer bounds', () => {
+    expect(
+      convertAction(
+        { type: 'number', minimum: 10, maximum: 20 },
+        v.safeInteger<number>(),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'integer',
+      minimum: 10,
+      maximum: 20,
     });
     expect(
-      convertAction({ type: 'string' }, v.ulid<string>(), undefined)
+      convertAction(
+        {
+          type: 'number',
+          exclusiveMinimum: 10,
+          exclusiveMaximum: 20,
+        },
+        v.safeInteger<number>(),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'integer',
+      minimum: Number.MIN_SAFE_INTEGER,
+      maximum: Number.MAX_SAFE_INTEGER,
+      exclusiveMinimum: 10,
+      exclusiveMaximum: 20,
+    });
+  });
+
+  test('should clamp broader safe integer bounds', () => {
+    expect(
+      convertAction(
+        {
+          type: 'number',
+          minimum: Number.MIN_SAFE_INTEGER - 1,
+          maximum: Number.MAX_SAFE_INTEGER + 1,
+        },
+        v.safeInteger<number>(),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'integer',
+      minimum: Number.MIN_SAFE_INTEGER,
+      maximum: Number.MAX_SAFE_INTEGER,
+    });
+  });
+
+  test('should convert starts with action', () => {
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.startsWith<string, 'foo'>('foo'),
+        undefined
+      )
     ).toStrictEqual({
       type: 'string',
-      pattern: v.ULID_REGEX.source,
+      pattern: '^foo',
+    });
+  });
+
+  test('should convert starts with action with special characters', () => {
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.startsWith<string, 'https://'>('https://'),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      pattern: '^https://',
+    });
+  });
+
+  test('should convert title action', () => {
+    expect(convertAction({}, v.title('test'), undefined)).toStrictEqual({
+      title: 'test',
     });
   });
 
@@ -827,46 +1369,140 @@ describe('convertAction', () => {
     });
   });
 
-  test('should throw error for unsupported transform action', () => {
-    const action = v.transform(parseInt);
-    const error = 'The "transform" action cannot be converted to JSON Schema.';
+  test('should convert value action for openapi-3.0', () => {
+    expect(
+      convertAction({ type: 'string' }, v.value<v.ValueInput, 'foo'>('foo'), {
+        target: 'openapi-3.0',
+      })
+    ).toStrictEqual({
+      type: 'string',
+      enum: ['foo'],
+    });
+  });
+
+  test('should throw error for unsupported value action', () => {
+    const error =
+      'The requirement of the "value" action is not JSON compatible.';
+    expect(() =>
+      convertAction({}, v.value<v.ValueInput, 1n>(1n), undefined)
+    ).toThrowError(error);
+    expect(() =>
+      convertAction({}, v.value<v.ValueInput, Date>(new Date(0)), {
+        errorMode: 'throw',
+      })
+    ).toThrowError(error);
     expect(() =>
       convertAction(
-        {},
-        // @ts-expect-error
-        action,
+        { type: 'number' },
+        v.value<v.ValueInput, number>(NaN),
         undefined
       )
     ).toThrowError(error);
     expect(() =>
       convertAction(
+        { type: 'number' },
+        v.value<v.ValueInput, number>(Infinity),
+        undefined
+      )
+    ).toThrowError(error);
+  });
+
+  test('should warn error for unsupported value action', () => {
+    expect(
+      convertAction({ type: 'number' }, v.value<v.ValueInput, 1n>(1n), {
+        errorMode: 'warn',
+      })
+    ).toStrictEqual({
+      type: 'number',
+    });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The requirement of the "value" action is not JSON compatible.'
+    );
+  });
+
+  test('should convert values action', () => {
+    expect(
+      convertAction(
+        { type: 'number' },
+        v.values<v.ValueInput, [1, 2, 3]>([1, 2, 3]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      enum: [1, 2, 3],
+    });
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.values<v.ValueInput, ['foo', 'bar']>(['foo', 'bar']),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      enum: ['foo', 'bar'],
+    });
+    expect(
+      convertAction(
+        { type: 'boolean' },
+        v.values<v.ValueInput, [true, false]>([true, false]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'boolean',
+      enum: [true, false],
+    });
+  });
+
+  test('should throw error for unsupported values action', () => {
+    const error =
+      'A requirement of the "values" action is not JSON compatible.';
+    expect(() =>
+      convertAction({}, v.values<v.ValueInput, [1n]>([1n]), undefined)
+    ).toThrowError(error);
+    expect(() =>
+      convertAction(
         {},
-        // @ts-expect-error
-        action,
+        v.values<v.ValueInput, [string, Date]>(['foo', new Date(0)]),
         { errorMode: 'throw' }
       )
     ).toThrowError(error);
   });
 
+  test('should warn error for unsupported values action', () => {
+    expect(
+      convertAction({ type: 'number' }, v.values<v.ValueInput, [1n]>([1n]), {
+        errorMode: 'warn',
+      })
+    ).toStrictEqual({
+      type: 'number',
+    });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'A requirement of the "values" action is not JSON compatible.'
+    );
+  });
+
+  test('should throw error for unsupported transform action', () => {
+    const action = v.transform(parseInt);
+    const error = 'The "transform" action cannot be converted to JSON Schema.';
+    expect(() => convertAction({}, action as never, undefined)).toThrowError(
+      error
+    );
+    expect(() =>
+      convertAction({}, action as never, { errorMode: 'throw' })
+    ).toThrowError(error);
+  });
+
   test('should warn error for unsupported transform action', () => {
     expect(
-      convertAction(
-        {},
-        // @ts-expect-error
-        v.transform(parseInt),
-        { errorMode: 'warn' }
-      )
+      convertAction({}, v.transform(parseInt) as never, { errorMode: 'warn' })
     ).toStrictEqual({});
     expect(console.warn).toHaveBeenLastCalledWith(
       'The "transform" action cannot be converted to JSON Schema.'
     );
     expect(
-      convertAction(
-        { type: 'string' },
-        // @ts-expect-error
-        v.transform(parseInt),
-        { errorMode: 'warn' }
-      )
+      convertAction({ type: 'string' }, v.transform(parseInt) as never, {
+        errorMode: 'warn',
+      })
     ).toStrictEqual({ type: 'string' });
     expect(console.warn).toHaveBeenLastCalledWith(
       'The "transform" action cannot be converted to JSON Schema.'
@@ -902,18 +1538,13 @@ describe('convertAction', () => {
 
   test('should override action to suppress error', () => {
     expect(
-      convertAction(
-        {},
-        // @ts-expect-error
-        v.transform(parseInt),
-        {
-          overrideAction({ valibotAction, jsonSchema }) {
-            if (valibotAction.type === 'transform') {
-              return jsonSchema;
-            }
-          },
-        }
-      )
+      convertAction({}, v.transform(parseInt) as never, {
+        overrideAction({ valibotAction, jsonSchema }) {
+          if (valibotAction.type === 'transform') {
+            return jsonSchema;
+          }
+        },
+      })
     ).toStrictEqual({});
   });
 });

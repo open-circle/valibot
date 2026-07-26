@@ -19,7 +19,7 @@ const schema7Description = v.getDescription(Schema7);
 const Schema8 = v.pipe(v.literal("hello"), v.description('some description (literal "hello")'));
 const schema8Description = v.getDescription(Schema8);
 // coerce
-const Schema9 = v.pipe(v.unknown(), v.transform(String), v.string());
+const Schema9 = v.pipe(v.unknown(), v.toString());
 const Schema10 = v.string();
 // errorMap - supported by Valibot but incompatible
 const Schema11 = v.string();
@@ -42,23 +42,17 @@ const Schema18 = v.literal("bot", 'must be "bot" (msg)');
 const Schema19 = v.string("must be a string (msg)");
 const Schema20 = v.literal("bot", 'must be "bot" (msg)');
 // coerce + invalid_type_error
-const Schema21 = v.pipe(v.unknown(), v.transform(String), v.string("must be a string"));
+const Schema21 = v.pipe(v.unknown(), v.toString("must be a string"));
 const Schema22 = v.string("must be a string");
 // coerce + description
-const Schema23 = v.pipe(
-  v.unknown(),
-  v.transform(String),
-  v.string(),
-  v.description("some description")
-);
+const Schema23 = v.pipe(v.unknown(), v.toString(), v.description("some description"));
 const schema23Description = v.getDescription(Schema23);
 const Schema24 = v.pipe(v.string(), v.description("some description"));
 const schema24Description = v.getDescription(Schema24);
 // coerce + invalid_type_error + description
 const Schema25 = v.pipe(
   v.unknown(),
-  v.transform(String),
-  v.string("must be a string"),
+  v.toString("must be a string"),
   v.description("some description")
 );
 const schema25Description = v.getDescription(Schema25);

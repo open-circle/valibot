@@ -77,6 +77,19 @@ describe('intersect', () => {
         ]
       );
     });
+
+    test('for frozen values', () => {
+      expectNoSchemaIssue(
+        intersect([
+          pipe(
+            object({ key1: string() }),
+            transform((value) => Object.freeze({ ...value }))
+          ),
+          object({ key2: number() }),
+        ]),
+        [{ key1: 'foo', key2: 123 }]
+      );
+    });
   });
 
   describe('should return dataset with issues', () => {

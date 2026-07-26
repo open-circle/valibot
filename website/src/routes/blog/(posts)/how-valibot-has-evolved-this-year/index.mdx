@@ -9,7 +9,7 @@ authors:
   - fabian-hiller
 ---
 
-import { Link } from '@builder.io/qwik-city';
+import { Link } from '~/components';
 import MonthlyDownloads from './monthly-downloads.jpg?jsx';
 import PlaygroundDark from './playground-dark.jpg?jsx';
 import PlaygroundLight from './playground-light.jpg?jsx';
@@ -28,7 +28,7 @@ On Github the project now has 5,483 stars and 102 contributors. During this year
 
 ## Website
 
-In December 2023 we started to add a detailed <Link href="/api/">API reference</Link> to provide additional information besides the guides that mainly explain the general concept of Valibot. With more than 400 symbols this was a pretty big task and I am happy about the [support](https://github.com/fabian-hiller/valibot/issues/287) I got from the community. Some references are still missing and will be added in the next weeks.
+In December 2023 we started to add a detailed <Link href="/api/">API reference</Link> to provide additional information besides the guides that mainly explain the general concept of Valibot. With more than 400 symbols this was a pretty big task and I am happy about the [support](https://github.com/open-circle/valibot/issues/287) I got from the community. Some references are still missing and will be added in the next weeks.
 
 Another highlight is the new <Link href="/playground/">playground</Link> that I added in February with the help of [Milo](https://github.com/milomg), a SolidJS core team member and student at the University of Toronto. The playground can be used to write, test, and share schemas directly on our website. Since then, the button to execute code has been clicked more than 13k times.
 
@@ -43,14 +43,14 @@ Another highlight is the new <Link href="/playground/">playground</Link> that I 
 
 ## Library
 
-On February 6th, we shipped a pretty big update with [v0.28.0](https://github.com/fabian-hiller/valibot/releases/tag/v0.28.0), which included our <Link href="/guides/internationalization/">i18n feature</Link>. We also refactored a large part of Valibot's source code and expanded and improved the default error messages. They now provide much more helpful details than before, and I am happy to announce that the community has translated them into 21 languages besides English for our official i18n package.
+On February 6th, we shipped a pretty big update with [v0.28.0](https://github.com/open-circle/valibot/releases/tag/v0.28.0), which included our <Link href="/guides/internationalization/">i18n feature</Link>. We also refactored a large part of Valibot's source code and expanded and improved the default error messages. They now provide much more helpful details than before, and I am happy to announce that the community has translated them into 21 languages besides English for our official i18n package.
 
-At the end of February, I started preparing our v1 release in my head, until [@Demivan](https://github.com/Demivan) and [@xcfox](https://github.com/xcfox) came up with two API proposals. I was skeptical at first, but I also knew that the API design had some major limitations that could harm the developer experience and the project in general in the long run. That's why I reached out to the community on [GitHub](https://github.com/fabian-hiller/valibot/discussions/463) to get their feedback.
+At the end of February, I started preparing our v1 release in my head, until [@Demivan](https://github.com/Demivan) and [@xcfox](https://github.com/xcfox) came up with two API proposals. I was skeptical at first, but I also knew that the API design had some major limitations that could harm the developer experience and the project in general in the long run. That's why I reached out to the community on [GitHub](https://github.com/open-circle/valibot/discussions/463) to get their feedback.
 
 It was great to see that more than 70 developers participated. The overall feedback was very positive. So I started working on a <Link href="../first-draft-of-the-new-pipe-function/">first draft</Link> in March. Back then, the only change I planned to introduce was the new <Link href="/api/pipe/">`pipe`</Link> method, but in the process I saw many more areas where I could improve Valibot. In the end, I started to rewrite the whole library from scratch with the help of the community. The results are promising. Feel free to read my <Link href="../valibot-v0.31.0-is-finally-available/">previous blog post</Link> for more details.
 
 ## Upcoming
 
-In the next few weeks, I plan to investigate the implementation of a `function` and `promise` schema, and take a look at [PR #655](https://github.com/fabian-hiller/valibot/pull/655), which introduces a metadata feature. After that, I plan to focus on our documentation to expand and update our <Link href="/api/">API reference</Link>. As we get closer to our v1 release, I will be thinking about a v1 roadmap soon. At the moment I expect to release a release candidate in August and the final release in September. Stay tuned for further updates!
+In the next few weeks, I plan to investigate the implementation of a `function` and `promise` schema, and take a look at [PR #655](https://github.com/open-circle/valibot/pull/655), which introduces a metadata feature. After that, I plan to focus on our documentation to expand and update our <Link href="/api/">API reference</Link>. As we get closer to our v1 release, I will be thinking about a v1 roadmap soon. At the moment I expect to release a release candidate in August and the final release in September. Stay tuned for further updates!
 
 > Recently I was a guest on Nick's show and talked about Valibot. If you missed our stream, you can watch it [here](https://www.youtube.com/live/fR2GJx_SQTE) on YouTube.

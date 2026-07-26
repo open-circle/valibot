@@ -2,6 +2,8 @@ import { describe, expectTypeOf, test } from 'vitest';
 import type { TransformAction } from '../../actions/index.ts';
 import type { SchemaWithPipe } from '../../methods/index.ts';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
+import type { ArrayIssue, ArraySchema } from '../array/index.ts';
+import type { ObjectIssue, ObjectSchema } from '../object/index.ts';
 import {
   string,
   type StringIssue,
@@ -40,12 +42,28 @@ describe('exactOptional', () => {
       >,
       'foo'
     >;
+    type Schema5 = ExactOptionalSchema<
+      ObjectSchema<
+        { foo: ArraySchema<StringSchema<undefined>, undefined> },
+        undefined
+      >,
+      { foo: string[] }
+    >;
+    type Schema6 = ExactOptionalSchema<
+      ObjectSchema<
+        { foo: ArraySchema<StringSchema<undefined>, undefined> },
+        undefined
+      >,
+      () => { foo: string[] }
+    >;
 
     test('of input', () => {
       expectTypeOf<InferInput<Schema1>>().toEqualTypeOf<string>();
       expectTypeOf<InferInput<Schema2>>().toEqualTypeOf<string>();
       expectTypeOf<InferInput<Schema3>>().toEqualTypeOf<string>();
       expectTypeOf<InferInput<Schema4>>().toEqualTypeOf<string>();
+      expectTypeOf<InferInput<Schema5>>().toEqualTypeOf<{ foo: string[] }>();
+      expectTypeOf<InferInput<Schema6>>().toEqualTypeOf<{ foo: string[] }>();
     });
 
     test('of output', () => {
@@ -53,6 +71,8 @@ describe('exactOptional', () => {
       expectTypeOf<InferOutput<Schema2>>().toEqualTypeOf<string>();
       expectTypeOf<InferOutput<Schema3>>().toEqualTypeOf<string>();
       expectTypeOf<InferOutput<Schema4>>().toEqualTypeOf<number>();
+      expectTypeOf<InferOutput<Schema5>>().toEqualTypeOf<{ foo: string[] }>();
+      expectTypeOf<InferOutput<Schema6>>().toEqualTypeOf<{ foo: string[] }>();
     });
 
     test('of issue', () => {
@@ -60,6 +80,12 @@ describe('exactOptional', () => {
       expectTypeOf<InferIssue<Schema2>>().toEqualTypeOf<StringIssue>();
       expectTypeOf<InferIssue<Schema3>>().toEqualTypeOf<StringIssue>();
       expectTypeOf<InferIssue<Schema4>>().toEqualTypeOf<StringIssue>();
+      expectTypeOf<InferIssue<Schema5>>().toEqualTypeOf<
+        ObjectIssue | ArrayIssue | StringIssue
+      >();
+      expectTypeOf<InferIssue<Schema6>>().toEqualTypeOf<
+        ObjectIssue | ArrayIssue | StringIssue
+      >();
     });
   });
 });

@@ -139,6 +139,31 @@ describe('toJsonSchema', () => {
         },
       });
     });
+
+    test('for definitions with JSON Pointer special characters', () => {
+      const sharedSchema = v.object({ name: v.string() });
+      expect(
+        toJsonSchema(v.object({ user: sharedSchema }), {
+          definitions: { 'Shared/User~': sharedSchema },
+        })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          user: { $ref: '#/$defs/Shared~1User~0' },
+        },
+        required: ['user'],
+        $defs: {
+          'Shared/User~': {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+            },
+            required: ['name'],
+          },
+        },
+      });
+    });
   });
 
   describe('should throw error', () => {
@@ -204,6 +229,32 @@ describe('toJsonSchema', () => {
         $schema: 'http://json-schema.org/draft-07/schema#',
         type: 'string',
       });
+    });
+  });
+
+  describe('should handle target config', () => {
+    test('for draft-07', () => {
+      expect(toJsonSchema(v.string(), { target: 'draft-07' })).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'string',
+      });
+    });
+
+    test('for draft-2020-12', () => {
+      expect(
+        toJsonSchema(v.string(), { target: 'draft-2020-12' })
+      ).toStrictEqual({
+        $schema: 'https://json-schema.org/draft/2020-12/schema',
+        type: 'string',
+      });
+    });
+
+    test('for openapi-3.0', () => {
+      expect(toJsonSchema(v.string(), { target: 'openapi-3.0' })).toStrictEqual(
+        {
+          type: 'string',
+        }
+      );
     });
   });
 });

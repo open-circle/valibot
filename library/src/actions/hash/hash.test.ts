@@ -214,7 +214,7 @@ describe('hash', () => {
     test('for invalid md4 hashes', () => {
       expectActionIssue(
         hash(['md4'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{32}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{32}$/u },
         [
           '',
           ' ',
@@ -228,7 +228,7 @@ describe('hash', () => {
     test('for invalid md5 hashes', () => {
       expectActionIssue(
         hash(['md5'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{32}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{32}$/u },
         [
           '',
           ' ',
@@ -242,7 +242,7 @@ describe('hash', () => {
     test('for invalid sha1 hashes', () => {
       expectActionIssue(
         hash(['sha1'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{40}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{40}$/u },
         [
           '',
           ' ',
@@ -256,7 +256,7 @@ describe('hash', () => {
     test('for invalid sha256 hashes', () => {
       expectActionIssue(
         hash(['sha256'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{64}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{64}$/u },
         [
           '',
           ' ',
@@ -270,7 +270,7 @@ describe('hash', () => {
     test('for invalid sha384 hashes', () => {
       expectActionIssue(
         hash(['sha384'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{96}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{96}$/u },
         [
           '',
           ' ',
@@ -284,7 +284,7 @@ describe('hash', () => {
     test('for invalid sha512 hashes', () => {
       expectActionIssue(
         hash(['sha512'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{128}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{128}$/u },
         [
           '',
           ' ',
@@ -298,7 +298,7 @@ describe('hash', () => {
     test('for invalid ripemd128 hashes', () => {
       expectActionIssue(
         hash(['ripemd128'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{32}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{32}$/u },
         [
           '',
           ' ',
@@ -312,7 +312,7 @@ describe('hash', () => {
     test('for invalid ripemd160 hashes', () => {
       expectActionIssue(
         hash(['ripemd160'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{40}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{40}$/u },
         [
           '',
           ' ',
@@ -326,7 +326,7 @@ describe('hash', () => {
     test('for invalid tiger128 hashes', () => {
       expectActionIssue(
         hash(['tiger128'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{32}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{32}$/u },
         [
           '',
           ' ',
@@ -340,7 +340,7 @@ describe('hash', () => {
     test('for invalid tiger160 hashes', () => {
       expectActionIssue(
         hash(['tiger160'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{40}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{40}$/u },
         [
           '',
           ' ',
@@ -354,7 +354,7 @@ describe('hash', () => {
     test('for invalid tiger192 hashes', () => {
       expectActionIssue(
         hash(['tiger192'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{48}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{48}$/u },
         [
           '',
           ' ',
@@ -368,7 +368,7 @@ describe('hash', () => {
     test('for invalid crc32 hashes', () => {
       expectActionIssue(
         hash(['crc32'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{8}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{8}$/u },
         ['', ' ', '12345', '3d08bq77', 'c93d3bf7a7c4afe94b64e30c2ce39f4f']
       );
     });
@@ -376,7 +376,7 @@ describe('hash', () => {
     test('for invalid crc32b hashes', () => {
       expectActionIssue(
         hash(['crc32b'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{8}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{8}$/u },
         ['', ' ', '12345', '35cer956', 'fbe550055d737a0cd3a4325df5dfdc79']
       );
     });
@@ -384,7 +384,7 @@ describe('hash', () => {
     test('for invalid adler32 hashes', () => {
       expectActionIssue(
         hash(['adler32'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{8}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{8}$/u },
         ['', ' ', '12345', '045dx1c1', '16360e57b209fb9d07f725aa796789ac']
       );
     });
@@ -392,7 +392,7 @@ describe('hash', () => {
     test('for invalid md5 and adler32 hashes', () => {
       expectActionIssue(
         hash(['adler32', 'md5'], 'message'),
-        { ...baseIssue, requirement: /^[a-f0-9]{8}$|^[a-f0-9]{32}$/iu },
+        { ...baseIssue, requirement: /^[a-fA-F0-9]{8}$|^[a-fA-F0-9]{32}$/u },
         [
           '',
           ' ',
@@ -410,7 +410,7 @@ describe('hash', () => {
         hash(['crc32', 'ripemd128', 'sha1'], 'message'),
         {
           ...baseIssue,
-          requirement: /^[a-f0-9]{8}$|^[a-f0-9]{32}$|^[a-f0-9]{40}$/iu,
+          requirement: /^[a-fA-F0-9]{8}$|^[a-fA-F0-9]{32}$|^[a-fA-F0-9]{40}$/u,
         },
         [
           '',

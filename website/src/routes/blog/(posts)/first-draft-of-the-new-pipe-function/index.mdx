@@ -10,7 +10,7 @@ authors:
   - Demivan
 ---
 
-import { Link } from '@builder.io/qwik-city';
+import { Link } from '~/components';
 import TypeSafeIssues from './type-safe-issues.jpg?jsx';
 
 One month after I published my <Link href="../should-we-change-valibots-api/">last post</Link> to discuss Valibot's API, it is finally time to share a first draft with you. I have not only implemented the `pipe` functions. In the end, I basically rewrote the whole library. I improved many things while keeping performance, bundle size and developer experience in mind.
@@ -118,13 +118,13 @@ It is important to me to ensure the functionality of the library and to make sur
 
 ## Next steps
 
-I created [this draft PR](https://github.com/fabian-hiller/valibot/pull/502) for two reasons. One is to get feedback from the community before rewriting the entire library. I have already discussed a lot of details with [@Demivan](https://github.com/Demivan) and think we are on a good path, but maybe we missed something. Feel free to investigate the source code and reach out via the comments.
+I created [this draft PR](https://github.com/open-circle/valibot/pull/502) for two reasons. One is to get feedback from the community before rewriting the entire library. I have already discussed a lot of details with [@Demivan](https://github.com/Demivan) and think we are on a good path, but maybe we missed something. Feel free to investigate the source code and reach out via the comments.
 
 With the following commands you can clone, bundle and play with the new source code in advance:
 
 ```bash
 # Clone repository
-git clone git@github.com:fabian-hiller/valibot.git
+git clone git@github.com:open-circle/valibot.git
 
 # Switch branch
 git switch rewrite-with-pipe
@@ -141,10 +141,10 @@ cd ./library && pnpm build
 pnpm play
 ```
 
-On the other hand, I created [this PR](https://github.com/fabian-hiller/valibot/pull/502) also to ask you to help me implement the missing parts. If you are passionate about open source and want to join an exponentially growing open source project, now might be the time.
+On the other hand, I created [this PR](https://github.com/open-circle/valibot/pull/502) also to ask you to help me implement the missing parts. If you are passionate about open source and want to join an exponentially growing open source project, now might be the time.
 
 Starting April 8, everyone is welcome to take over the implementation of a schema or action function. I recommend starting with a simple function like `minBytes`, where you only have to copy and modify the `minLength` action, and maybe look at the previous implementation of the same function.
 
-To participate, just add a comment to [this PR](https://github.com/fabian-hiller/valibot/pull/502) with the part you want to take over. Please only add a comment if you are able to do the implementation within 3 days, to not block the rewrite. After you get my thumbs up, you can create a PR that merges your changes into the `rewrite-with-pipe` branch.
+To participate, just add a comment to [this PR](https://github.com/open-circle/valibot/pull/502) with the part you want to take over. Please only add a comment if you are able to do the implementation within 3 days, to not block the rewrite. After you get my thumbs up, you can create a PR that merges your changes into the `rewrite-with-pipe` branch.
 
 The goal is to have everything implemented this month. ⚡️

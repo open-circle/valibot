@@ -8,8 +8,7 @@ contributors:
   - morinokami
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # lazy
@@ -166,7 +165,6 @@ The following APIs can be combined with `lazy`.
     'tuple',
     'undefined',
     'union',
-    'unionWithRest',
     'undefinedable',
     'unknown',
     'variant',
@@ -211,6 +209,7 @@ The following APIs can be combined with `lazy`.
     'decimal',
     'description',
     'digits',
+    'domain',
     'email',
     'emoji',
     'empty',
@@ -224,6 +223,7 @@ The following APIs can be combined with `lazy`.
     'flavor',
     'graphemes',
     'gtValue',
+    'guard',
     'hash',
     'hexadecimal',
     'hexColor',
@@ -233,8 +233,11 @@ The following APIs can be combined with `lazy`.
     'ip',
     'ipv4',
     'ipv6',
+    'isbn',
+    'isrc',
     'isoDate',
     'isoDateTime',
+    'isoDateTimeSecond',
     'isoTime',
     'isoTimeSecond',
     'isoTimestamp',
@@ -286,13 +289,17 @@ The following APIs can be combined with `lazy`.
     'size',
     'slug',
     'someItem',
-    'sortItem',
+    'sortItems',
     'startsWith',
     'stringifyJson',
     'title',
+    'toCamelCase',
+    'toKebabCase',
     'toLowerCase',
     'toMaxValue',
     'toMinValue',
+    'toPascalCase',
+    'toSnakeCase',
     'toUpperCase',
     'transform',
     'trim',

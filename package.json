@@ -7,13 +7,23 @@
   "homepage": "https://valibot.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fabian-hiller/valibot"
+    "url": "https://github.com/open-circle/valibot"
   },
   "private": true,
+  "packageManager": "pnpm@11.5.0",
+  "scripts": {
+    "test": "pnpm -r run test",
+    "lint": "pnpm -r run lint",
+    "format": "pnpm -r run format",
+    "format.check": "pnpm -r run format.check",
+    "build": "pnpm -r --filter='!website' run build",
+    "scan": "cve-lite . --report"
+  },
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "prettier": "^3.5.2",
-    "prettier-plugin-tailwindcss": "^0.6.11",
-    "typescript": "^5.7.3"
+    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
+    "cve-lite-cli": "^1.17.3",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.7.1",
+    "typescript": "^5.9.3"
   }
 }

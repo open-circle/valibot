@@ -8,6 +8,8 @@ import type { Paths } from '../../types.ts';
  * @param paths The paths to check.
  *
  * @returns Whether it is partially typed.
+ *
+ * @internal
  */
 // @__NO_SIDE_EFFECTS__
 export function _isPartiallyTyped(

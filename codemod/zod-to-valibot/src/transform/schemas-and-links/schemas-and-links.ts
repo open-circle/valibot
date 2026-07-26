@@ -23,17 +23,20 @@ import {
   transformNullish,
   transformOmit,
   transformOptional as transformOptionalMethod,
+  transformOr,
   transformParse,
   transformParseAsync,
   transformPartial,
   transformPassthrough,
   transformPick,
+  transformRefine,
   transformRequired,
   transformRest,
   transformSafeParse,
   transformSafeParseAsync,
   transformStrict,
   transformStrip,
+  transformTransform,
   transformUnwrap,
 } from './methods';
 import {
@@ -72,7 +75,7 @@ import {
   transformUnknown,
   transformVoid,
 } from './schemas';
-import { ZodSchemaType } from './types';
+import { ObjectModifier, ZodSchemaType } from './types';
 import {
   transformBase64,
   transformCUID2,
@@ -136,13 +139,46 @@ const isZodMethodName = getIsTypeFn(ZOD_METHODS);
 const isZodPropertyName = getIsTypeFn(ZOD_PROPERTIES);
 const isZodTypeName = getIsTypeFn(ZOD_TYPES);
 
+function checkForObjectModifierInChain(
+  cur: j.ASTPath<j.CallExpression>
+): ObjectModifier {
+  let parent = cur.parentPath;
+  let latestModifier: ObjectModifier = null;
+  
+  while (parent) {
+    if (
+      parent.value.type === 'CallExpression' &&
+      parent.value.callee.type === 'MemberExpression' &&
+      parent.value.callee.property.type === 'Identifier'
+    ) {
+      const methodName = parent.value.callee.property.name;
+      if (methodName === 'strict' || methodName === 'passthrough' || methodName === 'strip') {
+        latestModifier = methodName;
+      }
+    }
+    if (
+      parent.value.type === 'MemberExpression' &&
+      parent.value.property.type === 'Identifier' &&
+      parent.parentPath?.value.type === 'CallExpression'
+    ) {
+      const methodName = parent.value.property.name;
+      if (methodName === 'strict' || methodName === 'passthrough' || methodName === 'strip') {
+        latestModifier = methodName;
+      }
+    }
+    parent = parent.parentPath;
+  }
+  return latestModifier;
+}
+
 function toValibotSchemaExp(
   valibotIdentifier: string,
   zodSchemaName: ZodSchemaName,
   inputArgs: j.CallExpression['arguments'],
   // no type definition found
   typeParameters: any,
-  coerceOption = false
+  coerceOption = false,
+  objectModifier: ObjectModifier = null
 ): j.CallExpression {
   const args = [valibotIdentifier, inputArgs] as const;
   const argsWithCoerce = [...args, coerceOption] as const;
@@ -186,7 +222,7 @@ function toValibotSchemaExp(
     case 'literal':
       return transformLiteral(...args);
     case 'object':
-      return transformObject(...args);
+      return transformObject(...args, objectModifier);
     case 'optional':
       return transformOptional(...args);
     case 'record':
@@ -359,6 +395,8 @@ function toValibotMethodExp(
       return transformKeyof(...args);
     case 'omit':
       return transformOmit(...args);
+    case 'or':
+      return transformOr(...args);
     case 'optional':
       return transformOptionalMethod(...args);
     case 'merge':
@@ -375,6 +413,8 @@ function toValibotMethodExp(
       return transformPassthrough(valibotIdentifier, schemaExp);
     case 'pick':
       return transformPick(...args);
+    case 'refine':
+      return transformRefine(...args);
     case 'required':
       return transformRequired(...args);
     case 'rest':
@@ -388,6 +428,8 @@ function toValibotMethodExp(
       return transformStrict(valibotIdentifier, schemaExp);
     case 'strip':
       return transformStrip(valibotIdentifier, schemaExp);
+    case 'transform':
+      return transformTransform(...args);
     case 'unwrap':
       return transformUnwrap(...args);
     case 'nullish':
@@ -522,6 +564,13 @@ function transformSchemasAndLinksHelper(
       if (curSchemaType === null && isZodSchemaName(propertyName)) {
         curSchemaType = ZOD_SCHEMA_TO_TYPE[propertyName];
         useBigInt = propertyName === 'bigint';
+
+        // Check if there's a modifier call in the chain for object schemas
+        let objectModifier: ObjectModifier = null;
+        if (propertyName === 'object') {
+          objectModifier = checkForObjectModifierInChain(cur);
+        }
+
         transformedExp = toValibotSchemaExp(
           valibotIdentifier,
           propertyName,
@@ -529,7 +578,8 @@ function transformSchemasAndLinksHelper(
           // parser and types are not in sync
           // @ts-expect-error
           cur.value.typeParameters,
-          coerce
+          coerce,
+          objectModifier
         );
       } else if (isZodMethodName(propertyName)) {
         transformedExp = toValibotMethodExp(

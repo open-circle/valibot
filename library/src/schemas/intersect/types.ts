@@ -2,7 +2,11 @@ import type {
   BaseIssue,
   BaseSchema,
   BaseSchemaAsync,
+  InferInput,
+  InferOutput,
+  IsNever,
   MaybeReadonly,
+  UnionToIntersect,
 } from '../../types/index.ts';
 
 /**
@@ -62,7 +66,9 @@ export type InferIntersectInput<
     ]
     ? TInput & InferIntersectInput<TRest>
     : TInput
-  : never;
+  : IsNever<TOptions[number]> extends true
+    ? never
+    : UnionToIntersect<InferInput<TOptions[number]>>;
 
 /**
  * Infer intersect output type.
@@ -79,4 +85,6 @@ export type InferIntersectOutput<
     ]
     ? TOutput & InferIntersectOutput<TRest>
     : TOutput
-  : never;
+  : IsNever<TOptions[number]> extends true
+    ? never
+    : UnionToIntersect<InferOutput<TOptions[number]>>;

@@ -7,17 +7,7 @@ export const properties: Record<string, PropertyProps> = {
       type: 'custom',
       name: 'BaseTransformation',
       href: '../BaseTransformation/',
-      generics: [
-        {
-          type: 'custom',
-          name: 'TInput',
-        },
-        {
-          type: 'custom',
-          name: 'TInput',
-        },
-        'never',
-      ],
+      generics: ['string', 'string', 'never'],
     },
   },
   type: {

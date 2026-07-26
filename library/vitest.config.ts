@@ -14,6 +14,7 @@ export default defineConfig({
         '**/types.ts',
         '**/*.test.ts',
         '**/*.test-d.ts',
+        '**/.DS_Store',
       ],
     },
   },

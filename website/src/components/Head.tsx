@@ -1,25 +1,31 @@
 import { component$, useComputed$ } from '@builder.io/qwik';
 import { useDocumentHead, useLocation } from '@builder.io/qwik-city';
-import { useTheme } from '~/routes/plugin@theme';
+import { CHAPTERS_HIDDEN_CLASS, CHAPTERS_KEY } from '../routes/plugin@chapters';
+import { THEME_KEY } from '../routes/plugin@theme';
+
+// Keys and classes are imported from the plugins so these pre-hydration
+// scripts cannot drift from the runtime stores that read the same values.
+const THEME_INIT_SCRIPT = `try{var t=localStorage.getItem('${THEME_KEY}');document.documentElement.classList.toggle('dark',t==='dark'||t!=='light'&&!matchMedia('(prefers-color-scheme:light)').matches);}catch(e){}`;
+
+const CHAPTERS_INIT_SCRIPT = `try{document.documentElement.classList.toggle('${CHAPTERS_HIDDEN_CLASS}',localStorage.getItem('${CHAPTERS_KEY}')==='false');}catch(e){}`;
+
+function ogImagePath(pathname: string): string {
+  if (pathname === '/') return '/og/index.png';
+  const slug = pathname.replace(/^\/+|\/+$/g, '').replace(/\//g, '_');
+  return `/og/${slug}.png`;
+}
 
 /**
  * Head with title, meta, link, script and style elements.
  */
 export const Head = component$(() => {
-  // Use document head, location and theme
+  // Use document head and location
   const head = useDocumentHead();
   const location = useLocation();
-  const theme = useTheme();
 
   // Compute document title
   const documentTitle = useComputed$(() =>
-    // eslint-disable-next-line qwik/valid-lexical-scope
     location.url.pathname === '/' ? head.title : `${head.title} | Valibot`
-  );
-
-  // Compute theme color code
-  const themeColor = useComputed$(() =>
-    theme.value === 'dark' ? '#111827' : '#fff'
   );
 
   // Compute Open Graph type
@@ -31,41 +37,38 @@ export const Head = component$(() => {
 
   // Compute description from metadata
   const description = useComputed$(
-    // eslint-disable-next-line qwik/valid-lexical-scope
     () => head.meta.find((item) => item.name === 'description')?.content
   );
 
-  // Compute Open Graph image URL
-  const imageUrl = useComputed$(() => {
-    // Create base URL
-    let imageUrl = `${location.url.origin}/og-image`;
-
-    // Add title and path to URL
-    if (location.url.pathname !== '/') {
-      // eslint-disable-next-line qwik/valid-lexical-scope
-      imageUrl += `?title=${encodeURIComponent(head.title)}&path=${
-        location.url.pathname.split('/')[1]
-      }`;
-
-      // Add description to URL
-      if (description.value) {
-        imageUrl += `&description=${encodeURIComponent(description.value)}`;
-      }
-    }
-
-    // Return image URL
-    return imageUrl;
-  });
+  // Compute Open Graph image URL (points to pre-generated static PNG)
+  const imageUrl = useComputed$(
+    () => `${location.url.origin}${ogImagePath(location.url.pathname)}`
+  );
 
   return (
     <head>
+      {/* Pre-hydration theme + FOUC fix */}
+      <script dangerouslySetInnerHTML={THEME_INIT_SCRIPT} />
+
+      {/* Pre-hydration chapters visibility to avoid a layout shift */}
+      <script dangerouslySetInnerHTML={CHAPTERS_INIT_SCRIPT} />
+
       {/* Document title */}
       <title>{documentTitle.value}</title>
 
       {/* Default metadata */}
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="theme-color" content={themeColor.value} />
+      <meta
+        name="theme-color"
+        media="(prefers-color-scheme: light)"
+        content="#fff"
+      />
+      <meta
+        name="theme-color"
+        media="(prefers-color-scheme: dark)"
+        content="#111827"
+      />
       <link rel="canonical" href={location.url.href} />
       <link rel="manifest" href="/manifest.json" />
 
@@ -120,13 +123,6 @@ export const Head = component$(() => {
         data-domains="valibot.dev"
         data-strip-search="true"
       />
-
-      {/* Temporary solution until attribute can be rendered dynamically */}
-      {theme.value === 'dark' ? (
-        <script dangerouslySetInnerHTML="document.documentElement.classList.add('dark')" />
-      ) : (
-        <script dangerouslySetInnerHTML="document.documentElement.classList.remove('dark')" />
-      )}
     </head>
   );
 });

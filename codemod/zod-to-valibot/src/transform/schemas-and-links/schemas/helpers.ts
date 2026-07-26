@@ -34,10 +34,10 @@ export function getTransformedMsgs(schemaOptions: SchemaOptionsToASTVal) {
 }
 
 export function getOption(
-  optionsArgs: j.CallExpression['arguments'][number],
+  optionsArgs: j.CallExpression['arguments'][number] | null,
   optionName: string
 ) {
-  if (optionsArgs.type !== 'ObjectExpression') {
+  if (!optionsArgs || optionsArgs.type !== 'ObjectExpression') {
     return null;
   }
   const optionVals = optionsArgs.properties
@@ -49,7 +49,7 @@ export function getOption(
         : null
     )
     .filter((v) => v !== null);
-  const optionVal = optionVals.at(0);
+  const optionVal = optionVals[0];
   return optionVal === undefined ||
     optionVal.type === 'RestElement' ||
     optionVal.type === 'SpreadElementPattern' ||
@@ -64,7 +64,7 @@ export function getOption(
 }
 
 export function getOptions(
-  optionsArgs: j.CallExpression['arguments'][number]
+  optionsArgs: j.CallExpression['arguments'][number] | null
 ): Partial<
   Record<
     'description' | 'invalid_type_error' | 'required_error' | 'message',

@@ -29,7 +29,7 @@ type Path = readonly (string | number)[];
 export type RequiredPath = readonly [string | number, ...Path];
 
 /**
- * Lazily evaluate only the last valid path segment based on the given value.
+ * Lazily evaluate only the first valid path segment based on the given value.
  */
 type LazyPath<
   TValue,
@@ -56,7 +56,7 @@ type LazyPath<
           TValidPath;
 
 /**
- * Returns the path if valid, otherwise the last possible valid path based on
+ * Returns the path if valid, otherwise the first possible valid path based on
  * the given value.
  */
 export type ValidPath<
