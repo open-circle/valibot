@@ -11,3 +11,9 @@ server
 *.spec.tsx
 *.spec.ts
 .netlify
+.vercel
+zod
+
+# Vendored from https://github.com/open-circle/agent-skills and must stay
+# byte-identical to its source
+public/.well-known/agent-skills/valibot/SKILL.md

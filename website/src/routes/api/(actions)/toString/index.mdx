@@ -1,0 +1,76 @@
+---
+title: toString
+description: Creates a to string transformation action.
+source: /actions/toString/toString.ts
+contributors:
+  - EskiMojo14
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# toString
+
+Creates a to string transformation action.
+
+```ts
+const Action = v.toString<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `toString` you can transform the input to a string. If the input cannot be transformed, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `toString` can be used.
+
+### String schema
+
+Schema to validate a number and transform it to a string.
+
+```ts
+const StringSchema = v.pipe(v.number(), v.toString());
+```
+
+## Related
+
+The following APIs can be combined with `toString`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'bigint',
+    'boolean',
+    'custom',
+    'date',
+    'null',
+    'number',
+    'symbol',
+    'undefined',
+    'unknown',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

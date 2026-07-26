@@ -1,0 +1,68 @@
+---
+title: slug
+description: Creates a slug validation action.
+source: /actions/slug/slug.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# slug
+
+Creates an [slug](https://en.wikipedia.org/wiki/Clean_URL#Slug) validation action.
+
+```ts
+const Action = v.slug<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `slug` you can validate the formatting of a string. If the input is not a URL slug, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `slug` can be used.
+
+### Slug schema
+
+Schema to validate a slug.
+
+```ts
+const SlugSchema = v.pipe(
+  v.string(),
+  v.nonEmpty('Please provide a slug.'),
+  v.slug('The slug is badly formatted.'),
+  v.maxLength(100, 'Your slug is too long.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `slug`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

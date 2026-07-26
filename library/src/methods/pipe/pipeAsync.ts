@@ -22,7 +22,7 @@ import { _getStandardProps } from '../../utils/index.ts';
  * Schema with pipe async type.
  */
 export type SchemaWithPipeAsync<
-  TPipe extends [
+  TPipe extends readonly [
     (
       | BaseSchema<unknown, unknown, BaseIssue<unknown>>
       | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
@@ -32,7 +32,10 @@ export type SchemaWithPipeAsync<
       | PipeItemAsync<any, unknown, BaseIssue<unknown>> // eslint-disable-line @typescript-eslint/no-explicit-any
     )[],
   ],
-> = Omit<FirstTupleItem<TPipe>, 'async' | '~standard' | '~run' | '~types'> & {
+> = Omit<
+  FirstTupleItem<TPipe>,
+  'async' | 'pipe' | '~standard' | '~run' | '~types'
+> & {
   /**
    * The pipe items.
    */
@@ -105,7 +108,7 @@ export function pipeAsync<
         InferOutput<TItem1>,
         InferIssue<TItem1>
       >
-): SchemaWithPipeAsync<[TSchema, TItem1]>;
+): SchemaWithPipeAsync<readonly [TSchema, TItem1]>;
 
 /**
  * Adds a pipeline to a schema, that can validate and transform its input.
@@ -144,7 +147,7 @@ export function pipeAsync<
         InferOutput<TItem2>,
         InferIssue<TItem2>
       >
-): SchemaWithPipeAsync<[TSchema, TItem1, TItem2]>;
+): SchemaWithPipeAsync<readonly [TSchema, TItem1, TItem2]>;
 
 /**
  * Adds a pipeline to a schema, that can validate and transform its input.
@@ -195,7 +198,7 @@ export function pipeAsync<
         InferOutput<TItem3>,
         InferIssue<TItem3>
       >
-): SchemaWithPipeAsync<[TSchema, TItem1, TItem2, TItem3]>;
+): SchemaWithPipeAsync<readonly [TSchema, TItem1, TItem2, TItem3]>;
 
 /**
  * Adds a pipeline to a schema, that can validate and transform its input.
@@ -258,7 +261,7 @@ export function pipeAsync<
         InferOutput<TItem4>,
         InferIssue<TItem4>
       >
-): SchemaWithPipeAsync<[TSchema, TItem1, TItem2, TItem3, TItem4]>;
+): SchemaWithPipeAsync<readonly [TSchema, TItem1, TItem2, TItem3, TItem4]>;
 
 /**
  * Adds a pipeline to a schema, that can validate and transform its input.
@@ -333,7 +336,9 @@ export function pipeAsync<
         InferOutput<TItem5>,
         InferIssue<TItem5>
       >
-): SchemaWithPipeAsync<[TSchema, TItem1, TItem2, TItem3, TItem4, TItem5]>;
+): SchemaWithPipeAsync<
+  readonly [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5]
+>;
 
 /**
  * Adds a pipeline to a schema, that can validate and transform its input.
@@ -421,7 +426,7 @@ export function pipeAsync<
         InferIssue<TItem6>
       >
 ): SchemaWithPipeAsync<
-  [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5, TItem6]
+  readonly [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5, TItem6]
 >;
 
 /**
@@ -522,7 +527,7 @@ export function pipeAsync<
         InferIssue<TItem7>
       >
 ): SchemaWithPipeAsync<
-  [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5, TItem6, TItem7]
+  readonly [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5, TItem6, TItem7]
 >;
 
 /**
@@ -635,7 +640,17 @@ export function pipeAsync<
         InferIssue<TItem8>
       >
 ): SchemaWithPipeAsync<
-  [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5, TItem6, TItem7, TItem8]
+  readonly [
+    TSchema,
+    TItem1,
+    TItem2,
+    TItem3,
+    TItem4,
+    TItem5,
+    TItem6,
+    TItem7,
+    TItem8,
+  ]
 >;
 
 /**
@@ -760,7 +775,7 @@ export function pipeAsync<
         InferIssue<TItem9>
       >
 ): SchemaWithPipeAsync<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -908,7 +923,7 @@ export function pipeAsync<
         InferIssue<TItem10>
       >
 ): SchemaWithPipeAsync<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -1073,7 +1088,7 @@ export function pipeAsync<
         InferIssue<TItem11>
       >
 ): SchemaWithPipeAsync<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -1255,7 +1270,7 @@ export function pipeAsync<
         InferIssue<TItem12>
       >
 ): SchemaWithPipeAsync<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -1454,7 +1469,7 @@ export function pipeAsync<
         InferIssue<TItem13>
       >
 ): SchemaWithPipeAsync<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -1670,7 +1685,7 @@ export function pipeAsync<
         InferIssue<TItem14>
       >
 ): SchemaWithPipeAsync<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -1903,7 +1918,7 @@ export function pipeAsync<
         InferIssue<TItem15>
       >
 ): SchemaWithPipeAsync<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -2153,7 +2168,7 @@ export function pipeAsync<
         InferIssue<TItem16>
       >
 ): SchemaWithPipeAsync<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -2420,7 +2435,7 @@ export function pipeAsync<
         InferIssue<TItem17>
       >
 ): SchemaWithPipeAsync<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -2704,7 +2719,7 @@ export function pipeAsync<
         InferIssue<TItem18>
       >
 ): SchemaWithPipeAsync<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -3005,7 +3020,7 @@ export function pipeAsync<
         InferIssue<TItem19>
       >
 ): SchemaWithPipeAsync<
-  [
+  readonly [
     TSchema,
     TItem1,
     TItem2,
@@ -3041,7 +3056,7 @@ export function pipeAsync<
   const TSchema extends
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-  const TItems extends (
+  const TItems extends readonly (
     | PipeItem<InferOutput<TSchema>, InferOutput<TSchema>, BaseIssue<unknown>>
     | PipeItemAsync<
         InferOutput<TSchema>,
@@ -3049,18 +3064,23 @@ export function pipeAsync<
         BaseIssue<unknown>
       >
   )[],
->(schema: TSchema, ...items: TItems): SchemaWithPipeAsync<[TSchema, ...TItems]>;
+>(
+  schema: TSchema,
+  ...items: TItems
+): SchemaWithPipeAsync<readonly [TSchema, ...TItems]>;
 
 // @__NO_SIDE_EFFECTS__
 export function pipeAsync<
   const TSchema extends
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-  const TItems extends (
+  const TItems extends readonly (
     | PipeItem<unknown, unknown, BaseIssue<unknown>>
     | PipeItemAsync<unknown, unknown, BaseIssue<unknown>>
   )[],
->(...pipe: [TSchema, ...TItems]): SchemaWithPipeAsync<[TSchema, ...TItems]> {
+>(
+  ...pipe: [TSchema, ...TItems]
+): SchemaWithPipeAsync<readonly [TSchema, ...TItems]> {
   return {
     ...pipe[0],
     pipe,

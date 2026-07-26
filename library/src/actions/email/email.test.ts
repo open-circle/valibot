@@ -76,15 +76,15 @@ describe('email', () => {
 
     // Start of local part
 
-    test('for underscore in begining of local part', () => {
+    test('for underscore in beginning of local part', () => {
       expectNoActionIssue(action, ['_email@example.com']);
     });
 
-    test('for hyphen in begining of local part', () => {
+    test('for hyphen in beginning of local part', () => {
       expectNoActionIssue(action, ['-email@example.com']);
     });
 
-    test('for plus in begining of local part', () => {
+    test('for plus in beginning of local part', () => {
       expectNoActionIssue(action, ['+email@example.com']);
     });
 

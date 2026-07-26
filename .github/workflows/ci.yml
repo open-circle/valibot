@@ -5,30 +5,34 @@ on:
     branches: [main]
   pull_request:
   workflow_call:
+    
+permissions:
+  contents: read
 
 jobs:
   install:
     name: Install packages
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
 
-  library_build:
-    name: Build and publish library
+  library_preview:
+    name: Publish library via pkg.pr.new
     needs: install
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
-      - name: Build
-        run: pnpm build
-        working-directory: library
-      - name: Publish
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Publish library
         run: pnpx pkg-pr-new publish --compact --comment=update --pnpm
         working-directory: library
 
@@ -37,10 +41,10 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
       - name: Prettier check
         run: pnpm format.check
         working-directory: library
@@ -50,10 +54,10 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
       - name: ESLint check
         run: pnpm lint
         working-directory: library
@@ -63,10 +67,10 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
       - name: Vitest tests
         run: pnpm test
         working-directory: library
@@ -76,10 +80,10 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
       - name: Prettier check
         run: pnpm format.check
         working-directory: packages/to-json-schema
@@ -89,10 +93,10 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
       - name: ESLint check
         run: pnpm lint
         working-directory: packages/to-json-schema
@@ -102,10 +106,10 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
       - name: Vitest tests
         run: pnpm test
         working-directory: packages/to-json-schema
@@ -115,10 +119,10 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
       - name: Prettier check
         run: pnpm format.check
         working-directory: website
@@ -128,10 +132,23 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: ./.github/actions/pnpm
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
       - name: ESLint check
         run: pnpm lint
         working-directory: website
+
+  zod_to_valibot_vitest:
+    name: Run Vitest in codemod/zod-to-valibot
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Vitest tests
+        run: pnpm test
+        working-directory: codemod/zod-to-valibot

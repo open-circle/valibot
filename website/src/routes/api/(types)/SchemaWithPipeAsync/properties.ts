@@ -5,6 +5,7 @@ export const properties: Record<string, PropertyProps> = {
     modifier: 'extends',
     type: {
       type: 'tuple',
+      modifier: 'readonly',
       items: [
         {
           type: 'union',

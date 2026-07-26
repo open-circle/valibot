@@ -1,0 +1,82 @@
+---
+title: minEntries
+description: Creates a min entries validation action.
+source: /actions/minEntries/minEntries.ts
+contributors:
+  - EltonLobo07
+  - fabian-hiller
+  - muningis
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# minEntries
+
+Creates a min entries validation action.
+
+```ts
+const Action = v.minEntries<TInput, TRequirement, TMessage>(
+  requirement,
+  message
+);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `minEntries` you can validate the number of entries of an object. If the input does not match the `requirement`, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `minEntries` can be used.
+
+### Minimum object entries
+
+Schema to validate an object with a minimum of 5 entries.
+
+```ts
+const MinEntriesSchema = v.pipe(
+  v.record(v.string(), v.number()),
+  v.minEntries(5, 'The object should have at least 5 entries.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `minEntries`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'looseObject',
+    'object',
+    'objectWithRest',
+    'record',
+    'strictObject',
+    'variant',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

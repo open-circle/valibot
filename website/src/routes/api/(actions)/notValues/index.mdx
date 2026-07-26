@@ -1,0 +1,83 @@
+---
+title: notValues
+description: Creates a not values validation action.
+source: /actions/notValues/notValues.ts
+contributors:
+  - fabian-hiller
+  - EltonLobo07
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# notValues
+
+Creates a not values validation action.
+
+```ts
+const Action = v.notValues<TInput, TRequirement, TMessage>(
+  requirement,
+  message
+);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `notValues` you can validate the value of a string, number, boolean or date. If the input matches one of the values in the `requirement`, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `notValues` can be used.
+
+### Number schema
+
+Schema to validate a number that is not 10, 11 or 12.
+
+```ts
+const NumberSchema = v.pipe(
+  v.number(),
+  v.notValues([10, 11, 12], 'The number must not be 10, 11 or 12.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `notValues`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'bigint',
+    'boolean',
+    'custom',
+    'date',
+    'number',
+    'string',
+    'unknown',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

@@ -96,7 +96,7 @@ describe('isoWeek', () => {
       ]);
     });
 
-    test('for missing seperators', () => {
+    test('for missing separators', () => {
       expectActionIssue(action, baseIssue, ['0000-01', '0000W01', '000001']);
     });
 

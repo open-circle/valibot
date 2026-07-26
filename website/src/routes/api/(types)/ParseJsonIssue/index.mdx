@@ -1,0 +1,25 @@
+---
+title: ParseJsonIssue
+description: JSON parse issue interface.
+contributors:
+  - EskiMojo14
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# ParseJsonIssue
+
+JSON parse issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `ParseJsonIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `received` <Property {...properties.received} />

@@ -13,8 +13,8 @@ export const properties: Record<string, PropertyProps> = {
           name: 'context',
           type: {
             type: 'custom',
-            name: 'Context',
-            href: './Context/',
+            name: 'RawCheckContext',
+            href: '../RawCheckContext/',
             generics: [
               {
                 type: 'custom',

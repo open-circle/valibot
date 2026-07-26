@@ -65,6 +65,14 @@ describe('record', () => {
     test('for simple record', () => {
       expectNoSchemaIssue(schema, [{ foo: 1, bar: 2, baz: 3 }]);
     });
+
+    test('for record with __proto__ key', () => {
+      const input = JSON.parse('{"__proto__": 123, "foo": 456}');
+      expect(schema['~run']({ value: input }, {})).toStrictEqual({
+        typed: true,
+        value: { foo: 456 },
+      });
+    });
   });
 
   describe('should return dataset with issues', () => {
@@ -200,6 +208,34 @@ describe('record', () => {
           },
         ],
       } satisfies FailureDataset<InferIssue<typeof schema>>);
+    });
+
+    test('for first key invalid only', () => {
+      const keySchema = record(picklist(['foo', 'bar']), number());
+      const input = { invalid: 1 };
+      expect(keySchema['~run']({ value: input }, {})).toStrictEqual({
+        typed: false,
+        value: {},
+        issues: [
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'picklist',
+            input: 'invalid',
+            expected: '("foo" | "bar")',
+            received: '"invalid"',
+            path: [
+              {
+                type: 'object',
+                origin: 'key',
+                input,
+                key: 'invalid',
+                value: 1,
+              },
+            ],
+          },
+        ],
+      });
     });
 
     test('with abort early for invalid key', () => {

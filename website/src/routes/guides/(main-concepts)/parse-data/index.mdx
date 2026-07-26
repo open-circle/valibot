@@ -10,7 +10,7 @@ contributors:
   - cmaciasjimenez
 ---
 
-import { Link } from '@builder.io/qwik-city';
+import { Link } from '~/components';
 
 # Parse data
 
@@ -18,7 +18,7 @@ Now that you've learned how to create a schema, let's look at how you can use it
 
 > Each schema has a `~run` method. However, this is an internal API and should only be used if you know what you are doing.
 
-## Default way
+## Parse and throw
 
 The <Link href="/api/parse/">`parse`</Link> method will throw a <Link href="/api/ValiError/">`ValiError`</Link> if the input does not match the schema. Therefore, you should use a try/catch block to catch errors. If the input matches the schema, it is valid and the output of the schema will be returned with the correct TypeScript type.
 
@@ -35,7 +35,7 @@ try {
 }
 ```
 
-## Safe parse
+## Parse and return
 
 If you want issues to be returned instead of thrown, you can use <Link href="/api/safeParse/">`safeParse`</Link>. The returned value then contains the `.success` property, which is `true` if the input is valid or `false` otherwise.
 

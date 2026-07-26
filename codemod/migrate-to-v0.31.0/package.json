@@ -9,8 +9,8 @@
     "./dist/index.cjs"
   ],
   "devDependencies": {
-    "@codemod.com/workflow": "^0.0.3",
-    "@types/node": "20.9.0",
-    "typescript": "5.5.3"
+    "@codemod.com/workflow": "^0.0.31",
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
   }
 }

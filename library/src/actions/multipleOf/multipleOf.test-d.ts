@@ -30,19 +30,25 @@ describe('multipleOf', () => {
   });
 
   describe('should infer correct types', () => {
-    type Action = MultipleOfAction<number, 10, undefined>;
+    type Action1 = MultipleOfAction<number, 10, undefined>;
+    type Action2 = MultipleOfAction<bigint, 10n, undefined>;
 
     test('of input', () => {
-      expectTypeOf<InferInput<Action>>().toEqualTypeOf<number>();
+      expectTypeOf<InferInput<Action1>>().toEqualTypeOf<number>();
+      expectTypeOf<InferInput<Action2>>().toEqualTypeOf<bigint>();
     });
 
     test('of output', () => {
-      expectTypeOf<InferOutput<Action>>().toEqualTypeOf<number>();
+      expectTypeOf<InferOutput<Action1>>().toEqualTypeOf<number>();
+      expectTypeOf<InferOutput<Action2>>().toEqualTypeOf<bigint>();
     });
 
     test('of issue', () => {
-      expectTypeOf<InferIssue<Action>>().toEqualTypeOf<
+      expectTypeOf<InferIssue<Action1>>().toEqualTypeOf<
         MultipleOfIssue<number, 10>
+      >();
+      expectTypeOf<InferIssue<Action2>>().toEqualTypeOf<
+        MultipleOfIssue<bigint, 10n>
       >();
     });
   });

@@ -16,7 +16,7 @@ export type SafeParseResult<
 > =
   | {
       /**
-       * Whether is's typed.
+       * Whether it's typed.
        */
       readonly typed: true;
       /**
@@ -28,7 +28,7 @@ export type SafeParseResult<
        */
       readonly output: InferOutput<TSchema>;
       /**
-       * The issues if any.
+       * The issues, if any.
        */
       readonly issues: undefined;
     }

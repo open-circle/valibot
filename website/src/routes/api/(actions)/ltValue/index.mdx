@@ -1,0 +1,93 @@
+---
+title: ltValue
+description: Creates a less than value validation action.
+source: /actions/ltValue/ltValue.ts
+contributors:
+  - EltonLobo07
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# ltValue
+
+Creates a less than value validation action.
+
+```ts
+const Action = v.ltValue<TInput, TRequirement, TMessage>(requirement, message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `ltValue` you can validate the value of a string, number, boolean or date. If the input does not match the `requirement`, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `ltValue` can be used.
+
+### Number schema
+
+Schema to validate a number with a less than value.
+
+```ts
+const NumberSchema = v.pipe(
+  v.number(),
+  v.ltValue(100, 'The number must be less than 100.')
+);
+```
+
+### Date schema
+
+Schema to validate a date with a less than value.
+
+```ts
+const DateSchema = v.pipe(
+  v.date(),
+  v.ltValue(
+    new Date('2000-01-01'),
+    'The date must be less than 1st January 2000.'
+  )
+);
+```
+
+## Related
+
+The following APIs can be combined with `ltValue`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'bigint',
+    'boolean',
+    'custom',
+    'date',
+    'number',
+    'string',
+    'unknown',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

@@ -1,0 +1,93 @@
+---
+title: gtValue
+description: Creates a greater than value validation action.
+source: /actions/gtValue/gtValue.ts
+contributors:
+  - EltonLobo07
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# gtValue
+
+Creates a greater than value validation action.
+
+```ts
+const Action = v.gtValue<TInput, TRequirement, TMessage>(requirement, message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `gtValue` you can validate the value of a string, number, boolean or date. If the input does not match the `requirement`, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `gtValue` can be used.
+
+### Number schema
+
+Schema to validate a number with a greater than value.
+
+```ts
+const NumberSchema = v.pipe(
+  v.number(),
+  v.gtValue(100, 'The number must be greater than 100.')
+);
+```
+
+### Date schema
+
+Schema to validate a date with a greater than year.
+
+```ts
+const DateSchema = v.pipe(
+  v.date(),
+  v.gtValue(
+    new Date('2000-01-01'),
+    'The date must be greater than 1st January 2000.'
+  )
+);
+```
+
+## Related
+
+The following APIs can be combined with `gtValue`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'bigint',
+    'boolean',
+    'custom',
+    'date',
+    'number',
+    'string',
+    'unknown',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

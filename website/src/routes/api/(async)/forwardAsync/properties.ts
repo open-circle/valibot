@@ -28,6 +28,14 @@ export const properties: Record<string, PropertyProps> = {
       generics: ['unknown'],
     },
   },
+  TPath: {
+    modifier: 'extends',
+    type: {
+      type: 'custom',
+      name: 'RequiredPath',
+      href: '../RequiredPath/',
+    },
+  },
   action: {
     type: {
       type: 'union',
@@ -73,15 +81,19 @@ export const properties: Record<string, PropertyProps> = {
       ],
     },
   },
-  pathKeys: {
+  path: {
     type: {
       type: 'custom',
-      name: 'PathKeys',
-      href: '../PathKeys/',
+      name: 'ValidPath',
+      href: '../forward/ValidPath/',
       generics: [
         {
           type: 'custom',
           name: 'TInput',
+        },
+        {
+          type: 'custom',
+          name: 'TPath',
         },
       ],
     },

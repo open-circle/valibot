@@ -13,13 +13,15 @@ import { _isPartiallyTyped } from './_isPartiallyTyped.ts';
 describe('_isPartiallyTyped', () => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   type Input = {
-    nested: { key: string };
-    tuple: [number, { key: string }, number];
+    nested: { key1: string; key2: string };
+    tuple: [number, { key1: string; key2: string }, number];
+    array: { key1: string; key2: string }[];
     other: string;
   };
-  const pathList = [
-    ['nested', 'key'],
-    ['tuple', 1, 'key'],
+  const paths = [
+    ['nested', 'key2'],
+    ['tuple', 1, 'key2'],
+    ['array', '$', 'key2'],
   ] as const;
 
   const baseInfo = {
@@ -49,14 +51,15 @@ describe('_isPartiallyTyped', () => {
           },
         ],
       };
-      expect(_isPartiallyTyped(dataset, pathList)).toBe(false);
+      expect(_isPartiallyTyped(dataset, paths)).toBe(false);
     });
 
     test('if part of path matches path of issue', () => {
       const input = {
         nested: null,
-        tuple: [123, { key: 'foo' }, 456],
-        other: 'bar',
+        tuple: [123, { key1: 'foo', key2: 'bar' }, 456],
+        array: [{ key1: 'foo', key2: 'bar' }],
+        other: 'foo',
       };
       const dataset: FailureDataset<ObjectIssue> = {
         typed: false,
@@ -81,14 +84,15 @@ describe('_isPartiallyTyped', () => {
           },
         ],
       };
-      expect(_isPartiallyTyped(dataset, pathList)).toBe(false);
+      expect(_isPartiallyTyped(dataset, paths)).toBe(false);
     });
 
     test('if entire path matches path of issue', () => {
       const input = {
-        nested: { key: null },
-        tuple: [123, { key: 'foo' }, 456],
-        other: 'bar',
+        nested: { key1: 'foo', key2: null },
+        tuple: [123, { key1: 'foo', key2: 'bar' }, 456],
+        array: [{ key1: 'foo', key2: 'bar' }],
+        other: 'foo',
       };
       const dataset: FailureDataset<StringIssue> = {
         typed: false,
@@ -113,35 +117,77 @@ describe('_isPartiallyTyped', () => {
                 type: 'object',
                 origin: 'value',
                 input: input.nested,
-                key: 'key',
-                value: input.nested.key,
+                key: 'key2',
+                value: input.nested.key2,
               },
             ],
           },
         ],
       };
-      expect(_isPartiallyTyped(dataset, pathList)).toBe(false);
+      expect(_isPartiallyTyped(dataset, paths)).toBe(false);
+    });
+
+    test('if array wildcard of path matches path of issue', () => {
+      const input = {
+        nested: { key1: 'foo', key2: 'bar' },
+        tuple: [123, { key1: 'foo', key2: 'bar' }, 456],
+        array: [{ key1: 'foo', key2: 'bar' }, null],
+        other: 'foo',
+      };
+      const dataset: FailureDataset<ObjectIssue> = {
+        typed: false,
+        value: input,
+        issues: [
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'object',
+            input: null,
+            expected: 'Object',
+            received: 'null',
+            path: [
+              {
+                type: 'object',
+                origin: 'value',
+                input,
+                key: 'array',
+                value: input.array,
+              },
+              {
+                type: 'array',
+                origin: 'value',
+                input: input.array,
+                key: 1,
+                value: input.array[1],
+              },
+            ],
+          },
+        ],
+      };
+      expect(_isPartiallyTyped(dataset, paths)).toBe(false);
     });
   });
 
   describe('should return true', () => {
     test('if there are no issues', () => {
       const input: Input = {
-        nested: { key: 'foo' },
-        tuple: [123, { key: 'baz' }, 456],
-        other: 'bar',
+        nested: { key1: 'foo', key2: 'bar' },
+        tuple: [123, { key1: 'foo', key2: 'bar' }, 456],
+        array: [{ key1: 'foo', key2: 'bar' }],
+        other: 'foo',
       };
       const dataset: SuccessDataset<Input> = {
         typed: true,
         value: input,
       };
-      expect(_isPartiallyTyped(dataset, pathList)).toBe(true);
+      expect(_isPartiallyTyped(dataset, paths)).toBe(true);
     });
 
     test('if only unselected paths are untyped', () => {
       const input = {
         nested: { key: 'foo' },
         tuple: [123, { key: 'baz' }, null],
+        array: [{ key: 'foo' }, { key: 'bar' }],
         other: null,
       };
       const dataset: FailureDataset<NumberIssue | StringIssue> = {
@@ -191,7 +237,7 @@ describe('_isPartiallyTyped', () => {
           },
         ],
       };
-      expect(_isPartiallyTyped(dataset, pathList)).toBe(true);
+      expect(_isPartiallyTyped(dataset, paths)).toBe(true);
     });
   });
 });

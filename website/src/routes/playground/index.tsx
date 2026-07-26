@@ -27,7 +27,8 @@ import {
 import { useResetSignal } from '~/hooks';
 import { BinIcon, CheckIcon, CopyIcon, PlayIcon, ShareIcon } from '~/icons';
 import { trackEvent } from '~/utils';
-import valibotCode from '../../../../library/dist/index.min.js?url';
+import valibotCode from '../../../../library/dist/index.min.mjs?url';
+import valibotToJsonSchemaCode from '../../../../packages/to-json-schema/dist/index.min.mjs?url';
 import editorCode from './editorCode.ts?raw';
 import iframeCode from './iframeCode.js?raw';
 
@@ -55,6 +56,10 @@ export default component$(() => {
   const location = useLocation();
   const toggle = useSideBarToggle();
 
+  // Use editor and side bar elements signals
+  const editorElement = useSignal<HTMLElement>();
+  const sideBarElement = useSignal<HTMLElement>();
+
   // Use model and logs signals
   const model = useSignal<NoSerialize<monaco.editor.ITextModel>>();
   const logs = useSignal<[LogLevel, string][]>([]);
@@ -68,6 +73,48 @@ export default component$(() => {
   const initialCode = useComputed$(() => {
     const code = location.url.searchParams.get('code');
     return code ? lz.decompressFromEncodedURIComponent(code) : editorCode;
+  });
+
+  /**
+   * Changes the width of the side bar via pointer move.
+   */
+  const changeSideBarWidth = $(() => {
+    // Disable text selection and overflow while resizing
+    document.body.style.userSelect = 'none';
+    editorElement.value!.style.overflow = 'hidden';
+
+    // Create function to change side bar width
+    let currentWidth = sideBarElement.value!.clientWidth;
+    const maxWidth = Math.min(1700, window.innerWidth) * 0.6;
+    const onPointerMove = (event: PointerEvent) => {
+      currentWidth -= event.movementX;
+      if (currentWidth > 250 && currentWidth < maxWidth) {
+        sideBarElement.value!.style.width = `${currentWidth}px`;
+      }
+    };
+
+    // Create function to reset styles and remove event listener
+    const onPointerUp = () => {
+      document.body.style.userSelect = '';
+      editorElement.value!.style.overflow = '';
+      window.removeEventListener('pointermove', onPointerMove);
+    };
+
+    // Add pointer move and up event listeners
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp, { once: true });
+
+    // Track resize playground event
+    trackEvent('resize_playground');
+  });
+
+  /**
+   * Resets the width of the side bar on smaller devices.
+   */
+  const resetSideBarWidth = $(() => {
+    if (window.innerWidth <= 1024) {
+      sideBarElement.value!.style.width = '';
+    }
   });
 
   /**
@@ -89,11 +136,8 @@ export default component$(() => {
    */
   const executeCode = $(() => {
     // Open side bar on smaller devices if it's closed
-    if (
-      window.innerWidth < 1024 &&
-      (!toggle.value || toggle.value.state === 'closed')
-    ) {
-      toggle.submit({ state: 'opened' });
+    if (window.innerWidth < 1024 && !toggle.value) {
+      toggle.value = true;
     }
 
     // Update code of iframe
@@ -124,7 +168,6 @@ export default component$(() => {
    * Captures logs from the iframe.
    */
   const captureLogs = $((event: MessageEvent<MessageEventData>) => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (event.data.type === 'log') {
       logs.value = [...logs.value, event.data.log];
     }
@@ -177,20 +220,37 @@ export default component$(() => {
 
   return (
     <main
-      class="flex w-full flex-1 flex-col lg:flex-row lg:space-x-10 lg:px-10 lg:py-20 2xl:max-w-[1700px] 2xl:space-x-14 2xl:self-center"
+      class="flex w-full flex-1 flex-col lg:flex-row lg:gap-5 lg:px-10 lg:py-20 2xl:max-w-[1700px] 2xl:gap-7 2xl:self-center"
       window:onMessage$={captureLogs}
       window:onKeyDown$={[preventDefault, handleKeyDown]}
+      window:onResize$={resetSideBarWidth}
     >
-      <div class="flex flex-1 lg:relative">
-        <CodeEditor value={initialCode} model={model} onSave$={saveCode} />
+      <div ref={editorElement} class="flex flex-1 overflow-visible lg:relative">
+        <CodeEditor
+          class="lg:rounded-3xl lg:border-[3px] lg:border-slate-200 lg:dark:border-slate-800"
+          value={initialCode}
+          model={model}
+          onSave$={saveCode}
+        />
         <EditorButtons
-          class="!hidden lg:!absolute lg:right-10 lg:top-10 lg:z-10 lg:!flex"
+          class="hidden! lg:absolute! lg:top-10 lg:right-10 lg:z-10 lg:flex!"
           model={model}
           executeCode$={executeCode}
         />
       </div>
 
-      <SideBar class="lg:w-80 xl:w-96 2xl:w-[500px]" toggle={toggle}>
+      <div
+        class="group hidden lg:flex lg:w-3 lg:cursor-col-resize lg:justify-center"
+        onPointerDown$={changeSideBarWidth}
+      >
+        <div class="lg:invisible lg:h-full lg:w-[3px] lg:rounded lg:bg-slate-200/50 lg:group-hover:visible lg:dark:bg-slate-800/50" />
+      </div>
+
+      <SideBar
+        ref={sideBarElement}
+        class="lg:w-80 xl:w-96 2xl:w-[500px]"
+        toggle={toggle}
+      >
         <EditorButtons
           q:slot="buttons"
           class="mr-4 lg:hidden"
@@ -198,7 +258,7 @@ export default component$(() => {
           executeCode$={executeCode}
         />
         <IconButton
-          class="!absolute right-8 top-8 z-10 lg:right-10 lg:top-10"
+          class="absolute! top-8 right-8 z-10 lg:top-10 lg:right-10"
           type="button"
           variant="secondary"
           label="Clear logs"
@@ -243,7 +303,12 @@ export default component$(() => {
           <html>
             <head>
               <script type="importmap">
-                { "imports": { "valibot": "${valibotCode}" } }
+                {
+                  "imports": {
+                    "valibot": "${valibotCode}",
+                    "@valibot/to-json-schema": "${valibotToJsonSchemaCode}"
+                  }
+                }
               </script>
               <script>
                 ${iframeCode}
@@ -299,7 +364,6 @@ const EditorButtons = component$<EditorButtonsProps>(
       const url = location.url.href;
 
       // Share URL or copy it to clipboard
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (navigator.share) {
         navigator.share({ title: 'Playground', url });
       } else {
@@ -312,7 +376,7 @@ const EditorButtons = component$<EditorButtonsProps>(
     });
 
     return (
-      <div class={clsx('flex space-x-6', props.class)}>
+      <div class={clsx('flex gap-6', props.class)}>
         <IconButton
           type="button"
           variant="secondary"

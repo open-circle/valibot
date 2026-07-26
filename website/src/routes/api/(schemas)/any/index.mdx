@@ -4,12 +4,12 @@ description: Creates an any schema.
 source: /schemas/any/any.ts
 contributors:
   - fabian-hiller
-  - morinokami
+  - EltonLobo07
   - jasperteo
+  - morinokami
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # any
@@ -72,6 +72,7 @@ The following APIs can be combined with `any`.
     'getFallback',
     'getFallbacks',
     'is',
+    'message',
     'parse',
     'parser',
     'pipe',
@@ -96,16 +97,20 @@ The following APIs can be combined with `any`.
     'decimal',
     'description',
     'digits',
+    'domain',
     'email',
     'emoji',
     'empty',
     'endsWith',
+    'entries',
     'everyItem',
     'excludes',
     'filterItems',
     'findItem',
     'finite',
+    'flavor',
     'graphemes',
+    'gtValue',
     'hash',
     'hexadecimal',
     'hexColor',
@@ -115,18 +120,23 @@ The following APIs can be combined with `any`.
     'ip',
     'ipv4',
     'ipv6',
+    'isbn',
+    'isrc',
     'isoDate',
     'isoDateTime',
+    'isoDateTimeSecond',
     'isoTime',
     'isoTimeSecond',
     'isoTimestamp',
     'isoWeek',
     'length',
+    'ltValue',
     'mac',
     'mac48',
     'mac64',
     'mapItems',
     'maxBytes',
+    'maxEntries',
     'maxGraphemes',
     'maxLength',
     'maxSize',
@@ -135,6 +145,7 @@ The following APIs can be combined with `any`.
     'metadata',
     'mimeType',
     'minBytes',
+    'minEntries',
     'minGraphemes',
     'minLength',
     'minSize',
@@ -144,12 +155,15 @@ The following APIs can be combined with `any`.
     'nanoid',
     'nonEmpty',
     'notBytes',
+    'notEntries',
     'notGraphemes',
     'notLength',
     'notSize',
     'notValue',
+    'notValues',
     'notWords',
     'octal',
+    'parseJson',
     'partialCheck',
     'rawCheck',
     'rawTransform',
@@ -160,13 +174,24 @@ The following APIs can be combined with `any`.
     'rfcEmail',
     'safeInteger',
     'size',
+    'slug',
     'someItem',
-    'sortItem',
+    'sortItems',
     'startsWith',
+    'stringifyJson',
     'title',
+    'toBigint',
+    'toBoolean',
+    'toCamelCase',
+    'toDate',
+    'toKebabCase',
     'toLowerCase',
     'toMaxValue',
     'toMinValue',
+    'toNumber',
+    'toPascalCase',
+    'toSnakeCase',
+    'toString',
     'toUpperCase',
     'transform',
     'trim',
@@ -176,6 +201,7 @@ The following APIs can be combined with `any`.
     'url',
     'uuid',
     'value',
+    'values',
     'words',
   ]}
 />

@@ -1,0 +1,212 @@
+---
+cover: Valibot v1
+title: Valibot v1 - The 1 kB schema library
+description: >-
+  I am excited to announce the release of Valibot v1, a 1 kB alternative to
+  Zod with a type-safe and easy-to-remember API.
+published: 2025-03-19
+authors:
+  - fabian-hiller
+---
+
+import clsx from 'clsx';
+import { Link } from '~/components';
+import { PlayIcon } from '~/icons';
+import { valibotTalkDarkUrl, valibotTalkLigthUrl } from '~/images';
+import {
+  AlgoliaLogo,
+  BoltLogo,
+  BuilderLogo,
+  DailyDevLogo,
+  DigitalOceanLogo,
+  HdmLogo,
+  NetlifyLogo,
+  PaceLogo,
+  StainlessLogo,
+  VercelLogo,
+} from '~/logos';
+import ValibotTalk from './valibot-talk.webp?jsx';
+
+I am excited to announce the release of Valibot v1. Valibot is a modular and fully tree-shakable schema library that helps you describe and validate your data with a type-safe and easy-to-remember API. As a 1 kB alternative to Zod, Valibot is perfect for validating forms and securing backend-frontend communication with a single source of truth.
+
+## How everything started
+
+Some of you may remember my [introduction post](https://www.builder.io/blog/introducing-valibot) that I published on Builder.io in July 2023 with my supervisors Miško Hevery (creator of Angular and Qwik) and Ryan Carniato (creator of SolidJS). Back then, as part of my [bachelor thesis](https://valibot.dev/thesis.pdf), I was investigating how to drastically reduce the bundle size of JavaScript libraries by more then 90%. As part of my research, I analysed [Zod](https://zod.dev/), [ArkType](https://arktype.io/) and [Typia](https://typia.io/), and created with Valibot a new schema library from scratch.
+
+If all this makes you curious, you should definitely check out the talk I gave last October at the web development meetup I hosted with Miško Hevery and Rich Harris at Pace University.
+
+<div class="relative mx-3 flex aspect-video items-center justify-center overflow-hidden rounded-2xl lg:mx-10 lg:rounded-3xl 2xl:mx-0">
+  <ValibotTalk
+    class="absolute -z-10 h-full w-full"
+    alt="Talk: Going fully modular with Valibot"
+  />
+  <a
+    class="focus-ring absolute flex h-10 w-16 animate-bounce items-center justify-center rounded-xl! bg-sky-500/10 backdrop-blur hover:bg-sky-500/20 md:h-12 md:w-20 lg:h-16 lg:w-28 lg:backdrop-blur-lg dark:bg-sky-400/10 dark:hover:bg-sky-400/20"
+    href="https://youtu.be/AnXbYrGdxv0"
+    target="_blank"
+    rel="noreferrer"
+  >
+    <PlayIcon class="h-4 text-sky-500 md:h-5 lg:h-6 dark:text-sky-400" />
+  </a>
+</div>
+
+## How the 1 kB thing works
+
+Similar to how types can be defined in TypeScript, Valibot allows you to define a schema with various small functions. This applies to primitive values like strings as well as to more complex data sets like objects. In addition, the library helps to perform more detailed validations and transformations with the help of pipelines.
+
+{/* prettier-ignore */}
+```ts
+import * as v from 'valibot'; // 1.31 kB
+
+// Create login schema with email and password
+const LoginSchema = v.object({
+  email: v.pipe(v.string(), v.email()),
+  password: v.pipe(v.string(), v.minLength(8)),
+});
+
+// Infer output TypeScript type of login schema as
+// { email: string; password: string }
+type LoginData = v.InferOutput<typeof LoginSchema>;
+
+// Throws error for email and password
+const output1 = v.parse(LoginSchema, { email: '', password: '' });
+
+// Returns data as { email: string; password: string }
+const output2 = v.parse(LoginSchema, {
+  email: 'jane@example.com',
+  password: '12345678',
+});
+```
+
+Instead of relying on a few large classes or functions with many methods, Valibot's API design is based on many small and independent functions. Each with just a few lines of code and a single task. This modular design has several advantages.
+
+On the one hand, it provides the flexibility to replace and extend Valibot's functions with custom code. On the other hand, it makes the source code more robust and secure, because the functionality of a single function as well as special edge cases can be tested more specifically. This makes it easy for us to achieve 100% test coverage, reducing bugs to a minimum.
+
+However, perhaps the biggest advantage is that a bundler like [Rolldown](https://rolldown.rs/) or [Rspack](https://rspack.dev/) can use the static import statements to remove any code that is not needed. Thus, only the code that is actually used ends up in your production build. This allows us to extend the functionality of the library without increasing your individual bundle size, which is between 1 and 2 kB for most users.
+
+This can make a big difference, especially for client-side validation and serverless environments, by reducing bundle size and speeding up startup time.
+
+> Curious to learn more? Check out the [publication of my bachelor thesis](https://www.builder.io/blog/valibot-bundle-size), where I explain why Valibot can be 10x smaller than Zod.
+
+## Who is using Valibot?
+
+We are proud that Valibot is used on sites like [The Guardian](https://www.theguardian.com/) and that our work adds value to more than 50,000 dependent public GitHub repositories. Our users include many startups and open source projects such as [Rolldown](https://rolldown.rs/) and [React Router](https://reactrouter.com/). Chances are you have already run a Valibot schema on your devices without even knowing it.
+
+Valibot has grown from a research paper to a community-driven project with more than 140 contributors and various partners. I want to give a shoutout to [Elton](https://github.com/EltonLobo07), who joined the project as a co-maintainer. He helped rewrite the entire library from scratch and contributed a significant amount to the API reference in our docs. Another shoutout goes to [CodingBill](https://github.com/Bilboramix), who has become a moderator on Discord. If you have any schema-related questions, he is the guy to talk to!
+
+Below you will find our most influential contributors as well as our current and past sponsors and partners who helped make Valibot v1 possible. If your company uses Valibot and benefits from our work, please consider supporting the project through [GitHub sponsors](https://github.com/open-circle/valibot).
+
+<ul class="mx-8! mt-10! flex list-none! flex-row flex-wrap gap-2 md:mt-12! lg:mx-10! lg:mt-14! lg:gap-3">
+  {[
+    'Bilboramix',
+    'Demivan',
+    'EltonLobo07',
+    'Saeris',
+    'UniquePixels',
+    'andersk',
+    'anuraghazra',
+    'ariskemper',
+    'colinhacks',
+    'gcornut',
+    'kazizi55',
+    'kurtextrem',
+    'mhevery',
+    'ruiaraujo012',
+    'ryansolid',
+    'ssalbdivad',
+    'xcfox',
+  ].map((sponsor) => (
+    <li key={sponsor} class="m-0! p-0!">
+      <a
+        href={`https://github.com/${sponsor}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img
+          width="88"
+          height="88"
+          loading="lazy"
+          src={`https://github.com/${sponsor}.png?size=88`}
+          alt={`GitHub profile picture of @${sponsor}`}
+          class="w-9 rounded-full md:w-10 lg:w-11"
+        />
+      </a>
+    </li>
+  ))}
+</ul>
+
+<ul class="mx-8! mt-10! flex list-none! flex-row flex-wrap gap-2 md:mt-12! lg:mx-10! lg:mt-14! lg:gap-3">
+  {[
+    'antfu',
+    '/andrewmd5',
+    '/osdiab',
+    '/hyunbinseo',
+    '/F0rce',
+    '/caegdeveloper',
+    '/Thanaen',
+    '/ruiaraujo012',
+    '/dslatkin',
+    '/jdgamble555',
+    '/KubaJastrz',
+    '/BrianCurliss',
+    '/nickytonline',
+    '/marcusbuffett',
+    '/ffMathy',
+    '/KATT',
+    '/armandsalle',
+    '/aggroot',
+    '/herodevs',
+    '/luckasnix',
+    '/akhmadqasim',
+    '/ivan-mihalic',
+    '/seahindeniz',
+    '/richardvanbergen',
+    '/isoden',
+    '/andrew-3kb',
+    '/herkulano',
+  ].map((sponsor) => (
+    <li key={sponsor} class="m-0! p-0!">
+      <a
+        href={`https://github.com/${sponsor}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img
+          width="88"
+          height="88"
+          loading="lazy"
+          src={`https://github.com/${sponsor}.png?size=88`}
+          alt={`GitHub profile picture of @${sponsor}`}
+          class="w-9 rounded-full md:w-10 lg:w-11"
+        />
+      </a>
+    </li>
+  ))}
+</ul>
+
+<ul class="mx-8! mt-10! flex list-none! flex-row flex-wrap gap-x-6 gap-y-3 md:mt-12! md:gap-x-8 md:gap-y-4 lg:mx-10! lg:mt-14! lg:gap-x-10 lg:gap-y-5">
+  {[
+    { Logo: PaceLogo, href: 'https://www.pace.edu' },
+    { Logo: BoltLogo, href: 'https://bolt.new/' },
+    { Logo: BuilderLogo, href: 'https://www.builder.io' },
+    { Logo: HdmLogo, href: 'https://www.hdm-stuttgart.de' },
+    { Logo: DailyDevLogo, href: 'https://daily.dev/' },
+    { Logo: StainlessLogo, href: 'https://www.stainless.com/' },
+    { Logo: VercelLogo, href: 'https://vercel.com' },
+    { Logo: AlgoliaLogo, href: 'https://www.algolia.com' },
+    { Logo: NetlifyLogo, href: 'https://www.netlify.com' },
+    { Logo: DigitalOceanLogo, href: 'https://www.digitalocean.com/' },
+  ].map(({ Logo, href }) => (
+    <li key={href} class="m-0! p-0!">
+      <a href={href} target="_blank" rel="noreferrer">
+        <Logo class="h-9 md:h-11 lg:h-12" />
+      </a>
+    </li>
+  ))}
+</ul>
+
+## What's next on our list?
+
+With Valibot v1, you can rest assured that the library is stable and ready for production. But we are not done yet, we are basically just getting started. On our list are things like a VS Code extension to improve the developer experience, a Zod-to-Valibot codemod to increase adoption, and an OpenAPI package to improve compatibility with other libraries. If you would like to lead or contribute to these efforts, please [contact us on Discord](https://discord.gg/tkMjQACf2P)!
+
+> Just in case this is the first time you hear about Valibot and you have never tried it before, feel free to take a look at our <Link href='/guides/quick-start/' target='_blank'>quick start guide</Link> and experiment with the library in our <Link href='/playground/' target='_blank'>online playground</Link>.

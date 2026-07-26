@@ -1,0 +1,25 @@
+---
+title: FlavorAction
+description: Flavor action interface.
+contributors:
+  - fabian-hiller
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# FlavorAction
+
+Flavor action interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TName` <Property {...properties.TName} />
+
+## Definition
+
+- `FlavorAction` <Property {...properties.BaseTransformation} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `name` <Property {...properties.name} />

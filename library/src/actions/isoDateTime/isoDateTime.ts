@@ -71,6 +71,9 @@ export interface IsoDateTimeAction<
  * year and month. For example, "2023-06-31T00:00" is valid although June has only
  * 30 days.
  *
+ * Hint: The regex also allows a space as a separator between the date and time
+ * parts instead of the "T" character.
+ *
  * @returns An ISO date time action.
  */
 export function isoDateTime<TInput extends string>(): IsoDateTimeAction<
@@ -86,6 +89,9 @@ export function isoDateTime<TInput extends string>(): IsoDateTimeAction<
  * Hint: The regex used cannot validate the maximum number of days based on
  * year and month. For example, "2023-06-31T00:00" is valid although June has only
  * 30 days.
+ *
+ * Hint: The regex also allows a space as a separator between the date and time
+ * parts instead of the "T" character.
  *
  * @param message The error message.
  *

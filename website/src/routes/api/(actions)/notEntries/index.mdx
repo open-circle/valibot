@@ -1,0 +1,80 @@
+---
+title: notEntries
+description: Creates a not entries validation action.
+source: /actions/notEntries/notEntries.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# notEntries
+
+Creates a not entries validation action.
+
+```ts
+const Action = v.notEntries<TInput, TRequirement, TMessage>(
+  requirement,
+  message
+);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `notEntries` you can validate the number of entries of an object. If the input does not match the `requirement`, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `notEntries` can be used.
+
+### Not object entries
+
+Schema to validate an object that does not have 5 entries.
+
+```ts
+const NotEntriesSchema = v.pipe(
+  v.record(v.string(), v.number()),
+  v.notEntries(5, 'Object must not have 5 entries')
+);
+```
+
+## Related
+
+The following APIs can be combined with `notEntries`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'looseObject',
+    'object',
+    'objectWithRest',
+    'record',
+    'strictObject',
+    'variant',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

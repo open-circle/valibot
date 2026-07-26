@@ -6,8 +6,7 @@ contributors:
   - fabian-hiller
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # partialCheck
@@ -15,8 +14,8 @@ import { properties } from './properties';
 Creates a partial check validation action.
 
 ```ts
-const Action = v.partialCheck<TInput, TPathList, TSelection, TMessage>(
-  pathList,
+const Action = v.partialCheck<TInput, TPaths, TSelection, TMessage>(
+  paths,
   requirement,
   message
 );
@@ -25,13 +24,13 @@ const Action = v.partialCheck<TInput, TPathList, TSelection, TMessage>(
 ## Generics
 
 - `TInput` <Property {...properties.TInput} />
-- `TPathList` <Property {...properties.TPathList} />
+- `TPaths` <Property {...properties.TPaths} />
 - `TSelection` <Property {...properties.TSelection} />
 - `TMessage` <Property {...properties.TMessage} />
 
 ## Parameters
 
-- `pathList` <Property {...properties.pathList} />
+- `paths` <Property {...properties.paths} />
 - `requirement` <Property {...properties.requirement} />
 - `message` <Property {...properties.message} />
 

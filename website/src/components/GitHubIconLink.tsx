@@ -9,7 +9,7 @@ export const GitHubIconLink = component$(() => (
   <SystemIcon
     label="Open GitHub repository"
     type="link"
-    href="https://github.com/fabian-hiller/valibot"
+    href="https://github.com/open-circle/valibot"
     target="_blank"
   >
     <GitHubIcon class="h-full" />

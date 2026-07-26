@@ -5,22 +5,22 @@ import type {
   StringIssue,
 } from '../../schemas/index.ts';
 import type {
-  DeepPickN,
   FailureDataset,
   PartialDataset,
   SuccessDataset,
 } from '../../types/index.ts';
+import type { MinLengthIssue } from '../minLength/index.ts';
 import { partialCheck, type PartialCheckAction } from './partialCheck.ts';
-import type { PartialCheckIssue } from './types.ts';
+import type { DeepPickN, PartialCheckIssue } from './types.ts';
 
 describe('partialCheck', () => {
   describe('should return action object', () => {
     // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-    type Input = { nested: { key: string } };
-    const pathList = [['nested', 'key']] as const;
-    type PathList = typeof pathList;
+    type Input = { nested: { key1: number; key2: string; key3: boolean } };
+    const paths = [['nested', 'key2']] as const;
+    type PathList = typeof paths;
     type Selection = DeepPickN<Input, PathList>;
-    const requirement = (input: Selection) => input.nested.key.includes('foo');
+    const requirement = (input: Selection) => input.nested.key2.includes('foo');
     const baseAction: Omit<
       PartialCheckAction<Input, PathList, Selection, never>,
       'message'
@@ -29,7 +29,7 @@ describe('partialCheck', () => {
       type: 'partial_check',
       reference: partialCheck,
       expects: null,
-      pathList,
+      paths,
       requirement,
       async: false,
       '~run': expect.any(Function),
@@ -42,11 +42,11 @@ describe('partialCheck', () => {
           message: undefined,
         };
       expect(
-        partialCheck<Input, PathList, Selection>(pathList, requirement)
+        partialCheck<Input, PathList, Selection>(paths, requirement)
       ).toStrictEqual(action);
       expect(
         partialCheck<Input, PathList, Selection, undefined>(
-          pathList,
+          paths,
           requirement,
           undefined
         )
@@ -57,7 +57,7 @@ describe('partialCheck', () => {
       const message = 'message';
       expect(
         partialCheck<Input, PathList, Selection, 'message'>(
-          pathList,
+          paths,
           requirement,
           message
         )
@@ -71,7 +71,7 @@ describe('partialCheck', () => {
       const message = () => 'message';
       expect(
         partialCheck<Input, PathList, Selection, typeof message>(
-          pathList,
+          paths,
           requirement,
           message
         )
@@ -221,7 +221,7 @@ describe('partialCheck', () => {
   });
 
   describe('should add issue to dataset', () => {
-    test('if there are no issues', () => {
+    test('if there are no previous issues', () => {
       const input: Input = {
         nested: { key: 'foo' },
         tuple: [123, { key: 'baz' }, 456],
@@ -247,7 +247,63 @@ describe('partialCheck', () => {
       } satisfies PartialDataset<Input, PartialCheckIssue<Selection>>);
     });
 
-    test('if only unselected paths are untyped', () => {
+    test('if there are previous issues but the dataset is typed', () => {
+      const input: Input = {
+        nested: { key: 'foo' },
+        tuple: [123, { key: 'baz' }, 456],
+        other: 'bar',
+      };
+      const firstIssue: MinLengthIssue<string, 5> = {
+        ...baseInfo,
+        kind: 'validation',
+        type: 'min_length',
+        input: 'foo',
+        expected: '>=5',
+        received: '3',
+        requirement: 5,
+        path: [
+          {
+            type: 'object',
+            origin: 'value',
+            input,
+            key: 'nested',
+            value: input.nested,
+          },
+          {
+            type: 'object',
+            origin: 'value',
+            input: input.nested,
+            key: 'key',
+            value: input.nested.key,
+          },
+        ],
+      };
+      const dataset: PartialDataset<Input, MinLengthIssue<string, 5>> = {
+        typed: true,
+        value: input,
+        issues: [firstIssue],
+      };
+      expect(action['~run'](dataset, {})).toStrictEqual({
+        ...dataset,
+        issues: [
+          firstIssue,
+          {
+            ...baseInfo,
+            kind: 'validation',
+            type: 'partial_check',
+            input: input,
+            expected: null,
+            received: 'Object',
+            requirement,
+          },
+        ],
+      } satisfies PartialDataset<
+        Input,
+        MinLengthIssue<string, 5> | PartialCheckIssue<Selection>
+      >);
+    });
+
+    test('if there are previous issues but only with unrelated paths', () => {
       const input: {
         nested: { key: string };
         tuple: [number, { key: string }, null];

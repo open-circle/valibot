@@ -4,11 +4,11 @@ description: Creates a boolean schema.
 source: /schemas/boolean/boolean.ts
 contributors:
   - fabian-hiller
+  - EltonLobo07
   - wout-junius
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # boolean
@@ -95,6 +95,7 @@ The following APIs can be combined with `boolean`.
     'getFallback',
     'getFallbacks',
     'is',
+    'message',
     'parse',
     'parser',
     'pipe',
@@ -110,11 +111,16 @@ The following APIs can be combined with `boolean`.
     'check',
     'brand',
     'description',
+    'flavor',
+    'gtValue',
+    'guard',
+    'ltValue',
     'maxValue',
     'maxWords',
     'metadata',
     'minValue',
     'notValue',
+    'notValues',
     'rawCheck',
     'rawTransform',
     'readonly',
@@ -123,6 +129,7 @@ The following APIs can be combined with `boolean`.
     'toMinValue',
     'transform',
     'value',
+    'values',
   ]}
 />
 

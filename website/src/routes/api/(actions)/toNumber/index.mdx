@@ -1,0 +1,74 @@
+---
+title: toNumber
+description: Creates a to number transformation action.
+source: /actions/toNumber/toNumber.ts
+contributors:
+  - EskiMojo14
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# toNumber
+
+Creates a to number transformation action.
+
+```ts
+const Action = v.toNumber<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `toNumber` you can transform the input to a number. If the input cannot be transformed, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `toNumber` can be used.
+
+### Number schema
+
+Schema to validate a string and transform it to a number.
+
+```ts
+const NumberSchema = v.pipe(v.string(), v.toNumber());
+```
+
+## Related
+
+The following APIs can be combined with `toNumber`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'bigint',
+    'boolean',
+    'custom',
+    'date',
+    'null',
+    'string',
+    'unknown',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

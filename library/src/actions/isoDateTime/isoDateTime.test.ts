@@ -69,11 +69,19 @@ describe('isoDateTime', () => {
       });
     });
 
-    test('for valid ISO date times', () => {
+    test('for normal date times', () => {
       expectNoActionIssue(action, [
         '0000-01-01T00:00',
         '9999-12-31T23:59',
         '2023-07-11T19:34',
+      ]);
+    });
+
+    test('for space as separator', () => {
+      expectNoActionIssue(action, [
+        '0000-01-01 00:00',
+        '2023-07-11 17:26',
+        '9999-12-31 23:59',
       ]);
     });
   });
@@ -100,7 +108,7 @@ describe('isoDateTime', () => {
       ]);
     });
 
-    test('for missing seperators', () => {
+    test('for missing separators', () => {
       expectActionIssue(action, baseIssue, [
         '000001-01T00:00',
         '0000-0101T00:00',
@@ -122,6 +130,8 @@ describe('isoDateTime', () => {
         '0000-01-01A00:00',
         '0000-01-01U00:00',
         '0000-01-01Z00:00',
+        '0000-01-01_00:00',
+        '0000-01-01-00:00',
 
         // Time separators
         '0000-01-01T00 00',

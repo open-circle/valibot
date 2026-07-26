@@ -14,22 +14,23 @@ import { properties } from './properties';
 Forwards the issues of the passed validation action.
 
 ```ts
-const Action = v.forward<TInput, TIssue>(action, pathKeys);
+const Action = v.forward<TInput, TIssue, TPath>(action, path);
 ```
 
 ## Generics
 
 - `TInput` <Property {...properties.TInput} />
 - `TIssue` <Property {...properties.TIssue} />
+- `TPath` <Property {...properties.TPath} />
 
 ## Parameters
 
 - `action` <Property {...properties.action} />
-- `pathKeys` <Property {...properties.pathKeys} />
+- `path` <Property {...properties.path} />
 
 ### Explanation
 
-`forward` allows you to forward the issues of the passed validation `action` via `pathKeys` to a nested field of a schema.
+`forward` allows you to forward the issues of the passed validation `action` via `path` to a nested field of a schema.
 
 ## Returns
 
@@ -110,6 +111,7 @@ The following APIs can be combined with `forward`.
     'excludes',
     'filterItems',
     'findItem',
+    'guard',
     'includes',
     'length',
     'mapItems',

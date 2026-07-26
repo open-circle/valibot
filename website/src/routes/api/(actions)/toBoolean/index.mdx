@@ -1,0 +1,67 @@
+---
+title: toBoolean
+description: Creates a to boolean transformation action.
+source: /actions/toBoolean/toBoolean.ts
+contributors:
+  - EskiMojo14
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# toBoolean
+
+Creates a to boolean transformation action.
+
+```ts
+const Action = v.toBoolean<TInput>();
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `toBoolean` can be used.
+
+### Boolean schema
+
+Schema to validate a string and transform it to a boolean.
+
+```ts
+const BooleanSchema = v.pipe(v.string(), v.toBoolean());
+```
+
+## Related
+
+The following APIs can be combined with `toBoolean`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'bigint',
+    'custom',
+    'date',
+    'null',
+    'number',
+    'string',
+    'symbol',
+    'undefined',
+    'unknown',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

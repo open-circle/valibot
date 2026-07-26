@@ -64,6 +64,10 @@ export interface DecimalAction<
 /**
  * Creates a [decimal](https://en.wikipedia.org/wiki/Decimal) validation action.
  *
+ * The difference between `decimal` and `digits` is that `decimal` accepts
+ * floating point numbers and negative numbers, while `digits` accepts only the
+ * digits 0-9.
+ *
  * @returns An decimal action.
  */
 export function decimal<TInput extends string>(): DecimalAction<
@@ -73,6 +77,10 @@ export function decimal<TInput extends string>(): DecimalAction<
 
 /**
  * Creates a [decimal](https://en.wikipedia.org/wiki/Decimal) validation action.
+ *
+ * The difference between `decimal` and `digits` is that `decimal` accepts
+ * floating point numbers and negative numbers, while `digits` accepts only the
+ * digits 0-9.
  *
  * @param message The error message.
  *

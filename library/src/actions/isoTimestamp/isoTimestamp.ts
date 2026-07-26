@@ -78,6 +78,12 @@ export interface IsoTimestampAction<
  * year and month. For example, "2023-06-31T00:00:00.000Z" is valid although
  * June has only 30 days.
  *
+ * Hint: The regex also allows a space as a separator between the date and time
+ * parts instead of the "T" character.
+ *
+ * Hint: The regex also allows a space before the UTC offset (e.g., " +00:00")
+ * to support PostgreSQL's `timestamptz` output format.
+ *
  * @returns An ISO timestamp action.
  */
 export function isoTimestamp<TInput extends string>(): IsoTimestampAction<
@@ -101,6 +107,12 @@ export function isoTimestamp<TInput extends string>(): IsoTimestampAction<
  * Hint: The regex used cannot validate the maximum number of days based on
  * year and month. For example, "2023-06-31T00:00:00.000Z" is valid although
  * June has only 30 days.
+ *
+ * Hint: The regex also allows a space as a separator between the date and time
+ * parts instead of the "T" character.
+ *
+ * Hint: The regex also allows a space before the UTC offset (e.g., " +00:00")
+ * to support PostgreSQL's `timestamptz` output format.
  *
  * @param message The error message.
  *

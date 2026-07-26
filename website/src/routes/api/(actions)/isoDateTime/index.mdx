@@ -17,6 +17,8 @@ Format: `yyyy-mm-ddThh:mm`
 
 > The regex used cannot validate the maximum number of days based on year and month. For example, "2023-06-31T00:00" is valid although June has only 30 days.
 
+> The regex also allows a space as a separator between the date and time parts instead of the "T" character.
+
 ```ts
 const Action = v.isoDateTime<TInput, TMessage>(message);
 ```
@@ -59,7 +61,7 @@ The following APIs can be combined with `isoDateTime`.
 
 ### Schemas
 
-<ApiList items={['any', 'custom', 'string', 'unknown']} />
+<ApiList items={['any', 'custom', 'string']} />
 
 ### Methods
 

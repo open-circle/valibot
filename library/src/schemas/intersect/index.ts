@@ -1,3 +1,7 @@
 export * from './intersect.ts';
 export * from './intersectAsync.ts';
-export * from './types.ts';
+export type {
+  IntersectIssue,
+  IntersectOptions,
+  IntersectOptionsAsync,
+} from './types.ts';

@@ -2,11 +2,11 @@ import { describe, expect, test } from 'vitest';
 import { NANO_ID_REGEX } from '../../regex.ts';
 import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
-import { nanoid, type NanoIDAction, type NanoIDIssue } from './nanoid.ts';
+import { nanoid, type NanoIdAction, type NanoIdIssue } from './nanoid.ts';
 
 describe('nanoid', () => {
   describe('should return action object', () => {
-    const baseAction: Omit<NanoIDAction<string, never>, 'message'> = {
+    const baseAction: Omit<NanoIdAction<string, never>, 'message'> = {
       kind: 'validation',
       type: 'nanoid',
       reference: nanoid,
@@ -17,7 +17,7 @@ describe('nanoid', () => {
     };
 
     test('with undefined message', () => {
-      const action: NanoIDAction<string, undefined> = {
+      const action: NanoIdAction<string, undefined> = {
         ...baseAction,
         message: undefined,
       };
@@ -29,7 +29,7 @@ describe('nanoid', () => {
       expect(nanoid('message')).toStrictEqual({
         ...baseAction,
         message: 'message',
-      } satisfies NanoIDAction<string, string>);
+      } satisfies NanoIdAction<string, string>);
     });
 
     test('with function message', () => {
@@ -37,7 +37,7 @@ describe('nanoid', () => {
       expect(nanoid(message)).toStrictEqual({
         ...baseAction,
         message,
-      } satisfies NanoIDAction<string, typeof message>);
+      } satisfies NanoIdAction<string, typeof message>);
     });
   });
 
@@ -91,7 +91,7 @@ describe('nanoid', () => {
 
   describe('should return dataset with issues', () => {
     const action = nanoid('message');
-    const baseIssue: Omit<NanoIDIssue<string>, 'input' | 'received'> = {
+    const baseIssue: Omit<NanoIdIssue<string>, 'input' | 'received'> = {
       kind: 'validation',
       type: 'nanoid',
       expected: null,

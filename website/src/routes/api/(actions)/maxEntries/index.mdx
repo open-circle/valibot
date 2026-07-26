@@ -1,0 +1,82 @@
+---
+title: maxEntries
+description: Creates a max entries validation action.
+source: /actions/maxEntries/maxEntries.ts
+contributors:
+  - EltonLobo07
+  - fabian-hiller
+  - muningis
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# maxEntries
+
+Creates a max entries validation action.
+
+```ts
+const Action = v.maxEntries<TInput, TRequirement, TMessage>(
+  requirement,
+  message
+);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `maxEntries` you can validate the number of entries of an object. If the input does not match the `requirement`, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `maxEntries` can be used.
+
+### Maximum object entries
+
+Schema to validate an object with a maximum of 5 entries.
+
+```ts
+const MaxEntriesSchema = v.pipe(
+  v.record(v.string(), v.number()),
+  v.maxEntries(5, 'Object must not exceed 5 entries.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `maxEntries`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'looseObject',
+    'object',
+    'objectWithRest',
+    'record',
+    'strictObject',
+    'variant',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

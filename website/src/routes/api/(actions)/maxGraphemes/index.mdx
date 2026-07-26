@@ -4,9 +4,11 @@ description: Creates a max graphemes validation action.
 source: /actions/maxGraphemes/maxGraphemes.ts
 contributors:
   - fabian-hiller
+  - tats-u
+  - yslpn
 ---
 
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # maxGraphemes
@@ -35,6 +37,10 @@ const Action = v.maxGraphemes<TInput, TRequirement, TMessage>(
 
 With `maxGraphemes` you can validate the graphemes of a string. If the input does not match the `requirement`, you can use `message` to customize the error message.
 
+> If you are looking for an equivalent of JavaScript's `.length` for maximum length checks, use <Link href="../maxLength/">`maxLength`</Link> instead.
+
+> Hint: The number of characters per grapheme is not limited. You may want to consider combining `maxGraphemes` with <Link href="../maxLength/">`maxLength`</Link> or <Link href="../maxBytes/">`maxBytes`</Link> to set a stricter limit.
+
 ## Returns
 
 - `Action` <Property {...properties.Action} />
@@ -60,11 +66,15 @@ The following APIs can be combined with `maxGraphemes`.
 
 ### Schemas
 
-<ApiList items={['any', 'custom', 'string', 'unknown']} />
+<ApiList items={['any', 'custom', 'string']} />
 
 ### Methods
 
 <ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['maxLength']} />
 
 ### Utils
 

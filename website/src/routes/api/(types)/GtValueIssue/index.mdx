@@ -1,0 +1,26 @@
+---
+title: GtValueIssue
+description: Greater than value issue type.
+contributors:
+  - EltonLobo07
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# GtValueIssue
+
+Greater than value issue type.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+
+## Definition
+
+- `GtValueIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `requirement` <Property {...properties.requirement} />

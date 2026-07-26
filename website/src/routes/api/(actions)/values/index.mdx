@@ -1,0 +1,82 @@
+---
+title: values
+description: Creates a values validation action.
+source: /actions/values/values.ts
+contributors:
+  - fabian-hiller
+  - EltonLobo07
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# values
+
+Creates a values validation action.
+
+```ts
+const Action = v.values<TInput, TRequirement, TMessage>(requirement, message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `values` you can validate the value of a string, number, boolean or date. If the input does not match one of the values in the `requirement`, you can use `message` to customize the error message.
+
+> This action does not change the type of the pipeline. Use the <Link href="../picklist/">`picklist`</Link> schema instead if you want the type to match the union of specific values.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `values` can be used.
+
+### Number schema
+
+Schema to validate a number with specific values.
+
+```ts
+const NumberSchema = v.pipe(
+  v.number(),
+  v.values([5, 15, 20], 'The number must be one of the allowed numbers.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `values`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'bigint',
+    'boolean',
+    'custom',
+    'date',
+    'number',
+    'string',
+    'unknown',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

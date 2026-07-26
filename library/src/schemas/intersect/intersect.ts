@@ -110,8 +110,10 @@ export function intersect(
           // If there are issues, capture them
           if (optionDataset.issues) {
             if (dataset.issues) {
-              // @ts-expect-error
-              dataset.issues.push(...optionDataset.issues);
+              for (const issue of optionDataset.issues) {
+                // @ts-expect-error
+                dataset.issues.push(issue);
+              }
             } else {
               // @ts-expect-error
               dataset.issues = optionDataset.issues;

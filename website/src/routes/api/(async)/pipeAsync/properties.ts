@@ -43,6 +43,7 @@ export const properties: Record<string, PropertyProps> = {
     modifier: 'extends',
     type: {
       type: 'array',
+      modifier: 'readonly',
       item: {
         type: 'union',
         options: [
@@ -100,6 +101,7 @@ export const properties: Record<string, PropertyProps> = {
       generics: [
         {
           type: 'tuple',
+          modifier: 'readonly',
           items: [
             {
               type: 'custom',

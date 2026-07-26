@@ -1,3 +1,3 @@
 export * from './record.ts';
 export * from './recordAsync.ts';
-export * from './types.ts';
+export type { RecordIssue } from './types.ts';

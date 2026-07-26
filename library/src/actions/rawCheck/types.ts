@@ -21,9 +21,9 @@ export interface RawCheckIssue<TInput> extends BaseIssue<TInput> {
 }
 
 /**
- * Issue info interface.
+ * Raw check issue info interface.
  */
-interface IssueInfo<TInput> {
+export interface RawCheckIssueInfo<TInput> {
   label?: string | undefined;
   input?: unknown | undefined;
   expected?: string | undefined;
@@ -33,15 +33,17 @@ interface IssueInfo<TInput> {
 }
 
 /**
- * Add issue type.
+ * Raw check add issue type.
  */
-type AddIssue<TInput> = (info?: IssueInfo<TInput>) => void;
+export type RawCheckAddIssue<TInput> = (
+  info?: RawCheckIssueInfo<TInput>
+) => void;
 
 /**
- * Context interface.
+ * Raw check context interface.
  */
-export interface Context<TInput> {
+export interface RawCheckContext<TInput> {
   readonly dataset: OutputDataset<TInput, BaseIssue<unknown>>;
   readonly config: Config<RawCheckIssue<TInput>>;
-  readonly addIssue: AddIssue<TInput>;
+  readonly addIssue: RawCheckAddIssue<TInput>;
 }

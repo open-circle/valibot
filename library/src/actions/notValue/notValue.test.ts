@@ -156,7 +156,7 @@ describe('notValue', () => {
       const nextDate = new Date(+date + 1);
       expectNoActionIssue(notValue(date), [
         new Date(+date - 1),
-        new Date(+date + 1),
+        nextDate,
         new Date(+date + 999999),
         new Date(nextDate.getTime()),
         new Date(nextDate.toISOString()),
@@ -173,8 +173,7 @@ describe('notValue', () => {
     });
 
     test('for valid non-dates', () => {
-      const date1 = new Date(10);
-      expectNoActionIssue(notValue(date1), [
+      expectNoActionIssue(notValue(new Date(10)), [
         9n,
         11n,
         9,
@@ -190,8 +189,7 @@ describe('notValue', () => {
         true,
         false,
       ]);
-      const date2 = new Date(1);
-      expectNoActionIssue(notValue(date2), [
+      expectNoActionIssue(notValue(new Date(1)), [
         0,
         0.0,
         0n,
@@ -202,8 +200,7 @@ describe('notValue', () => {
         ' ',
         false,
       ]);
-      const date3 = new Date(0);
-      expectNoActionIssue(notValue(date3), [
+      expectNoActionIssue(notValue(new Date(0)), [
         1,
         1.0,
         1n,
@@ -448,6 +445,12 @@ describe('notValue', () => {
     });
 
     test('for invalid non-strings', () => {
+      expectActionIssue(
+        notValue('123', 'message'),
+        { ...baseInfo, expected: '!"123"', requirement: '123' },
+        [123, 123.0, 123n, new Date(123)],
+        getReceived
+      );
       expectActionIssue(
         notValue('1', 'message'),
         { ...baseInfo, expected: '!"1"', requirement: '1' },

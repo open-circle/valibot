@@ -8,8 +8,7 @@ contributors:
   - fabian-hiller
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # pick
@@ -32,7 +31,7 @@ const Schema = v.pick<TSchema, TKeys>(schema, keys);
 
 ### Explanation
 
-`pick` creates modified copy of the given object `schema` that containing only the selected `keys`. It is similar to TypeScript's [`Pick`](https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys) utility type.
+`pick` creates a modified copy of the given object `schema` that contains only the selected `keys`. It is similar to TypeScript's [`Pick`](https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys) utility type.
 
 > Because `pick` changes the data type of the input and output, it is not allowed to pass a schema that has been modified by the <Link href='../pipe/'>`pipe`</Link> method, as this may cause runtime errors. Please use the <Link href='../pipe/'>`pipe`</Link> method after you have modified the schema with `pick`.
 
@@ -50,7 +49,7 @@ Schema that contains only the selected keys of an existing schema.
 
 ```ts
 const PickedSchema = v.pick(
-  object({
+  v.object({
     key1: string(),
     key2: number(),
     key3: boolean(),
@@ -107,6 +106,7 @@ The following APIs can be combined with `pick`.
     'getFallbacks',
     'is',
     'keyof',
+    'message',
     'omit',
     'parse',
     'parser',
@@ -125,7 +125,13 @@ The following APIs can be combined with `pick`.
     'check',
     'brand',
     'description',
+    'entries',
+    'flavor',
+    'guard',
+    'maxEntries',
     'metadata',
+    'minEntries',
+    'notEntries',
     'partialCheck',
     'rawCheck',
     'rawTransform',

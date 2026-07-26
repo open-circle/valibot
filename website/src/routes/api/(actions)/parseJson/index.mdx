@@ -1,0 +1,85 @@
+---
+title: parseJson
+description: Creates a JSON parse transformation action.
+source: /actions/parseJson/parseJson.ts
+contributors:
+  - EskiMojo14
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# parseJson
+
+Creates a JSON parse transformation action.
+
+```ts
+const Action = v.parseJson<TInput, TConfig, TMessage>(config, message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TConfig` <Property {...properties.TConfig} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `config` <Property {...properties.config} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `parseJson` you can parse a JSON string. If the input is not valid JSON, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `parseJson` can be used.
+
+### Parse and validate JSON
+
+Parse a JSON string and validate the result.
+
+```ts
+const StringifiedObjectSchema = v.pipe(
+  v.string(),
+  v.parseJson(),
+  v.object({ key: v.string() })
+);
+```
+
+### Parse JSON with reviver
+
+Parse a JSON string with a reviver function.
+
+```ts
+const StringifiedObjectSchema = v.pipe(
+  v.string(),
+  v.parseJson({
+    reviver: (key, value) =>
+      typeof value === 'string' ? value.toUpperCase() : value,
+  }),
+  v.object({ key: v.string() })
+);
+```
+
+## Related
+
+The following APIs can be combined with `parseJson`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

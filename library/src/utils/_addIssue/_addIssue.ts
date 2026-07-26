@@ -112,7 +112,7 @@ export function _addIssue<const TContext extends Context>(
     getGlobalMessage(issue.lang);
 
   // If custom message if specified, override default message
-  if (message) {
+  if (message !== undefined) {
     // @ts-expect-error
     issue.message =
       typeof message === 'function'

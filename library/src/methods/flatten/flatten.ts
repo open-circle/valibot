@@ -63,7 +63,7 @@ export type FlatErrors<
  * @returns A flat error object.
  */
 export function flatten(
-  issues: [BaseIssue<unknown>, ...BaseIssue<unknown>[]]
+  issues: readonly [BaseIssue<unknown>, ...BaseIssue<unknown>[]]
 ): FlatErrors<undefined>;
 
 /**
@@ -77,11 +77,13 @@ export function flatten<
   TSchema extends
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
->(issues: [InferIssue<TSchema>, ...InferIssue<TSchema>[]]): FlatErrors<TSchema>;
+>(
+  issues: readonly [InferIssue<TSchema>, ...InferIssue<TSchema>[]]
+): FlatErrors<TSchema>;
 
 // @__NO_SIDE_EFFECTS__
 export function flatten(
-  issues: [BaseIssue<unknown>, ...BaseIssue<unknown>[]]
+  issues: readonly [BaseIssue<unknown>, ...BaseIssue<unknown>[]]
 ): FlatErrors<undefined> {
   // Create flat errors object
   const flatErrors: FlatErrors<undefined> = {};
@@ -99,7 +101,7 @@ export function flatten(
           // @ts-expect-error
           flatErrors.nested = {};
         }
-        if (flatErrors.nested![dotPath]) {
+        if (Object.prototype.hasOwnProperty.call(flatErrors.nested, dotPath)) {
           flatErrors.nested![dotPath]!.push(issue.message);
         } else {
           // @ts-expect-error

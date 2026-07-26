@@ -1,0 +1,76 @@
+---
+title: parseBoolean
+description: Creates a parse boolean transformation action.
+source: /actions/parseBoolean/parseBoolean.ts
+contributors:
+  - alexilyaev
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# parseBoolean
+
+Creates a parse boolean transformation action.
+
+```ts
+const Action = v.parseBoolean<TInput, TConfig, TMessage>(config, message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TConfig` <Property {...properties.TConfig} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `config` <Property {...properties.config} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `parseBoolean` you can parse certain "boolish" values into a plain boolean value (e.g. parsing environment variables). It supports both string and non-string values and the comparison is case-insensitive for strings.
+
+By default, the truthy values are `true`, `1`, `"true"`, `"1"`, `"yes"`, `"y"`, `"on"`, and `"enabled"`. The falsy values are `false`, `0`, `"false"`, `"0"`, `"no"`, `"n"`, `"off"`, and `"disabled"`. You can override these defaults via the `config` argument.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `parseBoolean` can be used.
+
+```ts
+const EnvSchema = v.object({
+  // Default behavior
+  PROD_MODE: v.pipe(v.string(), v.parseBoolean()),
+
+  // With custom config
+  LOG_MODE: v.pipe(
+    v.string(),
+    v.parseBoolean({
+      truthy: ['verbose', 'chatty', 'record'],
+      falsy: ['silent', 'quiet', 'mute'],
+    })
+  ),
+});
+```
+
+## Related
+
+The following APIs can be combined with `parseBoolean`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

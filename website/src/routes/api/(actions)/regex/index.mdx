@@ -4,6 +4,7 @@ description: Creates a regex validation action.
 source: /actions/regex/regex.ts
 contributors:
   - fabian-hiller
+  - CanRau
 ---
 
 import { ApiList, Property } from '~/components';
@@ -31,6 +32,8 @@ const Action = v.regex<TInput, TMessage>(requirement, message);
 
 With `regex` you can validate the formatting of a string. If the input does not match the `requirement`, you can use `message` to customize the error message.
 
+> Hint: Be careful with the global flag `g` in your regex pattern, as it can lead to unexpected results. See [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test#using_test_on_a_regex_with_the_global_flag) for more information.
+
 ## Returns
 
 - `Action` <Property {...properties.Action} />
@@ -56,7 +59,7 @@ The following APIs can be combined with `regex`.
 
 ### Schemas
 
-<ApiList items={['any', 'custom', 'string', 'unknown']} />
+<ApiList items={['any', 'custom', 'string']} />
 
 ### Methods
 

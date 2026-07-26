@@ -1,0 +1,63 @@
+---
+title: toDate
+description: Creates a to date transformation action.
+source: /actions/toDate/toDate.ts
+contributors:
+  - EskiMojo14
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# toDate
+
+Creates a to date transformation action.
+
+```ts
+const Action = v.toDate<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `toDate` you can transform the input to a date. If the input cannot be transformed, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `toDate` can be used.
+
+### Date schema
+
+Schema to validate a string and transform it to a date.
+
+```ts
+const DateSchema = v.pipe(v.string(), v.toDate());
+```
+
+## Related
+
+The following APIs can be combined with `toDate`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'number', 'string', 'unknown']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

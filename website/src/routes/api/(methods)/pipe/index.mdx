@@ -1,16 +1,16 @@
 ---
 title: pipe
-description: >-
-  Adds a pipeline to a schema, that can validate and transform its input.
+description: Adds a pipeline to a schema, that can validate and transform its input.
 source: /methods/pipe/pipe.ts
 contributors:
   - fabian-hiller
-  - morinokami
+  - EltonLobo07
+  - muningis
   - jasperteo
+  - morinokami
 ---
 
-import { Link } from '@builder.io/qwik-city';
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # pipe
@@ -139,6 +139,7 @@ The following APIs can be combined with `pipe`.
     'getFallbacks',
     'is',
     'keyof',
+    'message',
     'omit',
     'parse',
     'parser',
@@ -167,16 +168,20 @@ The following APIs can be combined with `pipe`.
     'decimal',
     'description',
     'digits',
+    'domain',
     'email',
     'emoji',
     'empty',
     'endsWith',
+    'entries',
     'everyItem',
     'excludes',
     'filterItems',
     'findItem',
     'finite',
+    'flavor',
     'graphemes',
+    'gtValue',
     'hash',
     'hexadecimal',
     'hexColor',
@@ -186,18 +191,23 @@ The following APIs can be combined with `pipe`.
     'ip',
     'ipv4',
     'ipv6',
+    'isbn',
+    'isrc',
     'isoDate',
     'isoDateTime',
+    'isoDateTimeSecond',
     'isoTime',
     'isoTimeSecond',
     'isoTimestamp',
     'isoWeek',
     'length',
+    'ltValue',
     'mac',
     'mac48',
     'mac64',
     'mapItems',
     'maxBytes',
+    'maxEntries',
     'maxGraphemes',
     'maxLength',
     'maxSize',
@@ -206,6 +216,7 @@ The following APIs can be combined with `pipe`.
     'metadata',
     'mimeType',
     'minBytes',
+    'minEntries',
     'minGraphemes',
     'minLength',
     'minSize',
@@ -215,12 +226,15 @@ The following APIs can be combined with `pipe`.
     'nanoid',
     'nonEmpty',
     'notBytes',
+    'notEntries',
     'notGraphemes',
     'notLength',
     'notSize',
     'notValue',
+    'notValues',
     'notWords',
     'octal',
+    'parseJson',
     'partialCheck',
     'rawCheck',
     'rawTransform',
@@ -231,13 +245,24 @@ The following APIs can be combined with `pipe`.
     'rfcEmail',
     'safeInteger',
     'size',
+    'slug',
     'someItem',
-    'sortItem',
+    'sortItems',
     'startsWith',
+    'stringifyJson',
     'title',
+    'toBigint',
+    'toBoolean',
+    'toCamelCase',
+    'toDate',
+    'toKebabCase',
     'toLowerCase',
     'toMaxValue',
     'toMinValue',
+    'toNumber',
+    'toPascalCase',
+    'toSnakeCase',
+    'toString',
     'toUpperCase',
     'transform',
     'trim',
@@ -247,6 +272,7 @@ The following APIs can be combined with `pipe`.
     'url',
     'uuid',
     'value',
+    'values',
     'words',
   ]}
 />

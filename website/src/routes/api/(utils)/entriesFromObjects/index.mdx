@@ -1,0 +1,54 @@
+---
+title: entriesFromObjects
+description: Creates a new object entries definition from existing object schemas.
+source: /utils/entriesFromObjects/entriesFromObjects.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# entriesFromObjects
+
+Creates a new object entries definition from existing object schemas.
+
+```ts
+const entries = v.entriesFromObjects<TSchemas>(schemas);
+```
+
+## Generics
+
+- `TSchemas` <Property {...properties.TSchemas} />
+
+## Parameters
+
+- `schemas` <Property {...properties.schemas} />
+
+## Returns
+
+- `entries` <Property {...properties.entries} />
+
+## Examples
+
+The following example show how `entriesFromObjects` can be used.
+
+> Hint: The third schema of the list overwrites the `foo` and `baz` properties of the previous schemas.
+
+```ts
+const ObjectSchema = v.object(
+  v.entriesFromObjects([
+     v.object({ foo:  v.string(), bar:  v.string() });
+     v.object({ baz:  v.number(), qux:  v.number() });
+     v.object({ foo:  v.boolean(), baz:  v.boolean() });
+  ])
+);
+```
+
+## Related
+
+The following APIs can be combined with `entriesFromObjects`.
+
+### Schemas
+
+<ApiList items={['looseObject', 'object', 'objectWithRest', 'strictObject']} />
