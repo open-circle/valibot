@@ -66,6 +66,7 @@
     "wrangler": "^4.101.0"
   },
   "dependencies": {
+    "@valibot/to-json-schema": "workspace:*",
     "@valibot/zod-to-valibot": "workspace:*",
     "@vercel/speed-insights": "^1.2.0",
     "clsx": "^2.1.1",

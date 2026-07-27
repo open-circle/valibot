@@ -4,11 +4,11 @@
 
 - [Introduction](/guides/introduction/)
 - [Installation](/guides/installation/)
+- [Coding agents](/guides/coding-agents/)
 - [Quick start](/guides/quick-start/)
 - [Use cases](/guides/use-cases/)
 - [Comparison](/guides/comparison/)
 - [Ecosystem](/guides/ecosystem/)
-- [LLMs.txt](/guides/llms-txt/)
 
 ## Main concepts
 

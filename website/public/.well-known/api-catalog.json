@@ -28,6 +28,23 @@
           "title": "Documentation index for AI agents and LLMs"
         }
       ]
+    },
+    {
+      "anchor": "https://valibot.dev/mcp",
+      "service-desc": [
+        {
+          "href": "https://valibot.dev/.well-known/mcp/server-card.json",
+          "type": "application/json",
+          "title": "Valibot MCP server card"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://valibot.dev/guides/coding-agents/",
+          "type": "text/html",
+          "title": "Coding agents guide"
+        }
+      ]
     }
   ]
 }
