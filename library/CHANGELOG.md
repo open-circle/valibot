@@ -5,6 +5,7 @@ All notable changes to the library will be documented in this file.
 ## vX.X.X (Month DD, YYYY)
 
 - Add `ksuid` validation action to validate KSUIDs (pull request #1370)
+- Fix `stringifyJson` action to preserve the dataset value when `JSON.stringify` returns `undefined` (pull request #1476)
 
 ## v1.4.2 (June 28, 2026)
 
