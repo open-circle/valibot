@@ -78,6 +78,7 @@ type Action =
       string,
       v.ErrorMessage<v.JwsCompactIssue<string>> | undefined
     >
+  | v.KsuidAction<string, v.ErrorMessage<v.KsuidIssue<string>> | undefined>
   | v.LengthAction<
       v.LengthInput,
       number,
@@ -214,6 +215,7 @@ export function convertAction(
     case 'isrc':
     case 'iso_time_second':
     case 'iso_week':
+    case 'ksuid':
     case 'mac':
     case 'mac48':
     case 'mac64':

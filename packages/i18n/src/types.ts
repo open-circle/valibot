@@ -26,6 +26,7 @@ export type Language = {
     | 'pt'
     | 'ro'
     | 'ru'
+    | 'rw'
     | 'sk'
     | 'sl'
     | 'sv'

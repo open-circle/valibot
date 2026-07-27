@@ -24,6 +24,23 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should encode definition key as JSON Pointer in reference', () => {
+      const schema = v.string();
+      expect(
+        convertSchema(
+          {},
+          schema,
+          undefined,
+          createContext({
+            definitions: { 'Shared/User~': { type: 'string' } },
+            referenceMap: new Map().set(schema, 'Shared/User~'),
+          })
+        )
+      ).toStrictEqual({
+        $ref: '#/$defs/Shared~1User~0',
+      });
+    });
+
     test('should skip definition if specified', () => {
       const stringSchema = v.string();
       expect(
