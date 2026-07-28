@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://storage.googleapis.com/coderabbit_public_assets/schema.v2.json
+
+reviews:
+  profile: chill
+
+  path_filters:
+    - "!**/dist/**"
+    - "!**/coverage/**"
+    - "!**/node_modules/**"
+    - "!pnpm-lock.yaml"
+    - "!**/*.snap"
+
+  # Path-specific review directives. The underlying guideline content (AGENTS.md
+  # and the /.agents/skills/*/SKILL.md files) is loaded via knowledge_base.code_guidelines
+  # below, so these instructions tell the reviewer *what to check*, not repeat the rules.
+  path_instructions:
+    - path: "library/src/**/*.ts"
+      instructions: >-
+        Review against AGENTS.md and the repo-source-code-review /
+        repo-source-code-document skills. Specifically check: (1) `interface` is
+        used for object shapes, `type` only for unions/aliases; (2) all relative
+        imports use the `.ts` extension; (3) `// @__NO_SIDE_EFFECTS__` immediately
+        precedes every pure factory function (schema/action/method creators) and is
+        absent from functions that mutate arguments or perform I/O; (4) every
+        exported function/interface has complete JSDoc — one full JSDoc block per
+        overload, `@param`/`@returns` documented, first line matches the kind
+        (`Creates a ... schema.` / `Creates a ... validation action.` /
+        `Creates a ... transformation action.`); (5) each schema/action/method lives
+        in its own folder with `name.ts`, `name.test.ts`, `name.test-d.ts`, and
+        `index.ts`; (6) no new runtime dependency is introduced. Flag any deviation
+        as a required change, not a nitpick.
+    - path: "library/src/**/*.test.ts"
+      instructions: >-
+        Verify runtime test coverage per the repo-source-code-review skill: success
+        cases, failure cases, and edge cases are all covered, and assertions check
+        the exact issue structure/messages produced, not just that validation
+        failed.
+    - path: "library/src/**/*.test-d.ts"
+      instructions: >-
+        Verify type-level coverage per the repo-source-code-review skill: tests use
+        `expectTypeOf` to validate inferred input/output/issue types for every
+        overload, including generic constraint edge cases.
+    - path: "website/src/routes/api/**/*.mdx"
+      instructions: >-
+        Review against the repo-website-api-create / repo-website-api-update
+        skills. Check: frontmatter has title/description/source/contributors (type
+        pages omit `source`); the signature and generics match `/library/src/`
+        exactly; every generic and parameter is documented via the `Property`
+        component; the `## Related` section lists only genuinely related APIs
+        (usable together in a `pipe`, or as each other's argument) ordered Schemas →
+        Methods → Actions → Utils; error-message examples are friendly and
+        actionable, never "Invalid"/"Error"; `menu.md` is updated alphabetically for
+        new pages.
+    - path: "website/src/routes/api/**/properties.ts"
+      instructions: >-
+        Verify property definitions match the corresponding source file in
+        `/library/src/` exactly, including generic constraints. Optional object
+        keys (`key?: T`) must keep the plain key name and be modeled as a union
+        with `undefined` as the last option — never append `?` to the key.
+    - path: "website/src/routes/guides/**/*.mdx"
+      instructions: >-
+        Review against the repo-website-guide-create skill. Check: frontmatter has
+        title/description/contributors; prose is conversational, first-person
+        plural ("we recommend"), not terse reference style; bold is not used as an
+        inline section label (e.g. no `**Note:** ...`) — a subheading or plain `>`
+        blockquote is used instead; internal links use the `Link` component; code
+        examples import as `import * as v from 'valibot';`; the page is added to
+        `menu.md`.
+    - path: "**/*.ts"
+      instructions: >-
+        Confirm ESM import style: all relative imports, including type-only
+        imports, include the `.ts` extension, as required by AGENTS.md and
+        enforced by ESLint.
+
+  auto_review:
+    enabled: true
+    drafts: false
+
+knowledge_base:
+  opt_out: false
+
+  # Feed the repo's own coding standards into every review instead of duplicating
+  # them in path_instructions. AGENTS.md is the file CLAUDE.md symlinks to.
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "AGENTS.md"
+      - "CONTRIBUTING.md"
+      - files: ".agents/skills/repo-source-code-document/SKILL.md,.agents/skills/repo-source-code-review/SKILL.md,.agents/skills/repo-structure-navigate/SKILL.md"
+        applyTo: "library/src/**,packages/*/src/**"
+      - files: ".agents/skills/repo-website-api-create/SKILL.md,.agents/skills/repo-website-api-update/SKILL.md"
+        applyTo: "website/src/routes/api/**"
+      - files: ".agents/skills/repo-website-guide-create/SKILL.md"
+        applyTo: "website/src/routes/guides/**"
+
+  # Actively use this repo's history as review context.
+  learnings:
+    scope: auto
+    approval_delay: 0
+  issues:
+    scope: auto
+  pull_requests:
+    scope: auto
