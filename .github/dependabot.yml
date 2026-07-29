@@ -39,6 +39,9 @@ updates:
       prefix: "dependabot"
     groups:
       github-actions:
+        update-types:
+          - "patch"
+          - "minor"
         patterns:
           - '*'
     ignore:
