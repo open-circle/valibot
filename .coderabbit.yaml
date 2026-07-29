@@ -1,7 +1,25 @@
-# yaml-language-server: $schema=https://storage.googleapis.com/coderabbit_public_assets/schema.v2.json
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 
 reviews:
   profile: chill
+  collapse_walkthrough: false
+  changed_files_summary: false
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  suggested_labels: false
+  in_progress_fortune: false
+
+  finishing_touches:
+    docstrings:
+      enabled: false
+    unit_tests:
+      enabled: false
+
+  tools:
+    fbinfer:
+      enabled: false
+    presidio:
+      enabled: false
 
   path_filters:
     - "!**/dist/**"
@@ -101,3 +119,6 @@ knowledge_base:
     scope: auto
   pull_requests:
     scope: auto
+
+chat:
+  art: false
