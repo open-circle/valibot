@@ -1,7 +1,12 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: /
+    directories:
+      - "/"
+      - "/library"
+      - "/packages/*"
+      - "/website"
+      - "/codemod/*"
     schedule:
       interval: weekly
       day: "saturday"
