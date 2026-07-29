@@ -18,6 +18,9 @@ updates:
       prefix: "dependabot"
     groups:
       npm-deps:
+        update-types:
+          - "patch"
+          - "minor"
         patterns:
           - "*"
     ignore:
