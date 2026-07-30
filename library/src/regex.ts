@@ -39,7 +39,7 @@ export const DOMAIN_REGEX: RegExp =
  * [Email address](https://en.wikipedia.org/wiki/Email_address) regex.
  */
 export const EMAIL_REGEX: RegExp =
-  // eslint-disable-next-line regexp/require-unicode-regexp, redos-detector/no-unsafe-regex -- false positive (recheck). Intentionally omit /u because /iu makes \w match some non-ASCII chars via Unicode case-folding (e.g. K, ſ).
+  // eslint-disable-next-line regexp/require-unicode-regexp, redos-detector/no-unsafe-regex -- false positive (recheck playground says this is safe). Intentionally omit /u because /iu makes \w match some non-ASCII chars via Unicode case-folding (e.g. K, ſ).
   /^[\w+-]+(?:\.[\w+-]+)*@[\da-z]+(?:[.-][\da-z]+)*\.[a-z]{2,}$/i;
 
 /**
