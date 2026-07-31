@@ -9,7 +9,7 @@ export const DiscordIconLink = component$(() => (
   <SystemIcon
     label="Join our Discord server"
     type="link"
-    href="https://discord.gg/tkMjQACf2P"
+    href="https://discord.gg/w5mRTETqzv"
     target="_blank"
   >
     <DiscordIcon class="h-full" />
