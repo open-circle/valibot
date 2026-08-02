@@ -3,7 +3,12 @@ import type {
   BaseValidation,
   ErrorMessage,
 } from '../../types/index.ts';
-import { _addIssue, _joinExpects, _stringify } from '../../utils/index.ts';
+import {
+  _addIssue,
+  _joinExpects,
+  _sameValueZero,
+  _stringify,
+} from '../../utils/index.ts';
 import type { ValueInput } from '../types.ts';
 
 /**
@@ -120,7 +125,9 @@ export function notValues(
       if (
         dataset.typed &&
         this.requirement.some(
-          (value) => value <= dataset.value && value >= dataset.value
+          (value) =>
+            _sameValueZero(value, dataset.value) ||
+            (value <= dataset.value && value >= dataset.value)
         )
       ) {
         _addIssue(this, 'value', dataset, config, {
