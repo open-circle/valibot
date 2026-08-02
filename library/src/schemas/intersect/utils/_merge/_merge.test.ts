@@ -44,7 +44,9 @@ describe('_merge', () => {
       const invalidDate = new Date(NaN);
       const result = _merge(invalidDate, new Date(NaN));
       expect(result.issue).toBeUndefined();
-      expect(Number.isNaN(+(result as { value: Date }).value)).toBe(true);
+      const value = (result as { value: Date }).value;
+      expect(value).toBeInstanceOf(Date);
+      expect(Number.isNaN(+value)).toBe(true);
     });
 
     test('for valid objects', () => {
