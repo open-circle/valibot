@@ -77,22 +77,40 @@ describe('_merge', () => {
     });
 
     test('for NaN primitives', () => {
-      // NaN === NaN is false in JavaScript, but Object.is(NaN, NaN) is true.
-      // Two NaN values represent the same "not a number" state and must merge.
+      // `NaN === NaN` is false in JavaScript, but SameValueZero treats `NaN` as
+      // equal to itself. Two NaN values represent the same "not a number" state
+      // and must merge.
       const result = _merge(NaN, NaN);
       expect(result.issue).toBeUndefined();
       expect(Number.isNaN((result as { value: unknown }).value)).toBe(true);
     });
 
     test('for invalid Date objects with NaN timestamp', () => {
-      // new Date(NaN) is an invalid date. Two invalid dates are equal under
-      // Object.is(+invalidDate, +invalidDate) === Object.is(NaN, NaN) === true.
+      // `new Date(NaN)` is an invalid date with a NaN timestamp, so two invalid
+      // dates are equal under SameValueZero and must merge.
       const invalidDate = new Date(NaN);
       const result = _merge(invalidDate, new Date(NaN));
       expect(result.issue).toBeUndefined();
-      expect(
-        Number.isNaN(+(result as { value: unknown }).value as number)
-      ).toBe(true);
+      expect(Number.isNaN(+(result as { value: Date }).value)).toBe(true);
+    });
+
+    test('for zero values with different signs', () => {
+      // Unlike `Object.is`, SameValueZero treats `-0` and `+0` as equal, so
+      // they merge to the first value instead of reporting an issue.
+      const result1 = _merge(-0, 0);
+      expect(result1.issue).toBeUndefined();
+      expect(Object.is((result1 as { value: unknown }).value, -0)).toBe(true);
+      const result2 = _merge(0, -0);
+      expect(result2.issue).toBeUndefined();
+      expect(Object.is((result2 as { value: unknown }).value, 0)).toBe(true);
+    });
+
+    test('for Date objects with zero timestamps of different signs', () => {
+      // `new Date(-0)` and `new Date(0)` describe the same instant, so the
+      // Date branch must stay consistent with the primitive branch.
+      const result = _merge(new Date(-0), new Date(0));
+      expect(result.issue).toBeUndefined();
+      expect(+(result as { value: Date }).value).toBe(0);
     });
   });
 
@@ -101,13 +119,6 @@ describe('_merge', () => {
       expect(_merge(1, 2)).toStrictEqual({ issue: true });
       expect(_merge('foo', 'bar')).toStrictEqual({ issue: true });
       expect(_merge(1, 'foo')).toStrictEqual({ issue: true });
-    });
-
-    test('for mismatched zero values', () => {
-      // Object.is(-0, +0) is false, so -0 and +0 are distinct values that
-      // cannot be merged without losing information.
-      expect(_merge(-0, 0)).toStrictEqual({ issue: true });
-      expect(_merge(0, -0)).toStrictEqual({ issue: true });
     });
 
     test('for invalid dates', () => {
