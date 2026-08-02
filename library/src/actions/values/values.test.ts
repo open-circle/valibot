@@ -213,6 +213,10 @@ describe('values', () => {
       expectNoActionIssue(values([0]), [0]);
     });
 
+    test('for valid NaN', () => {
+      expectNoActionIssue(values([NaN]), [NaN, Number.NaN]);
+    });
+
     test('for valid non-numbers', () => {
       expectNoActionIssue(values([-123, 456]), [
         -123n,

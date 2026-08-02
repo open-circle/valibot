@@ -4,7 +4,12 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps, _stringify } from '../../utils/index.ts';
+import {
+  _addIssue,
+  _getStandardProps,
+  _sameValueZero,
+  _stringify,
+} from '../../utils/index.ts';
 
 /**
  * Literal type.
@@ -95,7 +100,7 @@ export function literal(
       return _getStandardProps(this);
     },
     '~run'(dataset, config) {
-      if (dataset.value === this.literal) {
+      if (_sameValueZero(dataset.value, this.literal)) {
         // @ts-expect-error
         dataset.typed = true;
       } else {

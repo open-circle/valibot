@@ -558,6 +558,14 @@ describe('notValues', () => {
       );
     });
 
+    test('for invalid NaN', () => {
+      expectActionIssue(
+        notValues([NaN], 'message'),
+        { ...baseInfo, expected: '!NaN', requirement: [NaN] },
+        [NaN, Number.NaN]
+      );
+    });
+
     test('for invalid non-numbers', () => {
       expectActionIssue(
         notValues([10, 11, 12], 'message'),
