@@ -7,6 +7,7 @@ export * from './_getGraphemeCount/index.ts';
 export * from './_getLastMetadata/index.ts';
 export * from './_getWordCount/index.ts';
 export * from './_isLuhnAlgo/index.ts';
+export * from './_isValueRequirementMatch/index.ts';
 export * from './_isValidObjectKey/index.ts';
 export * from './_joinExpects/index.ts';
 export * from './_isSameValueZero/index.ts';
