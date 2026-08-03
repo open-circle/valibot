@@ -1,4 +1,4 @@
-import { _sameValueZero } from '../../../../utils/index.ts';
+import { _isSameValueZero } from '../../../../utils/index.ts';
 
 /**
  * Merge dataset type.
@@ -23,10 +23,10 @@ export function _merge(value1: unknown, value2: unknown): MergeDataset {
   if (typeof value1 === typeof value2) {
     // Return first value if both are equal
     if (
-      _sameValueZero(value1, value2) ||
+      _isSameValueZero(value1, value2) ||
       (value1 instanceof Date &&
         value2 instanceof Date &&
-        _sameValueZero(+value1, +value2))
+        _isSameValueZero(+value1, +value2))
     ) {
       return { value: value1 };
     }

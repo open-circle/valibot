@@ -10,6 +10,6 @@
  * @internal
  */
 // @__NO_SIDE_EFFECTS__
-export function _sameValueZero(value1: unknown, value2: unknown): boolean {
+export function _isSameValueZero(value1: unknown, value2: unknown): boolean {
   return value1 === value2 || (Number.isNaN(value1) && Number.isNaN(value2));
 }

@@ -6,7 +6,7 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _sameValueZero,
+  _isSameValueZero,
   _standardSchema,
   _stringify,
 } from '../../utils/index.ts';
@@ -97,7 +97,7 @@ export function literal(
     literal: literal_,
     message,
     '~run'(dataset, config) {
-      if (_sameValueZero(dataset.value, this.literal)) {
+      if (_isSameValueZero(dataset.value, this.literal)) {
         // @ts-expect-error
         dataset.typed = true;
       } else {
