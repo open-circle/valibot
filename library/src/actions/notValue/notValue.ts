@@ -3,7 +3,7 @@ import type {
   BaseValidation,
   ErrorMessage,
 } from '../../types/index.ts';
-import { _addIssue, _sameValueZero, _stringify } from '../../utils/index.ts';
+import { _addIssue, _isSameValueZero, _stringify } from '../../utils/index.ts';
 import type { ValueInput } from '../types.ts';
 
 /**
@@ -117,7 +117,7 @@ export function notValue(
     '~run'(dataset, config) {
       if (
         dataset.typed &&
-        (_sameValueZero(this.requirement, dataset.value) ||
+        (_isSameValueZero(this.requirement, dataset.value) ||
           (this.requirement <= dataset.value &&
             this.requirement >= dataset.value))
       ) {

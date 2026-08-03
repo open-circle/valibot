@@ -7,7 +7,7 @@ import type {
 import {
   _addIssue,
   _getStandardProps,
-  _sameValueZero,
+  _isSameValueZero,
   _stringify,
 } from '../../utils/index.ts';
 
@@ -100,7 +100,7 @@ export function literal(
       return _getStandardProps(this);
     },
     '~run'(dataset, config) {
-      if (_sameValueZero(dataset.value, this.literal)) {
+      if (_isSameValueZero(dataset.value, this.literal)) {
         // @ts-expect-error
         dataset.typed = true;
       } else {

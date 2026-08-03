@@ -6,7 +6,7 @@ import type {
 import {
   _addIssue,
   _joinExpects,
-  _sameValueZero,
+  _isSameValueZero,
   _stringify,
 } from '../../utils/index.ts';
 import type { ValueInput } from '../types.ts';
@@ -126,7 +126,7 @@ export function notValues(
         dataset.typed &&
         this.requirement.some(
           (value) =>
-            _sameValueZero(value, dataset.value) ||
+            _isSameValueZero(value, dataset.value) ||
             (value <= dataset.value && value >= dataset.value)
         )
       ) {
