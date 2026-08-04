@@ -66,7 +66,8 @@ export interface RfcTimeAction<
  *
  * Format: `hh:mm:ss[.fffffffff](Z|±hh:mm)`
  *
- * Supports leap-second `:60` (only valid at `23:59:60Z` per RFC 3339 §5.6).
+ * Supports leap-second `:60` when its local time maps to `23:59:60Z` (the
+ * offset, if present, is applied before validating the leap second).
  *
  * @returns An RFC time action.
  */
@@ -115,7 +116,13 @@ export function rfcTime(
         }
 
         if (sec === 60) {
-          if (hr !== 23 || min !== 59 || value.toUpperCase().indexOf('Z') === -1) {
+          const offset =
+            match[5].toUpperCase() === 'Z'
+              ? 0
+              : (match[5].startsWith('+') ? 1 : -1) *
+                (Number(match[5].slice(1, 3)) * 60 +
+                  Number(match[5].slice(4, 6)));
+          if ((hr * 60 + min - offset + 1440) % 1440 !== 23 * 60 + 59) {
             _addIssue(this, 'time', dataset, config);
             return dataset;
           }
