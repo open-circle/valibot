@@ -16,8 +16,11 @@ export function _isValueRequirementMatch(
   requirement: ValueInput,
   value: ValueInput
 ): boolean {
+  const isInvalidDate =
+    requirement instanceof Date && Number.isNaN(+requirement);
+
   return (
-    _isSameValueZero(requirement, value) ||
+    (!isInvalidDate && _isSameValueZero(requirement, value)) ||
     (requirement <= value && requirement >= value)
   );
 }

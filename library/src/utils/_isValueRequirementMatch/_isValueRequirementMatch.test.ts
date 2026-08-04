@@ -15,6 +15,11 @@ describe('_isValueRequirementMatch', () => {
     expect(_isValueRequirementMatch(NaN, 0)).toBe(false);
     expect(_isValueRequirementMatch(123, '456')).toBe(false);
     expect(_isValueRequirementMatch(new Date(123), new Date(456))).toBe(false);
-    expect(_isValueRequirementMatch(new Date(NaN), new Date(NaN))).toBe(false);
+  });
+
+  test('should return false for invalid dates', () => {
+    const invalidDate = new Date(NaN);
+    expect(_isValueRequirementMatch(invalidDate, invalidDate)).toBe(false);
+    expect(_isValueRequirementMatch(invalidDate, new Date(NaN))).toBe(false);
   });
 });
