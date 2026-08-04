@@ -16,6 +16,7 @@ export function _isValueRequirementMatch(
   requirement: ValueInput,
   value: ValueInput
 ): boolean {
+  // requirement.getTime() is NaN for Invalid Date
   if (requirement instanceof Date && Number.isNaN(requirement.getTime())) {
     return false;
   }
