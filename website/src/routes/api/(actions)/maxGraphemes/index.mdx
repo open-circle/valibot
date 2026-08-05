@@ -37,9 +37,9 @@ const Action = v.maxGraphemes<TInput, TRequirement, TMessage>(
 
 With `maxGraphemes` you can validate the graphemes of a string. If the input does not match the `requirement`, you can use `message` to customize the error message.
 
-> If you are looking for an equivalent of JavaScript's `.length` for maximum length checks, use <Link href="../maxLength/">`maxLength`</Link> instead.
+> If you are looking for an equivalent of JavaScript's `.length` for maximum length checks, use <Link href="../maxLength/">`maxLength`</Link> instead. If you want to count every Unicode code point as one character for e.g. the password requirement by [NIST SP 800-63B](https://pages.nist.gov/800-63-4/sp800-63b.html#passwordver) or are looking for an equivalent of `LENGTH()` of open source RDBMSes like PostgreSQL, use <Link href="../maxCodePoints/">`maxCodePoints`</Link> instead.
 
-> Hint: The number of characters per grapheme is not limited. You may want to consider combining `maxGraphemes` with <Link href="../maxLength/">`maxLength`</Link> or <Link href="../maxBytes/">`maxBytes`</Link> to set a stricter limit.
+> Hint: The number of characters per grapheme is not limited. You may want to consider combining `maxGraphemes` with <Link href="../maxLength/">`maxLength`</Link>, <Link href="../maxCodePoints/">`maxCodePoints`</Link>, or <Link href="../maxBytes/">`maxBytes`</Link> to set a stricter limit.
 
 ## Returns
 

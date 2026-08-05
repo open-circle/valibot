@@ -5,6 +5,7 @@ source: /actions/graphemes/graphemes.ts
 contributors:
   - fabian-hiller
   - yslpn
+  - tats-u
 ---
 
 import { ApiList, Link, Property } from '~/components';
@@ -36,7 +37,7 @@ const Action = v.graphemes<TInput, TRequirement, TMessage>(
 
 With `graphemes` you can validate the graphemes of a string. If the input does not match the `requirement`, you can use `message` to customize the error message.
 
-> If you are looking for an equivalent of JavaScript's `.length`, use <Link href="../length/">`length`</Link> instead.
+> If you are looking for an equivalent of JavaScript's `.length`, use <Link href="../length/">`length`</Link> instead. If you need to count every Unicode code point including a supplementary code point, which requires 2 characters to be represented in JavaScript's string, as one character use <Link href="../codePoints/">`codePoints`</Link> instead.
 
 ## Returns
 
