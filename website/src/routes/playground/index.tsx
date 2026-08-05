@@ -5,7 +5,6 @@ import {
   type QRL,
   type Signal,
   sync$,
-  useComputed$,
   useSignal,
   useVisibleTask$,
 } from '@builder.io/qwik';
@@ -51,9 +50,8 @@ export const head: DocumentHead = {
 };
 
 export default component$(() => {
-  // Use navigate, location and side bar toggle
+  // Use navigate and side bar toggle
   const navigate = useNavigate();
-  const location = useLocation();
   const toggle = useSideBarToggle();
 
   // Use editor and side bar elements signals
@@ -69,10 +67,16 @@ export default component$(() => {
   const logsElement = useSignal<HTMLOListElement>();
   const lastLogElement = useSignal<Element | null>();
 
-  // Computed initial code of editor
-  const initialCode = useComputed$(() => {
-    const code = location.url.searchParams.get('code');
-    return code ? lz.decompressFromEncodedURIComponent(code) : editorCode;
+  // Use initial code of editor signal
+  const initialCode = useSignal(editorCode);
+
+  // Get initial code of editor from search params
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(() => {
+    const code = new URLSearchParams(window.location.search).get('code');
+    if (code) {
+      initialCode.value = lz.decompressFromEncodedURIComponent(code);
+    }
   });
 
   /**
