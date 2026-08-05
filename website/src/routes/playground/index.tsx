@@ -75,7 +75,8 @@ export default component$(() => {
   useVisibleTask$(() => {
     const code = new URLSearchParams(window.location.search).get('code');
     if (code) {
-      initialCode.value = lz.decompressFromEncodedURIComponent(code);
+      initialCode.value =
+        lz.decompressFromEncodedURIComponent(code) || editorCode;
     }
   });
 
