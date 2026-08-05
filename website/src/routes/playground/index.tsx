@@ -76,7 +76,8 @@ export default component$(() => {
     const code = new URLSearchParams(window.location.search).get('code');
     if (code) {
       initialCode.value =
-        lz.decompressFromEncodedURIComponent(code) || editorCode;
+        lz.decompressFromEncodedURIComponent(code) ||
+        '// Failed to load the shared code. The link may be corrupted or incomplete.';
     }
   });
 
