@@ -98,7 +98,7 @@ knowledge_base:
   opt_out: false
 
   # Feed the repo's own coding standards into every review instead of duplicating
-  # them in path_instructions. AGENTS.md is the file CLAUDE.md symlinks to.
+  # them in path_instructions. AGENTS.md is the canonical guideline file for this repository.
   code_guidelines:
     enabled: true
     filePatterns:
