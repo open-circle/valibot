@@ -29,7 +29,7 @@ gh issue view <number> --json number,title,body,state,url,author,labels,comments
 gh label list --limit 100 --json name,description
 ```
 
-Create `tmp/triage/gh-<number>/report.md`. If the triage directory already exists from an earlier run, resume it and append instead of overwriting earlier findings. For an offline investigation without an issue number, derive a short sanitized slug from the topic, use `tmp/triage/offline-<slug>/` everywhere `tmp/triage/gh-<number>/` appears, substitute the slug for `<number>` in temporary test filenames and commands, skip live label lookups and other GitHub-only steps, and deliver the recommendation — including any draft comment — to the user instead of preparing GitHub writes. Keep these sections in order and append evidence without rewriting earlier phase findings:
+Create `tmp/triage/gh-<number>/report.md`. When triaging a repository other than the current checkout, include the repository in the directory name, such as `tmp/triage/<owner>-<repo>-<number>/`. If the triage directory already exists from an earlier run, confirm its recorded issue URL matches, then resume it and append instead of overwriting earlier findings. For an offline investigation without an issue number, derive a short sanitized slug from the topic, use `tmp/triage/offline-<slug>/` everywhere `tmp/triage/gh-<number>/` appears, substitute the slug for `<number>` in temporary test filenames and commands, skip live label lookups and other GitHub-only steps, and deliver the recommendation — including any draft comment — to the user instead of preparing GitHub writes. Keep these sections in order and append evidence without rewriting earlier phase findings:
 
 1. **Intake** — issue URL, last reviewed update, category, affected package, current labels, observed behavior, expected behavior, environment, and missing facts.
 2. **Reproduction** — baseline commit/branch, exact code and commands, observed/expected output, control case, outcome, and limitations.
@@ -84,7 +84,7 @@ Base the result on `report.md` and present:
 
 1. A concise triage summary: category, reproduction outcome, limitations, and — when those phases ran — the causal code path with file/line references and commit, verdict, and confidence.
 2. Minimal label changes using the live label list. Preserve unrelated labels and recommend removal only for a label made contradictory or obsolete by the evidence.
-3. An issue state recommendation: keep open, close as completed, close as not planned, close as duplicate of the canonical issue, or no change, with a reason.
+3. An issue state recommendation: keep open, close as completed, close as not planned, close as duplicate of the canonical issue, reopen, or no change, with a reason.
 4. A ready-to-post comment in a direct maintainer voice. State verified facts, the next step, and any requested information. Include a workaround when confirmed. Do not expose internal logs, local paths, secrets, speculation, or AI boilerplate.
 
 Use current Valibot issue-label semantics as guidance, but verify every name live:
@@ -119,6 +119,7 @@ gh issue comment <number> --body-file tmp/triage/gh-<number>/comment.md
 gh issue edit <number> --add-label "<label>" --remove-label "<label>"
 gh issue close <number> --reason completed
 gh issue close <number> --duplicate-of <canonical-number>
+gh issue reopen <number>
 ```
 
 Run only the operations the user approved.
