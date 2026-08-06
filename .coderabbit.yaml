@@ -104,8 +104,13 @@ knowledge_base:
     filePatterns:
       - "AGENTS.md"
       - "CONTRIBUTING.md"
-      - files: ".agents/skills/repo-source-code-document/SKILL.md,.agents/skills/repo-source-code-review/SKILL.md,.agents/skills/repo-structure-navigate/SKILL.md"
-        applyTo: "library/src/**,packages/*/src/**"
+      - files:
+          - ".agents/skills/repo-source-code-document/SKILL.md"
+          - ".agents/skills/repo-source-code-review/SKILL.md"
+          - ".agents/skills/repo-structure-navigate/SKILL.md"
+        applyTo:
+          - "library/src/**"
+          - "packages/*/src/**"
       - files: ".agents/skills/repo-website-api-create/SKILL.md,.agents/skills/repo-website-api-update/SKILL.md"
         applyTo: "website/src/routes/api/**"
       - files: ".agents/skills/repo-website-guide-create/SKILL.md"
