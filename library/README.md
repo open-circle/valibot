@@ -91,4 +91,4 @@ I am completely free and licensed under the [MIT license](https://github.com/ope
 [jsr-image]: https://jsr.io/badges/@valibot/valibot?style=flat-square
 [jsr-url]: https://jsr.io/@valibot/valibot
 [discord-image]: https://img.shields.io/discord/1252985447273992222?label=Discord&style=flat-square
-[discord-url]: https://discord.gg/tkMjQACf2P
+[discord-url]: https://discord.gg/w5mRTETqzv

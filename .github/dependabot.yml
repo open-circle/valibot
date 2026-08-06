@@ -1,15 +1,51 @@
 version: 2
 updates:
+  - package-ecosystem: npm
+    directories:
+      - "/"
+      - "/library"
+      - "/packages/*"
+      - "/website"
+      - "/codemod/*"
+    schedule:
+      interval: weekly
+      day: "saturday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "dependabot"
+    groups:
+      npm-deps:
+        update-types:
+          - "patch"
+          - "minor"
+        patterns:
+          - "*"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: monthly
+      interval: weekly
+      day: "saturday"
+      time: "09:00"
     cooldown:
       default-days: 7
     commit-message:
       prefix: "dependabot"
     groups:
       github-actions:
+        update-types:
+          - "patch"
+          - "minor"
         patterns:
           - '*'
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
 
