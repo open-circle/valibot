@@ -681,6 +681,48 @@ describe('convertAction', () => {
     });
   });
 
+  test('should intersect code points length constraints', () => {
+    const minSchema = convertAction(
+      { type: 'string' },
+      v.minCodePoints<string, 3>(3),
+      undefined
+    );
+    expect(
+      convertAction(minSchema, v.codePoints<string, 2>(2), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      minLength: 3,
+      maxLength: 2,
+    });
+
+    const maxSchema = convertAction(
+      { type: 'string' },
+      v.maxCodePoints<string, 3>(3),
+      undefined
+    );
+    expect(
+      convertAction(maxSchema, v.codePoints<string, 5>(5), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      minLength: 5,
+      maxLength: 3,
+    });
+  });
+
+  test('should preserve multiple not constraints', () => {
+    const notValueSchema = convertAction(
+      { type: 'string' },
+      v.notValue<v.ValueInput, 0>(0),
+      undefined
+    );
+    expect(
+      convertAction(notValueSchema, v.notCodePoints<string, 3>(3), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      allOf: [{ not: { const: 0 } }, { not: { minLength: 3, maxLength: 3 } }],
+    });
+  });
+
   test('should throw error for code points actions with invalid type', () => {
     const actions = [
       v.codePoints<string, 3>(3),

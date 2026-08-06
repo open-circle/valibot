@@ -2,6 +2,9 @@ import type * as v from 'valibot';
 import type { ConversionConfig, JsonSchema } from '../../types/index.ts';
 import {
   addError,
+  addMaxLength,
+  addMinLength,
+  addNot,
   escapeRegExp,
   handleError,
   isJsonConstValue,
@@ -287,7 +290,7 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        jsonSchema.maxLength = 0;
+        addMaxLength(jsonSchema, 0);
       }
       break;
     }
@@ -349,8 +352,8 @@ export function convertAction(
           `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
         );
       }
-      jsonSchema.minLength = valibotAction.requirement;
-      jsonSchema.maxLength = valibotAction.requirement;
+      addMinLength(jsonSchema, valibotAction.requirement);
+      addMaxLength(jsonSchema, valibotAction.requirement);
       break;
     }
 
@@ -408,8 +411,8 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        jsonSchema.minLength = valibotAction.requirement;
-        jsonSchema.maxLength = valibotAction.requirement;
+        addMinLength(jsonSchema, valibotAction.requirement);
+        addMaxLength(jsonSchema, valibotAction.requirement);
       }
       break;
     }
@@ -444,7 +447,7 @@ export function convertAction(
           `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
         );
       }
-      jsonSchema.maxLength = valibotAction.requirement;
+      addMaxLength(jsonSchema, valibotAction.requirement);
       break;
     }
 
@@ -458,7 +461,7 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        jsonSchema.maxLength = valibotAction.requirement;
+        addMaxLength(jsonSchema, valibotAction.requirement);
       }
       break;
     }
@@ -506,7 +509,7 @@ export function convertAction(
           `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
         );
       }
-      jsonSchema.minLength = valibotAction.requirement;
+      addMinLength(jsonSchema, valibotAction.requirement);
       break;
     }
 
@@ -520,7 +523,7 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        jsonSchema.minLength = valibotAction.requirement;
+        addMinLength(jsonSchema, valibotAction.requirement);
       }
       break;
     }
@@ -551,7 +554,7 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        jsonSchema.minLength = 1;
+        addMinLength(jsonSchema, 1);
       }
       break;
     }
@@ -563,10 +566,10 @@ export function convertAction(
           `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
         );
       }
-      jsonSchema.not = {
+      addNot(jsonSchema, {
         minLength: valibotAction.requirement,
         maxLength: valibotAction.requirement,
-      };
+      });
       break;
     }
 
@@ -579,9 +582,9 @@ export function convertAction(
         break;
       }
       if (config?.target === 'openapi-3.0') {
-        jsonSchema.not = { enum: [valibotAction.requirement] };
+        addNot(jsonSchema, { enum: [valibotAction.requirement] });
       } else {
-        jsonSchema.not = { const: valibotAction.requirement };
+        addNot(jsonSchema, { const: valibotAction.requirement });
       }
       break;
     }
@@ -594,7 +597,7 @@ export function convertAction(
         );
         break;
       }
-      jsonSchema.not = { enum: valibotAction.requirement };
+      addNot(jsonSchema, { enum: valibotAction.requirement });
       break;
     }
 
