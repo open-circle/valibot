@@ -40,8 +40,8 @@ reviews:
         imports use the `.ts` extension; (3) `// @__NO_SIDE_EFFECTS__` immediately
         precedes every pure factory function (schema/action/method creators) and is
         absent from functions that mutate arguments or perform I/O; (4) every
-        exported function/interface has complete JSDoc — one full JSDoc block per
-        overload, `@param`/`@returns` documented, first line matches the kind
+        exported function/interface has complete JSDoc — first overload only for
+        overload sets, `@param`/`@returns` documented, first line matches the kind
         (`Creates a ... schema.` / `Creates a ... validation action.` /
         `Creates a ... transformation action.`); (5) each schema/action/method lives
         in its own folder with `name.ts`, `name.test.ts`, `name.test-d.ts`, and
