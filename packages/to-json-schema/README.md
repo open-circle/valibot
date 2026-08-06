@@ -58,6 +58,7 @@ This package is particularly popular for:
 | --------------- | ------ | ----------------------------------------------------------- |
 | `base64`        | ✅     |                                                             |
 | `bic`           | ✅     |                                                             |
+| `codePoints`    | ✅     |                                                             |
 | `cuid2`         | ✅     |                                                             |
 | `decimal`       | ✅     |                                                             |
 | `description`   | ✅     |                                                             |
@@ -91,16 +92,19 @@ This package is particularly popular for:
 | `mac`           | ✅     |                                                             |
 | `mac48`         | ✅     |                                                             |
 | `mac64`         | ✅     |                                                             |
+| `maxCodePoints` | ✅     |                                                             |
 | `maxEntries`    | ✅     |                                                             |
 | `maxLength`     | ⚠️     | Only in combination with `string` and `array` schema        |
 | `maxValue`      | ⚠️     | Only in combination with `number` schema                    |
 | `metadata`      | ⚠️     | Only for valid `title`, `description` and `examples` values |
+| `minCodePoints` | ✅     |                                                             |
 | `minEntries`    | ✅     |                                                             |
 | `minLength`     | ⚠️     | Only in combination with `string` and `array` schema        |
 | `minValue`      | ⚠️     | Only in combination with `number` schema                    |
 | `multipleOf`    | ✅     |                                                             |
 | `nanoid`        | ✅     |                                                             |
 | `nonEmpty`      | ✅     |                                                             |
+| `notCodePoints` | ✅     |                                                             |
 | `notValue`      | ⚠️     | Only JSON compatible values are supported                   |
 | `notValues`     | ⚠️     | Only JSON compatible values are supported                   |
 | `octal`         | ✅     |                                                             |
@@ -116,7 +120,7 @@ This package is particularly popular for:
 | `value`         | ⚠️     | Only JSON compatible values are supported                   |
 | `values`        | ⚠️     | Only JSON compatible values are supported                   |
 
-> For `length`, `minLength`, and `maxLength`, string constraints have different length semantics in Valibot and JSON Schema. Valibot checks JavaScript string length (`value.length`, UTF-16 code units), while JSON Schema `minLength` and `maxLength` count Unicode code points. This can differ for non-BMP code points such as emoji and for multi-code-point grapheme clusters such as combining marks or ZWJ sequences.
+> For `length`, `minLength`, and `maxLength`, string constraints have different length semantics in Valibot and JSON Schema. Valibot checks JavaScript string length (`value.length`, UTF-16 code units), while JSON Schema `minLength` and `maxLength` count Unicode code points. This can differ for non-BMP code points such as emoji and for multi-code-point grapheme clusters such as combining marks or ZWJ sequences. The `codePoints`, `minCodePoints`, `maxCodePoints`, and `notCodePoints` actions use the same code point semantics as JSON Schema and can be converted without this difference.
 
 ## Configurations
 

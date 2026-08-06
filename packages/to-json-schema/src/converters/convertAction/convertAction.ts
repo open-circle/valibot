@@ -14,6 +14,11 @@ import {
 type Action =
   | v.Base64Action<string, v.ErrorMessage<v.Base64Issue<string>> | undefined>
   | v.BicAction<string, v.ErrorMessage<v.BicIssue<string>> | undefined>
+  | v.CodePointsAction<
+      string,
+      number,
+      v.ErrorMessage<v.CodePointsIssue<string, number>> | undefined
+    >
   | v.Cuid2Action<string, v.ErrorMessage<v.Cuid2Issue<string>> | undefined>
   | v.DecimalAction<string, v.ErrorMessage<v.DecimalIssue<string>> | undefined>
   | v.DescriptionAction<unknown, string>
@@ -92,6 +97,11 @@ type Action =
   | v.MacAction<string, v.ErrorMessage<v.MacIssue<string>> | undefined>
   | v.Mac48Action<string, v.ErrorMessage<v.Mac48Issue<string>> | undefined>
   | v.Mac64Action<string, v.ErrorMessage<v.Mac64Issue<string>> | undefined>
+  | v.MaxCodePointsAction<
+      string,
+      number,
+      v.ErrorMessage<v.MaxCodePointsIssue<string, number>> | undefined
+    >
   | v.MaxEntriesAction<
       v.EntriesInput,
       number,
@@ -108,6 +118,11 @@ type Action =
       v.ErrorMessage<v.MaxValueIssue<v.ValueInput, v.ValueInput>> | undefined
     >
   | v.MetadataAction<unknown, Record<string, unknown>>
+  | v.MinCodePointsAction<
+      string,
+      number,
+      v.ErrorMessage<v.MinCodePointsIssue<string, number>> | undefined
+    >
   | v.MinEntriesAction<
       v.EntriesInput,
       number,
@@ -132,6 +147,11 @@ type Action =
   | v.NonEmptyAction<
       v.LengthInput,
       v.ErrorMessage<v.NonEmptyIssue<v.LengthInput>> | undefined
+    >
+  | v.NotCodePointsAction<
+      string,
+      number,
+      v.ErrorMessage<v.NotCodePointsIssue<string, number>> | undefined
     >
   | v.NotValueAction<
       v.ValueInput,
@@ -322,6 +342,18 @@ export function convertAction(
       break;
     }
 
+    case 'code_points': {
+      if (jsonSchema.type !== 'string') {
+        errors = addError(
+          errors,
+          `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
+        );
+      }
+      jsonSchema.minLength = valibotAction.requirement;
+      jsonSchema.maxLength = valibotAction.requirement;
+      break;
+    }
+
     case 'integer': {
       jsonSchema.type = 'integer';
       break;
@@ -405,6 +437,17 @@ export function convertAction(
       break;
     }
 
+    case 'max_code_points': {
+      if (jsonSchema.type !== 'string') {
+        errors = addError(
+          errors,
+          `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
+        );
+      }
+      jsonSchema.maxLength = valibotAction.requirement;
+      break;
+    }
+
     case 'max_length': {
       if (jsonSchema.type === 'array') {
         jsonSchema.maxItems = valibotAction.requirement;
@@ -456,6 +499,17 @@ export function convertAction(
       break;
     }
 
+    case 'min_code_points': {
+      if (jsonSchema.type !== 'string') {
+        errors = addError(
+          errors,
+          `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
+        );
+      }
+      jsonSchema.minLength = valibotAction.requirement;
+      break;
+    }
+
     case 'min_length': {
       if (jsonSchema.type === 'array') {
         jsonSchema.minItems = valibotAction.requirement;
@@ -499,6 +553,20 @@ export function convertAction(
         }
         jsonSchema.minLength = 1;
       }
+      break;
+    }
+
+    case 'not_code_points': {
+      if (jsonSchema.type !== 'string') {
+        errors = addError(
+          errors,
+          `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
+        );
+      }
+      jsonSchema.not = {
+        minLength: valibotAction.requirement,
+        maxLength: valibotAction.requirement,
+      };
       break;
     }
 

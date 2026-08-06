@@ -641,6 +641,79 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert code points actions for strings', () => {
+    expect(
+      convertAction({ type: 'string' }, v.codePoints<string, 3>(3), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      minLength: 3,
+      maxLength: 3,
+    });
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.maxCodePoints<string, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      maxLength: 3,
+    });
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.minCodePoints<string, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      minLength: 3,
+    });
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.notCodePoints<string, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      not: { minLength: 3, maxLength: 3 },
+    });
+  });
+
+  test('should throw error for code points actions with invalid type', () => {
+    const actions = [
+      v.codePoints<string, 3>(3),
+      v.maxCodePoints<string, 3>(3),
+      v.minCodePoints<string, 3>(3),
+      v.notCodePoints<string, 3>(3),
+    ];
+    for (const action of actions) {
+      const error = `The "${action.type}" action is not supported on type "undefined".`;
+      expect(() => convertAction({}, action, undefined)).toThrowError(error);
+      expect(() =>
+        convertAction({}, action, { errorMode: 'throw' })
+      ).toThrowError(error);
+    }
+  });
+
+  test('should warn error for code points actions with invalid type', () => {
+    const actions = [
+      [v.codePoints<string, 3>(3), { minLength: 3, maxLength: 3 }],
+      [v.maxCodePoints<string, 3>(3), { maxLength: 3 }],
+      [v.minCodePoints<string, 3>(3), { minLength: 3 }],
+      [v.notCodePoints<string, 3>(3), { not: { minLength: 3, maxLength: 3 } }],
+    ] as const;
+    for (const [action, expected] of actions) {
+      expect(convertAction({}, action, { errorMode: 'warn' })).toStrictEqual(
+        expected
+      );
+      expect(console.warn).toHaveBeenLastCalledWith(
+        `The "${action.type}" action is not supported on type "undefined".`
+      );
+    }
+  });
+
   test('should throw error for length action with invalid type', () => {
     const action = v.length<v.LengthInput, 3>(3);
     const error1 = 'The "length" action is not supported on type "undefined".';
