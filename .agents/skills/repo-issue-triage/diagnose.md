@@ -10,14 +10,14 @@ Do not assume every issue belongs to the core library. Start from the affected p
 
 For `library/src/`, use these landmarks:
 
-| Area        | Likely responsibility                                    |
-| ----------- | -------------------------------------------------------- |
-| `schemas/`  | Input typing and dataset creation                        |
-| `actions/`  | Validation and transformation in pipelines               |
-| `methods/`  | API orchestration such as `parse`, `pipe`, and `partial` |
-| `types/`    | Shared inference and dataset types                       |
-| `utils/`    | Shared runtime helpers, prefixed with `_`                |
-| `storages/` | Global configuration and message state                   |
+| Area        | Likely responsibility                                                                          |
+| ----------- | ---------------------------------------------------------------------------------------------- |
+| `schemas/`  | Input typing and dataset creation                                                              |
+| `actions/`  | Validation and transformation in pipelines                                                     |
+| `methods/`  | API orchestration such as `parse`, `pipe`, and `partial`                                       |
+| `types/`    | Shared inference and dataset types                                                             |
+| `utils/`    | Public utilities such as `ValiError` and `getDotPath`, plus internal helpers prefixed with `_` |
+| `storages/` | Global configuration and message state                                                         |
 
 Schemas and actions expose a `'~run'` method that receives a dataset and config. Trace runtime issues through that method and shared utilities. Trace type issues from the public generic signature through helper types and, when relevant, generated declarations and package exports.
 

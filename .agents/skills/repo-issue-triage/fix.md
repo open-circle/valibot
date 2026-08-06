@@ -6,7 +6,7 @@ Read the full report first. Append the implementation and verification results t
 
 ## Confirm the Fix Boundary
 
-- Require a `reproduced` outcome, a verification verdict of `bug` or `documentation-bug`, and a medium- or high-confidence causal explanation.
+- Require a `reproduced` outcome, a verification verdict of `bug` or `documentation-bug`, and a medium- or high-confidence causal explanation. For a standalone documentation report that was routed directly to the recommendation, a confirmed mismatch between the documentation and the source recorded in the report satisfies this gate instead.
 - If the verdict is `unclear` or diagnosis confidence is low, stop and request the missing maintainer decision or evidence. Do not leave speculative source edits or a knowingly failing test in the working tree.
 - Record the current status again and preserve all pre-existing changes. Do not create or switch branches unless the user asked and the operation will not absorb unrelated work.
 
