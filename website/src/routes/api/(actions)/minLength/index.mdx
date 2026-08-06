@@ -38,7 +38,7 @@ const Action = v.minLength<TInput, TRequirement, TMessage>(
 
 With `minLength` you can validate the length of a string or array. For strings, length is measured like JavaScript's `value.length`, i.e. by UTF-16 code units. For arrays, length is measured by the number of items. If the input does not match the `requirement`, you can use `message` to customize the error message.
 
-> If you need to validate the minimum number of user-perceived characters, use <Link href="../minGraphemes/">`minGraphemes`</Link> instead. If you need to count every Unicode code point including a supplementary code point, which requires 2 characters to be represented in JavaScript's string, as one character use <Link href="../minCodePoints/">`minCodePoints`</Link> instead.
+> If you need to validate the minimum number of user-perceived characters, use <Link href="../minGraphemes/">`minGraphemes`</Link> instead. If you need to count each Unicode code point as a single character (a supplementary code point occupies two UTF-16 code units in JavaScript), use <Link href="../minCodePoints/">`minCodePoints`</Link> instead.
 
 ## Returns
 
@@ -86,7 +86,7 @@ The following APIs can be combined with `minLength`.
 
 ### Actions
 
-<ApiList items={['minGraphemes']} />
+<ApiList items={['minCodePoints', 'minGraphemes']} />
 
 ### Utils
 
