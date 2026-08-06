@@ -5,6 +5,7 @@ source: /actions/notCodePoints/notCodePoints.ts
 contributors:
   - fabian-hiller
   - tats-u
+  - yslpn
 ---
 
 import { ApiList, Property } from '~/components';
@@ -34,7 +35,7 @@ const Action = v.notCodePoints<TInput, TRequirement, TMessage>(
 
 ### Explanation
 
-With `notCodePoints` you can validate the number of code points in a string. If the input does not match the `requirement`, you can use `message` to customize the error message.
+With `notCodePoints` you can validate that a string does not have a specific number of Unicode code points. Code points are not the same as UTF-16 code units or user-perceived characters (graphemes): `😀` consists of 2 UTF-16 code units, 1 code point, and 1 grapheme, while `👨🏽‍👩🏽` consists of 5 code points but 1 grapheme. If the number of code points equals the `requirement`, you can use `message` to customize the error message.
 
 ## Returns
 

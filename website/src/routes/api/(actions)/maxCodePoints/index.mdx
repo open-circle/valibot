@@ -5,6 +5,7 @@ source: /actions/maxCodePoints/maxCodePoints.ts
 contributors:
   - fabian-hiller
   - tats-u
+  - yslpn
 ---
 
 import { ApiList, Property } from '~/components';
@@ -34,7 +35,7 @@ const Action = v.maxCodePoints<TInput, TRequirement, TMessage>(
 
 ### Explanation
 
-With `maxCodePoints` you can validate the number of code points in a string. If the input does not match the `requirement`, you can use `message` to customize the error message.
+With `maxCodePoints` you can validate the maximum number of Unicode code points in a string. Code points are not the same as UTF-16 code units or user-perceived characters (graphemes): `😀` consists of 2 UTF-16 code units, 1 code point, and 1 grapheme, while `👨🏽‍👩🏽` consists of 5 code points but 1 grapheme. If the number of code points exceeds the `requirement`, you can use `message` to customize the error message.
 
 > Hint: This action is suitable for `VARCHAR` in PostgreSQL and MySQL. Also, [NIST SP 800-63B requires us to count the length of a password in code points.](https://pages.nist.gov/800-63-4/sp800-63b.html#passwordver)
 
