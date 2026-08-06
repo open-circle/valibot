@@ -6,7 +6,7 @@ Always update the **Reproduction** section of `tmp/triage/gh-<number>/report.md`
 
 ## Preserve the Baseline
 
-Read the Intake section. Record the current commit, branch, package versions, runtime versions, and initial `git status --short`. Call this the **current checkout**, not `main`, unless its commit is verified to match the repository's default branch.
+Read the Intake section. Record the current commit, branch, package versions, runtime versions, and initial `git status --short`. Call this the **current checkout**, not `main`, unless its commit is verified to match the repository's default branch. If pre-existing modifications touch files that could influence the result — source, tests, configuration, lockfiles, or build outputs — reproduce in an isolated copy of the recorded commit or record the limitation with the outcome.
 
 Use dependencies already installed when possible. If installation is required, use the repository lockfile and a frozen install. For an external or published-version reproduction, work only in the triage directory, inspect manifests first, and disable lifecycle scripts by default.
 
@@ -40,7 +40,7 @@ pnpm -C library vitest run issue-<number>
 pnpm -C library vitest run --typecheck issue-<number>
 ```
 
-Replace `library` with the owning package directory, such as `packages/to-json-schema`, when the report targets another package.
+Replace `library` with the owning package directory, such as `packages/to-json-schema`, when the report targets another package. Run reproduction commands non-interactively and bound potentially long-running or untrusted reproductions with a timeout instead of letting them hang.
 
 Use the owning package's existing harness for website and codemod reports. For `packages/i18n/`, test the generated module or build script implicated by the report and run its TypeScript lint check. Do not force every package through the core-library test shape.
 

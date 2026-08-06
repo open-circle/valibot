@@ -28,7 +28,7 @@ Convert the reproduction into the smallest permanent regression test in the owni
 - Type behavior: extend the nearby `.test-d.ts` with `expectTypeOf` assertions.
 - Distribution behavior: add a test that exercises the emitted declaration, export, or package boundary rather than only source inference.
 
-Document that the regression test failed before the implementation change and passes afterward. Run the narrow test first, then the owning package's test suite. Run broader tests when a shared path or cross-package contract changed.
+Document that the regression test failed before the implementation change and passes afterward. Run the narrow test first, then the owning package's test suite. Run broader tests when a shared path or cross-package contract changed. For a documentation-only fix with no code change, skip the regression-test requirement and validate the affected pages with the owning package's build and lint checks instead.
 
 ## Format and Validate
 
@@ -50,4 +50,4 @@ If behavior, signatures, or public types change, identify the affected website A
 
 Remove only temporary files and instrumentation created during this work. Compare final status with the recorded baseline; the delta must contain only the approved fix and its tests/docs.
 
-Report the changed files, rationale, regression evidence, validation results, documentation impact, and remaining risk. Do not commit, push, publish, comment, label, close the issue, or open a pull request unless the user separately approves those actions.
+Report the changed files, rationale, regression evidence, validation results, documentation impact, and remaining risk. Do not perform any outward-facing action from the shared guardrails — commit, push, publish, comment, label, edit, assign, close, reopen, or open a pull request — unless the user separately approves that exact action.
