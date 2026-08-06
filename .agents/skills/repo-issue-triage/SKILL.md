@@ -29,7 +29,7 @@ gh issue view <number> --json number,title,body,state,url,author,labels,comments
 gh label list --limit 100 --json name,description
 ```
 
-Create `tmp/triage/gh-<number>/report.md`. Keep these sections in order and append evidence without rewriting earlier phase findings:
+Create `tmp/triage/gh-<number>/report.md`. For an offline investigation without an issue number, use `tmp/triage/offline-<topic-slug>/` everywhere `tmp/triage/gh-<number>/` appears, skip live label lookups and other GitHub-only steps, and deliver the recommendation — including any draft comment — to the user instead of preparing GitHub writes. Keep these sections in order and append evidence without rewriting earlier phase findings:
 
 1. **Intake** — issue URL, last reviewed update, category, affected package, current labels, observed behavior, expected behavior, environment, and missing facts.
 2. **Reproduction** — baseline commit/branch, exact code and commands, observed/expected output, control case, outcome, and limitations.
@@ -72,6 +72,8 @@ For each phase, read its full instruction file immediately before starting:
 2. [diagnose.md](diagnose.md), only after `reproduced`
 3. [verify.md](verify.md), after a medium- or high-confidence diagnosis; use it with a low-confidence diagnosis only when independent evidence can still establish intent
 
+If reproduction returns any outcome other than `reproduced`, or a later phase's gate is not met, record in `report.md` which phases were skipped and why, then go directly to [Recommend](#recommend). Never fabricate a diagnosis or verdict to complete the pipeline.
+
 Run each phase in a fresh isolated subagent when that capability is available. Pass only the issue data, triage directory, repository path, and phase scope. Require the subagent to update `report.md`. If subagents are unavailable, run phases sequentially, reread `report.md` at each boundary, and honor the same scope restrictions.
 
 Do not implement a fix during triage. After presenting the recommendation, follow [fix.md](fix.md) only when the user explicitly asks for a fix.
@@ -80,7 +82,7 @@ Do not implement a fix during triage. After presenting the recommendation, follo
 
 Base the result on `report.md` and present:
 
-1. A concise triage summary: category, reproduction outcome, causal code path with file/line references and commit, verdict, confidence, and limitations.
+1. A concise triage summary: category, reproduction outcome, limitations, and — when those phases ran — the causal code path with file/line references and commit, verdict, and confidence.
 2. Minimal label changes using the live label list. Preserve unrelated labels and recommend removal only for a label made contradictory or obsolete by the evidence.
 3. An issue state recommendation: keep open, close as completed, close as not planned, or no change, with a reason.
 4. A ready-to-post comment in a direct maintainer voice. State verified facts, the next step, and any requested information. Include a workaround when confirmed. Do not expose internal logs, local paths, secrets, speculation, or AI boilerplate.

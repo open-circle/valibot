@@ -33,12 +33,14 @@ For core `library/` and `packages/to-json-schema/` source behavior, create a uni
 
 Follow nearby tests and import current source through `./index.ts` or the package's corresponding relative entry point. Encode the reporter's expected behavior as an assertion, then confirm any failure is the claimed mismatch rather than an import, setup, or unrelated type error.
 
-Run from the owning package:
+Run with an explicit package context so the command cannot silently target the wrong package:
 
 ```bash
-pnpm vitest run issue-<number>
-pnpm vitest run --typecheck issue-<number>
+pnpm -C library vitest run issue-<number>
+pnpm -C library vitest run --typecheck issue-<number>
 ```
+
+Replace `library` with the owning package directory, such as `packages/to-json-schema`, when the report targets another package.
 
 Use the owning package's existing harness for website and codemod reports. For `packages/i18n/`, test the generated module or build script implicated by the report and run its TypeScript lint check. Do not force every package through the core-library test shape.
 
