@@ -4,6 +4,7 @@ description: Creates an email validation action.
 source: /actions/email/email.ts
 contributors:
   - fabian-hiller
+  - SAY-5
 ---
 
 import { ApiList, Link, Property } from '~/components';
@@ -50,6 +51,20 @@ const EmailSchema = v.pipe(
   v.nonEmpty('Please enter your email.'),
   v.email('The email is badly formatted.'),
   v.maxLength(30, 'Your email is too long.')
+);
+```
+
+### Optional email schema
+
+Schema to validate an email that is allowed to be an empty string, for example for an optional form field.
+
+```ts
+const OptionalEmailSchema = v.optional(
+  v.union([
+    v.literal(''),
+    v.pipe(v.string(), v.email('The email is badly formatted.')),
+  ]),
+  ''
 );
 ```
 

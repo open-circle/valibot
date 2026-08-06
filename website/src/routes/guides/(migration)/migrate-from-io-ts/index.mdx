@@ -1,0 +1,168 @@
+---
+title: Migrate from io-ts
+description: >-
+  Migrating from io-ts to Valibot is straightforward in most cases since both
+  libraries build schemas by composing small functions.
+contributors:
+  - fabian-hiller
+---
+
+import { Link } from '~/components';
+
+# Migrate from io-ts
+
+Migrating from [io-ts](https://github.com/gcanti/io-ts) to Valibot is straightforward in most cases since both libraries build schemas by composing small functions. A big difference is that Valibot does not depend on fp-ts. Instead of working with `Either` and functional combinators, you work with plain result objects. The following guide will help you migrate step by step and also point out important differences.
+
+## Replace imports
+
+The first thing to do after <Link href="../installation/">installing</Link> Valibot is to update your imports. Just change your io-ts imports to Valibot's and replace all occurrences of `t.` with `v.`. The imports from fp-ts are no longer needed.
+
+```ts
+// Change this
+import * as t from 'io-ts';
+import { isRight } from 'fp-ts/Either';
+const Schema = t.type({ key: t.string });
+
+// To this
+import * as v from 'valibot';
+const Schema = v.looseObject({ key: v.string() });
+```
+
+## Restructure code
+
+Instead of calling `.decode` on the codec, you pass the schema as the first argument to <Link href="/api/safeParse/">`safeParse`</Link>. Where io-ts returns an `Either` that you inspect with `isRight` or `fold`, Valibot returns a result object with a `success` property that narrows the type when checked.
+
+```ts
+// Change this
+const result = Schema.decode(input);
+if (isRight(result)) {
+  console.log(result.right);
+} else {
+  console.log(PathReporter.report(result));
+}
+
+// To this
+const result = v.safeParse(Schema, input);
+if (result.success) {
+  console.log(result.output);
+} else {
+  console.log(v.summarize(result.issues));
+}
+```
+
+If you prefer an exception to be thrown on invalid input, use <Link href="/api/parse/">`parse`</Link> instead. The `.is` method of a codec maps directly to the <Link href="/api/is/">`is`</Link> method.
+
+```ts
+// Change this
+if (Schema.is(input)) {
+  // input is typed
+}
+
+// To this
+if (v.is(Schema, input)) {
+  // input is typed
+}
+```
+
+To further validate a value, io-ts uses `t.brand` or `t.refinement`. In Valibot you use <Link href="../pipelines/">pipelines</Link> instead. This is a function that starts with a schema and is followed by up to 19 validation or transformation actions.
+
+```ts
+// Change this
+const Positive = t.brand(
+  t.number,
+  (input): input is t.Branded<number, PositiveBrand> => input > 0,
+  'Positive'
+);
+
+// To this
+const Positive = v.pipe(
+  v.number(),
+  v.check((input) => input > 0),
+  v.brand('Positive')
+);
+```
+
+We recommend that you read our <Link href="../mental-model/">mental model</Link> guide to understand how the individual functions of Valibot's modular API work together.
+
+## Optional properties
+
+io-ts has no dedicated way to mark a single property as optional. The common workaround is an intersection of `t.type` and `t.partial`. In Valibot, you simply wrap optional entries with <Link href="/api/optional/">`optional`</Link>, which usually reduces the schema to a single object.
+
+```ts
+// Change this
+const Schema = t.intersection([
+  t.type({ name: t.string }),
+  t.partial({ age: t.number }),
+]);
+
+// To this
+const Schema = v.looseObject({
+  name: v.string(),
+  age: v.optional(v.number()),
+});
+```
+
+## Change names
+
+Many of the names are the same as in io-ts. However, there are some exceptions. The following table shows all names that have changed.
+
+| io-ts           | Valibot                                                                                      |
+| --------------- | -------------------------------------------------------------------------------------------- |
+| `brand`         | <Link href="/api/check/">`check`</Link> with <Link href="/api/brand/">`brand`</Link>         |
+| `decode`        | <Link href="/api/safeParse/">`safeParse`</Link>, <Link href="/api/parse/">`parse`</Link>     |
+| `exact`         | <Link href="/api/object/">`object`</Link>                                                    |
+| `Int`           | <Link href="/api/number/">`number`</Link> with <Link href="/api/integer/">`integer`</Link>   |
+| `interface`     | <Link href="/api/looseObject/">`looseObject`</Link>                                          |
+| `intersection`  | <Link href="/api/intersect/">`intersect`</Link>                                              |
+| `keyof`         | <Link href="/api/picklist/">`picklist`</Link>                                                |
+| `OutputOf`      | <Link href="/api/InferInput/">`InferInput`</Link>                                            |
+| `PathReporter`  | <Link href="/api/summarize/">`summarize`</Link>, <Link href="/api/flatten/">`flatten`</Link> |
+| `readonlyArray` | <Link href="/api/array/">`array`</Link> with <Link href="/api/readonly/">`readonly`</Link>   |
+| `recursion`     | <Link href="/api/lazy/">`lazy`</Link>                                                        |
+| `refinement`    | <Link href="/api/check/">`check`</Link>                                                      |
+| `strict`        | <Link href="/api/object/">`object`</Link>                                                    |
+| `type`          | <Link href="/api/looseObject/">`looseObject`</Link>                                          |
+| `TypeOf`        | <Link href="/api/InferOutput/">`InferOutput`</Link>                                          |
+| `UnknownArray`  | <Link href="/api/array/">`array`</Link> with <Link href="/api/unknown/">`unknown`</Link>     |
+| `UnknownRecord` | <Link href="/api/record/">`record`</Link> with <Link href="/api/unknown/">`unknown`</Link>   |
+
+## Other details
+
+Below are some more details that may be helpful when migrating from io-ts to Valibot.
+
+### Unknown object keys
+
+io-ts keeps unknown keys when validating objects with `t.type` and removes them when the codec is wrapped with `t.exact` or created with `t.strict`. Valibot's <Link href="/api/looseObject/">`looseObject`</Link> and <Link href="/api/object/">`object`</Link> schemas match these two behaviors. In addition, <Link href="/api/strictObject/">`strictObject`</Link> allows you to reject unknown keys entirely, which io-ts does not support out of the box. See the <Link href="../objects/">objects</Link> guide for more details.
+
+```ts
+// Change this
+const Schema = t.strict({ key: t.string });
+
+// To this
+const Schema = v.object({ key: v.string() });
+```
+
+### Custom codecs
+
+Custom codecs created with `new t.Type` are usually replaced by a pipeline that validates the input and then transforms it. Note that Valibot only covers the decode direction. There is no equivalent to `.encode`, as Valibot does not support transforming in the reverse direction.
+
+```ts
+// Change this
+const DateFromString = new t.Type<Date, string, unknown>(
+  'DateFromString',
+  (input): input is Date => input instanceof Date,
+  (input, context) => {
+    if (typeof input !== 'string') return t.failure(input, context);
+    const date = new Date(input);
+    return isNaN(date.getTime()) ? t.failure(input, context) : t.success(date);
+  },
+  (date) => date.toISOString()
+);
+
+// To this
+const DateFromString = v.pipe(v.string(), v.isoTimestamp(), v.toDate());
+```
+
+### Async validation
+
+The core of io-ts is synchronous. Valibot additionally provides dedicated async functions like <Link href="/api/pipeAsync/">`pipeAsync`</Link> and <Link href="/api/checkAsync/">`checkAsync`</Link> that allow you to run asynchronous logic, such as database checks, as part of your schema. See the <Link href="../async-validation/">async guide</Link> for more details.
