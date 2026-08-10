@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Neplatné datum: Obdrženo ${issue.received}`,
     toNumber:         (issue) => `Neplatné číslo: Obdrženo ${issue.received}`,
     toString:         (issue) => `Neplatný řetězec: Obdrženo ${issue.received}`,
+    trimmed:          (issue) => `Neorezaný text: Obdrženo ${issue.received}`,
     ulid:             (issue) => `Neplatné ULID: Obdrženo ${issue.received}`,
     url:              (issue) => `Neplatná URL: Obdrženo ${issue.received}`,
     uuid:             (issue) => `Neplatné UUID: Obdrženo ${issue.received}`,

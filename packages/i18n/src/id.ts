@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Tanggal tidak valid: Menerima ${issue.received}`,
     toNumber:         (issue) => `Angka tidak valid: Menerima ${issue.received}`,
     toString:         (issue) => `String tidak valid: Menerima ${issue.received}`,
+    trimmed:          (issue) => `Teks tidak terpotong: Menerima ${issue.received}`,
     ulid:             (issue) => `ULID tidak valid: Menerima ${issue.received}`,
     url:              (issue) => `URL tidak valid: Menerima ${issue.received}`,
     uuid:             (issue) => `UUID tidak valid: Menerima ${issue.received}`,

@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Dată incorectă: S-a introdus ${issue.received}`,
     toNumber:         (issue) => `Număr incorect: S-a introdus ${issue.received}`,
     toString:         (issue) => `Șir incorect: S-a introdus ${issue.received}`,
+    trimmed:          (issue) => `Text neajustat: S-a introdus ${issue.received}`,
     ulid:             (issue) => `ULID incorect: S-a introdus ${issue.received}`,
     url:              (issue) => `URL incorect: S-a introdus ${issue.received}`,
     uuid:             (issue) => `UUID incorect: S-a introdus ${issue.received}`,

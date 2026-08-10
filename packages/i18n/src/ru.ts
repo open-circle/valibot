@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Неправильная дата: получено ${issue.received}`,
     toNumber:         (issue) => `Неправильное число: получено ${issue.received}`,
     toString:         (issue) => `Неправильная строка: получено ${issue.received}`,
+    trimmed:          (issue) => `Неправильный trimmed: получено ${issue.received}`,
     ulid:             (issue) => `Неправильный ULID: получено ${issue.received}`,
     url:              (issue) => `Неправильный URL: получено ${issue.received}`,
     uuid:             (issue) => `Неправильный UUID: получено ${issue.received}`,

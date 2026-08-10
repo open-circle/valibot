@@ -1,0 +1,72 @@
+---
+title: trimmed
+description: Creates a trimmed validation action.
+source: /actions/trimmed/trimmed.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# trimmed
+
+Creates a trimmed validation action.
+
+```ts
+const Action = v.trimmed<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `trimmed` you can validate that a string has no leading or trailing whitespaces. If the input is not trimmed, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `trimmed` can be used.
+
+### Username schema
+
+Schema to validate that a username is trimmed.
+
+```ts
+const UsernameSchema = v.pipe(
+  v.string(),
+  v.trimmed('Please remove any leading or trailing spaces.'),
+  v.nonEmpty('Please enter your username.'),
+  v.minLength(3, 'Your username is too short.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `trimmed`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['trim', 'trimEnd', 'trimStart']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

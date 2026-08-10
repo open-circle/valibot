@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `無効な日付: ${issue.received} を受け取りました`,
     toNumber:         (issue) => `無効な数値: ${issue.received} を受け取りました`,
     toString:         (issue) => `無効な文字列: ${issue.received} を受け取りました`,
+    trimmed:          (issue) => `無効なトリム: ${issue.received} を受け取りました`,
     ulid:             (issue) => `無効なULID: ${issue.received} を受け取りました`,
     url:              (issue) => `無効なURL: ${issue.received} を受け取りました`,
     uuid:             (issue) => `無効なUUID: ${issue.received} を受け取りました`,

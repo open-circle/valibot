@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Yanlış tarix: Alınan ${issue.received}`,
     toNumber:         (issue) => `Yanlış ədəd: Alınan ${issue.received}`,
     toString:         (issue) => `Yanlış sətir: Alınan ${issue.received}`,
+    trimmed:          (issue) => `Kəsilməmiş mətn: Alınan ${issue.received}`,
     ulid:             (issue) => `Yanlış ULID: Alınan ${issue.received}`,
     url:              (issue) => `Yanlış URL: Alınan ${issue.received}`,
     uuid:             (issue) => `Yanlış UUID: Alınan ${issue.received}`,

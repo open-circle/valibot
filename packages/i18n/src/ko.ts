@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `유효하지 않은 날짜: ${issue.received} 을(를) 받았습니다`,
     toNumber:         (issue) => `유효하지 않은 숫자: ${issue.received} 을(를) 받았습니다`,
     toString:         (issue) => `유효하지 않은 문자열: ${issue.received} 을(를) 받았습니다`,
+    trimmed:          (issue) => `유효하지 않은 트림: ${issue.received} 을(를) 받았습니다`,
     ulid:             (issue) => `유효하지 않은 ULID: ${issue.received} 을(를) 받았습니다`,
     url:              (issue) => `유효하지 않은 URL: ${issue.received} 을(를) 받았습니다`,
     uuid:             (issue) => `유효하지 않은 UUID: ${issue.received} 을(를) 받았습니다`,

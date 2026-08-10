@@ -5,6 +5,7 @@ All notable changes to the library will be documented in this file.
 ## vX.X.X (Month DD, YYYY)
 
 - Add Kinyarwanda (rw) translations (pull request #1489)
+- Add translations for `trimmed` validation action (issue #1587)
 
 ## v1.2.0 (May 05, 2026)
 

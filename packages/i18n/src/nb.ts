@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Ugyldig dato: Mottok ${issue.received}`,
     toNumber:         (issue) => `Ugyldig tall: Mottok ${issue.received}`,
     toString:         (issue) => `Ugyldig streng: Mottok ${issue.received}`,
+    trimmed:          (issue) => `Ugyldig trimmet: Mottok ${issue.received}`,
     ulid:             (issue) => `Ugyldig ULID: Mottok ${issue.received}`,
     url:              (issue) => `Ugyldig URL: Mottok ${issue.received}`,
     uuid:             (issue) => `Ugyldig UUID: Mottok ${issue.received}`,
