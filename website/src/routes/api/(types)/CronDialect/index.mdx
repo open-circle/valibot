@@ -1,0 +1,26 @@
+---
+title: CronDialect
+description: Supported cron dialect identifier used by the cron action.
+contributors:
+  - ysknsid25
+  - fabian-hiller
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# CronDialect
+
+Supported cron dialect identifier used by the [`cron`](../cron/) action. Pass via the `cronDialect` property of the parser config to select which grammar the action validates against. Defaults to `'VIXIE'`.
+
+| Value               | Reference                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------ |
+| `'VIXIE'` (default) | [OpenBSD `crontab(5)`](https://man.openbsd.org/crontab.5)                                  |
+| `'POSIX'`           | [POSIX `crontab`](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/crontab.html) |
+| `'NODE_CRON'`       | [node-cron](https://github.com/node-cron/node-cron)                                        |
+| `'NODE_SCHEDULE'`   | [node-schedule](https://github.com/node-schedule/node-schedule)                            |
+| `'Croner'`          | [Croner](https://github.com/Hexagon/croner)                                                |
+
+## Definition
+
+- `CronDialect` <Property {...properties.CronDialect} />
