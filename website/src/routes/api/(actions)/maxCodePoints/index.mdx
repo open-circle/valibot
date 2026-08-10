@@ -37,7 +37,7 @@ const Action = v.maxCodePoints<TInput, TRequirement, TMessage>(
 
 With `maxCodePoints` you can validate the maximum number of Unicode code points in a string. Code points are not the same as UTF-16 code units or user-perceived characters (graphemes): `😀` consists of 2 UTF-16 code units, 1 code point, and 1 grapheme, while `👨🏽‍👩🏽` consists of 5 code points but 1 grapheme. If the number of code points exceeds the `requirement`, you can use `message` to customize the error message.
 
-> Hint: This action is suitable for `VARCHAR` in PostgreSQL and MySQL. Also, [NIST SP 800-63B requires us to count the length of a password in code points.](https://pages.nist.gov/800-63-4/sp800-63b.html#passwordver)
+> Hint: This action is suitable for enforcing `VARCHAR` limits in PostgreSQL and in MySQL with the `utf8mb4` character set. [NIST SP 800-63B](https://pages.nist.gov/800-63-4/sp800-63b.html#passwordver) also requires password length to be measured in Unicode code points.
 
 ## Returns
 

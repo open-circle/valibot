@@ -10,15 +10,16 @@
 // @__NO_SIDE_EFFECTS__
 export function _getCodePointCount(input: string): number {
   let count = input.length;
-  // The last code unit of the input cannot be the start of a surrogate pair
+  // A surrogate pair cannot start at the last code unit, so no iteration needs
+  // to start there
   const lengthMinus1 = input.length - 1;
   for (let i = 0; i < lengthMinus1; ) {
-    // If codePointAt returned undefined here, we would have already exited the loop
-    if (input.codePointAt(i)! <= 65535) {
+    // codePointAt never returns undefined because i is always in bounds
+    if (input.codePointAt(i)! <= 0xffff) {
       i++;
     } else {
-      i += 2; // 2 characters (surrogate pair) in JS (UTF-16)
-      count--; // compensate for over-counting
+      i += 2; // Move past both code units of the surrogate pair
+      count--; // Count the pair as one code point instead of two code units
     }
   }
   return count;
