@@ -29,7 +29,7 @@ import { IconButton } from './IconButton';
 import { Navigation } from './Navigation';
 import { SideBar, useSideBarToggle } from './SideBar';
 
-const MDX_PATH_REGEX = /^\/(?:[\w-]+\/){2}$/;
+const MDX_PATH_REGEX = /^\/(?:[\w.-]+\/){2}$/;
 
 type NavItem = ContentMenu & { group: string };
 
@@ -85,29 +85,10 @@ export const DocsLayout = component$(() => {
   return (
     <div
       class={clsx(
-        'flex w-full flex-1 flex-col-reverse self-center lg:flex-row',
+        'flex w-full flex-1 flex-col self-center lg:flex-row',
         'no-chapters:max-w-(--breakpoint-xl) max-w-(--breakpoint-2xl)'
       )}
     >
-      {/* Side bar navigation */}
-      <SideBar class="lg:max-h-[calc(100vh-70px)]" toggle={sideBarToggle}>
-        <div q:slot="buttons" class="mr-4 flex gap-6 lg:hidden">
-          <NavButtons
-            pageIndex={navIndex.value}
-            sourcePath={documentHead.frontmatter.source}
-            markdownPath={markdownPath.value}
-            prevPage={prevPage.value}
-            nextPage={nextPage.value}
-          />
-        </div>
-        <Navigation
-          class={clsx(
-            'px-8 py-9 lg:w-60 lg:py-24 xl:py-32',
-            'no-chapters:2xl:w-72 2xl:w-64'
-          )}
-        />
-      </SideBar>
-
       <main
         class={clsx(
           'relative flex-1 py-12 md:py-14 lg:w-px lg:py-24 xl:py-32',
@@ -175,6 +156,30 @@ export const DocsLayout = component$(() => {
         {/* Credits */}
         <Credits />
       </main>
+
+      {/* Rendered after the main content so that the article comes first in
+          the DOM for crawlers and AI agents, but displayed before it via CSS
+          ordering to keep the visual layout unchanged. */}
+      <SideBar
+        class="lg:order-first lg:max-h-[calc(100vh-70px)]"
+        toggle={sideBarToggle}
+      >
+        <div q:slot="buttons" class="mr-4 flex gap-6 lg:hidden">
+          <NavButtons
+            pageIndex={navIndex.value}
+            sourcePath={documentHead.frontmatter.source}
+            markdownPath={markdownPath.value}
+            prevPage={prevPage.value}
+            nextPage={nextPage.value}
+          />
+        </div>
+        <Navigation
+          class={clsx(
+            'px-8 py-9 lg:w-60 lg:py-24 xl:py-32',
+            'no-chapters:2xl:w-72 2xl:w-64'
+          )}
+        />
+      </SideBar>
 
       {/* Always rendered so the root `.no-chapters` class can hide it before
           paint without a layout shift. */}
