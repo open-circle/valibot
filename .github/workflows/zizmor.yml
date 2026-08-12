@@ -1,4 +1,4 @@
-name: Lint CI workflows
+name: GitHub Actions Security Analysis with zizmor 🌈
 
 on:
   push:
