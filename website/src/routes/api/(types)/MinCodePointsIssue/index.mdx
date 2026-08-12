@@ -1,0 +1,28 @@
+---
+title: MinCodePointsIssue
+description: Min code points issue interface.
+contributors:
+  - fabian-hiller
+  - tats-u
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# MinCodePointsIssue
+
+Min code points issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+
+## Definition
+
+- `MinCodePointsIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `received` <Property {...properties.received} />
+  - `requirement` <Property {...properties.requirement} />
