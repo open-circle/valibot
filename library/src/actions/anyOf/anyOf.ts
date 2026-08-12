@@ -298,7 +298,6 @@ export function anyOf(
       }
 
       const input = dataset.value;
-      let typed = false;
       let datasets: OutputDataset<unknown, BaseIssue<unknown>>[] | undefined;
 
       for (const option of actionOptions) {
@@ -314,10 +313,6 @@ export function anyOf(
           // in the pipe) aren't discarded.
           dataset.value = optionDataset.value;
           return dataset as typeof optionDataset;
-        }
-
-        if (optionDataset.typed) {
-          typed = true;
         }
 
         if (optionDataset.issues) {
@@ -336,7 +331,7 @@ export function anyOf(
       _addIssue(this, 'input', dataset, config, { issues });
 
       // @ts-expect-error
-      dataset.typed = typed;
+      dataset.typed = datasets.some((optionDataset) => optionDataset.typed);
 
       return dataset as OutputDataset<
         InferAnyOfOutput<AnyOfOptions, unknown>,

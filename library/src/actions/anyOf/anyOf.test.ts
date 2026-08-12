@@ -1,6 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import type { BaseIssue, FailureDataset } from '../../types/index.ts';
+import { expectNoActionIssue } from '../../vitest/index.ts';
 import { guard, type GuardIssue } from '../guard/index.ts';
 import {
   brand,
@@ -117,30 +118,17 @@ describe('anyOf', () => {
           throw new Error('Option should not run.');
         }),
       ]);
-      expect(action['~run']({ typed: true, value: 'foo' }, {})).toStrictEqual({
-        typed: true,
-        value: 'foo',
-      });
+      expectNoActionIssue(action, ['foo']);
     });
 
     test('for second valid option', () => {
       const action = anyOf([email(), url()]);
-      expect(
-        action['~run']({ typed: true, value: 'https://example.com' }, {})
-      ).toStrictEqual({
-        typed: true,
-        value: 'https://example.com',
-      });
+      expectNoActionIssue(action, ['https://example.com']);
     });
 
     test('for guard option', () => {
       const action = anyOf([guard(isPixelString), guard(isRemString)]);
-      expect(
-        action['~run']({ typed: true, value: '123rem' }, {})
-      ).toStrictEqual({
-        typed: true,
-        value: '123rem',
-      });
+      expectNoActionIssue(action, ['123rem']);
     });
 
     test('for transform option fallback', () => {
@@ -165,26 +153,11 @@ describe('anyOf', () => {
       // `readonly`/`brand`/`flavor` are no-ops at runtime regardless of their
       // type argument, so this only confirms they still run correctly as
       // options once the type-level restriction on bare calls is satisfied.
-      expect(
-        anyOf([email(), readonly<string>()])['~run'](
-          { typed: true, value: 'foo' },
-          {}
-        )
-      ).toStrictEqual({ typed: true, value: 'foo' });
-
-      expect(
-        anyOf([email(), brand<string, 'id'>('id')])['~run'](
-          { typed: true, value: 'foo' },
-          {}
-        )
-      ).toStrictEqual({ typed: true, value: 'foo' });
-
-      expect(
-        anyOf([email(), flavor<string, 'id'>('id')])['~run'](
-          { typed: true, value: 'foo' },
-          {}
-        )
-      ).toStrictEqual({ typed: true, value: 'foo' });
+      expectNoActionIssue(anyOf([email(), readonly<string>()]), ['foo']);
+      expectNoActionIssue(anyOf([email(), brand<string, 'id'>('id')]), ['foo']);
+      expectNoActionIssue(anyOf([email(), flavor<string, 'id'>('id')]), [
+        'foo',
+      ]);
     });
 
     test('for a matching option, preserves issues already on the dataset', () => {
