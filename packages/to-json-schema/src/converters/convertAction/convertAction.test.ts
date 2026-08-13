@@ -876,6 +876,7 @@ describe('convertAction', () => {
       title: 'title',
       description: 'description',
       examples: ['example'],
+      other: 'other',
     });
     expect(
       convertAction(
@@ -898,11 +899,29 @@ describe('convertAction', () => {
           title: 123,
           description: null,
           examples: { foo: 'bar' },
-          other: 'other',
         }),
         undefined
       )
     ).toStrictEqual({});
+  });
+
+  test('should add other metadata properties to JSON Schema', () => {
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.metadata({
+          format: 'my-format',
+          'x-custom': { foo: 'bar' },
+          deprecated: true,
+        }),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      format: 'my-format',
+      'x-custom': { foo: 'bar' },
+      deprecated: true,
+    });
   });
 
   test('should convert min entries action', () => {
