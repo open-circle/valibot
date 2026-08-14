@@ -298,6 +298,7 @@ export function convertAction(
           errors,
           `The "gt_value" action is not supported on type "${jsonSchema.type}".`
         );
+        break;
       }
       if (config?.target === 'openapi-3.0') {
         errors = addError(
@@ -388,6 +389,7 @@ export function convertAction(
           errors,
           `The "lt_value" action is not supported on type "${jsonSchema.type}".`
         );
+        break;
       }
       if (config?.target === 'openapi-3.0') {
         errors = addError(
@@ -426,6 +428,7 @@ export function convertAction(
           errors,
           `The "max_value" action is not supported on type "${jsonSchema.type}".`
         );
+        break;
       }
       jsonSchema.maximum = valibotAction.requirement as number;
       break;
@@ -477,6 +480,7 @@ export function convertAction(
           errors,
           `The "min_value" action is not supported on type "${jsonSchema.type}".`
         );
+        break;
       }
       jsonSchema.minimum = valibotAction.requirement as number;
       break;
