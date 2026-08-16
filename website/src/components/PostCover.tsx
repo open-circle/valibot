@@ -38,6 +38,7 @@ export const PostCover = component$<PostCoverProps>(({ variant, label }) => (
         class="absolute top-4 right-4 text-slate-500 transition-colors hover:text-slate-700 lg:top-6 lg:right-6 dark:text-slate-400 dark:hover:text-slate-300"
         href="/feed.xml"
         target="_blank"
+        rel="noreferrer"
         aria-label="RSS feed"
       >
         <RssIcon class="h-5 lg:h-6" />

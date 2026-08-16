@@ -19,6 +19,7 @@
 /og/*
   Cache-Control: public, max-age=86400, s-maxage=86400
 /feed.xml
+  Content-Type: application/atom+xml; charset=utf-8
   Cache-Control: public, max-age=3600, s-maxage=3600
 
 # The splat greedily matches any path prefix at any depth, including none

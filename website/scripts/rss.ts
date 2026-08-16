@@ -30,16 +30,26 @@ const posts = fs
   .filter((post) => fs.existsSync(post.path))
   .map((post) => {
     const { data } = graymatter.read(post.path);
+    const published = new Date(data.published);
     // The feed is consumed by external readers, so fail the build on
-    // incomplete frontmatter instead of emitting invalid entries
-    if (!data.title || !data.description || !data.published || !data.authors) {
-      throw new Error(`Missing frontmatter in blog post: ${post.path}`);
+    // incomplete frontmatter instead of emitting invalid entries. Atom
+    // requires at least one author and a valid date for every entry.
+    if (
+      !data.title ||
+      !data.description ||
+      Number.isNaN(published.getTime()) ||
+      !Array.isArray(data.authors) ||
+      data.authors.length === 0
+    ) {
+      throw new Error(
+        `Missing or invalid frontmatter in blog post: ${post.path}`
+      );
     }
     return {
       name: post.name,
       title: data.title as string,
       description: data.description as string,
-      published: new Date(data.published),
+      published,
       authors: data.authors as string[],
     };
   })
