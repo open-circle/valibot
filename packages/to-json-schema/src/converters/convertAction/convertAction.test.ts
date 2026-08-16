@@ -924,6 +924,27 @@ describe('convertAction', () => {
     });
   });
 
+  test('should ignore inherited metadata properties', () => {
+    const metadata: Record<string, unknown> = Object.create({
+      'x-inherited': true,
+    });
+    metadata['x-own'] = 'own';
+    expect(convertAction({}, v.metadata(metadata), undefined)).toStrictEqual({
+      'x-own': 'own',
+    });
+  });
+
+  test('should not pollute prototype via metadata properties', () => {
+    const metadata: Record<string, unknown> = JSON.parse(
+      '{"__proto__": {"polluted": true}, "x-custom": "safe"}'
+    );
+    const jsonSchema = convertAction({}, v.metadata(metadata), undefined);
+    expect(jsonSchema).toStrictEqual({ 'x-custom': 'safe' });
+    expect(Object.getPrototypeOf(jsonSchema)).toBe(Object.prototype);
+    // @ts-expect-error
+    expect({}.polluted).toBeUndefined();
+  });
+
   test('should convert min entries action', () => {
     expect(
       convertAction(
