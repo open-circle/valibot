@@ -35,12 +35,16 @@ const posts = fs
     // incomplete frontmatter instead of emitting invalid entries. Atom
     // requires at least one author and a valid date for every entry.
     if (
-      !data.title ||
-      !data.description ||
+      typeof data.title !== 'string' ||
+      data.title.trim() === '' ||
+      typeof data.description !== 'string' ||
+      data.description.trim() === '' ||
       Number.isNaN(published.getTime()) ||
       !Array.isArray(data.authors) ||
       data.authors.length === 0 ||
-      data.authors.some((author) => typeof author !== 'string')
+      data.authors.some(
+        (author) => typeof author !== 'string' || author.trim() === ''
+      )
     ) {
       throw new Error(
         `Missing or invalid frontmatter in blog post: ${post.path}`
@@ -55,7 +59,11 @@ const posts = fs
     };
   })
   .sort(
-    (post1, post2) => post2.published.getTime() - post1.published.getTime()
+    // The name is a tie-breaker for equal dates to keep the output
+    // deterministic, as the file system does not guarantee entry order
+    (post1, post2) =>
+      post2.published.getTime() - post1.published.getTime() ||
+      post1.name.localeCompare(post2.name)
   );
 
 // The feed date is derived from the newest post, so at least one is required
