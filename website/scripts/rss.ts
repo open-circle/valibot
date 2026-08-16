@@ -39,7 +39,8 @@ const posts = fs
       !data.description ||
       Number.isNaN(published.getTime()) ||
       !Array.isArray(data.authors) ||
-      data.authors.length === 0
+      data.authors.length === 0 ||
+      data.authors.some((author) => typeof author !== 'string')
     ) {
       throw new Error(
         `Missing or invalid frontmatter in blog post: ${post.path}`
@@ -56,6 +57,11 @@ const posts = fs
   .sort(
     (post1, post2) => post2.published.getTime() - post1.published.getTime()
   );
+
+// The feed date is derived from the newest post, so at least one is required
+if (posts.length === 0) {
+  throw new Error('No blog posts found');
+}
 
 // Create an Atom entry for each blog post
 const entries = posts
