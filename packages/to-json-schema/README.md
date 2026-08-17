@@ -273,6 +273,7 @@ const ValibotSchema = v.pipe(
     title: 'Email Schema',
     description: 'A schema that validates email addresses.',
     examples: ['jane@example.com'],
+    'x-category': 'auth',
   })
 );
 
@@ -284,7 +285,8 @@ toJsonSchema(ValibotSchema);
 //   format: "email",
 //   title: "Email Schema",
 //   description: "A schema that validates email addresses.",
-//   examples: ["jane@example.com"]
+//   examples: ["jane@example.com"],
+//   "x-category": "auth"
 // }
 ```
 
