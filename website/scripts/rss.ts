@@ -39,6 +39,7 @@ const posts = fs
       data.title.trim() === '' ||
       typeof data.description !== 'string' ||
       data.description.trim() === '' ||
+      !data.published ||
       Number.isNaN(published.getTime()) ||
       !Array.isArray(data.authors) ||
       data.authors.length === 0 ||
@@ -63,13 +64,8 @@ const posts = fs
     // deterministic, as the file system does not guarantee entry order
     (post1, post2) =>
       post2.published.getTime() - post1.published.getTime() ||
-      post1.name.localeCompare(post2.name)
+      (post1.name < post2.name ? -1 : 1)
   );
-
-// The feed date is derived from the newest post, so at least one is required
-if (posts.length === 0) {
-  throw new Error('No blog posts found');
-}
 
 // Create an Atom entry for each blog post
 const entries = posts
