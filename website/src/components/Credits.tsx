@@ -5,6 +5,7 @@ import {
   AnthropicLogo,
   BoltLogo,
   BuilderLogo,
+  CloudflareLogo,
   CodeRabbitLogo,
   DigitalOceanLogo,
   HdmLogo,
@@ -66,6 +67,7 @@ export const Credits = component$(() => {
           { Logo: CodeRabbitLogo, href: 'https://coderabbit.link/valibot' },
           { Logo: AnthropicLogo, href: 'https://www.anthropic.com' },
           { Logo: OpenAILogo, href: 'https://www.openai.com' },
+          { Logo: CloudflareLogo, href: 'https://www.cloudflare.com' },
           {
             Logo: TestMuAiLogo,
             href: 'https://www.testmuai.com/?utm_medium=sponsor&utm_source=valibot',
