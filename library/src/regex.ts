@@ -120,6 +120,19 @@ export const ISO_TIME_SECOND_REGEX: RegExp =
   /^(?:0\d|1\d|2[0-3])(?::[0-5]\d){2}$/u;
 
 /**
+ * [RFC 3339 full-time](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6)
+ * regex. Requires seconds, optional fractional seconds, and a mandatory `Z`
+ * (case-insensitive) or `±hh:mm` time offset. Accepts `:60` in seconds for
+ * leap-second support; the `rfcTime` action applies the stricter leap-second
+ * and offset checks. The pattern is based on the [ajv-formats]
+ * (https://github.com/ajv-validator/ajv-formats/blob/master/src/formats.ts)
+ * time regex, but requires the offset and restricts hours and minutes to
+ * `00`–`23` and `00`–`59`.
+ */
+export const RFC_3339_TIME_REGEX: RegExp =
+  /^(0\d|1\d|2[0-3]):([0-5]\d):(\d{2})(\.\d+)?(Z|[+-](0\d|1\d|2[0-3]):[0-5]\d)$/iu;
+
+/**
  * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp regex. Allows a
  * space as a date/time separator and an optional space before the UTC offset.
  */
