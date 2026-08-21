@@ -13,12 +13,40 @@ describe('_merge', () => {
       });
     });
 
+    test('for NaN primitives', () => {
+      const result = _merge(NaN, NaN);
+      expect(result.issue).toBeUndefined();
+      expect(Number.isNaN((result as { value: unknown }).value)).toBe(true);
+    });
+
+    test('for zero values with different signs', () => {
+      const negativeZeroResult = _merge(-0, 0);
+      expect(negativeZeroResult.issue).toBeUndefined();
+      expect(
+        Object.is((negativeZeroResult as { value: unknown }).value, -0)
+      ).toBe(true);
+      const positiveZeroResult = _merge(0, -0);
+      expect(positiveZeroResult.issue).toBeUndefined();
+      expect(
+        Object.is((positiveZeroResult as { value: unknown }).value, 0)
+      ).toBe(true);
+    });
+
     test('for valid dates', () => {
       const date = new Date();
       expect(_merge(date, date)).toStrictEqual({ value: date });
       expect(_merge(new Date(+date), new Date(+date))).toStrictEqual({
         value: date,
       });
+    });
+
+    test('for invalid dates', () => {
+      const invalidDate = new Date(NaN);
+      const result = _merge(invalidDate, new Date(NaN));
+      expect(result.issue).toBeUndefined();
+      const value = (result as { value: Date }).value;
+      expect(value).toBeInstanceOf(Date);
+      expect(Number.isNaN(+value)).toBe(true);
     });
 
     test('for valid objects', () => {

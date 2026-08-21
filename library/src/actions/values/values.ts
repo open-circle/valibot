@@ -3,7 +3,12 @@ import type {
   BaseValidation,
   ErrorMessage,
 } from '../../types/index.ts';
-import { _addIssue, _joinExpects, _stringify } from '../../utils/index.ts';
+import {
+  _addIssue,
+  _isValueRequirementMatch,
+  _joinExpects,
+  _stringify,
+} from '../../utils/index.ts';
 import type { ValueInput } from '../types.ts';
 
 /**
@@ -117,8 +122,8 @@ export function values(
     '~run'(dataset, config) {
       if (
         dataset.typed &&
-        !this.requirement.some(
-          (value) => value <= dataset.value && value >= dataset.value
+        !this.requirement.some((requirement) =>
+          _isValueRequirementMatch(requirement, dataset.value)
         )
       ) {
         _addIssue(this, 'value', dataset, config, {
