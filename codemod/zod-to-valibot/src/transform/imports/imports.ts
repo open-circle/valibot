@@ -14,14 +14,17 @@ export function transformImports(
   // Find all Zod import statements
   const zodImports = root.find(
     j.ImportDeclaration,
-    (name) => name.source.value === 'zod' || name.source.value === 'zod/v4'
+    (name) =>
+      name.source.value === 'zod' ||
+      name.source.value === 'zod/v4' ||
+      name.source.value === 'zod/v4-mini'
   );
   // Check the number of statements is exactly one
   const importNodes = zodImports.nodes();
   if (importNodes.length !== 1) {
     return {
       conclusion: importNodes.length === 0 ? 'skip' : 'unsuccessful',
-      cause: 'Expected exactly one import statement from "zod" or "zod/v4".',
+      cause: 'Expected exactly one import statement from "zod", "zod/v4", or "zod/v4-mini".',
     };
   }
   // Check the number of specifiers is exactly one
@@ -29,7 +32,7 @@ export function transformImports(
   if (importSpecifiers?.length !== 1) {
     return {
       conclusion: 'unsuccessful',
-      cause: 'Expected exactly one import specifier from "zod" or "zod/v4".',
+      cause: 'Expected exactly one import specifier from "zod", "zod/v4", or "zod/v4-mini".',
     };
   }
   // Obtain the identifier
