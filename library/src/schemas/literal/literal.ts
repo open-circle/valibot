@@ -95,7 +95,7 @@ export function literal(
       return _getStandardProps(this);
     },
     '~run'(dataset, config) {
-      if (dataset.value === this.literal) {
+      if (Object.is(dataset.value, this.literal)) {
         // @ts-expect-error
         dataset.typed = true;
       } else {

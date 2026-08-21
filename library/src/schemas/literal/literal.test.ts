@@ -63,6 +63,14 @@ describe('literal', () => {
       expectNoSchemaIssue(literal(45.67), [45.67]);
     });
 
+    test('for NaN literal', () => {
+      // Regression test for #1529. `literal(NaN)` was an unsatisfiable
+      // schema because the value check used `===`, and `NaN === NaN` is
+      // false. After switching to `Object.is`, `literal(NaN)` accepts NaN
+      // and matches the behavior of `picklist([NaN])`.
+      expectNoSchemaIssue(literal(NaN), [NaN]);
+    });
+
     test('for valid string literal', () => {
       expectNoSchemaIssue(literal(''), ['']);
       expectNoSchemaIssue(literal('foo'), ['foo']);
@@ -131,6 +139,32 @@ describe('literal', () => {
           undefined,
           '123',
           Symbol('123'),
+          {},
+          [],
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          () => {},
+        ]
+      );
+    });
+
+    test('for invalid NaN literal', () => {
+      // Regression test for #1529. The fix switched the equality check from
+      // `===` to `Object.is`, so `literal(NaN)` accepts `NaN` but still
+      // rejects other numbers (and non-number inputs).
+      expectSchemaIssue(
+        literal(NaN, 'message'),
+        { ...baseIssue, expected: 'NaN' },
+        [
+          123n,
+          true,
+          false,
+          null,
+          -123,
+          0,
+          45.67,
+          undefined,
+          'foo',
+          Symbol(),
           {},
           [],
           // eslint-disable-next-line @typescript-eslint/no-empty-function
