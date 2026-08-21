@@ -7,7 +7,7 @@ import type {
   MapPathItem,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { map } from './map.ts';
 import type { InferMapInput, InferMapOutput, MapIssue } from './types.ts';
 
@@ -109,7 +109,15 @@ export function mapAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<MapIssue> | undefined
 > {
-  return {
+  return _standardSchema<
+    MapSchemaAsync<
+      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+      ErrorMessage<MapIssue> | undefined
+    >
+  >({
     kind: 'schema',
     type: 'map',
     reference: mapAsync,
@@ -118,10 +126,17 @@ export function mapAsync(
     key,
     value,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    async '~run'(dataset, config) {
+    async '~run'(
+      this: MapSchemaAsync<
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<MapIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // Get input value from dataset
       const input = dataset.value;
 
@@ -241,5 +256,5 @@ export function mapAsync(
         MapIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

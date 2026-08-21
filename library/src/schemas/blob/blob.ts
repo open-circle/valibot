@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Blob issue interface.
@@ -70,17 +70,18 @@ export function blob<
 export function blob(
   message?: ErrorMessage<BlobIssue>
 ): BlobSchema<ErrorMessage<BlobIssue> | undefined> {
-  return {
+  return _standardSchema<BlobSchema<ErrorMessage<BlobIssue> | undefined>>({
     kind: 'schema',
     type: 'blob',
     reference: blob,
     expects: 'Blob',
     async: false,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: BlobSchema<ErrorMessage<BlobIssue> | undefined>,
+      dataset,
+      config
+    ) {
       if (dataset.value instanceof Blob) {
         // @ts-expect-error
         dataset.typed = true;
@@ -90,5 +91,5 @@ export function blob(
       // @ts-expect-error
       return dataset as OutputDataset<Blob, BlobIssue>;
     },
-  };
+  });
 }

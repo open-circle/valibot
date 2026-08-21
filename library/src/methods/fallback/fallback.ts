@@ -7,7 +7,7 @@ import type {
   MaybeDeepReadonly,
   OutputDataset,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 import { getFallback } from '../getFallback/index.ts';
 
 /**
@@ -51,17 +51,14 @@ export function fallback<
   schema: TSchema,
   fallback: TFallback
 ): SchemaWithFallback<TSchema, TFallback> {
-  return {
+  return _standardSchema<SchemaWithFallback<TSchema, TFallback>>({
     ...schema,
     fallback,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(this: SchemaWithFallback<TSchema, TFallback>, dataset, config) {
       const outputDataset = schema['~run'](dataset, config);
       return outputDataset.issues
         ? { typed: true, value: getFallback(this, outputDataset, config) }
         : outputDataset;
     },
-  };
+  });
 }

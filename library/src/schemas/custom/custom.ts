@@ -3,7 +3,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { CustomIssue } from './types.ts';
 
 /**
@@ -69,7 +69,9 @@ export function custom<TInput>(
   check: Check,
   message?: ErrorMessage<CustomIssue>
 ): CustomSchema<TInput, ErrorMessage<CustomIssue> | undefined> {
-  return {
+  return _standardSchema<
+    CustomSchema<TInput, ErrorMessage<CustomIssue> | undefined>
+  >({
     kind: 'schema',
     type: 'custom',
     reference: custom,
@@ -77,10 +79,11 @@ export function custom<TInput>(
     async: false,
     check,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: CustomSchema<TInput, ErrorMessage<CustomIssue> | undefined>,
+      dataset,
+      config
+    ) {
       if (this.check(dataset.value)) {
         // @ts-expect-error
         dataset.typed = true;
@@ -90,5 +93,5 @@ export function custom<TInput>(
       // @ts-expect-error
       return dataset as OutputDataset<TInput, CustomIssue>;
     },
-  };
+  });
 }

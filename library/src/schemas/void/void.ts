@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Void issue interface.
@@ -70,17 +70,18 @@ export function void_<
 export function void_(
   message?: ErrorMessage<VoidIssue>
 ): VoidSchema<ErrorMessage<VoidIssue> | undefined> {
-  return {
+  return _standardSchema<VoidSchema<ErrorMessage<VoidIssue> | undefined>>({
     kind: 'schema',
     type: 'void',
     reference: void_,
     expects: 'void',
     async: false,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: VoidSchema<ErrorMessage<VoidIssue> | undefined>,
+      dataset,
+      config
+    ) {
       if (dataset.value === undefined) {
         // @ts-expect-error
         dataset.typed = true;
@@ -90,7 +91,7 @@ export function void_(
       // @ts-expect-error
       return dataset as OutputDataset<void, VoidIssue>;
     },
-  };
+  });
 }
 
 export { void_ as void };

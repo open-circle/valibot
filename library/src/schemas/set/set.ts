@@ -6,7 +6,7 @@ import type {
   OutputDataset,
   SetPathItem,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { InferSetInput, InferSetOutput, SetIssue } from './types.ts';
 
 /**
@@ -74,7 +74,12 @@ export function set(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<SetIssue> | undefined
 > {
-  return {
+  return _standardSchema<
+    SetSchema<
+      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+      ErrorMessage<SetIssue> | undefined
+    >
+  >({
     kind: 'schema',
     type: 'set',
     reference: set,
@@ -82,10 +87,14 @@ export function set(
     async: false,
     value,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: SetSchema<
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<SetIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // Get input value from dataset
       const input = dataset.value;
 
@@ -159,5 +168,5 @@ export function set(
         SetIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

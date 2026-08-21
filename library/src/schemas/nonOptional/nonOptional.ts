@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type {
   InferNonOptionalInput,
   InferNonOptionalIssue,
@@ -77,7 +77,12 @@ export function nonOptional(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<NonOptionalIssue> | undefined
 > {
-  return {
+  return _standardSchema<
+    NonOptionalSchema<
+      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+      ErrorMessage<NonOptionalIssue> | undefined
+    >
+  >({
     kind: 'schema',
     type: 'non_optional',
     reference: nonOptional,
@@ -85,10 +90,14 @@ export function nonOptional(
     async: false,
     wrapped,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: NonOptionalSchema<
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<NonOptionalIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // If value is not `undefined`, run wrapped schema
       if (dataset.value !== undefined) {
         // @ts-expect-error
@@ -104,5 +113,5 @@ export function nonOptional(
       // @ts-expect-error
       return dataset as OutputDataset<unknown, BaseIssue<unknown>>;
     },
-  };
+  });
 }

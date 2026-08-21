@@ -7,7 +7,7 @@ import type {
   InferOutput,
   MaybePromise,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 import type { lazy } from './lazy.ts';
 
 /**
@@ -55,18 +55,15 @@ export function lazyAsync<
 >(
   getter: (input: unknown) => MaybePromise<TWrapped>
 ): LazySchemaAsync<TWrapped> {
-  return {
+  return _standardSchema<LazySchemaAsync<TWrapped>>({
     kind: 'schema',
     type: 'lazy',
     reference: lazyAsync,
     expects: 'unknown',
     async: true,
     getter,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     async '~run'(dataset, config) {
       return (await this.getter(dataset.value))['~run'](dataset, config);
     },
-  };
+  });
 }

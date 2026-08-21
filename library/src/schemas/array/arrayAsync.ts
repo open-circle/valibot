@@ -9,7 +9,7 @@ import type {
   InferOutput,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { array } from './array.ts';
 import type { ArrayIssue } from './types.ts';
 
@@ -87,7 +87,13 @@ export function arrayAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ArrayIssue> | undefined
 > {
-  return {
+  return _standardSchema<
+    ArraySchemaAsync<
+      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+      ErrorMessage<ArrayIssue> | undefined
+    >
+  >({
     kind: 'schema',
     type: 'array',
     reference: arrayAsync,
@@ -95,10 +101,15 @@ export function arrayAsync(
     async: true,
     item,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    async '~run'(dataset, config) {
+    async '~run'(
+      this: ArraySchemaAsync<
+        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<ArrayIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // Get input value from dataset
       const input = dataset.value;
 
@@ -175,5 +186,5 @@ export function arrayAsync(
         ArrayIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

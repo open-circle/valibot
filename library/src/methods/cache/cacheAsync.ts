@@ -10,7 +10,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _cloneDataset, _getStandardProps } from '../../utils/index.ts';
+import { _cloneDataset, _standardSchema } from '../../utils/index.ts';
 import { _LruCache } from './_LruCache.ts';
 import type { Cache, CacheConfig } from './types.ts';
 
@@ -128,14 +128,17 @@ export function cacheAsync(
   let activeRuns:
     | Map<string, Promise<OutputDataset<unknown, BaseIssue<unknown>>>>
     | undefined;
-  return {
+  return _standardSchema<
+    SchemaWithCacheAsync<
+      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+      CacheConfig | undefined
+    >
+  >({
     ...schema,
     async: true,
     cacheConfig: config,
     cache: new _LruCache(config),
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     async '~run'(dataset, runConfig) {
       // Create cache key based on input and config
       const key = this.cache.key(dataset.value, runConfig);
@@ -169,5 +172,5 @@ export function cacheAsync(
         activeRuns?.delete(key);
       }
     },
-  };
+  });
 }

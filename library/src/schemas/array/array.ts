@@ -8,7 +8,7 @@ import type {
   InferOutput,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { ArrayIssue } from './types.ts';
 
 /**
@@ -76,7 +76,12 @@ export function array(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ArrayIssue> | undefined
 > {
-  return {
+  return _standardSchema<
+    ArraySchema<
+      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+      ErrorMessage<ArrayIssue> | undefined
+    >
+  >({
     kind: 'schema',
     type: 'array',
     reference: array,
@@ -84,10 +89,14 @@ export function array(
     async: false,
     item,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: ArraySchema<
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<ArrayIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // Get input value from dataset
       const input = dataset.value;
 
@@ -159,5 +168,5 @@ export function array(
         ArrayIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

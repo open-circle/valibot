@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Number issue interface.
@@ -70,17 +70,18 @@ export function number<
 export function number(
   message?: ErrorMessage<NumberIssue>
 ): NumberSchema<ErrorMessage<NumberIssue> | undefined> {
-  return {
+  return _standardSchema<NumberSchema<ErrorMessage<NumberIssue> | undefined>>({
     kind: 'schema',
     type: 'number',
     reference: number,
     expects: 'number',
     async: false,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: NumberSchema<ErrorMessage<NumberIssue> | undefined>,
+      dataset,
+      config
+    ) {
       if (typeof dataset.value === 'number' && !isNaN(dataset.value)) {
         // @ts-expect-error
         dataset.typed = true;
@@ -90,5 +91,5 @@ export function number(
       // @ts-expect-error
       return dataset as OutputDataset<number, NumberIssue>;
     },
-  };
+  });
 }

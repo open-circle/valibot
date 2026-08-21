@@ -12,7 +12,7 @@ import type {
   OutputDataset,
   TupleItems,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { TupleWithRestIssue } from './types.ts';
 
 /**
@@ -95,7 +95,13 @@ export function tupleWithRest(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<TupleWithRestIssue> | undefined
 > {
-  return {
+  return _standardSchema<
+    TupleWithRestSchema<
+      TupleItems,
+      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+      ErrorMessage<TupleWithRestIssue> | undefined
+    >
+  >({
     kind: 'schema',
     type: 'tuple_with_rest',
     reference: tupleWithRest,
@@ -104,10 +110,15 @@ export function tupleWithRest(
     items,
     rest,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-    '~run'(dataset, config) {
+    '~run'(
+      this: TupleWithRestSchema<
+        TupleItems,
+        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+        ErrorMessage<TupleWithRestIssue> | undefined
+      >,
+      dataset,
+      config
+    ) {
       // Get input value from dataset
       const input = dataset.value;
 
@@ -230,5 +241,5 @@ export function tupleWithRest(
         TupleWithRestIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }
