@@ -6,6 +6,29 @@ type MergeDataset =
   | { value?: undefined; issue: true };
 
 /**
+ * Compares two values with the SameValueZero algorithm, which differs from
+ * strict equality by treating `NaN` as equal to itself and from `Object.is`
+ * by treating `-0` as equal to `+0`.
+ *
+ * @param value1 First value.
+ * @param value2 Second value.
+ *
+ * @returns Whether the values are equal.
+ *
+ * @internal
+ */
+// @__NO_SIDE_EFFECTS__
+function _sameValueZero(value1: unknown, value2: unknown): boolean {
+  return (
+    value1 === value2 ||
+    (typeof value1 === 'number' &&
+      typeof value2 === 'number' &&
+      Number.isNaN(value1) &&
+      Number.isNaN(value2))
+  );
+}
+
+/**
  * Merges two values into one single output.
  *
  * @param value1 First value.
@@ -19,10 +42,13 @@ type MergeDataset =
 export function _merge(value1: unknown, value2: unknown): MergeDataset {
   // Continue if data type of values match
   if (typeof value1 === typeof value2) {
-    // Return first value if both are equal
+    // Return first value if both are equal using SameValueZero semantics, so
+    // that `NaN` merges with itself while `-0` and `+0` stay interchangeable
     if (
-      value1 === value2 ||
-      (value1 instanceof Date && value2 instanceof Date && +value1 === +value2)
+      _sameValueZero(value1, value2) ||
+      (value1 instanceof Date &&
+        value2 instanceof Date &&
+        _sameValueZero(+value1, +value2))
     ) {
       return { value: value1 };
     }
