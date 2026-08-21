@@ -556,6 +556,13 @@ describe('notValues', () => {
         { ...baseInfo, expected: '!0', requirement: [0] },
         [-0, 0.0, 0]
       );
+
+      // NaN in the blocklist must reject NaN input.
+      expectActionIssue(
+        notValues([NaN], 'message'),
+        { ...baseInfo, expected: '!NaN', requirement: [NaN] },
+        [NaN, Number('not-a-number')]
+      );
     });
 
     test('for invalid non-numbers', () => {

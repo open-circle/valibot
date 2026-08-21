@@ -116,7 +116,8 @@ export function value(
       if (
         dataset.typed &&
         !(
-          this.requirement <= dataset.value && this.requirement >= dataset.value
+          Object.is(this.requirement, dataset.value) ||
+          (this.requirement <= dataset.value && this.requirement >= dataset.value)
         )
       ) {
         _addIssue(this, 'value', dataset, config, {

@@ -166,6 +166,9 @@ describe('value', () => {
 
     test('for valid numbers', () => {
       expectNoActionIssue(value(123), [123, 123.0, Number('123')]);
+      // NaN === NaN must pass: <= / >= comparisons both return false for NaN,
+      // so without Object.is the validator incorrectly rejects the input.
+      expectNoActionIssue(value(NaN), [NaN, Number('not-a-number')]);
     });
 
     test('for valid non-numbers', () => {
