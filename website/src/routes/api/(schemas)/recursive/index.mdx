@@ -1,0 +1,109 @@
+---
+title: recursive
+description: Creates a recursive schema.
+source: /schemas/recursive/recursive.ts
+contributors:
+  - yslpn
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# recursive
+
+Creates a recursive schema.
+
+```ts
+const Schema = v.recursive<TWrapped>(getter);
+```
+
+## Generics
+
+- `TWrapped` <Property {...properties.TWrapped} />
+
+## Parameters
+
+- `getter` <Property {...properties.getter} />
+
+### Explanation
+
+The `getter` function receives a `self` schema that can be used inside the schema returned by `getter`. This allows Valibot to infer recursive input and output types automatically.
+
+> If you need to choose a schema based on the input value, use <Link href="/api/lazy/">`lazy`</Link> instead.
+
+## Returns
+
+- `Schema` <Property {...properties.Schema} />
+
+## Examples
+
+The following examples show how `recursive` can be used.
+
+### Category schema
+
+Recursive schema to validate nested categories.
+
+```ts
+const CategorySchema = v.recursive((self) =>
+  v.object({
+    name: v.string(),
+    subcategories: v.array(self),
+  })
+);
+```
+
+### Optional parent schema
+
+Recursive schema with an optional reference to the same schema.
+
+```ts
+const CategorySchema = v.recursive((Category) =>
+  v.object({
+    name: v.string(),
+    parent: v.optional(Category),
+  })
+);
+```
+
+### Transform root output
+
+Schema that transforms the root output after recursive parsing.
+
+```ts
+const CategoryWithLabelSchema = v.pipe(
+  v.recursive((self) =>
+    v.object({
+      name: v.string(),
+      subcategories: v.array(self),
+    })
+  ),
+  v.transform((category) => ({ ...category, label: category.name }))
+);
+```
+
+## Related
+
+The following APIs can be combined with `recursive`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'array',
+    'lazy',
+    'nullable',
+    'nullish',
+    'object',
+    'optional',
+    'record',
+    'union',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['parse', 'pipe', 'safeParse']} />
+
+### Actions
+
+<ApiList items={['transform']} />

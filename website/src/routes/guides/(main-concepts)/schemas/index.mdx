@@ -10,6 +10,7 @@ contributors:
   - alonidiom
   - yicrotkd
   - gotnoklu
+  - yslpn
 ---
 
 import { ApiList, Link } from '~/components';
@@ -122,6 +123,7 @@ Beyond primitive and complex values, there are also schema functions for more sp
     'nullish',
     'optional',
     'picklist',
+    'recursive',
     'undefinedable',
     'union',
     'unknown',
@@ -150,6 +152,9 @@ const NullableSchema = v.nullable(v.string()); // string | null
 const NullishSchema = v.nullish(v.string()); // string | null | undefined
 const OptionalSchema = v.optional(v.string()); // string | undefined
 const PicklistSchema = v.picklist(['a', 'b']); // 'a' | 'b'
+const RecursiveSchema = v.recursive((self) =>
+  v.object({ children: v.array(self) })
+); // { children: ...[] }
 const UndefinedableSchema = v.undefinedable(v.string()); // string | undefined
 const UnionSchema = v.union([v.string(), v.number()]); // string | number
 const UnknownSchema = v.unknown(); // unknown

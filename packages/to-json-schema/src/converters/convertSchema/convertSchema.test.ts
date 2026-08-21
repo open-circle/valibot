@@ -1496,6 +1496,186 @@ describe('convertSchema', () => {
         )
       ).toStrictEqual({ $ref: '#/$custom/reference' });
     });
+
+    test('should convert recursive schema', () => {
+      const schema = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const context = createContext();
+      const jsonSchema = convertSchema({}, schema, undefined, context);
+      const referenceId = context.referenceMap.get(schema);
+
+      expect(jsonSchema).toStrictEqual({
+        $ref: `#/$defs/${referenceId}`,
+      });
+      expect(context.definitions).toStrictEqual({
+        [referenceId!]: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            subcategories: {
+              type: 'array',
+              items: { $ref: `#/$defs/${referenceId}` },
+            },
+          },
+          required: ['name', 'subcategories'],
+        },
+      });
+    });
+
+    test('should convert recursive schema without colliding with existing definitions', () => {
+      const schema = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const definitions = Object.fromEntries(
+        Array.from({ length: 100 }, (_, index) => [
+          `${index}`,
+          { type: 'string' as const },
+        ])
+      );
+      const expectedDefinitions = { ...definitions };
+      const existingReferenceIds = new Set([
+        '100',
+        ...Object.keys(definitions),
+      ]);
+      const context = createContext({
+        definitions,
+        referenceMap: new Map().set(v.string(), '100'),
+      });
+
+      const jsonSchema = convertSchema({}, schema, undefined, context);
+      const referenceId = context.referenceMap.get(schema);
+
+      expect(referenceId).toBeDefined();
+      expect(existingReferenceIds.has(referenceId!)).toBe(false);
+      expect(context.definitions).toMatchObject(expectedDefinitions);
+      expect(context.definitions['100']).toBeUndefined();
+      expect(jsonSchema).toStrictEqual({
+        $ref: `#/$defs/${referenceId}`,
+      });
+      expect(context.definitions[referenceId!]).toStrictEqual({
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          subcategories: {
+            type: 'array',
+            items: { $ref: `#/$defs/${referenceId}` },
+          },
+        },
+        required: ['name', 'subcategories'],
+      });
+    });
+
+    test('should convert recursive schema as definition', () => {
+      const schema = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const context = createContext({
+        definitions: {},
+        referenceMap: new Map().set(schema, 'Category'),
+      });
+
+      expect(convertSchema({}, schema, undefined, context, true)).toStrictEqual(
+        {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            subcategories: {
+              type: 'array',
+              items: { $ref: '#/$defs/Category' },
+            },
+          },
+          required: ['name', 'subcategories'],
+        }
+      );
+      expect(context.definitions).toStrictEqual({
+        Category: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            subcategories: {
+              type: 'array',
+              items: { $ref: '#/$defs/Category' },
+            },
+          },
+          required: ['name', 'subcategories'],
+        },
+      });
+    });
+
+    test('should convert recursive schema with inherited definition key', () => {
+      const schema = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const context = createContext({
+        definitions: {},
+        referenceMap: new Map().set(schema, 'toString'),
+      });
+
+      expect(convertSchema({}, schema, undefined, context, true)).toStrictEqual(
+        {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            subcategories: {
+              type: 'array',
+              items: { $ref: '#/$defs/toString' },
+            },
+          },
+          required: ['name', 'subcategories'],
+        }
+      );
+      expect(
+        Object.prototype.hasOwnProperty.call(context.definitions, 'toString')
+      ).toBe(true);
+      expect(context.definitions.toString).toStrictEqual({
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          subcategories: {
+            type: 'array',
+            items: { $ref: '#/$defs/toString' },
+          },
+        },
+        required: ['name', 'subcategories'],
+      });
+    });
+
+    test('should convert recursive schema without custom reference ID', () => {
+      const schema = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const schemaReference: unknown = schema;
+      expect(
+        convertSchema(
+          {},
+          schema,
+          {
+            overrideRef({ valibotSchema }) {
+              if (valibotSchema === schemaReference) {
+                return '#/$custom/reference';
+              }
+            },
+          },
+          createContext()
+        )
+      ).toStrictEqual({ $ref: '#/$custom/reference' });
+    });
   });
 
   describe('other schemas', () => {
