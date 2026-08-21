@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Ongeldige datum: ${issue.received} ontvangen`,
     toNumber:         (issue) => `Ongeldig getal: ${issue.received} ontvangen`,
     toString:         (issue) => `Ongeldige tekenreeks: ${issue.received} ontvangen`,
+    trimmed:          (issue) => `Ongeldig getrimd: ${issue.received} ontvangen`,
     ulid:             (issue) => `Ongeldige ULID: ${issue.received} ontvangen`,
     url:              (issue) => `Ongeldige URL: ${issue.received} ontvangen`,
     uuid:             (issue) => `Ongeldige UUID: ${issue.received} ontvangen`,

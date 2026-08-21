@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Λάθος ημερομηνία: Ήρθε ${issue.received}`,
     toNumber:         (issue) => `Λάθος αριθμός: Ήρθε ${issue.received}`,
     toString:         (issue) => `Λάθος συμβολοσειρά: Ήρθε ${issue.received}`,
+    trimmed:          (issue) => `Μη περικομμένο κείμενο: Ήρθε ${issue.received}`,
     ulid:             (issue) => `Λάθος ULID: Ήρθε ${issue.received}`,
     url:              (issue) => `Λάθος URL: Ήρθε ${issue.received}`,
     uuid:             (issue) => `Λάθος UUID: Ήρθε ${issue.received}`,

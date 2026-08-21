@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `تاريخ غير صالح: القيمة المُدخلة ${issue.received}`,
     toNumber:         (issue) => `رقم غير صالح: القيمة المُدخلة ${issue.received}`,
     toString:         (issue) => `نص غير صالح: القيمة المُدخلة ${issue.received}`,
+    trimmed:          (issue) => `نص غير مُقَلَّم: القيمة المُدخلة ${issue.received}`,
     ulid:             (issue) => `معرّف ULID غير صالح: القيمة المُدخلة ${issue.received}`,
     url:              (issue) => `رابط غير صالح: القيمة المُدخلة ${issue.received}`,
     uuid:             (issue) => `معرّف UUID غير صالح: القيمة المُدخلة ${issue.received}`,

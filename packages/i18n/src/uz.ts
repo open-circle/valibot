@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Yaroqsiz sana: ${issue.received} qabul qilindi`,
     toNumber:         (issue) => `Yaroqsiz son: ${issue.received} qabul qilindi`,
     toString:         (issue) => `Yaroqsiz satr: ${issue.received} qabul qilindi`,
+    trimmed:          (issue) => `Yaroqsiz trimmed: ${issue.received} qabul qilindi`,
     ulid:             (issue) => `Yaroqsiz ULID: ${issue.received} qabul qilindi`,
     url:              (issue) => `Yaroqsiz URL: ${issue.received} qabul qilindi`,
     uuid:             (issue) => `Yaroqsiz UUID: ${issue.received} qabul qilindi`,
