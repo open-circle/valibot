@@ -29,6 +29,7 @@ export * from './object/index.ts';
 export * from './objectWithRest/index.ts';
 export * from './optional/index.ts';
 export * from './picklist/index.ts';
+export * from './pojo/index.ts';
 export * from './promise/index.ts';
 export * from './record/index.ts';
 export * from './set/index.ts';

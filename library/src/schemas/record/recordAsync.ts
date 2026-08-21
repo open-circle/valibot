@@ -11,6 +11,7 @@ import {
   _addIssue,
   _getStandardProps,
   _isValidObjectKey,
+  isPlainObject,
 } from '../../utils/index.ts';
 import type { record } from './record.ts';
 import type {
@@ -134,7 +135,7 @@ export function recordAsync(
       const input = dataset.value;
 
       // If root type is valid, check nested types
-      if (input && typeof input === 'object') {
+      if (input && isPlainObject(input)) {
         // Set typed to `true` and value to empty object
         // @ts-expect-error
         dataset.typed = true;
