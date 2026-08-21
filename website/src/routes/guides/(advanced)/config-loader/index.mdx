@@ -1,0 +1,118 @@
+---
+title: Config Loader
+description: This guide will show you how to load and validate configuration files with Valibot.
+contributors:
+  - ysknsid25
+---
+
+# Config Loader
+
+Applications often read their configuration from files on disk. Instead of wiring up file discovery, parsing, and validation by hand, you can load a config file and validate it against a Valibot schema in a single call. This functionality is provided via a separate package called [`@valibot/config-loader`](https://github.com/open-circle/valibot/tree/main/packages/config-loader).
+
+> See the [README](https://github.com/open-circle/valibot/blob/main/packages/config-loader/README.md) of the `@valibot/config-loader` package for more details.
+
+## Load a config file
+
+The `loadConfig` function discovers a configuration file from disk, merges in optional defaults, and validates the result against the provided Valibot schema. Since the return type is inferred from your schema, the loaded configuration is fully typed.
+
+```ts
+import { loadConfig } from '@valibot/config-loader';
+import * as v from 'valibot';
+
+const ConfigSchema = v.object({
+  port: v.pipe(v.number(), v.integer()),
+  database: v.object({
+    url: v.pipe(v.string(), v.url()),
+    poolSize: v.optional(v.number()),
+  }),
+});
+
+const config = await loadConfig({
+  schema: ConfigSchema,
+  name: 'myapp.config',
+  defaults: { port: 3000 },
+});
+// config is typed as v.InferOutput<typeof ConfigSchema>
+```
+
+`loadConfig` is always asynchronous. It returns a `Promise<v.InferOutput<typeof schema>>` and validates with `parseAsync`, so both synchronous and asynchronous Valibot schemas are supported.
+
+## File discovery
+
+For each entry in `name`, the loader searches `cwd` (defaults to `process.cwd()`) for `<name><ext>`. The built-in extensions `.json`, `.js`, `.mjs`, and `.cjs` are always searched and handled natively, with `.json` parsed via `JSON.parse` and the others loaded with a dynamic `import()`. The built-in extensions are searched first, and the first matching file per name wins. Missing files are silently skipped, so passing only `defaults` is a valid configuration.
+
+## Bring your own parser
+
+Valibot stays decoupled from any specific third-party parser. To support formats like YAML, TOML, or JSON5, register a parser via the `parsers` option. Each parser receives the raw file contents as a string and returns the parsed value. The registered extensions also drive discovery, and they are searched after the built-in extensions.
+
+```ts
+import { loadConfig } from '@valibot/config-loader';
+import * as v from 'valibot';
+import { parse as parseYaml } from 'yaml';
+
+const config = await loadConfig({
+  schema: ConfigSchema,
+  name: 'myapp.config',
+  parsers: { '.yaml': parseYaml, '.yml': parseYaml },
+});
+```
+
+A parser registered for one of the built-in extensions overrides the native handler for that extension, allowing overrides such as a JSON5 parser for `.json`.
+
+## Layering multiple files
+
+Pass `name` as an array to load several layers in order. Starting from `defaults`, every found file is merged on top of the previous result, so later entries override earlier ones. This lets you compose environment overlays without any baked-in naming convention.
+
+```ts
+const config = await loadConfig({
+  schema: ConfigSchema,
+  name: ['myapp.config', `myapp.config.${process.env.NODE_ENV}`],
+  defaults: { port: 3000 },
+});
+```
+
+## Merge strategy
+
+By default the layers are combined with a shallow merge: when both sides are plain objects, their top-level keys are combined with the override taking precedence; otherwise the override replaces the previous value. Because only the top level is merged, a nested object in a later layer replaces the entire object from the earlier layer rather than merging into it:
+
+```ts
+// myapp.config.production.json (on disk):
+// { "database": { "url": "https://prod.example.com" } }
+
+const config = await loadConfig({
+  schema: ConfigSchema,
+  name: 'myapp.config.production',
+  defaults: {
+    port: 3000,
+    database: { url: 'https://localhost', poolSize: 10 },
+  },
+});
+// merge(defaults, file) -> {
+//   port: 3000, // kept from defaults, since the file has no `port`
+//   database: { url: 'https://prod.example.com' }, // replaced wholesale, so `poolSize` is gone
+// }
+```
+
+To merge nested objects instead of replacing them, pass a custom `merge` function (for example `defu` or `lodash.merge`). Given the exact same files and defaults as above, only the merge strategy changes:
+
+```ts
+import { loadConfig } from '@valibot/config-loader';
+import { merge } from 'lodash-es';
+
+// myapp.config.production.json (on disk):
+// { "database": { "url": "https://prod.example.com" } }
+
+const config = await loadConfig({
+  schema: ConfigSchema,
+  name: 'myapp.config.production',
+  defaults: {
+    port: 3000,
+    database: { url: 'https://localhost', poolSize: 10 },
+  },
+  merge: (defaults, override) => merge({}, defaults, override),
+});
+// merge(defaults, file) -> {
+//   port: 3000,
+//   database: { url: 'https://prod.example.com', poolSize: 10 }, // poolSize is preserved
+// }
+```

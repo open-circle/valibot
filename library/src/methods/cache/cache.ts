@@ -1,9 +1,9 @@
-import type { OutputDataset } from '../../types/index.ts';
 import type {
   BaseIssue,
   BaseSchema,
   InferIssue,
   InferOutput,
+  OutputDataset,
 } from '../../types/index.ts';
 import { _cloneDataset, _getStandardProps } from '../../utils/index.ts';
 import { _LruCache } from './_LruCache.ts';
