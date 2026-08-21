@@ -22,6 +22,66 @@ import type {
 import type { variant } from './variant.ts';
 
 /**
+ * Builds a map from discriminator value to variant option for O(1) dispatch.
+ *
+ * Returns `null` (disabling the fast path) whenever the options cannot be
+ * unambiguously keyed by a single discriminator value: a nested variant, a
+ * discriminator schema whose accepted values are not statically enumerable
+ * (only `literal`, `enum` and `picklist` are), a `NaN` value (Map lookups use
+ * SameValueZero, `literal` compares with `===`), or a value claimed by more
+ * than one option.
+ *
+ * @param key The discriminator key.
+ * @param options The variant options.
+ *
+ * @returns The discriminator map or `null`.
+ *
+ * @internal
+ */
+// @__NO_SIDE_EFFECTS__
+function _buildDiscriminatorMap(
+  key: string,
+  options: VariantOptionsAsync<string>
+): Map<unknown, VariantOptionsAsync<string>[number]> | null {
+  const map = new Map<unknown, VariantOptionsAsync<string>[number]>();
+  for (const option of options) {
+    // Nested variants cannot be statically keyed here
+    if (option.type === 'variant') {
+      return null;
+    }
+    const discriminatorSchema = option.entries[key];
+    let values: readonly unknown[];
+    if (!discriminatorSchema) {
+      return null;
+    } else if (discriminatorSchema.type === 'literal') {
+      // @ts-expect-error
+      values = [discriminatorSchema.literal];
+    } else if (
+      discriminatorSchema.type === 'enum' ||
+      discriminatorSchema.type === 'picklist'
+    ) {
+      // @ts-expect-error
+      values = discriminatorSchema.options;
+    } else {
+      // Non-enumerable discriminator (e.g. optional, union, custom)
+      return null;
+    }
+    for (const value of values) {
+      // `NaN` would match under SameValueZero but never under `===`
+      if (Number.isNaN(value)) {
+        return null;
+      }
+      // Colliding discriminator values are ambiguous
+      if (map.has(value)) {
+        return null;
+      }
+      map.set(value, option);
+    }
+  }
+  return map;
+}
+
+/**
  * Variant schema async interface.
  */
 export interface VariantSchemaAsync<
@@ -119,6 +179,37 @@ export function variantAsync(
 
       // If root type is valid, check nested types
       if (input && typeof input === 'object') {
+        // Lazily build a discriminator map for O(1) option dispatch. It is
+        // `null` whenever the options cannot be unambiguously keyed by a single
+        // discriminator value, in which case the slow path below is used.
+        // @ts-expect-error
+        let discriminatorMap = this._discriminatorMap as
+          | Map<unknown, VariantOptionsAsync<string>[number]>
+          | null
+          | undefined;
+        if (discriminatorMap === undefined) {
+          discriminatorMap = _buildDiscriminatorMap(this.key, this.options);
+          // @ts-expect-error
+          this._discriminatorMap = discriminatorMap;
+        }
+
+        // Fast path: dispatch directly to the single option whose discriminator
+        // matches the input. On a miss, fall through to the slow path so the
+        // discriminator issue and message are produced identically.
+        if (discriminatorMap && this.key in input) {
+          // @ts-expect-error
+          const option = discriminatorMap.get(input[this.key]);
+          if (option) {
+            return (await option['~run'](
+              { value: input },
+              config
+            )) as OutputDataset<
+              InferOutput<VariantOptionsAsync<string>[number]>,
+              VariantIssue | BaseIssue<unknown>
+            >;
+          }
+        }
+
         // Create output dataset variable
         let outputDataset:
           | OutputDataset<unknown, BaseIssue<unknown>>

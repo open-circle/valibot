@@ -144,8 +144,18 @@ export function enum_(
       return _getStandardProps(this);
     },
     '~run'(dataset, config) {
+      // Lazily cache the options as a set for O(1) membership checks. This is
+      // faster than `Array.includes` for large enums and uses SameValueZero
+      // comparison, so behavior is identical. The set is built once and assumes
+      // `options` is not mutated after schema creation, which matches the
+      // existing contract: `expects` is already precomputed from `options`
+      // above, so a post-creation mutation would desync the error message
+      // regardless.
       // @ts-expect-error
-      if (this.options.includes(dataset.value)) {
+      const optionsSet: Set<unknown> = (this._optionsSet ??= new Set(
+        this.options
+      ));
+      if (optionsSet.has(dataset.value)) {
         // @ts-expect-error
         dataset.typed = true;
       } else {

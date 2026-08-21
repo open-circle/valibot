@@ -1,0 +1,18 @@
+import { bench, describe } from 'vitest';
+import * as v from '../src/index.ts';
+
+// Regression guard for pipe execution throughput.
+const schema = v.pipe(
+  v.string(),
+  v.minLength(3),
+  v.maxLength(32),
+  v.trim()
+);
+
+const input = 'hello world';
+
+describe('string pipe', () => {
+  bench('valid', () => {
+    return v.safeParse(schema, input);
+  });
+});
