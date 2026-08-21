@@ -10,6 +10,7 @@ import {
 } from './constants';
 import { addToPipe } from './helpers';
 import {
+  transformAnd,
   transformArray as transformArrayMethod,
   transformCatchall,
   transformDeepPartial,
@@ -377,6 +378,8 @@ function toValibotMethodExp(
 ) {
   const args = [valibotIdentifier, schemaExp, inputArgs] as const;
   switch (zodMethodName) {
+    case 'and':
+      return transformAnd(...args);
     case 'array':
       return transformArrayMethod(...args);
     case 'catchall':
