@@ -1,0 +1,66 @@
+---
+title: base64Url
+description: Creates a base64 url validation action.
+source: /actions/base64Url/base64Url.ts
+contributors:
+  - EltonLobo07
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# base64Url
+
+Creates a [base64 url](https://en.wikipedia.org/wiki/Base64#URL_applications) validation action.
+
+```ts
+const Action = v.base64Url<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `base64Url` you can validate the formatting of a string. If the input is not a base64 url string, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `base64Url` can be used.
+
+### Base64Url schema
+
+Schema to validate a base64 url string.
+
+```ts
+const Base64UrlSchema = v.pipe(
+  v.string(),
+  v.base64Url('The data is badly encoded.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `base64Url`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string', 'unknown']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
