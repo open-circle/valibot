@@ -13,6 +13,7 @@ import type {
 import {
   _addIssue,
   _getStandardProps,
+  _hasOwnProperty,
   _isValidObjectKey,
 } from '../../utils/index.ts';
 import type { looseObject } from './looseObject.ts';
@@ -227,7 +228,7 @@ export function looseObjectAsync(
         // Hint: We exclude specific keys for security reasons
         if (!dataset.issues || !config.abortEarly) {
           for (const key in input) {
-            if (_isValidObjectKey(input, key) && !(key in this.entries)) {
+            if (_isValidObjectKey(input, key) && !_hasOwnProperty(this.entries, key)) {
               // @ts-expect-error
               dataset.value[key] = input[key];
             }

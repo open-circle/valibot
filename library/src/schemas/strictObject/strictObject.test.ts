@@ -108,6 +108,24 @@ describe('strictObject', () => {
       expectSchemaIssue(schema, baseIssue, [Symbol(), Symbol('foo')]);
     });
 
+    test('for input with a key that collides with Object.prototype', () => {
+      // Regression test for #1523. The pre-fix `key in this.entries` check
+      // matched inherited Object.prototype members, so a strict schema
+      // silently accepted `__proto__`, `constructor`, `toString`, and
+      // friends as defined entries. After the fix, those keys are
+      // reported as unknown and the schema rejects the input.
+      const strict = strictObject({ name: string() }, 'message');
+      expectSchemaIssue(
+        strict,
+        { ...baseIssue, expected: 'never' },
+        [
+          { name: 'foo', toString: 'bar' },
+          { name: 'foo', constructor: 1 },
+          { name: 'foo', __proto__: 'x' },
+        ]
+      );
+    });
+
     // Complex types
 
     // TODO: Enable this test again in case we find a reliable way to check for
