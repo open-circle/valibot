@@ -1,0 +1,26 @@
+---
+title: BtcAddressBech32Issue
+description: Bitcoin Bech32 address issue interface.
+contributors:
+  - shuaixr
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# BtcAddressBech32Issue
+
+Bitcoin Bech32 address issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `BtcAddressBech32Issue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `received` <Property {...properties.received} />
+  - `requirement` <Property {...properties.requirement} />

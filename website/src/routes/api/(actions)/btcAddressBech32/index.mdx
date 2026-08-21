@@ -1,0 +1,76 @@
+---
+title: btcAddressBech32
+description: Creates a Bitcoin Bech32 address validation action.
+source: /actions/btcAddressBech32/btcAddressBech32.ts
+contributors:
+  - shuaixr
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# btcAddressBech32
+
+Creates a [Bitcoin Bech32 address](https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki) validation action.
+
+> This action validates native SegWit Bitcoin addresses only. For legacy Base58Check addresses, use <Link href="../btcAddressBase58/">`btcAddressBase58`</Link>. To accept both formats, use <Link href="../btcAddress/">`btcAddress`</Link>.
+
+```ts
+const Action = v.btcAddressBech32<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `btcAddressBech32` you can validate Bitcoin native SegWit addresses with `bc1...` or `tb1...` prefixes. Version 0 witness addresses are checked as Bech32, while version 1 through 16 witness addresses are checked as Bech32m.
+
+The rules come from BIP-0173 and BIP-0350. The action verifies the human-readable part, rejects mixed-case strings, validates the Bech32 or Bech32m checksum, checks the witness version, and enforces the Bitcoin witness program length rules.
+
+This action does not validate Base58Check addresses and does not import the SHA-256 dependency used by `btcAddressBase58`. It only checks address syntax and checksum; it does not check whether an address has appeared on-chain.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `btcAddressBech32` can be used.
+
+### Bitcoin Bech32 address schema
+
+Schema to validate a Bitcoin Bech32 or Bech32m address.
+
+```ts
+const BitcoinBech32AddressSchema = v.pipe(
+  v.string(),
+  v.btcAddressBech32('The Bitcoin Bech32 address is invalid.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `btcAddressBech32`.
+
+### Actions
+
+<ApiList items={['btcAddress', 'btcAddressBase58']} />
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
