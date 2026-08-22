@@ -448,6 +448,22 @@ export function convertAction(
           jsonSchema.examples = valibotAction.metadata.examples;
         }
       }
+      // Hint: Any other metadata properties are added to the JSON Schema
+      // without further validation, similar to other schema libraries. This
+      // allows custom annotations and standard keywords such as "format" to
+      // be specified via the metadata action. The "__proto__" key is skipped
+      // to prevent prototype pollution.
+      for (const key of Object.keys(valibotAction.metadata)) {
+        if (
+          key !== 'title' &&
+          key !== 'description' &&
+          key !== 'examples' &&
+          key !== '__proto__'
+        ) {
+          // @ts-expect-error
+          jsonSchema[key] = valibotAction.metadata[key];
+        }
+      }
       break;
     }
 

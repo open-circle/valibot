@@ -17,7 +17,11 @@
     "parsing",
     "bundle-size",
     "type-safe",
-    "runtime"
+    "runtime",
+    "validator",
+    "schema-validation",
+    "type-inference",
+    "standard-schema"
   ],
   "type": "module",
   "main": "./dist/index.mjs",
