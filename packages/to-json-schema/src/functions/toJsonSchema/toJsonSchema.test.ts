@@ -230,6 +230,17 @@ describe('toJsonSchema', () => {
         type: 'string',
       });
     });
+
+    test('for invalid min value action on a string', () => {
+      expect(
+        toJsonSchema(v.pipe(v.string(), v.minValue('m')), {
+          errorMode: 'ignore',
+        })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'string',
+      });
+    });
   });
 
   describe('should handle target config', () => {

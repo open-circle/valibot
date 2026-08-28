@@ -476,6 +476,17 @@ describe('convertAction', () => {
     ).toThrowError(error);
   });
 
+  test('should warn error for gt value action with invalid type', () => {
+    expect(
+      convertAction({ type: 'string' }, v.gtValue<v.ValueInput, 3>(3), {
+        errorMode: 'warn',
+      })
+    ).toStrictEqual({ type: 'string' });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The "gt_value" action is not supported on type "string".'
+    );
+  });
+
   test('should convert includes action', () => {
     expect(
       convertAction(
@@ -723,6 +734,17 @@ describe('convertAction', () => {
     ).toThrowError(error);
   });
 
+  test('should warn error for lt value action with invalid type', () => {
+    expect(
+      convertAction({ type: 'string' }, v.ltValue<v.ValueInput, 10>(10), {
+        errorMode: 'warn',
+      })
+    ).toStrictEqual({ type: 'string' });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The "lt_value" action is not supported on type "string".'
+    );
+  });
+
   test('should convert max entries action', () => {
     expect(
       convertAction(
@@ -844,9 +866,7 @@ describe('convertAction', () => {
   test('should warn error for max value action with invalid type', () => {
     expect(
       convertAction({}, v.maxValue<v.ValueInput, 3>(3), { errorMode: 'warn' })
-    ).toStrictEqual({
-      maximum: 3,
-    });
+    ).toStrictEqual({});
     expect(console.warn).toHaveBeenLastCalledWith(
       'The "max_value" action is not supported on type "undefined".'
     );
@@ -854,7 +874,7 @@ describe('convertAction', () => {
       convertAction({ type: 'string' }, v.maxValue<v.ValueInput, 3>(3), {
         errorMode: 'warn',
       })
-    ).toStrictEqual({ type: 'string', maximum: 3 });
+    ).toStrictEqual({ type: 'string' });
     expect(console.warn).toHaveBeenLastCalledWith(
       'The "max_value" action is not supported on type "string".'
     );
@@ -1066,9 +1086,7 @@ describe('convertAction', () => {
   test('should warn error for min value action with invalid type', () => {
     expect(
       convertAction({}, v.minValue<v.ValueInput, 3>(3), { errorMode: 'warn' })
-    ).toStrictEqual({
-      minimum: 3,
-    });
+    ).toStrictEqual({});
     expect(console.warn).toHaveBeenLastCalledWith(
       'The "min_value" action is not supported on type "undefined".'
     );
@@ -1076,7 +1094,7 @@ describe('convertAction', () => {
       convertAction({ type: 'string' }, v.minValue<v.ValueInput, 3>(3), {
         errorMode: 'warn',
       })
-    ).toStrictEqual({ type: 'string', minimum: 3 });
+    ).toStrictEqual({ type: 'string' });
     expect(console.warn).toHaveBeenLastCalledWith(
       'The "min_value" action is not supported on type "string".'
     );
