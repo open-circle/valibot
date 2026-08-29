@@ -2,6 +2,11 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Add support for `ksuid` action (pull request #1370)
+- Add passthrough of other `metadata` action properties to support custom annotations and standard keywords like `format`, which take precedence over generated properties (pull request #1591)
+
 ## v1.7.1 (June 08, 2026)
 
 - Fix `$ref` generation to encode definition keys containing `/` or `~` as JSON Pointer tokens (pull request #1482)

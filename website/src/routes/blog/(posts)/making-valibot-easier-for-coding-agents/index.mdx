@@ -1,0 +1,88 @@
+---
+cover: Coding Agents
+title: Making Valibot easier for coding agents to use
+description: How we reworked the Valibot documentation for coding agents, with an agent skill, an MCP server, a Markdown version of every page, and LLMs.txt routes.
+published: 2026-08-11
+authors:
+  - flySewa
+---
+
+import { Link } from '~/components';
+
+We assume a lot of people use coding agents when they're building with Valibot, so we spent the last few weeks reworking the documentation for them.
+
+Agents already write most Valibot schemas correctly from their training data. The problems we found were around function names that no longer matched, pages that nothing linked to, and how much context a single page costs to read. A lot of our work went into those.
+
+## We now run an MCP server
+
+It's at `https://valibot.dev/mcp`, free, needs no authentication, and gives your agent three tools:
+
+- `search_docs` searches the guides, API reference and blog and returns matching pages
+- `get_doc` reads a specific page and returns it as Markdown
+- `list_docs` returns all available documentation grouped by area and category
+
+Add it to Claude Code with this:
+
+```bash
+claude mcp add --transport http valibot https://valibot.dev/mcp
+```
+
+For Cursor and other tools that use a JSON configuration file, add this entry:
+
+```json
+{
+  "mcpServers": {
+    "valibot": {
+      "url": "https://valibot.dev/mcp"
+    }
+  }
+}
+```
+
+Your agent makes one tool call instead of several requests. When it needs a specific page, it asks for that page and gets it, instead of pulling three unrelated ones first.
+
+## Agents can find the skill now
+
+The skill loads the current API and the patterns we recommend at the start of the session, so the code your agent writes follows the examples in our guides. We think it's the most useful thing here for most people.
+
+It lives in `open-circle/agent-skills`, and until recently that was the only place it lived. Nothing on valibot.dev served it or linked to it, so you had to know the repo existed to point your agent at it. The site now publishes it at `/.well-known/agent-skills/valibot/SKILL.md` and lists it in a discovery index, so an agent looking for one can find it without being told.
+
+Installing is still one command.
+
+```bash
+npx skills add open-circle/agent-skills --skill valibot
+```
+
+## The Markdown is generated from the page now
+
+We were already publishing a `.md` file for every page, but it was a copy of the source file, and our source files have components in them. Where the page showed a full type signature or a list of related links, the `.md` file just had the tag that produces them, so an agent reading it got less than you would. Now the Markdown is generated the way the page is, with those components turned into content.
+
+That's worth having because of what an HTML page carries. When your agent fetches one it gets the navigation, the scripts and the styling along with it, and pays for all of that in context without using any of it. The Markdown version has the content and none of the rest, so your agent can read several pages for what one used to cost.
+
+We also added an `X-Markdown-Tokens` header to every Markdown response, so a tool can check what a page costs before loading it. API pages keep their full type signatures, and the links between pages point at Markdown, so an agent following a reference from one page to another never has to switch formats.
+
+## Every page now points to llms.txt
+
+We'd been publishing `llms.txt` for a while, and nothing on the site pointed at it, so an agent had to already know it was there. Every Markdown page now links back to it and to its own HTML page, and the file opens with a summary saying what's in it and where the rest of the files are.
+
+We publish a few other shapes as well, since one file doesn't suit every tool. `llms-full.txt` is the entire documentation in a single file. For something narrower, `llms-guides.txt` covers the guides, `llms-api.txt` the API reference, and `llms-blog.txt` the blog.
+
+## The API reference now matches the library
+
+The API reference is the first place an agent looks, so we checked it against the source. We corrected 28 files, covering function names that no longer matched, invalid links and outdated menu entries.
+
+We also found five pages that nothing linked to. `ltValue`, `LastTupleItem`, `Reference`, `VariantOption` and `VariantOptionAsync` were all written and published, but an agent working through the menu had no way of knowing they existed. We've listed them now. Ask an agent about `VariantOption` today and it reads the page instead of guessing.
+
+## The whole site is static now
+
+None of this helps much if the pages are slow, so every page is generated ahead of time and served as a file. That's more than 800 pre-rendered pages, so every page an agent asks for is already built and comes back in around 80 ms from the edge cache.
+
+Thanks to the [ZanReal](https://zanreal.com/) team for making that possible. They wrote about the [migration](https://zanreal.com/case-studies/valibot-formisch-static-docs) if you want the detail.
+
+## The API design helps too
+
+We think a lot of this works because of how Valibot is built, which is the part we didn't have to change.
+
+Valibot is made of schemas, actions and methods, and all three are plain objects. There's no class hierarchy to follow and no inherited methods to discover. Once a model understands how a schema and an action fit together, it can apply that same shape across the whole API. That's one pattern to learn instead of one per data type.
+
+The skill, the MCP server, the LLMs.txt files and the Markdown versions are all documented on the <Link href="/guides/coding-agents/">coding agents page</Link>. [Formisch](https://formisch.dev/), our form library, has the same setup if you're using it.

@@ -203,12 +203,27 @@ describe('stringifyJson', () => {
       const input = () => null;
       expect(action['~run']({ typed: true, value: input }, {})).toStrictEqual({
         typed: false,
-        value: undefined,
+        value: input,
         issues: [
           {
             ...baseIssue,
             input,
             received: 'Function',
+          },
+        ],
+      });
+    });
+
+    test('for symbol input', () => {
+      const input = Symbol('test');
+      expect(action['~run']({ typed: true, value: input }, {})).toStrictEqual({
+        typed: false,
+        value: input,
+        issues: [
+          {
+            ...baseIssue,
+            input,
+            received: 'symbol',
           },
         ],
       });

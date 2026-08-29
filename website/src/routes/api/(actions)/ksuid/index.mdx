@@ -1,0 +1,66 @@
+---
+title: ksuid
+description: Creates a KSUID validation action.
+source: /actions/ksuid/ksuid.ts
+contributors:
+  - idleberg
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# ksuid
+
+Creates a [KSUID](https://github.com/segmentio/ksuid) validation action.
+
+```ts
+const Action = v.ksuid<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `ksuid` you can validate the formatting of a string. If the input is not a KSUID, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `ksuid` can be used.
+
+### KSUID schema
+
+Schema to validate a KSUID.
+
+```ts
+const KsuidSchema = v.pipe(
+  v.string(),
+  v.ksuid('The KSUID is badly formatted.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `ksuid`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

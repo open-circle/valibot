@@ -174,6 +174,18 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert ksuid action', () => {
+    expect(convertAction({}, v.ksuid<string>(), undefined)).toStrictEqual({
+      pattern: v.KSUID_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.ksuid<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.KSUID_REGEX.source,
+    });
+  });
+
   test('should convert mac action', () => {
     expect(convertAction({}, v.mac<string>(), undefined)).toStrictEqual({
       pattern: v.MAC_REGEX.source,
@@ -864,6 +876,7 @@ describe('convertAction', () => {
       title: 'title',
       description: 'description',
       examples: ['example'],
+      other: 'other',
     });
     expect(
       convertAction(
@@ -886,11 +899,50 @@ describe('convertAction', () => {
           title: 123,
           description: null,
           examples: { foo: 'bar' },
-          other: 'other',
         }),
         undefined
       )
     ).toStrictEqual({});
+  });
+
+  test('should add other metadata properties to JSON Schema', () => {
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.metadata({
+          format: 'my-format',
+          'x-custom': { foo: 'bar' },
+          deprecated: true,
+        }),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      format: 'my-format',
+      'x-custom': { foo: 'bar' },
+      deprecated: true,
+    });
+  });
+
+  test('should ignore inherited metadata properties', () => {
+    const metadata: Record<string, unknown> = Object.create({
+      'x-inherited': true,
+    });
+    metadata['x-own'] = 'own';
+    expect(convertAction({}, v.metadata(metadata), undefined)).toStrictEqual({
+      'x-own': 'own',
+    });
+  });
+
+  test('should not pollute prototype via metadata properties', () => {
+    const metadata: Record<string, unknown> = JSON.parse(
+      '{"__proto__": {"polluted": true}, "x-custom": "safe"}'
+    );
+    const jsonSchema = convertAction({}, v.metadata(metadata), undefined);
+    expect(jsonSchema).toStrictEqual({ 'x-custom': 'safe' });
+    expect(Object.getPrototypeOf(jsonSchema)).toBe(Object.prototype);
+    // @ts-expect-error
+    expect({}.polluted).toBeUndefined();
   });
 
   test('should convert min entries action', () => {

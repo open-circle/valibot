@@ -3,7 +3,7 @@ import type {
   BaseSchema,
   BaseSchemaAsync,
 } from '../../types/index.ts';
-import { ValiError } from '../../utils/index.ts';
+import { ValiError } from '../ValiError/index.ts';
 
 /**
  * A type guard to check if an error is a ValiError.

@@ -118,7 +118,7 @@ const UsernameSchema = v.unwrap(
 
 ### Nullish async with pipes
 
-When using `nullishAsync` in a <Link href="../../pipeAsync/">`pipeAsync`</Link>, missing object keys only execute the pipe if a `default_` value is provided. If the key is present with `null` or `undefined`, later pipe actions still run.
+When using `nullishAsync` in a <Link href="/api/pipeAsync/">`pipeAsync`</Link>, missing object keys only execute the pipe if a `default_` value is provided. If the key is present with `null` or `undefined`, later pipe actions still run.
 
 ```ts
 const SchemaWithoutDefault = v.objectAsync({
