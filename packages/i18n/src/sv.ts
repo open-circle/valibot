@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Ogiltigt datum: Fick ${issue.received}`,
     toNumber:         (issue) => `Ogiltigt nummer: Fick ${issue.received}`,
     toString:         (issue) => `Ogiltig sträng: Fick ${issue.received}`,
+    trimmed:          (issue) => `Ogiltigt trimmat: Fick ${issue.received}`,
     ulid:             (issue) => `Ogiltigt ULID: Fick ${issue.received}`,
     url:              (issue) => `Ogiltig URL: Fick ${issue.received}`,
     uuid:             (issue) => `Ogiltigt UUID: Fick ${issue.received}`,

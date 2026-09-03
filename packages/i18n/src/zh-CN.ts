@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `无效的日期：输入为 ${issue.received}`,
     toNumber:         (issue) => `无效的数字：输入为 ${issue.received}`,
     toString:         (issue) => `无效的字符串：输入为 ${issue.received}`,
+    trimmed:          (issue) => `无效的修剪：输入为 ${issue.received}`,
     ulid:             (issue) => `无效的 ULID：输入为 ${issue.received}`,
     url:              (issue) => `无效的 URL：输入为 ${issue.received}`,
     uuid:             (issue) => `无效的 UUID：输入为 ${issue.received}`,

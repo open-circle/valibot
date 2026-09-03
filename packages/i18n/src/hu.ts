@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Érvénytelen dátum: ${issue.received} kapott`,
     toNumber:         (issue) => `Érvénytelen szám: ${issue.received} kapott`,
     toString:         (issue) => `Érvénytelen karakterlánc: ${issue.received} kapott`,
+    trimmed:          (issue) => `Érvénytelenül vágott: ${issue.received} kapott`,
     ulid:             (issue) => `Érvénytelen ULID: ${issue.received} kapott`,
     url:              (issue) => `Érvénytelen URL: ${issue.received} kapott`,
     uuid:             (issue) => `Érvénytelen UUID: ${issue.received} kapott`,

@@ -120,6 +120,7 @@ export * from './toUpperCase/index.ts';
 export * from './transform/index.ts';
 export * from './trim/index.ts';
 export * from './trimEnd/index.ts';
+export * from './trimmed/index.ts';
 export * from './trimStart/index.ts';
 export * from './types.ts';
 export * from './ulid/index.ts';

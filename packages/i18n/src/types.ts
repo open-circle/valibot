@@ -128,6 +128,7 @@ export type Language = {
     toDate: ErrorMessage<BaseIssue<unknown>>;
     toNumber: ErrorMessage<BaseIssue<unknown>>;
     toString: ErrorMessage<BaseIssue<unknown>>;
+    trimmed: ErrorMessage<BaseIssue<unknown>>;
     ulid: ErrorMessage<BaseIssue<unknown>>;
     url: ErrorMessage<BaseIssue<unknown>>;
     uuid: ErrorMessage<BaseIssue<unknown>>;

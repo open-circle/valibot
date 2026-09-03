@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Буруу огноо: ${issue.received} ирлээ`,
     toNumber:         (issue) => `Буруу тоо: ${issue.received} ирлээ`,
     toString:         (issue) => `Буруу тэмдэгт мөр: ${issue.received} ирлээ`,
+    trimmed:          (issue) => `Буруу trim: ${issue.received} ирлээ`,
     ulid:             (issue) => `Буруу ULID: ${issue.received} ирлээ`,
     url:              (issue) => `Буруу URL: ${issue.received} ирлээ`,
     uuid:             (issue) => `Буруу UUID: ${issue.received} ирлээ`,

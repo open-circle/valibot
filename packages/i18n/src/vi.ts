@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Ngày không hợp lệ: Nhận được ${issue.received}`,
     toNumber:         (issue) => `Số không hợp lệ: Nhận được ${issue.received}`,
     toString:         (issue) => `Chuỗi không hợp lệ: Nhận được ${issue.received}`,
+    trimmed:          (issue) => `Chuỗi chưa được cắt khoảng trắng: Nhận được ${issue.received}`,
     ulid:             (issue) => `ULID không hợp lệ: Nhận được ${issue.received}`,
     url:              (issue) => `URL không hợp lệ: Nhận được ${issue.received}`,
     uuid:             (issue) => `UUID không hợp lệ: Nhận được ${issue.received}`,

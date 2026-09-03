@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Geçersiz tarih: ${issue.received} alındı`,
     toNumber:         (issue) => `Geçersiz sayı: ${issue.received} alındı`,
     toString:         (issue) => `Geçersiz dize: ${issue.received} alındı`,
+    trimmed:          (issue) => `Geçersiz kırpılmış: ${issue.received} alındı`,
     ulid:             (issue) => `Geçersiz ULID: ${issue.received} alındı`,
     url:              (issue) => `Geçersiz URL: ${issue.received} alındı`,
     uuid:             (issue) => `Geçersiz UUID: ${issue.received} alındı`,

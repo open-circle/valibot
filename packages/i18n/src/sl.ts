@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Neveljaven datum: Prejet ${issue.received}`,
     toNumber:         (issue) => `Neveljavno število: Prejet ${issue.received}`,
     toString:         (issue) => `Neveljaven niz: Prejet ${issue.received}`,
+    trimmed:          (issue) => `Neobrezano besedilo: Prejet ${issue.received}`,
     ulid:             (issue) => `Neveljaven ULID: Prejet ${issue.received}`,
     url:              (issue) => `Neveljaven URL: Prejet ${issue.received}`,
     uuid:             (issue) => `Neveljaven UUID: Prejet ${issue.received}`,

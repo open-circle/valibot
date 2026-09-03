@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Itariki itemewe: hakiriwe ${issue.received}`,
     toNumber:         (issue) => `Umubare utemewe: hakiriwe ${issue.received}`,
     toString:         (issue) => `Inyandiko itemewe: hakiriwe ${issue.received}`,
+    trimmed:          (issue) => `Inyandiko itunganyijwe nabi: hakiriwe ${issue.received}`,
     ulid:             (issue) => `ULID itemewe: hakiriwe ${issue.received}`,
     url:              (issue) => `URL itemewe: hakiriwe ${issue.received}`,
     uuid:             (issue) => `UUID itemewe: hakiriwe ${issue.received}`,

@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `تاریخ نامعتبر: ${issue.received} دریافت شد`,
     toNumber:         (issue) => `عدد نامعتبر: ${issue.received} دریافت شد`,
     toString:         (issue) => `رشته نامعتبر: ${issue.received} دریافت شد`,
+    trimmed:          (issue) => `متن اصلاح‌نشده: ${issue.received} دریافت شد`,
     ulid:             (issue) => `ULID نامعتبر: ${issue.received} دریافت شد`,
     url:              (issue) => `URL نامعتبر: ${issue.received} دریافت شد`,
     uuid:             (issue) => `UUID نامعتبر: ${issue.received} دریافت شد`,

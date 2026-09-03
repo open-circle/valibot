@@ -95,6 +95,7 @@ const language: Language = {
     toDate:           (issue) => `Virheellinen päivämäärä: saatiin ${issue.received}`,
     toNumber:         (issue) => `Virheellinen luku: saatiin ${issue.received}`,
     toString:         (issue) => `Virheellinen merkkijono: saatiin ${issue.received}`,
+    trimmed:          (issue) => `Virheellinen trimmaus: saatiin ${issue.received}`,
     ulid:             (issue) => `Virheellinen ULID: saatiin ${issue.received}`,
     url:              (issue) => `Virheellinen URL: saatiin ${issue.received}`,
     uuid:             (issue) => `Virheellinen UUID: saatiin ${issue.received}`,
