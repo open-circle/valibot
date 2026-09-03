@@ -1,0 +1,25 @@
+---
+title: AnyOfIssue
+description: Any of issue interface.
+contributors:
+  - yslpn
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# AnyOfIssue
+
+Any of issue interface.
+
+## Generics
+
+- `TSubIssue` <Property {...properties.TSubIssue} />
+
+## Definition
+
+- `AnyOfIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `issues` <Property {...properties.issues} />

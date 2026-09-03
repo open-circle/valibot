@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import type { EmailIssue, UrlIssue } from '../../../../actions/index.ts';
-import type { PartialDataset } from '../../../../types/index.ts';
+import type { EmailIssue, UrlIssue } from '../../actions/index.ts';
+import type { PartialDataset } from '../../types/index.ts';
 import { _subIssues } from './_subIssues.ts';
 
 describe('_subIssues', () => {
