@@ -14,7 +14,6 @@ coverage
 backups
 
 # Services
-.vscode
 .netlify
 .vercel
 
@@ -39,3 +38,4 @@ tmp
 .DS_Store
 Thumbs.db
 *.pem
+config.bat

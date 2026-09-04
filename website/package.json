@@ -21,7 +21,7 @@
     "contributors": "tsm ./scripts/contributors.ts",
     "deploy.cloudflare": "wrangler deploy",
     "deploy.vercel": "vercel deploy",
-    "dev": "vite --mode ssr",
+    "dev": "node api.js && vite --mode ssr",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
     "format": "prettier --write .",
     "format.check": "prettier --check .",
@@ -32,7 +32,7 @@
     "llms": "tsm ./scripts/llms.ts",
     "og": "tsm ./scripts/og-images.ts",
     "sources": "tsm ./scripts/sources.ts",
-    "start": "vite --open --mode ssr",
+    "start": "node api.js && vite --open --mode ssr",
     "qwik": "qwik"
   },
   "devDependencies": {
