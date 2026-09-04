@@ -4,6 +4,7 @@ All notable changes to the library will be documented in this file.
 
 ## vX.X.X (Month DD, YYYY)
 
+- Fix codemod mangling standalone `z.partial(schema)` calls into `v.partial(v)` instead of `v.partial(schema)` (issue #1503)
 - Change build target to ES2020 so distributed output stays compatible with environments that lack support for newer syntax (pull request #1455)
 
 ## v0.1.2 (December 07, 2025)

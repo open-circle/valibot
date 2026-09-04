@@ -582,12 +582,32 @@ function transformSchemasAndLinksHelper(
           objectModifier
         );
       } else if (isZodMethodName(propertyName)) {
-        transformedExp = toValibotMethodExp(
-          valibotIdentifier,
-          propertyName,
-          transformedExp ?? j.identifier(identifier),
-          cur.value.arguments
-        );
+        // Standalone namespace call such as `z.partial(Foo)`, as opposed to the
+        // method form `Foo.partial()`. Here the schema is the first argument
+        // rather than the receiver, so route that argument in as the schema
+        // instead of the namespace identifier (which produced `v.partial(v)`).
+        const isStandaloneNamespaceCall =
+          transformedExp === null &&
+          cur.value.callee.type === 'MemberExpression' &&
+          cur.value.callee.object.type === 'Identifier' &&
+          cur.value.callee.object.name === valibotIdentifier &&
+          cur.value.arguments.length > 0;
+        if (isStandaloneNamespaceCall) {
+          const [schemaArg, ...methodArgs] = cur.value.arguments;
+          transformedExp = toValibotMethodExp(
+            valibotIdentifier,
+            propertyName,
+            schemaArg as j.CallExpression | j.MemberExpression | j.Identifier,
+            methodArgs
+          );
+        } else {
+          transformedExp = toValibotMethodExp(
+            valibotIdentifier,
+            propertyName,
+            transformedExp ?? j.identifier(identifier),
+            cur.value.arguments
+          );
+        }
       } else if (isZodValidatorName(propertyName)) {
         if (curSchemaType === null) {
           // validators can only be applied to parsed schemas

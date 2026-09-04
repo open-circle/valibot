@@ -45,6 +45,7 @@ defineTests(transform, [
   'object-merge',
   'object-omit',
   'object-partial',
+  'object-partial-static',
   'object-passthrough',
   'object-pick',
   'object-required',
