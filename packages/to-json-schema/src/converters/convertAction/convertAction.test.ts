@@ -421,6 +421,17 @@ describe('convertAction', () => {
     });
   });
 
+  test('examples should type as an array, not a bare JSON Schema value', () => {
+    const jsonSchema = convertAction({}, v.examples(['foo', 'bar']), undefined);
+    // `.map` only exists on the array member of `JsonSchemaType`. If
+    // `examples` regresses to allowing a non-array value, this fails to
+    // compile under `tsc --noEmit`, not just at runtime.
+    expect(jsonSchema.examples?.map((example) => example)).toStrictEqual([
+      'foo',
+      'bar',
+    ]);
+  });
+
   test('should merge examples from multiple actions', () => {
     const jsonSchema = {};
     convertAction(jsonSchema, v.examples(['foo']), undefined);
