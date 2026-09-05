@@ -70,18 +70,14 @@ export function void_<
 export function void_(
   message?: ErrorMessage<VoidIssue>
 ): VoidSchema<ErrorMessage<VoidIssue> | undefined> {
-  return _standardSchema<VoidSchema<ErrorMessage<VoidIssue> | undefined>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'void',
     reference: void_,
     expects: 'void',
     async: false,
     message,
-    '~run'(
-      this: VoidSchema<ErrorMessage<VoidIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (dataset.value === undefined) {
         // @ts-expect-error
         dataset.typed = true;

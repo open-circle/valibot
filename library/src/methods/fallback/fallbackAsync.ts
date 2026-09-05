@@ -79,7 +79,6 @@ export type SchemaWithFallbackAsync<
  *
  * @returns The passed schema.
  */
-// @__NO_SIDE_EFFECTS__
 export function fallbackAsync<
   const TSchema extends
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
@@ -88,29 +87,31 @@ export function fallbackAsync<
 >(
   schema: TSchema,
   fallback: TFallback
-): SchemaWithFallbackAsync<TSchema, TFallback> {
-  return _standardSchema<SchemaWithFallbackAsync<TSchema, TFallback>>({
+): SchemaWithFallbackAsync<TSchema, TFallback>;
+
+// @__NO_SIDE_EFFECTS__
+export function fallbackAsync(
+  schema:
+    | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+    | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+  fallback: unknown
+): SchemaWithFallbackAsync<
+  | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+  | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+  unknown
+> {
+  return _standardSchema({
     ...schema,
     fallback,
     async: true,
-    async '~run'(
-      dataset: UnknownDataset,
-      config: Config<BaseIssue<unknown>>
-    ): Promise<OutputDataset<InferOutput<TSchema>, InferIssue<TSchema>>> {
+    async '~run'(dataset, config) {
       const outputDataset = await schema['~run'](dataset, config);
       return outputDataset.issues
         ? {
             typed: true,
-            value: await getFallback(
-              this as SchemaWithFallbackAsync<TSchema, TFallback>,
-              outputDataset,
-              config
-            ),
+            value: await getFallback(this, outputDataset, config),
           }
         : outputDataset;
     },
-  } as unknown as Omit<
-    SchemaWithFallbackAsync<TSchema, TFallback>,
-    '~standard'
-  >);
+  });
 }

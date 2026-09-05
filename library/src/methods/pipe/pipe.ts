@@ -2692,7 +2692,7 @@ export function pipe<
 >(
   ...pipe: [TSchema, ...TItems]
 ): SchemaWithPipe<readonly [TSchema, ...TItems]> {
-  return _standardSchema<SchemaWithPipe<readonly [TSchema, ...TItems]>>({
+  return _standardSchema({
     ...pipe[0],
     pipe,
     '~run'(dataset, config) {

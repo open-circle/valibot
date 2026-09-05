@@ -478,7 +478,7 @@ export function pick<
 
   // Return modified copy of schema
   // @ts-expect-error
-  return _standardSchema<SchemaWithPick<TSchema, TKeys>>({
+  return _standardSchema({
     ...schema,
     entries,
   });

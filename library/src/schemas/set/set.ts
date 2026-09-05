@@ -74,12 +74,7 @@ export function set(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<SetIssue> | undefined
 > {
-  return _standardSchema<
-    SetSchema<
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<SetIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'set',
     reference: set,
@@ -87,14 +82,7 @@ export function set(
     async: false,
     value,
     message,
-    '~run'(
-      this: SetSchema<
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<SetIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

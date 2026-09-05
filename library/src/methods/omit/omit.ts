@@ -479,9 +479,9 @@ export function omit<
     delete entries[key];
   }
 
-  // Rerturn modified copy of schema
+  // Return modified copy of schema
   // @ts-expect-error
-  return _standardSchema<SchemaWithOmit<TSchema, TKeys>>({
+  return _standardSchema({
     ...schema,
     entries,
   });

@@ -115,14 +115,7 @@ export function objectWithRestAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ObjectWithRestIssue> | undefined
 > {
-  return _standardSchema<
-    ObjectWithRestSchemaAsync<
-      ObjectEntriesAsync,
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'object_with_rest',
     reference: objectWithRestAsync,
@@ -131,16 +124,7 @@ export function objectWithRestAsync(
     entries,
     rest,
     message,
-    async '~run'(
-      this: ObjectWithRestSchemaAsync<
-        ObjectEntriesAsync,
-        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<ObjectWithRestIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

@@ -78,12 +78,7 @@ export function strictTupleAsync(
   TupleItemsAsync,
   ErrorMessage<StrictTupleIssue> | undefined
 > {
-  return _standardSchema<
-    StrictTupleSchemaAsync<
-      TupleItemsAsync,
-      ErrorMessage<StrictTupleIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'strict_tuple',
     reference: strictTupleAsync,
@@ -91,14 +86,7 @@ export function strictTupleAsync(
     async: true,
     items,
     message,
-    async '~run'(
-      this: StrictTupleSchemaAsync<
-        TupleItemsAsync,
-        ErrorMessage<StrictTupleIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

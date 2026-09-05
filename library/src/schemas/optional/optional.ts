@@ -72,9 +72,7 @@ export function optional(
   wrapped: BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   default_?: unknown
 ): OptionalSchema<BaseSchema<unknown, unknown, BaseIssue<unknown>>, unknown> {
-  return _standardSchema<
-    OptionalSchema<BaseSchema<unknown, unknown, BaseIssue<unknown>>, unknown>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'optional',
     reference: optional,
@@ -82,14 +80,7 @@ export function optional(
     async: false,
     wrapped,
     default: default_,
-    '~run'(
-      this: OptionalSchema<
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        unknown
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // If value is `undefined`, override it with default or return dataset
       if (dataset.value === undefined) {
         // If default is specified, override value of dataset

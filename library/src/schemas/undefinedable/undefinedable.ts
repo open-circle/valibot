@@ -78,12 +78,7 @@ export function undefinedable(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   unknown
 > {
-  return _standardSchema<
-    UndefinedableSchema<
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      unknown
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'undefinedable',
     reference: undefinedable,
@@ -91,14 +86,7 @@ export function undefinedable(
     async: false,
     wrapped,
     default: default_,
-    '~run'(
-      this: UndefinedableSchema<
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        unknown
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // If value is `undefined`, override it with default or return dataset
       if (dataset.value === undefined) {
         // If default is specified, override value of dataset

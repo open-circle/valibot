@@ -21,7 +21,7 @@ export function message<
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
 >(schema: TSchema, message_: ErrorMessage<InferIssue<TSchema>>): TSchema {
-  return _standardSchema<TSchema>({
+  return _standardSchema({
     ...schema,
     '~run'(dataset, config) {
       return schema['~run'](dataset, { ...config, message: message_ });

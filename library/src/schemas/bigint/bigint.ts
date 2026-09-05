@@ -70,18 +70,14 @@ export function bigint<
 export function bigint(
   message?: ErrorMessage<BigintIssue>
 ): BigintSchema<ErrorMessage<BigintIssue> | undefined> {
-  return _standardSchema<BigintSchema<ErrorMessage<BigintIssue> | undefined>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'bigint',
     reference: bigint,
     expects: 'bigint',
     async: false,
     message,
-    '~run'(
-      this: BigintSchema<ErrorMessage<BigintIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (typeof dataset.value === 'bigint') {
         // @ts-expect-error
         dataset.typed = true;

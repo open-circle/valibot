@@ -128,13 +128,7 @@ export function cacheAsync(
   let activeRuns:
     | Map<string, Promise<OutputDataset<unknown, BaseIssue<unknown>>>>
     | undefined;
-  return _standardSchema<
-    SchemaWithCacheAsync<
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      CacheConfig | undefined
-    >
-  >({
+  return _standardSchema({
     ...schema,
     async: true,
     cacheConfig: config,

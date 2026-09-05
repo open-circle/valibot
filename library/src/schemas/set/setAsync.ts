@@ -85,13 +85,7 @@ export function setAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<SetIssue> | undefined
 > {
-  return _standardSchema<
-    SetSchemaAsync<
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<SetIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'set',
     reference: setAsync,
@@ -99,15 +93,7 @@ export function setAsync(
     async: true,
     value,
     message,
-    async '~run'(
-      this: SetSchemaAsync<
-        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<SetIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

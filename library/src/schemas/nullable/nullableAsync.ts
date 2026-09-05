@@ -89,13 +89,7 @@ export function nullableAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   unknown
 > {
-  return _standardSchema<
-    NullableSchemaAsync<
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      unknown
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'nullable',
     reference: nullableAsync,
@@ -103,15 +97,7 @@ export function nullableAsync(
     async: true,
     wrapped,
     default: default_,
-    async '~run'(
-      this: NullableSchemaAsync<
-        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-        unknown
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // If value is `null`, override it with default or return dataset
       if (dataset.value === null) {
         // If default is specified, override value of dataset

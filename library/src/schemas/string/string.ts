@@ -70,18 +70,14 @@ export function string<
 export function string(
   message?: ErrorMessage<StringIssue>
 ): StringSchema<ErrorMessage<StringIssue> | undefined> {
-  return _standardSchema<StringSchema<ErrorMessage<StringIssue> | undefined>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'string',
     reference: string,
     expects: 'string',
     async: false,
     message,
-    '~run'(
-      this: StringSchema<ErrorMessage<StringIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (typeof dataset.value === 'string') {
         // @ts-expect-error
         dataset.typed = true;

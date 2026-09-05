@@ -356,13 +356,7 @@ export function requiredAsync(
   }
 
   // Return modified copy of schema
-  return _standardSchema<
-    SchemaWithRequiredAsync<
-      Schema,
-      ObjectKeys<Schema> | undefined,
-      ErrorMessage<NonOptionalIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     ...schema,
     entries,
   });

@@ -26,7 +26,7 @@ export interface UnknownSchema extends BaseSchema<unknown, unknown, never> {
  */
 // @__NO_SIDE_EFFECTS__
 export function unknown(): UnknownSchema {
-  return _standardSchema<UnknownSchema>({
+  return _standardSchema({
     kind: 'schema',
     type: 'unknown',
     reference: unknown,

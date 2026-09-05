@@ -91,13 +91,7 @@ export function nonNullableAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<NonNullableIssue> | undefined
 > {
-  return _standardSchema<
-    NonNullableSchemaAsync<
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<NonNullableIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'non_nullable',
     reference: nonNullableAsync,
@@ -105,15 +99,7 @@ export function nonNullableAsync(
     async: true,
     wrapped,
     message,
-    async '~run'(
-      this: NonNullableSchemaAsync<
-        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<NonNullableIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // If value is not `null`, run wrapped schema
       if (dataset.value !== null) {
         // @ts-expect-error

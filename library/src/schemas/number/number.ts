@@ -70,18 +70,14 @@ export function number<
 export function number(
   message?: ErrorMessage<NumberIssue>
 ): NumberSchema<ErrorMessage<NumberIssue> | undefined> {
-  return _standardSchema<NumberSchema<ErrorMessage<NumberIssue> | undefined>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'number',
     reference: number,
     expects: 'number',
     async: false,
     message,
-    '~run'(
-      this: NumberSchema<ErrorMessage<NumberIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (typeof dataset.value === 'number' && !isNaN(dataset.value)) {
         // @ts-expect-error
         dataset.typed = true;

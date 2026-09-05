@@ -70,18 +70,14 @@ export function symbol<
 export function symbol(
   message?: ErrorMessage<SymbolIssue>
 ): SymbolSchema<ErrorMessage<SymbolIssue> | undefined> {
-  return _standardSchema<SymbolSchema<ErrorMessage<SymbolIssue> | undefined>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'symbol',
     reference: symbol,
     expects: 'symbol',
     async: false,
     message,
-    '~run'(
-      this: SymbolSchema<ErrorMessage<SymbolIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (typeof dataset.value === 'symbol') {
         // @ts-expect-error
         dataset.typed = true;

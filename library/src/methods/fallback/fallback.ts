@@ -51,10 +51,10 @@ export function fallback<
   schema: TSchema,
   fallback: TFallback
 ): SchemaWithFallback<TSchema, TFallback> {
-  return _standardSchema<SchemaWithFallback<TSchema, TFallback>>({
+  return _standardSchema({
     ...schema,
     fallback,
-    '~run'(this: SchemaWithFallback<TSchema, TFallback>, dataset, config) {
+    '~run'(dataset, config) {
       const outputDataset = schema['~run'](dataset, config);
       return outputDataset.issues
         ? { typed: true, value: getFallback(this, outputDataset, config) }

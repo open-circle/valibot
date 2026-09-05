@@ -83,9 +83,7 @@ export function literal(
   literal_: Literal,
   message?: ErrorMessage<LiteralIssue>
 ): LiteralSchema<Literal, ErrorMessage<LiteralIssue> | undefined> {
-  return _standardSchema<
-    LiteralSchema<Literal, ErrorMessage<LiteralIssue> | undefined>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'literal',
     reference: literal,
@@ -93,11 +91,7 @@ export function literal(
     async: false,
     literal: literal_,
     message,
-    '~run'(
-      this: LiteralSchema<Literal, ErrorMessage<LiteralIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (dataset.value === this.literal) {
         // @ts-expect-error
         dataset.typed = true;

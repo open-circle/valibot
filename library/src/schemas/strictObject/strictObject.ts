@@ -78,12 +78,7 @@ export function strictObject(
   ObjectEntries,
   ErrorMessage<StrictObjectIssue> | undefined
 > {
-  return _standardSchema<
-    StrictObjectSchema<
-      ObjectEntries,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'strict_object',
     reference: strictObject,
@@ -91,14 +86,7 @@ export function strictObject(
     async: false,
     entries,
     message,
-    '~run'(
-      this: StrictObjectSchema<
-        ObjectEntries,
-        ErrorMessage<StrictObjectIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

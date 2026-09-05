@@ -87,13 +87,7 @@ export function arrayAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ArrayIssue> | undefined
 > {
-  return _standardSchema<
-    ArraySchemaAsync<
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ArrayIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'array',
     reference: arrayAsync,
@@ -101,15 +95,7 @@ export function arrayAsync(
     async: true,
     item,
     message,
-    async '~run'(
-      this: ArraySchemaAsync<
-        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<ArrayIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

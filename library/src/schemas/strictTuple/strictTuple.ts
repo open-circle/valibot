@@ -74,9 +74,7 @@ export function strictTuple(
   items: TupleItems,
   message?: ErrorMessage<StrictTupleIssue>
 ): StrictTupleSchema<TupleItems, ErrorMessage<StrictTupleIssue> | undefined> {
-  return _standardSchema<
-    StrictTupleSchema<TupleItems, ErrorMessage<StrictTupleIssue> | undefined>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'strict_tuple',
     reference: strictTuple,
@@ -84,14 +82,7 @@ export function strictTuple(
     async: false,
     items,
     message,
-    '~run'(
-      this: StrictTupleSchema<
-        TupleItems,
-        ErrorMessage<StrictTupleIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

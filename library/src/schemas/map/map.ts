@@ -89,13 +89,7 @@ export function map(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<MapIssue> | undefined
 > {
-  return _standardSchema<
-    MapSchema<
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<MapIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'map',
     reference: map,
@@ -104,15 +98,7 @@ export function map(
     key,
     value,
     message,
-    '~run'(
-      this: MapSchema<
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<MapIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

@@ -95,13 +95,7 @@ export function tupleWithRest(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<TupleWithRestIssue> | undefined
 > {
-  return _standardSchema<
-    TupleWithRestSchema<
-      TupleItems,
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<TupleWithRestIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'tuple_with_rest',
     reference: tupleWithRest,
@@ -110,15 +104,7 @@ export function tupleWithRest(
     items,
     rest,
     message,
-    '~run'(
-      this: TupleWithRestSchema<
-        TupleItems,
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<TupleWithRestIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

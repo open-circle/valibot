@@ -1,9 +1,9 @@
-import type { OutputDataset } from '../../types/index.ts';
 import type {
   BaseIssue,
   BaseSchema,
   InferIssue,
   InferOutput,
+  OutputDataset,
 } from '../../types/index.ts';
 import { _cloneDataset, _standardSchema } from '../../utils/index.ts';
 import { _LruCache } from './_LruCache.ts';
@@ -79,12 +79,7 @@ export function cache(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   CacheConfig | undefined
 > {
-  return _standardSchema<
-    SchemaWithCache<
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      CacheConfig | undefined
-    >
-  >({
+  return _standardSchema({
     ...schema,
     cacheConfig: config,
     cache: new _LruCache(config),

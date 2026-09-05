@@ -70,18 +70,14 @@ export function null_<
 export function null_(
   message?: ErrorMessage<NullIssue>
 ): NullSchema<ErrorMessage<NullIssue> | undefined> {
-  return _standardSchema<NullSchema<ErrorMessage<NullIssue> | undefined>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'null',
     reference: null_,
     expects: 'null',
     async: false,
     message,
-    '~run'(
-      this: NullSchema<ErrorMessage<NullIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (dataset.value === null) {
         // @ts-expect-error
         dataset.typed = true;

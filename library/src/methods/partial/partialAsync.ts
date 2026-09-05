@@ -293,9 +293,7 @@ export function partialAsync(
   }
 
   // Return modified copy of schema
-  return _standardSchema<
-    SchemaWithPartialAsync<Schema, ObjectKeys<Schema> | undefined>
-  >({
+  return _standardSchema({
     ...schema,
     entries,
   });

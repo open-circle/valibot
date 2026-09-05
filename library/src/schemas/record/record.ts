@@ -105,13 +105,7 @@ export function record(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<RecordIssue> | undefined
 > {
-  return _standardSchema<
-    RecordSchema<
-      BaseSchema<string, string | number | symbol, BaseIssue<unknown>>,
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<RecordIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'record',
     reference: record,
@@ -120,15 +114,7 @@ export function record(
     key,
     value,
     message,
-    '~run'(
-      this: RecordSchema<
-        BaseSchema<string, string | number | symbol, BaseIssue<unknown>>,
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<RecordIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

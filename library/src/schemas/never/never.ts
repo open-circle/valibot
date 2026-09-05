@@ -70,18 +70,14 @@ export function never<
 export function never(
   message?: ErrorMessage<NeverIssue>
 ): NeverSchema<ErrorMessage<NeverIssue> | undefined> {
-  return _standardSchema<NeverSchema<ErrorMessage<NeverIssue> | undefined>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'never',
     reference: never,
     expects: 'never',
     async: false,
     message,
-    '~run'(
-      this: NeverSchema<ErrorMessage<NeverIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       _addIssue(this, 'type', dataset, config);
       // @ts-expect-error
       return dataset as FailureDataset<NeverIssue>;

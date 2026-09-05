@@ -87,13 +87,7 @@ export function exactOptionalAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   unknown
 > {
-  return _standardSchema<
-    ExactOptionalSchemaAsync<
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      unknown
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'exact_optional',
     reference: exactOptionalAsync,

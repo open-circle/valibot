@@ -72,9 +72,7 @@ export function nullable(
   wrapped: BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   default_?: unknown
 ): NullableSchema<BaseSchema<unknown, unknown, BaseIssue<unknown>>, unknown> {
-  return _standardSchema<
-    NullableSchema<BaseSchema<unknown, unknown, BaseIssue<unknown>>, unknown>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'nullable',
     reference: nullable,
@@ -82,14 +80,7 @@ export function nullable(
     async: false,
     wrapped,
     default: default_,
-    '~run'(
-      this: NullableSchema<
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        unknown
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // If value is `null`, override it with default or return dataset
       if (dataset.value === null) {
         // If default is specified, override value of dataset

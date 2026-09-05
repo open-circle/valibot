@@ -3078,17 +3078,16 @@ export function pipeAsync<
     | PipeItem<unknown, unknown, BaseIssue<unknown>>
     | PipeItemAsync<unknown, unknown, BaseIssue<unknown>>
   )[],
->(
-  ...pipe: [TSchema, ...TItems]
-): SchemaWithPipeAsync<readonly [TSchema, ...TItems]> {
-  return _standardSchema<SchemaWithPipeAsync<readonly [TSchema, ...TItems]>>({
+>(...pipe: [TSchema, ...TItems]): unknown {
+  return _standardSchema<
+    BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>> & {
+      readonly pipe: Readonly<typeof pipe>;
+    }
+  >({
     ...pipe[0],
     pipe,
     async: true,
-    async '~run'(
-      dataset: UnknownDataset,
-      config: Config<BaseIssue<unknown>>
-    ): Promise<OutputDataset<unknown, BaseIssue<unknown>>> {
+    async '~run'(dataset, config) {
       // Execute pipeline items in sequence
       for (const item of pipe) {
         // Exclude metadata items from execution
@@ -3118,8 +3117,5 @@ export function pipeAsync<
       // @ts-expect-error
       return dataset as OutputDataset<unknown, BaseIssue<unknown>>;
     },
-  } as unknown as Omit<
-    SchemaWithPipeAsync<readonly [TSchema, ...TItems]>,
-    '~standard'
-  >);
+  });
 }

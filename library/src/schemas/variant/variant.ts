@@ -95,13 +95,7 @@ export function variant(
   VariantOptions<string>,
   ErrorMessage<VariantIssue> | undefined
 > {
-  return _standardSchema<
-    VariantSchema<
-      string,
-      VariantOptions<string>,
-      ErrorMessage<VariantIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'variant',
     reference: variant,
@@ -110,15 +104,7 @@ export function variant(
     key,
     options,
     message,
-    '~run'(
-      this: VariantSchema<
-        string,
-        VariantOptions<string>,
-        ErrorMessage<VariantIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

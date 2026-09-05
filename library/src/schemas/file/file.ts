@@ -70,18 +70,14 @@ export function file<
 export function file(
   message?: ErrorMessage<FileIssue>
 ): FileSchema<ErrorMessage<FileIssue> | undefined> {
-  return _standardSchema<FileSchema<ErrorMessage<FileIssue> | undefined>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'file',
     reference: file,
     expects: 'File',
     async: false,
     message,
-    '~run'(
-      this: FileSchema<ErrorMessage<FileIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (dataset.value instanceof File) {
         // @ts-expect-error
         dataset.typed = true;

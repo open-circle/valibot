@@ -91,13 +91,7 @@ export function nonOptionalAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<NonOptionalIssue> | undefined
 > {
-  return _standardSchema<
-    NonOptionalSchemaAsync<
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<NonOptionalIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'non_optional',
     reference: nonOptionalAsync,
@@ -105,15 +99,7 @@ export function nonOptionalAsync(
     async: true,
     wrapped,
     message,
-    async '~run'(
-      this: NonOptionalSchemaAsync<
-        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<NonOptionalIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // If value is not `undefined`, run wrapped schema
       if (dataset.value !== undefined) {
         // @ts-expect-error

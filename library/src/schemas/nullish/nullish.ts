@@ -72,9 +72,7 @@ export function nullish(
   wrapped: BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   default_?: unknown
 ): NullishSchema<BaseSchema<unknown, unknown, BaseIssue<unknown>>, unknown> {
-  return _standardSchema<
-    NullishSchema<BaseSchema<unknown, unknown, BaseIssue<unknown>>, unknown>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'nullish',
     reference: nullish,
@@ -82,14 +80,7 @@ export function nullish(
     async: false,
     wrapped,
     default: default_,
-    '~run'(
-      this: NullishSchema<
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        unknown
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // If value is `null` or `undefined`, override it with default or return
       // dataset
       if (dataset.value === null || dataset.value === undefined) {

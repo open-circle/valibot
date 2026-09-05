@@ -46,7 +46,7 @@ export interface LazySchema<
 export function lazy<
   const TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
 >(getter: (input: unknown) => TWrapped): LazySchema<TWrapped> {
-  return _standardSchema<LazySchema<TWrapped>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'lazy',
     reference: lazy,

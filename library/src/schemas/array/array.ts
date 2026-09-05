@@ -76,12 +76,7 @@ export function array(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ArrayIssue> | undefined
 > {
-  return _standardSchema<
-    ArraySchema<
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ArrayIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'array',
     reference: array,
@@ -89,14 +84,7 @@ export function array(
     async: false,
     item,
     message,
-    '~run'(
-      this: ArraySchema<
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<ArrayIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

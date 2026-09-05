@@ -85,9 +85,7 @@ export function object(
   entries: ObjectEntries,
   message?: ErrorMessage<ObjectIssue>
 ): ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined> {
-  return _standardSchema<
-    ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'object',
     reference: object,
@@ -95,11 +93,7 @@ export function object(
     async: false,
     entries,
     message,
-    '~run'(
-      this: ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

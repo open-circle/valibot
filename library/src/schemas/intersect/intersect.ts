@@ -72,9 +72,7 @@ export function intersect(
   options: IntersectOptions,
   message?: ErrorMessage<IntersectIssue>
 ): IntersectSchema<IntersectOptions, ErrorMessage<IntersectIssue> | undefined> {
-  return _standardSchema<
-    IntersectSchema<IntersectOptions, ErrorMessage<IntersectIssue> | undefined>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'intersect',
     reference: intersect,
@@ -85,14 +83,7 @@ export function intersect(
     async: false,
     options,
     message,
-    '~run'(
-      this: IntersectSchema<
-        IntersectOptions,
-        ErrorMessage<IntersectIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // Parse input with schema of options, if not empty
       if (this.options.length) {
         // Get input value from dataset

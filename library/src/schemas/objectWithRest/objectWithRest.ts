@@ -104,13 +104,7 @@ export function objectWithRest(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ObjectWithRestIssue> | undefined
 > {
-  return _standardSchema<
-    ObjectWithRestSchema<
-      ObjectEntries,
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'object_with_rest',
     reference: objectWithRest,
@@ -119,15 +113,7 @@ export function objectWithRest(
     entries,
     rest,
     message,
-    '~run'(
-      this: ObjectWithRestSchema<
-        ObjectEntries,
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<ObjectWithRestIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

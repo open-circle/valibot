@@ -97,13 +97,7 @@ export function variantAsync(
   VariantOptionsAsync<string>,
   ErrorMessage<VariantIssue> | undefined
 > {
-  return _standardSchema<
-    VariantSchemaAsync<
-      string,
-      VariantOptionsAsync<string>,
-      ErrorMessage<VariantIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'variant',
     reference: variantAsync,
@@ -112,15 +106,7 @@ export function variantAsync(
     key,
     options,
     message,
-    async '~run'(
-      this: VariantSchemaAsync<
-        string,
-        VariantOptionsAsync<string>,
-        ErrorMessage<VariantIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

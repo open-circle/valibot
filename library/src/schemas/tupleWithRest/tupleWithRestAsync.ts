@@ -109,14 +109,7 @@ export function tupleWithRestAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<TupleWithRestIssue> | undefined
 > {
-  return _standardSchema<
-    TupleWithRestSchemaAsync<
-      TupleItemsAsync,
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<TupleWithRestIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'tuple_with_rest',
     reference: tupleWithRestAsync,
@@ -125,16 +118,7 @@ export function tupleWithRestAsync(
     items,
     rest,
     message,
-    async '~run'(
-      this: TupleWithRestSchemaAsync<
-        TupleItemsAsync,
-        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<TupleWithRestIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

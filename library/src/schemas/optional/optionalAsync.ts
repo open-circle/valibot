@@ -89,13 +89,7 @@ export function optionalAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   unknown
 > {
-  return _standardSchema<
-    OptionalSchemaAsync<
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      unknown
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'optional',
     reference: optionalAsync,
@@ -103,15 +97,7 @@ export function optionalAsync(
     async: true,
     wrapped,
     default: default_,
-    async '~run'(
-      this: OptionalSchemaAsync<
-        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-        unknown
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // If value is `undefined`, override it with default or return dataset
       if (dataset.value === undefined) {
         // If default is specified, override value of dataset

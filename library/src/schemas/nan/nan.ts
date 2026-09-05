@@ -69,18 +69,14 @@ export function nan<const TMessage extends ErrorMessage<NanIssue> | undefined>(
 export function nan(
   message?: ErrorMessage<NanIssue>
 ): NanSchema<ErrorMessage<NanIssue> | undefined> {
-  return _standardSchema<NanSchema<ErrorMessage<NanIssue> | undefined>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'nan',
     reference: nan,
     expects: 'NaN',
     async: false,
     message,
-    '~run'(
-      this: NanSchema<ErrorMessage<NanIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (Number.isNaN(dataset.value)) {
         // @ts-expect-error
         dataset.typed = true;

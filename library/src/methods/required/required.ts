@@ -342,13 +342,7 @@ export function required(
   }
 
   // Return modified copy of schema
-  return _standardSchema<
-    SchemaWithRequired<
-      Schema,
-      ObjectKeys<Schema> | undefined,
-      ErrorMessage<NonOptionalIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     ...schema,
     entries,
   });

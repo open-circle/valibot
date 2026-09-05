@@ -92,12 +92,7 @@ export function unionAsync(
   UnionOptionsAsync,
   ErrorMessage<UnionIssue<BaseIssue<unknown>>> | undefined
 > {
-  return _standardSchema<
-    UnionSchemaAsync<
-      UnionOptionsAsync,
-      ErrorMessage<UnionIssue<BaseIssue<unknown>>> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'union',
     reference: unionAsync,
@@ -108,14 +103,7 @@ export function unionAsync(
     async: true,
     options,
     message,
-    async '~run'(
-      this: UnionSchemaAsync<
-        UnionOptionsAsync,
-        ErrorMessage<UnionIssue<BaseIssue<unknown>>> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // Create variables to collect datasets
       let validDataset: SuccessDataset<unknown> | undefined;
       let typedDatasets:

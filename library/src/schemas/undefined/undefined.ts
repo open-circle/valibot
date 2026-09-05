@@ -70,20 +70,14 @@ export function undefined_<
 export function undefined_(
   message?: ErrorMessage<UndefinedIssue>
 ): UndefinedSchema<ErrorMessage<UndefinedIssue> | undefined> {
-  return _standardSchema<
-    UndefinedSchema<ErrorMessage<UndefinedIssue> | undefined>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'undefined',
     reference: undefined_,
     expects: 'undefined',
     async: false,
     message,
-    '~run'(
-      this: UndefinedSchema<ErrorMessage<UndefinedIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (dataset.value === undefined) {
         // @ts-expect-error
         dataset.typed = true;

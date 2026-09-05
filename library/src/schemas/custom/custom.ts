@@ -69,9 +69,7 @@ export function custom<TInput>(
   check: Check,
   message?: ErrorMessage<CustomIssue>
 ): CustomSchema<TInput, ErrorMessage<CustomIssue> | undefined> {
-  return _standardSchema<
-    CustomSchema<TInput, ErrorMessage<CustomIssue> | undefined>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'custom',
     reference: custom,
@@ -79,11 +77,7 @@ export function custom<TInput>(
     async: false,
     check,
     message,
-    '~run'(
-      this: CustomSchema<TInput, ErrorMessage<CustomIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (this.check(dataset.value)) {
         // @ts-expect-error
         dataset.typed = true;

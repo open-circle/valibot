@@ -74,20 +74,14 @@ export function function_<
 export function function_(
   message?: ErrorMessage<FunctionIssue>
 ): FunctionSchema<ErrorMessage<FunctionIssue> | undefined> {
-  return _standardSchema<
-    FunctionSchema<ErrorMessage<FunctionIssue> | undefined>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'function',
     reference: function_,
     expects: 'Function',
     async: false,
     message,
-    '~run'(
-      this: FunctionSchema<ErrorMessage<FunctionIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (typeof dataset.value === 'function') {
         // @ts-expect-error
         dataset.typed = true;

@@ -79,12 +79,7 @@ export function intersectAsync(
   IntersectOptionsAsync,
   ErrorMessage<IntersectIssue> | undefined
 > {
-  return _standardSchema<
-    IntersectSchemaAsync<
-      IntersectOptionsAsync,
-      ErrorMessage<IntersectIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'intersect',
     reference: intersectAsync,
@@ -95,14 +90,7 @@ export function intersectAsync(
     async: true,
     options,
     message,
-    async '~run'(
-      this: IntersectSchemaAsync<
-        IntersectOptionsAsync,
-        ErrorMessage<IntersectIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // Parse input with schema of options, if not empty
       if (this.options.length) {
         // Get input value from dataset

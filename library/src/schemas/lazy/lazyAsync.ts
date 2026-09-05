@@ -55,7 +55,7 @@ export function lazyAsync<
 >(
   getter: (input: unknown) => MaybePromise<TWrapped>
 ): LazySchemaAsync<TWrapped> {
-  return _standardSchema<LazySchemaAsync<TWrapped>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'lazy',
     reference: lazyAsync,

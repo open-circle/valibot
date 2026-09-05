@@ -70,18 +70,14 @@ export function date<
 export function date(
   message?: ErrorMessage<DateIssue>
 ): DateSchema<ErrorMessage<DateIssue> | undefined> {
-  return _standardSchema<DateSchema<ErrorMessage<DateIssue> | undefined>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'date',
     reference: date,
     expects: 'Date',
     async: false,
     message,
-    '~run'(
-      this: DateSchema<ErrorMessage<DateIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (dataset.value instanceof Date) {
         // @ts-expect-error
         if (!isNaN(dataset.value)) {

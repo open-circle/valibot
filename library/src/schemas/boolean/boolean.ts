@@ -70,28 +70,22 @@ export function boolean<
 export function boolean(
   message?: ErrorMessage<BooleanIssue>
 ): BooleanSchema<ErrorMessage<BooleanIssue> | undefined> {
-  return _standardSchema<BooleanSchema<ErrorMessage<BooleanIssue> | undefined>>(
-    {
-      kind: 'schema',
-      type: 'boolean',
-      reference: boolean,
-      expects: 'boolean',
-      async: false,
-      message,
-      '~run'(
-        this: BooleanSchema<ErrorMessage<BooleanIssue> | undefined>,
-        dataset,
-        config
-      ) {
-        if (typeof dataset.value === 'boolean') {
-          // @ts-expect-error
-          dataset.typed = true;
-        } else {
-          _addIssue(this, 'type', dataset, config);
-        }
+  return _standardSchema({
+    kind: 'schema',
+    type: 'boolean',
+    reference: boolean,
+    expects: 'boolean',
+    async: false,
+    message,
+    '~run'(dataset, config) {
+      if (typeof dataset.value === 'boolean') {
         // @ts-expect-error
-        return dataset as OutputDataset<boolean, BooleanIssue>;
-      },
-    }
-  );
+        dataset.typed = true;
+      } else {
+        _addIssue(this, 'type', dataset, config);
+      }
+      // @ts-expect-error
+      return dataset as OutputDataset<boolean, BooleanIssue>;
+    },
+  });
 }

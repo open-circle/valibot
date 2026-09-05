@@ -91,13 +91,7 @@ export function nonNullishAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<NonNullishIssue> | undefined
 > {
-  return _standardSchema<
-    NonNullishSchemaAsync<
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<NonNullishIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'non_nullish',
     reference: nonNullishAsync,
@@ -105,15 +99,7 @@ export function nonNullishAsync(
     async: true,
     wrapped,
     message,
-    async '~run'(
-      this: NonNullishSchemaAsync<
-        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<NonNullishIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // If value is not `null` and `undefined`, run wrapped schema
       if (!(dataset.value === null || dataset.value === undefined)) {
         // @ts-expect-error

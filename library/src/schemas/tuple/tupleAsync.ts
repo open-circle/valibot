@@ -85,9 +85,7 @@ export function tupleAsync(
   items: TupleItemsAsync,
   message?: ErrorMessage<TupleIssue>
 ): TupleSchemaAsync<TupleItemsAsync, ErrorMessage<TupleIssue> | undefined> {
-  return _standardSchema<
-    TupleSchemaAsync<TupleItemsAsync, ErrorMessage<TupleIssue> | undefined>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'tuple',
     reference: tupleAsync,
@@ -95,14 +93,7 @@ export function tupleAsync(
     async: true,
     items,
     message,
-    async '~run'(
-      this: TupleSchemaAsync<
-        TupleItemsAsync,
-        ErrorMessage<TupleIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

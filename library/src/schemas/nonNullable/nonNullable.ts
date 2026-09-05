@@ -77,12 +77,7 @@ export function nonNullable(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<NonNullableIssue> | undefined
 > {
-  return _standardSchema<
-    NonNullableSchema<
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<NonNullableIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'non_nullable',
     reference: nonNullable,
@@ -90,14 +85,7 @@ export function nonNullable(
     async: false,
     wrapped,
     message,
-    '~run'(
-      this: NonNullableSchema<
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<NonNullableIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // If value is not `null`, run wrapped schema
       if (dataset.value !== null) {
         // @ts-expect-error

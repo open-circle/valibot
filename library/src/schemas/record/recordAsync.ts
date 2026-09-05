@@ -117,15 +117,7 @@ export function recordAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<RecordIssue> | undefined
 > {
-  return _standardSchema<
-    RecordSchemaAsync<
-      | BaseSchema<string, string | number | symbol, BaseIssue<unknown>>
-      | BaseSchemaAsync<string, string | number | symbol, BaseIssue<unknown>>,
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<RecordIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'record',
     reference: recordAsync,
@@ -134,17 +126,7 @@ export function recordAsync(
     key,
     value,
     message,
-    async '~run'(
-      this: RecordSchemaAsync<
-        | BaseSchema<string, string | number | symbol, BaseIssue<unknown>>
-        | BaseSchemaAsync<string, string | number | symbol, BaseIssue<unknown>>,
-        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<RecordIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

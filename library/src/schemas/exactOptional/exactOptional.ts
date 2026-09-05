@@ -76,12 +76,7 @@ export function exactOptional(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   unknown
 > {
-  return _standardSchema<
-    ExactOptionalSchema<
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      unknown
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'exact_optional',
     reference: exactOptional,

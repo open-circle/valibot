@@ -31,7 +31,7 @@ export interface AnySchema extends BaseSchema<any, any, never> {
  */
 // @__NO_SIDE_EFFECTS__
 export function any(): AnySchema {
-  return _standardSchema<AnySchema>({
+  return _standardSchema({
     kind: 'schema',
     type: 'any',
     reference: any,

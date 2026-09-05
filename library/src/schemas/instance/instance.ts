@@ -88,9 +88,7 @@ export function instance(
   class_: Class,
   message?: ErrorMessage<InstanceIssue>
 ): InstanceSchema<Class, ErrorMessage<InstanceIssue> | undefined> {
-  return _standardSchema<
-    InstanceSchema<Class, ErrorMessage<InstanceIssue> | undefined>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'instance',
     reference: instance,
@@ -98,11 +96,7 @@ export function instance(
     async: false,
     class: class_,
     message,
-    '~run'(
-      this: InstanceSchema<Class, ErrorMessage<InstanceIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (dataset.value instanceof this.class) {
         // @ts-expect-error
         dataset.typed = true;

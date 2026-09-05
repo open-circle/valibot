@@ -70,18 +70,14 @@ export function blob<
 export function blob(
   message?: ErrorMessage<BlobIssue>
 ): BlobSchema<ErrorMessage<BlobIssue> | undefined> {
-  return _standardSchema<BlobSchema<ErrorMessage<BlobIssue> | undefined>>({
+  return _standardSchema({
     kind: 'schema',
     type: 'blob',
     reference: blob,
     expects: 'Blob',
     async: false,
     message,
-    '~run'(
-      this: BlobSchema<ErrorMessage<BlobIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       if (dataset.value instanceof Blob) {
         // @ts-expect-error
         dataset.typed = true;

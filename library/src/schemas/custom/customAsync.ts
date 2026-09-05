@@ -73,9 +73,7 @@ export function customAsync<TInput>(
   check: CheckAsync,
   message?: ErrorMessage<CustomIssue>
 ): CustomSchemaAsync<TInput, ErrorMessage<CustomIssue> | undefined> {
-  return _standardSchema<
-    CustomSchemaAsync<TInput, ErrorMessage<CustomIssue> | undefined>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'custom',
     reference: customAsync,
@@ -83,11 +81,7 @@ export function customAsync<TInput>(
     async: true,
     check,
     message,
-    async '~run'(
-      this: CustomSchemaAsync<TInput, ErrorMessage<CustomIssue> | undefined>,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       if (await this.check(dataset.value)) {
         // @ts-expect-error
         dataset.typed = true;

@@ -86,12 +86,7 @@ export function looseObjectAsync(
   ObjectEntriesAsync,
   ErrorMessage<LooseObjectIssue> | undefined
 > {
-  return _standardSchema<
-    LooseObjectSchemaAsync<
-      ObjectEntriesAsync,
-      ErrorMessage<LooseObjectIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'loose_object',
     reference: looseObjectAsync,
@@ -99,14 +94,7 @@ export function looseObjectAsync(
     async: true,
     entries,
     message,
-    async '~run'(
-      this: LooseObjectSchemaAsync<
-        ObjectEntriesAsync,
-        ErrorMessage<LooseObjectIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

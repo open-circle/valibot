@@ -70,28 +70,22 @@ export function promise<
 export function promise(
   message?: ErrorMessage<PromiseIssue>
 ): PromiseSchema<ErrorMessage<PromiseIssue> | undefined> {
-  return _standardSchema<PromiseSchema<ErrorMessage<PromiseIssue> | undefined>>(
-    {
-      kind: 'schema',
-      type: 'promise',
-      reference: promise,
-      expects: 'Promise',
-      async: false,
-      message,
-      '~run'(
-        this: PromiseSchema<ErrorMessage<PromiseIssue> | undefined>,
-        dataset,
-        config
-      ) {
-        if (dataset.value instanceof Promise) {
-          // @ts-expect-error
-          dataset.typed = true;
-        } else {
-          _addIssue(this, 'type', dataset, config);
-        }
+  return _standardSchema({
+    kind: 'schema',
+    type: 'promise',
+    reference: promise,
+    expects: 'Promise',
+    async: false,
+    message,
+    '~run'(dataset, config) {
+      if (dataset.value instanceof Promise) {
         // @ts-expect-error
-        return dataset as OutputDataset<Promise<unknown>, PromiseIssue>;
-      },
-    }
-  );
+        dataset.typed = true;
+      } else {
+        _addIssue(this, 'type', dataset, config);
+      }
+      // @ts-expect-error
+      return dataset as OutputDataset<Promise<unknown>, PromiseIssue>;
+    },
+  });
 }

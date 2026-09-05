@@ -78,12 +78,7 @@ export function looseTupleAsync(
   TupleItemsAsync,
   ErrorMessage<LooseTupleIssue> | undefined
 > {
-  return _standardSchema<
-    LooseTupleSchemaAsync<
-      TupleItemsAsync,
-      ErrorMessage<LooseTupleIssue> | undefined
-    >
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'loose_tuple',
     reference: looseTupleAsync,
@@ -91,14 +86,7 @@ export function looseTupleAsync(
     async: true,
     items,
     message,
-    async '~run'(
-      this: LooseTupleSchemaAsync<
-        TupleItemsAsync,
-        ErrorMessage<LooseTupleIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
 

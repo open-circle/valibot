@@ -131,33 +131,27 @@ export function enum_(
       options.push(enum__[key]);
     }
   }
-  return _standardSchema<EnumSchema<Enum, ErrorMessage<EnumIssue> | undefined>>(
-    {
-      kind: 'schema',
-      type: 'enum',
-      reference: enum_,
-      expects: _joinExpects(options.map(_stringify), '|'),
-      async: false,
-      enum: enum__,
-      options,
-      message,
-      '~run'(
-        this: EnumSchema<Enum, ErrorMessage<EnumIssue> | undefined>,
-        dataset,
-        config
-      ) {
+  return _standardSchema({
+    kind: 'schema',
+    type: 'enum',
+    reference: enum_,
+    expects: _joinExpects(options.map(_stringify), '|'),
+    async: false,
+    enum: enum__,
+    options,
+    message,
+    '~run'(dataset, config) {
+      // @ts-expect-error
+      if (this.options.includes(dataset.value)) {
         // @ts-expect-error
-        if (this.options.includes(dataset.value)) {
-          // @ts-expect-error
-          dataset.typed = true;
-        } else {
-          _addIssue(this, 'type', dataset, config);
-        }
-        // @ts-expect-error
-        return dataset as OutputDataset<string | number, EnumIssue>;
-      },
-    }
-  );
+        dataset.typed = true;
+      } else {
+        _addIssue(this, 'type', dataset, config);
+      }
+      // @ts-expect-error
+      return dataset as OutputDataset<string | number, EnumIssue>;
+    },
+  });
 }
 
 export { enum_ as enum };

@@ -282,9 +282,7 @@ export function partial(
   }
 
   // Return modified copy of schema
-  return _standardSchema<
-    SchemaWithPartial<Schema, ObjectKeys<Schema> | undefined>
-  >({
+  return _standardSchema({
     ...schema,
     entries,
   });

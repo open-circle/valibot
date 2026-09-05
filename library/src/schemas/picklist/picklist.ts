@@ -89,9 +89,7 @@ export function picklist(
   options: PicklistOptions,
   message?: ErrorMessage<PicklistIssue>
 ): PicklistSchema<PicklistOptions, ErrorMessage<PicklistIssue> | undefined> {
-  return _standardSchema<
-    PicklistSchema<PicklistOptions, ErrorMessage<PicklistIssue> | undefined>
-  >({
+  return _standardSchema({
     kind: 'schema',
     type: 'picklist',
     reference: picklist,
@@ -99,14 +97,7 @@ export function picklist(
     async: false,
     options,
     message,
-    '~run'(
-      this: PicklistSchema<
-        PicklistOptions,
-        ErrorMessage<PicklistIssue> | undefined
-      >,
-      dataset,
-      config
-    ) {
+    '~run'(dataset, config) {
       // @ts-expect-error
       if (this.options.includes(dataset.value)) {
         // @ts-expect-error
