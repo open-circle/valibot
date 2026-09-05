@@ -5,7 +5,7 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _isValueRequirementMatch,
+  _isValueMatch,
   _joinExpects,
   _stringify,
 } from '../../utils/index.ts';
@@ -123,7 +123,7 @@ export function values(
       if (
         dataset.typed &&
         !this.requirement.some((requirement) =>
-          _isValueRequirementMatch(requirement, dataset.value)
+          _isValueMatch(requirement, dataset.value)
         )
       ) {
         _addIssue(this, 'value', dataset, config, {

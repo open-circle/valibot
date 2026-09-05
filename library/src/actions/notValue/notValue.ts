@@ -3,11 +3,7 @@ import type {
   BaseValidation,
   ErrorMessage,
 } from '../../types/index.ts';
-import {
-  _addIssue,
-  _isValueRequirementMatch,
-  _stringify,
-} from '../../utils/index.ts';
+import { _addIssue, _isValueMatch, _stringify } from '../../utils/index.ts';
 import type { ValueInput } from '../types.ts';
 
 /**
@@ -119,10 +115,7 @@ export function notValue(
     requirement,
     message,
     '~run'(dataset, config) {
-      if (
-        dataset.typed &&
-        _isValueRequirementMatch(this.requirement, dataset.value)
-      ) {
+      if (dataset.typed && _isValueMatch(this.requirement, dataset.value)) {
         _addIssue(this, 'value', dataset, config, {
           received:
             dataset.value instanceof Date

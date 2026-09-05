@@ -7,6 +7,7 @@ All notable changes to the library will be documented in this file.
 - Add support for `ksuid` action (pull request #1370)
 - Add passthrough of other `metadata` action properties to support custom annotations and standard keywords like `format`, which take precedence over generated properties (pull request #1591)
 - Fix `examples` property type of `JsonSchema` to always be an array (pull request #1607)
+- Fix JSON compatibility validation of `literal` schemas to reject `NaN` and infinite numbers by default (pull request #1573)
 
 ## v1.7.1 (June 08, 2026)
 

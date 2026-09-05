@@ -1,5 +1,4 @@
 import type { ValueInput } from '../../actions/types.ts';
-import { _isSameValueZero } from '../_isSameValueZero/index.ts';
 
 /**
  * Checks whether a value matches a value action requirement.
@@ -12,17 +11,14 @@ import { _isSameValueZero } from '../_isSameValueZero/index.ts';
  * @internal
  */
 // @__NO_SIDE_EFFECTS__
-export function _isValueRequirementMatch(
+export function _isValueMatch(
   requirement: ValueInput,
   value: ValueInput
 ): boolean {
-  // requirement.getTime() is NaN for Invalid Date
-  if (requirement instanceof Date && Number.isNaN(requirement.getTime())) {
-    return false;
-  }
-
+  // Match NaN explicitly and compare other values by ordering so that invalid
+  // dates never match, even when both values reference the same object.
   return (
-    _isSameValueZero(requirement, value) ||
+    (Number.isNaN(requirement) && Number.isNaN(value)) ||
     (requirement <= value && requirement >= value)
   );
 }
