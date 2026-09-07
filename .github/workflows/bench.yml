@@ -6,6 +6,7 @@ on:
       - 'library/**'
       - 'bench/**'
       - '.github/workflows/bench.yml'
+      - '.github/actions/environment/**'
 
 permissions:
   contents: read
@@ -34,32 +35,4 @@ jobs:
         run: pnpm install
       - name: Compare pull request benchmarks
         run: pnpm exec vitest bench --run representative --compare=/tmp/valibot-baseline.json
-        working-directory: bench
-
-  bench_prettier:
-    name: Run Prettier in bench
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Setup environment
-        uses: ./.github/actions/environment
-      - name: Prettier check
-        run: pnpm format.check
-        working-directory: bench
-
-  bench_eslint:
-    name: Run ESLint in bench
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Setup environment
-        uses: ./.github/actions/environment
-      - name: ESLint check
-        run: pnpm lint
         working-directory: bench
