@@ -65,7 +65,7 @@ describe('record', () => {
         Partial<Record<string, number>>
       >();
       expectTypeOf<InferInput<Schema2>>().toEqualTypeOf<
-        Partial<Record<'foo' | 'bar', string>>
+        Partial<Record<'foo' | 'bar', string | undefined>>
       >();
       expectTypeOf<InferInput<Schema3>>().toEqualTypeOf<
         Record<string, string>
