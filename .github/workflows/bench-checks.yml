@@ -6,6 +6,8 @@ on:
       - 'bench/**'
       - '.github/workflows/*.yml'
       - '.github/actions/environment/**'
+      - 'pnpm-workspace.yaml'
+      - 'pnpm-lock.yaml'
 
 permissions:
   contents: read
