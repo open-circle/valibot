@@ -11,6 +11,7 @@ All notable changes to the library will be documented in this file.
 - Fix `literal` schema and `value`, `values`, `notValue` and `notValues` actions to treat `NaN` as equal to itself (pull request #1573)
 - Fix `intersect` schema to merge matching `NaN` values and invalid dates (pull request #1573)
 - Fix `cache` and `cacheAsync` methods to clone the issues of a cached dataset, preventing parent schemas from adding their path item to the same issue on every cache hit (pull request #1620)
+- Change `object`, `strictObject`, `looseObject`, `objectWithRest` and their async variants to treat inherited input properties as missing
 
 ## v1.4.2 (June 28, 2026)
 
