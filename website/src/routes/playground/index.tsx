@@ -33,10 +33,14 @@ import iframeCode from './iframeCode.js?raw';
 
 type LogLevel = 'log' | 'info' | 'debug' | 'warn' | 'error';
 
-type MessageEventData = {
-  type: 'log';
-  log: [LogLevel, string];
-};
+type MessageEventData =
+  | {
+      type: 'log';
+      log: [LogLevel, string];
+    }
+  | {
+      type: 'clear';
+    };
 
 export const head: DocumentHead = {
   title: 'Playground',
@@ -176,6 +180,8 @@ export default component$(() => {
   const captureLogs = $((event: MessageEvent<MessageEventData>) => {
     if (event.data.type === 'log') {
       logs.value = [...logs.value, event.data.log];
+    } else if (event.data.type === 'clear') {
+      logs.value = [];
     }
   });
 
