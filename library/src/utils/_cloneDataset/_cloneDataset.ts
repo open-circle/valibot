@@ -18,7 +18,6 @@ export function _cloneDataset<TValue, TIssue extends BaseIssue<unknown>>(
 ): OutputDataset<TValue, TIssue> {
   // Hint: We assign the known dataset properties directly instead of using the
   // spread operator for better runtime performance.
-  // @ts-expect-error
   return {
     typed: dataset.typed,
     value: dataset.value,
@@ -26,9 +25,10 @@ export function _cloneDataset<TValue, TIssue extends BaseIssue<unknown>>(
     // issues they receive. We therefore clone each issue and its `path` array,
     // so that these mutations are not applied to the same issue again on every
     // following run.
+    // @ts-expect-error Array.map does not preserve the non-empty tuple type
     issues: dataset.issues?.map((issue) => ({
       ...issue,
       path: issue.path && [...issue.path],
-    })) as OutputDataset<TValue, TIssue>['issues'],
+    })),
   };
 }
