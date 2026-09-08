@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { fallback, fallbackAsync } from '../../methods/index.ts';
+import { checkAsync } from '../../actions/index.ts';
+import { fallback, fallbackAsync, pipeAsync } from '../../methods/index.ts';
 import type { FailureDataset, InferIssue } from '../../types/index.ts';
 import {
   expectNoSchemaIssueAsync,
@@ -590,6 +591,33 @@ describe('strictObjectAsync', () => {
           },
         ],
       } satisfies FailureDataset<InferIssue<typeof schema>>);
+    });
+
+    test('for sequential async validation with abort early', async () => {
+      const calls: string[] = [];
+      const schema = strictObjectAsync({
+        key1: pipeAsync(
+          string(),
+          checkAsync(async () => {
+            calls.push('key1');
+            return false;
+          }, 'message')
+        ),
+        key2: pipeAsync(
+          string(),
+          checkAsync(async () => {
+            calls.push('key2');
+            return true;
+          })
+        ),
+      });
+
+      await schema['~run'](
+        { value: { key1: 'foo', key2: 'bar' } },
+        { abortEarly: true }
+      );
+
+      expect(calls).toStrictEqual(['key1']);
     });
 
     test('for missing any and unknown entry', async () => {
