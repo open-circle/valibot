@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Null issue interface.
@@ -70,16 +70,13 @@ export function null_<
 export function null_(
   message?: ErrorMessage<NullIssue>
 ): NullSchema<ErrorMessage<NullIssue> | undefined> {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'null',
     reference: null_,
     expects: 'null',
     async: false,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       if (dataset.value === null) {
         // @ts-expect-error
@@ -90,7 +87,7 @@ export function null_(
       // @ts-expect-error
       return dataset as OutputDataset<null, NullIssue>;
     },
-  };
+  });
 }
 
 export { null_ as null };

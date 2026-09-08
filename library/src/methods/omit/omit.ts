@@ -32,7 +32,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Schema type.
@@ -479,13 +479,10 @@ export function omit<
     delete entries[key];
   }
 
-  // Rerturn modified copy of schema
+  // Return modified copy of schema
   // @ts-expect-error
-  return {
+  return _standardSchema({
     ...schema,
     entries,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
-  };
+  });
 }

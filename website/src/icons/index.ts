@@ -16,6 +16,7 @@ export * from './PageIcon';
 export * from './PenIcon';
 export * from './PlayIcon';
 export * from './PlusIcon';
+export * from './RssIcon';
 export * from './SearchIcon';
 export * from './ShareIcon';
 export * from './SunIcon';

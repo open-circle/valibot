@@ -4,7 +4,7 @@ import type {
   ConversionContext,
   JsonSchema,
 } from '../../types/index.ts';
-import { addError, handleError } from '../../utils/index.ts';
+import { addError, handleError, isJsonConstValue } from '../../utils/index.ts';
 import { convertAction } from '../convertAction/index.ts';
 
 /**
@@ -533,11 +533,7 @@ export function convertSchema(
     }
 
     case 'literal': {
-      if (
-        typeof valibotSchema.literal !== 'boolean' &&
-        typeof valibotSchema.literal !== 'number' &&
-        typeof valibotSchema.literal !== 'string'
-      ) {
+      if (!isJsonConstValue(valibotSchema.literal)) {
         errors = addError(
           errors,
           'The value of the "literal" schema is not JSON compatible.'

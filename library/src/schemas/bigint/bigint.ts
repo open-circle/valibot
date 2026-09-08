@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Bigint issue interface.
@@ -70,16 +70,13 @@ export function bigint<
 export function bigint(
   message?: ErrorMessage<BigintIssue>
 ): BigintSchema<ErrorMessage<BigintIssue> | undefined> {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'bigint',
     reference: bigint,
     expects: 'bigint',
     async: false,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       if (typeof dataset.value === 'bigint') {
         // @ts-expect-error
@@ -90,5 +87,5 @@ export function bigint(
       // @ts-expect-error
       return dataset as OutputDataset<bigint, BigintIssue>;
     },
-  };
+  });
 }

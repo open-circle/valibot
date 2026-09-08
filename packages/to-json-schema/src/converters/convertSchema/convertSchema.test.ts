@@ -1060,6 +1060,19 @@ describe('convertSchema', () => {
       ).toThrowError(error);
     });
 
+    test.each(['draft-07', 'draft-2020-12', 'openapi-3.0'] as const)(
+      'should reject non-finite numeric literals for %s',
+      (target) => {
+        for (const literal of [NaN, Infinity, -Infinity]) {
+          expect(() =>
+            convertSchema({}, v.literal(literal), { target }, createContext())
+          ).toThrowError(
+            'The value of the "literal" schema is not JSON compatible.'
+          );
+        }
+      }
+    );
+
     test('should warn error for unsupported literal schema', () => {
       expect(
         convertSchema(

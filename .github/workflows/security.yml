@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: read
-  
+
 jobs:
   scan:
     name: Scan dependencies
@@ -17,18 +17,18 @@ jobs:
       security-events: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Scan for vulnerabilities
-        uses: OWASP/cve-lite-cli@v1
+        uses: OWASP/cve-lite-cli@a9072cb521f68bc0a693b4be85e36e226a49abf0 # v1.31.0
         with:
           path: .
           fail-on: critical
           verbose: 'true'
           sarif: 'true'
       - name: Upload SARIF to GitHub
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4.37.9
         if: always()
         with:
           sarif_file: ${{ github.workspace }}

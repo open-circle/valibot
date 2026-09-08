@@ -13,7 +13,7 @@
   "scripts": {
     "build": "qwik build",
     "build.client": "vite build",
-    "build.cloudflare": "cd ../library && pnpm build && cd ../packages/to-json-schema && pnpm build && cd ../../codemod/zod-to-valibot && pnpm build && cd ../../website && pnpm sitemap && pnpm llms && pnpm agents && pnpm og && pnpm build",
+    "build.cloudflare": "cd ../library && pnpm build && cd ../packages/to-json-schema && pnpm build && cd ../../codemod/zod-to-valibot && pnpm build && cd ../../website && pnpm sitemap && pnpm llms && pnpm agents && pnpm og && pnpm rss && pnpm build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.server": "vite build -c adapters/static/vite.config.ts",
     "build.types": "tsc --incremental --noEmit",
@@ -27,6 +27,7 @@
     "format.check": "prettier --check .",
     "lint": "eslint \"src/**/*.ts*\" \"scripts/**/*.ts\" \"worker/**/*.ts\" && tsc --noEmit",
     "preview": "qwik build preview && vite preview --open",
+    "rss": "tsm ./scripts/rss.ts",
     "sitemap": "tsm ./scripts/sitemap.ts",
     "llms": "tsm ./scripts/llms.ts",
     "og": "tsm ./scripts/og-images.ts",

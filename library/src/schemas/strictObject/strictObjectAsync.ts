@@ -10,7 +10,7 @@ import type {
   ObjectPathItem,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { strictObject } from './strictObject.ts';
 import type { StrictObjectIssue } from './types.ts';
 
@@ -82,7 +82,7 @@ export function strictObjectAsync(
   ObjectEntriesAsync,
   ErrorMessage<StrictObjectIssue> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'strict_object',
     reference: strictObjectAsync,
@@ -90,9 +90,6 @@ export function strictObjectAsync(
     async: true,
     entries,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
@@ -222,7 +219,7 @@ export function strictObjectAsync(
         // Check input for unknown keys if necessary
         if (!dataset.issues || !config.abortEarly) {
           for (const key in input) {
-            if (!(key in this.entries)) {
+            if (!Object.prototype.hasOwnProperty.call(this.entries, key)) {
               _addIssue(this, 'key', dataset, config, {
                 input: key,
                 expected: 'never',
@@ -260,5 +257,5 @@ export function strictObjectAsync(
         StrictObjectIssue | InferObjectIssue<ObjectEntriesAsync>
       >;
     },
-  };
+  });
 }
