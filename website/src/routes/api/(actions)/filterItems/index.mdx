@@ -14,12 +14,13 @@ import { properties } from './properties';
 Creates a filter items transformation action.
 
 ```ts
-const Action = v.filterItems<TInput>(operation);
+const Action = v.filterItems<TInput, TOutput>(operation);
 ```
 
 ## Generics
 
 - `TInput` <Property {...properties.TInput} />
+- `TOutput` <Property {...properties.TOutput} />
 
 ## Parameters
 
@@ -28,6 +29,8 @@ const Action = v.filterItems<TInput>(operation);
 ### Explanation
 
 With `filterItems` you can filter the items of an array. Returning `true` for an item will keep it in the array and returning `false` will remove it.
+
+If you pass a type predicate as `operation`, the output type of the action is narrowed to an array of the predicated type. If you specify `TOutput` yourself, `operation` must be a type predicate for that type. If `operation` only returns a boolean, the output type is not narrowed.
 
 ## Returns
 
@@ -45,6 +48,17 @@ Schema to filter duplicate items from an array.
 const FilteredArraySchema = v.pipe(
   v.array(v.string()),
   v.filterItems((item, index, array) => array.indexOf(item) === index)
+);
+```
+
+### Filter items by type
+
+Schema to keep only the string items of an array.
+
+```ts
+const StringItemsSchema = v.pipe(
+  v.array(v.union([v.string(), v.number()])),
+  v.filterItems((item) => typeof item === 'string')
 );
 ```
 

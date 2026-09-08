@@ -7,6 +7,7 @@ All notable changes to the library will be documented in this file.
 - Add `codePoints`, `maxCodePoints`, `minCodePoints` and `notCodePoints` validation actions to validate the number of Unicode code points (pull request #888)
 - Add `ksuid` validation action to validate KSUIDs (pull request #1370)
 - Change Standard Schema properties to use eager initialization for faster schema construction and replace internal `_getStandardProps` utility with `_standardSchema` (pull request #1534)
+- Change type signature of `filterItems` action to support type predicates (issue #1618)
 - Fix `stringifyJson` action to preserve the dataset value when `JSON.stringify` returns `undefined` (pull request #1476)
 - Fix `literal` schema and `value`, `values`, `notValue` and `notValues` actions to treat `NaN` as equal to itself (pull request #1573)
 - Fix `intersect` schema to merge matching `NaN` values and invalid dates (pull request #1573)
