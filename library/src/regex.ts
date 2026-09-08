@@ -37,10 +37,12 @@ export const DOMAIN_REGEX: RegExp =
 
 /**
  * [Email address](https://en.wikipedia.org/wiki/Email_address) regex.
+ *
+ * Hint: We decided against the `i` flag to avoid matching non-ASCII characters.
  */
 export const EMAIL_REGEX: RegExp =
-  // eslint-disable-next-line regexp/require-unicode-regexp, redos-detector/no-unsafe-regex -- false positive (recheck playground says this is safe). Intentionally omit /u because /iu makes \w match some non-ASCII chars via Unicode case-folding (e.g. K, ſ).
-  /^[\w+-]+(?:\.[\w+-]+)*@[\da-z]+(?:[.-][\da-z]+)*\.[a-z]{2,}$/i;
+  // eslint-disable-next-line redos-detector/no-unsafe-regex -- false positive: separators cannot match the adjacent character classes
+  /^[\w+-]+(?:\.[\w+-]+)*@[\da-zA-Z]+(?:[.-][\da-zA-Z]+)*\.[a-zA-Z]{2,}$/u;
 
 /**
  * Emoji regex from [emoji-regex-xs](https://github.com/slevithan/emoji-regex-xs) v1.0.0 (MIT license).
