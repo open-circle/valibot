@@ -2,13 +2,30 @@
  * Returns the code point count of the input.
  *
  * @param input The input to be measured.
+ * @param limit The optional count limit.
  *
- * @returns The code point count.
+ * @returns The code point count, or the count at which the limit was reached.
  *
  * @internal
  */
 // @__NO_SIDE_EFFECTS__
-export function _getCodePointCount(input: string): number {
+export function _getCodePointCount(input: string, limit?: number): number {
+  if (limit !== undefined) {
+    if (limit <= 0) {
+      return 0;
+    }
+    let count = 0;
+    for (let i = 0; i < input.length; ) {
+      count++;
+      if (count >= limit) {
+        return count;
+      }
+      // codePointAt never returns undefined because i is always in bounds
+      i += input.codePointAt(i)! > 0xffff ? 2 : 1;
+    }
+    return count;
+  }
+
   let count = input.length;
   // A surrogate pair cannot start at the last code unit, so no iteration needs
   // to start there

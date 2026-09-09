@@ -122,7 +122,7 @@ export function notGraphemes(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getGraphemeCount(dataset.value);
+        const count = _getGraphemeCount(dataset.value, this.requirement + 1);
         if (count === this.requirement) {
           _addIssue(this, 'graphemes', dataset, config, {
             received: `${count}`,

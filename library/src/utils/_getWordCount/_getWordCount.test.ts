@@ -15,6 +15,12 @@ describe('_getWordCount', () => {
     expect(_getWordCount('th', 'สวัสดี')).toBe(1);
   });
 
+  test('should stop at the limit', () => {
+    expect(_getWordCount('en', 'hello world from Valibot', 2)).toBe(2);
+    expect(_getWordCount('en', 'hello world', 5)).toBe(2);
+    expect(_getWordCount('en', 'hello world', 0)).toBe(0);
+  });
+
   test('should cache segmenter for non-primitive locales', () => {
     const OriginalSegmenter = Intl.Segmenter;
     const SegmenterSpy = vi
