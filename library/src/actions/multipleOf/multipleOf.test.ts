@@ -68,6 +68,12 @@ describe('multipleOf', () => {
     test('for valid bigints', () => {
       expectNoActionIssue(multipleOf(5n), [-15n, -10n, -5n, 0n, 5n, 10n, 15n]);
     });
+
+    test('for valid decimal numbers without floating-point error', () => {
+      // Native `%` reports `0.3 % 0.1` as `0.0999…`, wrongly rejecting these.
+      expectNoActionIssue(multipleOf(0.1), [0.1, 0.2, 0.3, 0.6, 0.9, 1.1, -0.3]);
+      expectNoActionIssue(multipleOf(0.2), [0.2, 0.4, 0.6, -0.6]);
+    });
   });
 
   describe('should return dataset with issues', () => {
