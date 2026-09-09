@@ -10,6 +10,26 @@ export const BASE64_REGEX: RegExp =
 export const BIC_REGEX: RegExp = /^[A-Z]{6}(?!00)[\dA-Z]{2}(?:[\dA-Z]{3})?$/u;
 
 /**
+ * [Bitcoin Base58Check address](https://en.bitcoin.it/wiki/Base58Check_encoding) regex.
+ */
+export const BTC_ADDRESS_BASE58_REGEX: RegExp =
+  /^[123mn][a-km-zA-HJ-NP-Z1-9]{25,34}$/u;
+
+/**
+ * [Bitcoin Bech32 address](https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki) regex.
+ */
+export const BTC_ADDRESS_BECH32_REGEX: RegExp =
+  /^(?:BC1|TB1|bc1|tb1)[02-9A-HJ-NP-Za-hj-np-z]{14,74}$/u;
+
+/**
+ * [Bitcoin address](https://en.bitcoin.it/wiki/Address) regex.
+ */
+export const BTC_ADDRESS_REGEX: RegExp = RegExp(
+  `${BTC_ADDRESS_BASE58_REGEX.source}|${BTC_ADDRESS_BECH32_REGEX.source}`,
+  'u'
+);
+
+/**
  * [Cuid2](https://github.com/paralleldrive/cuid2) regex.
  */
 export const CUID2_REGEX: RegExp = /^[a-z][\da-z]*$/u;
