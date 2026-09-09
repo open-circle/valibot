@@ -43,6 +43,8 @@ import type {
   RecordIssue,
   RecordSchema,
   RecordSchemaAsync,
+  RecursiveSchema,
+  RecursiveSchemaAsync,
   SetIssue,
   SetSchema,
   SetSchemaAsync,
@@ -67,6 +69,8 @@ import type {
   VariantSchema,
   VariantSchemaAsync,
 } from '../schemas/index.ts';
+import type { RecursiveSelfSchema } from '../schemas/recursive/recursive.ts';
+import type { RecursiveSelfSchemaAsync } from '../schemas/recursive/recursiveAsync.ts';
 import type { Config } from './config.ts';
 import type { InferInput } from './infer.ts';
 import type { ObjectEntries, ObjectEntriesAsync } from './object.ts';
@@ -511,6 +515,7 @@ export type IssueDotPath<
                                                 >
                                               >
                                             | LazySchema<infer TWrapped>
+                                            | RecursiveSchema<infer TWrapped>
                                             | NonNullableSchema<
                                                 infer TWrapped,
                                                 | ErrorMessage<NonNullableIssue>
@@ -590,6 +595,9 @@ export type IssueDotPath<
                                                   >
                                                 >
                                               | LazySchemaAsync<infer TWrapped>
+                                              | RecursiveSchemaAsync<
+                                                  infer TWrapped
+                                                >
                                               | NonNullableSchemaAsync<
                                                   infer TWrapped,
                                                   | ErrorMessage<NonNullableIssue>
@@ -670,5 +678,10 @@ export type IssueDotPath<
                                                   >
                                                 >
                                           ? IssueDotPath<TWrapped>
-                                          : // Otherwise
-                                            never;
+                                          : // Recursive self
+                                            TSchema extends
+                                                | RecursiveSelfSchema
+                                                | RecursiveSelfSchemaAsync
+                                            ? string
+                                            : // Otherwise
+                                              never;

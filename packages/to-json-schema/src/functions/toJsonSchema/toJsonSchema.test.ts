@@ -140,6 +140,68 @@ describe('toJsonSchema', () => {
       });
     });
 
+    test('for generated recursive schema definition', () => {
+      const category = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const jsonSchema = toJsonSchema(category);
+      const referenceIds = Object.keys(jsonSchema.$defs ?? {});
+      expect(referenceIds).toHaveLength(1);
+      const referenceId = referenceIds[0]!;
+
+      expect(jsonSchema).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        $ref: `#/$defs/${referenceId}`,
+        $defs: {
+          [referenceId]: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              subcategories: {
+                type: 'array',
+                items: { $ref: `#/$defs/${referenceId}` },
+              },
+            },
+            required: ['name', 'subcategories'],
+          },
+        },
+      });
+    });
+
+    test('for recursive definitions with JSON Pointer special characters', () => {
+      const category = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+
+      expect(
+        toJsonSchema(category, {
+          definitions: { 'Category/Node~': category },
+        })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        $ref: '#/$defs/Category~1Node~0',
+        $defs: {
+          'Category/Node~': {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              subcategories: {
+                type: 'array',
+                items: { $ref: '#/$defs/Category~1Node~0' },
+              },
+            },
+            required: ['name', 'subcategories'],
+          },
+        },
+      });
+    });
+
     test('for definitions with JSON Pointer special characters', () => {
       const sharedSchema = v.object({ name: v.string() });
       expect(
