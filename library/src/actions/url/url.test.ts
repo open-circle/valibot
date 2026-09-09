@@ -41,6 +41,17 @@ describe('url', () => {
   });
 
   describe('should detect URL.canParse support', () => {
+    const inputs: [string, boolean][] = [
+      ['https://example.com', true],
+      ['example.com', false],
+      ['abc:1234', true],
+      ['mailto:user@example.com', true],
+      ['https://例え.テスト', true],
+      ['/relative/path', false],
+      ['https://', false],
+      ['https://[::1', false],
+    ];
+
     afterEach(() => {
       vi.unstubAllGlobals();
       vi.restoreAllMocks();
@@ -49,9 +60,10 @@ describe('url', () => {
     test('for environment with URL.canParse', () => {
       const canParseSpy = vi.spyOn(URL, 'canParse');
       const action = url();
-      expect(action.requirement('https://example.com')).toBe(true);
-      expect(action.requirement('example.com')).toBe(false);
-      expect(canParseSpy).toHaveBeenCalledTimes(2);
+      for (const [input, expected] of inputs) {
+        expect(action.requirement(input)).toBe(expected);
+      }
+      expect(canParseSpy).toHaveBeenCalledTimes(inputs.length);
     });
 
     test('for environment without URL.canParse', () => {
@@ -66,9 +78,10 @@ describe('url', () => {
       vi.stubGlobal('URL', MockURL);
       expect(typeof URL.canParse).toBe('undefined');
       const action = url();
-      expect(action.requirement('https://example.com')).toBe(true);
-      expect(action.requirement('example.com')).toBe(false);
-      expect(constructorSpy).toHaveBeenCalledTimes(2);
+      for (const [input, expected] of inputs) {
+        expect(action.requirement(input)).toBe(expected);
+      }
+      expect(constructorSpy).toHaveBeenCalledTimes(inputs.length);
     });
 
     test('for environment without URL', () => {
