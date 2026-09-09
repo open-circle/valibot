@@ -178,6 +178,10 @@ export default component$(() => {
    * Captures logs from the iframe.
    */
   const captureLogs = $((event: MessageEvent<MessageEventData>) => {
+    if (event.source !== iframeElement.value?.contentWindow) {
+      return;
+    }
+
     if (event.data.type === 'log') {
       logs.value = [...logs.value, event.data.log];
     } else if (event.data.type === 'clear') {
