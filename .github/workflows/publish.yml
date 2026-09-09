@@ -11,6 +11,10 @@ permissions:
 jobs:
   default_ci:
     name: Run default CI of repository
+    permissions:
+      contents: read
+      # Required by the reusable workflow's PR preview job, even when skipped.
+      pull-requests: write
     uses: ./.github/workflows/ci.yml
 
   library_npm:
