@@ -14,6 +14,7 @@ All notable changes to the library will be documented in this file.
 - Fix `cache` and `cacheAsync` methods to clone the issues of a cached dataset, preventing parent schemas from adding their path item to the same issue on every cache hit (pull request #1620)
 - Fix `strictObject`, `looseObject`, `objectWithRest` and their async variants to correctly handle unknown input keys that collide with `Object.prototype` members (pull request #1523)
 - Fix `intersect` and `intersectAsync` schemas to ignore inherited properties when merging objects and preserve own properties without invoking inherited setters or changing the output prototype (pull request #1621)
+- Fix `intersect` and `intersectAsync` schemas to merge objects with own `constructor` properties without rejecting valid inputs
 - Fix `ulid` action to reject ULIDs that exceed the maximum 128-bit value (pull request #1498)
 - Fix `email` action to reject non-ASCII characters accepted by Unicode case folding (pull request #1075)
 
