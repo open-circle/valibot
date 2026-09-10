@@ -3,6 +3,8 @@ import { _isLuhnAlgo } from './_isLuhnAlgo.ts';
 
 describe('_isLuhnAlgo', () => {
   test('should return true', () => {
+    expect(_isLuhnAlgo('53-649845-919122-6')).toBe(true);
+    expect(_isLuhnAlgo('53 649845 919122 6')).toBe(true);
     expect(_isLuhnAlgo('536498459191226')).toBe(true);
     expect(_isLuhnAlgo('860548042618881')).toBe(true);
     expect(_isLuhnAlgo('304517506893326')).toBe(true);
