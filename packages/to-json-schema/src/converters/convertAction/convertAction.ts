@@ -346,6 +346,13 @@ export function convertAction(
         );
         break;
       }
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "gt_value" action is not JSON compatible.'
+        );
+        break;
+      }
       if (config?.target === 'openapi-3.0') {
         errors = addError(
           errors,
@@ -452,6 +459,13 @@ export function convertAction(
         );
         break;
       }
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "lt_value" action is not JSON compatible.'
+        );
+        break;
+      }
       if (config?.target === 'openapi-3.0') {
         errors = addError(
           errors,
@@ -500,6 +514,13 @@ export function convertAction(
         errors = addError(
           errors,
           `The "max_value" action is not supported on type "${jsonSchema.type}".`
+        );
+        break;
+      }
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "max_value" action is not JSON compatible.'
         );
         break;
       }
@@ -580,6 +601,13 @@ export function convertAction(
         errors = addError(
           errors,
           `The "min_value" action is not supported on type "${jsonSchema.type}".`
+        );
+        break;
+      }
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "min_value" action is not JSON compatible.'
         );
         break;
       }

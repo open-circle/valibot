@@ -389,6 +389,19 @@ describe('toJsonSchema', () => {
   });
 
   describe('should throw error', () => {
+    test('for impossible numeric bounds before safe integer', () => {
+      expect(() =>
+        toJsonSchema(v.pipe(v.number(), v.minValue(Infinity), v.safeInteger()))
+      ).toThrowError(
+        'The requirement of the "min_value" action is not JSON compatible.'
+      );
+      expect(() =>
+        toJsonSchema(v.pipe(v.number(), v.maxValue(-Infinity), v.safeInteger()))
+      ).toThrowError(
+        'The requirement of the "max_value" action is not JSON compatible.'
+      );
+    });
+
     test('for invalid file schema', () => {
       expect(() => toJsonSchema(v.file())).toThrowError(
         'The "file" schema cannot be converted to JSON Schema.'
@@ -590,13 +603,13 @@ describe('toJsonSchema', () => {
         v.pipe(
           v.number(),
           v.safeInteger(),
-          v.minValue(-Infinity),
-          v.maxValue(Infinity)
+          v.minValue(Number.MIN_SAFE_INTEGER - 1),
+          v.maxValue(Number.MAX_SAFE_INTEGER + 1)
         ),
         v.pipe(
           v.number(),
-          v.minValue(-Infinity),
-          v.maxValue(Infinity),
+          v.minValue(Number.MIN_SAFE_INTEGER - 1),
+          v.maxValue(Number.MAX_SAFE_INTEGER + 1),
           v.safeInteger()
         ),
       ]) {

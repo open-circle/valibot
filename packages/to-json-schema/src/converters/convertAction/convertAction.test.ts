@@ -1446,6 +1446,61 @@ describe('convertAction', () => {
     });
   });
 
+  test('should throw error for non-finite numeric bound requirements', () => {
+    for (const requirement of [NaN, Infinity, -Infinity]) {
+      for (const action of [
+        v.minValue<v.ValueInput, number>(requirement),
+        v.maxValue<v.ValueInput, number>(requirement),
+        v.gtValue<v.ValueInput, number>(requirement),
+        v.ltValue<v.ValueInput, number>(requirement),
+      ]) {
+        const error = `The requirement of the "${action.type}" action is not JSON compatible.`;
+        expect(() =>
+          convertAction({ type: 'number' }, action, undefined)
+        ).toThrowError(error);
+        expect(() =>
+          convertAction({ type: 'number' }, action, { errorMode: 'throw' })
+        ).toThrowError(error);
+      }
+    }
+  });
+
+  test('should warn error for non-finite numeric bound requirements', () => {
+    for (const requirement of [NaN, Infinity, -Infinity]) {
+      for (const action of [
+        v.minValue<v.ValueInput, number>(requirement),
+        v.maxValue<v.ValueInput, number>(requirement),
+        v.gtValue<v.ValueInput, number>(requirement),
+        v.ltValue<v.ValueInput, number>(requirement),
+      ]) {
+        const error = `The requirement of the "${action.type}" action is not JSON compatible.`;
+        expect(
+          convertAction({ type: 'number', minimum: -5, maximum: 5 }, action, {
+            errorMode: 'warn',
+          })
+        ).toStrictEqual({ type: 'number', minimum: -5, maximum: 5 });
+        expect(console.warn).toHaveBeenLastCalledWith(error);
+      }
+    }
+  });
+
+  test('should ignore non-finite numeric bound requirements', () => {
+    for (const requirement of [NaN, Infinity, -Infinity]) {
+      for (const action of [
+        v.minValue<v.ValueInput, number>(requirement),
+        v.maxValue<v.ValueInput, number>(requirement),
+        v.gtValue<v.ValueInput, number>(requirement),
+        v.ltValue<v.ValueInput, number>(requirement),
+      ]) {
+        expect(
+          convertAction({ type: 'number', minimum: -5, maximum: 5 }, action, {
+            errorMode: 'ignore',
+          })
+        ).toStrictEqual({ type: 'number', minimum: -5, maximum: 5 });
+      }
+    }
+  });
+
   test('should replace a non-finite bound instead of keeping it', () => {
     for (const bound of [NaN, Infinity, -Infinity]) {
       expect(
