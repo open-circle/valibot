@@ -1501,9 +1501,17 @@ describe('convertAction', () => {
     }
   });
 
-  test('should throw error for non-finite length and entry requirements', () => {
+  test('should throw error for invalid length and entry requirements', () => {
     for (const type of ['string', 'array', 'object'] as const) {
-      for (const requirement of [NaN, Infinity, -Infinity]) {
+      for (const requirement of [
+        -1,
+        -0.5,
+        0.5,
+        1.5,
+        NaN,
+        Infinity,
+        -Infinity,
+      ]) {
         const actions =
           type === 'object'
             ? [
@@ -1517,7 +1525,7 @@ describe('convertAction', () => {
                 v.maxLength<v.LengthInput, number>(requirement),
               ];
         for (const action of actions) {
-          const error = `The requirement of the "${action.type}" action is not JSON compatible.`;
+          const error = `The requirement of the "${action.type}" action must be a non-negative integer.`;
           expect(() => convertAction({ type }, action, undefined)).toThrowError(
             error
           );
@@ -1529,9 +1537,17 @@ describe('convertAction', () => {
     }
   });
 
-  test('should warn error for non-finite length and entry requirements', () => {
+  test('should warn error for invalid length and entry requirements', () => {
     for (const type of ['string', 'array', 'object'] as const) {
-      for (const requirement of [NaN, Infinity, -Infinity]) {
+      for (const requirement of [
+        -1,
+        -0.5,
+        0.5,
+        1.5,
+        NaN,
+        Infinity,
+        -Infinity,
+      ]) {
         const actions =
           type === 'object'
             ? [
@@ -1549,16 +1565,24 @@ describe('convertAction', () => {
             convertAction({ type }, action, { errorMode: 'warn' })
           ).toStrictEqual({ type });
           expect(console.warn).toHaveBeenLastCalledWith(
-            `The requirement of the "${action.type}" action is not JSON compatible.`
+            `The requirement of the "${action.type}" action must be a non-negative integer.`
           );
         }
       }
     }
   });
 
-  test('should ignore non-finite length and entry requirements', () => {
+  test('should ignore invalid length and entry requirements', () => {
     for (const type of ['string', 'array', 'object'] as const) {
-      for (const requirement of [NaN, Infinity, -Infinity]) {
+      for (const requirement of [
+        -1,
+        -0.5,
+        0.5,
+        1.5,
+        NaN,
+        Infinity,
+        -Infinity,
+      ]) {
         const actions =
           type === 'object'
             ? [
