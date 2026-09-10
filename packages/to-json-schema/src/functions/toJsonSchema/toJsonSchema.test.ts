@@ -140,6 +140,228 @@ describe('toJsonSchema', () => {
       });
     });
 
+    test('for recursive schema without definitions on repeated calls', () => {
+      const nodeSchema: v.GenericSchema = v.object({
+        child: v.optional(v.lazy(() => nodeSchema)),
+      });
+      const expectedJsonSchema = {
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: { child: { $ref: '#/$defs/0' } },
+        required: [],
+        $defs: {
+          '0': {
+            type: 'object',
+            properties: { child: { $ref: '#/$defs/0' } },
+            required: [],
+          },
+        },
+      };
+      expect(toJsonSchema(nodeSchema)).toStrictEqual(expectedJsonSchema);
+      expect(toJsonSchema(nodeSchema)).toStrictEqual(expectedJsonSchema);
+    });
+
+    test('for lazy schema with multiple definitions of same schema', () => {
+      const stringSchema = v.string();
+      const numberSchema = v.number();
+      const lazySchema = v.lazy(() => stringSchema);
+      expect(
+        toJsonSchema(lazySchema, {
+          definitions: {
+            '0': lazySchema,
+            '1': numberSchema,
+            '2': numberSchema,
+          },
+        })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        $ref: '#/$defs/0',
+        $defs: {
+          '0': { $ref: '#/$defs/3' },
+          '1': { type: 'number' },
+          '2': { type: 'number' },
+          '3': { type: 'string' },
+        },
+      });
+    });
+
+    test('for overrides with only previously converted definitions', () => {
+      const stringSchema = v.string();
+      const numberSchema = v.number();
+      expect(
+        toJsonSchema(stringSchema, {
+          definitions: { stringSchema, numberSchema },
+          overrideSchema(context) {
+            if (context.valibotSchema === stringSchema) {
+              expect(context.definitions).toStrictEqual({});
+            } else if (context.valibotSchema === numberSchema) {
+              expect(context.definitions).toStrictEqual({
+                stringSchema: { type: 'string' },
+              });
+            }
+            return null;
+          },
+        })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        $ref: '#/$defs/stringSchema',
+        $defs: {
+          stringSchema: { type: 'string' },
+          numberSchema: { type: 'number' },
+        },
+      });
+    });
+
+    test('for lazy schemas with definition added by override', () => {
+      const stringSchema = v.string();
+      const numberSchema = v.number();
+      expect(
+        toJsonSchema(
+          v.object({
+            foo: v.lazy(() => stringSchema),
+            bar: v.lazy(() => numberSchema),
+          }),
+          {
+            overrideSchema(context) {
+              if (context.valibotSchema === stringSchema) {
+                context.definitions['1'] = { type: 'boolean' };
+              }
+              return null;
+            },
+          }
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          foo: { $ref: '#/$defs/0' },
+          bar: { $ref: '#/$defs/2' },
+        },
+        required: ['foo', 'bar'],
+        $defs: {
+          '0': { type: 'string' },
+          '1': { type: 'boolean' },
+          '2': { type: 'number' },
+        },
+      });
+    });
+
+    test('for lazy schemas with conversion inside override', () => {
+      const stringSchema = v.string();
+      const numberSchema = v.number();
+      expect(
+        toJsonSchema(
+          v.object({
+            foo: v.lazy(() => stringSchema),
+            bar: v.lazy(() => numberSchema),
+          }),
+          {
+            overrideSchema(context) {
+              if (context.valibotSchema === stringSchema) {
+                // A nested conversion must not reset the outer reference counter.
+                toJsonSchema(v.boolean());
+              }
+              return null;
+            },
+          }
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          foo: { $ref: '#/$defs/0' },
+          bar: { $ref: '#/$defs/1' },
+        },
+        required: ['foo', 'bar'],
+        $defs: {
+          '0': { type: 'string' },
+          '1': { type: 'number' },
+        },
+      });
+    });
+
+    test('for lazy schemas with reference added by override', () => {
+      const stringSchema = v.string();
+      const numberSchema = v.number();
+      const booleanSchema = v.boolean();
+      expect(
+        toJsonSchema(
+          v.object({
+            foo: v.lazy(() => stringSchema),
+            bar: v.lazy(() => numberSchema),
+            baz: booleanSchema,
+          }),
+          {
+            overrideSchema(context) {
+              if (context.valibotSchema === stringSchema) {
+                // Reserve a reference before its definition is created.
+                context.referenceMap.set(booleanSchema, '1');
+              } else if (context.valibotSchema === numberSchema) {
+                context.definitions['1'] = { type: 'boolean' };
+              }
+              return null;
+            },
+          }
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          foo: { $ref: '#/$defs/0' },
+          bar: { $ref: '#/$defs/2' },
+          baz: { $ref: '#/$defs/1' },
+        },
+        required: ['foo', 'bar', 'baz'],
+        $defs: {
+          '0': { type: 'string' },
+          '1': { type: 'boolean' },
+          '2': { type: 'number' },
+        },
+      });
+    });
+
+    test('for lazy schemas with reference replaced by override', () => {
+      const stringSchema = v.string();
+      const numberSchema = v.number();
+      const booleanSchema = v.boolean();
+      expect(
+        toJsonSchema(
+          v.object({
+            foo: v.lazy(() => stringSchema),
+            bar: v.lazy(() => numberSchema),
+            baz: booleanSchema,
+          }),
+          {
+            definitions: { booleanSchema },
+            overrideRef(context) {
+              if (context.valibotSchema === stringSchema) {
+                // Replacing a reference does not change the map's size.
+                context.referenceMap.set(booleanSchema, '1');
+              } else if (context.valibotSchema === numberSchema) {
+                context.definitions['1'] = { type: 'boolean' };
+              }
+              return undefined;
+            },
+          }
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          foo: { $ref: '#/$defs/0' },
+          bar: { $ref: '#/$defs/2' },
+          baz: { $ref: '#/$defs/1' },
+        },
+        required: ['foo', 'bar', 'baz'],
+        $defs: {
+          booleanSchema: { type: 'boolean' },
+          '0': { type: 'string' },
+          '1': { type: 'boolean' },
+          '2': { type: 'number' },
+        },
+      });
+    });
+
     test('for definitions with JSON Pointer special characters', () => {
       const sharedSchema = v.object({ name: v.string() });
       expect(

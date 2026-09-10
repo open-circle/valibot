@@ -29,7 +29,7 @@ Schemas are the starting point for using Valibot. They validate a specific data 
 | `reference`   | `Function`      | The factory function itself (for identity checks)                           |
 | `expects`     | `string`        | Human-readable expected type, e.g. `'string'`                               |
 | `async`       | `false`         | `true` on async variants                                                    |
-| `'~standard'` | `StandardProps` | Standard Schema v1 properties (lazy getter)                                 |
+| `'~standard'` | `StandardProps` | Standard Schema v1 properties                                               |
 | `'~run'`      | `Function`      | Parses an `UnknownDataset` and returns an output dataset                    |
 | `'~types'`    | `undefined`     | Phantom field for TypeScript inference only — always `undefined` at runtime |
 
@@ -124,15 +124,11 @@ Pipe items can be validation actions, transformation actions, metadata actions, 
 
 ```ts
 function pipe(...pipe) {
-  return {
+  return _standardSchema({
     // Spread all properties of the root schema
     ...pipe[0],
     // Add the pipe tuple (root schema at index 0, other pipe items at index 1+)
     pipe,
-    // Replace '~standard' with a lazy getter so that `this` refers to the new schema object
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     // Replace '~run' with a new implementation that executes the pipeline
     '~run'(dataset, config) {
       for (const item of pipe) {
@@ -158,7 +154,7 @@ function pipe(...pipe) {
       }
       return dataset;
     },
-  };
+  });
 }
 ```
 
@@ -178,15 +174,11 @@ When we need a modified copy of a schema, we spread it into a new object and rep
 
 ```ts
 function fallback(schema, fallbackValue) {
-  return {
+  return _standardSchema({
     // Copy all properties from the original schema
     ...schema,
     // Add the new fallback property as metadata
     fallback: fallbackValue,
-    // Re-bind '~standard' so `this` refers to the new object
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     // Override '~run' to return the fallback value on failure
     '~run'(dataset, config) {
       const outputDataset = schema['~run'](dataset, config);
@@ -194,10 +186,10 @@ function fallback(schema, fallbackValue) {
         ? { typed: true, value: fallbackValue }
         : outputDataset;
     },
-  };
+  });
 }
 ```
 
-Two things are important when creating a modified copy. First, always re-bind the `'~standard'` getter so that `this` inside it refers to the new object instead of the original. Second, capture the original schema in a closure rather than reading `this` in `'~run'`, so the original `'~run'` logic is called correctly.
+Two things are important when creating a modified copy. First, wrap the new object with `_standardSchema` so that its `'~standard'.validate` function uses the modified schema. Spreading alone copies the original schema's validator. Second, capture the original schema in a closure rather than reading `this` in `'~run'`, so the original `'~run'` logic is called correctly.
 
 If you want to create an entirely new schema or action from scratch rather than wrapping an existing one, see the [Extend Valibot](/guides/extend-valibot/) guide.

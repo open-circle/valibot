@@ -63,6 +63,15 @@ describe('literal', () => {
       expectNoSchemaIssue(literal(45.67), [45.67]);
     });
 
+    test('for valid NaN literal', () => {
+      expectNoSchemaIssue(literal(NaN), [NaN, Number.NaN]);
+    });
+
+    test('for valid signed zero literal', () => {
+      expectNoSchemaIssue(literal(0), [-0]);
+      expectNoSchemaIssue(literal(-0), [0]);
+    });
+
     test('for valid string literal', () => {
       expectNoSchemaIssue(literal(''), ['']);
       expectNoSchemaIssue(literal('foo'), ['foo']);
@@ -131,6 +140,29 @@ describe('literal', () => {
           undefined,
           '123',
           Symbol('123'),
+          {},
+          [],
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          () => {},
+        ]
+      );
+    });
+
+    test('for invalid NaN literal', () => {
+      expectSchemaIssue(
+        literal(NaN, 'message'),
+        { ...baseIssue, expected: 'NaN' },
+        [
+          123n,
+          true,
+          false,
+          null,
+          -123,
+          0,
+          45.67,
+          undefined,
+          'foo',
+          Symbol(),
           {},
           [],
           // eslint-disable-next-line @typescript-eslint/no-empty-function

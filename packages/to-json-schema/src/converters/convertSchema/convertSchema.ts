@@ -4,7 +4,7 @@ import type {
   ConversionContext,
   JsonSchema,
 } from '../../types/index.ts';
-import { addError, handleError } from '../../utils/index.ts';
+import { addError, handleError, isJsonConstValue } from '../../utils/index.ts';
 import { convertAction } from '../convertAction/index.ts';
 
 /**
@@ -133,9 +133,6 @@ function flattenPipe(pipe: Pipe): Pipe {
 function getDefinitionRef(referenceId: string): string {
   return `#/$defs/${referenceId.replaceAll('~', '~0').replaceAll('/', '~1')}`;
 }
-
-// Create global reference count
-let refCount = 0;
 
 /**
  * Converts any supported Valibot schema to the JSON Schema format.
@@ -533,11 +530,7 @@ export function convertSchema(
     }
 
     case 'literal': {
-      if (
-        typeof valibotSchema.literal !== 'boolean' &&
-        typeof valibotSchema.literal !== 'number' &&
-        typeof valibotSchema.literal !== 'string'
-      ) {
+      if (!isJsonConstValue(valibotSchema.literal)) {
         errors = addError(
           errors,
           'The value of the "literal" schema is not JSON compatible.'
@@ -630,7 +623,7 @@ export function convertSchema(
 
       // Add wrapped Valibot schema to reference map and definitions, if necessary
       if (!referenceId) {
-        referenceId = `${refCount++}`;
+        referenceId = context.referenceMap.createId(context.definitions);
         context.referenceMap.set(wrappedValibotSchema, referenceId);
         context.definitions[referenceId] = convertSchema(
           {},

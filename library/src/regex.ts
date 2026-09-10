@@ -37,9 +37,12 @@ export const DOMAIN_REGEX: RegExp =
 
 /**
  * [Email address](https://en.wikipedia.org/wiki/Email_address) regex.
+ *
+ * Hint: We decided against the `i` flag to avoid matching non-ASCII characters.
  */
 export const EMAIL_REGEX: RegExp =
-  /^[\w+-]+(?:\.[\w+-]+)*@[\da-z]+(?:[.-][\da-z]+)*\.[a-z]{2,}$/iu;
+  // eslint-disable-next-line redos-detector/no-unsafe-regex -- false positive: separators cannot match the adjacent character classes
+  /^[\w+-]+(?:\.[\w+-]+)*@[\da-zA-Z]+(?:[.-][\da-zA-Z]+)*\.[a-zA-Z]{2,}$/u;
 
 /**
  * Emoji regex from [emoji-regex-xs](https://github.com/slevithan/emoji-regex-xs) v1.0.0 (MIT license).
@@ -205,8 +208,11 @@ export const SLUG_REGEX: RegExp = /^[\da-z]+(?:[-_][\da-z]+)*$/u;
  * [ULID](https://github.com/ulid/spec) regex.
  *
  * Hint: We decided against the `i` flag for better JSON Schema compatibility.
+ * Hint: The first character is restricted to `[0-7]` because the 48-bit
+ * timestamp cannot exceed 2^48-1, making the maximum valid ULID
+ * `7ZZZZZZZZZZZZZZZZZZZZZZZZZ` in Crockford's Base32 encoding.
  */
-export const ULID_REGEX: RegExp = /^[\da-hjkmnp-tv-zA-HJKMNP-TV-Z]{26}$/u;
+export const ULID_REGEX: RegExp = /^[0-7][\da-hjkmnp-tv-zA-HJKMNP-TV-Z]{25}$/u;
 
 /**
  * [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) regex.
