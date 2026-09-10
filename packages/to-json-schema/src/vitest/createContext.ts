@@ -1,4 +1,5 @@
 import type { ConversionContext } from '../types/index.ts';
+import { ReferenceMap } from '../utils/index.ts';
 
 /**
  * Creates a new conversion context.
@@ -12,7 +13,7 @@ export function createContext(
 ): ConversionContext {
   return {
     definitions: initial?.definitions ?? {},
-    referenceMap: initial?.referenceMap ?? new Map(),
+    referenceMap: initial?.referenceMap ?? new ReferenceMap(),
     getterMap: new Map(),
   };
 }

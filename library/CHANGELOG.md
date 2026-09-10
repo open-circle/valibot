@@ -2,14 +2,20 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v1.5.0 (September 09, 2026)
 
 - Add `codePoints`, `maxCodePoints`, `minCodePoints` and `notCodePoints` validation actions to validate the number of Unicode code points (pull request #888)
 - Add `ksuid` validation action to validate KSUIDs (pull request #1370)
 - Change Standard Schema properties to use eager initialization for faster schema construction and replace internal `_getStandardProps` utility with `_standardSchema` (pull request #1534)
+- Change `url` action to use `URL.canParse` when available to avoid constructing URL objects (pull request #1608)
 - Fix `stringifyJson` action to preserve the dataset value when `JSON.stringify` returns `undefined` (pull request #1476)
 - Fix `literal` schema and `value`, `values`, `notValue` and `notValues` actions to treat `NaN` as equal to itself (pull request #1573)
 - Fix `intersect` schema to merge matching `NaN` values and invalid dates (pull request #1573)
+- Fix `cache` and `cacheAsync` methods to clone the issues of a cached dataset, preventing parent schemas from adding their path item to the same issue on every cache hit (pull request #1620)
+- Fix `strictObject`, `looseObject`, `objectWithRest` and their async variants to correctly handle unknown input keys that collide with `Object.prototype` members (pull request #1523)
+- Fix `intersect` and `intersectAsync` schemas to ignore inherited properties when merging objects and preserve own properties without invoking inherited setters or changing the output prototype (pull request #1621)
+- Fix `ulid` action to reject ULIDs that exceed the maximum 128-bit value (pull request #1498)
+- Fix `email` action to reject non-ASCII characters accepted by Unicode case folding (pull request #1075)
 
 ## v1.4.2 (June 28, 2026)
 

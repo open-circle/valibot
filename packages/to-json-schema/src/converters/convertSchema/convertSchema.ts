@@ -134,9 +134,6 @@ function getDefinitionRef(referenceId: string): string {
   return `#/$defs/${referenceId.replaceAll('~', '~0').replaceAll('/', '~1')}`;
 }
 
-// Create global reference count
-let refCount = 0;
-
 /**
  * Converts any supported Valibot schema to the JSON Schema format.
  *
@@ -626,7 +623,7 @@ export function convertSchema(
 
       // Add wrapped Valibot schema to reference map and definitions, if necessary
       if (!referenceId) {
-        referenceId = `${refCount++}`;
+        referenceId = context.referenceMap.createId(context.definitions);
         context.referenceMap.set(wrappedValibotSchema, referenceId);
         context.definitions[referenceId] = convertSchema(
           {},

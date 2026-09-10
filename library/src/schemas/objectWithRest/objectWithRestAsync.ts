@@ -177,7 +177,8 @@ export function objectWithRestAsync(
             Object.entries(input)
               .filter(
                 ([key]) =>
-                  _isValidObjectKey(input, key) && !(key in this.entries)
+                  _isValidObjectKey(input, key) &&
+                  !Object.prototype.hasOwnProperty.call(this.entries, key)
               )
               .map(
                 async ([key, value]) =>

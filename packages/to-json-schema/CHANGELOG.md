@@ -8,6 +8,9 @@ All notable changes to the library will be documented in this file.
 - Add passthrough of other `metadata` action properties to support custom annotations and standard keywords like `format`, which take precedence over generated properties (pull request #1591)
 - Fix `examples` property type of `JsonSchema` to always be an array (pull request #1607)
 - Fix JSON compatibility validation of `literal` schemas to reject `NaN` and infinite numbers by default (pull request #1573)
+- Fix `minValue`, `maxValue`, `gtValue` and `ltValue` actions to skip numeric constraints on unsupported types in `warn` and `ignore` error modes (pull request #1595)
+- Fix generation of reference IDs for `lazy` schemas to produce consistent output and avoid collisions with existing definitions (pull request #1604)
+- Change `ConversionContext.referenceMap` type from `Map` to its `ReferenceMap` subclass (pull request #1604)
 
 ## v1.7.1 (June 08, 2026)
 
