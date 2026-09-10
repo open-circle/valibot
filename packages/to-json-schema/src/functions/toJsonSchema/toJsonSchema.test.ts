@@ -259,6 +259,134 @@ describe('toJsonSchema', () => {
   });
 
   describe('should keep stricter bound when actions overlap', () => {
+    test('for repeated numeric bounds in either order', () => {
+      for (const schema of [
+        v.pipe(
+          v.number(),
+          v.minValue(-1),
+          v.minValue(0),
+          v.maxValue(1),
+          v.maxValue(0)
+        ),
+        v.pipe(
+          v.number(),
+          v.minValue(0),
+          v.minValue(-1),
+          v.maxValue(0),
+          v.maxValue(1)
+        ),
+        v.pipe(
+          v.number(),
+          v.minValue(0),
+          v.minValue(0),
+          v.maxValue(0),
+          v.maxValue(0)
+        ),
+      ]) {
+        expect(toJsonSchema(schema)).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'number',
+          minimum: 0,
+          maximum: 0,
+        });
+      }
+    });
+
+    test('for repeated exclusive bounds in either order', () => {
+      for (const schema of [
+        v.pipe(
+          v.number(),
+          v.gtValue(-1),
+          v.gtValue(0),
+          v.ltValue(2),
+          v.ltValue(1)
+        ),
+        v.pipe(
+          v.number(),
+          v.gtValue(0),
+          v.gtValue(-1),
+          v.ltValue(1),
+          v.ltValue(2)
+        ),
+      ]) {
+        expect(toJsonSchema(schema)).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'number',
+          exclusiveMinimum: 0,
+          exclusiveMaximum: 1,
+        });
+      }
+    });
+
+    test('for contradictory string lengths in either order', () => {
+      for (const schema of [
+        v.pipe(v.string(), v.length(2), v.length(3)),
+        v.pipe(v.string(), v.length(3), v.length(2)),
+      ]) {
+        expect(toJsonSchema(schema)).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'string',
+          minLength: 3,
+          maxLength: 2,
+        });
+      }
+    });
+
+    test('for contradictory array lengths in either order', () => {
+      for (const schema of [
+        v.pipe(v.array(v.number()), v.length(2), v.length(3)),
+        v.pipe(v.array(v.number()), v.length(3), v.length(2)),
+      ]) {
+        expect(toJsonSchema(schema)).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'array',
+          items: { type: 'number' },
+          minItems: 3,
+          maxItems: 2,
+        });
+      }
+    });
+
+    test('for contradictory entry counts in either order', () => {
+      for (const schema of [
+        v.pipe(v.record(v.string(), v.number()), v.entries(2), v.entries(3)),
+        v.pipe(v.record(v.string(), v.number()), v.entries(3), v.entries(2)),
+      ]) {
+        expect(toJsonSchema(schema)).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'object',
+          additionalProperties: { type: 'number' },
+          propertyNames: { type: 'string' },
+          minProperties: 3,
+          maxProperties: 2,
+        });
+      }
+    });
+
+    test('for safe integer and numeric bounds in either order', () => {
+      for (const schema of [
+        v.pipe(
+          v.number(),
+          v.safeInteger(),
+          v.minValue(-Infinity),
+          v.maxValue(Infinity)
+        ),
+        v.pipe(
+          v.number(),
+          v.minValue(-Infinity),
+          v.maxValue(Infinity),
+          v.safeInteger()
+        ),
+      ]) {
+        expect(toJsonSchema(schema)).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'integer',
+          minimum: Number.MIN_SAFE_INTEGER,
+          maximum: Number.MAX_SAFE_INTEGER,
+        });
+      }
+    });
+
     test('for non empty after min length', () => {
       expect(
         toJsonSchema(v.pipe(v.string(), v.minLength(3), v.nonEmpty()))

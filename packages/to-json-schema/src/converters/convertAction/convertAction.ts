@@ -175,55 +175,43 @@ type Action =
     >;
 
 /**
- * Merges a lower bound keyword into the JSON Schema. If the keyword is
- * already set, the stricter (greater) of both values is kept.
+ * Returns the stricter lower bound.
  *
- * @param jsonSchema The JSON Schema object.
- * @param keyword The lower bound keyword.
- * @param value The new lower bound value.
+ * @param current The current lower bound.
+ * @param value The new lower bound.
+ *
+ * @returns The stricter lower bound.
  */
-function mergeLowerBound(
-  jsonSchema: JsonSchema,
-  keyword:
-    | 'exclusiveMinimum'
-    | 'minimum'
-    | 'minItems'
-    | 'minLength'
-    | 'minProperties',
-  value: number
-): void {
-  const current = jsonSchema[keyword];
-  // A non-finite bound cannot be represented in JSON, so it is replaced
-  // rather than compared against.
-  if (!Number.isFinite(current) || value > (current as number)) {
-    jsonSchema[keyword] = value;
+function getLowerBound(current: number | undefined, value: number): number {
+  // Replace non-finite bounds because they cannot be represented in JSON.
+  if (
+    typeof current !== 'number' ||
+    !Number.isFinite(current) ||
+    value > current
+  ) {
+    return value;
   }
+  return current;
 }
 
 /**
- * Merges an upper bound keyword into the JSON Schema. If the keyword is
- * already set, the stricter (smaller) of both values is kept.
+ * Returns the stricter upper bound.
  *
- * @param jsonSchema The JSON Schema object.
- * @param keyword The upper bound keyword.
- * @param value The new upper bound value.
+ * @param current The current upper bound.
+ * @param value The new upper bound.
+ *
+ * @returns The stricter upper bound.
  */
-function mergeUpperBound(
-  jsonSchema: JsonSchema,
-  keyword:
-    | 'exclusiveMaximum'
-    | 'maximum'
-    | 'maxItems'
-    | 'maxLength'
-    | 'maxProperties',
-  value: number
-): void {
-  const current = jsonSchema[keyword];
-  // A non-finite bound cannot be represented in JSON, so it is replaced
-  // rather than compared against.
-  if (!Number.isFinite(current) || value < (current as number)) {
-    jsonSchema[keyword] = value;
+function getUpperBound(current: number | undefined, value: number): number {
+  // Replace non-finite bounds because they cannot be represented in JSON.
+  if (
+    typeof current !== 'number' ||
+    !Number.isFinite(current) ||
+    value < current
+  ) {
+    return value;
   }
+  return current;
 }
 
 /**
@@ -325,8 +313,14 @@ export function convertAction(
     }
 
     case 'entries': {
-      mergeLowerBound(jsonSchema, 'minProperties', valibotAction.requirement);
-      mergeUpperBound(jsonSchema, 'maxProperties', valibotAction.requirement);
+      jsonSchema.minProperties = getLowerBound(
+        jsonSchema.minProperties,
+        valibotAction.requirement
+      );
+      jsonSchema.maxProperties = getUpperBound(
+        jsonSchema.maxProperties,
+        valibotAction.requirement
+      );
       break;
     }
 
@@ -358,9 +352,8 @@ export function convertAction(
         );
         break;
       }
-      mergeLowerBound(
-        jsonSchema,
-        'exclusiveMinimum',
+      jsonSchema.exclusiveMinimum = getLowerBound(
+        jsonSchema.exclusiveMinimum,
         valibotAction.requirement as number
       );
       break;
@@ -423,8 +416,14 @@ export function convertAction(
 
     case 'length': {
       if (jsonSchema.type === 'array') {
-        mergeLowerBound(jsonSchema, 'minItems', valibotAction.requirement);
-        mergeUpperBound(jsonSchema, 'maxItems', valibotAction.requirement);
+        jsonSchema.minItems = getLowerBound(
+          jsonSchema.minItems,
+          valibotAction.requirement
+        );
+        jsonSchema.maxItems = getUpperBound(
+          jsonSchema.maxItems,
+          valibotAction.requirement
+        );
       } else {
         if (jsonSchema.type !== 'string') {
           errors = addError(
@@ -432,8 +431,14 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        mergeLowerBound(jsonSchema, 'minLength', valibotAction.requirement);
-        mergeUpperBound(jsonSchema, 'maxLength', valibotAction.requirement);
+        jsonSchema.minLength = getLowerBound(
+          jsonSchema.minLength,
+          valibotAction.requirement
+        );
+        jsonSchema.maxLength = getUpperBound(
+          jsonSchema.maxLength,
+          valibotAction.requirement
+        );
       }
       break;
     }
@@ -452,22 +457,27 @@ export function convertAction(
         );
         break;
       }
-      mergeUpperBound(
-        jsonSchema,
-        'exclusiveMaximum',
+      jsonSchema.exclusiveMaximum = getUpperBound(
+        jsonSchema.exclusiveMaximum,
         valibotAction.requirement as number
       );
       break;
     }
 
     case 'max_entries': {
-      mergeUpperBound(jsonSchema, 'maxProperties', valibotAction.requirement);
+      jsonSchema.maxProperties = getUpperBound(
+        jsonSchema.maxProperties,
+        valibotAction.requirement
+      );
       break;
     }
 
     case 'max_length': {
       if (jsonSchema.type === 'array') {
-        mergeUpperBound(jsonSchema, 'maxItems', valibotAction.requirement);
+        jsonSchema.maxItems = getUpperBound(
+          jsonSchema.maxItems,
+          valibotAction.requirement
+        );
       } else {
         if (jsonSchema.type !== 'string') {
           errors = addError(
@@ -475,7 +485,10 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        mergeUpperBound(jsonSchema, 'maxLength', valibotAction.requirement);
+        jsonSchema.maxLength = getUpperBound(
+          jsonSchema.maxLength,
+          valibotAction.requirement
+        );
       }
       break;
     }
@@ -487,9 +500,8 @@ export function convertAction(
           `The "max_value" action is not supported on type "${jsonSchema.type}".`
         );
       }
-      mergeUpperBound(
-        jsonSchema,
-        'maximum',
+      jsonSchema.maximum = getUpperBound(
+        jsonSchema.maximum,
         valibotAction.requirement as number
       );
       break;
@@ -532,13 +544,19 @@ export function convertAction(
     }
 
     case 'min_entries': {
-      mergeLowerBound(jsonSchema, 'minProperties', valibotAction.requirement);
+      jsonSchema.minProperties = getLowerBound(
+        jsonSchema.minProperties,
+        valibotAction.requirement
+      );
       break;
     }
 
     case 'min_length': {
       if (jsonSchema.type === 'array') {
-        mergeLowerBound(jsonSchema, 'minItems', valibotAction.requirement);
+        jsonSchema.minItems = getLowerBound(
+          jsonSchema.minItems,
+          valibotAction.requirement
+        );
       } else {
         if (jsonSchema.type !== 'string') {
           errors = addError(
@@ -546,7 +564,10 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        mergeLowerBound(jsonSchema, 'minLength', valibotAction.requirement);
+        jsonSchema.minLength = getLowerBound(
+          jsonSchema.minLength,
+          valibotAction.requirement
+        );
       }
       break;
     }
@@ -558,9 +579,8 @@ export function convertAction(
           `The "min_value" action is not supported on type "${jsonSchema.type}".`
         );
       }
-      mergeLowerBound(
-        jsonSchema,
-        'minimum',
+      jsonSchema.minimum = getLowerBound(
+        jsonSchema.minimum,
         valibotAction.requirement as number
       );
       break;
@@ -573,7 +593,7 @@ export function convertAction(
 
     case 'non_empty': {
       if (jsonSchema.type === 'array') {
-        mergeLowerBound(jsonSchema, 'minItems', 1);
+        jsonSchema.minItems = getLowerBound(jsonSchema.minItems, 1);
       } else {
         if (jsonSchema.type !== 'string') {
           errors = addError(
@@ -581,7 +601,7 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        mergeLowerBound(jsonSchema, 'minLength', 1);
+        jsonSchema.minLength = getLowerBound(jsonSchema.minLength, 1);
       }
       break;
     }
@@ -634,8 +654,14 @@ export function convertAction(
 
     case 'safe_integer': {
       jsonSchema.type = 'integer';
-      mergeLowerBound(jsonSchema, 'minimum', Number.MIN_SAFE_INTEGER);
-      mergeUpperBound(jsonSchema, 'maximum', Number.MAX_SAFE_INTEGER);
+      jsonSchema.minimum = getLowerBound(
+        jsonSchema.minimum,
+        Number.MIN_SAFE_INTEGER
+      );
+      jsonSchema.maximum = getUpperBound(
+        jsonSchema.maximum,
+        Number.MAX_SAFE_INTEGER
+      );
       break;
     }
 
