@@ -12,8 +12,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _getStandardProps,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type { looseObject } from './looseObject.ts';
 import type { LooseObjectIssue } from './types.ts';
@@ -86,7 +86,7 @@ export function looseObjectAsync(
   ObjectEntriesAsync,
   ErrorMessage<LooseObjectIssue> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'loose_object',
     reference: looseObjectAsync,
@@ -94,9 +94,6 @@ export function looseObjectAsync(
     async: true,
     entries,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
@@ -227,7 +224,10 @@ export function looseObjectAsync(
         // Hint: We exclude specific keys for security reasons
         if (!dataset.issues || !config.abortEarly) {
           for (const key in input) {
-            if (_isValidObjectKey(input, key) && !(key in this.entries)) {
+            if (
+              _isValidObjectKey(input, key) &&
+              !Object.prototype.hasOwnProperty.call(this.entries, key)
+            ) {
               // @ts-expect-error
               dataset.value[key] = input[key];
             }
@@ -246,5 +246,5 @@ export function looseObjectAsync(
         LooseObjectIssue | InferObjectIssue<ObjectEntriesAsync>
       >;
     },
-  };
+  });
 }

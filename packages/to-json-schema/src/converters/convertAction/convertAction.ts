@@ -175,6 +175,46 @@ type Action =
     >;
 
 /**
+ * Returns the stricter lower bound.
+ *
+ * @param current The current lower bound.
+ * @param value The new lower bound.
+ *
+ * @returns The stricter lower bound.
+ */
+function getLowerBound(current: number | undefined, value: number): number {
+  // Replace non-finite bounds because they cannot be represented in JSON.
+  if (
+    typeof current !== 'number' ||
+    !Number.isFinite(current) ||
+    value > current
+  ) {
+    return value;
+  }
+  return current;
+}
+
+/**
+ * Returns the stricter upper bound.
+ *
+ * @param current The current upper bound.
+ * @param value The new upper bound.
+ *
+ * @returns The stricter upper bound.
+ */
+function getUpperBound(current: number | undefined, value: number): number {
+  // Replace non-finite bounds because they cannot be represented in JSON.
+  if (
+    typeof current !== 'number' ||
+    !Number.isFinite(current) ||
+    value < current
+  ) {
+    return value;
+  }
+  return current;
+}
+
+/**
  * Merges an enum restriction into the JSON Schema. If the "enum" keyword is
  * already set, it is reduced to the values allowed by both restrictions. When
  * the restrictions have no value in common, nothing can validate, which is
@@ -322,8 +362,24 @@ export function convertAction(
     }
 
     case 'entries': {
-      jsonSchema.minProperties = valibotAction.requirement;
-      jsonSchema.maxProperties = valibotAction.requirement;
+      if (
+        !Number.isInteger(valibotAction.requirement) ||
+        valibotAction.requirement < 0
+      ) {
+        errors = addError(
+          errors,
+          'The requirement of the "entries" action must be a non-negative integer.'
+        );
+        break;
+      }
+      jsonSchema.minProperties = getLowerBound(
+        jsonSchema.minProperties,
+        valibotAction.requirement
+      );
+      jsonSchema.maxProperties = getUpperBound(
+        jsonSchema.maxProperties,
+        valibotAction.requirement
+      );
       break;
     }
 
@@ -347,6 +403,14 @@ export function convertAction(
           errors,
           `The "gt_value" action is not supported on type "${jsonSchema.type}".`
         );
+        break;
+      }
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "gt_value" action is not JSON compatible.'
+        );
+        break;
       }
       if (config?.target === 'openapi-3.0') {
         errors = addError(
@@ -355,7 +419,10 @@ export function convertAction(
         );
         break;
       }
-      jsonSchema.exclusiveMinimum = valibotAction.requirement as number;
+      jsonSchema.exclusiveMinimum = getLowerBound(
+        jsonSchema.exclusiveMinimum,
+        valibotAction.requirement as number
+      );
       break;
     }
 
@@ -415,9 +482,25 @@ export function convertAction(
     }
 
     case 'length': {
+      if (
+        !Number.isInteger(valibotAction.requirement) ||
+        valibotAction.requirement < 0
+      ) {
+        errors = addError(
+          errors,
+          'The requirement of the "length" action must be a non-negative integer.'
+        );
+        break;
+      }
       if (jsonSchema.type === 'array') {
-        jsonSchema.minItems = valibotAction.requirement;
-        jsonSchema.maxItems = valibotAction.requirement;
+        jsonSchema.minItems = getLowerBound(
+          jsonSchema.minItems,
+          valibotAction.requirement
+        );
+        jsonSchema.maxItems = getUpperBound(
+          jsonSchema.maxItems,
+          valibotAction.requirement
+        );
       } else {
         if (jsonSchema.type !== 'string') {
           errors = addError(
@@ -425,8 +508,14 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        jsonSchema.minLength = valibotAction.requirement;
-        jsonSchema.maxLength = valibotAction.requirement;
+        jsonSchema.minLength = getLowerBound(
+          jsonSchema.minLength,
+          valibotAction.requirement
+        );
+        jsonSchema.maxLength = getUpperBound(
+          jsonSchema.maxLength,
+          valibotAction.requirement
+        );
       }
       break;
     }
@@ -437,6 +526,14 @@ export function convertAction(
           errors,
           `The "lt_value" action is not supported on type "${jsonSchema.type}".`
         );
+        break;
+      }
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "lt_value" action is not JSON compatible.'
+        );
+        break;
       }
       if (config?.target === 'openapi-3.0') {
         errors = addError(
@@ -445,18 +542,47 @@ export function convertAction(
         );
         break;
       }
-      jsonSchema.exclusiveMaximum = valibotAction.requirement as number;
+      jsonSchema.exclusiveMaximum = getUpperBound(
+        jsonSchema.exclusiveMaximum,
+        valibotAction.requirement as number
+      );
       break;
     }
 
     case 'max_entries': {
-      jsonSchema.maxProperties = valibotAction.requirement;
+      if (
+        !Number.isInteger(valibotAction.requirement) ||
+        valibotAction.requirement < 0
+      ) {
+        errors = addError(
+          errors,
+          'The requirement of the "max_entries" action must be a non-negative integer.'
+        );
+        break;
+      }
+      jsonSchema.maxProperties = getUpperBound(
+        jsonSchema.maxProperties,
+        valibotAction.requirement
+      );
       break;
     }
 
     case 'max_length': {
+      if (
+        !Number.isInteger(valibotAction.requirement) ||
+        valibotAction.requirement < 0
+      ) {
+        errors = addError(
+          errors,
+          'The requirement of the "max_length" action must be a non-negative integer.'
+        );
+        break;
+      }
       if (jsonSchema.type === 'array') {
-        jsonSchema.maxItems = valibotAction.requirement;
+        jsonSchema.maxItems = getUpperBound(
+          jsonSchema.maxItems,
+          valibotAction.requirement
+        );
       } else {
         if (jsonSchema.type !== 'string') {
           errors = addError(
@@ -464,7 +590,10 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        jsonSchema.maxLength = valibotAction.requirement;
+        jsonSchema.maxLength = getUpperBound(
+          jsonSchema.maxLength,
+          valibotAction.requirement
+        );
       }
       break;
     }
@@ -475,8 +604,19 @@ export function convertAction(
           errors,
           `The "max_value" action is not supported on type "${jsonSchema.type}".`
         );
+        break;
       }
-      jsonSchema.maximum = valibotAction.requirement as number;
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "max_value" action is not JSON compatible.'
+        );
+        break;
+      }
+      jsonSchema.maximum = getUpperBound(
+        jsonSchema.maximum,
+        valibotAction.requirement as number
+      );
       break;
     }
 
@@ -517,13 +657,39 @@ export function convertAction(
     }
 
     case 'min_entries': {
-      jsonSchema.minProperties = valibotAction.requirement;
+      if (
+        !Number.isInteger(valibotAction.requirement) ||
+        valibotAction.requirement < 0
+      ) {
+        errors = addError(
+          errors,
+          'The requirement of the "min_entries" action must be a non-negative integer.'
+        );
+        break;
+      }
+      jsonSchema.minProperties = getLowerBound(
+        jsonSchema.minProperties,
+        valibotAction.requirement
+      );
       break;
     }
 
     case 'min_length': {
+      if (
+        !Number.isInteger(valibotAction.requirement) ||
+        valibotAction.requirement < 0
+      ) {
+        errors = addError(
+          errors,
+          'The requirement of the "min_length" action must be a non-negative integer.'
+        );
+        break;
+      }
       if (jsonSchema.type === 'array') {
-        jsonSchema.minItems = valibotAction.requirement;
+        jsonSchema.minItems = getLowerBound(
+          jsonSchema.minItems,
+          valibotAction.requirement
+        );
       } else {
         if (jsonSchema.type !== 'string') {
           errors = addError(
@@ -531,7 +697,10 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        jsonSchema.minLength = valibotAction.requirement;
+        jsonSchema.minLength = getLowerBound(
+          jsonSchema.minLength,
+          valibotAction.requirement
+        );
       }
       break;
     }
@@ -542,8 +711,19 @@ export function convertAction(
           errors,
           `The "min_value" action is not supported on type "${jsonSchema.type}".`
         );
+        break;
       }
-      jsonSchema.minimum = valibotAction.requirement as number;
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "min_value" action is not JSON compatible.'
+        );
+        break;
+      }
+      jsonSchema.minimum = getLowerBound(
+        jsonSchema.minimum,
+        valibotAction.requirement as number
+      );
       break;
     }
 
@@ -554,7 +734,7 @@ export function convertAction(
 
     case 'non_empty': {
       if (jsonSchema.type === 'array') {
-        jsonSchema.minItems = 1;
+        jsonSchema.minItems = getLowerBound(jsonSchema.minItems, 1);
       } else {
         if (jsonSchema.type !== 'string') {
           errors = addError(
@@ -562,7 +742,7 @@ export function convertAction(
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
         }
-        jsonSchema.minLength = 1;
+        jsonSchema.minLength = getLowerBound(jsonSchema.minLength, 1);
       }
       break;
     }
@@ -616,18 +796,14 @@ export function convertAction(
 
     case 'safe_integer': {
       jsonSchema.type = 'integer';
-      if (
-        typeof jsonSchema.minimum !== 'number' ||
-        jsonSchema.minimum < Number.MIN_SAFE_INTEGER
-      ) {
-        jsonSchema.minimum = Number.MIN_SAFE_INTEGER;
-      }
-      if (
-        typeof jsonSchema.maximum !== 'number' ||
-        jsonSchema.maximum > Number.MAX_SAFE_INTEGER
-      ) {
-        jsonSchema.maximum = Number.MAX_SAFE_INTEGER;
-      }
+      jsonSchema.minimum = getLowerBound(
+        jsonSchema.minimum,
+        Number.MIN_SAFE_INTEGER
+      );
+      jsonSchema.maximum = getUpperBound(
+        jsonSchema.maximum,
+        Number.MAX_SAFE_INTEGER
+      );
       break;
     }
 

@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type {
   InferNonNullableInput,
   InferNonNullableIssue,
@@ -77,7 +77,7 @@ export function nonNullable(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<NonNullableIssue> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'non_nullable',
     reference: nonNullable,
@@ -85,9 +85,6 @@ export function nonNullable(
     async: false,
     wrapped,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       // If value is not `null`, run wrapped schema
       if (dataset.value !== null) {
@@ -104,5 +101,5 @@ export function nonNullable(
       // @ts-expect-error
       return dataset as OutputDataset<unknown, BaseIssue<unknown>>;
     },
-  };
+  });
 }

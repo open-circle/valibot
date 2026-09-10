@@ -9,7 +9,7 @@ import type {
   OutputDataset,
   TupleItems,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { LooseTupleIssue } from './types.ts';
 
 /**
@@ -74,7 +74,7 @@ export function looseTuple(
   items: TupleItems,
   message?: ErrorMessage<LooseTupleIssue>
 ): LooseTupleSchema<TupleItems, ErrorMessage<LooseTupleIssue> | undefined> {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'loose_tuple',
     reference: looseTuple,
@@ -82,9 +82,6 @@ export function looseTuple(
     async: false,
     items,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
@@ -165,5 +162,5 @@ export function looseTuple(
         LooseTupleIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }
