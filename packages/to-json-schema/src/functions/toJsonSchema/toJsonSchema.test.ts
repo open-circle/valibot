@@ -389,6 +389,31 @@ describe('toJsonSchema', () => {
   });
 
   describe('should throw error', () => {
+    test('for impossible lengths before non empty', () => {
+      for (const schema of [
+        v.pipe(v.string(), v.minLength(Infinity), v.nonEmpty()),
+        v.pipe(v.array(v.number()), v.minLength(Infinity), v.nonEmpty()),
+      ]) {
+        expect(() => toJsonSchema(schema)).toThrowError(
+          'The requirement of the "min_length" action is not JSON compatible.'
+        );
+      }
+    });
+
+    test('for impossible entry count before finite minimum', () => {
+      expect(() =>
+        toJsonSchema(
+          v.pipe(
+            v.record(v.string(), v.number()),
+            v.minEntries(Infinity),
+            v.minEntries(1)
+          )
+        )
+      ).toThrowError(
+        'The requirement of the "min_entries" action is not JSON compatible.'
+      );
+    });
+
     test('for impossible numeric bounds before safe integer', () => {
       expect(() =>
         toJsonSchema(v.pipe(v.number(), v.minValue(Infinity), v.safeInteger()))

@@ -1501,6 +1501,85 @@ describe('convertAction', () => {
     }
   });
 
+  test('should throw error for non-finite length and entry requirements', () => {
+    for (const type of ['string', 'array', 'object'] as const) {
+      for (const requirement of [NaN, Infinity, -Infinity]) {
+        const actions =
+          type === 'object'
+            ? [
+                v.entries<v.EntriesInput, number>(requirement),
+                v.minEntries<v.EntriesInput, number>(requirement),
+                v.maxEntries<v.EntriesInput, number>(requirement),
+              ]
+            : [
+                v.length<v.LengthInput, number>(requirement),
+                v.minLength<v.LengthInput, number>(requirement),
+                v.maxLength<v.LengthInput, number>(requirement),
+              ];
+        for (const action of actions) {
+          const error = `The requirement of the "${action.type}" action is not JSON compatible.`;
+          expect(() => convertAction({ type }, action, undefined)).toThrowError(
+            error
+          );
+          expect(() =>
+            convertAction({ type }, action, { errorMode: 'throw' })
+          ).toThrowError(error);
+        }
+      }
+    }
+  });
+
+  test('should warn error for non-finite length and entry requirements', () => {
+    for (const type of ['string', 'array', 'object'] as const) {
+      for (const requirement of [NaN, Infinity, -Infinity]) {
+        const actions =
+          type === 'object'
+            ? [
+                v.entries<v.EntriesInput, number>(requirement),
+                v.minEntries<v.EntriesInput, number>(requirement),
+                v.maxEntries<v.EntriesInput, number>(requirement),
+              ]
+            : [
+                v.length<v.LengthInput, number>(requirement),
+                v.minLength<v.LengthInput, number>(requirement),
+                v.maxLength<v.LengthInput, number>(requirement),
+              ];
+        for (const action of actions) {
+          expect(
+            convertAction({ type }, action, { errorMode: 'warn' })
+          ).toStrictEqual({ type });
+          expect(console.warn).toHaveBeenLastCalledWith(
+            `The requirement of the "${action.type}" action is not JSON compatible.`
+          );
+        }
+      }
+    }
+  });
+
+  test('should ignore non-finite length and entry requirements', () => {
+    for (const type of ['string', 'array', 'object'] as const) {
+      for (const requirement of [NaN, Infinity, -Infinity]) {
+        const actions =
+          type === 'object'
+            ? [
+                v.entries<v.EntriesInput, number>(requirement),
+                v.minEntries<v.EntriesInput, number>(requirement),
+                v.maxEntries<v.EntriesInput, number>(requirement),
+              ]
+            : [
+                v.length<v.LengthInput, number>(requirement),
+                v.minLength<v.LengthInput, number>(requirement),
+                v.maxLength<v.LengthInput, number>(requirement),
+              ];
+        for (const action of actions) {
+          expect(
+            convertAction({ type }, action, { errorMode: 'ignore' })
+          ).toStrictEqual({ type });
+        }
+      }
+    }
+  });
+
   test('should replace a non-finite bound instead of keeping it', () => {
     for (const bound of [NaN, Infinity, -Infinity]) {
       expect(

@@ -313,6 +313,13 @@ export function convertAction(
     }
 
     case 'entries': {
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "entries" action is not JSON compatible.'
+        );
+        break;
+      }
       jsonSchema.minProperties = getLowerBound(
         jsonSchema.minProperties,
         valibotAction.requirement
@@ -423,6 +430,13 @@ export function convertAction(
     }
 
     case 'length': {
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "length" action is not JSON compatible.'
+        );
+        break;
+      }
       if (jsonSchema.type === 'array') {
         jsonSchema.minItems = getLowerBound(
           jsonSchema.minItems,
@@ -481,6 +495,13 @@ export function convertAction(
     }
 
     case 'max_entries': {
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "max_entries" action is not JSON compatible.'
+        );
+        break;
+      }
       jsonSchema.maxProperties = getUpperBound(
         jsonSchema.maxProperties,
         valibotAction.requirement
@@ -489,6 +510,13 @@ export function convertAction(
     }
 
     case 'max_length': {
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "max_length" action is not JSON compatible.'
+        );
+        break;
+      }
       if (jsonSchema.type === 'array') {
         jsonSchema.maxItems = getUpperBound(
           jsonSchema.maxItems,
@@ -568,6 +596,13 @@ export function convertAction(
     }
 
     case 'min_entries': {
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "min_entries" action is not JSON compatible.'
+        );
+        break;
+      }
       jsonSchema.minProperties = getLowerBound(
         jsonSchema.minProperties,
         valibotAction.requirement
@@ -576,6 +611,13 @@ export function convertAction(
     }
 
     case 'min_length': {
+      if (!Number.isFinite(valibotAction.requirement)) {
+        errors = addError(
+          errors,
+          'The requirement of the "min_length" action is not JSON compatible.'
+        );
+        break;
+      }
       if (jsonSchema.type === 'array') {
         jsonSchema.minItems = getLowerBound(
           jsonSchema.minItems,
