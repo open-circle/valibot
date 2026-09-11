@@ -74,7 +74,15 @@ const BinaryTreeSchema: v.GenericSchema<BinaryTree> = v.object({
 
 ### JSON schema
 
-Another practical use case for `lazy` is a schema for all possible `JSON` values. These are all values that can be serialized and deserialized using `JSON.stringify()` and `JSON.parse()`.
+Another practical use case for `lazy` is a schema for all possible `JSON` values. These are all values that can be serialized and deserialized using `JSON.stringify()` and `JSON.parse()`. Valibot ships this as a built-in schema, <Link href="/api/jsonValue/">`jsonValue`</Link>, so you don't need to write it yourself.
+
+```ts
+import * as v from 'valibot';
+
+const JsonSchema = v.jsonValue();
+```
+
+The same shape can also be built by hand, which is a good illustration of how `lazy` enables recursive schemas. Note that `jsonValue` is implemented directly and, unlike this hand-rolled composition, rejects non-finite numbers such as `Infinity` and `-Infinity`, detects circular references and rejects them with an issue instead of overflowing the call stack, and reports different issues:
 
 ```ts
 import * as v from 'valibot';
