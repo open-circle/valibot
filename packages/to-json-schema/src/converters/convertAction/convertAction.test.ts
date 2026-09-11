@@ -1301,6 +1301,62 @@ describe('convertAction', () => {
     });
   });
 
+  test('should preserve other keywords in existing not restriction', () => {
+    const not = { anyOf: [{ const: 0 }], minimum: 0 };
+    expect(
+      convertAction(
+        { type: 'number', not },
+        v.notValue<v.ValueInput, 1>(1),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      not: { anyOf: [not, { const: 1 }] },
+    });
+    expect(not).toStrictEqual({ anyOf: [{ const: 0 }], minimum: 0 });
+  });
+
+  test('should preserve boolean not restrictions', () => {
+    for (const not of [true, false]) {
+      expect(
+        convertAction(
+          { type: 'number', not },
+          v.notValue<v.ValueInput, 1>(1),
+          undefined
+        )
+      ).toStrictEqual({
+        type: 'number',
+        not: { anyOf: [not, { const: 1 }] },
+      });
+    }
+  });
+
+  test('should skip empty not values requirement', () => {
+    expect(
+      convertAction(
+        { type: 'number', not: { const: 1 } },
+        v.notValues<v.ValueInput, []>([]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      not: { const: 1 },
+    });
+  });
+
+  test('should remove duplicate not values requirements', () => {
+    expect(
+      convertAction(
+        { type: 'number' },
+        v.notValues<v.ValueInput, [1, 1, 2]>([1, 1, 2]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      not: { enum: [1, 2] },
+    });
+  });
+
   test('should throw error for unsupported not value action', () => {
     const error =
       'The requirement of the "not_value" action is not JSON compatible.';
@@ -1916,6 +1972,35 @@ describe('convertAction', () => {
     );
   });
 
+  test('should warn error for value action with different const restriction', () => {
+    expect(
+      convertAction(
+        { type: 'string', const: 'foo' },
+        v.value<v.ValueInput, 'bar'>('bar'),
+        { errorMode: 'warn' }
+      )
+    ).toStrictEqual({
+      type: 'string',
+      const: 'foo',
+    });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The "value" action is not supported in combination with a different "const" restriction.'
+    );
+  });
+
+  test('should ignore value action with different const restriction', () => {
+    expect(
+      convertAction(
+        { type: 'string', const: 'foo' },
+        v.value<v.ValueInput, 'bar'>('bar'),
+        { errorMode: 'ignore' }
+      )
+    ).toStrictEqual({
+      type: 'string',
+      const: 'foo',
+    });
+  });
+
   test('should convert value action for openapi-3.0', () => {
     expect(
       convertAction({ type: 'string' }, v.value<v.ValueInput, 'foo'>('foo'), {
@@ -2027,9 +2112,6 @@ describe('convertAction', () => {
   });
 
   test('should express an empty values intersection as an impossible schema', () => {
-    // An empty "enum" array is not a valid JSON Schema and validators refuse
-    // to compile it, so a restriction that nothing can satisfy is expressed
-    // with "not" instead.
     expect(
       convertAction(
         { type: 'number', enum: [1, 2] },
@@ -2040,6 +2122,46 @@ describe('convertAction', () => {
       type: 'number',
       not: {},
     });
+  });
+
+  test('should express empty values requirement as an impossible schema', () => {
+    expect(
+      convertAction(
+        { type: 'number' },
+        v.values<v.ValueInput, []>([]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      not: {},
+    });
+  });
+
+  test('should remove duplicate values without changing original arrays', () => {
+    const values = [1, 1, 2];
+    const options = [2, 1, 2, 3];
+    expect(
+      convertAction(
+        { type: 'number' },
+        v.values<v.ValueInput, number[]>(values),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      enum: [1, 2],
+    });
+    expect(
+      convertAction(
+        { type: 'number', enum: options },
+        v.values<v.ValueInput, number[]>(values),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      enum: [2, 1],
+    });
+    expect(values).toStrictEqual([1, 1, 2]);
+    expect(options).toStrictEqual([2, 1, 2, 3]);
   });
 
   test('should throw error for unsupported values action', () => {

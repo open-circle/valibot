@@ -742,6 +742,71 @@ describe('toJsonSchema', () => {
   });
 
   describe('should merge overlapping value restrictions', () => {
+    test('for disjoint values followed by further restrictions', () => {
+      expect(
+        toJsonSchema(
+          v.pipe(
+            v.number(),
+            v.values([1]),
+            v.values([2]),
+            v.values([1, 2]),
+            v.notValue(3)
+          )
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'number',
+        enum: [1, 2],
+        not: { anyOf: [{}, { const: 3 }] },
+      });
+    });
+
+    test('for mixed exclusions with openapi-3.0', () => {
+      expect(
+        toJsonSchema(
+          v.pipe(
+            v.number(),
+            v.notValues([1, 2]),
+            v.notValue(3),
+            v.notValues([4])
+          ),
+          { target: 'openapi-3.0' }
+        )
+      ).toStrictEqual({
+        type: 'number',
+        not: {
+          anyOf: [{ anyOf: [{ enum: [1, 2] }, { enum: [3] }] }, { enum: [4] }],
+        },
+      });
+    });
+
+    test('for disjoint values with openapi-3.0', () => {
+      for (const schema of [
+        v.pipe(v.number(), v.values([1]), v.values([2])),
+        v.pipe(v.number(), v.values([1]), v.value(2)),
+        v.pipe(v.number(), v.value(1), v.values([2])),
+        v.pipe(v.number(), v.value(1), v.value(2)),
+      ]) {
+        expect(toJsonSchema(schema, { target: 'openapi-3.0' })).toStrictEqual({
+          type: 'number',
+          not: {},
+        });
+      }
+    });
+
+    test('for overlapping values with openapi-3.0', () => {
+      for (const schema of [
+        v.pipe(v.number(), v.values([1, 2]), v.value(2)),
+        v.pipe(v.number(), v.value(2), v.values([1, 2])),
+        v.pipe(v.number(), v.value(2), v.value(2)),
+      ]) {
+        expect(toJsonSchema(schema, { target: 'openapi-3.0' })).toStrictEqual({
+          type: 'number',
+          enum: [2],
+        });
+      }
+    });
+
     test('for repeated values actions', () => {
       expect(
         toJsonSchema(v.pipe(v.number(), v.values([1, 2]), v.values([2, 3])))

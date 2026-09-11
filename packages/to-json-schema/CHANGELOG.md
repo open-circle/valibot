@@ -6,6 +6,9 @@ All notable changes to the library will be documented in this file.
 
 - Add support for `ksuid` action (pull request #1370)
 - Add passthrough of other `metadata` action properties to support custom annotations and standard keywords like `format`, which take precedence over generated properties (pull request #1591)
+- Fix overlapping `values`, `notValue` and `notValues` actions to preserve all restrictions, including `value` actions for OpenAPI 3.0 (pull request #1613)
+- Fix `value` actions to report conflicting constant restrictions by default (pull request #1613)
+- Fix empty and duplicate requirements of `values` and `notValues` actions to produce valid enum restrictions or an impossible schema (pull request #1613)
 - Fix overlapping numeric, length, and object entry bounds to preserve the stricter constraints, including combinations with `nonEmpty` and `safeInteger` actions (pull request #1611)
 - Fix `minValue`, `maxValue`, `gtValue` and `ltValue` actions to reject `NaN` and infinite requirements by default and skip them in `warn` and `ignore` error modes (pull request #1611)
 - Fix `length`, `minLength`, `maxLength`, `entries`, `minEntries` and `maxEntries` actions to require non-negative integers by default and skip invalid requirements in `warn` and `ignore` error modes (pull request #1611)

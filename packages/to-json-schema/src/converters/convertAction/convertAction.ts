@@ -215,51 +215,42 @@ function getUpperBound(current: number | undefined, value: number): number {
 }
 
 /**
- * Merges an enum restriction into the JSON Schema. If the "enum" keyword is
- * already set, it is reduced to the values allowed by both restrictions. When
- * the restrictions have no value in common, nothing can validate, which is
- * expressed as `not: {}` because an empty "enum" array is not a valid JSON
- * Schema and validators refuse to compile it.
+ * Returns the combined not restriction.
+ *
+ * @param current The current not restriction.
+ * @param value The new not restriction.
+ *
+ * @returns The combined not restriction.
+ */
+function getNotRestriction(
+  current: JsonSchema['not'],
+  value: JsonSchema
+): JsonSchema {
+  // Negate the union to preserve both exclusions.
+  return current !== undefined ? { anyOf: [current, value] } : value;
+}
+
+/**
+ * Intersects allowed values with an existing enum restriction.
  *
  * @param jsonSchema The JSON Schema object.
  * @param values The allowed values.
  */
-function mergeEnumRestriction(
+function intersectEnum(
   jsonSchema: JsonSchema,
   values: (boolean | number | string)[]
 ): void {
+  let enumValues = jsonSchema.enum ?? values;
   if (jsonSchema.enum) {
-    const allowed = jsonSchema.enum.filter((option) =>
-      values.includes(option as boolean | number | string)
-    );
-    if (allowed.length === 0) {
-      delete jsonSchema.enum;
-      mergeNotRestriction(jsonSchema, {});
-      return;
-    }
-    jsonSchema.enum = allowed;
-  } else {
-    jsonSchema.enum = values;
+    const valueSet = new Set<unknown>(values);
+    enumValues = enumValues.filter((value) => valueSet.has(value));
   }
-}
-
-/**
- * Merges a "not" restriction into the JSON Schema. If the "not" keyword is
- * already set, both restrictions are combined with "anyOf", because negating
- * a union of restrictions rejects exactly the values that each individual
- * restriction rejects.
- *
- * @param jsonSchema The JSON Schema object.
- * @param notSchema The "not" restriction.
- */
-function mergeNotRestriction(
-  jsonSchema: JsonSchema,
-  notSchema: JsonSchema
-): void {
-  if (jsonSchema.not !== undefined) {
-    jsonSchema.not = { anyOf: [jsonSchema.not, notSchema] };
+  if (enumValues.length) {
+    jsonSchema.enum = [...new Set(enumValues)];
   } else {
-    jsonSchema.not = notSchema;
+    // An empty enum is invalid, so reject every value with "not".
+    delete jsonSchema.enum;
+    jsonSchema.not = getNotRestriction(jsonSchema.not, {});
   }
 }
 
@@ -755,8 +746,8 @@ export function convertAction(
         );
         break;
       }
-      mergeNotRestriction(
-        jsonSchema,
+      jsonSchema.not = getNotRestriction(
+        jsonSchema.not,
         config?.target === 'openapi-3.0'
           ? { enum: [valibotAction.requirement] }
           : { const: valibotAction.requirement }
@@ -772,7 +763,11 @@ export function convertAction(
         );
         break;
       }
-      mergeNotRestriction(jsonSchema, { enum: valibotAction.requirement });
+      if (valibotAction.requirement.length) {
+        jsonSchema.not = getNotRestriction(jsonSchema.not, {
+          enum: [...new Set(valibotAction.requirement)],
+        });
+      }
       break;
     }
 
@@ -848,7 +843,7 @@ export function convertAction(
       if (config?.target === 'openapi-3.0') {
         // Hint: OpenAPI 3.0 does not support const. That's why we use an
         // enum instead.
-        mergeEnumRestriction(jsonSchema, [valibotAction.requirement]);
+        intersectEnum(jsonSchema, [valibotAction.requirement]);
       } else if (
         'const' in jsonSchema &&
         jsonSchema.const !== valibotAction.requirement
@@ -871,7 +866,7 @@ export function convertAction(
         );
         break;
       }
-      mergeEnumRestriction(jsonSchema, valibotAction.requirement);
+      intersectEnum(jsonSchema, valibotAction.requirement);
       break;
     }
 
