@@ -3,7 +3,12 @@ import type { BaseIssue, Config } from '../../types/index.ts';
 /**
  * The global config type.
  */
-export type GlobalConfig = Omit<Config<never>, 'message'>;
+export type GlobalConfig = Omit<Config<never>, 'lang' | 'message'> & {
+  /**
+   * The selected language or a function that returns it.
+   */
+  readonly lang?: string | (() => string);
+};
 
 // Create global configuration store
 let store: GlobalConfig | undefined;
@@ -41,7 +46,9 @@ export function getGlobalConfig<const TIssue extends BaseIssue<unknown>>(
   // Hint: The configuration is deliberately not constructed with the spread
   // operator for performance reasons
   return {
-    lang: config?.lang ?? store?.lang,
+    lang:
+      config?.lang ??
+      (typeof store?.lang === 'function' ? store.lang() : store?.lang),
     message: config?.message,
     abortEarly: config?.abortEarly ?? store?.abortEarly,
     abortPipeEarly: config?.abortPipeEarly ?? store?.abortPipeEarly,
