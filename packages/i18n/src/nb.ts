@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Ugyldig inndata: Mottok ${issue.received}`,
     checkItems:       (issue) => `Ugyldig element: Mottok ${issue.received}`,
     checkItemsAsync:  (issue) => `Ugyldig element: Mottok ${issue.received}`,
+    codePoints:       (issue) => `Ugyldig antall kodepunkter: Forventet ${issue.expected}, men mottok ${issue.received}`,
     creditCard:       (issue) => `Ugyldig kredittkort: Mottok ${issue.received}`,
     cuid2:            (issue) => `Ugyldig Cuid2: Mottok ${issue.received}`,
     decimal:          (issue) => `Ugyldig desimal: Mottok ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Ugyldig ISBN: Mottok ${issue.received}`,
     isoDate:          (issue) => `Ugyldig dato: Mottok ${issue.received}`,
     isoDateTime:      (issue) => `Ugyldig dato-klokkeslett: Mottok ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Ugyldig dato-klokkeslett med sekunder: Mottok ${issue.received}`,
     isoTime:          (issue) => `Ugyldig tid: Mottok ${issue.received}`,
     isoTimeSecond:    (issue) => `Ugyldig tidssekund: Mottok ${issue.received}`,
     isoTimestamp:     (issue) => `Ugyldig tidsstempel: Mottok ${issue.received}`,
     isoWeek:          (issue) => `Ugyldig uke: Mottok ${issue.received}`,
     isrc:             (issue) => `Ugyldig ISRC: Mottok ${issue.received}`,
     jwsCompact:       (issue) => `Ugyldig kompakt JWS: Mottok ${issue.received}`,
+    ksuid:            (issue) => `Ugyldig KSUID: Mottok ${issue.received}`,
     length:           (issue) => `Ugyldig lengde: Forventet ${issue.expected}, men mottok ${issue.received}`,
     ltValue:          (issue) => `Ugyldig verdi: Forventet ${issue.expected}, men mottok ${issue.received}`,
     mac:              (issue) => `Ugyldig MAC: Mottok ${issue.received}`,
     mac48:            (issue) => `Ugyldig 48-bit MAC: Mottok ${issue.received}`,
     mac64:            (issue) => `Ugyldig 64-bit MAC: Mottok ${issue.received}`,
     maxBytes:         (issue) => `Ugyldige bytes: Forventet ${issue.expected}, men mottok ${issue.received}`,
+    maxCodePoints:    (issue) => `Ugyldig antall kodepunkter: Forventet ${issue.expected}, men mottok ${issue.received}`,
     maxEntries:       (issue) => `Ugyldige oppføringer: Forventet ${issue.expected}, men mottok ${issue.received}`,
     maxGraphemes:     (issue) => `Ugyldig grafem: Forventet ${issue.expected}, men mottok ${issue.received}`,
     maxLength:        (issue) => `Ugyldig lengde: Forventet ${issue.expected}, men mottok ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Ugyldig ord: Forventet ${issue.expected}, men mottok ${issue.received}`,
     mimeType:         (issue) => `Ugyldig MIME-type: Forventet ${issue.expected}, men mottok ${issue.received}`,
     minBytes:         (issue) => `Ugyldige bytes: Forventet ${issue.expected}, men mottok ${issue.received}`,
+    minCodePoints:    (issue) => `Ugyldig antall kodepunkter: Forventet ${issue.expected}, men mottok ${issue.received}`,
     minEntries:       (issue) => `Ugyldige oppføringer: Forventet ${issue.expected}, men mottok ${issue.received}`,
     minGraphemes:     (issue) => `Ugyldig grafem: Forventet ${issue.expected}, men mottok ${issue.received}`,
     minLength:        (issue) => `Ugyldig lengde: Forventet ${issue.expected}, men mottok ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Ugyldig Nano ID: Mottok ${issue.received}`,
     nonEmpty:         (issue) => `Ugyldig lengde: Forventet ${issue.expected}, men mottok ${issue.received}`,
     notBytes:         (issue) => `Ugyldige bytes: Forventet ${issue.expected}, men mottok ${issue.received}`,
+    notCodePoints:    (issue) => `Ugyldig antall kodepunkter: Forventet ${issue.expected}, men mottok ${issue.received}`,
     notEntries:       (issue) => `Ugyldige oppføringer: Forventet ${issue.expected}, men mottok ${issue.received}`,
     notGraphemes:     (issue) => `Ugyldig grafem: Forventet ${issue.expected}, men mottok ${issue.received}`,
     notLength:        (issue) => `Ugyldig lengde: Forventet ${issue.expected}, men mottok ${issue.received}`,

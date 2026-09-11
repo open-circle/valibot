@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Yanlış giriş: Alınan ${issue.received}`,
     checkItems:       (issue) => `Yanlış element: Alınan ${issue.received}`,
     checkItemsAsync:  (issue) => `Yanlış element: Alınan ${issue.received}`,
+    codePoints:       (issue) => `Yanlış kod nöqtələrinin sayı: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     creditCard:       (issue) => `Yanlış kredit kartı: Alınan ${issue.received}`,
     cuid2:            (issue) => `Yanlış Cuid2: Alınan ${issue.received}`,
     decimal:          (issue) => `Yanlış onluq ədəd: Alınan ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Yanlış ISBN: Alınan ${issue.received}`,
     isoDate:          (issue) => `Yanlış tarix: Alınan ${issue.received}`,
     isoDateTime:      (issue) => `Yanlış tarix-vaxt: Alınan ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Yanlış saniyəli tarix-vaxt: Alınan ${issue.received}`,
     isoTime:          (issue) => `Yanlış vaxt: Alınan ${issue.received}`,
     isoTimeSecond:    (issue) => `Yanlış saniyəli vaxt: Alınan ${issue.received}`,
     isoTimestamp:     (issue) => `Yanlış zaman möhürü: Alınan ${issue.received}`,
     isoWeek:          (issue) => `Yanlış həftə: Alınan ${issue.received}`,
     isrc:             (issue) => `Yanlış ISRC: Alınan ${issue.received}`,
     jwsCompact:       (issue) => `Yanlış kompakt JWS: Alınan ${issue.received}`,
+    ksuid:            (issue) => `Yanlış KSUID: Alınan ${issue.received}`,
     length:           (issue) => `Yanlış uzunluq: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     ltValue:          (issue) => `Yanlış dəyər: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     mac:              (issue) => `Yanlış MAC: Alınan ${issue.received}`,
     mac48:            (issue) => `Yanlış 48-bit MAC: Alınan ${issue.received}`,
     mac64:            (issue) => `Yanlış 64-bit MAC: Alınan ${issue.received}`,
     maxBytes:         (issue) => `Yanlış bayt: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
+    maxCodePoints:    (issue) => `Yanlış kod nöqtələrinin sayı: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     maxEntries:       (issue) => `Yanlış giriş sayı: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     maxGraphemes:     (issue) => `Yanlış qrafem: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     maxLength:        (issue) => `Yanlış uzunluq: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Yanlış söz sayı: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     mimeType:         (issue) => `Yanlış MIME tipi: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     minBytes:         (issue) => `Yanlış bayt: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
+    minCodePoints:    (issue) => `Yanlış kod nöqtələrinin sayı: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     minEntries:       (issue) => `Yanlış giriş sayı: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     minGraphemes:     (issue) => `Yanlış qrafem: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     minLength:        (issue) => `Yanlış uzunluq: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Yanlış Nano ID: Alınan ${issue.received}`,
     nonEmpty:         (issue) => `Yanlış uzunluq: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     notBytes:         (issue) => `Yanlış bayt: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
+    notCodePoints:    (issue) => `Yanlış kod nöqtələrinin sayı: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     notEntries:       (issue) => `Yanlış giriş sayı: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     notGraphemes:     (issue) => `Yanlış qrafem: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,
     notLength:        (issue) => `Yanlış uzunluq: Gözlənilən ${issue.expected} lakin alınan ${issue.received}`,

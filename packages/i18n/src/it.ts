@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Input non valido: Ricevuto ${issue.received}`,
     checkItems:       (issue) => `Elemento non valido: Input ${issue.received}`,
     checkItemsAsync:  (issue) => `Elemento non valido: Input ${issue.received}`,
+    codePoints:       (issue) => `Numero di punti di codice non valido: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     creditCard:       (issue) => `Carta di credito non valida: Ricevuto ${issue.received}`,
     cuid2:            (issue) => `Cuid2 non valido: Ricevuto ${issue.received}`,
     decimal:          (issue) => `Decimale non valido: Ricevuto ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `ISBN non valido: Ricevuto ${issue.received}`,
     isoDate:          (issue) => `Data non valida: Ricevuto ${issue.received}`,
     isoDateTime:      (issue) => `Data e ora non validi: Ricevuto ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Data e ora con secondi non valide: Ricevuto ${issue.received}`,
     isoTime:          (issue) => `Ora non valida: Ricevuto ${issue.received}`,
     isoTimeSecond:    (issue) => `Secondo dell'ora non valido: Ricevuto ${issue.received}`,
     isoTimestamp:     (issue) => `Timestamp non valido: Ricevuto ${issue.received}`,
     isoWeek:          (issue) => `Settimana non valida: Ricevuto ${issue.received}`,
     isrc:             (issue) => `ISRC non valido: Ricevuto ${issue.received}`,
     jwsCompact:       (issue) => `JWS compatto non valido: Ricevuto ${issue.received}`,
+    ksuid:            (issue) => `KSUID non valido: Ricevuto ${issue.received}`,
     length:           (issue) => `Lunghezza non valida: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     ltValue:          (issue) => `Valore non valido: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     mac:              (issue) => `MAC non valido: Ricevuto ${issue.received}`,
     mac48:            (issue) => `MAC a 48 bit non valido: Ricevuto ${issue.received}`,
     mac64:            (issue) => `MAC a 64 bit non valido: Ricevuto ${issue.received}`,
     maxBytes:         (issue) => `Byte non validi: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
+    maxCodePoints:    (issue) => `Numero di punti di codice non valido: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     maxEntries:       (issue) => `Voci non valide: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     maxGraphemes:     (issue) => `Grafi non validi: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     maxLength:        (issue) => `Lunghezza non valida: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Parole non valide: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     mimeType:         (issue) => `Tipo MIME non valido: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     minBytes:         (issue) => `Byte non validi: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
+    minCodePoints:    (issue) => `Numero di punti di codice non valido: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     minEntries:       (issue) => `Voci non valide: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     minGraphemes:     (issue) => `Grafi non validi: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     minLength:        (issue) => `Lunghezza non valida: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Nano ID non valido: Ricevuto ${issue.received}`,
     nonEmpty:         (issue) => `Lunghezza non valida: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     notBytes:         (issue) => `Byte non validi: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
+    notCodePoints:    (issue) => `Numero di punti di codice non valido: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     notEntries:       (issue) => `Voci non valide: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     notGraphemes:     (issue) => `Grafi non validi: Previsto ${issue.expected} ma ricevuto ${issue.received}`,
     notLength:        (issue) => `Lunghezza non valida: Previsto ${issue.expected} ma ricevuto ${issue.received}`,

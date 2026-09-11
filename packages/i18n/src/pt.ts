@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Entrada inválida: Recebido ${issue.received}`,
     checkItems:       (issue) => `Item inválido: Recebido ${issue.received}`,
     checkItemsAsync:  (issue) => `Item inválido: Recebido ${issue.received}`,
+    codePoints:       (issue) => `Número de pontos de código inválido: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     creditCard:       (issue) => `Cartão de crédito inválido: Recebido ${issue.received}`,
     cuid2:            (issue) => `Cuid2 inválido: Recebido ${issue.received}`,
     decimal:          (issue) => `Decimal inválido: Recebido ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `ISBN inválido: Recebido ${issue.received}`,
     isoDate:          (issue) => `Data inválida: Recebido ${issue.received}`,
     isoDateTime:      (issue) => `Data e hora inválidas: Recebido ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Data e hora com segundos inválidas: Recebido ${issue.received}`,
     isoTime:          (issue) => `Hora inválida: Recebido ${issue.received}`,
     isoTimeSecond:    (issue) => `Segundo inválido: Recebido ${issue.received}`,
     isoTimestamp:     (issue) => `Timestamp inválido: Recebido ${issue.received}`,
     isoWeek:          (issue) => `Semana inválida: Recebido ${issue.received}`,
     isrc:             (issue) => `ISRC inválido: Recebido ${issue.received}`,
     jwsCompact:       (issue) => `JWS compacto inválido: Recebido ${issue.received}`,
+    ksuid:            (issue) => `KSUID inválido: Recebido ${issue.received}`,
     length:           (issue) => `Tamanho inválido: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     ltValue:          (issue) => `Valor inválido: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     mac:              (issue) => `MAC inválido: Recebido ${issue.received}`,
     mac48:            (issue) => `MAC de 48-bits inválido: Recebido ${issue.received}`,
     mac64:            (issue) => `MAC de 64-bits inválido: Recebido ${issue.received}`,
     maxBytes:         (issue) => `Bytes inválidos: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
+    maxCodePoints:    (issue) => `Número de pontos de código inválido: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     maxEntries:       (issue) => `Entradas inválidas: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     maxGraphemes:     (issue) => `Grafemas inválidos: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     maxLength:        (issue) => `Tamanho inválido: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Palavras inválidas: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     mimeType:         (issue) => `Tipo MIME inválido: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     minBytes:         (issue) => `Bytes mínimos inválidos: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
+    minCodePoints:    (issue) => `Número de pontos de código inválido: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     minEntries:       (issue) => `Entradas inválidas: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     minGraphemes:     (issue) => `Grafemas inválidos: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     minLength:        (issue) => `Tamanho inválido: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `ID Nano inválido: Recebido ${issue.received}`,
     nonEmpty:         (issue) => `Tamanho inválido: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     notBytes:         (issue) => `Bytes inválidos: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
+    notCodePoints:    (issue) => `Número de pontos de código inválido: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     notEntries:       (issue) => `Entradas inválidas: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     notGraphemes:     (issue) => `Grafemas inválidos: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,
     notLength:        (issue) => `Tamanho inválido: Esperado ${issue.expected}, porém foi recebido ${issue.received}`,

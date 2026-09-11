@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `无效的输入：输入为 ${issue.received}`,
     checkItems:       (issue) => `无效的项：输入为 ${issue.received}`,
     checkItemsAsync:  (issue) => `无效的项：输入为 ${issue.received}`,
+    codePoints:       (issue) => `无效的码点数量：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     creditCard:       (issue) => `无效的信用卡：输入为 ${issue.received}`,
     cuid2:            (issue) => `无效的 Cuid2：输入为 ${issue.received}`,
     decimal:          (issue) => `无效的十进制：输入为 ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `无效的 ISBN：输入为 ${issue.received}`,
     isoDate:          (issue) => `无效的日期：输入为 ${issue.received}`,
     isoDateTime:      (issue) => `无效的日期时间：输入为 ${issue.received}`,
+    isoDateTimeSecond: (issue) => `无效的含秒日期时间：输入为 ${issue.received}`,
     isoTime:          (issue) => `无效的时间：输入为 ${issue.received}`,
     isoTimeSecond:    (issue) => `无效的秒级时间：输入为 ${issue.received}`,
     isoTimestamp:     (issue) => `无效的时间戳：输入为 ${issue.received}`,
     isoWeek:          (issue) => `无效的周数：输入为 ${issue.received}`,
     isrc:             (issue) => `无效的 ISRC：输入为 ${issue.received}`,
     jwsCompact:       (issue) => `无效的 JWS 紧凑序列化：输入为 ${issue.received}`,
+    ksuid:            (issue) => `无效的 KSUID：输入为 ${issue.received}`,
     length:           (issue) => `无效的长度：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     ltValue:          (issue) => `无效的值：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     mac:              (issue) => `无效的 MAC：输入为 ${issue.received}`,
     mac48:            (issue) => `无效的 48 位 MAC：输入为 ${issue.received}`,
     mac64:            (issue) => `无效的 64 位 MAC：输入为 ${issue.received}`,
     maxBytes:         (issue) => `无效的字节长度：预期为 ${issue.expected}，而输入为 ${issue.received}`,
+    maxCodePoints:    (issue) => `无效的码点数量：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     maxEntries:       (issue) => `无效的条目数：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     maxGraphemes:     (issue) => `无效的图素长度：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     maxLength:        (issue) => `无效的长度：预期为 ${issue.expected}，而输入为 ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `无效的单词数：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     mimeType:         (issue) => `无效的媒体类型：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     minBytes:         (issue) => `无效的字节长度：预期为 ${issue.expected}，而输入为 ${issue.received}`,
+    minCodePoints:    (issue) => `无效的码点数量：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     minEntries:       (issue) => `无效的条目数：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     minGraphemes:     (issue) => `无效的图素长度：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     minLength:        (issue) => `无效的长度：预期为 ${issue.expected}，而输入为 ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `无效的 Nano ID：输入为 ${issue.received}`,
     nonEmpty:         (issue) => `无效的长度：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     notBytes:         (issue) => `无效的字节长度：预期为 ${issue.expected}，而输入为 ${issue.received}`,
+    notCodePoints:    (issue) => `无效的码点数量：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     notEntries:       (issue) => `无效的条目数：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     notGraphemes:     (issue) => `无效的图素长度：预期为 ${issue.expected}，而输入为 ${issue.received}`,
     notLength:        (issue) => `无效的长度：预期为 ${issue.expected}，而输入为 ${issue.received}`,

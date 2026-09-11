@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Буруу утга: ${issue.received} ирлээ`,
     checkItems:       (issue) => `Буруу элемент: ${issue.received} ирлээ`,
     checkItemsAsync:  (issue) => `Буруу элемент: ${issue.received} ирлээ`,
+    codePoints:       (issue) => `Буруу кодын цэгийн тоо: ${issue.expected} хүлээсэн ч ${issue.received} ирлээ`,
     creditCard:       (issue) => `Буруу картын дугаар: ${issue.received} ирлээ`,
     cuid2:            (issue) => `Буруу Cuid2: ${issue.received} ирлээ`,
     decimal:          (issue) => `Буруу аравтын тоо: ${issue.received} ирлээ`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Буруу ISBN: ${issue.received} ирлээ`,
     isoDate:          (issue) => `Буруу огноо: ${issue.received} ирлээ`,
     isoDateTime:      (issue) => `Буруу огноо-цаг: ${issue.received} ирлээ`,
+    isoDateTimeSecond: (issue) => `Буруу секундтэй огноо-цаг: ${issue.received} ирлээ`,
     isoTime:          (issue) => `Буруу цаг: ${issue.received} ирлээ`,
     isoTimeSecond:    (issue) => `Буруу цаг: ${issue.received} ирлээ`,
     isoTimestamp:     (issue) => `Буруу ISO timestamp: ${issue.received} ирлээ`,
     isoWeek:          (issue) => `Буруу долоо хоног: ${issue.received} ирлээ`,
     isrc:             (issue) => `Буруу ISRC: ${issue.received} ирлээ`,
     jwsCompact:       (issue) => `Буруу JWS compact: ${issue.received} ирлээ`,
+    ksuid:            (issue) => `Буруу KSUID: ${issue.received} ирлээ`,
     length:           (issue) => `Буруу урт: ${issue.expected} хүлээсэн ч ${issue.received} ирлээ`,
     ltValue:          (issue) => `Буруу утга: ${issue.expected}-ээс бага байх ёстой ч ${issue.received} ирлээ`,
     mac:              (issue) => `Буруу MAC: ${issue.received} ирлээ`,
     mac48:            (issue) => `Буруу 48-bit MAC: ${issue.received} ирлээ`,
     mac64:            (issue) => `Буруу 64-bit MAC: ${issue.received} ирлээ`,
     maxBytes:         (issue) => `Буруу байт хэмжээ: ${issue.expected} хэтрэхгүй байх ёстой ч ${issue.received} ирлээ`,
+    maxCodePoints:    (issue) => `Буруу кодын цэгийн тоо: ${issue.expected} хүлээсэн ч ${issue.received} ирлээ`,
     maxEntries:       (issue) => `Буруу элементийн тоо: ${issue.expected} хэтрэхгүй байх ёстой ч ${issue.received} ирлээ`,
     maxGraphemes:     (issue) => `Буруу тэмдэгтийн тоо: ${issue.expected} хэтрэхгүй байх ёстой ч ${issue.received} ирлээ`,
     maxLength:        (issue) => `Буруу урт: ${issue.expected} хэтрэхгүй байх ёстой ч ${issue.received} ирлээ`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Буруу үгийн тоо: ${issue.expected} хэтрэхгүй байх ёстой ч ${issue.received} ирлээ`,
     mimeType:         (issue) => `Буруу MIME төрөл: ${issue.expected} хүлээсэн ч ${issue.received} ирлээ`,
     minBytes:         (issue) => `Буруу байт хэмжээ: ${issue.expected}-с багагүй байх ёстой ч ${issue.received} ирлээ`,
+    minCodePoints:    (issue) => `Буруу кодын цэгийн тоо: ${issue.expected} хүлээсэн ч ${issue.received} ирлээ`,
     minEntries:       (issue) => `Буруу элементийн тоо: ${issue.expected}-с багагүй байх ёстой ч ${issue.received} ирлээ`,
     minGraphemes:     (issue) => `Буруу тэмдэгтийн тоо: ${issue.expected}-с багагүй байх ёстой ч ${issue.received} ирлээ`,
     minLength:        (issue) => `Буруу урт: ${issue.expected}-с багагүй байх ёстой ч ${issue.received} ирлээ`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Буруу Nano ID: ${issue.received} ирлээ`,
     nonEmpty:         (issue) => `Буруу урт: ${issue.expected} хүлээсэн ч ${issue.received} ирлээ`,
     notBytes:         (issue) => `Буруу байт хэмжээ: ${issue.expected} хүлээсэн ч ${issue.received} ирлээ`,
+    notCodePoints:    (issue) => `Буруу кодын цэгийн тоо: ${issue.expected} хүлээсэн ч ${issue.received} ирлээ`,
     notEntries:       (issue) => `Буруу элементийн тоо: ${issue.expected} хүлээсэн ч ${issue.received} ирлээ`,
     notGraphemes:     (issue) => `Буруу тэмдэгтийн тоо: ${issue.expected} хүлээсэн ч ${issue.received} ирлээ`,
     notLength:        (issue) => `Буруу урт: ${issue.expected} хүлээсэн ч ${issue.received} ирлээ`,

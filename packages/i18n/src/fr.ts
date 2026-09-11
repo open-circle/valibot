@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Valeur invalide: reçu ${issue.received}`,
     checkItems:       (issue) => `Élément invalide: reçu ${issue.received}`,
     checkItemsAsync:  (issue) => `Élément invalide: reçu ${issue.received}`,
+    codePoints:       (issue) => `Nombre de points de code invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
     creditCard:       (issue) => `Carte de crédit invalide: reçu ${issue.received}`,
     cuid2:            (issue) => `Cuid2 invalide: reçu ${issue.received}`,
     decimal:          (issue) => `Décimale invalide: reçu ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `ISBN invalide: reçu ${issue.received}`,
     isoDate:          (issue) => `Date invalide: reçu ${issue.received}`,
     isoDateTime:      (issue) => `Date et heure invalide: reçu ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Date et heure avec secondes invalides: reçu ${issue.received}`,
     isoTime:          (issue) => `Temps invalide: reçu ${issue.received}`,
     isoTimeSecond:    (issue) => `Temps invalide (secondes): reçu ${issue.received}`,
     isoTimestamp:     (issue) => `Timestamp invalide: reçu ${issue.received}`,
     isoWeek:          (issue) => `Semaine invalide: reçu ${issue.received}`,
     isrc:             (issue) => `ISRC invalide: reçu ${issue.received}`,
     jwsCompact:       (issue) => `JWS compact invalide: reçu ${issue.received}`,
+    ksuid:            (issue) => `KSUID invalide: reçu ${issue.received}`,
     length:           (issue) => `Longueur invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
     ltValue:          (issue) => `Valeur invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
     mac:              (issue) => `MAC invalide: reçu ${issue.received}`,
     mac48:            (issue) => `MAC 48-bit invalide: reçu ${issue.received}`,
     mac64:            (issue) => `MAC 64-bit invalide: reçu ${issue.received}`,
     maxBytes:         (issue) => `Octet invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
+    maxCodePoints:    (issue) => `Nombre de points de code invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
     maxEntries:       (issue) => `Entrées invalides: attendu ${issue.expected}, mais reçu ${issue.received}`,
     maxGraphemes:     (issue) => `Graphèmes invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
     maxLength:        (issue) => `Longueur invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Mots invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
     mimeType:         (issue) => `Type MIME invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
     minBytes:         (issue) => `Octet invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
+    minCodePoints:    (issue) => `Nombre de points de code invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
     minEntries:       (issue) => `Entrées invalides: attendu ${issue.expected}, mais reçu ${issue.received}`,
     minGraphemes:     (issue) => `Graphèmes invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
     minLength:        (issue) => `Longueur invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Nano ID invalide: reçu ${issue.received}`,
     nonEmpty:         (issue) => `Longueur invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
     notBytes:         (issue) => `Octet invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
+    notCodePoints:    (issue) => `Nombre de points de code invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
     notEntries:       (issue) => `Entrées invalides: attendu ${issue.expected}, mais reçu ${issue.received}`,
     notGraphemes:     (issue) => `Graphèmes invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,
     notLength:        (issue) => `Longueur invalide: attendu ${issue.expected}, mais reçu ${issue.received}`,

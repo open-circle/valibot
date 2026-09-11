@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Valor invàlid: S'ha rebut ${issue.received}`,
     checkItems:       (issue) => `Element invàlids: S'ha rebut ${issue.received}`,
     checkItemsAsync:  (issue) => `Element invàlids: S'ha rebut ${issue.received}`,
+    codePoints:       (issue) => `Nombre de punts de codi invàlid: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     creditCard:       (issue) => `Targeta de crèdit invàlida: S'ha rebut ${issue.received}`,
     cuid2:            (issue) => `Cuid2 invàlid: S'ha rebut ${issue.received}`,
     decimal:          (issue) => `Decimal invàlid: S'ha rebut ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `ISBN invàlid: S'ha rebut ${issue.received}`,
     isoDate:          (issue) => `Data invàlida: S'ha rebut ${issue.received}`,
     isoDateTime:      (issue) => `Data-hora invàlida: S'ha rebut ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Data-hora amb segons invàlida: S'ha rebut ${issue.received}`,
     isoTime:          (issue) => `Hora invàlida: S'ha rebut ${issue.received}`,
     isoTimeSecond:    (issue) => `Segon de temps invàlid: S'ha rebut ${issue.received}`,
     isoTimestamp:     (issue) => `Timestamp invàlid: S'ha rebut ${issue.received}`,
     isoWeek:          (issue) => `Setmana invàlida: S'ha rebut ${issue.received}`,
     isrc:             (issue) => `ISRC invàlid: S'ha rebut ${issue.received}`,
     jwsCompact:       (issue) => `JWS compacte invàlid: S'ha rebut ${issue.received}`,
+    ksuid:            (issue) => `KSUID invàlid: S'ha rebut ${issue.received}`,
     length:           (issue) => `Llargada invàlida: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     ltValue:          (issue) => `Valor invàlid: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     mac:              (issue) => `MAC invàlida: S'ha rebut ${issue.received}`,
     mac48:            (issue) => `MAC de 48 bits invàlida: S'ha rebut ${issue.received}`,
     mac64:            (issue) => `MAC de 64 bits invàlida: S'ha rebut ${issue.received}`,
     maxBytes:         (issue) => `Quantitat de bytes invàlida: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
+    maxCodePoints:    (issue) => `Nombre de punts de codi invàlid: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     maxEntries:       (issue) => `Entrades invàlides: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     maxGraphemes:     (issue) => `Gràfems invàlids: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     maxLength:        (issue) => `Llargada invàlida: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Paraules invàlides: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     mimeType:         (issue) => `Tipus de MIME invàlid: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     minBytes:         (issue) => `Quantitat de bytes invàlida: S'esperava mínim ${issue.expected} però s'ha rebut ${issue.received}`,
+    minCodePoints:    (issue) => `Nombre de punts de codi invàlid: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     minEntries:       (issue) => `Entrades invàlides: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     minGraphemes:     (issue) => `Gràfems invàlids: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     minLength:        (issue) => `Llargada invàlida: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Nano ID invàlid: S'ha rebut ${issue.received}`,
     nonEmpty:         (issue) => `Llargada invàlida: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     notBytes:         (issue) => `Bytes invàlids: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
+    notCodePoints:    (issue) => `Nombre de punts de codi invàlid: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     notEntries:       (issue) => `Entrades invàlides: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     notGraphemes:     (issue) => `Gràfems invàlids: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,
     notLength:        (issue) => `Llargada invàlida: S'esperava ${issue.expected} però s'ha rebut ${issue.received}`,

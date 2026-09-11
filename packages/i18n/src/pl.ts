@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Nieprawidłowe dane: Otrzymano ${issue.received}`,
     checkItems:       (issue) => `Nieprawidłowy element: Otrzymano ${issue.received}`,
     checkItemsAsync:  (issue) => `Nieprawidłowy element: Otrzymano ${issue.received}`,
+    codePoints:       (issue) => `Nieprawidłowa liczba punktów kodowych: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     creditCard:       (issue) => `Nieprawidłowy numer karty kredytowej: Otrzymano ${issue.received}`,
     cuid2:            (issue) => `Nieprawidłowy Cuid2: Otrzymano ${issue.received}`,
     decimal:          (issue) => `Nieprawidłowa wartość dziesiętna: Otrzymano ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Nieprawidłowy ISBN: Otrzymano ${issue.received}`,
     isoDate:          (issue) => `Nieprawidłowa data: Otrzymano ${issue.received}`,
     isoDateTime:      (issue) => `Nieprawidłowa data i czas: Otrzymano ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Nieprawidłowa data i czas z sekundami: Otrzymano ${issue.received}`,
     isoTime:          (issue) => `Nieprawidłowy czas: Otrzymano ${issue.received}`,
     isoTimeSecond:    (issue) => `Nieprawidłowa wartość sekundy czasu: Otrzymano ${issue.received}`,
     isoTimestamp:     (issue) => `Nieprawidłowy znacznik czasu: Otrzymano ${issue.received}`,
     isoWeek:          (issue) => `Nieprawidłowy tydzień: Otrzymano ${issue.received}`,
     isrc:             (issue) => `Nieprawidłowy ISRC: Otrzymano ${issue.received}`,
     jwsCompact:       (issue) => `Nieprawidłowy kompaktowy JWS: Otrzymano ${issue.received}`,
+    ksuid:            (issue) => `Nieprawidłowy KSUID: Otrzymano ${issue.received}`,
     length:           (issue) => `Nieprawidłowa długość: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     ltValue:          (issue) => `Nieprawidłowa wartość: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     mac:              (issue) => `Nieprawidłowy adres MAC: Otrzymano ${issue.received}`,
     mac48:            (issue) => `Nieprawidłowy 48-bitowy adres MAC: Otrzymano ${issue.received}`,
     mac64:            (issue) => `Nieprawidłowy 64-bitowy adres MAC: Otrzymano ${issue.received}`,
     maxBytes:         (issue) => `Nieprawidłowe bajty: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
+    maxCodePoints:    (issue) => `Nieprawidłowa liczba punktów kodowych: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     maxEntries:       (issue) => `Nieprawidłowa liczba wpisów: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     maxGraphemes:     (issue) => `Nieprawidłowe grafemy: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     maxLength:        (issue) => `Nieprawidłowa długość: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Nieprawidłowe słowa: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     mimeType:         (issue) => `Nieprawidłowy typ MIME: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     minBytes:         (issue) => `Nieprawidłowe bajty: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
+    minCodePoints:    (issue) => `Nieprawidłowa liczba punktów kodowych: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     minEntries:       (issue) => `Nieprawidłowa liczba wpisów: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     minGraphemes:     (issue) => `Nieprawidłowe grafemy: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     minLength:        (issue) => `Nieprawidłowa długość: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Nieprawidłowy identyfikator Nano ID: Otrzymano ${issue.received}`,
     nonEmpty:         (issue) => `Nieprawidłowa długość: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     notBytes:         (issue) => `Nieprawidłowe bajty: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
+    notCodePoints:    (issue) => `Nieprawidłowa liczba punktów kodowych: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     notEntries:       (issue) => `Nieprawidłowa liczba wpisów: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     notGraphemes:     (issue) => `Nieprawidłowe grafemy: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,
     notLength:        (issue) => `Nieprawidłowa długość: Oczekiwano ${issue.expected}, ale otrzymano ${issue.received}`,

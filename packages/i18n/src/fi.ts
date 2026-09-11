@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Virheellinen syöte: saatiin ${issue.received}`,
     checkItems:       (issue) => `Virheellinen alkio: saatiin ${issue.received}`,
     checkItemsAsync:  (issue) => `Virheellinen alkio: saatiin ${issue.received}`,
+    codePoints:       (issue) => `Virheellinen määrä koodipisteitä: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     creditCard:       (issue) => `Virheellinen luottokortti: saatiin ${issue.received}`,
     cuid2:            (issue) => `Virheellinen Cuid2: saatiin ${issue.received}`,
     decimal:          (issue) => `Virheellinen desimaaliluku: saatiin ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Virheellinen ISBN: saatiin ${issue.received}`,
     isoDate:          (issue) => `Virheellinen päivämäärä: saatiin ${issue.received}`,
     isoDateTime:      (issue) => `Virheellinen ISO-päivämäärä ja -aika: saatiin ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Virheellinen ISO-päivämäärä ja -aika sekunteineen: saatiin ${issue.received}`,
     isoTime:          (issue) => `Virheellinen aika: saatiin ${issue.received}`,
     isoTimeSecond:    (issue) => `Virheellinen aika sekunneissa: saatiin ${issue.received}`,
     isoTimestamp:     (issue) => `Virheellinen aikaleima: saatiin ${issue.received}`,
     isoWeek:          (issue) => `Virheellinen viikko: saatiin ${issue.received}`,
     isrc:             (issue) => `Virheellinen ISRC: saatiin ${issue.received}`,
     jwsCompact:       (issue) => `Virheellinen JWS Compact: saatiin ${issue.received}`,
+    ksuid:            (issue) => `Virheellinen KSUID: saatiin ${issue.received}`,
     length:           (issue) => `Virheellinen pituus: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     ltValue:          (issue) => `Virheellinen arvo: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     mac:              (issue) => `Virheellinen MAC: saatiin ${issue.received}`,
     mac48:            (issue) => `Virheellinen 48-bit MAC: saatiin ${issue.received}`,
     mac64:            (issue) => `Virheellinen 64-bit MAC: saatiin ${issue.received}`,
     maxBytes:         (issue) => `Virheellinen määrä tavuja: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
+    maxCodePoints:    (issue) => `Virheellinen määrä koodipisteitä: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     maxEntries:       (issue) => `Virheelliset merkinnät: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     maxGraphemes:     (issue) => `Virheellinen määrä grafeemeja: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     maxLength:        (issue) => `Virheellinen pituus: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Virheellinen sanamäärä: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     mimeType:         (issue) => `Virheellinen MIME-tyyppi: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     minBytes:         (issue) => `Virheellinen määrä tavuja: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
+    minCodePoints:    (issue) => `Virheellinen määrä koodipisteitä: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     minEntries:       (issue) => `Virheelliset merkinnät: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     minGraphemes:     (issue) => `Virheellinen määrä grafeemeja: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     minLength:        (issue) => `Virheellinen pituus: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Virheellinen Nano ID: saatiin ${issue.received}`,
     nonEmpty:         (issue) => `Virheellinen pituus: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     notBytes:         (issue) => `Virheellinen määrä tavuja: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
+    notCodePoints:    (issue) => `Virheellinen määrä koodipisteitä: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     notEntries:       (issue) => `Virheelliset merkinnät: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     notGraphemes:     (issue) => `Virheellinen määrä grafeemeja: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,
     notLength:        (issue) => `Virheellinen pituus: odotettiin ${issue.expected}, mutta saatiin ${issue.received}`,

@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `無効な入力: ${issue.received} を受け取りました`,
     checkItems:       (issue) => `無効な項目: ${issue.received} を受け取りました`,
     checkItemsAsync:  (issue) => `無効な項目: ${issue.received} を受け取りました`,
+    codePoints:       (issue) => `無効なコードポイント数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     creditCard:       (issue) => `無効なクレジットカード: ${issue.received} を受け取りました`,
     cuid2:            (issue) => `無効なCuid2: ${issue.received} を受け取りました`,
     decimal:          (issue) => `無効な10進数: ${issue.received} を受け取りました`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `無効なISBN: ${issue.received} を受け取りました`,
     isoDate:          (issue) => `無効な日付: ${issue.received} を受け取りました`,
     isoDateTime:      (issue) => `無効な日時: ${issue.received} を受け取りました`,
+    isoDateTimeSecond: (issue) => `無効な秒付き日時: ${issue.received} を受け取りました`,
     isoTime:          (issue) => `無効な時刻: ${issue.received} を受け取りました`,
     isoTimeSecond:    (issue) => `無効な時刻: ${issue.received} を受け取りました`,
     isoTimestamp:     (issue) => `無効なタイムスタンプ: ${issue.received} を受け取りました`,
     isoWeek:          (issue) => `無効な週番号: ${issue.received} を受け取りました`,
     isrc:             (issue) => `無効なISRC: ${issue.received} を受け取りました`,
     jwsCompact:       (issue) => `無効なコンパクトJWS: ${issue.received} を受け取りました`,
+    ksuid:            (issue) => `無効なKSUID: ${issue.received} を受け取りました`,
     length:           (issue) => `無効な長さ: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     ltValue:          (issue) => `無効な値: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     mac:              (issue) => `無効なMACアドレス: ${issue.received} を受け取りました`,
     mac48:            (issue) => `無効な48-bit MACアドレス: ${issue.received} を受け取りました`,
     mac64:            (issue) => `無効な64-bit MACアドレス: ${issue.received} を受け取りました`,
     maxBytes:         (issue) => `無効なバイト数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
+    maxCodePoints:    (issue) => `無効なコードポイント数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     maxEntries:       (issue) => `無効な項目数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     maxGraphemes:     (issue) => `無効な書記素数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     maxLength:        (issue) => `無効な長さ: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `無効な単語数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     mimeType:         (issue) => `無効なMIME type: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     minBytes:         (issue) => `無効なバイト数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
+    minCodePoints:    (issue) => `無効なコードポイント数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     minEntries:       (issue) => `無効な項目数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     minGraphemes:     (issue) => `無効な書記素数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     minLength:        (issue) => `無効な長さ: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `無効なNano ID: ${issue.received} を受け取りました`,
     nonEmpty:         (issue) => `無効な長さ: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     notBytes:         (issue) => `無効なバイト数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
+    notCodePoints:    (issue) => `無効なコードポイント数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     notEntries:       (issue) => `無効な項目数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     notGraphemes:     (issue) => `無効な書記素数: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,
     notLength:        (issue) => `無効な長さ: ${issue.expected} を期待しましたが、 ${issue.received} を受け取りました`,

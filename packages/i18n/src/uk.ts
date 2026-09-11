@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Неправильні дані: отримано ${issue.received}`,
     checkItems:       (issue) => `Неправильний елемент: отримано ${issue.received}`,
     checkItemsAsync:  (issue) => `Неправильний елемент: отримано ${issue.received}`,
+    codePoints:       (issue) => `Неправильна кількість кодових точок: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     creditCard:       (issue) => `Неправильний номер кредитної картки: отримано ${issue.received}`,
     cuid2:            (issue) => `Неправильний Cuid2: отримано ${issue.received}`,
     decimal:          (issue) => `Неправильне десяткове число: отримано ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Неправильний ISBN: отримано ${issue.received}`,
     isoDate:          (issue) => `Неправильна дата: отримано ${issue.received}`,
     isoDateTime:      (issue) => `Неправильна дата і час: отримано ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Неправильні дата і час із секундами: отримано ${issue.received}`,
     isoTime:          (issue) => `Неправильний час: отримано ${issue.received}`,
     isoTimeSecond:    (issue) => `Неправильний час з секундами: отримано ${issue.received}`,
     isoTimestamp:     (issue) => `Неправильна мітка часу: отримано ${issue.received}`,
     isoWeek:          (issue) => `Неправильний тиждень: отримано ${issue.received}`,
     isrc:             (issue) => `Неправильний ISRC: отримано ${issue.received}`,
     jwsCompact:       (issue) => `Неправильний компактний JWS: отримано ${issue.received}`,
+    ksuid:            (issue) => `Неправильний KSUID: отримано ${issue.received}`,
     length:           (issue) => `Неправильна довжина: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     ltValue:          (issue) => `Неправильне значення: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     mac:              (issue) => `Неправильний MAC: отримано ${issue.received}`,
     mac48:            (issue) => `Неправильний 48-бітний MAC: отримано ${issue.received}`,
     mac64:            (issue) => `Неправильний 64-бітний MAC: отримано ${issue.received}`,
     maxBytes:         (issue) => `Неправильна кількість байт: очікувалося ${issue.expected}, але отримано ${issue.received}`,
+    maxCodePoints:    (issue) => `Неправильна кількість кодових точок: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     maxEntries:       (issue) => `Неправильна кількість записів: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     maxGraphemes:     (issue) => `Неправильна кількість графем: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     maxLength:        (issue) => `Неправильна довжина: очікувалося ${issue.expected}, але отримано ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Неправильна кількість слів: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     mimeType:         (issue) => `Неправильний MIME тип: очікувався ${issue.expected}, але отримано ${issue.received}`,
     minBytes:         (issue) => `Неправильна кількість байт: очікувалося ${issue.expected}, але отримано ${issue.received}`,
+    minCodePoints:    (issue) => `Неправильна кількість кодових точок: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     minEntries:       (issue) => `Неправильна кількість записів: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     minGraphemes:     (issue) => `Неправильна кількість графем: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     minLength:        (issue) => `Неправильна довжина: очікувалося ${issue.expected}, але отримано ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Неправильний Nano ID: отримано ${issue.received}`,
     nonEmpty:         (issue) => `Неправильна довжина: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     notBytes:         (issue) => `Неправильна кількість байт: очікувалося ${issue.expected}, але отримано ${issue.received}`,
+    notCodePoints:    (issue) => `Неправильна кількість кодових точок: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     notEntries:       (issue) => `Неправильна кількість записів: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     notGraphemes:     (issue) => `Неправильна кількість графем: очікувалося ${issue.expected}, але отримано ${issue.received}`,
     notLength:        (issue) => `Неправильна довжина: очікувалося ${issue.expected}, але отримано ${issue.received}`,

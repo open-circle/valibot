@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Intrare incorectă: S-a introdus ${issue.received}`,
     checkItems:       (issue) => `Element incorect: S-a introdus ${issue.received}`,
     checkItemsAsync:  (issue) => `Element incorect: S-a introdus ${issue.received}`,
+    codePoints:       (issue) => `Număr incorect de puncte de cod: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     creditCard:       (issue) => `Card de credit incorect: S-a introdus ${issue.received}`,
     cuid2:            (issue) => `Cuid2 incorect: S-a introdus ${issue.received}`,
     decimal:          (issue) => `Zecimal incorect: S-a introdus ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `ISBN incorect: S-a introdus ${issue.received}`,
     isoDate:          (issue) => `Dată incorectă: S-a introdus ${issue.received}`,
     isoDateTime:      (issue) => `Dată-timp incorect: S-a introdus ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Dată și oră cu secunde incorecte: S-a introdus ${issue.received}`,
     isoTime:          (issue) => `Timp incorect: S-a introdus ${issue.received}`,
     isoTimeSecond:    (issue) => `Secundă-timp incorect: S-a introdus ${issue.received}`,
     isoTimestamp:     (issue) => `Timestamp incorect: S-a introdus ${issue.received}`,
     isoWeek:          (issue) => `Săptămână incorectă: S-a introdus ${issue.received}`,
     isrc:             (issue) => `ISRC incorect: S-a introdus ${issue.received}`,
     jwsCompact:       (issue) => `JWS compact incorect: S-a introdus ${issue.received}`,
+    ksuid:            (issue) => `KSUID incorect: S-a introdus ${issue.received}`,
     length:           (issue) => `Lungime incorectă: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     ltValue:          (issue) => `Valoare incorectă: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     mac:              (issue) => `MAC incorect: S-a introdus ${issue.received}`,
     mac48:            (issue) => `48-bit MAC incorect: S-a introdus ${issue.received}`,
     mac64:            (issue) => `64-bit MAC incorect: S-a introdus ${issue.received}`,
     maxBytes:         (issue) => `Număr de bytes incorect: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
+    maxCodePoints:    (issue) => `Număr incorect de puncte de cod: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     maxEntries:       (issue) => `Număr de intrări incorect: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     maxGraphemes:     (issue) => `Număr de grafeme incorect: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     maxLength:        (issue) => `Lungime incorectă: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Număr maxim de cuvinte incorect: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     mimeType:         (issue) => `Tip MIME incorect: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     minBytes:         (issue) => `Număr minim de bytes incorect: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
+    minCodePoints:    (issue) => `Număr incorect de puncte de cod: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     minEntries:       (issue) => `Număr de intrări incorect: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     minGraphemes:     (issue) => `Număr minim de grafeme incorect: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     minLength:        (issue) => `Lungime minimă incorectă: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Nano ID incorect: S-a introdus ${issue.received}`,
     nonEmpty:         (issue) => `Lungime incorectă: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     notBytes:         (issue) => `Bytes incorect: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
+    notCodePoints:    (issue) => `Număr incorect de puncte de cod: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     notEntries:       (issue) => `Număr de intrări incorect: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     notGraphemes:     (issue) => `Grafeme incorecte: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,
     notLength:        (issue) => `Lungime incorectă: Specificat era ${issue.expected} dar s-a introdus ${issue.received}`,

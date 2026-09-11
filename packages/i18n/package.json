@@ -31,10 +31,10 @@
     "@types/node": "^24.10.1",
     "tsm": "^2.3.0",
     "typescript": "^5.9.3",
-    "valibot": "^1.4.0"
+    "valibot": "^1.5.0"
   },
   "peerDependencies": {
-    "valibot": "^1.4.0"
+    "valibot": "^1.5.0"
   },
   "files": [
     "index.ts",
@@ -175,6 +175,16 @@
       "require": {
         "types": "./ar/checkItemsAsync.d.cts",
         "default": "./ar/checkItemsAsync.cjs"
+      }
+    },
+    "./ar/codePoints": {
+      "import": {
+        "types": "./ar/codePoints.d.mts",
+        "default": "./ar/codePoints.mjs"
+      },
+      "require": {
+        "types": "./ar/codePoints.d.cts",
+        "default": "./ar/codePoints.cjs"
       }
     },
     "./ar/creditCard": {
@@ -457,6 +467,16 @@
         "default": "./ar/isoDateTime.cjs"
       }
     },
+    "./ar/isoDateTimeSecond": {
+      "import": {
+        "types": "./ar/isoDateTimeSecond.d.mts",
+        "default": "./ar/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./ar/isoDateTimeSecond.d.cts",
+        "default": "./ar/isoDateTimeSecond.cjs"
+      }
+    },
     "./ar/isoTime": {
       "import": {
         "types": "./ar/isoTime.d.mts",
@@ -517,6 +537,16 @@
         "default": "./ar/jwsCompact.cjs"
       }
     },
+    "./ar/ksuid": {
+      "import": {
+        "types": "./ar/ksuid.d.mts",
+        "default": "./ar/ksuid.mjs"
+      },
+      "require": {
+        "types": "./ar/ksuid.d.cts",
+        "default": "./ar/ksuid.cjs"
+      }
+    },
     "./ar/length": {
       "import": {
         "types": "./ar/length.d.mts",
@@ -575,6 +605,16 @@
       "require": {
         "types": "./ar/maxBytes.d.cts",
         "default": "./ar/maxBytes.cjs"
+      }
+    },
+    "./ar/maxCodePoints": {
+      "import": {
+        "types": "./ar/maxCodePoints.d.mts",
+        "default": "./ar/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ar/maxCodePoints.d.cts",
+        "default": "./ar/maxCodePoints.cjs"
       }
     },
     "./ar/maxEntries": {
@@ -655,6 +695,16 @@
       "require": {
         "types": "./ar/minBytes.d.cts",
         "default": "./ar/minBytes.cjs"
+      }
+    },
+    "./ar/minCodePoints": {
+      "import": {
+        "types": "./ar/minCodePoints.d.mts",
+        "default": "./ar/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ar/minCodePoints.d.cts",
+        "default": "./ar/minCodePoints.cjs"
       }
     },
     "./ar/minEntries": {
@@ -755,6 +805,16 @@
       "require": {
         "types": "./ar/notBytes.d.cts",
         "default": "./ar/notBytes.cjs"
+      }
+    },
+    "./ar/notCodePoints": {
+      "import": {
+        "types": "./ar/notCodePoints.d.mts",
+        "default": "./ar/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ar/notCodePoints.d.cts",
+        "default": "./ar/notCodePoints.cjs"
       }
     },
     "./ar/notEntries": {
@@ -1157,6 +1217,16 @@
         "default": "./az/checkItemsAsync.cjs"
       }
     },
+    "./az/codePoints": {
+      "import": {
+        "types": "./az/codePoints.d.mts",
+        "default": "./az/codePoints.mjs"
+      },
+      "require": {
+        "types": "./az/codePoints.d.cts",
+        "default": "./az/codePoints.cjs"
+      }
+    },
     "./az/creditCard": {
       "import": {
         "types": "./az/creditCard.d.mts",
@@ -1437,6 +1507,16 @@
         "default": "./az/isoDateTime.cjs"
       }
     },
+    "./az/isoDateTimeSecond": {
+      "import": {
+        "types": "./az/isoDateTimeSecond.d.mts",
+        "default": "./az/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./az/isoDateTimeSecond.d.cts",
+        "default": "./az/isoDateTimeSecond.cjs"
+      }
+    },
     "./az/isoTime": {
       "import": {
         "types": "./az/isoTime.d.mts",
@@ -1497,6 +1577,16 @@
         "default": "./az/jwsCompact.cjs"
       }
     },
+    "./az/ksuid": {
+      "import": {
+        "types": "./az/ksuid.d.mts",
+        "default": "./az/ksuid.mjs"
+      },
+      "require": {
+        "types": "./az/ksuid.d.cts",
+        "default": "./az/ksuid.cjs"
+      }
+    },
     "./az/length": {
       "import": {
         "types": "./az/length.d.mts",
@@ -1555,6 +1645,16 @@
       "require": {
         "types": "./az/maxBytes.d.cts",
         "default": "./az/maxBytes.cjs"
+      }
+    },
+    "./az/maxCodePoints": {
+      "import": {
+        "types": "./az/maxCodePoints.d.mts",
+        "default": "./az/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./az/maxCodePoints.d.cts",
+        "default": "./az/maxCodePoints.cjs"
       }
     },
     "./az/maxEntries": {
@@ -1635,6 +1735,16 @@
       "require": {
         "types": "./az/minBytes.d.cts",
         "default": "./az/minBytes.cjs"
+      }
+    },
+    "./az/minCodePoints": {
+      "import": {
+        "types": "./az/minCodePoints.d.mts",
+        "default": "./az/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./az/minCodePoints.d.cts",
+        "default": "./az/minCodePoints.cjs"
       }
     },
     "./az/minEntries": {
@@ -1735,6 +1845,16 @@
       "require": {
         "types": "./az/notBytes.d.cts",
         "default": "./az/notBytes.cjs"
+      }
+    },
+    "./az/notCodePoints": {
+      "import": {
+        "types": "./az/notCodePoints.d.mts",
+        "default": "./az/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./az/notCodePoints.d.cts",
+        "default": "./az/notCodePoints.cjs"
       }
     },
     "./az/notEntries": {
@@ -2137,6 +2257,16 @@
         "default": "./ca/checkItemsAsync.cjs"
       }
     },
+    "./ca/codePoints": {
+      "import": {
+        "types": "./ca/codePoints.d.mts",
+        "default": "./ca/codePoints.mjs"
+      },
+      "require": {
+        "types": "./ca/codePoints.d.cts",
+        "default": "./ca/codePoints.cjs"
+      }
+    },
     "./ca/creditCard": {
       "import": {
         "types": "./ca/creditCard.d.mts",
@@ -2417,6 +2547,16 @@
         "default": "./ca/isoDateTime.cjs"
       }
     },
+    "./ca/isoDateTimeSecond": {
+      "import": {
+        "types": "./ca/isoDateTimeSecond.d.mts",
+        "default": "./ca/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./ca/isoDateTimeSecond.d.cts",
+        "default": "./ca/isoDateTimeSecond.cjs"
+      }
+    },
     "./ca/isoTime": {
       "import": {
         "types": "./ca/isoTime.d.mts",
@@ -2477,6 +2617,16 @@
         "default": "./ca/jwsCompact.cjs"
       }
     },
+    "./ca/ksuid": {
+      "import": {
+        "types": "./ca/ksuid.d.mts",
+        "default": "./ca/ksuid.mjs"
+      },
+      "require": {
+        "types": "./ca/ksuid.d.cts",
+        "default": "./ca/ksuid.cjs"
+      }
+    },
     "./ca/length": {
       "import": {
         "types": "./ca/length.d.mts",
@@ -2535,6 +2685,16 @@
       "require": {
         "types": "./ca/maxBytes.d.cts",
         "default": "./ca/maxBytes.cjs"
+      }
+    },
+    "./ca/maxCodePoints": {
+      "import": {
+        "types": "./ca/maxCodePoints.d.mts",
+        "default": "./ca/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ca/maxCodePoints.d.cts",
+        "default": "./ca/maxCodePoints.cjs"
       }
     },
     "./ca/maxEntries": {
@@ -2615,6 +2775,16 @@
       "require": {
         "types": "./ca/minBytes.d.cts",
         "default": "./ca/minBytes.cjs"
+      }
+    },
+    "./ca/minCodePoints": {
+      "import": {
+        "types": "./ca/minCodePoints.d.mts",
+        "default": "./ca/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ca/minCodePoints.d.cts",
+        "default": "./ca/minCodePoints.cjs"
       }
     },
     "./ca/minEntries": {
@@ -2715,6 +2885,16 @@
       "require": {
         "types": "./ca/notBytes.d.cts",
         "default": "./ca/notBytes.cjs"
+      }
+    },
+    "./ca/notCodePoints": {
+      "import": {
+        "types": "./ca/notCodePoints.d.mts",
+        "default": "./ca/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ca/notCodePoints.d.cts",
+        "default": "./ca/notCodePoints.cjs"
       }
     },
     "./ca/notEntries": {
@@ -3117,6 +3297,16 @@
         "default": "./cs/checkItemsAsync.cjs"
       }
     },
+    "./cs/codePoints": {
+      "import": {
+        "types": "./cs/codePoints.d.mts",
+        "default": "./cs/codePoints.mjs"
+      },
+      "require": {
+        "types": "./cs/codePoints.d.cts",
+        "default": "./cs/codePoints.cjs"
+      }
+    },
     "./cs/creditCard": {
       "import": {
         "types": "./cs/creditCard.d.mts",
@@ -3397,6 +3587,16 @@
         "default": "./cs/isoDateTime.cjs"
       }
     },
+    "./cs/isoDateTimeSecond": {
+      "import": {
+        "types": "./cs/isoDateTimeSecond.d.mts",
+        "default": "./cs/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./cs/isoDateTimeSecond.d.cts",
+        "default": "./cs/isoDateTimeSecond.cjs"
+      }
+    },
     "./cs/isoTime": {
       "import": {
         "types": "./cs/isoTime.d.mts",
@@ -3457,6 +3657,16 @@
         "default": "./cs/jwsCompact.cjs"
       }
     },
+    "./cs/ksuid": {
+      "import": {
+        "types": "./cs/ksuid.d.mts",
+        "default": "./cs/ksuid.mjs"
+      },
+      "require": {
+        "types": "./cs/ksuid.d.cts",
+        "default": "./cs/ksuid.cjs"
+      }
+    },
     "./cs/length": {
       "import": {
         "types": "./cs/length.d.mts",
@@ -3515,6 +3725,16 @@
       "require": {
         "types": "./cs/maxBytes.d.cts",
         "default": "./cs/maxBytes.cjs"
+      }
+    },
+    "./cs/maxCodePoints": {
+      "import": {
+        "types": "./cs/maxCodePoints.d.mts",
+        "default": "./cs/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./cs/maxCodePoints.d.cts",
+        "default": "./cs/maxCodePoints.cjs"
       }
     },
     "./cs/maxEntries": {
@@ -3595,6 +3815,16 @@
       "require": {
         "types": "./cs/minBytes.d.cts",
         "default": "./cs/minBytes.cjs"
+      }
+    },
+    "./cs/minCodePoints": {
+      "import": {
+        "types": "./cs/minCodePoints.d.mts",
+        "default": "./cs/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./cs/minCodePoints.d.cts",
+        "default": "./cs/minCodePoints.cjs"
       }
     },
     "./cs/minEntries": {
@@ -3695,6 +3925,16 @@
       "require": {
         "types": "./cs/notBytes.d.cts",
         "default": "./cs/notBytes.cjs"
+      }
+    },
+    "./cs/notCodePoints": {
+      "import": {
+        "types": "./cs/notCodePoints.d.mts",
+        "default": "./cs/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./cs/notCodePoints.d.cts",
+        "default": "./cs/notCodePoints.cjs"
       }
     },
     "./cs/notEntries": {
@@ -4097,6 +4337,16 @@
         "default": "./de/checkItemsAsync.cjs"
       }
     },
+    "./de/codePoints": {
+      "import": {
+        "types": "./de/codePoints.d.mts",
+        "default": "./de/codePoints.mjs"
+      },
+      "require": {
+        "types": "./de/codePoints.d.cts",
+        "default": "./de/codePoints.cjs"
+      }
+    },
     "./de/creditCard": {
       "import": {
         "types": "./de/creditCard.d.mts",
@@ -4377,6 +4627,16 @@
         "default": "./de/isoDateTime.cjs"
       }
     },
+    "./de/isoDateTimeSecond": {
+      "import": {
+        "types": "./de/isoDateTimeSecond.d.mts",
+        "default": "./de/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./de/isoDateTimeSecond.d.cts",
+        "default": "./de/isoDateTimeSecond.cjs"
+      }
+    },
     "./de/isoTime": {
       "import": {
         "types": "./de/isoTime.d.mts",
@@ -4437,6 +4697,16 @@
         "default": "./de/jwsCompact.cjs"
       }
     },
+    "./de/ksuid": {
+      "import": {
+        "types": "./de/ksuid.d.mts",
+        "default": "./de/ksuid.mjs"
+      },
+      "require": {
+        "types": "./de/ksuid.d.cts",
+        "default": "./de/ksuid.cjs"
+      }
+    },
     "./de/length": {
       "import": {
         "types": "./de/length.d.mts",
@@ -4495,6 +4765,16 @@
       "require": {
         "types": "./de/maxBytes.d.cts",
         "default": "./de/maxBytes.cjs"
+      }
+    },
+    "./de/maxCodePoints": {
+      "import": {
+        "types": "./de/maxCodePoints.d.mts",
+        "default": "./de/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./de/maxCodePoints.d.cts",
+        "default": "./de/maxCodePoints.cjs"
       }
     },
     "./de/maxEntries": {
@@ -4575,6 +4855,16 @@
       "require": {
         "types": "./de/minBytes.d.cts",
         "default": "./de/minBytes.cjs"
+      }
+    },
+    "./de/minCodePoints": {
+      "import": {
+        "types": "./de/minCodePoints.d.mts",
+        "default": "./de/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./de/minCodePoints.d.cts",
+        "default": "./de/minCodePoints.cjs"
       }
     },
     "./de/minEntries": {
@@ -4675,6 +4965,16 @@
       "require": {
         "types": "./de/notBytes.d.cts",
         "default": "./de/notBytes.cjs"
+      }
+    },
+    "./de/notCodePoints": {
+      "import": {
+        "types": "./de/notCodePoints.d.mts",
+        "default": "./de/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./de/notCodePoints.d.cts",
+        "default": "./de/notCodePoints.cjs"
       }
     },
     "./de/notEntries": {
@@ -5077,6 +5377,16 @@
         "default": "./el/checkItemsAsync.cjs"
       }
     },
+    "./el/codePoints": {
+      "import": {
+        "types": "./el/codePoints.d.mts",
+        "default": "./el/codePoints.mjs"
+      },
+      "require": {
+        "types": "./el/codePoints.d.cts",
+        "default": "./el/codePoints.cjs"
+      }
+    },
     "./el/creditCard": {
       "import": {
         "types": "./el/creditCard.d.mts",
@@ -5357,6 +5667,16 @@
         "default": "./el/isoDateTime.cjs"
       }
     },
+    "./el/isoDateTimeSecond": {
+      "import": {
+        "types": "./el/isoDateTimeSecond.d.mts",
+        "default": "./el/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./el/isoDateTimeSecond.d.cts",
+        "default": "./el/isoDateTimeSecond.cjs"
+      }
+    },
     "./el/isoTime": {
       "import": {
         "types": "./el/isoTime.d.mts",
@@ -5417,6 +5737,16 @@
         "default": "./el/jwsCompact.cjs"
       }
     },
+    "./el/ksuid": {
+      "import": {
+        "types": "./el/ksuid.d.mts",
+        "default": "./el/ksuid.mjs"
+      },
+      "require": {
+        "types": "./el/ksuid.d.cts",
+        "default": "./el/ksuid.cjs"
+      }
+    },
     "./el/length": {
       "import": {
         "types": "./el/length.d.mts",
@@ -5475,6 +5805,16 @@
       "require": {
         "types": "./el/maxBytes.d.cts",
         "default": "./el/maxBytes.cjs"
+      }
+    },
+    "./el/maxCodePoints": {
+      "import": {
+        "types": "./el/maxCodePoints.d.mts",
+        "default": "./el/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./el/maxCodePoints.d.cts",
+        "default": "./el/maxCodePoints.cjs"
       }
     },
     "./el/maxEntries": {
@@ -5555,6 +5895,16 @@
       "require": {
         "types": "./el/minBytes.d.cts",
         "default": "./el/minBytes.cjs"
+      }
+    },
+    "./el/minCodePoints": {
+      "import": {
+        "types": "./el/minCodePoints.d.mts",
+        "default": "./el/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./el/minCodePoints.d.cts",
+        "default": "./el/minCodePoints.cjs"
       }
     },
     "./el/minEntries": {
@@ -5655,6 +6005,16 @@
       "require": {
         "types": "./el/notBytes.d.cts",
         "default": "./el/notBytes.cjs"
+      }
+    },
+    "./el/notCodePoints": {
+      "import": {
+        "types": "./el/notCodePoints.d.mts",
+        "default": "./el/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./el/notCodePoints.d.cts",
+        "default": "./el/notCodePoints.cjs"
       }
     },
     "./el/notEntries": {
@@ -6057,6 +6417,16 @@
         "default": "./es/checkItemsAsync.cjs"
       }
     },
+    "./es/codePoints": {
+      "import": {
+        "types": "./es/codePoints.d.mts",
+        "default": "./es/codePoints.mjs"
+      },
+      "require": {
+        "types": "./es/codePoints.d.cts",
+        "default": "./es/codePoints.cjs"
+      }
+    },
     "./es/creditCard": {
       "import": {
         "types": "./es/creditCard.d.mts",
@@ -6337,6 +6707,16 @@
         "default": "./es/isoDateTime.cjs"
       }
     },
+    "./es/isoDateTimeSecond": {
+      "import": {
+        "types": "./es/isoDateTimeSecond.d.mts",
+        "default": "./es/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./es/isoDateTimeSecond.d.cts",
+        "default": "./es/isoDateTimeSecond.cjs"
+      }
+    },
     "./es/isoTime": {
       "import": {
         "types": "./es/isoTime.d.mts",
@@ -6397,6 +6777,16 @@
         "default": "./es/jwsCompact.cjs"
       }
     },
+    "./es/ksuid": {
+      "import": {
+        "types": "./es/ksuid.d.mts",
+        "default": "./es/ksuid.mjs"
+      },
+      "require": {
+        "types": "./es/ksuid.d.cts",
+        "default": "./es/ksuid.cjs"
+      }
+    },
     "./es/length": {
       "import": {
         "types": "./es/length.d.mts",
@@ -6455,6 +6845,16 @@
       "require": {
         "types": "./es/maxBytes.d.cts",
         "default": "./es/maxBytes.cjs"
+      }
+    },
+    "./es/maxCodePoints": {
+      "import": {
+        "types": "./es/maxCodePoints.d.mts",
+        "default": "./es/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./es/maxCodePoints.d.cts",
+        "default": "./es/maxCodePoints.cjs"
       }
     },
     "./es/maxEntries": {
@@ -6535,6 +6935,16 @@
       "require": {
         "types": "./es/minBytes.d.cts",
         "default": "./es/minBytes.cjs"
+      }
+    },
+    "./es/minCodePoints": {
+      "import": {
+        "types": "./es/minCodePoints.d.mts",
+        "default": "./es/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./es/minCodePoints.d.cts",
+        "default": "./es/minCodePoints.cjs"
       }
     },
     "./es/minEntries": {
@@ -6635,6 +7045,16 @@
       "require": {
         "types": "./es/notBytes.d.cts",
         "default": "./es/notBytes.cjs"
+      }
+    },
+    "./es/notCodePoints": {
+      "import": {
+        "types": "./es/notCodePoints.d.mts",
+        "default": "./es/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./es/notCodePoints.d.cts",
+        "default": "./es/notCodePoints.cjs"
       }
     },
     "./es/notEntries": {
@@ -7037,6 +7457,16 @@
         "default": "./fa/checkItemsAsync.cjs"
       }
     },
+    "./fa/codePoints": {
+      "import": {
+        "types": "./fa/codePoints.d.mts",
+        "default": "./fa/codePoints.mjs"
+      },
+      "require": {
+        "types": "./fa/codePoints.d.cts",
+        "default": "./fa/codePoints.cjs"
+      }
+    },
     "./fa/creditCard": {
       "import": {
         "types": "./fa/creditCard.d.mts",
@@ -7317,6 +7747,16 @@
         "default": "./fa/isoDateTime.cjs"
       }
     },
+    "./fa/isoDateTimeSecond": {
+      "import": {
+        "types": "./fa/isoDateTimeSecond.d.mts",
+        "default": "./fa/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./fa/isoDateTimeSecond.d.cts",
+        "default": "./fa/isoDateTimeSecond.cjs"
+      }
+    },
     "./fa/isoTime": {
       "import": {
         "types": "./fa/isoTime.d.mts",
@@ -7377,6 +7817,16 @@
         "default": "./fa/jwsCompact.cjs"
       }
     },
+    "./fa/ksuid": {
+      "import": {
+        "types": "./fa/ksuid.d.mts",
+        "default": "./fa/ksuid.mjs"
+      },
+      "require": {
+        "types": "./fa/ksuid.d.cts",
+        "default": "./fa/ksuid.cjs"
+      }
+    },
     "./fa/length": {
       "import": {
         "types": "./fa/length.d.mts",
@@ -7435,6 +7885,16 @@
       "require": {
         "types": "./fa/maxBytes.d.cts",
         "default": "./fa/maxBytes.cjs"
+      }
+    },
+    "./fa/maxCodePoints": {
+      "import": {
+        "types": "./fa/maxCodePoints.d.mts",
+        "default": "./fa/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./fa/maxCodePoints.d.cts",
+        "default": "./fa/maxCodePoints.cjs"
       }
     },
     "./fa/maxEntries": {
@@ -7515,6 +7975,16 @@
       "require": {
         "types": "./fa/minBytes.d.cts",
         "default": "./fa/minBytes.cjs"
+      }
+    },
+    "./fa/minCodePoints": {
+      "import": {
+        "types": "./fa/minCodePoints.d.mts",
+        "default": "./fa/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./fa/minCodePoints.d.cts",
+        "default": "./fa/minCodePoints.cjs"
       }
     },
     "./fa/minEntries": {
@@ -7615,6 +8085,16 @@
       "require": {
         "types": "./fa/notBytes.d.cts",
         "default": "./fa/notBytes.cjs"
+      }
+    },
+    "./fa/notCodePoints": {
+      "import": {
+        "types": "./fa/notCodePoints.d.mts",
+        "default": "./fa/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./fa/notCodePoints.d.cts",
+        "default": "./fa/notCodePoints.cjs"
       }
     },
     "./fa/notEntries": {
@@ -8017,6 +8497,16 @@
         "default": "./fi/checkItemsAsync.cjs"
       }
     },
+    "./fi/codePoints": {
+      "import": {
+        "types": "./fi/codePoints.d.mts",
+        "default": "./fi/codePoints.mjs"
+      },
+      "require": {
+        "types": "./fi/codePoints.d.cts",
+        "default": "./fi/codePoints.cjs"
+      }
+    },
     "./fi/creditCard": {
       "import": {
         "types": "./fi/creditCard.d.mts",
@@ -8297,6 +8787,16 @@
         "default": "./fi/isoDateTime.cjs"
       }
     },
+    "./fi/isoDateTimeSecond": {
+      "import": {
+        "types": "./fi/isoDateTimeSecond.d.mts",
+        "default": "./fi/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./fi/isoDateTimeSecond.d.cts",
+        "default": "./fi/isoDateTimeSecond.cjs"
+      }
+    },
     "./fi/isoTime": {
       "import": {
         "types": "./fi/isoTime.d.mts",
@@ -8357,6 +8857,16 @@
         "default": "./fi/jwsCompact.cjs"
       }
     },
+    "./fi/ksuid": {
+      "import": {
+        "types": "./fi/ksuid.d.mts",
+        "default": "./fi/ksuid.mjs"
+      },
+      "require": {
+        "types": "./fi/ksuid.d.cts",
+        "default": "./fi/ksuid.cjs"
+      }
+    },
     "./fi/length": {
       "import": {
         "types": "./fi/length.d.mts",
@@ -8415,6 +8925,16 @@
       "require": {
         "types": "./fi/maxBytes.d.cts",
         "default": "./fi/maxBytes.cjs"
+      }
+    },
+    "./fi/maxCodePoints": {
+      "import": {
+        "types": "./fi/maxCodePoints.d.mts",
+        "default": "./fi/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./fi/maxCodePoints.d.cts",
+        "default": "./fi/maxCodePoints.cjs"
       }
     },
     "./fi/maxEntries": {
@@ -8495,6 +9015,16 @@
       "require": {
         "types": "./fi/minBytes.d.cts",
         "default": "./fi/minBytes.cjs"
+      }
+    },
+    "./fi/minCodePoints": {
+      "import": {
+        "types": "./fi/minCodePoints.d.mts",
+        "default": "./fi/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./fi/minCodePoints.d.cts",
+        "default": "./fi/minCodePoints.cjs"
       }
     },
     "./fi/minEntries": {
@@ -8595,6 +9125,16 @@
       "require": {
         "types": "./fi/notBytes.d.cts",
         "default": "./fi/notBytes.cjs"
+      }
+    },
+    "./fi/notCodePoints": {
+      "import": {
+        "types": "./fi/notCodePoints.d.mts",
+        "default": "./fi/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./fi/notCodePoints.d.cts",
+        "default": "./fi/notCodePoints.cjs"
       }
     },
     "./fi/notEntries": {
@@ -8997,6 +9537,16 @@
         "default": "./fr/checkItemsAsync.cjs"
       }
     },
+    "./fr/codePoints": {
+      "import": {
+        "types": "./fr/codePoints.d.mts",
+        "default": "./fr/codePoints.mjs"
+      },
+      "require": {
+        "types": "./fr/codePoints.d.cts",
+        "default": "./fr/codePoints.cjs"
+      }
+    },
     "./fr/creditCard": {
       "import": {
         "types": "./fr/creditCard.d.mts",
@@ -9277,6 +9827,16 @@
         "default": "./fr/isoDateTime.cjs"
       }
     },
+    "./fr/isoDateTimeSecond": {
+      "import": {
+        "types": "./fr/isoDateTimeSecond.d.mts",
+        "default": "./fr/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./fr/isoDateTimeSecond.d.cts",
+        "default": "./fr/isoDateTimeSecond.cjs"
+      }
+    },
     "./fr/isoTime": {
       "import": {
         "types": "./fr/isoTime.d.mts",
@@ -9337,6 +9897,16 @@
         "default": "./fr/jwsCompact.cjs"
       }
     },
+    "./fr/ksuid": {
+      "import": {
+        "types": "./fr/ksuid.d.mts",
+        "default": "./fr/ksuid.mjs"
+      },
+      "require": {
+        "types": "./fr/ksuid.d.cts",
+        "default": "./fr/ksuid.cjs"
+      }
+    },
     "./fr/length": {
       "import": {
         "types": "./fr/length.d.mts",
@@ -9395,6 +9965,16 @@
       "require": {
         "types": "./fr/maxBytes.d.cts",
         "default": "./fr/maxBytes.cjs"
+      }
+    },
+    "./fr/maxCodePoints": {
+      "import": {
+        "types": "./fr/maxCodePoints.d.mts",
+        "default": "./fr/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./fr/maxCodePoints.d.cts",
+        "default": "./fr/maxCodePoints.cjs"
       }
     },
     "./fr/maxEntries": {
@@ -9475,6 +10055,16 @@
       "require": {
         "types": "./fr/minBytes.d.cts",
         "default": "./fr/minBytes.cjs"
+      }
+    },
+    "./fr/minCodePoints": {
+      "import": {
+        "types": "./fr/minCodePoints.d.mts",
+        "default": "./fr/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./fr/minCodePoints.d.cts",
+        "default": "./fr/minCodePoints.cjs"
       }
     },
     "./fr/minEntries": {
@@ -9575,6 +10165,16 @@
       "require": {
         "types": "./fr/notBytes.d.cts",
         "default": "./fr/notBytes.cjs"
+      }
+    },
+    "./fr/notCodePoints": {
+      "import": {
+        "types": "./fr/notCodePoints.d.mts",
+        "default": "./fr/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./fr/notCodePoints.d.cts",
+        "default": "./fr/notCodePoints.cjs"
       }
     },
     "./fr/notEntries": {
@@ -9977,6 +10577,16 @@
         "default": "./hu/checkItemsAsync.cjs"
       }
     },
+    "./hu/codePoints": {
+      "import": {
+        "types": "./hu/codePoints.d.mts",
+        "default": "./hu/codePoints.mjs"
+      },
+      "require": {
+        "types": "./hu/codePoints.d.cts",
+        "default": "./hu/codePoints.cjs"
+      }
+    },
     "./hu/creditCard": {
       "import": {
         "types": "./hu/creditCard.d.mts",
@@ -10257,6 +10867,16 @@
         "default": "./hu/isoDateTime.cjs"
       }
     },
+    "./hu/isoDateTimeSecond": {
+      "import": {
+        "types": "./hu/isoDateTimeSecond.d.mts",
+        "default": "./hu/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./hu/isoDateTimeSecond.d.cts",
+        "default": "./hu/isoDateTimeSecond.cjs"
+      }
+    },
     "./hu/isoTime": {
       "import": {
         "types": "./hu/isoTime.d.mts",
@@ -10317,6 +10937,16 @@
         "default": "./hu/jwsCompact.cjs"
       }
     },
+    "./hu/ksuid": {
+      "import": {
+        "types": "./hu/ksuid.d.mts",
+        "default": "./hu/ksuid.mjs"
+      },
+      "require": {
+        "types": "./hu/ksuid.d.cts",
+        "default": "./hu/ksuid.cjs"
+      }
+    },
     "./hu/length": {
       "import": {
         "types": "./hu/length.d.mts",
@@ -10375,6 +11005,16 @@
       "require": {
         "types": "./hu/maxBytes.d.cts",
         "default": "./hu/maxBytes.cjs"
+      }
+    },
+    "./hu/maxCodePoints": {
+      "import": {
+        "types": "./hu/maxCodePoints.d.mts",
+        "default": "./hu/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./hu/maxCodePoints.d.cts",
+        "default": "./hu/maxCodePoints.cjs"
       }
     },
     "./hu/maxEntries": {
@@ -10455,6 +11095,16 @@
       "require": {
         "types": "./hu/minBytes.d.cts",
         "default": "./hu/minBytes.cjs"
+      }
+    },
+    "./hu/minCodePoints": {
+      "import": {
+        "types": "./hu/minCodePoints.d.mts",
+        "default": "./hu/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./hu/minCodePoints.d.cts",
+        "default": "./hu/minCodePoints.cjs"
       }
     },
     "./hu/minEntries": {
@@ -10555,6 +11205,16 @@
       "require": {
         "types": "./hu/notBytes.d.cts",
         "default": "./hu/notBytes.cjs"
+      }
+    },
+    "./hu/notCodePoints": {
+      "import": {
+        "types": "./hu/notCodePoints.d.mts",
+        "default": "./hu/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./hu/notCodePoints.d.cts",
+        "default": "./hu/notCodePoints.cjs"
       }
     },
     "./hu/notEntries": {
@@ -10957,6 +11617,16 @@
         "default": "./id/checkItemsAsync.cjs"
       }
     },
+    "./id/codePoints": {
+      "import": {
+        "types": "./id/codePoints.d.mts",
+        "default": "./id/codePoints.mjs"
+      },
+      "require": {
+        "types": "./id/codePoints.d.cts",
+        "default": "./id/codePoints.cjs"
+      }
+    },
     "./id/creditCard": {
       "import": {
         "types": "./id/creditCard.d.mts",
@@ -11237,6 +11907,16 @@
         "default": "./id/isoDateTime.cjs"
       }
     },
+    "./id/isoDateTimeSecond": {
+      "import": {
+        "types": "./id/isoDateTimeSecond.d.mts",
+        "default": "./id/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./id/isoDateTimeSecond.d.cts",
+        "default": "./id/isoDateTimeSecond.cjs"
+      }
+    },
     "./id/isoTime": {
       "import": {
         "types": "./id/isoTime.d.mts",
@@ -11297,6 +11977,16 @@
         "default": "./id/jwsCompact.cjs"
       }
     },
+    "./id/ksuid": {
+      "import": {
+        "types": "./id/ksuid.d.mts",
+        "default": "./id/ksuid.mjs"
+      },
+      "require": {
+        "types": "./id/ksuid.d.cts",
+        "default": "./id/ksuid.cjs"
+      }
+    },
     "./id/length": {
       "import": {
         "types": "./id/length.d.mts",
@@ -11355,6 +12045,16 @@
       "require": {
         "types": "./id/maxBytes.d.cts",
         "default": "./id/maxBytes.cjs"
+      }
+    },
+    "./id/maxCodePoints": {
+      "import": {
+        "types": "./id/maxCodePoints.d.mts",
+        "default": "./id/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./id/maxCodePoints.d.cts",
+        "default": "./id/maxCodePoints.cjs"
       }
     },
     "./id/maxEntries": {
@@ -11435,6 +12135,16 @@
       "require": {
         "types": "./id/minBytes.d.cts",
         "default": "./id/minBytes.cjs"
+      }
+    },
+    "./id/minCodePoints": {
+      "import": {
+        "types": "./id/minCodePoints.d.mts",
+        "default": "./id/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./id/minCodePoints.d.cts",
+        "default": "./id/minCodePoints.cjs"
       }
     },
     "./id/minEntries": {
@@ -11535,6 +12245,16 @@
       "require": {
         "types": "./id/notBytes.d.cts",
         "default": "./id/notBytes.cjs"
+      }
+    },
+    "./id/notCodePoints": {
+      "import": {
+        "types": "./id/notCodePoints.d.mts",
+        "default": "./id/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./id/notCodePoints.d.cts",
+        "default": "./id/notCodePoints.cjs"
       }
     },
     "./id/notEntries": {
@@ -11937,6 +12657,16 @@
         "default": "./it/checkItemsAsync.cjs"
       }
     },
+    "./it/codePoints": {
+      "import": {
+        "types": "./it/codePoints.d.mts",
+        "default": "./it/codePoints.mjs"
+      },
+      "require": {
+        "types": "./it/codePoints.d.cts",
+        "default": "./it/codePoints.cjs"
+      }
+    },
     "./it/creditCard": {
       "import": {
         "types": "./it/creditCard.d.mts",
@@ -12217,6 +12947,16 @@
         "default": "./it/isoDateTime.cjs"
       }
     },
+    "./it/isoDateTimeSecond": {
+      "import": {
+        "types": "./it/isoDateTimeSecond.d.mts",
+        "default": "./it/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./it/isoDateTimeSecond.d.cts",
+        "default": "./it/isoDateTimeSecond.cjs"
+      }
+    },
     "./it/isoTime": {
       "import": {
         "types": "./it/isoTime.d.mts",
@@ -12277,6 +13017,16 @@
         "default": "./it/jwsCompact.cjs"
       }
     },
+    "./it/ksuid": {
+      "import": {
+        "types": "./it/ksuid.d.mts",
+        "default": "./it/ksuid.mjs"
+      },
+      "require": {
+        "types": "./it/ksuid.d.cts",
+        "default": "./it/ksuid.cjs"
+      }
+    },
     "./it/length": {
       "import": {
         "types": "./it/length.d.mts",
@@ -12335,6 +13085,16 @@
       "require": {
         "types": "./it/maxBytes.d.cts",
         "default": "./it/maxBytes.cjs"
+      }
+    },
+    "./it/maxCodePoints": {
+      "import": {
+        "types": "./it/maxCodePoints.d.mts",
+        "default": "./it/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./it/maxCodePoints.d.cts",
+        "default": "./it/maxCodePoints.cjs"
       }
     },
     "./it/maxEntries": {
@@ -12415,6 +13175,16 @@
       "require": {
         "types": "./it/minBytes.d.cts",
         "default": "./it/minBytes.cjs"
+      }
+    },
+    "./it/minCodePoints": {
+      "import": {
+        "types": "./it/minCodePoints.d.mts",
+        "default": "./it/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./it/minCodePoints.d.cts",
+        "default": "./it/minCodePoints.cjs"
       }
     },
     "./it/minEntries": {
@@ -12515,6 +13285,16 @@
       "require": {
         "types": "./it/notBytes.d.cts",
         "default": "./it/notBytes.cjs"
+      }
+    },
+    "./it/notCodePoints": {
+      "import": {
+        "types": "./it/notCodePoints.d.mts",
+        "default": "./it/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./it/notCodePoints.d.cts",
+        "default": "./it/notCodePoints.cjs"
       }
     },
     "./it/notEntries": {
@@ -12917,6 +13697,16 @@
         "default": "./ja/checkItemsAsync.cjs"
       }
     },
+    "./ja/codePoints": {
+      "import": {
+        "types": "./ja/codePoints.d.mts",
+        "default": "./ja/codePoints.mjs"
+      },
+      "require": {
+        "types": "./ja/codePoints.d.cts",
+        "default": "./ja/codePoints.cjs"
+      }
+    },
     "./ja/creditCard": {
       "import": {
         "types": "./ja/creditCard.d.mts",
@@ -13197,6 +13987,16 @@
         "default": "./ja/isoDateTime.cjs"
       }
     },
+    "./ja/isoDateTimeSecond": {
+      "import": {
+        "types": "./ja/isoDateTimeSecond.d.mts",
+        "default": "./ja/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./ja/isoDateTimeSecond.d.cts",
+        "default": "./ja/isoDateTimeSecond.cjs"
+      }
+    },
     "./ja/isoTime": {
       "import": {
         "types": "./ja/isoTime.d.mts",
@@ -13257,6 +14057,16 @@
         "default": "./ja/jwsCompact.cjs"
       }
     },
+    "./ja/ksuid": {
+      "import": {
+        "types": "./ja/ksuid.d.mts",
+        "default": "./ja/ksuid.mjs"
+      },
+      "require": {
+        "types": "./ja/ksuid.d.cts",
+        "default": "./ja/ksuid.cjs"
+      }
+    },
     "./ja/length": {
       "import": {
         "types": "./ja/length.d.mts",
@@ -13315,6 +14125,16 @@
       "require": {
         "types": "./ja/maxBytes.d.cts",
         "default": "./ja/maxBytes.cjs"
+      }
+    },
+    "./ja/maxCodePoints": {
+      "import": {
+        "types": "./ja/maxCodePoints.d.mts",
+        "default": "./ja/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ja/maxCodePoints.d.cts",
+        "default": "./ja/maxCodePoints.cjs"
       }
     },
     "./ja/maxEntries": {
@@ -13395,6 +14215,16 @@
       "require": {
         "types": "./ja/minBytes.d.cts",
         "default": "./ja/minBytes.cjs"
+      }
+    },
+    "./ja/minCodePoints": {
+      "import": {
+        "types": "./ja/minCodePoints.d.mts",
+        "default": "./ja/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ja/minCodePoints.d.cts",
+        "default": "./ja/minCodePoints.cjs"
       }
     },
     "./ja/minEntries": {
@@ -13495,6 +14325,16 @@
       "require": {
         "types": "./ja/notBytes.d.cts",
         "default": "./ja/notBytes.cjs"
+      }
+    },
+    "./ja/notCodePoints": {
+      "import": {
+        "types": "./ja/notCodePoints.d.mts",
+        "default": "./ja/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ja/notCodePoints.d.cts",
+        "default": "./ja/notCodePoints.cjs"
       }
     },
     "./ja/notEntries": {
@@ -13897,6 +14737,16 @@
         "default": "./ko/checkItemsAsync.cjs"
       }
     },
+    "./ko/codePoints": {
+      "import": {
+        "types": "./ko/codePoints.d.mts",
+        "default": "./ko/codePoints.mjs"
+      },
+      "require": {
+        "types": "./ko/codePoints.d.cts",
+        "default": "./ko/codePoints.cjs"
+      }
+    },
     "./ko/creditCard": {
       "import": {
         "types": "./ko/creditCard.d.mts",
@@ -14177,6 +15027,16 @@
         "default": "./ko/isoDateTime.cjs"
       }
     },
+    "./ko/isoDateTimeSecond": {
+      "import": {
+        "types": "./ko/isoDateTimeSecond.d.mts",
+        "default": "./ko/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./ko/isoDateTimeSecond.d.cts",
+        "default": "./ko/isoDateTimeSecond.cjs"
+      }
+    },
     "./ko/isoTime": {
       "import": {
         "types": "./ko/isoTime.d.mts",
@@ -14237,6 +15097,16 @@
         "default": "./ko/jwsCompact.cjs"
       }
     },
+    "./ko/ksuid": {
+      "import": {
+        "types": "./ko/ksuid.d.mts",
+        "default": "./ko/ksuid.mjs"
+      },
+      "require": {
+        "types": "./ko/ksuid.d.cts",
+        "default": "./ko/ksuid.cjs"
+      }
+    },
     "./ko/length": {
       "import": {
         "types": "./ko/length.d.mts",
@@ -14295,6 +15165,16 @@
       "require": {
         "types": "./ko/maxBytes.d.cts",
         "default": "./ko/maxBytes.cjs"
+      }
+    },
+    "./ko/maxCodePoints": {
+      "import": {
+        "types": "./ko/maxCodePoints.d.mts",
+        "default": "./ko/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ko/maxCodePoints.d.cts",
+        "default": "./ko/maxCodePoints.cjs"
       }
     },
     "./ko/maxEntries": {
@@ -14375,6 +15255,16 @@
       "require": {
         "types": "./ko/minBytes.d.cts",
         "default": "./ko/minBytes.cjs"
+      }
+    },
+    "./ko/minCodePoints": {
+      "import": {
+        "types": "./ko/minCodePoints.d.mts",
+        "default": "./ko/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ko/minCodePoints.d.cts",
+        "default": "./ko/minCodePoints.cjs"
       }
     },
     "./ko/minEntries": {
@@ -14475,6 +15365,16 @@
       "require": {
         "types": "./ko/notBytes.d.cts",
         "default": "./ko/notBytes.cjs"
+      }
+    },
+    "./ko/notCodePoints": {
+      "import": {
+        "types": "./ko/notCodePoints.d.mts",
+        "default": "./ko/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ko/notCodePoints.d.cts",
+        "default": "./ko/notCodePoints.cjs"
       }
     },
     "./ko/notEntries": {
@@ -14877,6 +15777,16 @@
         "default": "./kr/checkItemsAsync.cjs"
       }
     },
+    "./kr/codePoints": {
+      "import": {
+        "types": "./kr/codePoints.d.mts",
+        "default": "./kr/codePoints.mjs"
+      },
+      "require": {
+        "types": "./kr/codePoints.d.cts",
+        "default": "./kr/codePoints.cjs"
+      }
+    },
     "./kr/creditCard": {
       "import": {
         "types": "./kr/creditCard.d.mts",
@@ -15157,6 +16067,16 @@
         "default": "./kr/isoDateTime.cjs"
       }
     },
+    "./kr/isoDateTimeSecond": {
+      "import": {
+        "types": "./kr/isoDateTimeSecond.d.mts",
+        "default": "./kr/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./kr/isoDateTimeSecond.d.cts",
+        "default": "./kr/isoDateTimeSecond.cjs"
+      }
+    },
     "./kr/isoTime": {
       "import": {
         "types": "./kr/isoTime.d.mts",
@@ -15217,6 +16137,16 @@
         "default": "./kr/jwsCompact.cjs"
       }
     },
+    "./kr/ksuid": {
+      "import": {
+        "types": "./kr/ksuid.d.mts",
+        "default": "./kr/ksuid.mjs"
+      },
+      "require": {
+        "types": "./kr/ksuid.d.cts",
+        "default": "./kr/ksuid.cjs"
+      }
+    },
     "./kr/length": {
       "import": {
         "types": "./kr/length.d.mts",
@@ -15275,6 +16205,16 @@
       "require": {
         "types": "./kr/maxBytes.d.cts",
         "default": "./kr/maxBytes.cjs"
+      }
+    },
+    "./kr/maxCodePoints": {
+      "import": {
+        "types": "./kr/maxCodePoints.d.mts",
+        "default": "./kr/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./kr/maxCodePoints.d.cts",
+        "default": "./kr/maxCodePoints.cjs"
       }
     },
     "./kr/maxEntries": {
@@ -15355,6 +16295,16 @@
       "require": {
         "types": "./kr/minBytes.d.cts",
         "default": "./kr/minBytes.cjs"
+      }
+    },
+    "./kr/minCodePoints": {
+      "import": {
+        "types": "./kr/minCodePoints.d.mts",
+        "default": "./kr/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./kr/minCodePoints.d.cts",
+        "default": "./kr/minCodePoints.cjs"
       }
     },
     "./kr/minEntries": {
@@ -15455,6 +16405,16 @@
       "require": {
         "types": "./kr/notBytes.d.cts",
         "default": "./kr/notBytes.cjs"
+      }
+    },
+    "./kr/notCodePoints": {
+      "import": {
+        "types": "./kr/notCodePoints.d.mts",
+        "default": "./kr/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./kr/notCodePoints.d.cts",
+        "default": "./kr/notCodePoints.cjs"
       }
     },
     "./kr/notEntries": {
@@ -15857,6 +16817,16 @@
         "default": "./mn/checkItemsAsync.cjs"
       }
     },
+    "./mn/codePoints": {
+      "import": {
+        "types": "./mn/codePoints.d.mts",
+        "default": "./mn/codePoints.mjs"
+      },
+      "require": {
+        "types": "./mn/codePoints.d.cts",
+        "default": "./mn/codePoints.cjs"
+      }
+    },
     "./mn/creditCard": {
       "import": {
         "types": "./mn/creditCard.d.mts",
@@ -16137,6 +17107,16 @@
         "default": "./mn/isoDateTime.cjs"
       }
     },
+    "./mn/isoDateTimeSecond": {
+      "import": {
+        "types": "./mn/isoDateTimeSecond.d.mts",
+        "default": "./mn/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./mn/isoDateTimeSecond.d.cts",
+        "default": "./mn/isoDateTimeSecond.cjs"
+      }
+    },
     "./mn/isoTime": {
       "import": {
         "types": "./mn/isoTime.d.mts",
@@ -16197,6 +17177,16 @@
         "default": "./mn/jwsCompact.cjs"
       }
     },
+    "./mn/ksuid": {
+      "import": {
+        "types": "./mn/ksuid.d.mts",
+        "default": "./mn/ksuid.mjs"
+      },
+      "require": {
+        "types": "./mn/ksuid.d.cts",
+        "default": "./mn/ksuid.cjs"
+      }
+    },
     "./mn/length": {
       "import": {
         "types": "./mn/length.d.mts",
@@ -16255,6 +17245,16 @@
       "require": {
         "types": "./mn/maxBytes.d.cts",
         "default": "./mn/maxBytes.cjs"
+      }
+    },
+    "./mn/maxCodePoints": {
+      "import": {
+        "types": "./mn/maxCodePoints.d.mts",
+        "default": "./mn/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./mn/maxCodePoints.d.cts",
+        "default": "./mn/maxCodePoints.cjs"
       }
     },
     "./mn/maxEntries": {
@@ -16335,6 +17335,16 @@
       "require": {
         "types": "./mn/minBytes.d.cts",
         "default": "./mn/minBytes.cjs"
+      }
+    },
+    "./mn/minCodePoints": {
+      "import": {
+        "types": "./mn/minCodePoints.d.mts",
+        "default": "./mn/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./mn/minCodePoints.d.cts",
+        "default": "./mn/minCodePoints.cjs"
       }
     },
     "./mn/minEntries": {
@@ -16435,6 +17445,16 @@
       "require": {
         "types": "./mn/notBytes.d.cts",
         "default": "./mn/notBytes.cjs"
+      }
+    },
+    "./mn/notCodePoints": {
+      "import": {
+        "types": "./mn/notCodePoints.d.mts",
+        "default": "./mn/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./mn/notCodePoints.d.cts",
+        "default": "./mn/notCodePoints.cjs"
       }
     },
     "./mn/notEntries": {
@@ -16837,6 +17857,16 @@
         "default": "./nb/checkItemsAsync.cjs"
       }
     },
+    "./nb/codePoints": {
+      "import": {
+        "types": "./nb/codePoints.d.mts",
+        "default": "./nb/codePoints.mjs"
+      },
+      "require": {
+        "types": "./nb/codePoints.d.cts",
+        "default": "./nb/codePoints.cjs"
+      }
+    },
     "./nb/creditCard": {
       "import": {
         "types": "./nb/creditCard.d.mts",
@@ -17117,6 +18147,16 @@
         "default": "./nb/isoDateTime.cjs"
       }
     },
+    "./nb/isoDateTimeSecond": {
+      "import": {
+        "types": "./nb/isoDateTimeSecond.d.mts",
+        "default": "./nb/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./nb/isoDateTimeSecond.d.cts",
+        "default": "./nb/isoDateTimeSecond.cjs"
+      }
+    },
     "./nb/isoTime": {
       "import": {
         "types": "./nb/isoTime.d.mts",
@@ -17177,6 +18217,16 @@
         "default": "./nb/jwsCompact.cjs"
       }
     },
+    "./nb/ksuid": {
+      "import": {
+        "types": "./nb/ksuid.d.mts",
+        "default": "./nb/ksuid.mjs"
+      },
+      "require": {
+        "types": "./nb/ksuid.d.cts",
+        "default": "./nb/ksuid.cjs"
+      }
+    },
     "./nb/length": {
       "import": {
         "types": "./nb/length.d.mts",
@@ -17235,6 +18285,16 @@
       "require": {
         "types": "./nb/maxBytes.d.cts",
         "default": "./nb/maxBytes.cjs"
+      }
+    },
+    "./nb/maxCodePoints": {
+      "import": {
+        "types": "./nb/maxCodePoints.d.mts",
+        "default": "./nb/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./nb/maxCodePoints.d.cts",
+        "default": "./nb/maxCodePoints.cjs"
       }
     },
     "./nb/maxEntries": {
@@ -17315,6 +18375,16 @@
       "require": {
         "types": "./nb/minBytes.d.cts",
         "default": "./nb/minBytes.cjs"
+      }
+    },
+    "./nb/minCodePoints": {
+      "import": {
+        "types": "./nb/minCodePoints.d.mts",
+        "default": "./nb/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./nb/minCodePoints.d.cts",
+        "default": "./nb/minCodePoints.cjs"
       }
     },
     "./nb/minEntries": {
@@ -17415,6 +18485,16 @@
       "require": {
         "types": "./nb/notBytes.d.cts",
         "default": "./nb/notBytes.cjs"
+      }
+    },
+    "./nb/notCodePoints": {
+      "import": {
+        "types": "./nb/notCodePoints.d.mts",
+        "default": "./nb/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./nb/notCodePoints.d.cts",
+        "default": "./nb/notCodePoints.cjs"
       }
     },
     "./nb/notEntries": {
@@ -17817,6 +18897,16 @@
         "default": "./nl/checkItemsAsync.cjs"
       }
     },
+    "./nl/codePoints": {
+      "import": {
+        "types": "./nl/codePoints.d.mts",
+        "default": "./nl/codePoints.mjs"
+      },
+      "require": {
+        "types": "./nl/codePoints.d.cts",
+        "default": "./nl/codePoints.cjs"
+      }
+    },
     "./nl/creditCard": {
       "import": {
         "types": "./nl/creditCard.d.mts",
@@ -18097,6 +19187,16 @@
         "default": "./nl/isoDateTime.cjs"
       }
     },
+    "./nl/isoDateTimeSecond": {
+      "import": {
+        "types": "./nl/isoDateTimeSecond.d.mts",
+        "default": "./nl/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./nl/isoDateTimeSecond.d.cts",
+        "default": "./nl/isoDateTimeSecond.cjs"
+      }
+    },
     "./nl/isoTime": {
       "import": {
         "types": "./nl/isoTime.d.mts",
@@ -18157,6 +19257,16 @@
         "default": "./nl/jwsCompact.cjs"
       }
     },
+    "./nl/ksuid": {
+      "import": {
+        "types": "./nl/ksuid.d.mts",
+        "default": "./nl/ksuid.mjs"
+      },
+      "require": {
+        "types": "./nl/ksuid.d.cts",
+        "default": "./nl/ksuid.cjs"
+      }
+    },
     "./nl/length": {
       "import": {
         "types": "./nl/length.d.mts",
@@ -18215,6 +19325,16 @@
       "require": {
         "types": "./nl/maxBytes.d.cts",
         "default": "./nl/maxBytes.cjs"
+      }
+    },
+    "./nl/maxCodePoints": {
+      "import": {
+        "types": "./nl/maxCodePoints.d.mts",
+        "default": "./nl/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./nl/maxCodePoints.d.cts",
+        "default": "./nl/maxCodePoints.cjs"
       }
     },
     "./nl/maxEntries": {
@@ -18295,6 +19415,16 @@
       "require": {
         "types": "./nl/minBytes.d.cts",
         "default": "./nl/minBytes.cjs"
+      }
+    },
+    "./nl/minCodePoints": {
+      "import": {
+        "types": "./nl/minCodePoints.d.mts",
+        "default": "./nl/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./nl/minCodePoints.d.cts",
+        "default": "./nl/minCodePoints.cjs"
       }
     },
     "./nl/minEntries": {
@@ -18395,6 +19525,16 @@
       "require": {
         "types": "./nl/notBytes.d.cts",
         "default": "./nl/notBytes.cjs"
+      }
+    },
+    "./nl/notCodePoints": {
+      "import": {
+        "types": "./nl/notCodePoints.d.mts",
+        "default": "./nl/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./nl/notCodePoints.d.cts",
+        "default": "./nl/notCodePoints.cjs"
       }
     },
     "./nl/notEntries": {
@@ -18797,6 +19937,16 @@
         "default": "./pl/checkItemsAsync.cjs"
       }
     },
+    "./pl/codePoints": {
+      "import": {
+        "types": "./pl/codePoints.d.mts",
+        "default": "./pl/codePoints.mjs"
+      },
+      "require": {
+        "types": "./pl/codePoints.d.cts",
+        "default": "./pl/codePoints.cjs"
+      }
+    },
     "./pl/creditCard": {
       "import": {
         "types": "./pl/creditCard.d.mts",
@@ -19077,6 +20227,16 @@
         "default": "./pl/isoDateTime.cjs"
       }
     },
+    "./pl/isoDateTimeSecond": {
+      "import": {
+        "types": "./pl/isoDateTimeSecond.d.mts",
+        "default": "./pl/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./pl/isoDateTimeSecond.d.cts",
+        "default": "./pl/isoDateTimeSecond.cjs"
+      }
+    },
     "./pl/isoTime": {
       "import": {
         "types": "./pl/isoTime.d.mts",
@@ -19137,6 +20297,16 @@
         "default": "./pl/jwsCompact.cjs"
       }
     },
+    "./pl/ksuid": {
+      "import": {
+        "types": "./pl/ksuid.d.mts",
+        "default": "./pl/ksuid.mjs"
+      },
+      "require": {
+        "types": "./pl/ksuid.d.cts",
+        "default": "./pl/ksuid.cjs"
+      }
+    },
     "./pl/length": {
       "import": {
         "types": "./pl/length.d.mts",
@@ -19195,6 +20365,16 @@
       "require": {
         "types": "./pl/maxBytes.d.cts",
         "default": "./pl/maxBytes.cjs"
+      }
+    },
+    "./pl/maxCodePoints": {
+      "import": {
+        "types": "./pl/maxCodePoints.d.mts",
+        "default": "./pl/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./pl/maxCodePoints.d.cts",
+        "default": "./pl/maxCodePoints.cjs"
       }
     },
     "./pl/maxEntries": {
@@ -19275,6 +20455,16 @@
       "require": {
         "types": "./pl/minBytes.d.cts",
         "default": "./pl/minBytes.cjs"
+      }
+    },
+    "./pl/minCodePoints": {
+      "import": {
+        "types": "./pl/minCodePoints.d.mts",
+        "default": "./pl/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./pl/minCodePoints.d.cts",
+        "default": "./pl/minCodePoints.cjs"
       }
     },
     "./pl/minEntries": {
@@ -19375,6 +20565,16 @@
       "require": {
         "types": "./pl/notBytes.d.cts",
         "default": "./pl/notBytes.cjs"
+      }
+    },
+    "./pl/notCodePoints": {
+      "import": {
+        "types": "./pl/notCodePoints.d.mts",
+        "default": "./pl/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./pl/notCodePoints.d.cts",
+        "default": "./pl/notCodePoints.cjs"
       }
     },
     "./pl/notEntries": {
@@ -19777,6 +20977,16 @@
         "default": "./pt/checkItemsAsync.cjs"
       }
     },
+    "./pt/codePoints": {
+      "import": {
+        "types": "./pt/codePoints.d.mts",
+        "default": "./pt/codePoints.mjs"
+      },
+      "require": {
+        "types": "./pt/codePoints.d.cts",
+        "default": "./pt/codePoints.cjs"
+      }
+    },
     "./pt/creditCard": {
       "import": {
         "types": "./pt/creditCard.d.mts",
@@ -20057,6 +21267,16 @@
         "default": "./pt/isoDateTime.cjs"
       }
     },
+    "./pt/isoDateTimeSecond": {
+      "import": {
+        "types": "./pt/isoDateTimeSecond.d.mts",
+        "default": "./pt/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./pt/isoDateTimeSecond.d.cts",
+        "default": "./pt/isoDateTimeSecond.cjs"
+      }
+    },
     "./pt/isoTime": {
       "import": {
         "types": "./pt/isoTime.d.mts",
@@ -20117,6 +21337,16 @@
         "default": "./pt/jwsCompact.cjs"
       }
     },
+    "./pt/ksuid": {
+      "import": {
+        "types": "./pt/ksuid.d.mts",
+        "default": "./pt/ksuid.mjs"
+      },
+      "require": {
+        "types": "./pt/ksuid.d.cts",
+        "default": "./pt/ksuid.cjs"
+      }
+    },
     "./pt/length": {
       "import": {
         "types": "./pt/length.d.mts",
@@ -20175,6 +21405,16 @@
       "require": {
         "types": "./pt/maxBytes.d.cts",
         "default": "./pt/maxBytes.cjs"
+      }
+    },
+    "./pt/maxCodePoints": {
+      "import": {
+        "types": "./pt/maxCodePoints.d.mts",
+        "default": "./pt/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./pt/maxCodePoints.d.cts",
+        "default": "./pt/maxCodePoints.cjs"
       }
     },
     "./pt/maxEntries": {
@@ -20255,6 +21495,16 @@
       "require": {
         "types": "./pt/minBytes.d.cts",
         "default": "./pt/minBytes.cjs"
+      }
+    },
+    "./pt/minCodePoints": {
+      "import": {
+        "types": "./pt/minCodePoints.d.mts",
+        "default": "./pt/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./pt/minCodePoints.d.cts",
+        "default": "./pt/minCodePoints.cjs"
       }
     },
     "./pt/minEntries": {
@@ -20355,6 +21605,16 @@
       "require": {
         "types": "./pt/notBytes.d.cts",
         "default": "./pt/notBytes.cjs"
+      }
+    },
+    "./pt/notCodePoints": {
+      "import": {
+        "types": "./pt/notCodePoints.d.mts",
+        "default": "./pt/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./pt/notCodePoints.d.cts",
+        "default": "./pt/notCodePoints.cjs"
       }
     },
     "./pt/notEntries": {
@@ -20757,6 +22017,16 @@
         "default": "./ro/checkItemsAsync.cjs"
       }
     },
+    "./ro/codePoints": {
+      "import": {
+        "types": "./ro/codePoints.d.mts",
+        "default": "./ro/codePoints.mjs"
+      },
+      "require": {
+        "types": "./ro/codePoints.d.cts",
+        "default": "./ro/codePoints.cjs"
+      }
+    },
     "./ro/creditCard": {
       "import": {
         "types": "./ro/creditCard.d.mts",
@@ -21037,6 +22307,16 @@
         "default": "./ro/isoDateTime.cjs"
       }
     },
+    "./ro/isoDateTimeSecond": {
+      "import": {
+        "types": "./ro/isoDateTimeSecond.d.mts",
+        "default": "./ro/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./ro/isoDateTimeSecond.d.cts",
+        "default": "./ro/isoDateTimeSecond.cjs"
+      }
+    },
     "./ro/isoTime": {
       "import": {
         "types": "./ro/isoTime.d.mts",
@@ -21097,6 +22377,16 @@
         "default": "./ro/jwsCompact.cjs"
       }
     },
+    "./ro/ksuid": {
+      "import": {
+        "types": "./ro/ksuid.d.mts",
+        "default": "./ro/ksuid.mjs"
+      },
+      "require": {
+        "types": "./ro/ksuid.d.cts",
+        "default": "./ro/ksuid.cjs"
+      }
+    },
     "./ro/length": {
       "import": {
         "types": "./ro/length.d.mts",
@@ -21155,6 +22445,16 @@
       "require": {
         "types": "./ro/maxBytes.d.cts",
         "default": "./ro/maxBytes.cjs"
+      }
+    },
+    "./ro/maxCodePoints": {
+      "import": {
+        "types": "./ro/maxCodePoints.d.mts",
+        "default": "./ro/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ro/maxCodePoints.d.cts",
+        "default": "./ro/maxCodePoints.cjs"
       }
     },
     "./ro/maxEntries": {
@@ -21235,6 +22535,16 @@
       "require": {
         "types": "./ro/minBytes.d.cts",
         "default": "./ro/minBytes.cjs"
+      }
+    },
+    "./ro/minCodePoints": {
+      "import": {
+        "types": "./ro/minCodePoints.d.mts",
+        "default": "./ro/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ro/minCodePoints.d.cts",
+        "default": "./ro/minCodePoints.cjs"
       }
     },
     "./ro/minEntries": {
@@ -21335,6 +22645,16 @@
       "require": {
         "types": "./ro/notBytes.d.cts",
         "default": "./ro/notBytes.cjs"
+      }
+    },
+    "./ro/notCodePoints": {
+      "import": {
+        "types": "./ro/notCodePoints.d.mts",
+        "default": "./ro/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ro/notCodePoints.d.cts",
+        "default": "./ro/notCodePoints.cjs"
       }
     },
     "./ro/notEntries": {
@@ -21737,6 +23057,16 @@
         "default": "./ru/checkItemsAsync.cjs"
       }
     },
+    "./ru/codePoints": {
+      "import": {
+        "types": "./ru/codePoints.d.mts",
+        "default": "./ru/codePoints.mjs"
+      },
+      "require": {
+        "types": "./ru/codePoints.d.cts",
+        "default": "./ru/codePoints.cjs"
+      }
+    },
     "./ru/creditCard": {
       "import": {
         "types": "./ru/creditCard.d.mts",
@@ -22017,6 +23347,16 @@
         "default": "./ru/isoDateTime.cjs"
       }
     },
+    "./ru/isoDateTimeSecond": {
+      "import": {
+        "types": "./ru/isoDateTimeSecond.d.mts",
+        "default": "./ru/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./ru/isoDateTimeSecond.d.cts",
+        "default": "./ru/isoDateTimeSecond.cjs"
+      }
+    },
     "./ru/isoTime": {
       "import": {
         "types": "./ru/isoTime.d.mts",
@@ -22077,6 +23417,16 @@
         "default": "./ru/jwsCompact.cjs"
       }
     },
+    "./ru/ksuid": {
+      "import": {
+        "types": "./ru/ksuid.d.mts",
+        "default": "./ru/ksuid.mjs"
+      },
+      "require": {
+        "types": "./ru/ksuid.d.cts",
+        "default": "./ru/ksuid.cjs"
+      }
+    },
     "./ru/length": {
       "import": {
         "types": "./ru/length.d.mts",
@@ -22135,6 +23485,16 @@
       "require": {
         "types": "./ru/maxBytes.d.cts",
         "default": "./ru/maxBytes.cjs"
+      }
+    },
+    "./ru/maxCodePoints": {
+      "import": {
+        "types": "./ru/maxCodePoints.d.mts",
+        "default": "./ru/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ru/maxCodePoints.d.cts",
+        "default": "./ru/maxCodePoints.cjs"
       }
     },
     "./ru/maxEntries": {
@@ -22215,6 +23575,16 @@
       "require": {
         "types": "./ru/minBytes.d.cts",
         "default": "./ru/minBytes.cjs"
+      }
+    },
+    "./ru/minCodePoints": {
+      "import": {
+        "types": "./ru/minCodePoints.d.mts",
+        "default": "./ru/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ru/minCodePoints.d.cts",
+        "default": "./ru/minCodePoints.cjs"
       }
     },
     "./ru/minEntries": {
@@ -22315,6 +23685,16 @@
       "require": {
         "types": "./ru/notBytes.d.cts",
         "default": "./ru/notBytes.cjs"
+      }
+    },
+    "./ru/notCodePoints": {
+      "import": {
+        "types": "./ru/notCodePoints.d.mts",
+        "default": "./ru/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./ru/notCodePoints.d.cts",
+        "default": "./ru/notCodePoints.cjs"
       }
     },
     "./ru/notEntries": {
@@ -22717,6 +24097,16 @@
         "default": "./rw/checkItemsAsync.cjs"
       }
     },
+    "./rw/codePoints": {
+      "import": {
+        "types": "./rw/codePoints.d.mts",
+        "default": "./rw/codePoints.mjs"
+      },
+      "require": {
+        "types": "./rw/codePoints.d.cts",
+        "default": "./rw/codePoints.cjs"
+      }
+    },
     "./rw/creditCard": {
       "import": {
         "types": "./rw/creditCard.d.mts",
@@ -22997,6 +24387,16 @@
         "default": "./rw/isoDateTime.cjs"
       }
     },
+    "./rw/isoDateTimeSecond": {
+      "import": {
+        "types": "./rw/isoDateTimeSecond.d.mts",
+        "default": "./rw/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./rw/isoDateTimeSecond.d.cts",
+        "default": "./rw/isoDateTimeSecond.cjs"
+      }
+    },
     "./rw/isoTime": {
       "import": {
         "types": "./rw/isoTime.d.mts",
@@ -23057,6 +24457,16 @@
         "default": "./rw/jwsCompact.cjs"
       }
     },
+    "./rw/ksuid": {
+      "import": {
+        "types": "./rw/ksuid.d.mts",
+        "default": "./rw/ksuid.mjs"
+      },
+      "require": {
+        "types": "./rw/ksuid.d.cts",
+        "default": "./rw/ksuid.cjs"
+      }
+    },
     "./rw/length": {
       "import": {
         "types": "./rw/length.d.mts",
@@ -23115,6 +24525,16 @@
       "require": {
         "types": "./rw/maxBytes.d.cts",
         "default": "./rw/maxBytes.cjs"
+      }
+    },
+    "./rw/maxCodePoints": {
+      "import": {
+        "types": "./rw/maxCodePoints.d.mts",
+        "default": "./rw/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./rw/maxCodePoints.d.cts",
+        "default": "./rw/maxCodePoints.cjs"
       }
     },
     "./rw/maxEntries": {
@@ -23195,6 +24615,16 @@
       "require": {
         "types": "./rw/minBytes.d.cts",
         "default": "./rw/minBytes.cjs"
+      }
+    },
+    "./rw/minCodePoints": {
+      "import": {
+        "types": "./rw/minCodePoints.d.mts",
+        "default": "./rw/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./rw/minCodePoints.d.cts",
+        "default": "./rw/minCodePoints.cjs"
       }
     },
     "./rw/minEntries": {
@@ -23295,6 +24725,16 @@
       "require": {
         "types": "./rw/notBytes.d.cts",
         "default": "./rw/notBytes.cjs"
+      }
+    },
+    "./rw/notCodePoints": {
+      "import": {
+        "types": "./rw/notCodePoints.d.mts",
+        "default": "./rw/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./rw/notCodePoints.d.cts",
+        "default": "./rw/notCodePoints.cjs"
       }
     },
     "./rw/notEntries": {
@@ -23697,6 +25137,16 @@
         "default": "./sk/checkItemsAsync.cjs"
       }
     },
+    "./sk/codePoints": {
+      "import": {
+        "types": "./sk/codePoints.d.mts",
+        "default": "./sk/codePoints.mjs"
+      },
+      "require": {
+        "types": "./sk/codePoints.d.cts",
+        "default": "./sk/codePoints.cjs"
+      }
+    },
     "./sk/creditCard": {
       "import": {
         "types": "./sk/creditCard.d.mts",
@@ -23977,6 +25427,16 @@
         "default": "./sk/isoDateTime.cjs"
       }
     },
+    "./sk/isoDateTimeSecond": {
+      "import": {
+        "types": "./sk/isoDateTimeSecond.d.mts",
+        "default": "./sk/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./sk/isoDateTimeSecond.d.cts",
+        "default": "./sk/isoDateTimeSecond.cjs"
+      }
+    },
     "./sk/isoTime": {
       "import": {
         "types": "./sk/isoTime.d.mts",
@@ -24037,6 +25497,16 @@
         "default": "./sk/jwsCompact.cjs"
       }
     },
+    "./sk/ksuid": {
+      "import": {
+        "types": "./sk/ksuid.d.mts",
+        "default": "./sk/ksuid.mjs"
+      },
+      "require": {
+        "types": "./sk/ksuid.d.cts",
+        "default": "./sk/ksuid.cjs"
+      }
+    },
     "./sk/length": {
       "import": {
         "types": "./sk/length.d.mts",
@@ -24095,6 +25565,16 @@
       "require": {
         "types": "./sk/maxBytes.d.cts",
         "default": "./sk/maxBytes.cjs"
+      }
+    },
+    "./sk/maxCodePoints": {
+      "import": {
+        "types": "./sk/maxCodePoints.d.mts",
+        "default": "./sk/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./sk/maxCodePoints.d.cts",
+        "default": "./sk/maxCodePoints.cjs"
       }
     },
     "./sk/maxEntries": {
@@ -24175,6 +25655,16 @@
       "require": {
         "types": "./sk/minBytes.d.cts",
         "default": "./sk/minBytes.cjs"
+      }
+    },
+    "./sk/minCodePoints": {
+      "import": {
+        "types": "./sk/minCodePoints.d.mts",
+        "default": "./sk/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./sk/minCodePoints.d.cts",
+        "default": "./sk/minCodePoints.cjs"
       }
     },
     "./sk/minEntries": {
@@ -24275,6 +25765,16 @@
       "require": {
         "types": "./sk/notBytes.d.cts",
         "default": "./sk/notBytes.cjs"
+      }
+    },
+    "./sk/notCodePoints": {
+      "import": {
+        "types": "./sk/notCodePoints.d.mts",
+        "default": "./sk/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./sk/notCodePoints.d.cts",
+        "default": "./sk/notCodePoints.cjs"
       }
     },
     "./sk/notEntries": {
@@ -24677,6 +26177,16 @@
         "default": "./sl/checkItemsAsync.cjs"
       }
     },
+    "./sl/codePoints": {
+      "import": {
+        "types": "./sl/codePoints.d.mts",
+        "default": "./sl/codePoints.mjs"
+      },
+      "require": {
+        "types": "./sl/codePoints.d.cts",
+        "default": "./sl/codePoints.cjs"
+      }
+    },
     "./sl/creditCard": {
       "import": {
         "types": "./sl/creditCard.d.mts",
@@ -24957,6 +26467,16 @@
         "default": "./sl/isoDateTime.cjs"
       }
     },
+    "./sl/isoDateTimeSecond": {
+      "import": {
+        "types": "./sl/isoDateTimeSecond.d.mts",
+        "default": "./sl/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./sl/isoDateTimeSecond.d.cts",
+        "default": "./sl/isoDateTimeSecond.cjs"
+      }
+    },
     "./sl/isoTime": {
       "import": {
         "types": "./sl/isoTime.d.mts",
@@ -25017,6 +26537,16 @@
         "default": "./sl/jwsCompact.cjs"
       }
     },
+    "./sl/ksuid": {
+      "import": {
+        "types": "./sl/ksuid.d.mts",
+        "default": "./sl/ksuid.mjs"
+      },
+      "require": {
+        "types": "./sl/ksuid.d.cts",
+        "default": "./sl/ksuid.cjs"
+      }
+    },
     "./sl/length": {
       "import": {
         "types": "./sl/length.d.mts",
@@ -25075,6 +26605,16 @@
       "require": {
         "types": "./sl/maxBytes.d.cts",
         "default": "./sl/maxBytes.cjs"
+      }
+    },
+    "./sl/maxCodePoints": {
+      "import": {
+        "types": "./sl/maxCodePoints.d.mts",
+        "default": "./sl/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./sl/maxCodePoints.d.cts",
+        "default": "./sl/maxCodePoints.cjs"
       }
     },
     "./sl/maxEntries": {
@@ -25155,6 +26695,16 @@
       "require": {
         "types": "./sl/minBytes.d.cts",
         "default": "./sl/minBytes.cjs"
+      }
+    },
+    "./sl/minCodePoints": {
+      "import": {
+        "types": "./sl/minCodePoints.d.mts",
+        "default": "./sl/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./sl/minCodePoints.d.cts",
+        "default": "./sl/minCodePoints.cjs"
       }
     },
     "./sl/minEntries": {
@@ -25255,6 +26805,16 @@
       "require": {
         "types": "./sl/notBytes.d.cts",
         "default": "./sl/notBytes.cjs"
+      }
+    },
+    "./sl/notCodePoints": {
+      "import": {
+        "types": "./sl/notCodePoints.d.mts",
+        "default": "./sl/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./sl/notCodePoints.d.cts",
+        "default": "./sl/notCodePoints.cjs"
       }
     },
     "./sl/notEntries": {
@@ -25657,6 +27217,16 @@
         "default": "./sv/checkItemsAsync.cjs"
       }
     },
+    "./sv/codePoints": {
+      "import": {
+        "types": "./sv/codePoints.d.mts",
+        "default": "./sv/codePoints.mjs"
+      },
+      "require": {
+        "types": "./sv/codePoints.d.cts",
+        "default": "./sv/codePoints.cjs"
+      }
+    },
     "./sv/creditCard": {
       "import": {
         "types": "./sv/creditCard.d.mts",
@@ -25937,6 +27507,16 @@
         "default": "./sv/isoDateTime.cjs"
       }
     },
+    "./sv/isoDateTimeSecond": {
+      "import": {
+        "types": "./sv/isoDateTimeSecond.d.mts",
+        "default": "./sv/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./sv/isoDateTimeSecond.d.cts",
+        "default": "./sv/isoDateTimeSecond.cjs"
+      }
+    },
     "./sv/isoTime": {
       "import": {
         "types": "./sv/isoTime.d.mts",
@@ -25997,6 +27577,16 @@
         "default": "./sv/jwsCompact.cjs"
       }
     },
+    "./sv/ksuid": {
+      "import": {
+        "types": "./sv/ksuid.d.mts",
+        "default": "./sv/ksuid.mjs"
+      },
+      "require": {
+        "types": "./sv/ksuid.d.cts",
+        "default": "./sv/ksuid.cjs"
+      }
+    },
     "./sv/length": {
       "import": {
         "types": "./sv/length.d.mts",
@@ -26055,6 +27645,16 @@
       "require": {
         "types": "./sv/maxBytes.d.cts",
         "default": "./sv/maxBytes.cjs"
+      }
+    },
+    "./sv/maxCodePoints": {
+      "import": {
+        "types": "./sv/maxCodePoints.d.mts",
+        "default": "./sv/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./sv/maxCodePoints.d.cts",
+        "default": "./sv/maxCodePoints.cjs"
       }
     },
     "./sv/maxEntries": {
@@ -26135,6 +27735,16 @@
       "require": {
         "types": "./sv/minBytes.d.cts",
         "default": "./sv/minBytes.cjs"
+      }
+    },
+    "./sv/minCodePoints": {
+      "import": {
+        "types": "./sv/minCodePoints.d.mts",
+        "default": "./sv/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./sv/minCodePoints.d.cts",
+        "default": "./sv/minCodePoints.cjs"
       }
     },
     "./sv/minEntries": {
@@ -26235,6 +27845,16 @@
       "require": {
         "types": "./sv/notBytes.d.cts",
         "default": "./sv/notBytes.cjs"
+      }
+    },
+    "./sv/notCodePoints": {
+      "import": {
+        "types": "./sv/notCodePoints.d.mts",
+        "default": "./sv/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./sv/notCodePoints.d.cts",
+        "default": "./sv/notCodePoints.cjs"
       }
     },
     "./sv/notEntries": {
@@ -26637,6 +28257,16 @@
         "default": "./tr/checkItemsAsync.cjs"
       }
     },
+    "./tr/codePoints": {
+      "import": {
+        "types": "./tr/codePoints.d.mts",
+        "default": "./tr/codePoints.mjs"
+      },
+      "require": {
+        "types": "./tr/codePoints.d.cts",
+        "default": "./tr/codePoints.cjs"
+      }
+    },
     "./tr/creditCard": {
       "import": {
         "types": "./tr/creditCard.d.mts",
@@ -26917,6 +28547,16 @@
         "default": "./tr/isoDateTime.cjs"
       }
     },
+    "./tr/isoDateTimeSecond": {
+      "import": {
+        "types": "./tr/isoDateTimeSecond.d.mts",
+        "default": "./tr/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./tr/isoDateTimeSecond.d.cts",
+        "default": "./tr/isoDateTimeSecond.cjs"
+      }
+    },
     "./tr/isoTime": {
       "import": {
         "types": "./tr/isoTime.d.mts",
@@ -26977,6 +28617,16 @@
         "default": "./tr/jwsCompact.cjs"
       }
     },
+    "./tr/ksuid": {
+      "import": {
+        "types": "./tr/ksuid.d.mts",
+        "default": "./tr/ksuid.mjs"
+      },
+      "require": {
+        "types": "./tr/ksuid.d.cts",
+        "default": "./tr/ksuid.cjs"
+      }
+    },
     "./tr/length": {
       "import": {
         "types": "./tr/length.d.mts",
@@ -27035,6 +28685,16 @@
       "require": {
         "types": "./tr/maxBytes.d.cts",
         "default": "./tr/maxBytes.cjs"
+      }
+    },
+    "./tr/maxCodePoints": {
+      "import": {
+        "types": "./tr/maxCodePoints.d.mts",
+        "default": "./tr/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./tr/maxCodePoints.d.cts",
+        "default": "./tr/maxCodePoints.cjs"
       }
     },
     "./tr/maxEntries": {
@@ -27115,6 +28775,16 @@
       "require": {
         "types": "./tr/minBytes.d.cts",
         "default": "./tr/minBytes.cjs"
+      }
+    },
+    "./tr/minCodePoints": {
+      "import": {
+        "types": "./tr/minCodePoints.d.mts",
+        "default": "./tr/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./tr/minCodePoints.d.cts",
+        "default": "./tr/minCodePoints.cjs"
       }
     },
     "./tr/minEntries": {
@@ -27215,6 +28885,16 @@
       "require": {
         "types": "./tr/notBytes.d.cts",
         "default": "./tr/notBytes.cjs"
+      }
+    },
+    "./tr/notCodePoints": {
+      "import": {
+        "types": "./tr/notCodePoints.d.mts",
+        "default": "./tr/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./tr/notCodePoints.d.cts",
+        "default": "./tr/notCodePoints.cjs"
       }
     },
     "./tr/notEntries": {
@@ -27617,6 +29297,16 @@
         "default": "./uk/checkItemsAsync.cjs"
       }
     },
+    "./uk/codePoints": {
+      "import": {
+        "types": "./uk/codePoints.d.mts",
+        "default": "./uk/codePoints.mjs"
+      },
+      "require": {
+        "types": "./uk/codePoints.d.cts",
+        "default": "./uk/codePoints.cjs"
+      }
+    },
     "./uk/creditCard": {
       "import": {
         "types": "./uk/creditCard.d.mts",
@@ -27897,6 +29587,16 @@
         "default": "./uk/isoDateTime.cjs"
       }
     },
+    "./uk/isoDateTimeSecond": {
+      "import": {
+        "types": "./uk/isoDateTimeSecond.d.mts",
+        "default": "./uk/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./uk/isoDateTimeSecond.d.cts",
+        "default": "./uk/isoDateTimeSecond.cjs"
+      }
+    },
     "./uk/isoTime": {
       "import": {
         "types": "./uk/isoTime.d.mts",
@@ -27957,6 +29657,16 @@
         "default": "./uk/jwsCompact.cjs"
       }
     },
+    "./uk/ksuid": {
+      "import": {
+        "types": "./uk/ksuid.d.mts",
+        "default": "./uk/ksuid.mjs"
+      },
+      "require": {
+        "types": "./uk/ksuid.d.cts",
+        "default": "./uk/ksuid.cjs"
+      }
+    },
     "./uk/length": {
       "import": {
         "types": "./uk/length.d.mts",
@@ -28015,6 +29725,16 @@
       "require": {
         "types": "./uk/maxBytes.d.cts",
         "default": "./uk/maxBytes.cjs"
+      }
+    },
+    "./uk/maxCodePoints": {
+      "import": {
+        "types": "./uk/maxCodePoints.d.mts",
+        "default": "./uk/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./uk/maxCodePoints.d.cts",
+        "default": "./uk/maxCodePoints.cjs"
       }
     },
     "./uk/maxEntries": {
@@ -28095,6 +29815,16 @@
       "require": {
         "types": "./uk/minBytes.d.cts",
         "default": "./uk/minBytes.cjs"
+      }
+    },
+    "./uk/minCodePoints": {
+      "import": {
+        "types": "./uk/minCodePoints.d.mts",
+        "default": "./uk/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./uk/minCodePoints.d.cts",
+        "default": "./uk/minCodePoints.cjs"
       }
     },
     "./uk/minEntries": {
@@ -28195,6 +29925,16 @@
       "require": {
         "types": "./uk/notBytes.d.cts",
         "default": "./uk/notBytes.cjs"
+      }
+    },
+    "./uk/notCodePoints": {
+      "import": {
+        "types": "./uk/notCodePoints.d.mts",
+        "default": "./uk/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./uk/notCodePoints.d.cts",
+        "default": "./uk/notCodePoints.cjs"
       }
     },
     "./uk/notEntries": {
@@ -28597,6 +30337,16 @@
         "default": "./uz/checkItemsAsync.cjs"
       }
     },
+    "./uz/codePoints": {
+      "import": {
+        "types": "./uz/codePoints.d.mts",
+        "default": "./uz/codePoints.mjs"
+      },
+      "require": {
+        "types": "./uz/codePoints.d.cts",
+        "default": "./uz/codePoints.cjs"
+      }
+    },
     "./uz/creditCard": {
       "import": {
         "types": "./uz/creditCard.d.mts",
@@ -28877,6 +30627,16 @@
         "default": "./uz/isoDateTime.cjs"
       }
     },
+    "./uz/isoDateTimeSecond": {
+      "import": {
+        "types": "./uz/isoDateTimeSecond.d.mts",
+        "default": "./uz/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./uz/isoDateTimeSecond.d.cts",
+        "default": "./uz/isoDateTimeSecond.cjs"
+      }
+    },
     "./uz/isoTime": {
       "import": {
         "types": "./uz/isoTime.d.mts",
@@ -28937,6 +30697,16 @@
         "default": "./uz/jwsCompact.cjs"
       }
     },
+    "./uz/ksuid": {
+      "import": {
+        "types": "./uz/ksuid.d.mts",
+        "default": "./uz/ksuid.mjs"
+      },
+      "require": {
+        "types": "./uz/ksuid.d.cts",
+        "default": "./uz/ksuid.cjs"
+      }
+    },
     "./uz/length": {
       "import": {
         "types": "./uz/length.d.mts",
@@ -28995,6 +30765,16 @@
       "require": {
         "types": "./uz/maxBytes.d.cts",
         "default": "./uz/maxBytes.cjs"
+      }
+    },
+    "./uz/maxCodePoints": {
+      "import": {
+        "types": "./uz/maxCodePoints.d.mts",
+        "default": "./uz/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./uz/maxCodePoints.d.cts",
+        "default": "./uz/maxCodePoints.cjs"
       }
     },
     "./uz/maxEntries": {
@@ -29075,6 +30855,16 @@
       "require": {
         "types": "./uz/minBytes.d.cts",
         "default": "./uz/minBytes.cjs"
+      }
+    },
+    "./uz/minCodePoints": {
+      "import": {
+        "types": "./uz/minCodePoints.d.mts",
+        "default": "./uz/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./uz/minCodePoints.d.cts",
+        "default": "./uz/minCodePoints.cjs"
       }
     },
     "./uz/minEntries": {
@@ -29175,6 +30965,16 @@
       "require": {
         "types": "./uz/notBytes.d.cts",
         "default": "./uz/notBytes.cjs"
+      }
+    },
+    "./uz/notCodePoints": {
+      "import": {
+        "types": "./uz/notCodePoints.d.mts",
+        "default": "./uz/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./uz/notCodePoints.d.cts",
+        "default": "./uz/notCodePoints.cjs"
       }
     },
     "./uz/notEntries": {
@@ -29577,6 +31377,16 @@
         "default": "./vi/checkItemsAsync.cjs"
       }
     },
+    "./vi/codePoints": {
+      "import": {
+        "types": "./vi/codePoints.d.mts",
+        "default": "./vi/codePoints.mjs"
+      },
+      "require": {
+        "types": "./vi/codePoints.d.cts",
+        "default": "./vi/codePoints.cjs"
+      }
+    },
     "./vi/creditCard": {
       "import": {
         "types": "./vi/creditCard.d.mts",
@@ -29857,6 +31667,16 @@
         "default": "./vi/isoDateTime.cjs"
       }
     },
+    "./vi/isoDateTimeSecond": {
+      "import": {
+        "types": "./vi/isoDateTimeSecond.d.mts",
+        "default": "./vi/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./vi/isoDateTimeSecond.d.cts",
+        "default": "./vi/isoDateTimeSecond.cjs"
+      }
+    },
     "./vi/isoTime": {
       "import": {
         "types": "./vi/isoTime.d.mts",
@@ -29917,6 +31737,16 @@
         "default": "./vi/jwsCompact.cjs"
       }
     },
+    "./vi/ksuid": {
+      "import": {
+        "types": "./vi/ksuid.d.mts",
+        "default": "./vi/ksuid.mjs"
+      },
+      "require": {
+        "types": "./vi/ksuid.d.cts",
+        "default": "./vi/ksuid.cjs"
+      }
+    },
     "./vi/length": {
       "import": {
         "types": "./vi/length.d.mts",
@@ -29975,6 +31805,16 @@
       "require": {
         "types": "./vi/maxBytes.d.cts",
         "default": "./vi/maxBytes.cjs"
+      }
+    },
+    "./vi/maxCodePoints": {
+      "import": {
+        "types": "./vi/maxCodePoints.d.mts",
+        "default": "./vi/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./vi/maxCodePoints.d.cts",
+        "default": "./vi/maxCodePoints.cjs"
       }
     },
     "./vi/maxEntries": {
@@ -30055,6 +31895,16 @@
       "require": {
         "types": "./vi/minBytes.d.cts",
         "default": "./vi/minBytes.cjs"
+      }
+    },
+    "./vi/minCodePoints": {
+      "import": {
+        "types": "./vi/minCodePoints.d.mts",
+        "default": "./vi/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./vi/minCodePoints.d.cts",
+        "default": "./vi/minCodePoints.cjs"
       }
     },
     "./vi/minEntries": {
@@ -30155,6 +32005,16 @@
       "require": {
         "types": "./vi/notBytes.d.cts",
         "default": "./vi/notBytes.cjs"
+      }
+    },
+    "./vi/notCodePoints": {
+      "import": {
+        "types": "./vi/notCodePoints.d.mts",
+        "default": "./vi/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./vi/notCodePoints.d.cts",
+        "default": "./vi/notCodePoints.cjs"
       }
     },
     "./vi/notEntries": {
@@ -30557,6 +32417,16 @@
         "default": "./zh-CN/checkItemsAsync.cjs"
       }
     },
+    "./zh-CN/codePoints": {
+      "import": {
+        "types": "./zh-CN/codePoints.d.mts",
+        "default": "./zh-CN/codePoints.mjs"
+      },
+      "require": {
+        "types": "./zh-CN/codePoints.d.cts",
+        "default": "./zh-CN/codePoints.cjs"
+      }
+    },
     "./zh-CN/creditCard": {
       "import": {
         "types": "./zh-CN/creditCard.d.mts",
@@ -30837,6 +32707,16 @@
         "default": "./zh-CN/isoDateTime.cjs"
       }
     },
+    "./zh-CN/isoDateTimeSecond": {
+      "import": {
+        "types": "./zh-CN/isoDateTimeSecond.d.mts",
+        "default": "./zh-CN/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./zh-CN/isoDateTimeSecond.d.cts",
+        "default": "./zh-CN/isoDateTimeSecond.cjs"
+      }
+    },
     "./zh-CN/isoTime": {
       "import": {
         "types": "./zh-CN/isoTime.d.mts",
@@ -30897,6 +32777,16 @@
         "default": "./zh-CN/jwsCompact.cjs"
       }
     },
+    "./zh-CN/ksuid": {
+      "import": {
+        "types": "./zh-CN/ksuid.d.mts",
+        "default": "./zh-CN/ksuid.mjs"
+      },
+      "require": {
+        "types": "./zh-CN/ksuid.d.cts",
+        "default": "./zh-CN/ksuid.cjs"
+      }
+    },
     "./zh-CN/length": {
       "import": {
         "types": "./zh-CN/length.d.mts",
@@ -30955,6 +32845,16 @@
       "require": {
         "types": "./zh-CN/maxBytes.d.cts",
         "default": "./zh-CN/maxBytes.cjs"
+      }
+    },
+    "./zh-CN/maxCodePoints": {
+      "import": {
+        "types": "./zh-CN/maxCodePoints.d.mts",
+        "default": "./zh-CN/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./zh-CN/maxCodePoints.d.cts",
+        "default": "./zh-CN/maxCodePoints.cjs"
       }
     },
     "./zh-CN/maxEntries": {
@@ -31035,6 +32935,16 @@
       "require": {
         "types": "./zh-CN/minBytes.d.cts",
         "default": "./zh-CN/minBytes.cjs"
+      }
+    },
+    "./zh-CN/minCodePoints": {
+      "import": {
+        "types": "./zh-CN/minCodePoints.d.mts",
+        "default": "./zh-CN/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./zh-CN/minCodePoints.d.cts",
+        "default": "./zh-CN/minCodePoints.cjs"
       }
     },
     "./zh-CN/minEntries": {
@@ -31135,6 +33045,16 @@
       "require": {
         "types": "./zh-CN/notBytes.d.cts",
         "default": "./zh-CN/notBytes.cjs"
+      }
+    },
+    "./zh-CN/notCodePoints": {
+      "import": {
+        "types": "./zh-CN/notCodePoints.d.mts",
+        "default": "./zh-CN/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./zh-CN/notCodePoints.d.cts",
+        "default": "./zh-CN/notCodePoints.cjs"
       }
     },
     "./zh-CN/notEntries": {
@@ -31537,6 +33457,16 @@
         "default": "./zh-TW/checkItemsAsync.cjs"
       }
     },
+    "./zh-TW/codePoints": {
+      "import": {
+        "types": "./zh-TW/codePoints.d.mts",
+        "default": "./zh-TW/codePoints.mjs"
+      },
+      "require": {
+        "types": "./zh-TW/codePoints.d.cts",
+        "default": "./zh-TW/codePoints.cjs"
+      }
+    },
     "./zh-TW/creditCard": {
       "import": {
         "types": "./zh-TW/creditCard.d.mts",
@@ -31817,6 +33747,16 @@
         "default": "./zh-TW/isoDateTime.cjs"
       }
     },
+    "./zh-TW/isoDateTimeSecond": {
+      "import": {
+        "types": "./zh-TW/isoDateTimeSecond.d.mts",
+        "default": "./zh-TW/isoDateTimeSecond.mjs"
+      },
+      "require": {
+        "types": "./zh-TW/isoDateTimeSecond.d.cts",
+        "default": "./zh-TW/isoDateTimeSecond.cjs"
+      }
+    },
     "./zh-TW/isoTime": {
       "import": {
         "types": "./zh-TW/isoTime.d.mts",
@@ -31877,6 +33817,16 @@
         "default": "./zh-TW/jwsCompact.cjs"
       }
     },
+    "./zh-TW/ksuid": {
+      "import": {
+        "types": "./zh-TW/ksuid.d.mts",
+        "default": "./zh-TW/ksuid.mjs"
+      },
+      "require": {
+        "types": "./zh-TW/ksuid.d.cts",
+        "default": "./zh-TW/ksuid.cjs"
+      }
+    },
     "./zh-TW/length": {
       "import": {
         "types": "./zh-TW/length.d.mts",
@@ -31935,6 +33885,16 @@
       "require": {
         "types": "./zh-TW/maxBytes.d.cts",
         "default": "./zh-TW/maxBytes.cjs"
+      }
+    },
+    "./zh-TW/maxCodePoints": {
+      "import": {
+        "types": "./zh-TW/maxCodePoints.d.mts",
+        "default": "./zh-TW/maxCodePoints.mjs"
+      },
+      "require": {
+        "types": "./zh-TW/maxCodePoints.d.cts",
+        "default": "./zh-TW/maxCodePoints.cjs"
       }
     },
     "./zh-TW/maxEntries": {
@@ -32015,6 +33975,16 @@
       "require": {
         "types": "./zh-TW/minBytes.d.cts",
         "default": "./zh-TW/minBytes.cjs"
+      }
+    },
+    "./zh-TW/minCodePoints": {
+      "import": {
+        "types": "./zh-TW/minCodePoints.d.mts",
+        "default": "./zh-TW/minCodePoints.mjs"
+      },
+      "require": {
+        "types": "./zh-TW/minCodePoints.d.cts",
+        "default": "./zh-TW/minCodePoints.cjs"
       }
     },
     "./zh-TW/minEntries": {
@@ -32115,6 +34085,16 @@
       "require": {
         "types": "./zh-TW/notBytes.d.cts",
         "default": "./zh-TW/notBytes.cjs"
+      }
+    },
+    "./zh-TW/notCodePoints": {
+      "import": {
+        "types": "./zh-TW/notCodePoints.d.mts",
+        "default": "./zh-TW/notCodePoints.mjs"
+      },
+      "require": {
+        "types": "./zh-TW/notCodePoints.d.cts",
+        "default": "./zh-TW/notCodePoints.cjs"
       }
     },
     "./zh-TW/notEntries": {

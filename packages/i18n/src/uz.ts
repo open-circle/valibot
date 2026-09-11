@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Yaroqsiz kirish: ${issue.received} qabul qilindi`,
     checkItems:       (issue) => `Yaroqsiz element: ${issue.received} qabul qilindi`,
     checkItemsAsync:  (issue) => `Yaroqsiz element: ${issue.received} qabul qilindi`,
+    codePoints:       (issue) => `Yaroqsiz kod nuqtalari soni: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     creditCard:       (issue) => `Yaroqsiz kredit karta: ${issue.received} qabul qilindi`,
     cuid2:            (issue) => `Yaroqsiz Cuid2: ${issue.received} qabul qilindi`,
     decimal:          (issue) => `Yaroqsiz oʻnli son: ${issue.received} qabul qilindi`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Yaroqsiz ISBN: ${issue.received} qabul qilindi`,
     isoDate:          (issue) => `Yaroqsiz sana: ${issue.received} qabul qilindi`,
     isoDateTime:      (issue) => `Yaroqsiz sana-vaqt: ${issue.received} qabul qilindi`,
+    isoDateTimeSecond: (issue) => `Yaroqsiz soniyali sana-vaqt: ${issue.received} qabul qilindi`,
     isoTime:          (issue) => `Yaroqsiz vaqt: ${issue.received} qabul qilindi`,
     isoTimeSecond:    (issue) => `Yaroqsiz vaqt soniyasi: ${issue.received} qabul qilindi`,
     isoTimestamp:     (issue) => `Yaroqsiz timestamp: ${issue.received} qabul qilindi`,
     isoWeek:          (issue) => `Yaroqsiz hafta: ${issue.received} qabul qilindi`,
     isrc:             (issue) => `Yaroqsiz ISRC: ${issue.received} qabul qilindi`,
     jwsCompact:       (issue) => `Yaroqsiz JWS compact: ${issue.received} qabul qilindi`,
+    ksuid:            (issue) => `Yaroqsiz KSUID: ${issue.received} qabul qilindi`,
     length:           (issue) => `Yaroqsiz uzunlik: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     ltValue:          (issue) => `Yaroqsiz qiymat: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     mac:              (issue) => `Yaroqsiz MAC: ${issue.received} qabul qilindi`,
     mac48:            (issue) => `Yaroqsiz 48-bit MAC: ${issue.received} qabul qilindi`,
     mac64:            (issue) => `Yaroqsiz 64-bit MAC: ${issue.received} qabul qilindi`,
     maxBytes:         (issue) => `Yaroqsiz bayt: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
+    maxCodePoints:    (issue) => `Yaroqsiz kod nuqtalari soni: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     maxEntries:       (issue) => `Yaroqsiz yozuvlar: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     maxGraphemes:     (issue) => `Yaroqsiz grafemalar: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     maxLength:        (issue) => `Yaroqsiz uzunlik: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Yaroqsiz soʻzlar: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     mimeType:         (issue) => `Yaroqsiz MIME turi: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     minBytes:         (issue) => `Yaroqsiz bayt: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
+    minCodePoints:    (issue) => `Yaroqsiz kod nuqtalari soni: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     minEntries:       (issue) => `Yaroqsiz yozuvlar: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     minGraphemes:     (issue) => `Yaroqsiz grafemalar: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     minLength:        (issue) => `Yaroqsiz uzunlik: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Yaroqsiz Nano ID: ${issue.received} qabul qilindi`,
     nonEmpty:         (issue) => `Yaroqsiz uzunlik: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     notBytes:         (issue) => `Yaroqsiz bayt: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
+    notCodePoints:    (issue) => `Yaroqsiz kod nuqtalari soni: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     notEntries:       (issue) => `Yaroqsiz yozuvlar: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     notGraphemes:     (issue) => `Yaroqsiz grafemalar: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,
     notLength:        (issue) => `Yaroqsiz uzunlik: ${issue.expected} kutilgan edi, ammo ${issue.received} qabul qilindi`,

@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Ibyinjizwa bitemewe: hakiriwe ${issue.received}`,
     checkItems:       (issue) => `Ikintu kitemewe: hakiriwe ${issue.received}`,
     checkItemsAsync:  (issue) => `Ikintu kitemewe: hakiriwe ${issue.received}`,
+    codePoints:       (issue) => `Umubare w'utudomo twa kode utemewe: hari hitezwe ${issue.expected} ariko hakiriwe ${issue.received}`,
     creditCard:       (issue) => `Ikarita y'inguzanyo itemewe: hakiriwe ${issue.received}`,
     cuid2:            (issue) => `Cuid2 itemewe: hakiriwe ${issue.received}`,
     decimal:          (issue) => `Umubare w'ikinyacumi utemewe: hakiriwe ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `ISBN itemewe: hakiriwe ${issue.received}`,
     isoDate:          (issue) => `Itariki itemewe: hakiriwe ${issue.received}`,
     isoDateTime:      (issue) => `Itariki n'isaha bitemewe: hakiriwe ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Itariki n'isaha birimo amasegonda bitemewe: hakiriwe ${issue.received}`,
     isoTime:          (issue) => `Isaha itemewe: hakiriwe ${issue.received}`,
     isoTimeSecond:    (issue) => `Amasegonda atemewe: hakiriwe ${issue.received}`,
     isoTimestamp:     (issue) => `Timestamp itemewe: hakiriwe ${issue.received}`,
     isoWeek:          (issue) => `Icyumweru gitemewe: hakiriwe ${issue.received}`,
     isrc:             (issue) => `ISRC itemewe: hakiriwe ${issue.received}`,
     jwsCompact:       (issue) => `JWS itemewe: hakiriwe ${issue.received}`,
+    ksuid:            (issue) => `KSUID itemewe: hakiriwe ${issue.received}`,
     length:           (issue) => `Uburebure butemewe: hari hitezwe inyuguti ${issue.expected} ariko hakiriwe ${issue.received}`,
     ltValue:          (issue) => `Agaciro katemewe: hari hitezwe ikagabanyuka kuri ${issue.expected} ariko hakiriwe ${issue.received}`,
     mac:              (issue) => `Adiresi ya MAC itemewe: hakiriwe ${issue.received}`,
     mac48:            (issue) => `MAC y'ubwoko bwa 48-bit itemewe: hakiriwe ${issue.received}`,
     mac64:            (issue) => `MAC y'ubwoko bwa 64-bit itemewe: hakiriwe ${issue.received}`,
     maxBytes:         (issue) => `Bayiti zitemewe: hari hitezwe umubare utarenga ${issue.expected} ariko hakiriwe ${issue.received}`,
+    maxCodePoints:    (issue) => `Umubare w'utudomo twa kode utemewe: hari hitezwe ${issue.expected} ariko hakiriwe ${issue.received}`,
     maxEntries:       (issue) => `Inyandiko zitemewe: hari hitezwe umubare utarenga ${issue.expected} ariko hakiriwe ${issue.received}`,
     maxGraphemes:     (issue) => `Inyuguti zitemewe: hari hitezwe umubare utarenga ${issue.expected} ariko hakiriwe ${issue.received}`,
     maxLength:        (issue) => `Uburebure butemewe: hari hitezwe umubare utarenga ${issue.expected} ariko hakiriwe ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Amagambo atemewe: hari hitezwe umubare utarenga ${issue.expected} ariko hakiriwe ${issue.received}`,
     mimeType:         (issue) => `Ubwoko bwa MIME butemewe: hari hitezwe ${issue.expected} ariko hakiriwe ${issue.received}`,
     minBytes:         (issue) => `Bayiti zitemewe: hari hitezwe umubare utari munsi ya ${issue.expected} ariko hakiriwe ${issue.received}`,
+    minCodePoints:    (issue) => `Umubare w'utudomo twa kode utemewe: hari hitezwe ${issue.expected} ariko hakiriwe ${issue.received}`,
     minEntries:       (issue) => `Inyandiko zitemewe: hari hitezwe umubare utari munsi ya ${issue.expected} ariko hakiriwe ${issue.received}`,
     minGraphemes:     (issue) => `Inyuguti zitemewe: hari hitezwe umubare utari munsi ya ${issue.expected} ariko hakiriwe ${issue.received}`,
     minLength:        (issue) => `Uburebure butemewe: hari hitezwe umubare utari munsi ya ${issue.expected} ariko hakiriwe ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Nano ID itemewe: hakiriwe ${issue.received}`,
     nonEmpty:         (issue) => `Uburebure butemewe: ntihitezwe ubusa ariko hakiriwe ${issue.received}`,
     notBytes:         (issue) => `Bayiti zitemewe: ntihitezwe ${issue.expected} ariko hakiriwe ${issue.received}`,
+    notCodePoints:    (issue) => `Umubare w'utudomo twa kode utemewe: hari hitezwe ${issue.expected} ariko hakiriwe ${issue.received}`,
     notEntries:       (issue) => `Inyandiko zitemewe: ntihitezwe ${issue.expected} ariko hakiriwe ${issue.received}`,
     notGraphemes:     (issue) => `Inyuguti zitemewe: ntihitezwe ${issue.expected} ariko hakiriwe ${issue.received}`,
     notLength:        (issue) => `Uburebure butemewe: ntihitezwe ${issue.expected} ariko hakiriwe ${issue.received}`,

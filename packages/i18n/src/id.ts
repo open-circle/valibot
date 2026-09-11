@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Input tidak valid: Menerima ${issue.received}`,
     checkItems:       (issue) => `Item tidak valid: Menerima ${issue.received}`,
     checkItemsAsync:  (issue) => `Item tidak valid: Menerima ${issue.received}`,
+    codePoints:       (issue) => `Jumlah titik kode tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     creditCard:       (issue) => `Kartu kredit tidak valid: Menerima ${issue.received}`,
     cuid2:            (issue) => `Cuid2 tidak valid: Menerima ${issue.received}`,
     decimal:          (issue) => `Desimal tidak valid: Menerima ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `ISBN tidak valid: Menerima ${issue.received}`,
     isoDate:          (issue) => `Tanggal tidak valid: Menerima ${issue.received}`,
     isoDateTime:      (issue) => `Tanggal-waktu tidak valid: Menerima ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Tanggal-waktu dengan detik tidak valid: Menerima ${issue.received}`,
     isoTime:          (issue) => `Waktu tidak valid: Menerima ${issue.received}`,
     isoTimeSecond:    (issue) => `Detik waktu tidak valid: Menerima ${issue.received}`,
     isoTimestamp:     (issue) => `Timestamp tidak valid: Menerima ${issue.received}`,
     isoWeek:          (issue) => `Minggu tidak valid: Menerima ${issue.received}`,
     isrc:             (issue) => `ISRC tidak valid: Menerima ${issue.received}`,
     jwsCompact:       (issue) => `JWS ringkas tidak valid: Menerima ${issue.received}`,
+    ksuid:            (issue) => `KSUID tidak valid: Menerima ${issue.received}`,
     length:           (issue) => `Panjang tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     ltValue:          (issue) => `Nilai tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     mac:              (issue) => `MAC tidak valid: Menerima ${issue.received}`,
     mac48:            (issue) => `MAC 48-bit tidak valid: Menerima ${issue.received}`,
     mac64:            (issue) => `MAC 64-bit tidak valid: Menerima ${issue.received}`,
     maxBytes:         (issue) => `Byte maksimum tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
+    maxCodePoints:    (issue) => `Jumlah titik kode tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     maxEntries:       (issue) => `Entri tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     maxGraphemes:     (issue) => `Grafem maksimum tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     maxLength:        (issue) => `Panjang maksimum tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Kata maksimum tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     mimeType:         (issue) => `Tipe MIME tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     minBytes:         (issue) => `Byte minimum tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
+    minCodePoints:    (issue) => `Jumlah titik kode tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     minEntries:       (issue) => `Entri tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     minGraphemes:     (issue) => `Grafem minimum tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     minLength:        (issue) => `Panjang minimum tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Nano ID tidak valid: Menerima ${issue.received}`,
     nonEmpty:         (issue) => `Panjang tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     notBytes:         (issue) => `Byte tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
+    notCodePoints:    (issue) => `Jumlah titik kode tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     notEntries:       (issue) => `Entri tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     notGraphemes:     (issue) => `Grafem tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,
     notLength:        (issue) => `Panjang tidak valid: Seharusnya ${issue.expected} tetapi menerima ${issue.received}`,

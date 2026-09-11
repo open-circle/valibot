@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Érvénytelen bemenet: ${issue.received} kapott`,
     checkItems:       (issue) => `Érvénytelen elem: ${issue.received} kapott`,
     checkItemsAsync:  (issue) => `Érvénytelen elem: ${issue.received} kapott`,
+    codePoints:       (issue) => `Érvénytelen kódpontszám: ${issue.expected} várt, de ${issue.received} kapott`,
     creditCard:       (issue) => `Érvénytelen kártya szám: ${issue.received} kapott`,
     cuid2:            (issue) => `Érvénytelen Cuid2: ${issue.received} kapott`,
     decimal:          (issue) => `Érvénytelen decimális: ${issue.received} kapott`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Érvénytelen ISBN: ${issue.received} kapott`,
     isoDate:          (issue) => `Érvénytelen dátum: ${issue.received} kapott`,
     isoDateTime:      (issue) => `Érvénytelen dátum idő: ${issue.received} kapott`,
+    isoDateTimeSecond: (issue) => `Érvénytelen dátum és idő másodpercekkel: ${issue.received} kapott`,
     isoTime:          (issue) => `Érvénytelen idő: ${issue.received} kapott`,
     isoTimeSecond:    (issue) => `Érvénytelen idő másodperc: ${issue.received} kapott`,
     isoTimestamp:     (issue) => `Érvénytelen időbélyeg: ${issue.received} kapott`,
     isoWeek:          (issue) => `Érvénytelen hét: ${issue.received} kapott`,
     isrc:             (issue) => `Érvénytelen ISRC: ${issue.received} kapott`,
     jwsCompact:       (issue) => `Érvénytelen tömör JWS: ${issue.received} kapott`,
+    ksuid:            (issue) => `Érvénytelen KSUID: ${issue.received} kapott`,
     length:           (issue) => `Érvénytelen hosszúság: ${issue.expected} várt, de ${issue.received} kapott`,
     ltValue:          (issue) => `Érvénytelen érték: ${issue.expected} várt, de ${issue.received} kapott`,
     mac:              (issue) => `Érvénytelen MAC: ${issue.received} kapott`,
     mac48:            (issue) => `Érvénytelen 48 bites MAC: ${issue.received} kapott`,
     mac64:            (issue) => `Érvénytelen 64 bites MAC: ${issue.received} kapott`,
     maxBytes:         (issue) => `Érvénytelen bájtok: ${issue.expected} várt, de ${issue.received} kapott`,
+    maxCodePoints:    (issue) => `Érvénytelen kódpontszám: ${issue.expected} várt, de ${issue.received} kapott`,
     maxEntries:       (issue) => `Érvénytelen bejegyzésszám: ${issue.expected} várt, de ${issue.received} kapott`,
     maxGraphemes:     (issue) => `Érvénytelen gráfémák: ${issue.expected} várt, de ${issue.received} kapott`,
     maxLength:        (issue) => `Érvénytelen hosszúság: ${issue.expected} várt, de ${issue.received} kapott`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Érvénytelen szavak: ${issue.expected} várt, de ${issue.received} kapott`,
     mimeType:         (issue) => `Érvénytelen MIME típus: ${issue.expected} várt, de ${issue.received} kapott`,
     minBytes:         (issue) => `Érvénytelen bájtok: ${issue.expected} várt, de ${issue.received} kapott`,
+    minCodePoints:    (issue) => `Érvénytelen kódpontszám: ${issue.expected} várt, de ${issue.received} kapott`,
     minEntries:       (issue) => `Érvénytelen bejegyzésszám: ${issue.expected} várt, de ${issue.received} kapott`,
     minGraphemes:     (issue) => `Érvénytelen gráfémák: ${issue.expected} várt, de ${issue.received} kapott`,
     minLength:        (issue) => `Érvénytelen hosszúság: ${issue.expected} várt, de ${issue.received} kapott`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Érvénytelen Nano ID: ${issue.received} kapott`,
     nonEmpty:         (issue) => `Érvénytelen hosszúság: ${issue.expected} várt, de ${issue.received} kapott`,
     notBytes:         (issue) => `Érvénytelen bájtok: ${issue.expected} várt, de ${issue.received} kapott`,
+    notCodePoints:    (issue) => `Érvénytelen kódpontszám: ${issue.expected} várt, de ${issue.received} kapott`,
     notEntries:       (issue) => `Érvénytelen bejegyzésszám: ${issue.expected} várt, de ${issue.received} kapott`,
     notGraphemes:     (issue) => `Érvénytelen gráfémák: ${issue.expected} várt, de ${issue.received} kapott`,
     notLength:        (issue) => `Érvénytelen hosszúság: ${issue.expected} várt, de ${issue.received} kapott`,

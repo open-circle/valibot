@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `ورودی نامعتبر: ${issue.received} دریافت شد`,
     checkItems:       (issue) => `آیتم نامعتبر: ${issue.received} دریافت شد`,
     checkItemsAsync:  (issue) => `آیتم نامعتبر: ${issue.received} دریافت شد`,
+    codePoints:       (issue) => `تعداد نقاط کد نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     creditCard:       (issue) => `کارت اعتباری نامعتبر: ${issue.received} دریافت شد`,
     cuid2:            (issue) => `Cuid2 نامعتبر: ${issue.received} دریافت شد`,
     decimal:          (issue) => `اعشار نامعتبر: ${issue.received} دریافت شد`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `ISBN نامعتبر: ${issue.received} دریافت شد`,
     isoDate:          (issue) => `تاریخ ISO نامعتبر: ${issue.received} دریافت شد`,
     isoDateTime:      (issue) => `تاریخ‌ و زمان ISO نامعتبر: ${issue.received} دریافت شد`,
+    isoDateTimeSecond: (issue) => `تاریخ و زمان ISO با ثانیه نامعتبر: ${issue.received} دریافت شد`,
     isoTime:          (issue) => `زمان ISO نامعتبر: ${issue.received} دریافت شد`,
     isoTimeSecond:    (issue) => `ثانیه ISO نامعتبر: ${issue.received} دریافت شد`,
     isoTimestamp:     (issue) => `تایم‌استمپ ISO نامعتبر: ${issue.received} دریافت شد`,
     isoWeek:          (issue) => `هفته ISO نامعتبر: ${issue.received} دریافت شد`,
     isrc:             (issue) => `ISRC نامعتبر: ${issue.received} دریافت شد`,
     jwsCompact:       (issue) => `JWS فشرده نامعتبر: ${issue.received} دریافت شد`,
+    ksuid:            (issue) => `KSUID نامعتبر: ${issue.received} دریافت شد`,
     length:           (issue) => `طول نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     ltValue:          (issue) => `مقدار نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     mac:              (issue) => `MAC نامعتبر: ${issue.received} دریافت شد`,
     mac48:            (issue) => `MAC 48 بیتی نامعتبر: ${issue.received} دریافت شد`,
     mac64:            (issue) => `MAC 64 بیتی نامعتبر: ${issue.received} دریافت شد`,
     maxBytes:         (issue) => `بایت‌های نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
+    maxCodePoints:    (issue) => `تعداد نقاط کد نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     maxEntries:       (issue) => `تعداد ورودی نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     maxGraphemes:     (issue) => `گرافم‌های نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     maxLength:        (issue) => `طول نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `کلمات نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     mimeType:         (issue) => `MIME type نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     minBytes:         (issue) => `بایت‌های نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
+    minCodePoints:    (issue) => `تعداد نقاط کد نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     minEntries:       (issue) => `تعداد ورودی نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     minGraphemes:     (issue) => `گرافم‌های نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     minLength:        (issue) => `طول نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Nano ID نامعتبر: ${issue.received} دریافت شد`,
     nonEmpty:         (issue) => `طول نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     notBytes:         (issue) => `بایت‌های نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
+    notCodePoints:    (issue) => `تعداد نقاط کد نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     notEntries:       (issue) => `تعداد ورودی نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     notGraphemes:     (issue) => `گرافم‌های نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,
     notLength:        (issue) => `طول نامعتبر: ${issue.expected} انتظار می‌رفت اما ${issue.received} دریافت شد`,

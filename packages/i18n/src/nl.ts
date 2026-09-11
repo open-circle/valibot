@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Ongeldige invoer: ${issue.received} ontvangen`,
     checkItems:       (issue) => `Ongeldige item: ${issue.received} ontvangen`,
     checkItemsAsync:  (issue) => `Ongeldige item: ${issue.received} ontvangen`,
+    codePoints:       (issue) => `Ongeldig aantal codepunten: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     creditCard:       (issue) => `Ongeldige creditcard: ${issue.received} ontvangen`,
     cuid2:            (issue) => `Ongeldige Cuid2: ${issue.received} ontvangen`,
     decimal:          (issue) => `Ongeldige decimaal: ${issue.received} ontvangen`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Ongeldige ISBN: ${issue.received} ontvangen`,
     isoDate:          (issue) => `Ongeldige datum: ${issue.received} ontvangen`,
     isoDateTime:      (issue) => `Ongeldige datum-tijd: ${issue.received} ontvangen`,
+    isoDateTimeSecond: (issue) => `Ongeldige datum-tijd met seconden: ${issue.received} ontvangen`,
     isoTime:          (issue) => `Ongeldige tijd: ${issue.received} ontvangen`,
     isoTimeSecond:    (issue) => `Ongeldige tijd in seconden: ${issue.received} ontvangen`,
     isoTimestamp:     (issue) => `Ongeldige tijdstempel: ${issue.received} ontvangen`,
     isoWeek:          (issue) => `Ongeldige week: ${issue.received} ontvangen`,
     isrc:             (issue) => `Ongeldige ISRC: ${issue.received} ontvangen`,
     jwsCompact:       (issue) => `Ongeldige compacte JWS: ${issue.received} ontvangen`,
+    ksuid:            (issue) => `Ongeldige KSUID: ${issue.received} ontvangen`,
     length:           (issue) => `Ongeldige lengte: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     ltValue:          (issue) => `Ongeldige waarde: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     mac:              (issue) => `Ongeldige MAC: ${issue.received} ontvangen`,
     mac48:            (issue) => `Ongeldige 48-bit MAC: ${issue.received} ontvangen`,
     mac64:            (issue) => `Ongeldige 64-bit MAC: ${issue.received} ontvangen`,
     maxBytes:         (issue) => `Ongeldige bytes: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
+    maxCodePoints:    (issue) => `Ongeldig aantal codepunten: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     maxEntries:       (issue) => `Ongeldig aantal items: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     maxGraphemes:     (issue) => `Ongeldige grafemen: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     maxLength:        (issue) => `Ongeldige lengte: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Ongeldige woorden: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     mimeType:         (issue) => `Ongeldig MIME-type: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     minBytes:         (issue) => `Ongeldige bytes: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
+    minCodePoints:    (issue) => `Ongeldig aantal codepunten: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     minEntries:       (issue) => `Ongeldig aantal items: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     minGraphemes:     (issue) => `Ongeldige grafemen: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     minLength:        (issue) => `Ongeldige lengte: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Ongeldige Nano ID: ${issue.received} ontvangen`,
     nonEmpty:         (issue) => `Ongeldige lengte: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     notBytes:         (issue) => `Ongeldige bytes: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
+    notCodePoints:    (issue) => `Ongeldig aantal codepunten: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     notEntries:       (issue) => `Ongeldig aantal items: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     notGraphemes:     (issue) => `Ongeldige grafemen: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,
     notLength:        (issue) => `Ongeldige lengte: ${issue.expected} verwacht, maar ${issue.received} ontvangen`,

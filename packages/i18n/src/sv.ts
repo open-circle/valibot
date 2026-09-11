@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Ogiltig indata: Fick ${issue.received}`,
     checkItems:       (issue) => `Ogiltigt element: Fick ${issue.received}`,
     checkItemsAsync:  (issue) => `Ogiltigt element: Fick ${issue.received}`,
+    codePoints:       (issue) => `Ogiltigt antal kodpunkter: Förväntade ${issue.expected}, men fick ${issue.received}`,
     creditCard:       (issue) => `Ogiltigt kreditkort: Fick ${issue.received}`,
     cuid2:            (issue) => `Ogiltigt Cuid2: Fick ${issue.received}`,
     decimal:          (issue) => `Ogiltig decimal: Fick ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Ogiltig ISBN: Fick ${issue.received}`,
     isoDate:          (issue) => `Ogiltigt datum: Fick ${issue.received}`,
     isoDateTime:      (issue) => `Ogiltig datum-tid: Fick ${issue.received}`, 
+    isoDateTimeSecond: (issue) => `Ogiltigt datum och tid med sekunder: Fick ${issue.received}`,
     isoTime:          (issue) => `Ogiltig tid: Fick ${issue.received}`,
     isoTimeSecond:    (issue) => `Ogiltig sekund: Fick ${issue.received}`,
     isoTimestamp:     (issue) => `Ogiltig tidsstämpel: Fick ${issue.received}`,
     isoWeek:          (issue) => `Ogiltig vecka: Fick ${issue.received}`,
     isrc:             (issue) => `Ogiltig ISRC: Fick ${issue.received}`,
     jwsCompact:       (issue) => `Ogiltig kompakt JWS: Fick ${issue.received}`,
+    ksuid:            (issue) => `Ogiltigt KSUID: Fick ${issue.received}`,
     length:           (issue) => `Ogiltig längd: Förväntade ${issue.expected}, men fick ${issue.received}`,
     ltValue:          (issue) => `Ogiltigt värde: Förväntade ${issue.expected}, men fick ${issue.received}`,
     mac:              (issue) => `Ogiltig MAC: Fick ${issue.received}`,
     mac48:            (issue) => `Ogiltig 48-bit MAC: Fick ${issue.received}`,
     mac64:            (issue) => `Ogiltig 64-bit MAC: Fick ${issue.received}`,
     maxBytes:         (issue) => `Ogiltiga bytes: Förväntade ${issue.expected}, men fick ${issue.received}`,
+    maxCodePoints:    (issue) => `Ogiltigt antal kodpunkter: Förväntade ${issue.expected}, men fick ${issue.received}`,
     maxEntries:       (issue) => `Ogiltigt antal poster: Förväntade ${issue.expected}, men fick ${issue.received}`,
     maxGraphemes:     (issue) => `Ogiltigt grafem: Förväntade ${issue.expected}, men fick ${issue.received}`,
     maxLength:        (issue) => `Ogiltig längd: Förväntade ${issue.expected}, men fick ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Ogiltigt ord: Förväntade ${issue.expected}, men fick ${issue.received}`,
     mimeType:         (issue) => `Ogiltig MIME typ: Förväntade ${issue.expected}, men fick ${issue.received}`,
     minBytes:         (issue) => `Ogiltiga bytes: Förväntade ${issue.expected}, men fick ${issue.received}`,
+    minCodePoints:    (issue) => `Ogiltigt antal kodpunkter: Förväntade ${issue.expected}, men fick ${issue.received}`,
     minEntries:       (issue) => `Ogiltigt antal poster: Förväntade ${issue.expected}, men fick ${issue.received}`,
     minGraphemes:     (issue) => `Ogiltigt grafem: Förväntade ${issue.expected}, men fick ${issue.received}`,
     minLength:        (issue) => `Ogiltig längd: Förväntade ${issue.expected}, men fick ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Ogiltigt Nano ID: Fick ${issue.received}`,
     nonEmpty:         (issue) => `Ogiltig längd: Förväntade ${issue.expected}, men fick ${issue.received}`,
     notBytes:         (issue) => `Ogiltiga bytes: Förväntade ${issue.expected}, men fick ${issue.received}`, 
+    notCodePoints:    (issue) => `Ogiltigt antal kodpunkter: Förväntade ${issue.expected}, men fick ${issue.received}`,
     notEntries:       (issue) => `Ogiltigt antal poster: Förväntade ${issue.expected}, men fick ${issue.received}`,
     notGraphemes:     (issue) => `Ogiltigt grafem: Förväntade ${issue.expected}, men fick ${issue.received}`,
     notLength:        (issue) => `Ogiltig längd: Förväntade ${issue.expected}, men fick ${issue.received}`, 

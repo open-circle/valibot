@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Invalid input: Received ${issue.received}`,
     checkItems:       (issue) => `Invalid item: Received ${issue.received}`,
     checkItemsAsync:  (issue) => `Invalid item: Received ${issue.received}`,
+    codePoints:       (issue) => `Invalid code points: Expected ${issue.expected} but received ${issue.received}`,
     creditCard:       (issue) => `Invalid credit card: Received ${issue.received}`,
     cuid2:            (issue) => `Invalid Cuid2: Received ${issue.received}`,
     decimal:          (issue) => `Invalid decimal: Received ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Invalid ISBN: Received ${issue.received}`,
     isoDate:          (issue) => `Invalid date: Received ${issue.received}`,
     isoDateTime:      (issue) => `Invalid date-time: Received ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Invalid date-time-second: Received ${issue.received}`,
     isoTime:          (issue) => `Invalid time: Received ${issue.received}`,
     isoTimeSecond:    (issue) => `Invalid time second: Received ${issue.received}`,
     isoTimestamp:     (issue) => `Invalid timestamp: Received ${issue.received}`,
     isoWeek:          (issue) => `Invalid week: Received ${issue.received}`,
     isrc:             (issue) => `Invalid ISRC: Received ${issue.received}`,
     jwsCompact:       (issue) => `Invalid JWS compact: Received ${issue.received}`,
+    ksuid:            (issue) => `Invalid KSUID: Received ${issue.received}`,
     length:           (issue) => `Invalid length: Expected ${issue.expected} but received ${issue.received}`,
     ltValue:          (issue) => `Invalid value: Expected ${issue.expected} but received ${issue.received}`,
     mac:              (issue) => `Invalid MAC: Received ${issue.received}`,
     mac48:            (issue) => `Invalid 48-bit MAC: Received ${issue.received}`,
     mac64:            (issue) => `Invalid 64-bit MAC: Received ${issue.received}`,
     maxBytes:         (issue) => `Invalid bytes: Expected ${issue.expected} but received ${issue.received}`,
+    maxCodePoints:    (issue) => `Invalid code points: Expected ${issue.expected} but received ${issue.received}`,
     maxEntries:       (issue) => `Invalid entries: Expected ${issue.expected} but received ${issue.received}`,
     maxGraphemes:     (issue) => `Invalid graphemes: Expected ${issue.expected} but received ${issue.received}`,
     maxLength:        (issue) => `Invalid length: Expected ${issue.expected} but received ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Invalid words: Expected ${issue.expected} but received ${issue.received}`,
     mimeType:         (issue) => `Invalid MIME type: Expected ${issue.expected} but received ${issue.received}`,
     minBytes:         (issue) => `Invalid bytes: Expected ${issue.expected} but received ${issue.received}`,
+    minCodePoints:    (issue) => `Invalid code points: Expected ${issue.expected} but received ${issue.received}`,
     minEntries:       (issue) => `Invalid entries: Expected ${issue.expected} but received ${issue.received}`,
     minGraphemes:     (issue) => `Invalid graphemes: Expected ${issue.expected} but received ${issue.received}`,
     minLength:        (issue) => `Invalid length: Expected ${issue.expected} but received ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Invalid Nano ID: Received ${issue.received}`,
     nonEmpty:         (issue) => `Invalid length: Expected ${issue.expected} but received ${issue.received}`,
     notBytes:         (issue) => `Invalid bytes: Expected ${issue.expected} but received ${issue.received}`,
+    notCodePoints:    (issue) => `Invalid code points: Expected ${issue.expected} but received ${issue.received}`,
     notEntries:       (issue) => `Invalid entries: Expected ${issue.expected} but received ${issue.received}`,
     notGraphemes:     (issue) => `Invalid graphemes: Expected ${issue.expected} but received ${issue.received}`,
     notLength:        (issue) => `Invalid length: Expected ${issue.expected} but received ${issue.received}`,

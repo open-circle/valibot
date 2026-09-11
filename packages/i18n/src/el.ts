@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Λάθος είσοδος: Ήρθε ${issue.received}`,
     checkItems:       (issue) => `Λάθος στοιχείο: Ήρθε ${issue.received}`,
     checkItemsAsync:  (issue) => `Λάθος στοιχείο: Ήρθε ${issue.received}`,
+    codePoints:       (issue) => `Λάθος αριθμός κωδικών σημείων: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     creditCard:       (issue) => `Λάθος πιστωτική κάρτα: Ήρθε ${issue.received}`,
     cuid2:            (issue) => `Λάθος Cuid2: Ήρθε ${issue.received}`,
     decimal:          (issue) => `Λάθος δεκαδικός: Ήρθε ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Λάθος ISBN: Ήρθε ${issue.received}`,
     isoDate:          (issue) => `Λάθος ημερομηνία: Ήρθε ${issue.received}`,
     isoDateTime:      (issue) => `Λάθος ημερομηνία-ώρα: Ήρθε ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Λάθος ημερομηνία-ώρα με δευτερόλεπτα: Ήρθε ${issue.received}`,
     isoTime:          (issue) => `Λάθος ώρα: Ήρθε ${issue.received}`,
     isoTimeSecond:    (issue) => `Λάθος ώρα με δευτερόλεπτα: Ήρθε ${issue.received}`,
     isoTimestamp:     (issue) => `Λάθος χρονοσήμανση: Ήρθε ${issue.received}`,
     isoWeek:          (issue) => `Λάθος εβδομάδα: Ήρθε ${issue.received}`,
     isrc:             (issue) => `Λάθος ISRC: Ήρθε ${issue.received}`,
     jwsCompact:       (issue) => `Λάθος συμπαγές JWS: Ήρθε ${issue.received}`,
+    ksuid:            (issue) => `Λάθος KSUID: Ήρθε ${issue.received}`,
     length:           (issue) => `Λάθος μήκος: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     ltValue:          (issue) => `Λάθος τιμή: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     mac:              (issue) => `Λάθος MAC: Ήρθε ${issue.received}`,
     mac48:            (issue) => `Λάθος 48-bit MAC: Ήρθε ${issue.received}`,
     mac64:            (issue) => `Λάθος 64-bit MAC: Ήρθε ${issue.received}`,
     maxBytes:         (issue) => `Λάθος bytes: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
+    maxCodePoints:    (issue) => `Λάθος αριθμός κωδικών σημείων: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     maxEntries:       (issue) => `Λάθος καταχωρήσεις: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     maxGraphemes:     (issue) => `Λάθος γραφήματα: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     maxLength:        (issue) => `Λάθος μήκος: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Λάθος λέξεις: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     mimeType:         (issue) => `Λάθος τύπος MIME: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     minBytes:         (issue) => `Λάθος bytes: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
+    minCodePoints:    (issue) => `Λάθος αριθμός κωδικών σημείων: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     minEntries:       (issue) => `Λάθος καταχωρήσεις: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     minGraphemes:     (issue) => `Λάθος γραφήματα: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     minLength:        (issue) => `Λάθος μήκος: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Λάθος Nano ID: Ήρθε ${issue.received}`,
     nonEmpty:         (issue) => `Λάθος μήκος: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     notBytes:         (issue) => `Λάθος bytes: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
+    notCodePoints:    (issue) => `Λάθος αριθμός κωδικών σημείων: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     notEntries:       (issue) => `Λάθος καταχωρήσεις: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     notGraphemes:     (issue) => `Λάθος γραφήματα: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,
     notLength:        (issue) => `Λάθος μήκος: Αναμενόταν ${issue.expected} αλλά ήρθε ${issue.received}`,

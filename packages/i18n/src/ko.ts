@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `유효하지 않은 입력: ${issue.received} 을(를) 받았습니다`,
     checkItems:       (issue) => `유효하지 않은 항목: ${issue.received} 을(를) 받았습니다`,
     checkItemsAsync:  (issue) => `유효하지 않은 항목: ${issue.received} 을(를) 받았습니다`,
+    codePoints:       (issue) => `유효하지 않은 코드 포인트 수: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     creditCard:       (issue) => `유효하지 않은 신용카드: ${issue.received} 을(를) 받았습니다`,
     cuid2:            (issue) => `유효하지 않은 Cuid2: ${issue.received} 을(를) 받았습니다`,
     decimal:          (issue) => `유효하지 않은 소수: ${issue.received} 을(를) 받았습니다`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `유효하지 않은 ISBN: ${issue.received} 을(를) 받았습니다`,
     isoDate:          (issue) => `유효하지 않은 ISO 날짜: ${issue.received} 을(를) 받았습니다`,
     isoDateTime:      (issue) => `유효하지 않은 ISO 날짜-시간: ${issue.received} 을(를) 받았습니다`,
+    isoDateTimeSecond: (issue) => `유효하지 않은 초가 포함된 ISO 날짜-시간: ${issue.received} 을(를) 받았습니다`,
     isoTime:          (issue) => `유효하지 않은 ISO 시간: ${issue.received} 을(를) 받았습니다`,
     isoTimeSecond:    (issue) => `유효하지 않은 ISO 초: ${issue.received} 을(를) 받았습니다`,
     isoTimestamp:     (issue) => `유효하지 않은 ISO 타임스탬프: ${issue.received} 을(를) 받았습니다`,
     isoWeek:          (issue) => `유효하지 않은 ISO 주: ${issue.received} 을(를) 받았습니다`,
     isrc:             (issue) => `유효하지 않은 ISRC: ${issue.received} 을(를) 받았습니다`,
     jwsCompact:       (issue) => `유효하지 않은 JWS 압축 직렬화: ${issue.received} 을(를) 받았습니다`,
+    ksuid:            (issue) => `유효하지 않은 KSUID: ${issue.received} 을(를) 받았습니다`,
     length:           (issue) => `유효하지 않은 길이: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     ltValue:          (issue) => `유효하지 않은 값: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     mac:              (issue) => `유효하지 않은 MAC: ${issue.received} 을(를) 받았습니다`,
     mac48:            (issue) => `유효하지 않은 MAC-48: ${issue.received} 을(를) 받았습니다`,
     mac64:            (issue) => `유효하지 않은 MAC-64: ${issue.received} 을(를) 받았습니다`,
     maxBytes:         (issue) => `바이트가 너무 큽니다: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
+    maxCodePoints:    (issue) => `유효하지 않은 코드 포인트 수: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     maxEntries:       (issue) => `유효하지 않은 항목 수: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     maxGraphemes:     (issue) => `문자 그래프가 너무 큽니다: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     maxLength:        (issue) => `길이가 너무 깁니다: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `단어가 너무 많습니다: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     mimeType:         (issue) => `유효하지 않은 MIME 타입: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     minBytes:         (issue) => `바이트가 너무 작습니다: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
+    minCodePoints:    (issue) => `유효하지 않은 코드 포인트 수: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     minEntries:       (issue) => `유효하지 않은 항목 수: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     minGraphemes:     (issue) => `문자 그래프가 너무 작습니다: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     minLength:        (issue) => `길이가 너무 짧습니다: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `유효하지 않은 Nano ID: ${issue.received} 을(를) 받았습니다`,
     nonEmpty:         (issue) => `값이 비어 있습니다: ${issue.received} 을(를) 받았습니다`,
     notBytes:         (issue) => `허용되지 않는 바이트 길이: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
+    notCodePoints:    (issue) => `유효하지 않은 코드 포인트 수: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     notEntries:       (issue) => `유효하지 않은 항목 수: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     notGraphemes:     (issue) => `허용되지 않는 문자 그래프 수: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,
     notLength:        (issue) => `허용되지 않는 길이: ${issue.expected} 을(를) 예상했으나 ${issue.received} 을(를) 받았습니다`,

@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Đầu vào không hợp lệ: Nhận ${issue.received}`,
     checkItems:       (issue) => `Mục không hợp lệ: Nhận được ${issue.received}`,
     checkItemsAsync:  (issue) => `Mục không hợp lệ: Nhận được ${issue.received}`,
+    codePoints:       (issue) => `Số lượng điểm mã không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     creditCard:       (issue) => `Thẻ tín dụng không hợp lệ: Nhận được ${issue.received}`,
     cuid2:            (issue) => `Cuid2 không hợp lệ: Nhận được ${issue.received}`,
     decimal:          (issue) => `Số thập phân không hợp lệ: Nhận được ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `ISBN không hợp lệ: Nhận được ${issue.received}`,
     isoDate:          (issue) => `Ngày không hợp lệ: Nhận được ${issue.received}`,
     isoDateTime:      (issue) => `Ngày giờ không hợp lệ: Nhận được ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Ngày giờ có giây không hợp lệ: Nhận được ${issue.received}`,
     isoTime:          (issue) => `Giờ không hợp lệ: Nhận được ${issue.received}`,
     isoTimeSecond:    (issue) => `Giây không hợp lệ: Nhận được ${issue.received}`,
     isoTimestamp:     (issue) => `Dấu thời gian không hợp lệ: Nhận được ${issue.received}`,
     isoWeek:          (issue) => `Tuần không hợp lệ: Nhận được ${issue.received}`,
     isrc:             (issue) => `ISRC không hợp lệ: Nhận được ${issue.received}`,
     jwsCompact:       (issue) => `JWS dạng rút gọn không hợp lệ: Nhận được ${issue.received}`,
+    ksuid:            (issue) => `KSUID không hợp lệ: Nhận được ${issue.received}`,
     length:           (issue) => `Độ dài không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     ltValue:          (issue) => `Giá trị không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     mac:              (issue) => `MAC không hợp lệ: Nhận được ${issue.received}`,
     mac48:            (issue) => `MAC 48-bit không hợp lệ: Nhận được ${issue.received}`,
     mac64:            (issue) => `MAC 64-bit không hợp lệ: Nhận được ${issue.received}`,
     maxBytes:         (issue) => `Bytes không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
+    maxCodePoints:    (issue) => `Số lượng điểm mã không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     maxEntries:       (issue) => `Số mục không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     maxGraphemes:     (issue) => `Các chữ cái không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     maxLength:        (issue) => `Độ dài không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Từ không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     mimeType:         (issue) => `Loại MIME không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     minBytes:         (issue) => `Bytes không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
+    minCodePoints:    (issue) => `Số lượng điểm mã không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     minEntries:       (issue) => `Số mục không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     minGraphemes:     (issue) => `Các chữ cái không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     minLength:        (issue) => `Độ dài không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Nano ID không hợp lệ: Nhận được ${issue.received}`,
     nonEmpty:         (issue) => `Độ dài không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     notBytes:         (issue) => `Bytes không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
+    notCodePoints:    (issue) => `Số lượng điểm mã không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     notEntries:       (issue) => `Số mục không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     notGraphemes:     (issue) => `Các chữ cái không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,
     notLength:        (issue) => `Độ dài không hợp lệ: Mong muốn ${issue.expected} nhưng nhận được ${issue.received}`,

@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Neplatný vstup: Prijaté ${issue.received}`,
     checkItems:       (issue) => `Neplatná položka: Prijaté ${issue.received}`,
     checkItemsAsync:  (issue) => `Neplatná položka: Prijaté ${issue.received}`,
+    codePoints:       (issue) => `Neplatný počet kódových bodov: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     creditCard:       (issue) => `Neplatná kreditná karta: Prijaté ${issue.received}`,
     cuid2:            (issue) => `Neplatné Cuid2: Prijaté ${issue.received}`,
     decimal:          (issue) => `Neplatné desatinné číslo: Prijaté ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Neplatné ISBN: Prijaté ${issue.received}`,
     isoDate:          (issue) => `Neplatný dátum: Prijaté ${issue.received}`,
     isoDateTime:      (issue) => `Neplatný dátum a čas: Prijaté ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Neplatný dátum a čas so sekundami: Prijaté ${issue.received}`,
     isoTime:          (issue) => `Neplatný čas: Prijaté ${issue.received}`,
     isoTimeSecond:    (issue) => `Neplatný čas: Prijaté ${issue.received}`,
     isoTimestamp:     (issue) => `Neplatná časová značka: Prijaté ${issue.received}`,
     isoWeek:          (issue) => `Neplatný týždeň: Prijaté ${issue.received}`,
     isrc:             (issue) => `Neplatné ISRC: Prijaté ${issue.received}`,
     jwsCompact:       (issue) => `Neplatné kompaktné JWS: Prijaté ${issue.received}`,
+    ksuid:            (issue) => `Neplatné KSUID: Prijaté ${issue.received}`,
     length:           (issue) => `Neplatná dĺžka: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     ltValue:          (issue) => `Neplatná hodnota: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     mac:              (issue) => `Neplatná MAC adresa: Prijaté ${issue.received}`,
     mac48:            (issue) => `Neplatná 48-bitová MAC adresa: Prijaté ${issue.received}`,
     mac64:            (issue) => `Neplatná 64-bitová MAC adresa: Prijaté ${issue.received}`,
     maxBytes:         (issue) => `Prekročený maximálny počet bajtov: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
+    maxCodePoints:    (issue) => `Neplatný počet kódových bodov: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     maxEntries:       (issue) => `Prekročený maximálny počet položiek: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     maxGraphemes:     (issue) => `Prekročená maximálna dĺžka znakov: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     maxLength:        (issue) => `Prekročená maximálna dĺžka: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Prekročený maximálny počet slov: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     mimeType:         (issue) => `Neplatný MIME typ: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     minBytes:         (issue) => `Nedostatočný počet bajtov: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
+    minCodePoints:    (issue) => `Neplatný počet kódových bodov: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     minEntries:       (issue) => `Nedostatočný počet položiek: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     minGraphemes:     (issue) => `Nedostatočná minimálna dĺžka grafémov: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     minLength:        (issue) => `Nedostatočná minimálna dĺžka: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Neplatné Nano ID: Prijaté ${issue.received}`,
     nonEmpty:         (issue) => `Nedostatočná dĺžka: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     notBytes:         (issue) => `Neplatný počet bajtov: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
+    notCodePoints:    (issue) => `Neplatný počet kódových bodov: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     notEntries:       (issue) => `Neplatný počet položiek: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     notGraphemes:     (issue) => `Neplatná dĺžka grafémov: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,
     notLength:        (issue) => `Neplatná dĺžka: Očakávané ${issue.expected}, ale prijaté ${issue.received}`,

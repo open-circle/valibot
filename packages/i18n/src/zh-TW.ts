@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `無效的輸入：輸入為 ${issue.received}`,
     checkItems:       (issue) => `無效元素：輸入為 ${issue.received}`,
     checkItemsAsync:  (issue) => `無效元素：輸入為 ${issue.received}`,
+    codePoints:       (issue) => `無效的碼點數量：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     creditCard:       (issue) => `無效的信用卡：輸入為 ${issue.received}`,
     cuid2:            (issue) => `無效的 Cuid2：輸入為 ${issue.received}`,
     decimal:          (issue) => `無效的十進位：輸入為 ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `無效的 ISBN：輸入為 ${issue.received}`,
     isoDate:          (issue) => `無效的日期：輸入為 ${issue.received}`,
     isoDateTime:      (issue) => `無效的日期時間：輸入為 ${issue.received}`,
+    isoDateTimeSecond: (issue) => `無效的含秒日期時間：輸入為 ${issue.received}`,
     isoTime:          (issue) => `無效的時間：輸入為 ${issue.received}`,
     isoTimeSecond:    (issue) => `無效的時間秒：輸入為 ${issue.received}`,
     isoTimestamp:     (issue) => `無效的時間戳記：輸入為 ${issue.received}`,
     isoWeek:          (issue) => `無效的週數：輸入為 ${issue.received}`,
     isrc:             (issue) => `無效的 ISRC：輸入為 ${issue.received}`,
     jwsCompact:       (issue) => `無效的 JWS 緊湊序列化：輸入為 ${issue.received}`,
+    ksuid:            (issue) => `無效的 KSUID：輸入為 ${issue.received}`,
     length:           (issue) => `無效的長度：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     ltValue:          (issue) => `無效的值：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     mac:              (issue) => `無效的 MAC：輸入為 ${issue.received}`,
     mac48:            (issue) => `無效的 48 位元 MAC：輸入為 ${issue.received}`,
     mac64:            (issue) => `無效的 64 位元 MAC：輸入為 ${issue.received}`,
     maxBytes:         (issue) => `無效的位元組：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
+    maxCodePoints:    (issue) => `無效的碼點數量：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     maxEntries:       (issue) => `無效的項目數：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     maxGraphemes:     (issue) => `無效的字元：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     maxLength:        (issue) => `無效的長度：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `無效的字詞：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     mimeType:         (issue) => `無效的 MIME 類型：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     minBytes:         (issue) => `無效的位元組：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
+    minCodePoints:    (issue) => `無效的碼點數量：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     minEntries:       (issue) => `無效的項目數：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     minGraphemes:     (issue) => `無效的字元：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     minLength:        (issue) => `無效的長度：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `無效的 Nano ID：輸入為 ${issue.received}`,
     nonEmpty:         (issue) => `無效的長度：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     notBytes:         (issue) => `無效的位元組：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
+    notCodePoints:    (issue) => `無效的碼點數量：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     notEntries:       (issue) => `無效的項目數：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     notGraphemes:     (issue) => `無效的字元：預期為 ${issue.expected}，但輸入為 ${issue.received}`,
     notLength:        (issue) => `無效的長度：預期為 ${issue.expected}，但輸入為 ${issue.received}`,

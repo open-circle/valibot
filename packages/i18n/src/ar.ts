@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `مُدخل غير صالح: القيمة المُدخلة ${issue.received}`,
     checkItems:       (issue) => `عناصر غير صالحة: قيمة الإدخال ${issue.received}`,
     checkItemsAsync:  (issue) => `عناصر غير صالحة: قيمة الإدخال ${issue.received}`,
+    codePoints:       (issue) => `عدد نقاط الترميز غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     creditCard:       (issue) => `بطاقة إئتمان غير صالحة: القيمة المُدخلة ${issue.received}`,
     cuid2:            (issue) => `قيمة Cuid2 غير صالحة: القيمة المُدخلة ${issue.received}`,
     decimal:          (issue) => `رقم عُشَري غير صالح: القيمة المُدخلة ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `ISBN غير صالح: القيمة المُدخلة ${issue.received}`,
     isoDate:          (issue) => `تاريخ غير صالح: القيمة المُدخلة ${issue.received}`,
     isoDateTime:      (issue) => `التاريخ والوقت غير صالحان: القيمة المُدخلة ${issue.received}`,
+    isoDateTimeSecond: (issue) => `التاريخ والوقت بالثواني غير صالحان: القيمة المُدخلة ${issue.received}`,
     isoTime:          (issue) => `صيغة وقت غير صالحة: القيمة المُدخلة ${issue.received}`,
     isoTimeSecond:    (issue) => `قيمة وقت بالثواني غير صالحة: القيمة المُدخلة ${issue.received}`,
     isoTimestamp:     (issue) => `الطابع الزمني غير صالح: القيمة المُدخلة ${issue.received}`,
     isoWeek:          (issue) => `أسبوع غير صالح: القيمة المُدخلة ${issue.received}`,
     isrc:             (issue) => `ISRC غير صالح: القيمة المُدخلة ${issue.received}`,
     jwsCompact:       (issue) => `ترميز JWS المضغوط غير صالح: القيمة المُدخلة ${issue.received}`,
+    ksuid:            (issue) => `معرّف KSUID غير صالح: القيمة المُدخلة ${issue.received}`,
     length:           (issue) => `الطول غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     ltValue:          (issue) => `قيمة غير صالحة: القيمة المتوقعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     mac:              (issue) => `عنوان MAC غير صالح: القيمة المُدخلة ${issue.received}`,
     mac48:            (issue) => `عنوان 48-بت MAC غير صالح: القيمة المُدخلة ${issue.received}`,
     mac64:            (issue) => `عنوان 64-بت MAC غير صالح: القيمة المُدخلة ${issue.received}`,
     maxBytes:         (issue) => `حجم بايت غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
+    maxCodePoints:    (issue) => `عدد نقاط الترميز غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     maxEntries:       (issue) => `عدد الإدخالات غير صالح: القيمة المتوقعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     maxGraphemes:     (issue) => `عدد الرموز غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     maxLength:        (issue) => `الطول غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `عدد الكلمات غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     mimeType:         (issue) => `نوع MIME غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     minBytes:         (issue) => `حجم بايت غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
+    minCodePoints:    (issue) => `عدد نقاط الترميز غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     minEntries:       (issue) => `عدد الإدخالات غير صالح: القيمة المتوقعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     minGraphemes:     (issue) => `عدد الرموز غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     minLength:        (issue) => `طول غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `معرّف Nano ID غير صالح: القيمة المُدخلة ${issue.received}`,
     nonEmpty:         (issue) => `الطول غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     notBytes:         (issue) => `حجم بايت غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
+    notCodePoints:    (issue) => `عدد نقاط الترميز غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     notEntries:       (issue) => `عدد الإدخالات غير صالح: القيمة المتوقعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     notGraphemes:     (issue) => `عدد الرموز غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,
     notLength:        (issue) => `طول غير صالح: القيمة المتوقّعة ${issue.expected} لكن القيمة المُدخلة ${issue.received}`,

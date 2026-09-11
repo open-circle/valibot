@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Ungültige Eingabe: ${issue.received} erhalten`,
     checkItems:       (issue) => `Ungültiges Element: ${issue.received} erhalten`,
     checkItemsAsync:  (issue) => `Ungültiges Element: ${issue.received} erhalten`,
+    codePoints:       (issue) => `Ungültige Anzahl an Codepoints: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     creditCard:       (issue) => `Ungültige Kreditkarte: ${issue.received} erhalten`,
     cuid2:            (issue) => `Ungültige Cuid2: ${issue.received} erhalten`,
     decimal:          (issue) => `Ungültige Dezimale: ${issue.received} erhalten`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Ungültige ISBN: ${issue.received} erhalten`,
     isoDate:          (issue) => `Ungültiges Datum: ${issue.received} erhalten`,
     isoDateTime:      (issue) => `Ungültige Datums-Zeit: ${issue.received} erhalten`,
+    isoDateTimeSecond: (issue) => `Ungültige Datums-Zeit mit Sekunden: ${issue.received} erhalten`,
     isoTime:          (issue) => `Ungültige Zeit: ${issue.received} erhalten`,
     isoTimeSecond:    (issue) => `Ungültige Zeitsekunde: ${issue.received} erhalten`,
     isoTimestamp:     (issue) => `Ungültiger Zeitstempel: ${issue.received} erhalten`,
     isoWeek:          (issue) => `Ungültige Woche: ${issue.received} erhalten`,
     isrc:             (issue) => `Ungültige ISRC: ${issue.received} erhalten`,
     jwsCompact:       (issue) => `Ungültiges kompaktes JWS: ${issue.received} erhalten`,
+    ksuid:            (issue) => `Ungültige KSUID: ${issue.received} erhalten`,
     length:           (issue) => `Ungültige Länge: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     ltValue:          (issue) => `Ungültiger Wert: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     mac:              (issue) => `Ungültige MAC: ${issue.received} erhalten`,
     mac48:            (issue) => `Ungültige 48-bit MAC: ${issue.received} erhalten`,
     mac64:            (issue) => `Ungültige 64-bit MAC: ${issue.received} erhalten`,
     maxBytes:         (issue) => `Ungültige Bytes: ${issue.expected} erwartet aber ${issue.received} erhalten`,
+    maxCodePoints:    (issue) => `Ungültige Anzahl an Codepoints: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     maxEntries:       (issue) => `Ungültige Einträge: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     maxGraphemes:     (issue) => `Ungültige Grapheme: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     maxLength:        (issue) => `Ungültige Länge: ${issue.expected} erwartet aber ${issue.received} erhalten`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Ungültige Wörter: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     mimeType:         (issue) => `Ungültiger MIME-Typ: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     minBytes:         (issue) => `Ungültige Bytes: ${issue.expected} erwartet aber ${issue.received} erhalten`,
+    minCodePoints:    (issue) => `Ungültige Anzahl an Codepoints: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     minEntries:       (issue) => `Ungültige Einträge: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     minGraphemes:     (issue) => `Ungültige Grapheme: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     minLength:        (issue) => `Ungültige Länge: ${issue.expected} erwartet aber ${issue.received} erhalten`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Ungültige Nano-ID: ${issue.received} erhalten`,
     nonEmpty:         (issue) => `Ungültige Länge: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     notBytes:         (issue) => `Ungültige Bytes: ${issue.expected} erwartet aber ${issue.received} erhalten`,
+    notCodePoints:    (issue) => `Ungültige Anzahl an Codepoints: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     notEntries:       (issue) => `Ungültige Einträge: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     notGraphemes:     (issue) => `Ungültige Grapheme: ${issue.expected} erwartet aber ${issue.received} erhalten`,
     notLength:        (issue) => `Ungültige Länge: ${issue.expected} erwartet aber ${issue.received} erhalten`,

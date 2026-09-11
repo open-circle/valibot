@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Neveljaven input: Prejet ${issue.received}`,
     checkItems:       (issue) => `Neveljaven element: Prejet ${issue.received}`,
     checkItemsAsync:  (issue) => `Neveljaven element: Prejet ${issue.received}`,
+    codePoints:       (issue) => `Neveljavno število kodnih točk: Pričakovani ${issue.expected}, vendar prejeti ${issue.received}`,
     creditCard:       (issue) => `Neveljavna kreditna kartica: Prejeta ${issue.received}`,
     cuid2:            (issue) => `Neveljaven Cuid2: Prejet ${issue.received}`,
     decimal:          (issue) => `Neveljaven decimal: Prejet ${issue.received}`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Neveljaven ISBN: Prejet ${issue.received}`,
     isoDate:          (issue) => `Neveljaven datum: Prejet ${issue.received}`,
     isoDateTime:      (issue) => `Neveljaven datum in čas: Prejet ${issue.received}`,
+    isoDateTimeSecond: (issue) => `Neveljaven datum in čas s sekundami: Prejet ${issue.received}`,
     isoTime:          (issue) => `Neveljaven čas: Prejet ${issue.received}`,
     isoTimeSecond:    (issue) => `Neveljaven iso čas v sekundah: Prejet ${issue.received}`,
     isoTimestamp:     (issue) => `Neveljaven časovni žig iso: Prejet ${issue.received}`,
     isoWeek:          (issue) => `Neveljaven format za teden: Prejet ${issue.received}`,
     isrc:             (issue) => `Neveljaven ISRC: Prejet ${issue.received}`,
     jwsCompact:       (issue) => `Neveljaven kompaktni JWS: Prejet ${issue.received}`,
+    ksuid:            (issue) => `Neveljaven KSUID: Prejet ${issue.received}`,
     length:           (issue) => `Neveljaven dolžina: Pričakovana ${issue.expected}, vendar prejeta ${issue.received}`,
     ltValue:          (issue) => `Neveljavna vrednost: Pričakovan ${issue.expected}, vendar prejet ${issue.received}`,
     mac:              (issue) => `Neveljaven MAC: Prejet ${issue.received}`,
     mac48:            (issue) => `Neveljaven 48-bit MAC: Prejet ${issue.received}`,
     mac64:            (issue) => `Neveljaven 64-bit MAC: Prejet ${issue.received}`,
     maxBytes:         (issue) => `Neveljaven bajti: Pričakovani ${issue.expected}, vendar prejeti ${issue.received}`,
+    maxCodePoints:    (issue) => `Neveljavno število kodnih točk: Pričakovani ${issue.expected}, vendar prejeti ${issue.received}`,
     maxEntries:       (issue) => `Neveljavno število vnosov: Pričakovan ${issue.expected}, vendar prejet ${issue.received}`,
     maxGraphemes:     (issue) => `Neveljaven grafemi: Pričakovani ${issue.expected}, vendar prejeti ${issue.received}`,
     maxLength:        (issue) => `Neveljaven dolžina: Pričakovana ${issue.expected}, vendar prejeta ${issue.received}`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Neveljaven besede: Pričakovani ${issue.expected}, vendar prejeti ${issue.received}`,
     mimeType:         (issue) => `Neveljaven MIME type: Pričakovan ${issue.expected}, vendar prejet ${issue.received}`,
     minBytes:         (issue) => `Neveljaven bajt: Pričakovan ${issue.expected}, vendar prejet ${issue.received}`,
+    minCodePoints:    (issue) => `Neveljavno število kodnih točk: Pričakovani ${issue.expected}, vendar prejeti ${issue.received}`,
     minEntries:       (issue) => `Neveljavno število vnosov: Pričakovan ${issue.expected}, vendar prejet ${issue.received}`,
     minGraphemes:     (issue) => `Neveljaven grafemi: Pričakovan ${issue.expected}, vendar prejet ${issue.received}`,
     minLength:        (issue) => `Neveljaven dolžina: Pričakovana ${issue.expected}, vendar prejeta ${issue.received}`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Neveljaven Nano ID: Prejet ${issue.received}`,
     nonEmpty:         (issue) => `Neveljaven dolžina: Pričakovana ${issue.expected}, vendar prejeta ${issue.received}`,
     notBytes:         (issue) => `Neveljavni bajti: Pričakovan ${issue.expected}, vendar prejet ${issue.received}`,
+    notCodePoints:    (issue) => `Neveljavno število kodnih točk: Pričakovani ${issue.expected}, vendar prejeti ${issue.received}`,
     notEntries:       (issue) => `Neveljavno število vnosov: Pričakovan ${issue.expected}, vendar prejet ${issue.received}`,
     notGraphemes:     (issue) => `Neveljavni grafemi: Pričakovan ${issue.expected}, vendar prejet ${issue.received}`,
     notLength:        (issue) => `Neveljavna dolžina: Pričakovan ${issue.expected}, vendar prejet ${issue.received}`,

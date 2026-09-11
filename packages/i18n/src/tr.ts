@@ -1,4 +1,4 @@
-import type { Language } from './types';
+import type { Language } from './types.ts';
 
 // prettier-ignore
 const language: Language = {
@@ -12,6 +12,7 @@ const language: Language = {
     checkAsync:       (issue) => `Geçersiz girdi: ${issue.received} alındı`,
     checkItems:       (issue) => `Geçersiz öğe: ${issue.received} alındı`,
     checkItemsAsync:  (issue) => `Geçersiz öğe: ${issue.received} alındı`,
+    codePoints:       (issue) => `Geçersiz kod noktası sayısı: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     creditCard:       (issue) => `Geçersiz kredi kartı: ${issue.received} alındı`,
     cuid2:            (issue) => `Geçersiz Cuid2: ${issue.received} alındı`,
     decimal:          (issue) => `Geçersiz kesirli sayı: ${issue.received} alındı`,
@@ -40,18 +41,21 @@ const language: Language = {
     isbn:             (issue) => `Geçersiz ISBN: ${issue.received} alındı`,
     isoDate:          (issue) => `Geçersiz tarih: ${issue.received} alındı`,
     isoDateTime:      (issue) => `Geçersiz tarih-saat: ${issue.received} alındı`,
+    isoDateTimeSecond: (issue) => `Geçersiz saniyeli tarih-saat: ${issue.received} alındı`,
     isoTime:          (issue) => `Geçersiz saat: ${issue.received} alındı`,
     isoTimeSecond:    (issue) => `Geçersiz saat saniye: ${issue.received} alındı`,
     isoTimestamp:     (issue) => `Geçersiz zaman bilgisi: ${issue.received} alındı`,
     isoWeek:          (issue) => `Geçersiz hafta: ${issue.received} alındı`,
     isrc:             (issue) => `Geçersiz ISRC: ${issue.received} alındı`,
     jwsCompact:       (issue) => `Geçersiz kompakt JWS: ${issue.received} alındı`,
+    ksuid:            (issue) => `Geçersiz KSUID: ${issue.received} alındı`,
     length:           (issue) => `Geçersiz uzunluk: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     ltValue:          (issue) => `Geçersiz değer: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     mac:              (issue) => `Geçersiz MAC: ${issue.received} alındı`,
     mac48:            (issue) => `Geçersiz 48-bit MAC: ${issue.received} alındı`,
     mac64:            (issue) => `Geçersiz 64-bit MAC: ${issue.received} alındı`,
     maxBytes:         (issue) => `Geçersiz bayt: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
+    maxCodePoints:    (issue) => `Geçersiz kod noktası sayısı: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     maxEntries:       (issue) => `Geçersiz giriş sayısı: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     maxGraphemes:     (issue) => `Geçersiz grafem: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     maxLength:        (issue) => `Geçersiz uzunluk: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
@@ -60,6 +64,7 @@ const language: Language = {
     maxWords:         (issue) => `Geçersiz kelime: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     mimeType:         (issue) => `Geçersiz MIME tipi: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     minBytes:         (issue) => `Geçersiz bayt: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
+    minCodePoints:    (issue) => `Geçersiz kod noktası sayısı: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     minEntries:       (issue) => `Geçersiz giriş sayısı: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     minGraphemes:     (issue) => `Geçersiz grafem: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     minLength:        (issue) => `Geçersiz uzunluk: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
@@ -70,6 +75,7 @@ const language: Language = {
     nanoid:           (issue) => `Geçersiz Nano ID: ${issue.received} alındı`,
     nonEmpty:         (issue) => `Geçersiz uzunluk: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     notBytes:         (issue) => `Geçersiz bayt: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
+    notCodePoints:    (issue) => `Geçersiz kod noktası sayısı: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     notEntries:       (issue) => `Geçersiz giriş sayısı: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     notGraphemes:     (issue) => `Geçersiz grafem: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
     notLength:        (issue) => `Geçersiz uzunluk: ${issue.expected} bekleniyordu ancak ${issue.received} alındı`,
