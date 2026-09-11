@@ -222,6 +222,7 @@ function getUpperBound(current: number | undefined, value: number): number {
  *
  * @returns The combined not restriction.
  */
+// @__NO_SIDE_EFFECTS__
 function getNotRestriction(
   current: JsonSchema['not'],
   value: JsonSchema
