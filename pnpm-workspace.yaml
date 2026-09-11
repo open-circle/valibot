@@ -3,7 +3,7 @@ packages:
   - 'library'
   - 'packages/*'
   - 'website'
-minimumReleaseAge: 10080  # minutes — 7 days
+minimumReleaseAge: 10080 # minutes — 7 days
 allowBuilds:
   '@ast-grep/cli': true
   '@vercel/speed-insights': true
@@ -22,6 +22,7 @@ minimumReleaseAgeExclude:
   - workerd@1.20260616.1
   - wrangler@4.101.0
   - tar@7.5.21
+  - valibot@1.5.0
 overrides:
   # Security: pin vulnerable transitive deps to patched versions (CVE Lite findings).
   # Keyed by major so only the affected major line is moved to its fixed version.
