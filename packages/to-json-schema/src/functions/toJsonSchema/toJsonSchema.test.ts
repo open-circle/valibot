@@ -140,6 +140,228 @@ describe('toJsonSchema', () => {
       });
     });
 
+    test('for recursive schema without definitions on repeated calls', () => {
+      const nodeSchema: v.GenericSchema = v.object({
+        child: v.optional(v.lazy(() => nodeSchema)),
+      });
+      const expectedJsonSchema = {
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: { child: { $ref: '#/$defs/0' } },
+        required: [],
+        $defs: {
+          '0': {
+            type: 'object',
+            properties: { child: { $ref: '#/$defs/0' } },
+            required: [],
+          },
+        },
+      };
+      expect(toJsonSchema(nodeSchema)).toStrictEqual(expectedJsonSchema);
+      expect(toJsonSchema(nodeSchema)).toStrictEqual(expectedJsonSchema);
+    });
+
+    test('for lazy schema with multiple definitions of same schema', () => {
+      const stringSchema = v.string();
+      const numberSchema = v.number();
+      const lazySchema = v.lazy(() => stringSchema);
+      expect(
+        toJsonSchema(lazySchema, {
+          definitions: {
+            '0': lazySchema,
+            '1': numberSchema,
+            '2': numberSchema,
+          },
+        })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        $ref: '#/$defs/0',
+        $defs: {
+          '0': { $ref: '#/$defs/3' },
+          '1': { type: 'number' },
+          '2': { type: 'number' },
+          '3': { type: 'string' },
+        },
+      });
+    });
+
+    test('for overrides with only previously converted definitions', () => {
+      const stringSchema = v.string();
+      const numberSchema = v.number();
+      expect(
+        toJsonSchema(stringSchema, {
+          definitions: { stringSchema, numberSchema },
+          overrideSchema(context) {
+            if (context.valibotSchema === stringSchema) {
+              expect(context.definitions).toStrictEqual({});
+            } else if (context.valibotSchema === numberSchema) {
+              expect(context.definitions).toStrictEqual({
+                stringSchema: { type: 'string' },
+              });
+            }
+            return null;
+          },
+        })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        $ref: '#/$defs/stringSchema',
+        $defs: {
+          stringSchema: { type: 'string' },
+          numberSchema: { type: 'number' },
+        },
+      });
+    });
+
+    test('for lazy schemas with definition added by override', () => {
+      const stringSchema = v.string();
+      const numberSchema = v.number();
+      expect(
+        toJsonSchema(
+          v.object({
+            foo: v.lazy(() => stringSchema),
+            bar: v.lazy(() => numberSchema),
+          }),
+          {
+            overrideSchema(context) {
+              if (context.valibotSchema === stringSchema) {
+                context.definitions['1'] = { type: 'boolean' };
+              }
+              return null;
+            },
+          }
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          foo: { $ref: '#/$defs/0' },
+          bar: { $ref: '#/$defs/2' },
+        },
+        required: ['foo', 'bar'],
+        $defs: {
+          '0': { type: 'string' },
+          '1': { type: 'boolean' },
+          '2': { type: 'number' },
+        },
+      });
+    });
+
+    test('for lazy schemas with conversion inside override', () => {
+      const stringSchema = v.string();
+      const numberSchema = v.number();
+      expect(
+        toJsonSchema(
+          v.object({
+            foo: v.lazy(() => stringSchema),
+            bar: v.lazy(() => numberSchema),
+          }),
+          {
+            overrideSchema(context) {
+              if (context.valibotSchema === stringSchema) {
+                // A nested conversion must not reset the outer reference counter.
+                toJsonSchema(v.boolean());
+              }
+              return null;
+            },
+          }
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          foo: { $ref: '#/$defs/0' },
+          bar: { $ref: '#/$defs/1' },
+        },
+        required: ['foo', 'bar'],
+        $defs: {
+          '0': { type: 'string' },
+          '1': { type: 'number' },
+        },
+      });
+    });
+
+    test('for lazy schemas with reference added by override', () => {
+      const stringSchema = v.string();
+      const numberSchema = v.number();
+      const booleanSchema = v.boolean();
+      expect(
+        toJsonSchema(
+          v.object({
+            foo: v.lazy(() => stringSchema),
+            bar: v.lazy(() => numberSchema),
+            baz: booleanSchema,
+          }),
+          {
+            overrideSchema(context) {
+              if (context.valibotSchema === stringSchema) {
+                // Reserve a reference before its definition is created.
+                context.referenceMap.set(booleanSchema, '1');
+              } else if (context.valibotSchema === numberSchema) {
+                context.definitions['1'] = { type: 'boolean' };
+              }
+              return null;
+            },
+          }
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          foo: { $ref: '#/$defs/0' },
+          bar: { $ref: '#/$defs/2' },
+          baz: { $ref: '#/$defs/1' },
+        },
+        required: ['foo', 'bar', 'baz'],
+        $defs: {
+          '0': { type: 'string' },
+          '1': { type: 'boolean' },
+          '2': { type: 'number' },
+        },
+      });
+    });
+
+    test('for lazy schemas with reference replaced by override', () => {
+      const stringSchema = v.string();
+      const numberSchema = v.number();
+      const booleanSchema = v.boolean();
+      expect(
+        toJsonSchema(
+          v.object({
+            foo: v.lazy(() => stringSchema),
+            bar: v.lazy(() => numberSchema),
+            baz: booleanSchema,
+          }),
+          {
+            definitions: { booleanSchema },
+            overrideRef(context) {
+              if (context.valibotSchema === stringSchema) {
+                // Replacing a reference does not change the map's size.
+                context.referenceMap.set(booleanSchema, '1');
+              } else if (context.valibotSchema === numberSchema) {
+                context.definitions['1'] = { type: 'boolean' };
+              }
+              return undefined;
+            },
+          }
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          foo: { $ref: '#/$defs/0' },
+          bar: { $ref: '#/$defs/2' },
+          baz: { $ref: '#/$defs/1' },
+        },
+        required: ['foo', 'bar', 'baz'],
+        $defs: {
+          booleanSchema: { type: 'boolean' },
+          '0': { type: 'string' },
+          '1': { type: 'boolean' },
+          '2': { type: 'number' },
+        },
+      });
+    });
+
     test('for definitions with JSON Pointer special characters', () => {
       const sharedSchema = v.object({ name: v.string() });
       expect(
@@ -167,6 +389,44 @@ describe('toJsonSchema', () => {
   });
 
   describe('should throw error', () => {
+    test('for impossible lengths before non empty', () => {
+      for (const schema of [
+        v.pipe(v.string(), v.minLength(Infinity), v.nonEmpty()),
+        v.pipe(v.array(v.number()), v.minLength(Infinity), v.nonEmpty()),
+      ]) {
+        expect(() => toJsonSchema(schema)).toThrowError(
+          'The requirement of the "min_length" action must be a non-negative integer.'
+        );
+      }
+    });
+
+    test('for impossible entry count before finite minimum', () => {
+      expect(() =>
+        toJsonSchema(
+          v.pipe(
+            v.record(v.string(), v.number()),
+            v.minEntries(Infinity),
+            v.minEntries(1)
+          )
+        )
+      ).toThrowError(
+        'The requirement of the "min_entries" action must be a non-negative integer.'
+      );
+    });
+
+    test('for impossible numeric bounds before safe integer', () => {
+      expect(() =>
+        toJsonSchema(v.pipe(v.number(), v.minValue(Infinity), v.safeInteger()))
+      ).toThrowError(
+        'The requirement of the "min_value" action is not JSON compatible.'
+      );
+      expect(() =>
+        toJsonSchema(v.pipe(v.number(), v.maxValue(-Infinity), v.safeInteger()))
+      ).toThrowError(
+        'The requirement of the "max_value" action is not JSON compatible.'
+      );
+    });
+
     test('for invalid file schema', () => {
       expect(() => toJsonSchema(v.file())).toThrowError(
         'The "file" schema cannot be converted to JSON Schema.'
@@ -255,6 +515,316 @@ describe('toJsonSchema', () => {
           type: 'string',
         }
       );
+    });
+  });
+
+  describe('should keep stricter bound when actions overlap', () => {
+    test('for zero string lengths', () => {
+      expect(
+        toJsonSchema(
+          v.pipe(v.string(), v.minLength(0), v.maxLength(0), v.length(0))
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'string',
+        minLength: 0,
+        maxLength: 0,
+      });
+    });
+
+    test('for zero array lengths', () => {
+      expect(
+        toJsonSchema(
+          v.pipe(
+            v.array(v.number()),
+            v.minLength(0),
+            v.maxLength(0),
+            v.length(0)
+          )
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'array',
+        items: { type: 'number' },
+        minItems: 0,
+        maxItems: 0,
+      });
+    });
+
+    test('for zero entry counts', () => {
+      expect(
+        toJsonSchema(
+          v.pipe(
+            v.record(v.string(), v.number()),
+            v.minEntries(0),
+            v.maxEntries(0),
+            v.entries(0)
+          )
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        additionalProperties: { type: 'number' },
+        propertyNames: { type: 'string' },
+        minProperties: 0,
+        maxProperties: 0,
+      });
+    });
+
+    test('for negative and fractional numeric bounds', () => {
+      expect(
+        toJsonSchema(
+          v.pipe(
+            v.number(),
+            v.minValue(-1.5),
+            v.maxValue(1.5),
+            v.gtValue(-0.5),
+            v.ltValue(0.5)
+          )
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'number',
+        minimum: -1.5,
+        maximum: 1.5,
+        exclusiveMinimum: -0.5,
+        exclusiveMaximum: 0.5,
+      });
+    });
+
+    test('for repeated numeric bounds in either order', () => {
+      for (const schema of [
+        v.pipe(
+          v.number(),
+          v.minValue(-1),
+          v.minValue(0),
+          v.maxValue(1),
+          v.maxValue(0)
+        ),
+        v.pipe(
+          v.number(),
+          v.minValue(0),
+          v.minValue(-1),
+          v.maxValue(0),
+          v.maxValue(1)
+        ),
+        v.pipe(
+          v.number(),
+          v.minValue(0),
+          v.minValue(0),
+          v.maxValue(0),
+          v.maxValue(0)
+        ),
+      ]) {
+        expect(toJsonSchema(schema)).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'number',
+          minimum: 0,
+          maximum: 0,
+        });
+      }
+    });
+
+    test('for repeated exclusive bounds in either order', () => {
+      for (const schema of [
+        v.pipe(
+          v.number(),
+          v.gtValue(-1),
+          v.gtValue(0),
+          v.ltValue(2),
+          v.ltValue(1)
+        ),
+        v.pipe(
+          v.number(),
+          v.gtValue(0),
+          v.gtValue(-1),
+          v.ltValue(1),
+          v.ltValue(2)
+        ),
+      ]) {
+        expect(toJsonSchema(schema)).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'number',
+          exclusiveMinimum: 0,
+          exclusiveMaximum: 1,
+        });
+      }
+    });
+
+    test('for contradictory string lengths in either order', () => {
+      for (const schema of [
+        v.pipe(v.string(), v.length(2), v.length(3)),
+        v.pipe(v.string(), v.length(3), v.length(2)),
+      ]) {
+        expect(toJsonSchema(schema)).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'string',
+          minLength: 3,
+          maxLength: 2,
+        });
+      }
+    });
+
+    test('for contradictory array lengths in either order', () => {
+      for (const schema of [
+        v.pipe(v.array(v.number()), v.length(2), v.length(3)),
+        v.pipe(v.array(v.number()), v.length(3), v.length(2)),
+      ]) {
+        expect(toJsonSchema(schema)).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'array',
+          items: { type: 'number' },
+          minItems: 3,
+          maxItems: 2,
+        });
+      }
+    });
+
+    test('for contradictory entry counts in either order', () => {
+      for (const schema of [
+        v.pipe(v.record(v.string(), v.number()), v.entries(2), v.entries(3)),
+        v.pipe(v.record(v.string(), v.number()), v.entries(3), v.entries(2)),
+      ]) {
+        expect(toJsonSchema(schema)).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'object',
+          additionalProperties: { type: 'number' },
+          propertyNames: { type: 'string' },
+          minProperties: 3,
+          maxProperties: 2,
+        });
+      }
+    });
+
+    test('for safe integer and numeric bounds in either order', () => {
+      for (const schema of [
+        v.pipe(
+          v.number(),
+          v.safeInteger(),
+          v.minValue(Number.MIN_SAFE_INTEGER - 1),
+          v.maxValue(Number.MAX_SAFE_INTEGER + 1)
+        ),
+        v.pipe(
+          v.number(),
+          v.minValue(Number.MIN_SAFE_INTEGER - 1),
+          v.maxValue(Number.MAX_SAFE_INTEGER + 1),
+          v.safeInteger()
+        ),
+      ]) {
+        expect(toJsonSchema(schema)).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'integer',
+          minimum: Number.MIN_SAFE_INTEGER,
+          maximum: Number.MAX_SAFE_INTEGER,
+        });
+      }
+    });
+
+    test('for non empty after min length', () => {
+      expect(
+        toJsonSchema(v.pipe(v.string(), v.minLength(3), v.nonEmpty()))
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'string',
+        minLength: 3,
+      });
+    });
+
+    test('for repeated min value actions', () => {
+      expect(
+        toJsonSchema(v.pipe(v.number(), v.minValue(5), v.minValue(3)))
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'number',
+        minimum: 5,
+      });
+    });
+  });
+
+  describe('should merge overlapping value restrictions', () => {
+    test('for disjoint values followed by further restrictions', () => {
+      expect(
+        toJsonSchema(
+          v.pipe(
+            v.number(),
+            v.values([1]),
+            v.values([2]),
+            v.values([1, 2]),
+            v.notValue(3)
+          )
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'number',
+        enum: [1, 2],
+        not: { anyOf: [{}, { const: 3 }] },
+      });
+    });
+
+    test('for mixed exclusions with openapi-3.0', () => {
+      expect(
+        toJsonSchema(
+          v.pipe(
+            v.number(),
+            v.notValues([1, 2]),
+            v.notValue(3),
+            v.notValues([4])
+          ),
+          { target: 'openapi-3.0' }
+        )
+      ).toStrictEqual({
+        type: 'number',
+        not: {
+          anyOf: [{ anyOf: [{ enum: [1, 2] }, { enum: [3] }] }, { enum: [4] }],
+        },
+      });
+    });
+
+    test('for disjoint values with openapi-3.0', () => {
+      for (const schema of [
+        v.pipe(v.number(), v.values([1]), v.values([2])),
+        v.pipe(v.number(), v.values([1]), v.value(2)),
+        v.pipe(v.number(), v.value(1), v.values([2])),
+        v.pipe(v.number(), v.value(1), v.value(2)),
+      ]) {
+        expect(toJsonSchema(schema, { target: 'openapi-3.0' })).toStrictEqual({
+          type: 'number',
+          not: {},
+        });
+      }
+    });
+
+    test('for overlapping values with openapi-3.0', () => {
+      for (const schema of [
+        v.pipe(v.number(), v.values([1, 2]), v.value(2)),
+        v.pipe(v.number(), v.value(2), v.values([1, 2])),
+        v.pipe(v.number(), v.value(2), v.value(2)),
+      ]) {
+        expect(toJsonSchema(schema, { target: 'openapi-3.0' })).toStrictEqual({
+          type: 'number',
+          enum: [2],
+        });
+      }
+    });
+
+    test('for repeated values actions', () => {
+      expect(
+        toJsonSchema(v.pipe(v.number(), v.values([1, 2]), v.values([2, 3])))
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'number',
+        enum: [2],
+      });
+    });
+
+    test('for repeated not value actions', () => {
+      expect(
+        toJsonSchema(v.pipe(v.number(), v.notValue(1), v.notValue(2)))
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'number',
+        not: { anyOf: [{ const: 1 }, { const: 2 }] },
+      });
     });
   });
 });

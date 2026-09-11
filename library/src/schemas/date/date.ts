@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Date issue interface.
@@ -70,16 +70,13 @@ export function date<
 export function date(
   message?: ErrorMessage<DateIssue>
 ): DateSchema<ErrorMessage<DateIssue> | undefined> {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'date',
     reference: date,
     expects: 'Date',
     async: false,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       if (dataset.value instanceof Date) {
         // @ts-expect-error
@@ -97,5 +94,5 @@ export function date(
       // @ts-expect-error
       return dataset as OutputDataset<Date, DateIssue>;
     },
-  };
+  });
 }
