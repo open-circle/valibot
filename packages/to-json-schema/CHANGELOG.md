@@ -2,7 +2,7 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v1.8.0 (September 11, 2026)
 
 - Add support for `ksuid` action (pull request #1370)
 - Add passthrough of other `metadata` action properties to support custom annotations and standard keywords like `format`, which take precedence over generated properties (pull request #1591)
@@ -19,6 +19,7 @@ All notable changes to the library will be documented in this file.
 - Fix `minValue`, `maxValue`, `gtValue` and `ltValue` actions to skip numeric constraints on unsupported types in `warn` and `ignore` error modes (pull request #1595)
 - Fix generation of reference IDs for `lazy` schemas to produce consistent output and avoid collisions with existing definitions (pull request #1604)
 - Change `ConversionContext.referenceMap` type from `Map` to its `ReferenceMap` subclass (pull request #1604)
+- Change Valibot peer dependency to v1.5.0
 
 ## v1.7.1 (June 08, 2026)
 
