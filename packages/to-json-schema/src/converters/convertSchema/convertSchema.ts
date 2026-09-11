@@ -111,22 +111,6 @@ type Pipe = readonly (Schema | v.PipeAction<any, any, v.BaseIssue<unknown>>)[];
 type SchemaOrPipe = Schema | v.SchemaWithPipe<readonly [Schema, ...Pipe]>;
 
 /**
- * Whether a value is a valid option of an "enum" or "picklist" schema in
- * JSON. Valibot itself only allows strings, numbers and bigints here, and a
- * non-finite number or a bigint cannot be represented in JSON.
- *
- * @param option The option to check.
- *
- * @returns Whether the option is valid.
- */
-function isValidEnumOption(option: unknown): option is number | string {
-  return (
-    typeof option === 'string' ||
-    (typeof option === 'number' && Number.isFinite(option))
-  );
-}
-
-/**
  * Flattens a Valibot pipe by recursively expanding nested pipes.
  *
  * @param pipe The pipeline to flatten.
@@ -551,57 +535,39 @@ export function convertSchema(
           errors,
           'The value of the "literal" schema is not JSON compatible.'
         );
+        break;
       }
       if (config?.target === 'openapi-3.0') {
         // Hint: OpenAPI 3.0 does not support const. That's why we use an enum instead.
-        // @ts-expect-error
         jsonSchema.enum = [valibotSchema.literal];
       } else {
-        // @ts-expect-error
         jsonSchema.const = valibotSchema.literal;
       }
       break;
     }
 
-    case 'enum': {
-      const hasInvalidOptions = !valibotSchema.options.every(isValidEnumOption);
-      if (hasInvalidOptions) {
-        errors = addError(
-          errors,
-          'An option of the "enum" schema is not JSON compatible.'
-        );
-      }
-      jsonSchema.enum = valibotSchema.options;
-      if (valibotSchema.options.every((option) => typeof option === 'string')) {
-        jsonSchema.type = 'string';
-      } else if (
-        valibotSchema.options.every((option) => typeof option === 'number')
-      ) {
-        jsonSchema.type = 'number';
-      } else if (!hasInvalidOptions && config?.target !== 'openapi-3.0') {
-        // Hint: OpenAPI 3.0 does not support multi-type arrays.
-        jsonSchema.type = ['string', 'number'];
-      }
-      break;
-    }
-
+    case 'enum':
     case 'picklist': {
-      const hasInvalidOptions = !valibotSchema.options.every(isValidEnumOption);
-      if (hasInvalidOptions) {
+      const options = valibotSchema.options;
+      if (
+        !options.every(
+          (option) =>
+            typeof option === 'string' ||
+            (typeof option === 'number' && Number.isFinite(option))
+        )
+      ) {
         errors = addError(
           errors,
-          'An option of the "picklist" schema is not JSON compatible.'
+          `An option of the "${valibotSchema.type}" schema is not JSON compatible.`
         );
+        break;
       }
-      // @ts-expect-error
-      jsonSchema.enum = valibotSchema.options;
-      if (valibotSchema.options.every((option) => typeof option === 'string')) {
+      jsonSchema.enum = options as (number | string)[];
+      if (options.every((option) => typeof option === 'string')) {
         jsonSchema.type = 'string';
-      } else if (
-        valibotSchema.options.every((option) => typeof option === 'number')
-      ) {
+      } else if (options.every((option) => typeof option === 'number')) {
         jsonSchema.type = 'number';
-      } else if (!hasInvalidOptions && config?.target !== 'openapi-3.0') {
+      } else if (config?.target !== 'openapi-3.0') {
         // Hint: OpenAPI 3.0 does not support multi-type arrays.
         jsonSchema.type = ['string', 'number'];
       }

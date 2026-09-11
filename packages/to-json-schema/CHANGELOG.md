@@ -14,6 +14,8 @@ All notable changes to the library will be documented in this file.
 - Fix `length`, `minLength`, `maxLength`, `entries`, `minEntries` and `maxEntries` actions to require non-negative integers by default and skip invalid requirements in `warn` and `ignore` error modes (pull request #1611)
 - Fix `examples` property type of `JsonSchema` to always be an array (pull request #1607)
 - Fix JSON compatibility validation of `literal` schemas to reject `NaN` and infinite numbers by default (pull request #1573)
+- Fix JSON compatibility validation of `enum` and `picklist` schemas to reject `NaN` and infinite numbers by default (pull request #1612)
+- Fix `literal`, `enum` and `picklist` schemas to skip unsupported values in `warn` and `ignore` error modes (pull request #1612)
 - Fix `minValue`, `maxValue`, `gtValue` and `ltValue` actions to skip numeric constraints on unsupported types in `warn` and `ignore` error modes (pull request #1595)
 - Fix generation of reference IDs for `lazy` schemas to produce consistent output and avoid collisions with existing definitions (pull request #1604)
 - Change `ConversionContext.referenceMap` type from `Map` to its `ReferenceMap` subclass (pull request #1604)

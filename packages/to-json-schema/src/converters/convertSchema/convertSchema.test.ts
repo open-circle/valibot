@@ -1081,9 +1081,7 @@ describe('convertSchema', () => {
           { errorMode: 'warn' },
           createContext()
         )
-      ).toStrictEqual({
-        const: 123n,
-      });
+      ).toStrictEqual({});
       expect(console.warn).toHaveBeenLastCalledWith(
         'The value of the "literal" schema is not JSON compatible.'
       );
@@ -1095,26 +1093,38 @@ describe('convertSchema', () => {
           { errorMode: 'warn' },
           createContext()
         )
-      ).toStrictEqual({
-        const: symbol,
-      });
+      ).toStrictEqual({});
       expect(console.warn).toHaveBeenLastCalledWith(
         'The value of the "literal" schema is not JSON compatible.'
       );
     });
 
-    test('should throw error for non-finite literal schema', () => {
-      const error = 'The value of the "literal" schema is not JSON compatible.';
-      expect(() =>
-        convertSchema({}, v.literal(Infinity), undefined, createContext())
-      ).toThrowError(error);
-      expect(() =>
-        convertSchema({}, v.literal(-Infinity), undefined, createContext())
-      ).toThrowError(error);
-      expect(() =>
-        convertSchema({}, v.literal(NaN), undefined, createContext())
-      ).toThrowError(error);
-    });
+    test.each(['warn', 'ignore'] as const)(
+      'should skip unsupported literal values in %s mode',
+      (errorMode) => {
+        for (const target of [
+          'draft-07',
+          'draft-2020-12',
+          'openapi-3.0',
+        ] as const) {
+          for (const value of [NaN, Infinity, -Infinity, 123n, Symbol('foo')]) {
+            expect(
+              convertSchema(
+                { title: 'foo' },
+                v.literal(value),
+                { target, errorMode },
+                createContext()
+              )
+            ).toStrictEqual({ title: 'foo' });
+            if (errorMode === 'warn') {
+              expect(console.warn).toHaveBeenLastCalledWith(
+                'The value of the "literal" schema is not JSON compatible.'
+              );
+            }
+          }
+        }
+      }
+    );
 
     test('should convert enum schema', () => {
       enum TestEnum {
@@ -1171,6 +1181,20 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should preserve finite numeric enum and picklist options', () => {
+      for (const schema of [
+        v.enum<v.Enum>({ ZERO: 0, NEGATIVE: -1.5, LARGE: Number.MAX_VALUE }),
+        v.picklist([0, -1.5, Number.MAX_VALUE]),
+      ]) {
+        expect(
+          convertSchema({}, schema, undefined, createContext())
+        ).toStrictEqual({
+          type: 'number',
+          enum: [0, -1.5, Number.MAX_VALUE],
+        });
+      }
+    });
+
     test('should convert enum schema for openapi-3.0', () => {
       enum TestEnum {
         KEY1,
@@ -1225,22 +1249,54 @@ describe('convertSchema', () => {
       });
     });
 
-    test('should throw error for non-finite enum option', () => {
-      const error = 'An option of the "enum" schema is not JSON compatible.';
-      expect(() =>
-        convertSchema(
-          {},
-          // @ts-expect-error
-          v.enum({ KEY1: Infinity }),
-          undefined,
-          createContext()
-        )
-      ).toThrowError(error);
-      expect(() =>
-        // @ts-expect-error
-        convertSchema({}, v.enum({ KEY1: NaN }), undefined, createContext())
-      ).toThrowError(error);
-    });
+    test.each(['draft-07', 'draft-2020-12', 'openapi-3.0'] as const)(
+      'should throw error for non-finite enum option for %s',
+      (target) => {
+        for (const option of [NaN, Infinity, -Infinity]) {
+          const schema = v.enum<v.Enum>({ KEY1: 1, KEY2: option });
+          const error =
+            'An option of the "enum" schema is not JSON compatible.';
+          expect(() =>
+            convertSchema({}, schema, { target }, createContext())
+          ).toThrowError(error);
+          expect(() =>
+            convertSchema(
+              {},
+              schema,
+              { target, errorMode: 'throw' },
+              createContext()
+            )
+          ).toThrowError(error);
+        }
+      }
+    );
+
+    test.each(['warn', 'ignore'] as const)(
+      'should skip non-finite enum options in %s mode',
+      (errorMode) => {
+        for (const target of [
+          'draft-07',
+          'draft-2020-12',
+          'openapi-3.0',
+        ] as const) {
+          for (const option of [NaN, Infinity, -Infinity]) {
+            expect(
+              convertSchema(
+                { title: 'foo' },
+                v.enum<v.Enum>({ KEY1: 1, KEY2: option }),
+                { target, errorMode },
+                createContext()
+              )
+            ).toStrictEqual({ title: 'foo' });
+            if (errorMode === 'warn') {
+              expect(console.warn).toHaveBeenLastCalledWith(
+                'An option of the "enum" schema is not JSON compatible.'
+              );
+            }
+          }
+        }
+      }
+    );
 
     test('should convert supported picklist schema', () => {
       expect(
@@ -1332,17 +1388,13 @@ describe('convertSchema', () => {
           { errorMode: 'warn' },
           createContext()
         )
-      ).toStrictEqual({ enum: [123n, 456n] });
+      ).toStrictEqual({});
       expect(console.warn).toHaveBeenLastCalledWith(
         'An option of the "picklist" schema is not JSON compatible.'
       );
     });
 
     test('should reject a boolean picklist option', () => {
-      // Valibot's PicklistOptions type does not include booleans, and the
-      // type inference below only emits string and number, so accepting a
-      // boolean here would produce a schema whose type excludes its own
-      // enum value.
       expect(() =>
         convertSchema(
           {},
@@ -1356,16 +1408,54 @@ describe('convertSchema', () => {
       );
     });
 
-    test('should throw error for non-finite picklist option', () => {
-      const error =
-        'An option of the "picklist" schema is not JSON compatible.';
-      expect(() =>
-        convertSchema({}, v.picklist([1, Infinity]), undefined, createContext())
-      ).toThrowError(error);
-      expect(() =>
-        convertSchema({}, v.picklist([NaN]), undefined, createContext())
-      ).toThrowError(error);
-    });
+    test.each(['draft-07', 'draft-2020-12', 'openapi-3.0'] as const)(
+      'should throw error for non-finite picklist option for %s',
+      (target) => {
+        for (const option of [NaN, Infinity, -Infinity]) {
+          const schema = v.picklist([1, option]);
+          const error =
+            'An option of the "picklist" schema is not JSON compatible.';
+          expect(() =>
+            convertSchema({}, schema, { target }, createContext())
+          ).toThrowError(error);
+          expect(() =>
+            convertSchema(
+              {},
+              schema,
+              { target, errorMode: 'throw' },
+              createContext()
+            )
+          ).toThrowError(error);
+        }
+      }
+    );
+
+    test.each(['warn', 'ignore'] as const)(
+      'should skip unsupported picklist options in %s mode',
+      (errorMode) => {
+        for (const target of [
+          'draft-07',
+          'draft-2020-12',
+          'openapi-3.0',
+        ] as const) {
+          for (const option of [NaN, Infinity, -Infinity, 123n]) {
+            expect(
+              convertSchema(
+                { title: 'foo' },
+                v.picklist([1, option]),
+                { target, errorMode },
+                createContext()
+              )
+            ).toStrictEqual({ title: 'foo' });
+            if (errorMode === 'warn') {
+              expect(console.warn).toHaveBeenLastCalledWith(
+                'An option of the "picklist" schema is not JSON compatible.'
+              );
+            }
+          }
+        }
+      }
+    );
 
     test('should convert union schema', () => {
       expect(
@@ -1672,6 +1762,38 @@ describe('convertSchema', () => {
   });
 
   describe('custom config', () => {
+    test('should allow overriding schemas with unsupported values', () => {
+      for (const [schema, error] of [
+        [
+          v.literal(Infinity),
+          'The value of the "literal" schema is not JSON compatible.',
+        ],
+        [
+          v.enum<v.Enum>({ KEY1: Infinity }),
+          'An option of the "enum" schema is not JSON compatible.',
+        ],
+        [
+          v.picklist([Infinity]),
+          'An option of the "picklist" schema is not JSON compatible.',
+        ],
+      ] as const) {
+        expect(
+          convertSchema(
+            { title: 'foo' },
+            schema,
+            {
+              overrideSchema({ jsonSchema, errors }) {
+                expect(jsonSchema).toStrictEqual({ title: 'foo' });
+                expect(errors).toStrictEqual([error]);
+                return { type: 'string' };
+              },
+            },
+            createContext()
+          )
+        ).toStrictEqual({ type: 'string' });
+      }
+    });
+
     test('should override JSON Schema and suppress error', () => {
       expect(() =>
         convertSchema(

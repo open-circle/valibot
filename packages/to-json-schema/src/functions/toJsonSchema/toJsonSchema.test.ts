@@ -389,6 +389,14 @@ describe('toJsonSchema', () => {
   });
 
   describe('should throw error', () => {
+    test('for a non-finite option before a values action', () => {
+      expect(() =>
+        toJsonSchema(v.pipe(v.picklist([1, Infinity]), v.values([1])))
+      ).toThrowError(
+        'An option of the "picklist" schema is not JSON compatible.'
+      );
+    });
+
     test('for impossible lengths before non empty', () => {
       for (const schema of [
         v.pipe(v.string(), v.minLength(Infinity), v.nonEmpty()),
@@ -491,6 +499,30 @@ describe('toJsonSchema', () => {
       });
     });
   });
+
+  test.each(['warn', 'ignore'] as const)(
+    'should omit unsupported nested values in %s mode',
+    (errorMode) => {
+      const jsonSchema = toJsonSchema(
+        v.object({
+          literal: v.pipe(v.literal(123n), v.description('foo')),
+          enum: v.enum({ KEY1: NaN }),
+          picklist: v.picklist([1, Infinity]),
+        }),
+        { errorMode }
+      );
+      expect(JSON.parse(JSON.stringify(jsonSchema))).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          literal: { description: 'foo' },
+          enum: {},
+          picklist: {},
+        },
+        required: ['literal', 'enum', 'picklist'],
+      });
+    }
+  );
 
   describe('should handle target config', () => {
     test('for draft-07', () => {
