@@ -131,6 +131,13 @@ export function enum_(
       options.push(enum__[key]);
     }
   }
+
+  // Lazily built set of the options for O(1) membership checks. `Set.has` uses
+  // the same SameValueZero comparison as `Array.includes`, so behavior is
+  // identical. The cache lives in this closure so that parsing never adds
+  // observable properties to the returned schema object.
+  let optionsSet: Set<unknown> | undefined;
+
   return _standardSchema({
     kind: 'schema',
     type: 'enum',
@@ -141,8 +148,12 @@ export function enum_(
     options,
     message,
     '~run'(dataset, config) {
-      // @ts-expect-error
-      if (this.options.includes(dataset.value)) {
+      // Build the set on first use. It is built from the options captured at
+      // creation time, which matches the existing contract: `expects` is
+      // precomputed from the same options above, so a post-creation mutation
+      // would desync the error message regardless.
+      optionsSet ??= new Set(options);
+      if (optionsSet.has(dataset.value)) {
         // @ts-expect-error
         dataset.typed = true;
       } else {

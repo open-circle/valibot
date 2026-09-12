@@ -232,4 +232,15 @@ describe('enum_', () => {
       >);
     });
   });
+
+  test('should not mutate the schema object', () => {
+    const schema = enum_({ FOO: 'foo', BAR: 'bar' });
+    const keys = Reflect.ownKeys(schema);
+    Object.freeze(schema);
+    expect(schema['~run']({ value: 'bar' }, {})).toStrictEqual({
+      typed: true,
+      value: 'bar',
+    });
+    expect(Reflect.ownKeys(schema)).toStrictEqual(keys);
+  });
 });
