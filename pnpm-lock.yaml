@@ -3860,6 +3860,7 @@ packages:
   eslint@9.39.1:
     resolution: {integrity: sha512-BhHmn2yNOFA9H9JmmIVKJmd288g9hrVRDkdoIgRCRuSySRUHH7r/DI6aAXW9T1WwUuY3DFgrcaqB+deURBLR5g==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -7018,7 +7019,7 @@ snapshots:
       source-map: 0.7.6
       svgo: 3.3.3
       undici: 7.16.0
-      valibot: 1.4.0(typescript@5.9.3)
+      valibot: 1.5.0(typescript@5.9.3)
       vfile: 6.0.3
       vite: 7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.19.2)(yaml@2.8.1)
       vite-imagetools: 9.0.0(rollup@4.60.4)
