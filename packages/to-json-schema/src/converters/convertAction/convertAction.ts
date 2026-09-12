@@ -889,6 +889,7 @@ export function convertAction(
           errors,
           `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
         );
+        break;
       }
       jsonSchema.not = getNotRestriction(jsonSchema.not, {
         minLength: valibotAction.requirement,

@@ -792,7 +792,7 @@ describe('convertAction', () => {
       [v.codePoints<string, 3>(3), { minLength: 3, maxLength: 3 }],
       [v.maxCodePoints<string, 3>(3), { maxLength: 3 }],
       [v.minCodePoints<string, 3>(3), { minLength: 3 }],
-      [v.notCodePoints<string, 3>(3), { not: { minLength: 3, maxLength: 3 } }],
+      [v.notCodePoints<string, 3>(3), {}],
     ] as const;
     for (const [action, expected] of actions) {
       expect(convertAction({}, action, { errorMode: 'warn' })).toStrictEqual(
@@ -809,7 +809,7 @@ describe('convertAction', () => {
       [v.codePoints<string, 3>(3), { minLength: 3, maxLength: 3 }],
       [v.maxCodePoints<string, 3>(3), { maxLength: 3 }],
       [v.minCodePoints<string, 3>(3), { minLength: 3 }],
-      [v.notCodePoints<string, 3>(3), { not: { minLength: 3, maxLength: 3 } }],
+      [v.notCodePoints<string, 3>(3), {}],
     ] as const;
     for (const [action, expected] of actions) {
       expect(convertAction({}, action, { errorMode: 'ignore' })).toStrictEqual(
