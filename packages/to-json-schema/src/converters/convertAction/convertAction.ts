@@ -374,6 +374,7 @@ export function convertAction(
           errors,
           `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
         );
+        break;
       }
       jsonSchema.minLength = getLowerBound(
         jsonSchema.minLength,
@@ -632,6 +633,7 @@ export function convertAction(
           errors,
           `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
         );
+        break;
       }
       jsonSchema.maxLength = getUpperBound(
         jsonSchema.maxLength,
@@ -769,6 +771,7 @@ export function convertAction(
           errors,
           `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
         );
+        break;
       }
       jsonSchema.minLength = getLowerBound(
         jsonSchema.minLength,

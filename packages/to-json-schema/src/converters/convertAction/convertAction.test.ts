@@ -789,9 +789,9 @@ describe('convertAction', () => {
 
   test('should warn error for code points actions with invalid type', () => {
     const actions = [
-      [v.codePoints<string, 3>(3), { minLength: 3, maxLength: 3 }],
-      [v.maxCodePoints<string, 3>(3), { maxLength: 3 }],
-      [v.minCodePoints<string, 3>(3), { minLength: 3 }],
+      [v.codePoints<string, 3>(3), {}],
+      [v.maxCodePoints<string, 3>(3), {}],
+      [v.minCodePoints<string, 3>(3), {}],
       [v.notCodePoints<string, 3>(3), {}],
     ] as const;
     for (const [action, expected] of actions) {
@@ -806,9 +806,9 @@ describe('convertAction', () => {
 
   test('should ignore error for code points actions with invalid type', () => {
     const actions = [
-      [v.codePoints<string, 3>(3), { minLength: 3, maxLength: 3 }],
-      [v.maxCodePoints<string, 3>(3), { maxLength: 3 }],
-      [v.minCodePoints<string, 3>(3), { minLength: 3 }],
+      [v.codePoints<string, 3>(3), {}],
+      [v.maxCodePoints<string, 3>(3), {}],
+      [v.minCodePoints<string, 3>(3), {}],
       [v.notCodePoints<string, 3>(3), {}],
     ] as const;
     for (const [action, expected] of actions) {
