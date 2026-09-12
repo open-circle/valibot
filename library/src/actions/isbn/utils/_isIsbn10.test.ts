@@ -20,5 +20,6 @@ describe('_isIsbn10', () => {
     expect(_isIsbn10('0975229801')).toBe(false);
     expect(_isIsbn10('0684843286')).toBe(false);
     expect(_isIsbn10('1566199094')).toBe(false);
+    expect(_isIsbn10('03064061a2')).toBe(false);
   });
 });
