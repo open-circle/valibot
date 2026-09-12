@@ -132,7 +132,11 @@ export function minWords(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getWordCount(this.locales, dataset.value);
+        const count = _getWordCount(
+          this.locales,
+          dataset.value,
+          this.requirement
+        );
         if (count < this.requirement) {
           _addIssue(this, 'words', dataset, config, {
             received: `${count}`,
