@@ -2,6 +2,8 @@ export * from './AlgoliaLogo';
 export * from './AnthropicLogo';
 export * from './BoltLogo';
 export * from './BuilderLogo';
+export * from './CloudflareLogo';
+export * from './CodeRabbitLogo';
 export * from './DailyDevLogo';
 export * from './DigitalOceanLogo';
 export * from './HdmLogo';

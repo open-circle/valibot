@@ -5,7 +5,7 @@ import type { BaseIssue } from './issue.ts';
  */
 export interface UnknownDataset {
   /**
-   * Whether is's typed.
+   * Whether it's typed.
    */
   typed?: false;
   /**
@@ -23,7 +23,7 @@ export interface UnknownDataset {
  */
 export interface SuccessDataset<TValue> {
   /**
-   * Whether is's typed.
+   * Whether it's typed.
    */
   typed: true;
   /**
@@ -41,7 +41,7 @@ export interface SuccessDataset<TValue> {
  */
 export interface PartialDataset<TValue, TIssue extends BaseIssue<unknown>> {
   /**
-   * Whether is's typed.
+   * Whether it's typed.
    */
   typed: true;
   /**
@@ -59,7 +59,7 @@ export interface PartialDataset<TValue, TIssue extends BaseIssue<unknown>> {
  */
 export interface FailureDataset<TIssue extends BaseIssue<unknown>> {
   /**
-   * Whether is's typed.
+   * Whether it's typed.
    */
   typed: false;
   /**

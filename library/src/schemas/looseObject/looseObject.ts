@@ -1,4 +1,5 @@
-import { getDefault, getFallback } from '../../methods/index.ts';
+import { getDefault } from '../../methods/getDefault/index.ts';
+import { getFallback } from '../../methods/getFallback/index.ts';
 import type {
   BaseSchema,
   ErrorMessage,
@@ -11,8 +12,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _getStandardProps,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type { LooseObjectIssue } from './types.ts';
 
@@ -81,7 +82,7 @@ export function looseObject(
   ObjectEntries,
   ErrorMessage<LooseObjectIssue> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'loose_object',
     reference: looseObject,
@@ -89,9 +90,6 @@ export function looseObject(
     async: false,
     entries,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
@@ -205,7 +203,10 @@ export function looseObject(
         // Hint: We exclude specific keys for security reasons
         if (!dataset.issues || !config.abortEarly) {
           for (const key in input) {
-            if (_isValidObjectKey(input, key) && !(key in this.entries)) {
+            if (
+              _isValidObjectKey(input, key) &&
+              !Object.prototype.hasOwnProperty.call(this.entries, key)
+            ) {
               // @ts-expect-error
               dataset.value[key] = input[key];
             }
@@ -224,5 +225,5 @@ export function looseObject(
         LooseObjectIssue | InferObjectIssue<ObjectEntries>
       >;
     },
-  };
+  });
 }

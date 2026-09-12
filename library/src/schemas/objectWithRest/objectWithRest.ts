@@ -1,4 +1,5 @@
-import { getDefault, getFallback } from '../../methods/index.ts';
+import { getDefault } from '../../methods/getDefault/index.ts';
+import { getFallback } from '../../methods/getFallback/index.ts';
 import type {
   BaseIssue,
   BaseSchema,
@@ -15,8 +16,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _getStandardProps,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type { ObjectWithRestIssue } from './types.ts';
 
@@ -103,7 +104,7 @@ export function objectWithRest(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ObjectWithRestIssue> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'object_with_rest',
     reference: objectWithRest,
@@ -112,9 +113,6 @@ export function objectWithRest(
     entries,
     rest,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
@@ -228,7 +226,10 @@ export function objectWithRest(
         // Hint: We exclude specific keys for security reasons
         if (!dataset.issues || !config.abortEarly) {
           for (const key in input) {
-            if (_isValidObjectKey(input, key) && !(key in this.entries)) {
+            if (
+              _isValidObjectKey(input, key) &&
+              !Object.prototype.hasOwnProperty.call(this.entries, key)
+            ) {
               const valueDataset = this.rest['~run'](
                 // @ts-expect-error
                 { value: input[key] },
@@ -296,5 +297,5 @@ export function objectWithRest(
         | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

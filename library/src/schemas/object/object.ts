@@ -1,4 +1,5 @@
-import { getDefault, getFallback } from '../../methods/index.ts';
+import { getDefault } from '../../methods/getDefault/index.ts';
+import { getFallback } from '../../methods/getFallback/index.ts';
 import type {
   BaseSchema,
   ErrorMessage,
@@ -9,7 +10,7 @@ import type {
   ObjectPathItem,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { ObjectIssue } from './types.ts';
 
 /**
@@ -84,7 +85,7 @@ export function object(
   entries: ObjectEntries,
   message?: ErrorMessage<ObjectIssue>
 ): ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined> {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'object',
     reference: object,
@@ -92,9 +93,6 @@ export function object(
     async: false,
     entries,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
@@ -216,5 +214,5 @@ export function object(
         ObjectIssue | InferObjectIssue<ObjectEntries>
       >;
     },
-  };
+  });
 }

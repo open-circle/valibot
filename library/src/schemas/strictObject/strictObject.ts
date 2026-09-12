@@ -1,4 +1,5 @@
-import { getDefault, getFallback } from '../../methods/index.ts';
+import { getDefault } from '../../methods/getDefault/index.ts';
+import { getFallback } from '../../methods/getFallback/index.ts';
 import type {
   BaseSchema,
   ErrorMessage,
@@ -9,7 +10,7 @@ import type {
   ObjectPathItem,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { StrictObjectIssue } from './types.ts';
 
 /**
@@ -77,7 +78,7 @@ export function strictObject(
   ObjectEntries,
   ErrorMessage<StrictObjectIssue> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'strict_object',
     reference: strictObject,
@@ -85,9 +86,6 @@ export function strictObject(
     async: false,
     entries,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
@@ -200,7 +198,7 @@ export function strictObject(
         // Check input for unknown keys if necessary
         if (!dataset.issues || !config.abortEarly) {
           for (const key in input) {
-            if (!(key in this.entries)) {
+            if (!Object.prototype.hasOwnProperty.call(this.entries, key)) {
               _addIssue(this, 'key', dataset, config, {
                 input: key,
                 expected: 'never',
@@ -238,5 +236,5 @@ export function strictObject(
         StrictObjectIssue | InferObjectIssue<ObjectEntries>
       >;
     },
-  };
+  });
 }

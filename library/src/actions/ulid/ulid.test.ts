@@ -69,7 +69,9 @@ describe('ulid', () => {
         '01ARZ3NDEKTSV4RRFFQ69G5FAV',
         '01bx5zzkbkactav9wevgemmvry',
         '0123456789abcdefghjkmnpqrs',
-        'ABCDEFGHJKMNPQRSTVWXYZ0123',
+        '00000000000000000000000000',
+        '7ZZZZZZZZZZZZZZZZZZZZZZZZZ',
+        '7zzzzzzzzzzzzzzzzzzzzzzzzz',
       ]);
     });
   });
@@ -120,6 +122,16 @@ describe('ulid', () => {
         '01bx5zzkbkactav9wevgemmory',
         '01ARZ3NDEKTSV4RRFFQ69G5FAU',
         '01bx5zzkbkactav9wevgemmvru',
+      ]);
+    });
+
+    test('for overflowing ULIDs', () => {
+      expectActionIssue(action, baseIssue, [
+        '80000000000000000000000000',
+        '8ARZ3NDEKTSV4RRFFQ69G5FAV0',
+        '9ARZ3NDEKTSV4RRFFQ69G5FAV0',
+        'ABCDEFGHJKMNPQRSTVWXYZ0123',
+        'abcdefghjkmnpqrstvwxyz0123',
       ]);
     });
   });

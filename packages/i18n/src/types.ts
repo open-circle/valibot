@@ -1,6 +1,9 @@
 import type { BaseIssue, ErrorMessage } from 'valibot';
 
-export type Language = {
+/**
+ * The language configuration.
+ */
+export interface Language {
   code:
     | 'ar'
     | 'az'
@@ -46,6 +49,7 @@ export type Language = {
     checkAsync: ErrorMessage<BaseIssue<unknown>>;
     checkItems: ErrorMessage<BaseIssue<unknown>>;
     checkItemsAsync: ErrorMessage<BaseIssue<unknown>>;
+    codePoints: ErrorMessage<BaseIssue<unknown>>;
     creditCard: ErrorMessage<BaseIssue<unknown>>;
     cuid2: ErrorMessage<BaseIssue<unknown>>;
     decimal: ErrorMessage<BaseIssue<unknown>>;
@@ -74,18 +78,21 @@ export type Language = {
     isbn: ErrorMessage<BaseIssue<unknown>>;
     isoDate: ErrorMessage<BaseIssue<unknown>>;
     isoDateTime: ErrorMessage<BaseIssue<unknown>>;
+    isoDateTimeSecond: ErrorMessage<BaseIssue<unknown>>;
     isoTime: ErrorMessage<BaseIssue<unknown>>;
     isoTimeSecond: ErrorMessage<BaseIssue<unknown>>;
     isoTimestamp: ErrorMessage<BaseIssue<unknown>>;
     isoWeek: ErrorMessage<BaseIssue<unknown>>;
     isrc: ErrorMessage<BaseIssue<unknown>>;
     jwsCompact: ErrorMessage<BaseIssue<unknown>>;
+    ksuid: ErrorMessage<BaseIssue<unknown>>;
     length: ErrorMessage<BaseIssue<unknown>>;
     ltValue: ErrorMessage<BaseIssue<unknown>>;
     mac: ErrorMessage<BaseIssue<unknown>>;
     mac48: ErrorMessage<BaseIssue<unknown>>;
     mac64: ErrorMessage<BaseIssue<unknown>>;
     maxBytes: ErrorMessage<BaseIssue<unknown>>;
+    maxCodePoints: ErrorMessage<BaseIssue<unknown>>;
     maxEntries: ErrorMessage<BaseIssue<unknown>>;
     maxGraphemes: ErrorMessage<BaseIssue<unknown>>;
     maxLength: ErrorMessage<BaseIssue<unknown>>;
@@ -94,6 +101,7 @@ export type Language = {
     maxWords: ErrorMessage<BaseIssue<unknown>>;
     mimeType: ErrorMessage<BaseIssue<unknown>>;
     minBytes: ErrorMessage<BaseIssue<unknown>>;
+    minCodePoints: ErrorMessage<BaseIssue<unknown>>;
     minEntries: ErrorMessage<BaseIssue<unknown>>;
     minGraphemes: ErrorMessage<BaseIssue<unknown>>;
     minLength: ErrorMessage<BaseIssue<unknown>>;
@@ -104,6 +112,7 @@ export type Language = {
     nanoid: ErrorMessage<BaseIssue<unknown>>;
     nonEmpty: ErrorMessage<BaseIssue<unknown>>;
     notBytes: ErrorMessage<BaseIssue<unknown>>;
+    notCodePoints: ErrorMessage<BaseIssue<unknown>>;
     notEntries: ErrorMessage<BaseIssue<unknown>>;
     notGraphemes: ErrorMessage<BaseIssue<unknown>>;
     notLength: ErrorMessage<BaseIssue<unknown>>;
@@ -136,4 +145,4 @@ export type Language = {
     values: ErrorMessage<BaseIssue<unknown>>;
     words: ErrorMessage<BaseIssue<unknown>>;
   };
-};
+}

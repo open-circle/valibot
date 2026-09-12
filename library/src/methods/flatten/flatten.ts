@@ -101,7 +101,7 @@ export function flatten(
           // @ts-expect-error
           flatErrors.nested = {};
         }
-        if (flatErrors.nested![dotPath]) {
+        if (Object.prototype.hasOwnProperty.call(flatErrors.nested, dotPath)) {
           flatErrors.nested![dotPath]!.push(issue.message);
         } else {
           // @ts-expect-error
