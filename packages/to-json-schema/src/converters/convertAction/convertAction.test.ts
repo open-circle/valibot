@@ -656,6 +656,168 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert code points actions for strings', () => {
+    expect(
+      convertAction({ type: 'string' }, v.codePoints<string, 3>(3), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      minLength: 3,
+      maxLength: 3,
+    });
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.maxCodePoints<string, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      maxLength: 3,
+    });
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.minCodePoints<string, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      minLength: 3,
+    });
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.notCodePoints<string, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      not: { minLength: 3, maxLength: 3 },
+    });
+  });
+
+  test('should warn for deprecated string length actions', () => {
+    const actions = [
+      [v.length<v.LengthInput, 3>(3), 'length', 'codePoints'],
+      [v.maxLength<v.LengthInput, 3>(3), 'maxLength', 'maxCodePoints'],
+      [v.minLength<v.LengthInput, 3>(3), 'minLength', 'minCodePoints'],
+    ] as const;
+    for (const [action, actionName, replacementName] of actions) {
+      convertAction({ type: 'string' }, action, { errorMode: 'warn' });
+      expect(console.warn).toHaveBeenLastCalledWith(
+        `The "${actionName}" action is deprecated for string schemas because Valibot counts UTF-16 code units while JSON Schema counts Unicode code points. Use "${replacementName}" instead.`
+      );
+    }
+  });
+
+  test('should not warn for length actions on arrays', () => {
+    vi.clearAllMocks();
+    for (const action of [
+      v.length<v.LengthInput, 3>(3),
+      v.maxLength<v.LengthInput, 3>(3),
+      v.minLength<v.LengthInput, 3>(3),
+    ]) {
+      convertAction({ type: 'array' }, action, { errorMode: 'warn' });
+    }
+    expect(console.warn).not.toHaveBeenCalled();
+  });
+
+  test('should keep stricter bounds for code points actions', () => {
+    expect(
+      convertAction(
+        { type: 'string', minLength: 5 },
+        v.minCodePoints<string, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      minLength: 5,
+    });
+    expect(
+      convertAction(
+        { type: 'string', maxLength: 3 },
+        v.maxCodePoints<string, 5>(5),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      maxLength: 3,
+    });
+    expect(
+      convertAction(
+        { type: 'string', minLength: 3, maxLength: 5 },
+        v.codePoints<string, 4>(4),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      minLength: 4,
+      maxLength: 4,
+    });
+  });
+
+  test('should merge not code points restrictions', () => {
+    expect(
+      convertAction(
+        { type: 'string', not: { const: 'foo' } },
+        v.notCodePoints<string, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      not: {
+        anyOf: [{ const: 'foo' }, { minLength: 3, maxLength: 3 }],
+      },
+    });
+  });
+
+  test('should throw error for code points actions with invalid type', () => {
+    const actions = [
+      v.codePoints<string, 3>(3),
+      v.maxCodePoints<string, 3>(3),
+      v.minCodePoints<string, 3>(3),
+      v.notCodePoints<string, 3>(3),
+    ];
+    for (const action of actions) {
+      const error = `The "${action.type}" action is not supported on type "undefined".`;
+      expect(() => convertAction({}, action, undefined)).toThrow(error);
+      expect(() => convertAction({}, action, { errorMode: 'throw' })).toThrow(
+        error
+      );
+    }
+  });
+
+  test('should warn error for code points actions with invalid type', () => {
+    const actions = [
+      [v.codePoints<string, 3>(3), { minLength: 3, maxLength: 3 }],
+      [v.maxCodePoints<string, 3>(3), { maxLength: 3 }],
+      [v.minCodePoints<string, 3>(3), { minLength: 3 }],
+      [v.notCodePoints<string, 3>(3), { not: { minLength: 3, maxLength: 3 } }],
+    ] as const;
+    for (const [action, expected] of actions) {
+      expect(convertAction({}, action, { errorMode: 'warn' })).toStrictEqual(
+        expected
+      );
+      expect(console.warn).toHaveBeenLastCalledWith(
+        `The "${action.type}" action is not supported on type "undefined".`
+      );
+    }
+  });
+
+  test('should ignore error for code points actions with invalid type', () => {
+    const actions = [
+      [v.codePoints<string, 3>(3), { minLength: 3, maxLength: 3 }],
+      [v.maxCodePoints<string, 3>(3), { maxLength: 3 }],
+      [v.minCodePoints<string, 3>(3), { minLength: 3 }],
+      [v.notCodePoints<string, 3>(3), { not: { minLength: 3, maxLength: 3 } }],
+    ] as const;
+    for (const [action, expected] of actions) {
+      expect(convertAction({}, action, { errorMode: 'ignore' })).toStrictEqual(
+        expected
+      );
+    }
+  });
+
   test('should convert length action for strings', () => {
     expect(
       convertAction(
@@ -1679,6 +1841,33 @@ describe('convertAction', () => {
             convertAction({ type }, action, { errorMode: 'ignore' })
           ).toStrictEqual({ type });
         }
+      }
+    }
+  });
+
+  test('should handle invalid code points requirements', () => {
+    for (const requirement of [-1, -0.5, 0.5, 1.5, NaN, Infinity, -Infinity]) {
+      const actions = [
+        v.codePoints<string, number>(requirement),
+        v.maxCodePoints<string, number>(requirement),
+        v.minCodePoints<string, number>(requirement),
+        v.notCodePoints<string, number>(requirement),
+      ];
+      for (const action of actions) {
+        const error = `The requirement of the "${action.type}" action must be a non-negative integer.`;
+        expect(() =>
+          convertAction({ type: 'string' }, action, undefined)
+        ).toThrow(error);
+        expect(() =>
+          convertAction({ type: 'string' }, action, { errorMode: 'throw' })
+        ).toThrow(error);
+        expect(
+          convertAction({ type: 'string' }, action, { errorMode: 'warn' })
+        ).toStrictEqual({ type: 'string' });
+        expect(console.warn).toHaveBeenLastCalledWith(error);
+        expect(
+          convertAction({ type: 'string' }, action, { errorMode: 'ignore' })
+        ).toStrictEqual({ type: 'string' });
       }
     }
   });
