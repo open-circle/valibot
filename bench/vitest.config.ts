@@ -5,6 +5,5 @@ export default defineConfig({
     benchmark: {
       include: ['src/**/*.bench.ts'],
     },
-    isolate: false,
   },
 });
