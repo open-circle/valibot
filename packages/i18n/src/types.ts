@@ -25,6 +25,7 @@ export interface Language {
     | 'mn'
     | 'nb'
     | 'nl'
+    | 'nn'
     | 'pl'
     | 'pt'
     | 'ro'
