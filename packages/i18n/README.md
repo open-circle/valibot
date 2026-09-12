@@ -6,41 +6,42 @@ The official i18n translations for Valibot. See the [internationalization guide]
 
 Valibot ships English messages by default, so this package publishes translated submodules for the languages below.
 
-| Language         | Pull Request         | Status |
-| ---------------- | -------------------- | ------ |
-| Arabic (ar)      | [#527][pr-527-url]   | ✅     |
-| Azerbaijani (az) | [#1409][pr-1409-url] | ✅     |
-| Catalan (ca)     | [#652][pr-652-url]   | ✅     |
-| Chinese (zh-CN)  | [#419][pr-419-url]   | ✅     |
-| Chinese (zh-TW)  | [#427][pr-427-url]   | ✅     |
-| Czech (cs)       | [#886][pr-886-url]   | ✅     |
-| Dutch (nl)       | [#438][pr-438-url]   | ✅     |
-| English (en)     | [#397][pr-397-url]   | ✅     |
-| Farsi (fa)       | [#838][pr-838-url]   | ✅     |
-| Finnish (fi)     | [#1318][pr-1318-url] | ✅     |
-| French (fr)      | [#418][pr-418-url]   | ✅     |
-| German (de)      | [#397][pr-397-url]   | ✅     |
-| Greek (el)       | [#1311][pr-1311-url] | ✅     |
-| Hungarian (hu)   | [#560][pr-560-url]   | ✅     |
-| Indonesian (id)  | [#683][pr-683-url]   | ✅     |
-| Italian (it)     | [#605][pr-605-url]   | ✅     |
-| Japanese (ja)    | [#431][pr-431-url]   | ✅     |
-| Kinyarwanda (rw) | [#1489][pr-1489-url] | ✅     |
-| Korean (ko)      | [#1306][pr-1306-url] | ✅     |
-| Mongolian (mn)   | [#1224][pr-1224-url] | ✅     |
-| Norwegian (nb)   | [#439][pr-439-url]   | ✅     |
-| Polish (pl)      | [#584][pr-584-url]   | ✅     |
-| Portuguese (pt)  | [#509][pr-509-url]   | ✅     |
-| Romanian (ro)    | [#472][pr-472-url]   | ✅     |
-| Russian (ru)     | [#434][pr-434-url]   | ✅     |
-| Slovak (sk)      | [#1334][pr-1334-url] | ✅     |
-| Slovenian (sl)   | [#422][pr-422-url]   | ✅     |
-| Spanish (es)     | [#581][pr-581-url]   | ✅     |
-| Swedish (sv)     | [#606][pr-606-url]   | ✅     |
-| Turkish (tr)     | [#549][pr-549-url]   | ✅     |
-| Ukrainian (uk)   | [#423][pr-423-url]   | ✅     |
-| Uzbek (uz)       | [#1452][pr-1452-url] | ✅     |
-| Vietnamese (vi)  | [#951][pr-951-url]   | ✅     |
+| Language               | Pull Request         | Status |
+| ---------------------- | -------------------- | ------ |
+| Arabic (ar)            | [#527][pr-527-url]   | ✅     |
+| Azerbaijani (az)       | [#1409][pr-1409-url] | ✅     |
+| Catalan (ca)           | [#652][pr-652-url]   | ✅     |
+| Chinese (zh-CN)        | [#419][pr-419-url]   | ✅     |
+| Chinese (zh-TW)        | [#427][pr-427-url]   | ✅     |
+| Czech (cs)             | [#886][pr-886-url]   | ✅     |
+| Dutch (nl)             | [#438][pr-438-url]   | ✅     |
+| English (en)           | [#397][pr-397-url]   | ✅     |
+| Farsi (fa)             | [#838][pr-838-url]   | ✅     |
+| Finnish (fi)           | [#1318][pr-1318-url] | ✅     |
+| French (fr)            | [#418][pr-418-url]   | ✅     |
+| German (de)            | [#397][pr-397-url]   | ✅     |
+| Greek (el)             | [#1311][pr-1311-url] | ✅     |
+| Hungarian (hu)         | [#560][pr-560-url]   | ✅     |
+| Indonesian (id)        | [#683][pr-683-url]   | ✅     |
+| Italian (it)           | [#605][pr-605-url]   | ✅     |
+| Japanese (ja)          | [#431][pr-431-url]   | ✅     |
+| Kinyarwanda (rw)       | [#1489][pr-1489-url] | ✅     |
+| Korean (ko)            | [#1306][pr-1306-url] | ✅     |
+| Mongolian (mn)         | [#1224][pr-1224-url] | ✅     |
+| Norwegian (nb)         | [#439][pr-439-url]   | ✅     |
+| Norwegian Nynorsk (nn) | [#1512][pr-1512-url] | ✅     |
+| Polish (pl)            | [#584][pr-584-url]   | ✅     |
+| Portuguese (pt)        | [#509][pr-509-url]   | ✅     |
+| Romanian (ro)          | [#472][pr-472-url]   | ✅     |
+| Russian (ru)           | [#434][pr-434-url]   | ✅     |
+| Slovak (sk)            | [#1334][pr-1334-url] | ✅     |
+| Slovenian (sl)         | [#422][pr-422-url]   | ✅     |
+| Spanish (es)           | [#581][pr-581-url]   | ✅     |
+| Swedish (sv)           | [#606][pr-606-url]   | ✅     |
+| Turkish (tr)           | [#549][pr-549-url]   | ✅     |
+| Ukrainian (uk)         | [#423][pr-423-url]   | ✅     |
+| Uzbek (uz)             | [#1452][pr-1452-url] | ✅     |
+| Vietnamese (vi)        | [#951][pr-951-url]   | ✅     |
 
 The deprecated `kr` submodule remains available as an alias of `ko` for compatibility, but new integrations should use `ko`.
 
@@ -76,6 +77,7 @@ The deprecated `kr` submodule remains available as an alias of `ko` for compatib
 [pr-1409-url]: https://github.com/open-circle/valibot/pull/1409
 [pr-1452-url]: https://github.com/open-circle/valibot/pull/1452
 [pr-1489-url]: https://github.com/open-circle/valibot/pull/1489
+[pr-1512-url]: https://github.com/open-circle/valibot/pull/1512
 
 ## Getting started
 
