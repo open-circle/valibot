@@ -1,0 +1,42 @@
+name: Benchmark checks
+
+on:
+  pull_request:
+    paths:
+      - 'bench/**'
+      - '.github/workflows/*.yml'
+      - '.github/actions/environment/**'
+      - 'pnpm-workspace.yaml'
+      - 'pnpm-lock.yaml'
+
+permissions:
+  contents: read
+
+jobs:
+  bench_prettier:
+    name: Run Prettier in bench
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Prettier check
+        run: pnpm format.check
+        working-directory: bench
+
+  bench_eslint:
+    name: Run ESLint in bench
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: ESLint check
+        run: pnpm lint
+        working-directory: bench

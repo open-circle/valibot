@@ -1,4 +1,5 @@
 packages:
+  - 'bench'
   - 'codemod/*'
   - 'library'
   - 'packages/*'
