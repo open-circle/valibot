@@ -21,7 +21,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Scan for vulnerabilities
-        uses: OWASP/cve-lite-cli@a9072cb521f68bc0a693b4be85e36e226a49abf0 # v1.31.0
+        uses: OWASP/cve-lite-cli@d747ab87b8eb9df6a2d4e6c7c58fd8d663c2e99c # v1.33.0
         with:
           path: .
           fail-on: critical
