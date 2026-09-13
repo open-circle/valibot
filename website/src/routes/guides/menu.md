@@ -36,6 +36,7 @@
 - [Async](/guides/async-validation/)
 - [i18n](/guides/internationalization/)
 - [JSON Schema](/guides/json-schema/)
+- [Config Loader](/guides/config-loader/)
 - [Internals](/guides/internal-architecture/)
 - [Integration](/guides/integrate-valibot/)
 - [Extension](/guides/extend-valibot/)
