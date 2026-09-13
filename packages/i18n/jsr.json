@@ -1,6 +1,7 @@
 {
   "name": "@valibot/i18n",
   "version": "1.2.0",
+  "license": "MIT",
   "exclude": [
     "scripts",
     "src",
