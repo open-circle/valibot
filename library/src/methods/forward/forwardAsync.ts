@@ -53,7 +53,7 @@ export function forwardAsync<
             for (const key of path) {
               // Create path value variable
               // @ts-expect-error
-              const pathValue: unknown = pathInput[key];
+              const pathValue: unknown = pathInput != null ? pathInput[key] : undefined;
 
               // Create path item for current key
               const pathItem: IssuePathItem = {
@@ -72,8 +72,8 @@ export function forwardAsync<
                 issue.path = [pathItem];
               }
 
-              // If path value is undefined, stop forwarding
-              if (!pathValue) {
+              // If path value is nullish, stop forwarding
+              if (pathValue === undefined || pathValue === null) {
                 break;
               }
 
