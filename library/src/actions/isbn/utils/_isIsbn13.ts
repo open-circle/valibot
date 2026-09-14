@@ -8,10 +8,13 @@
  * @internal
  */
 export function _isIsbn13(input: string): boolean {
-  const digits = input.split('').map((c) => parseInt(c));
   let sum = 0;
   for (let i = 0; i < 13; i++) {
-    sum += digits[i] * (i % 2 === 0 ? 1 : 3);
+    const charCode = input.charCodeAt(i);
+    if (charCode < 48 || charCode > 57) {
+      return false;
+    }
+    sum += (charCode - 48) * (i % 2 === 0 ? 1 : 3);
   }
   return sum % 10 === 0;
 }

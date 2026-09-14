@@ -8,10 +8,16 @@
  * @internal
  */
 export function _isIsbn10(input: string): boolean {
-  const digits = input.split('').map((c) => (c === 'X' ? 10 : parseInt(c)));
   let sum = 0;
   for (let i = 0; i < 10; i++) {
-    sum += digits[i] * (10 - i);
+    const charCode = input.charCodeAt(i);
+    if (charCode === 88) {
+      sum += 10 * (10 - i);
+    } else if (charCode >= 48 && charCode <= 57) {
+      sum += (charCode - 48) * (10 - i);
+    } else {
+      return false;
+    }
   }
   return sum % 11 === 0;
 }
