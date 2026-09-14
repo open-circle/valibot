@@ -2,7 +2,7 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v1.3.0 (September 13, 2026)
 
 - Add translations for `codePoints`, `maxCodePoints`, `minCodePoints`, `notCodePoints`, `ksuid` and `isoDateTimeSecond` actions
 - Change Valibot peer dependency and generated JSR imports to v1.5.0
