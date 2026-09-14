@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Fix `uuid` action to reject UUIDs with a version outside 1 to 8 or a variant outside RFC 9562, while still accepting the Nil and Max UUIDs (pull request #1643)
+
 ## v1.5.0 (September 09, 2026)
 
 - Add `codePoints`, `maxCodePoints`, `minCodePoints` and `notCodePoints` validation actions to validate the number of Unicode code points (pull request #888)
