@@ -32,11 +32,15 @@ export function _merge(value1: unknown, value2: unknown): MergeDataset {
     }
 
     // Return deeply merged object
+    // Hint: Keep the fast constructor check and fall back to the prototype
+    // when an own constructor property shadows Object.
     if (
       value1 &&
       value2 &&
-      value1.constructor === Object &&
-      value2.constructor === Object
+      (value1.constructor === Object ||
+        Object.getPrototypeOf(value1)?.constructor === Object) &&
+      (value2.constructor === Object ||
+        Object.getPrototypeOf(value2)?.constructor === Object)
     ) {
       // Hint: Spreading both values creates own data properties without
       // invoking inherited setters.
