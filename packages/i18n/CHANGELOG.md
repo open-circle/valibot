@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Add translations for `partialCheckAsync`, `rawCheckAsync` and `rawTransformAsync` actions (pull request #1645)
+
 ## v1.3.0 (September 13, 2026)
 
 - Add translations for `codePoints`, `maxCodePoints`, `minCodePoints`, `notCodePoints`, `ksuid` and `isoDateTimeSecond` actions

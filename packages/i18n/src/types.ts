@@ -124,8 +124,11 @@ export interface Language {
     parseBoolean: ErrorMessage<BaseIssue<unknown>>;
     parseJson: ErrorMessage<BaseIssue<unknown>>;
     partialCheck: ErrorMessage<BaseIssue<unknown>>;
+    partialCheckAsync: ErrorMessage<BaseIssue<unknown>>;
     rawCheck: ErrorMessage<BaseIssue<unknown>>;
+    rawCheckAsync: ErrorMessage<BaseIssue<unknown>>;
     rawTransform: ErrorMessage<BaseIssue<unknown>>;
+    rawTransformAsync: ErrorMessage<BaseIssue<unknown>>;
     regex: ErrorMessage<BaseIssue<unknown>>;
     rfcEmail: ErrorMessage<BaseIssue<unknown>>;
     safeInteger: ErrorMessage<BaseIssue<unknown>>;

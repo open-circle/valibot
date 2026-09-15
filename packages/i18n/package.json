@@ -928,6 +928,16 @@
         "default": "./ar/partialCheck.cjs"
       }
     },
+    "./ar/partialCheckAsync": {
+      "import": {
+        "types": "./ar/partialCheckAsync.d.mts",
+        "default": "./ar/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./ar/partialCheckAsync.d.cts",
+        "default": "./ar/partialCheckAsync.cjs"
+      }
+    },
     "./ar/rawCheck": {
       "import": {
         "types": "./ar/rawCheck.d.mts",
@@ -938,6 +948,16 @@
         "default": "./ar/rawCheck.cjs"
       }
     },
+    "./ar/rawCheckAsync": {
+      "import": {
+        "types": "./ar/rawCheckAsync.d.mts",
+        "default": "./ar/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./ar/rawCheckAsync.d.cts",
+        "default": "./ar/rawCheckAsync.cjs"
+      }
+    },
     "./ar/rawTransform": {
       "import": {
         "types": "./ar/rawTransform.d.mts",
@@ -946,6 +966,16 @@
       "require": {
         "types": "./ar/rawTransform.d.cts",
         "default": "./ar/rawTransform.cjs"
+      }
+    },
+    "./ar/rawTransformAsync": {
+      "import": {
+        "types": "./ar/rawTransformAsync.d.mts",
+        "default": "./ar/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./ar/rawTransformAsync.d.cts",
+        "default": "./ar/rawTransformAsync.cjs"
       }
     },
     "./ar/regex": {
@@ -1968,6 +1998,16 @@
         "default": "./az/partialCheck.cjs"
       }
     },
+    "./az/partialCheckAsync": {
+      "import": {
+        "types": "./az/partialCheckAsync.d.mts",
+        "default": "./az/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./az/partialCheckAsync.d.cts",
+        "default": "./az/partialCheckAsync.cjs"
+      }
+    },
     "./az/rawCheck": {
       "import": {
         "types": "./az/rawCheck.d.mts",
@@ -1978,6 +2018,16 @@
         "default": "./az/rawCheck.cjs"
       }
     },
+    "./az/rawCheckAsync": {
+      "import": {
+        "types": "./az/rawCheckAsync.d.mts",
+        "default": "./az/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./az/rawCheckAsync.d.cts",
+        "default": "./az/rawCheckAsync.cjs"
+      }
+    },
     "./az/rawTransform": {
       "import": {
         "types": "./az/rawTransform.d.mts",
@@ -1986,6 +2036,16 @@
       "require": {
         "types": "./az/rawTransform.d.cts",
         "default": "./az/rawTransform.cjs"
+      }
+    },
+    "./az/rawTransformAsync": {
+      "import": {
+        "types": "./az/rawTransformAsync.d.mts",
+        "default": "./az/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./az/rawTransformAsync.d.cts",
+        "default": "./az/rawTransformAsync.cjs"
       }
     },
     "./az/regex": {
@@ -3008,6 +3068,16 @@
         "default": "./ca/partialCheck.cjs"
       }
     },
+    "./ca/partialCheckAsync": {
+      "import": {
+        "types": "./ca/partialCheckAsync.d.mts",
+        "default": "./ca/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./ca/partialCheckAsync.d.cts",
+        "default": "./ca/partialCheckAsync.cjs"
+      }
+    },
     "./ca/rawCheck": {
       "import": {
         "types": "./ca/rawCheck.d.mts",
@@ -3018,6 +3088,16 @@
         "default": "./ca/rawCheck.cjs"
       }
     },
+    "./ca/rawCheckAsync": {
+      "import": {
+        "types": "./ca/rawCheckAsync.d.mts",
+        "default": "./ca/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./ca/rawCheckAsync.d.cts",
+        "default": "./ca/rawCheckAsync.cjs"
+      }
+    },
     "./ca/rawTransform": {
       "import": {
         "types": "./ca/rawTransform.d.mts",
@@ -3026,6 +3106,16 @@
       "require": {
         "types": "./ca/rawTransform.d.cts",
         "default": "./ca/rawTransform.cjs"
+      }
+    },
+    "./ca/rawTransformAsync": {
+      "import": {
+        "types": "./ca/rawTransformAsync.d.mts",
+        "default": "./ca/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./ca/rawTransformAsync.d.cts",
+        "default": "./ca/rawTransformAsync.cjs"
       }
     },
     "./ca/regex": {
@@ -4048,6 +4138,16 @@
         "default": "./cs/partialCheck.cjs"
       }
     },
+    "./cs/partialCheckAsync": {
+      "import": {
+        "types": "./cs/partialCheckAsync.d.mts",
+        "default": "./cs/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./cs/partialCheckAsync.d.cts",
+        "default": "./cs/partialCheckAsync.cjs"
+      }
+    },
     "./cs/rawCheck": {
       "import": {
         "types": "./cs/rawCheck.d.mts",
@@ -4058,6 +4158,16 @@
         "default": "./cs/rawCheck.cjs"
       }
     },
+    "./cs/rawCheckAsync": {
+      "import": {
+        "types": "./cs/rawCheckAsync.d.mts",
+        "default": "./cs/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./cs/rawCheckAsync.d.cts",
+        "default": "./cs/rawCheckAsync.cjs"
+      }
+    },
     "./cs/rawTransform": {
       "import": {
         "types": "./cs/rawTransform.d.mts",
@@ -4066,6 +4176,16 @@
       "require": {
         "types": "./cs/rawTransform.d.cts",
         "default": "./cs/rawTransform.cjs"
+      }
+    },
+    "./cs/rawTransformAsync": {
+      "import": {
+        "types": "./cs/rawTransformAsync.d.mts",
+        "default": "./cs/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./cs/rawTransformAsync.d.cts",
+        "default": "./cs/rawTransformAsync.cjs"
       }
     },
     "./cs/regex": {
@@ -5088,6 +5208,16 @@
         "default": "./de/partialCheck.cjs"
       }
     },
+    "./de/partialCheckAsync": {
+      "import": {
+        "types": "./de/partialCheckAsync.d.mts",
+        "default": "./de/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./de/partialCheckAsync.d.cts",
+        "default": "./de/partialCheckAsync.cjs"
+      }
+    },
     "./de/rawCheck": {
       "import": {
         "types": "./de/rawCheck.d.mts",
@@ -5098,6 +5228,16 @@
         "default": "./de/rawCheck.cjs"
       }
     },
+    "./de/rawCheckAsync": {
+      "import": {
+        "types": "./de/rawCheckAsync.d.mts",
+        "default": "./de/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./de/rawCheckAsync.d.cts",
+        "default": "./de/rawCheckAsync.cjs"
+      }
+    },
     "./de/rawTransform": {
       "import": {
         "types": "./de/rawTransform.d.mts",
@@ -5106,6 +5246,16 @@
       "require": {
         "types": "./de/rawTransform.d.cts",
         "default": "./de/rawTransform.cjs"
+      }
+    },
+    "./de/rawTransformAsync": {
+      "import": {
+        "types": "./de/rawTransformAsync.d.mts",
+        "default": "./de/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./de/rawTransformAsync.d.cts",
+        "default": "./de/rawTransformAsync.cjs"
       }
     },
     "./de/regex": {
@@ -6128,6 +6278,16 @@
         "default": "./el/partialCheck.cjs"
       }
     },
+    "./el/partialCheckAsync": {
+      "import": {
+        "types": "./el/partialCheckAsync.d.mts",
+        "default": "./el/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./el/partialCheckAsync.d.cts",
+        "default": "./el/partialCheckAsync.cjs"
+      }
+    },
     "./el/rawCheck": {
       "import": {
         "types": "./el/rawCheck.d.mts",
@@ -6138,6 +6298,16 @@
         "default": "./el/rawCheck.cjs"
       }
     },
+    "./el/rawCheckAsync": {
+      "import": {
+        "types": "./el/rawCheckAsync.d.mts",
+        "default": "./el/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./el/rawCheckAsync.d.cts",
+        "default": "./el/rawCheckAsync.cjs"
+      }
+    },
     "./el/rawTransform": {
       "import": {
         "types": "./el/rawTransform.d.mts",
@@ -6146,6 +6316,16 @@
       "require": {
         "types": "./el/rawTransform.d.cts",
         "default": "./el/rawTransform.cjs"
+      }
+    },
+    "./el/rawTransformAsync": {
+      "import": {
+        "types": "./el/rawTransformAsync.d.mts",
+        "default": "./el/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./el/rawTransformAsync.d.cts",
+        "default": "./el/rawTransformAsync.cjs"
       }
     },
     "./el/regex": {
@@ -7168,6 +7348,16 @@
         "default": "./es/partialCheck.cjs"
       }
     },
+    "./es/partialCheckAsync": {
+      "import": {
+        "types": "./es/partialCheckAsync.d.mts",
+        "default": "./es/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./es/partialCheckAsync.d.cts",
+        "default": "./es/partialCheckAsync.cjs"
+      }
+    },
     "./es/rawCheck": {
       "import": {
         "types": "./es/rawCheck.d.mts",
@@ -7178,6 +7368,16 @@
         "default": "./es/rawCheck.cjs"
       }
     },
+    "./es/rawCheckAsync": {
+      "import": {
+        "types": "./es/rawCheckAsync.d.mts",
+        "default": "./es/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./es/rawCheckAsync.d.cts",
+        "default": "./es/rawCheckAsync.cjs"
+      }
+    },
     "./es/rawTransform": {
       "import": {
         "types": "./es/rawTransform.d.mts",
@@ -7186,6 +7386,16 @@
       "require": {
         "types": "./es/rawTransform.d.cts",
         "default": "./es/rawTransform.cjs"
+      }
+    },
+    "./es/rawTransformAsync": {
+      "import": {
+        "types": "./es/rawTransformAsync.d.mts",
+        "default": "./es/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./es/rawTransformAsync.d.cts",
+        "default": "./es/rawTransformAsync.cjs"
       }
     },
     "./es/regex": {
@@ -8208,6 +8418,16 @@
         "default": "./fa/partialCheck.cjs"
       }
     },
+    "./fa/partialCheckAsync": {
+      "import": {
+        "types": "./fa/partialCheckAsync.d.mts",
+        "default": "./fa/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./fa/partialCheckAsync.d.cts",
+        "default": "./fa/partialCheckAsync.cjs"
+      }
+    },
     "./fa/rawCheck": {
       "import": {
         "types": "./fa/rawCheck.d.mts",
@@ -8218,6 +8438,16 @@
         "default": "./fa/rawCheck.cjs"
       }
     },
+    "./fa/rawCheckAsync": {
+      "import": {
+        "types": "./fa/rawCheckAsync.d.mts",
+        "default": "./fa/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./fa/rawCheckAsync.d.cts",
+        "default": "./fa/rawCheckAsync.cjs"
+      }
+    },
     "./fa/rawTransform": {
       "import": {
         "types": "./fa/rawTransform.d.mts",
@@ -8226,6 +8456,16 @@
       "require": {
         "types": "./fa/rawTransform.d.cts",
         "default": "./fa/rawTransform.cjs"
+      }
+    },
+    "./fa/rawTransformAsync": {
+      "import": {
+        "types": "./fa/rawTransformAsync.d.mts",
+        "default": "./fa/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./fa/rawTransformAsync.d.cts",
+        "default": "./fa/rawTransformAsync.cjs"
       }
     },
     "./fa/regex": {
@@ -9248,6 +9488,16 @@
         "default": "./fi/partialCheck.cjs"
       }
     },
+    "./fi/partialCheckAsync": {
+      "import": {
+        "types": "./fi/partialCheckAsync.d.mts",
+        "default": "./fi/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./fi/partialCheckAsync.d.cts",
+        "default": "./fi/partialCheckAsync.cjs"
+      }
+    },
     "./fi/rawCheck": {
       "import": {
         "types": "./fi/rawCheck.d.mts",
@@ -9258,6 +9508,16 @@
         "default": "./fi/rawCheck.cjs"
       }
     },
+    "./fi/rawCheckAsync": {
+      "import": {
+        "types": "./fi/rawCheckAsync.d.mts",
+        "default": "./fi/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./fi/rawCheckAsync.d.cts",
+        "default": "./fi/rawCheckAsync.cjs"
+      }
+    },
     "./fi/rawTransform": {
       "import": {
         "types": "./fi/rawTransform.d.mts",
@@ -9266,6 +9526,16 @@
       "require": {
         "types": "./fi/rawTransform.d.cts",
         "default": "./fi/rawTransform.cjs"
+      }
+    },
+    "./fi/rawTransformAsync": {
+      "import": {
+        "types": "./fi/rawTransformAsync.d.mts",
+        "default": "./fi/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./fi/rawTransformAsync.d.cts",
+        "default": "./fi/rawTransformAsync.cjs"
       }
     },
     "./fi/regex": {
@@ -10288,6 +10558,16 @@
         "default": "./fr/partialCheck.cjs"
       }
     },
+    "./fr/partialCheckAsync": {
+      "import": {
+        "types": "./fr/partialCheckAsync.d.mts",
+        "default": "./fr/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./fr/partialCheckAsync.d.cts",
+        "default": "./fr/partialCheckAsync.cjs"
+      }
+    },
     "./fr/rawCheck": {
       "import": {
         "types": "./fr/rawCheck.d.mts",
@@ -10298,6 +10578,16 @@
         "default": "./fr/rawCheck.cjs"
       }
     },
+    "./fr/rawCheckAsync": {
+      "import": {
+        "types": "./fr/rawCheckAsync.d.mts",
+        "default": "./fr/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./fr/rawCheckAsync.d.cts",
+        "default": "./fr/rawCheckAsync.cjs"
+      }
+    },
     "./fr/rawTransform": {
       "import": {
         "types": "./fr/rawTransform.d.mts",
@@ -10306,6 +10596,16 @@
       "require": {
         "types": "./fr/rawTransform.d.cts",
         "default": "./fr/rawTransform.cjs"
+      }
+    },
+    "./fr/rawTransformAsync": {
+      "import": {
+        "types": "./fr/rawTransformAsync.d.mts",
+        "default": "./fr/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./fr/rawTransformAsync.d.cts",
+        "default": "./fr/rawTransformAsync.cjs"
       }
     },
     "./fr/regex": {
@@ -11328,6 +11628,16 @@
         "default": "./hu/partialCheck.cjs"
       }
     },
+    "./hu/partialCheckAsync": {
+      "import": {
+        "types": "./hu/partialCheckAsync.d.mts",
+        "default": "./hu/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./hu/partialCheckAsync.d.cts",
+        "default": "./hu/partialCheckAsync.cjs"
+      }
+    },
     "./hu/rawCheck": {
       "import": {
         "types": "./hu/rawCheck.d.mts",
@@ -11338,6 +11648,16 @@
         "default": "./hu/rawCheck.cjs"
       }
     },
+    "./hu/rawCheckAsync": {
+      "import": {
+        "types": "./hu/rawCheckAsync.d.mts",
+        "default": "./hu/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./hu/rawCheckAsync.d.cts",
+        "default": "./hu/rawCheckAsync.cjs"
+      }
+    },
     "./hu/rawTransform": {
       "import": {
         "types": "./hu/rawTransform.d.mts",
@@ -11346,6 +11666,16 @@
       "require": {
         "types": "./hu/rawTransform.d.cts",
         "default": "./hu/rawTransform.cjs"
+      }
+    },
+    "./hu/rawTransformAsync": {
+      "import": {
+        "types": "./hu/rawTransformAsync.d.mts",
+        "default": "./hu/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./hu/rawTransformAsync.d.cts",
+        "default": "./hu/rawTransformAsync.cjs"
       }
     },
     "./hu/regex": {
@@ -12368,6 +12698,16 @@
         "default": "./id/partialCheck.cjs"
       }
     },
+    "./id/partialCheckAsync": {
+      "import": {
+        "types": "./id/partialCheckAsync.d.mts",
+        "default": "./id/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./id/partialCheckAsync.d.cts",
+        "default": "./id/partialCheckAsync.cjs"
+      }
+    },
     "./id/rawCheck": {
       "import": {
         "types": "./id/rawCheck.d.mts",
@@ -12378,6 +12718,16 @@
         "default": "./id/rawCheck.cjs"
       }
     },
+    "./id/rawCheckAsync": {
+      "import": {
+        "types": "./id/rawCheckAsync.d.mts",
+        "default": "./id/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./id/rawCheckAsync.d.cts",
+        "default": "./id/rawCheckAsync.cjs"
+      }
+    },
     "./id/rawTransform": {
       "import": {
         "types": "./id/rawTransform.d.mts",
@@ -12386,6 +12736,16 @@
       "require": {
         "types": "./id/rawTransform.d.cts",
         "default": "./id/rawTransform.cjs"
+      }
+    },
+    "./id/rawTransformAsync": {
+      "import": {
+        "types": "./id/rawTransformAsync.d.mts",
+        "default": "./id/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./id/rawTransformAsync.d.cts",
+        "default": "./id/rawTransformAsync.cjs"
       }
     },
     "./id/regex": {
@@ -13408,6 +13768,16 @@
         "default": "./it/partialCheck.cjs"
       }
     },
+    "./it/partialCheckAsync": {
+      "import": {
+        "types": "./it/partialCheckAsync.d.mts",
+        "default": "./it/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./it/partialCheckAsync.d.cts",
+        "default": "./it/partialCheckAsync.cjs"
+      }
+    },
     "./it/rawCheck": {
       "import": {
         "types": "./it/rawCheck.d.mts",
@@ -13418,6 +13788,16 @@
         "default": "./it/rawCheck.cjs"
       }
     },
+    "./it/rawCheckAsync": {
+      "import": {
+        "types": "./it/rawCheckAsync.d.mts",
+        "default": "./it/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./it/rawCheckAsync.d.cts",
+        "default": "./it/rawCheckAsync.cjs"
+      }
+    },
     "./it/rawTransform": {
       "import": {
         "types": "./it/rawTransform.d.mts",
@@ -13426,6 +13806,16 @@
       "require": {
         "types": "./it/rawTransform.d.cts",
         "default": "./it/rawTransform.cjs"
+      }
+    },
+    "./it/rawTransformAsync": {
+      "import": {
+        "types": "./it/rawTransformAsync.d.mts",
+        "default": "./it/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./it/rawTransformAsync.d.cts",
+        "default": "./it/rawTransformAsync.cjs"
       }
     },
     "./it/regex": {
@@ -14448,6 +14838,16 @@
         "default": "./ja/partialCheck.cjs"
       }
     },
+    "./ja/partialCheckAsync": {
+      "import": {
+        "types": "./ja/partialCheckAsync.d.mts",
+        "default": "./ja/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./ja/partialCheckAsync.d.cts",
+        "default": "./ja/partialCheckAsync.cjs"
+      }
+    },
     "./ja/rawCheck": {
       "import": {
         "types": "./ja/rawCheck.d.mts",
@@ -14458,6 +14858,16 @@
         "default": "./ja/rawCheck.cjs"
       }
     },
+    "./ja/rawCheckAsync": {
+      "import": {
+        "types": "./ja/rawCheckAsync.d.mts",
+        "default": "./ja/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./ja/rawCheckAsync.d.cts",
+        "default": "./ja/rawCheckAsync.cjs"
+      }
+    },
     "./ja/rawTransform": {
       "import": {
         "types": "./ja/rawTransform.d.mts",
@@ -14466,6 +14876,16 @@
       "require": {
         "types": "./ja/rawTransform.d.cts",
         "default": "./ja/rawTransform.cjs"
+      }
+    },
+    "./ja/rawTransformAsync": {
+      "import": {
+        "types": "./ja/rawTransformAsync.d.mts",
+        "default": "./ja/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./ja/rawTransformAsync.d.cts",
+        "default": "./ja/rawTransformAsync.cjs"
       }
     },
     "./ja/regex": {
@@ -15488,6 +15908,16 @@
         "default": "./ko/partialCheck.cjs"
       }
     },
+    "./ko/partialCheckAsync": {
+      "import": {
+        "types": "./ko/partialCheckAsync.d.mts",
+        "default": "./ko/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./ko/partialCheckAsync.d.cts",
+        "default": "./ko/partialCheckAsync.cjs"
+      }
+    },
     "./ko/rawCheck": {
       "import": {
         "types": "./ko/rawCheck.d.mts",
@@ -15498,6 +15928,16 @@
         "default": "./ko/rawCheck.cjs"
       }
     },
+    "./ko/rawCheckAsync": {
+      "import": {
+        "types": "./ko/rawCheckAsync.d.mts",
+        "default": "./ko/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./ko/rawCheckAsync.d.cts",
+        "default": "./ko/rawCheckAsync.cjs"
+      }
+    },
     "./ko/rawTransform": {
       "import": {
         "types": "./ko/rawTransform.d.mts",
@@ -15506,6 +15946,16 @@
       "require": {
         "types": "./ko/rawTransform.d.cts",
         "default": "./ko/rawTransform.cjs"
+      }
+    },
+    "./ko/rawTransformAsync": {
+      "import": {
+        "types": "./ko/rawTransformAsync.d.mts",
+        "default": "./ko/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./ko/rawTransformAsync.d.cts",
+        "default": "./ko/rawTransformAsync.cjs"
       }
     },
     "./ko/regex": {
@@ -16528,6 +16978,16 @@
         "default": "./kr/partialCheck.cjs"
       }
     },
+    "./kr/partialCheckAsync": {
+      "import": {
+        "types": "./kr/partialCheckAsync.d.mts",
+        "default": "./kr/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./kr/partialCheckAsync.d.cts",
+        "default": "./kr/partialCheckAsync.cjs"
+      }
+    },
     "./kr/rawCheck": {
       "import": {
         "types": "./kr/rawCheck.d.mts",
@@ -16538,6 +16998,16 @@
         "default": "./kr/rawCheck.cjs"
       }
     },
+    "./kr/rawCheckAsync": {
+      "import": {
+        "types": "./kr/rawCheckAsync.d.mts",
+        "default": "./kr/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./kr/rawCheckAsync.d.cts",
+        "default": "./kr/rawCheckAsync.cjs"
+      }
+    },
     "./kr/rawTransform": {
       "import": {
         "types": "./kr/rawTransform.d.mts",
@@ -16546,6 +17016,16 @@
       "require": {
         "types": "./kr/rawTransform.d.cts",
         "default": "./kr/rawTransform.cjs"
+      }
+    },
+    "./kr/rawTransformAsync": {
+      "import": {
+        "types": "./kr/rawTransformAsync.d.mts",
+        "default": "./kr/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./kr/rawTransformAsync.d.cts",
+        "default": "./kr/rawTransformAsync.cjs"
       }
     },
     "./kr/regex": {
@@ -17568,6 +18048,16 @@
         "default": "./mn/partialCheck.cjs"
       }
     },
+    "./mn/partialCheckAsync": {
+      "import": {
+        "types": "./mn/partialCheckAsync.d.mts",
+        "default": "./mn/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./mn/partialCheckAsync.d.cts",
+        "default": "./mn/partialCheckAsync.cjs"
+      }
+    },
     "./mn/rawCheck": {
       "import": {
         "types": "./mn/rawCheck.d.mts",
@@ -17578,6 +18068,16 @@
         "default": "./mn/rawCheck.cjs"
       }
     },
+    "./mn/rawCheckAsync": {
+      "import": {
+        "types": "./mn/rawCheckAsync.d.mts",
+        "default": "./mn/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./mn/rawCheckAsync.d.cts",
+        "default": "./mn/rawCheckAsync.cjs"
+      }
+    },
     "./mn/rawTransform": {
       "import": {
         "types": "./mn/rawTransform.d.mts",
@@ -17586,6 +18086,16 @@
       "require": {
         "types": "./mn/rawTransform.d.cts",
         "default": "./mn/rawTransform.cjs"
+      }
+    },
+    "./mn/rawTransformAsync": {
+      "import": {
+        "types": "./mn/rawTransformAsync.d.mts",
+        "default": "./mn/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./mn/rawTransformAsync.d.cts",
+        "default": "./mn/rawTransformAsync.cjs"
       }
     },
     "./mn/regex": {
@@ -18608,6 +19118,16 @@
         "default": "./nb/partialCheck.cjs"
       }
     },
+    "./nb/partialCheckAsync": {
+      "import": {
+        "types": "./nb/partialCheckAsync.d.mts",
+        "default": "./nb/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./nb/partialCheckAsync.d.cts",
+        "default": "./nb/partialCheckAsync.cjs"
+      }
+    },
     "./nb/rawCheck": {
       "import": {
         "types": "./nb/rawCheck.d.mts",
@@ -18618,6 +19138,16 @@
         "default": "./nb/rawCheck.cjs"
       }
     },
+    "./nb/rawCheckAsync": {
+      "import": {
+        "types": "./nb/rawCheckAsync.d.mts",
+        "default": "./nb/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./nb/rawCheckAsync.d.cts",
+        "default": "./nb/rawCheckAsync.cjs"
+      }
+    },
     "./nb/rawTransform": {
       "import": {
         "types": "./nb/rawTransform.d.mts",
@@ -18626,6 +19156,16 @@
       "require": {
         "types": "./nb/rawTransform.d.cts",
         "default": "./nb/rawTransform.cjs"
+      }
+    },
+    "./nb/rawTransformAsync": {
+      "import": {
+        "types": "./nb/rawTransformAsync.d.mts",
+        "default": "./nb/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./nb/rawTransformAsync.d.cts",
+        "default": "./nb/rawTransformAsync.cjs"
       }
     },
     "./nb/regex": {
@@ -19648,6 +20188,16 @@
         "default": "./nl/partialCheck.cjs"
       }
     },
+    "./nl/partialCheckAsync": {
+      "import": {
+        "types": "./nl/partialCheckAsync.d.mts",
+        "default": "./nl/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./nl/partialCheckAsync.d.cts",
+        "default": "./nl/partialCheckAsync.cjs"
+      }
+    },
     "./nl/rawCheck": {
       "import": {
         "types": "./nl/rawCheck.d.mts",
@@ -19658,6 +20208,16 @@
         "default": "./nl/rawCheck.cjs"
       }
     },
+    "./nl/rawCheckAsync": {
+      "import": {
+        "types": "./nl/rawCheckAsync.d.mts",
+        "default": "./nl/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./nl/rawCheckAsync.d.cts",
+        "default": "./nl/rawCheckAsync.cjs"
+      }
+    },
     "./nl/rawTransform": {
       "import": {
         "types": "./nl/rawTransform.d.mts",
@@ -19666,6 +20226,16 @@
       "require": {
         "types": "./nl/rawTransform.d.cts",
         "default": "./nl/rawTransform.cjs"
+      }
+    },
+    "./nl/rawTransformAsync": {
+      "import": {
+        "types": "./nl/rawTransformAsync.d.mts",
+        "default": "./nl/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./nl/rawTransformAsync.d.cts",
+        "default": "./nl/rawTransformAsync.cjs"
       }
     },
     "./nl/regex": {
@@ -20688,6 +21258,16 @@
         "default": "./nn/partialCheck.cjs"
       }
     },
+    "./nn/partialCheckAsync": {
+      "import": {
+        "types": "./nn/partialCheckAsync.d.mts",
+        "default": "./nn/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./nn/partialCheckAsync.d.cts",
+        "default": "./nn/partialCheckAsync.cjs"
+      }
+    },
     "./nn/rawCheck": {
       "import": {
         "types": "./nn/rawCheck.d.mts",
@@ -20698,6 +21278,16 @@
         "default": "./nn/rawCheck.cjs"
       }
     },
+    "./nn/rawCheckAsync": {
+      "import": {
+        "types": "./nn/rawCheckAsync.d.mts",
+        "default": "./nn/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./nn/rawCheckAsync.d.cts",
+        "default": "./nn/rawCheckAsync.cjs"
+      }
+    },
     "./nn/rawTransform": {
       "import": {
         "types": "./nn/rawTransform.d.mts",
@@ -20706,6 +21296,16 @@
       "require": {
         "types": "./nn/rawTransform.d.cts",
         "default": "./nn/rawTransform.cjs"
+      }
+    },
+    "./nn/rawTransformAsync": {
+      "import": {
+        "types": "./nn/rawTransformAsync.d.mts",
+        "default": "./nn/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./nn/rawTransformAsync.d.cts",
+        "default": "./nn/rawTransformAsync.cjs"
       }
     },
     "./nn/regex": {
@@ -21728,6 +22328,16 @@
         "default": "./pl/partialCheck.cjs"
       }
     },
+    "./pl/partialCheckAsync": {
+      "import": {
+        "types": "./pl/partialCheckAsync.d.mts",
+        "default": "./pl/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./pl/partialCheckAsync.d.cts",
+        "default": "./pl/partialCheckAsync.cjs"
+      }
+    },
     "./pl/rawCheck": {
       "import": {
         "types": "./pl/rawCheck.d.mts",
@@ -21738,6 +22348,16 @@
         "default": "./pl/rawCheck.cjs"
       }
     },
+    "./pl/rawCheckAsync": {
+      "import": {
+        "types": "./pl/rawCheckAsync.d.mts",
+        "default": "./pl/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./pl/rawCheckAsync.d.cts",
+        "default": "./pl/rawCheckAsync.cjs"
+      }
+    },
     "./pl/rawTransform": {
       "import": {
         "types": "./pl/rawTransform.d.mts",
@@ -21746,6 +22366,16 @@
       "require": {
         "types": "./pl/rawTransform.d.cts",
         "default": "./pl/rawTransform.cjs"
+      }
+    },
+    "./pl/rawTransformAsync": {
+      "import": {
+        "types": "./pl/rawTransformAsync.d.mts",
+        "default": "./pl/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./pl/rawTransformAsync.d.cts",
+        "default": "./pl/rawTransformAsync.cjs"
       }
     },
     "./pl/regex": {
@@ -22768,6 +23398,16 @@
         "default": "./pt/partialCheck.cjs"
       }
     },
+    "./pt/partialCheckAsync": {
+      "import": {
+        "types": "./pt/partialCheckAsync.d.mts",
+        "default": "./pt/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./pt/partialCheckAsync.d.cts",
+        "default": "./pt/partialCheckAsync.cjs"
+      }
+    },
     "./pt/rawCheck": {
       "import": {
         "types": "./pt/rawCheck.d.mts",
@@ -22778,6 +23418,16 @@
         "default": "./pt/rawCheck.cjs"
       }
     },
+    "./pt/rawCheckAsync": {
+      "import": {
+        "types": "./pt/rawCheckAsync.d.mts",
+        "default": "./pt/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./pt/rawCheckAsync.d.cts",
+        "default": "./pt/rawCheckAsync.cjs"
+      }
+    },
     "./pt/rawTransform": {
       "import": {
         "types": "./pt/rawTransform.d.mts",
@@ -22786,6 +23436,16 @@
       "require": {
         "types": "./pt/rawTransform.d.cts",
         "default": "./pt/rawTransform.cjs"
+      }
+    },
+    "./pt/rawTransformAsync": {
+      "import": {
+        "types": "./pt/rawTransformAsync.d.mts",
+        "default": "./pt/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./pt/rawTransformAsync.d.cts",
+        "default": "./pt/rawTransformAsync.cjs"
       }
     },
     "./pt/regex": {
@@ -23808,6 +24468,16 @@
         "default": "./ro/partialCheck.cjs"
       }
     },
+    "./ro/partialCheckAsync": {
+      "import": {
+        "types": "./ro/partialCheckAsync.d.mts",
+        "default": "./ro/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./ro/partialCheckAsync.d.cts",
+        "default": "./ro/partialCheckAsync.cjs"
+      }
+    },
     "./ro/rawCheck": {
       "import": {
         "types": "./ro/rawCheck.d.mts",
@@ -23818,6 +24488,16 @@
         "default": "./ro/rawCheck.cjs"
       }
     },
+    "./ro/rawCheckAsync": {
+      "import": {
+        "types": "./ro/rawCheckAsync.d.mts",
+        "default": "./ro/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./ro/rawCheckAsync.d.cts",
+        "default": "./ro/rawCheckAsync.cjs"
+      }
+    },
     "./ro/rawTransform": {
       "import": {
         "types": "./ro/rawTransform.d.mts",
@@ -23826,6 +24506,16 @@
       "require": {
         "types": "./ro/rawTransform.d.cts",
         "default": "./ro/rawTransform.cjs"
+      }
+    },
+    "./ro/rawTransformAsync": {
+      "import": {
+        "types": "./ro/rawTransformAsync.d.mts",
+        "default": "./ro/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./ro/rawTransformAsync.d.cts",
+        "default": "./ro/rawTransformAsync.cjs"
       }
     },
     "./ro/regex": {
@@ -24848,6 +25538,16 @@
         "default": "./ru/partialCheck.cjs"
       }
     },
+    "./ru/partialCheckAsync": {
+      "import": {
+        "types": "./ru/partialCheckAsync.d.mts",
+        "default": "./ru/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./ru/partialCheckAsync.d.cts",
+        "default": "./ru/partialCheckAsync.cjs"
+      }
+    },
     "./ru/rawCheck": {
       "import": {
         "types": "./ru/rawCheck.d.mts",
@@ -24858,6 +25558,16 @@
         "default": "./ru/rawCheck.cjs"
       }
     },
+    "./ru/rawCheckAsync": {
+      "import": {
+        "types": "./ru/rawCheckAsync.d.mts",
+        "default": "./ru/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./ru/rawCheckAsync.d.cts",
+        "default": "./ru/rawCheckAsync.cjs"
+      }
+    },
     "./ru/rawTransform": {
       "import": {
         "types": "./ru/rawTransform.d.mts",
@@ -24866,6 +25576,16 @@
       "require": {
         "types": "./ru/rawTransform.d.cts",
         "default": "./ru/rawTransform.cjs"
+      }
+    },
+    "./ru/rawTransformAsync": {
+      "import": {
+        "types": "./ru/rawTransformAsync.d.mts",
+        "default": "./ru/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./ru/rawTransformAsync.d.cts",
+        "default": "./ru/rawTransformAsync.cjs"
       }
     },
     "./ru/regex": {
@@ -25888,6 +26608,16 @@
         "default": "./rw/partialCheck.cjs"
       }
     },
+    "./rw/partialCheckAsync": {
+      "import": {
+        "types": "./rw/partialCheckAsync.d.mts",
+        "default": "./rw/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./rw/partialCheckAsync.d.cts",
+        "default": "./rw/partialCheckAsync.cjs"
+      }
+    },
     "./rw/rawCheck": {
       "import": {
         "types": "./rw/rawCheck.d.mts",
@@ -25898,6 +26628,16 @@
         "default": "./rw/rawCheck.cjs"
       }
     },
+    "./rw/rawCheckAsync": {
+      "import": {
+        "types": "./rw/rawCheckAsync.d.mts",
+        "default": "./rw/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./rw/rawCheckAsync.d.cts",
+        "default": "./rw/rawCheckAsync.cjs"
+      }
+    },
     "./rw/rawTransform": {
       "import": {
         "types": "./rw/rawTransform.d.mts",
@@ -25906,6 +26646,16 @@
       "require": {
         "types": "./rw/rawTransform.d.cts",
         "default": "./rw/rawTransform.cjs"
+      }
+    },
+    "./rw/rawTransformAsync": {
+      "import": {
+        "types": "./rw/rawTransformAsync.d.mts",
+        "default": "./rw/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./rw/rawTransformAsync.d.cts",
+        "default": "./rw/rawTransformAsync.cjs"
       }
     },
     "./rw/regex": {
@@ -26928,6 +27678,16 @@
         "default": "./sk/partialCheck.cjs"
       }
     },
+    "./sk/partialCheckAsync": {
+      "import": {
+        "types": "./sk/partialCheckAsync.d.mts",
+        "default": "./sk/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./sk/partialCheckAsync.d.cts",
+        "default": "./sk/partialCheckAsync.cjs"
+      }
+    },
     "./sk/rawCheck": {
       "import": {
         "types": "./sk/rawCheck.d.mts",
@@ -26938,6 +27698,16 @@
         "default": "./sk/rawCheck.cjs"
       }
     },
+    "./sk/rawCheckAsync": {
+      "import": {
+        "types": "./sk/rawCheckAsync.d.mts",
+        "default": "./sk/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./sk/rawCheckAsync.d.cts",
+        "default": "./sk/rawCheckAsync.cjs"
+      }
+    },
     "./sk/rawTransform": {
       "import": {
         "types": "./sk/rawTransform.d.mts",
@@ -26946,6 +27716,16 @@
       "require": {
         "types": "./sk/rawTransform.d.cts",
         "default": "./sk/rawTransform.cjs"
+      }
+    },
+    "./sk/rawTransformAsync": {
+      "import": {
+        "types": "./sk/rawTransformAsync.d.mts",
+        "default": "./sk/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./sk/rawTransformAsync.d.cts",
+        "default": "./sk/rawTransformAsync.cjs"
       }
     },
     "./sk/regex": {
@@ -27968,6 +28748,16 @@
         "default": "./sl/partialCheck.cjs"
       }
     },
+    "./sl/partialCheckAsync": {
+      "import": {
+        "types": "./sl/partialCheckAsync.d.mts",
+        "default": "./sl/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./sl/partialCheckAsync.d.cts",
+        "default": "./sl/partialCheckAsync.cjs"
+      }
+    },
     "./sl/rawCheck": {
       "import": {
         "types": "./sl/rawCheck.d.mts",
@@ -27978,6 +28768,16 @@
         "default": "./sl/rawCheck.cjs"
       }
     },
+    "./sl/rawCheckAsync": {
+      "import": {
+        "types": "./sl/rawCheckAsync.d.mts",
+        "default": "./sl/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./sl/rawCheckAsync.d.cts",
+        "default": "./sl/rawCheckAsync.cjs"
+      }
+    },
     "./sl/rawTransform": {
       "import": {
         "types": "./sl/rawTransform.d.mts",
@@ -27986,6 +28786,16 @@
       "require": {
         "types": "./sl/rawTransform.d.cts",
         "default": "./sl/rawTransform.cjs"
+      }
+    },
+    "./sl/rawTransformAsync": {
+      "import": {
+        "types": "./sl/rawTransformAsync.d.mts",
+        "default": "./sl/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./sl/rawTransformAsync.d.cts",
+        "default": "./sl/rawTransformAsync.cjs"
       }
     },
     "./sl/regex": {
@@ -29008,6 +29818,16 @@
         "default": "./sv/partialCheck.cjs"
       }
     },
+    "./sv/partialCheckAsync": {
+      "import": {
+        "types": "./sv/partialCheckAsync.d.mts",
+        "default": "./sv/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./sv/partialCheckAsync.d.cts",
+        "default": "./sv/partialCheckAsync.cjs"
+      }
+    },
     "./sv/rawCheck": {
       "import": {
         "types": "./sv/rawCheck.d.mts",
@@ -29018,6 +29838,16 @@
         "default": "./sv/rawCheck.cjs"
       }
     },
+    "./sv/rawCheckAsync": {
+      "import": {
+        "types": "./sv/rawCheckAsync.d.mts",
+        "default": "./sv/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./sv/rawCheckAsync.d.cts",
+        "default": "./sv/rawCheckAsync.cjs"
+      }
+    },
     "./sv/rawTransform": {
       "import": {
         "types": "./sv/rawTransform.d.mts",
@@ -29026,6 +29856,16 @@
       "require": {
         "types": "./sv/rawTransform.d.cts",
         "default": "./sv/rawTransform.cjs"
+      }
+    },
+    "./sv/rawTransformAsync": {
+      "import": {
+        "types": "./sv/rawTransformAsync.d.mts",
+        "default": "./sv/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./sv/rawTransformAsync.d.cts",
+        "default": "./sv/rawTransformAsync.cjs"
       }
     },
     "./sv/regex": {
@@ -30048,6 +30888,16 @@
         "default": "./tr/partialCheck.cjs"
       }
     },
+    "./tr/partialCheckAsync": {
+      "import": {
+        "types": "./tr/partialCheckAsync.d.mts",
+        "default": "./tr/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./tr/partialCheckAsync.d.cts",
+        "default": "./tr/partialCheckAsync.cjs"
+      }
+    },
     "./tr/rawCheck": {
       "import": {
         "types": "./tr/rawCheck.d.mts",
@@ -30058,6 +30908,16 @@
         "default": "./tr/rawCheck.cjs"
       }
     },
+    "./tr/rawCheckAsync": {
+      "import": {
+        "types": "./tr/rawCheckAsync.d.mts",
+        "default": "./tr/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./tr/rawCheckAsync.d.cts",
+        "default": "./tr/rawCheckAsync.cjs"
+      }
+    },
     "./tr/rawTransform": {
       "import": {
         "types": "./tr/rawTransform.d.mts",
@@ -30066,6 +30926,16 @@
       "require": {
         "types": "./tr/rawTransform.d.cts",
         "default": "./tr/rawTransform.cjs"
+      }
+    },
+    "./tr/rawTransformAsync": {
+      "import": {
+        "types": "./tr/rawTransformAsync.d.mts",
+        "default": "./tr/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./tr/rawTransformAsync.d.cts",
+        "default": "./tr/rawTransformAsync.cjs"
       }
     },
     "./tr/regex": {
@@ -31088,6 +31958,16 @@
         "default": "./uk/partialCheck.cjs"
       }
     },
+    "./uk/partialCheckAsync": {
+      "import": {
+        "types": "./uk/partialCheckAsync.d.mts",
+        "default": "./uk/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./uk/partialCheckAsync.d.cts",
+        "default": "./uk/partialCheckAsync.cjs"
+      }
+    },
     "./uk/rawCheck": {
       "import": {
         "types": "./uk/rawCheck.d.mts",
@@ -31098,6 +31978,16 @@
         "default": "./uk/rawCheck.cjs"
       }
     },
+    "./uk/rawCheckAsync": {
+      "import": {
+        "types": "./uk/rawCheckAsync.d.mts",
+        "default": "./uk/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./uk/rawCheckAsync.d.cts",
+        "default": "./uk/rawCheckAsync.cjs"
+      }
+    },
     "./uk/rawTransform": {
       "import": {
         "types": "./uk/rawTransform.d.mts",
@@ -31106,6 +31996,16 @@
       "require": {
         "types": "./uk/rawTransform.d.cts",
         "default": "./uk/rawTransform.cjs"
+      }
+    },
+    "./uk/rawTransformAsync": {
+      "import": {
+        "types": "./uk/rawTransformAsync.d.mts",
+        "default": "./uk/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./uk/rawTransformAsync.d.cts",
+        "default": "./uk/rawTransformAsync.cjs"
       }
     },
     "./uk/regex": {
@@ -32128,6 +33028,16 @@
         "default": "./uz/partialCheck.cjs"
       }
     },
+    "./uz/partialCheckAsync": {
+      "import": {
+        "types": "./uz/partialCheckAsync.d.mts",
+        "default": "./uz/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./uz/partialCheckAsync.d.cts",
+        "default": "./uz/partialCheckAsync.cjs"
+      }
+    },
     "./uz/rawCheck": {
       "import": {
         "types": "./uz/rawCheck.d.mts",
@@ -32138,6 +33048,16 @@
         "default": "./uz/rawCheck.cjs"
       }
     },
+    "./uz/rawCheckAsync": {
+      "import": {
+        "types": "./uz/rawCheckAsync.d.mts",
+        "default": "./uz/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./uz/rawCheckAsync.d.cts",
+        "default": "./uz/rawCheckAsync.cjs"
+      }
+    },
     "./uz/rawTransform": {
       "import": {
         "types": "./uz/rawTransform.d.mts",
@@ -32146,6 +33066,16 @@
       "require": {
         "types": "./uz/rawTransform.d.cts",
         "default": "./uz/rawTransform.cjs"
+      }
+    },
+    "./uz/rawTransformAsync": {
+      "import": {
+        "types": "./uz/rawTransformAsync.d.mts",
+        "default": "./uz/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./uz/rawTransformAsync.d.cts",
+        "default": "./uz/rawTransformAsync.cjs"
       }
     },
     "./uz/regex": {
@@ -33168,6 +34098,16 @@
         "default": "./vi/partialCheck.cjs"
       }
     },
+    "./vi/partialCheckAsync": {
+      "import": {
+        "types": "./vi/partialCheckAsync.d.mts",
+        "default": "./vi/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./vi/partialCheckAsync.d.cts",
+        "default": "./vi/partialCheckAsync.cjs"
+      }
+    },
     "./vi/rawCheck": {
       "import": {
         "types": "./vi/rawCheck.d.mts",
@@ -33178,6 +34118,16 @@
         "default": "./vi/rawCheck.cjs"
       }
     },
+    "./vi/rawCheckAsync": {
+      "import": {
+        "types": "./vi/rawCheckAsync.d.mts",
+        "default": "./vi/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./vi/rawCheckAsync.d.cts",
+        "default": "./vi/rawCheckAsync.cjs"
+      }
+    },
     "./vi/rawTransform": {
       "import": {
         "types": "./vi/rawTransform.d.mts",
@@ -33186,6 +34136,16 @@
       "require": {
         "types": "./vi/rawTransform.d.cts",
         "default": "./vi/rawTransform.cjs"
+      }
+    },
+    "./vi/rawTransformAsync": {
+      "import": {
+        "types": "./vi/rawTransformAsync.d.mts",
+        "default": "./vi/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./vi/rawTransformAsync.d.cts",
+        "default": "./vi/rawTransformAsync.cjs"
       }
     },
     "./vi/regex": {
@@ -34208,6 +35168,16 @@
         "default": "./zh-CN/partialCheck.cjs"
       }
     },
+    "./zh-CN/partialCheckAsync": {
+      "import": {
+        "types": "./zh-CN/partialCheckAsync.d.mts",
+        "default": "./zh-CN/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./zh-CN/partialCheckAsync.d.cts",
+        "default": "./zh-CN/partialCheckAsync.cjs"
+      }
+    },
     "./zh-CN/rawCheck": {
       "import": {
         "types": "./zh-CN/rawCheck.d.mts",
@@ -34218,6 +35188,16 @@
         "default": "./zh-CN/rawCheck.cjs"
       }
     },
+    "./zh-CN/rawCheckAsync": {
+      "import": {
+        "types": "./zh-CN/rawCheckAsync.d.mts",
+        "default": "./zh-CN/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./zh-CN/rawCheckAsync.d.cts",
+        "default": "./zh-CN/rawCheckAsync.cjs"
+      }
+    },
     "./zh-CN/rawTransform": {
       "import": {
         "types": "./zh-CN/rawTransform.d.mts",
@@ -34226,6 +35206,16 @@
       "require": {
         "types": "./zh-CN/rawTransform.d.cts",
         "default": "./zh-CN/rawTransform.cjs"
+      }
+    },
+    "./zh-CN/rawTransformAsync": {
+      "import": {
+        "types": "./zh-CN/rawTransformAsync.d.mts",
+        "default": "./zh-CN/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./zh-CN/rawTransformAsync.d.cts",
+        "default": "./zh-CN/rawTransformAsync.cjs"
       }
     },
     "./zh-CN/regex": {
@@ -35248,6 +36238,16 @@
         "default": "./zh-TW/partialCheck.cjs"
       }
     },
+    "./zh-TW/partialCheckAsync": {
+      "import": {
+        "types": "./zh-TW/partialCheckAsync.d.mts",
+        "default": "./zh-TW/partialCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./zh-TW/partialCheckAsync.d.cts",
+        "default": "./zh-TW/partialCheckAsync.cjs"
+      }
+    },
     "./zh-TW/rawCheck": {
       "import": {
         "types": "./zh-TW/rawCheck.d.mts",
@@ -35258,6 +36258,16 @@
         "default": "./zh-TW/rawCheck.cjs"
       }
     },
+    "./zh-TW/rawCheckAsync": {
+      "import": {
+        "types": "./zh-TW/rawCheckAsync.d.mts",
+        "default": "./zh-TW/rawCheckAsync.mjs"
+      },
+      "require": {
+        "types": "./zh-TW/rawCheckAsync.d.cts",
+        "default": "./zh-TW/rawCheckAsync.cjs"
+      }
+    },
     "./zh-TW/rawTransform": {
       "import": {
         "types": "./zh-TW/rawTransform.d.mts",
@@ -35266,6 +36276,16 @@
       "require": {
         "types": "./zh-TW/rawTransform.d.cts",
         "default": "./zh-TW/rawTransform.cjs"
+      }
+    },
+    "./zh-TW/rawTransformAsync": {
+      "import": {
+        "types": "./zh-TW/rawTransformAsync.d.mts",
+        "default": "./zh-TW/rawTransformAsync.mjs"
+      },
+      "require": {
+        "types": "./zh-TW/rawTransformAsync.d.cts",
+        "default": "./zh-TW/rawTransformAsync.cjs"
       }
     },
     "./zh-TW/regex": {
