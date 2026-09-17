@@ -1,0 +1,27 @@
+---
+title: RfcTimeIssue
+description: RFC time issue interface.
+contributors:
+  - fabian-hiller
+  - tungyhardDevOps
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# RfcTimeIssue
+
+RFC time issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `RfcTimeIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `received` <Property {...properties.received} />
+  - `requirement` <Property {...properties.requirement} />
