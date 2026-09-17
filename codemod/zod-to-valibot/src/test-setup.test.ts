@@ -41,6 +41,7 @@ defineTests(transform, [
   'object-catchall',
   'object-deepPartial',
   'object-extend',
+  'object-extend-static',
   'object-keyof',
   'object-merge',
   'object-omit',
