@@ -1,0 +1,23 @@
+---
+title: InferPatternsIssue
+description: Infer patterns issue type.
+contributors:
+  - EskiMojo14
+---
+
+# InferPatternsIssue
+
+Infer patterns issue type.
+
+> This type is too complex to display. Please refer to the [source code](https://github.com/open-circle/valibot/blob/main/library/src/schemas/recordWithPatterns/recordWithPatterns.ts).
+
+```ts
+// Create pattern tuples
+const patterns = [
+  [v.picklist(['id']), v.pipe(v.string(), v.transform(Number))],
+  [v.picklist(['name']), v.string()],
+] as const;
+
+// Infer patterns issue type
+type PatternsIssue = v.InferPatternsIssue<typeof patterns>;
+```
