@@ -6,6 +6,7 @@ All notable changes to the library will be documented in this file.
 
 - Add `codePoints`, `maxCodePoints`, `minCodePoints` and `notCodePoints` validation actions to validate the number of Unicode code points (pull request #888)
 - Add `ksuid` validation action to validate KSUIDs (pull request #1370)
+- Add `jsonValue` schema to validate JSON-serializable values (pull request #1610)
 - Change Standard Schema properties to use eager initialization for faster schema construction and replace internal `_getStandardProps` utility with `_standardSchema` (pull request #1534)
 - Change `url` action to use `URL.canParse` when available to avoid constructing URL objects (pull request #1608)
 - Fix `stringifyJson` action to preserve the dataset value when `JSON.stringify` returns `undefined` (pull request #1476)

@@ -44,6 +44,18 @@ describe('_stringify', () => {
     expect(_stringify(new Date())).toBe('Date');
   });
 
+  test('should return Object as fallback if getPrototypeOf throws', () => {
+    const input = new Proxy(
+      {},
+      {
+        getPrototypeOf() {
+          throw new Error('boom');
+        },
+      }
+    );
+    expect(_stringify(input)).toBe('Object');
+  });
+
   test('should return null as string', () => {
     expect(_stringify(null)).toBe('null');
     expect(_stringify(Object.create(null))).toBe('null');
