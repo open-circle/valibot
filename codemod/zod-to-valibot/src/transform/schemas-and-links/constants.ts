@@ -134,6 +134,7 @@ export const ZOD_PROPERTIES = [
 ] as const;
 
 export const ZOD_METHODS = [
+  'and',
   'array',
   'catchall',
   'default',
