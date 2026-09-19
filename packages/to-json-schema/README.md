@@ -58,6 +58,7 @@ This package is particularly popular for:
 | --------------- | ------ | ------------------------------------------------------ |
 | `base64`        | ✅     |                                                        |
 | `bic`           | ✅     |                                                        |
+| `codePoints`    | ✅     |                                                        |
 | `cuid2`         | ✅     |                                                        |
 | `decimal`       | ✅     |                                                        |
 | `description`   | ✅     |                                                        |
@@ -86,21 +87,24 @@ This package is particularly popular for:
 | `isrc`          | ✅     |                                                        |
 | `jwsCompact`    | ✅     |                                                        |
 | `ksuid`         | ✅     |                                                        |
-| `length`        | ⚠️     | Only in combination with `string` and `array` schema   |
+| `length`        | ⚠️     | Deprecated for strings; use `codePoints`; arrays are supported |
 | `ltValue`       | ⚠️     | Only in combination with `number` and `integer` schema |
 | `mac`           | ✅     |                                                        |
 | `mac48`         | ✅     |                                                        |
 | `mac64`         | ✅     |                                                        |
+| `maxCodePoints` | ✅     |                                                        |
 | `maxEntries`    | ✅     |                                                        |
-| `maxLength`     | ⚠️     | Only in combination with `string` and `array` schema   |
+| `maxLength`     | ⚠️     | Deprecated for strings; use `maxCodePoints`; arrays are supported |
 | `maxValue`      | ⚠️     | Only in combination with `number` schema               |
 | `metadata`      | ✅     | Additional properties are added without validation     |
+| `minCodePoints` | ✅     |                                                        |
 | `minEntries`    | ✅     |                                                        |
-| `minLength`     | ⚠️     | Only in combination with `string` and `array` schema   |
+| `minLength`     | ⚠️     | Deprecated for strings; use `minCodePoints`; arrays are supported |
 | `minValue`      | ⚠️     | Only in combination with `number` schema               |
 | `multipleOf`    | ✅     |                                                        |
 | `nanoid`        | ✅     |                                                        |
 | `nonEmpty`      | ✅     |                                                        |
+| `notCodePoints` | ✅     |                                                        |
 | `notValue`      | ⚠️     | Only JSON compatible values are supported              |
 | `notValues`     | ⚠️     | Only JSON compatible values are supported              |
 | `octal`         | ✅     |                                                        |
@@ -116,7 +120,7 @@ This package is particularly popular for:
 | `value`         | ⚠️     | Only JSON compatible values are supported              |
 | `values`        | ⚠️     | Only JSON compatible values are supported              |
 
-> For `length`, `minLength`, and `maxLength`, string constraints have different length semantics in Valibot and JSON Schema. Valibot checks JavaScript string length (`value.length`, UTF-16 code units), while JSON Schema `minLength` and `maxLength` count Unicode code points. This can differ for non-BMP code points such as emoji and for multi-code-point grapheme clusters such as combining marks or ZWJ sequences.
+> For string schemas, `length`, `minLength`, and `maxLength` have different length semantics in Valibot and JSON Schema. Valibot checks JavaScript string length (`value.length`, UTF-16 code units), while JSON Schema `minLength` and `maxLength` count Unicode code points. Their string conversion is deprecated and will be removed in v2. Use `codePoints`, `minCodePoints`, `maxCodePoints`, and `notCodePoints` for matching semantics. Set `errorMode` to `warn` to receive a runtime deprecation warning. This can differ for non-BMP code points such as emoji and for multi-code-point grapheme clusters such as combining marks or ZWJ sequences.
 
 ## Configurations
 

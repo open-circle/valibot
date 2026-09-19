@@ -14,6 +14,11 @@ import {
 type Action =
   | v.Base64Action<string, v.ErrorMessage<v.Base64Issue<string>> | undefined>
   | v.BicAction<string, v.ErrorMessage<v.BicIssue<string>> | undefined>
+  | v.CodePointsAction<
+      string,
+      number,
+      v.ErrorMessage<v.CodePointsIssue<string, number>> | undefined
+    >
   | v.Cuid2Action<string, v.ErrorMessage<v.Cuid2Issue<string>> | undefined>
   | v.DecimalAction<string, v.ErrorMessage<v.DecimalIssue<string>> | undefined>
   | v.DescriptionAction<unknown, string>
@@ -92,6 +97,11 @@ type Action =
   | v.MacAction<string, v.ErrorMessage<v.MacIssue<string>> | undefined>
   | v.Mac48Action<string, v.ErrorMessage<v.Mac48Issue<string>> | undefined>
   | v.Mac64Action<string, v.ErrorMessage<v.Mac64Issue<string>> | undefined>
+  | v.MaxCodePointsAction<
+      string,
+      number,
+      v.ErrorMessage<v.MaxCodePointsIssue<string, number>> | undefined
+    >
   | v.MaxEntriesAction<
       v.EntriesInput,
       number,
@@ -108,6 +118,11 @@ type Action =
       v.ErrorMessage<v.MaxValueIssue<v.ValueInput, v.ValueInput>> | undefined
     >
   | v.MetadataAction<unknown, Record<string, unknown>>
+  | v.MinCodePointsAction<
+      string,
+      number,
+      v.ErrorMessage<v.MinCodePointsIssue<string, number>> | undefined
+    >
   | v.MinEntriesAction<
       v.EntriesInput,
       number,
@@ -132,6 +147,11 @@ type Action =
   | v.NonEmptyAction<
       v.LengthInput,
       v.ErrorMessage<v.NonEmptyIssue<v.LengthInput>> | undefined
+    >
+  | v.NotCodePointsAction<
+      string,
+      number,
+      v.ErrorMessage<v.NotCodePointsIssue<string, number>> | undefined
     >
   | v.NotValueAction<
       v.ValueInput,
@@ -338,6 +358,35 @@ export function convertAction(
       break;
     }
 
+    case 'code_points': {
+      if (
+        !Number.isInteger(valibotAction.requirement) ||
+        valibotAction.requirement < 0
+      ) {
+        errors = addError(
+          errors,
+          'The requirement of the "code_points" action must be a non-negative integer.'
+        );
+        break;
+      }
+      if (jsonSchema.type !== 'string') {
+        errors = addError(
+          errors,
+          `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
+        );
+        break;
+      }
+      jsonSchema.minLength = getLowerBound(
+        jsonSchema.minLength,
+        valibotAction.requirement
+      );
+      jsonSchema.maxLength = getUpperBound(
+        jsonSchema.maxLength,
+        valibotAction.requirement
+      );
+      break;
+    }
+
     case 'empty': {
       if (jsonSchema.type === 'array') {
         jsonSchema.maxItems = 0;
@@ -473,6 +522,9 @@ export function convertAction(
       break;
     }
 
+    // TODO(v2): Remove the legacy string conversion for length actions.
+    // Valibot counts UTF-16 code units, while JSON Schema counts Unicode code
+    // points. Use the codePoints actions for string schemas instead.
     case 'length': {
       if (
         !Number.isInteger(valibotAction.requirement) ||
@@ -499,6 +551,12 @@ export function convertAction(
             errors,
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
+        } else {
+          if (config?.errorMode === 'warn') {
+            console.warn(
+              'The "length" action is deprecated for string schemas because Valibot counts UTF-16 code units while JSON Schema counts Unicode code points. Use "codePoints" instead.'
+            );
+          }
         }
         jsonSchema.minLength = getLowerBound(
           jsonSchema.minLength,
@@ -559,6 +617,31 @@ export function convertAction(
       break;
     }
 
+    case 'max_code_points': {
+      if (
+        !Number.isInteger(valibotAction.requirement) ||
+        valibotAction.requirement < 0
+      ) {
+        errors = addError(
+          errors,
+          'The requirement of the "max_code_points" action must be a non-negative integer.'
+        );
+        break;
+      }
+      if (jsonSchema.type !== 'string') {
+        errors = addError(
+          errors,
+          `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
+        );
+        break;
+      }
+      jsonSchema.maxLength = getUpperBound(
+        jsonSchema.maxLength,
+        valibotAction.requirement
+      );
+      break;
+    }
+
     case 'max_length': {
       if (
         !Number.isInteger(valibotAction.requirement) ||
@@ -581,6 +664,12 @@ export function convertAction(
             errors,
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
+        } else {
+          if (config?.errorMode === 'warn') {
+            console.warn(
+              'The "maxLength" action is deprecated for string schemas because Valibot counts UTF-16 code units while JSON Schema counts Unicode code points. Use "maxCodePoints" instead.'
+            );
+          }
         }
         jsonSchema.maxLength = getUpperBound(
           jsonSchema.maxLength,
@@ -666,6 +755,31 @@ export function convertAction(
       break;
     }
 
+    case 'min_code_points': {
+      if (
+        !Number.isInteger(valibotAction.requirement) ||
+        valibotAction.requirement < 0
+      ) {
+        errors = addError(
+          errors,
+          'The requirement of the "min_code_points" action must be a non-negative integer.'
+        );
+        break;
+      }
+      if (jsonSchema.type !== 'string') {
+        errors = addError(
+          errors,
+          `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
+        );
+        break;
+      }
+      jsonSchema.minLength = getLowerBound(
+        jsonSchema.minLength,
+        valibotAction.requirement
+      );
+      break;
+    }
+
     case 'min_length': {
       if (
         !Number.isInteger(valibotAction.requirement) ||
@@ -688,6 +802,12 @@ export function convertAction(
             errors,
             `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
           );
+        } else {
+          if (config?.errorMode === 'warn') {
+            console.warn(
+              'The "minLength" action is deprecated for string schemas because Valibot counts UTF-16 code units while JSON Schema counts Unicode code points. Use "minCodePoints" instead.'
+            );
+          }
         }
         jsonSchema.minLength = getLowerBound(
           jsonSchema.minLength,
@@ -753,6 +873,31 @@ export function convertAction(
           ? { enum: [valibotAction.requirement] }
           : { const: valibotAction.requirement }
       );
+      break;
+    }
+
+    case 'not_code_points': {
+      if (
+        !Number.isInteger(valibotAction.requirement) ||
+        valibotAction.requirement < 0
+      ) {
+        errors = addError(
+          errors,
+          'The requirement of the "not_code_points" action must be a non-negative integer.'
+        );
+        break;
+      }
+      if (jsonSchema.type !== 'string') {
+        errors = addError(
+          errors,
+          `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
+        );
+        break;
+      }
+      jsonSchema.not = getNotRestriction(jsonSchema.not, {
+        minLength: valibotAction.requirement,
+        maxLength: valibotAction.requirement,
+      });
       break;
     }
 

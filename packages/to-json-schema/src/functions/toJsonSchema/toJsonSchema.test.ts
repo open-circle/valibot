@@ -15,6 +15,37 @@ describe('toJsonSchema', () => {
       });
     });
 
+    test('for code point actions', () => {
+      const actions = [
+        [v.codePoints(3), { minLength: 3, maxLength: 3 }],
+        [v.maxCodePoints(3), { maxLength: 3 }],
+        [v.minCodePoints(3), { minLength: 3 }],
+        [v.notCodePoints(3), { not: { minLength: 3, maxLength: 3 } }],
+      ] as const;
+      for (const [action, expected] of actions) {
+        expect(toJsonSchema(v.pipe(v.string(), action))).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          type: 'string',
+          ...expected,
+        });
+      }
+    });
+
+    test('warns for deprecated string length actions', () => {
+      expect(
+        toJsonSchema(v.pipe(v.string(), v.minLength(3)), {
+          errorMode: 'warn',
+        })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'string',
+        minLength: 3,
+      });
+      expect(console.warn).toHaveBeenLastCalledWith(
+        'The "minLength" action is deprecated for string schemas because Valibot counts UTF-16 code units while JSON Schema counts Unicode code points. Use "minCodePoints" instead.'
+      );
+    });
+
     test('for complex schema with definitions', () => {
       const stringSchema = v.string();
       const complexSchema = v.pipe(
