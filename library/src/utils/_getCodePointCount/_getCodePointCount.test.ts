@@ -17,4 +17,10 @@ describe('_getCodePointCount', () => {
     expect(_getCodePointCount('\ud800\udbff')).toBe(2);
     expect(_getCodePointCount('\udc00\udfff')).toBe(2);
   });
+
+  test('should stop at the limit', () => {
+    expect(_getCodePointCount('😀👋🏼🧩', 2)).toBe(2);
+    expect(_getCodePointCount('hello', 8)).toBe(5);
+    expect(_getCodePointCount('hello', 0)).toBe(0);
+  });
 });

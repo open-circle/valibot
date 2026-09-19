@@ -116,11 +116,13 @@ export function minBytes(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const length = _getByteCount(dataset.value);
-        if (length < this.requirement) {
-          _addIssue(this, 'bytes', dataset, config, {
-            received: `${length}`,
-          });
+        if (dataset.value.length < this.requirement) {
+          const length = _getByteCount(dataset.value);
+          if (length < this.requirement) {
+            _addIssue(this, 'bytes', dataset, config, {
+              received: `${length}`,
+            });
+          }
         }
       }
       return dataset;

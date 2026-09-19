@@ -122,11 +122,13 @@ export function maxGraphemes(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getGraphemeCount(dataset.value);
-        if (count > this.requirement) {
-          _addIssue(this, 'graphemes', dataset, config, {
-            received: `${count}`,
-          });
+        if (dataset.value.length > this.requirement) {
+          const count = _getGraphemeCount(dataset.value);
+          if (count > this.requirement) {
+            _addIssue(this, 'graphemes', dataset, config, {
+              received: `${count}`,
+            });
+          }
         }
       }
       return dataset;
