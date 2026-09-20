@@ -109,19 +109,19 @@ export function looseObjectAsync(
         // parse input of key or default value asynchronously
         const valueDatasets = await Promise.all(
           Object.entries(this.entries).map(async ([key, valueSchema]) => {
+            const isKeyPresent = key in input;
             if (
-              key in input ||
+              isKeyPresent ||
               ((valueSchema.type === 'exact_optional' ||
                 valueSchema.type === 'optional' ||
                 valueSchema.type === 'nullish') &&
                 // @ts-expect-error
                 valueSchema.default !== undefined)
             ) {
-              const value: unknown =
-                key in input
-                  ? // @ts-expect-error
-                    input[key]
-                  : await getDefault(valueSchema);
+              const value: unknown = isKeyPresent
+                ? // @ts-expect-error
+                  input[key]
+                : await getDefault(valueSchema);
               return [
                 key,
                 value,
