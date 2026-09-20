@@ -3,8 +3,10 @@ import type { BaseMetadata } from '../../types/index.ts';
 /**
  * Description action interface.
  */
-export interface DescriptionAction<TInput, TDescription extends string>
-  extends BaseMetadata<TInput> {
+export interface DescriptionAction<
+  TInput,
+  TDescription extends string,
+> extends BaseMetadata<TInput> {
   /**
    * The action type.
    */

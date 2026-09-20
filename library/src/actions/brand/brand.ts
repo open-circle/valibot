@@ -20,8 +20,10 @@ export interface Brand<TName extends BrandName> {
 /**
  * Brand action interface.
  */
-export interface BrandAction<TInput, TName extends BrandName>
-  extends BaseTransformation<TInput, TInput & Brand<TName>, never> {
+export interface BrandAction<
+  TInput,
+  TName extends BrandName,
+> extends BaseTransformation<TInput, TInput & Brand<TName>, never> {
   /**
    * The action type.
    */

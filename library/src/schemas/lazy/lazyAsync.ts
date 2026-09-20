@@ -18,10 +18,10 @@ export interface LazySchemaAsync<
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
 > extends BaseSchemaAsync<
-    InferInput<TWrapped>,
-    InferOutput<TWrapped>,
-    InferIssue<TWrapped>
-  > {
+  InferInput<TWrapped>,
+  InferOutput<TWrapped>,
+  InferIssue<TWrapped>
+> {
   /**
    * The schema type.
    */

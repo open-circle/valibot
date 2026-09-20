@@ -209,11 +209,7 @@ export interface UnknownPathItem {
  * Issue path item type.
  */
 export type IssuePathItem =
-  | ArrayPathItem
-  | MapPathItem
-  | ObjectPathItem
-  | SetPathItem
-  | UnknownPathItem;
+  ArrayPathItem | MapPathItem | ObjectPathItem | SetPathItem | UnknownPathItem;
 
 /**
  * Base issue interface.
@@ -494,9 +490,8 @@ export type IssueDotPath<
                                           | ErrorMessage<TupleWithRestIssue>
                                           | undefined
                                         >
-                                      ?
-                                          | TuplePath<TItems>
-                                          | DotPath<number, TRest>
+                                      ? | TuplePath<TItems>
+                                        | DotPath<number, TRest>
                                       : // Wrapped (sync)
                                         TSchema extends
                                             | ExactOptionalSchema<

@@ -4,8 +4,9 @@ import type { ArrayInput, ArrayRequirementAsync } from '../types.ts';
 /**
  * Check items issue interface.
  */
-export interface CheckItemsIssue<TInput extends ArrayInput>
-  extends BaseIssue<TInput[number]> {
+export interface CheckItemsIssue<TInput extends ArrayInput> extends BaseIssue<
+  TInput[number]
+> {
   /**
    * The issue kind.
    */

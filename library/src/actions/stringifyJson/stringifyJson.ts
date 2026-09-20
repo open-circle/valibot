@@ -15,8 +15,9 @@ export interface StringifyJsonConfig {
   /**
    * The JSON replacer function or array.
    */
-  replacer?: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ((this: any, key: string, value: any) => any) | (number | string)[];
+  replacer?:
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ((this: any, key: string, value: any) => any) | (number | string)[];
   /**
    * The JSON space option.
    */

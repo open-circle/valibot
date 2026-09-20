@@ -38,8 +38,7 @@ type DefinitionData =
       type: 'object';
       entries: {
         key:
-          | string
-          | { name: string; modifier?: string; type?: DefinitionData };
+          string | { name: string; modifier?: string; type?: DefinitionData };
         optional?: boolean;
         value: DefinitionData;
       }[];

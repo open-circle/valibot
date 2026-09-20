@@ -38,8 +38,7 @@ export interface IncludesAction<
   TInput extends ContentInput,
   TRequirement extends ContentRequirement<TInput>,
   TMessage extends
-    | ErrorMessage<IncludesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<IncludesIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, IncludesIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -87,8 +86,7 @@ export function includes<
   TInput extends ContentInput,
   const TRequirement extends ContentRequirement<TInput>,
   const TMessage extends
-    | ErrorMessage<IncludesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<IncludesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

@@ -46,8 +46,7 @@ export interface MimeTypeAction<
   TInput extends Blob,
   TRequirement extends Requirement,
   TMessage extends
-    | ErrorMessage<MimeTypeIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MimeTypeIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, MimeTypeIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -95,8 +94,7 @@ export function mimeType<
   TInput extends Blob,
   const TRequirement extends Requirement,
   const TMessage extends
-    | ErrorMessage<MimeTypeIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MimeTypeIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

@@ -15,10 +15,10 @@ export interface ExactOptionalSchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TDefault extends Default<TWrapped, never>,
 > extends BaseSchema<
-    InferInput<TWrapped>,
-    InferOutput<TWrapped>,
-    InferIssue<TWrapped>
-  > {
+  InferInput<TWrapped>,
+  InferOutput<TWrapped>,
+  InferIssue<TWrapped>
+> {
   /**
    * The schema type.
    */

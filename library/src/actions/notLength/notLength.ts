@@ -42,8 +42,7 @@ export interface NotLengthAction<
   TInput extends LengthInput,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<NotLengthIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotLengthIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, NotLengthIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -91,8 +90,7 @@ export function notLength<
   TInput extends LengthInput,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<NotLengthIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotLengthIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

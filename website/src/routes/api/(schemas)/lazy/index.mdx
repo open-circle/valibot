@@ -67,12 +67,7 @@ Schema to validate all possible `JSON` values.
 import * as v from 'valibot';
 
 type JsonData =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: JsonData }
-  | JsonData[];
+  string | number | boolean | null | { [key: string]: JsonData } | JsonData[];
 
 const JsonSchema: v.GenericSchema<JsonData> = v.lazy(() =>
   v.union([

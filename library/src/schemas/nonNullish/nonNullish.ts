@@ -19,10 +19,10 @@ export interface NonNullishSchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<NonNullishIssue> | undefined,
 > extends BaseSchema<
-    InferNonNullishInput<TWrapped>,
-    InferNonNullishOutput<TWrapped>,
-    NonNullishIssue | InferNonNullishIssue<TWrapped>
-  > {
+  InferNonNullishInput<TWrapped>,
+  InferNonNullishOutput<TWrapped>,
+  NonNullishIssue | InferNonNullishIssue<TWrapped>
+> {
   /**
    * The schema type.
    */

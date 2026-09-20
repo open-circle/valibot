@@ -23,10 +23,10 @@ export interface NonOptionalSchemaAsync<
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<NonOptionalIssue> | undefined,
 > extends BaseSchemaAsync<
-    InferNonOptionalInput<TWrapped>,
-    InferNonOptionalOutput<TWrapped>,
-    NonOptionalIssue | InferNonOptionalIssue<TWrapped>
-  > {
+  InferNonOptionalInput<TWrapped>,
+  InferNonOptionalOutput<TWrapped>,
+  NonOptionalIssue | InferNonOptionalIssue<TWrapped>
+> {
   /**
    * The schema type.
    */

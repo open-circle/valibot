@@ -46,13 +46,12 @@ export interface MinEntriesAction<
   TInput extends EntriesInput,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<MinEntriesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinEntriesIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<
-    TInput,
-    TInput,
-    MinEntriesIssue<TInput, TRequirement>
-  > {
+  TInput,
+  TInput,
+  MinEntriesIssue<TInput, TRequirement>
+> {
   /**
    * The action type.
    */
@@ -103,8 +102,7 @@ export function minEntries<
   TInput extends EntriesInput,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MinEntriesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinEntriesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

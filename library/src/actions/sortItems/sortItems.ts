@@ -12,8 +12,9 @@ type ArrayAction<TInput extends ArrayInput> = (
 /**
  * Sort items action interface.
  */
-export interface SortItemsAction<TInput extends ArrayInput>
-  extends BaseTransformation<TInput, TInput, never> {
+export interface SortItemsAction<
+  TInput extends ArrayInput,
+> extends BaseTransformation<TInput, TInput, never> {
   /**
    * The action type.
    */

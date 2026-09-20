@@ -58,8 +58,7 @@ type RecursiveConcat<
   )[],
 ]
   ? TFirstItem extends
-      | SchemaWithPipe<infer TNestedPipe>
-      | SchemaWithPipeAsync<infer TNestedPipe>
+      SchemaWithPipe<infer TNestedPipe> | SchemaWithPipeAsync<infer TNestedPipe>
     ? RecursiveConcat<
         TPipeRest,
         RecursiveConcat<TNestedPipe, TCollectedExamples>
@@ -73,8 +72,7 @@ type RecursiveConcat<
  * Infer examples type.
  */
 export type InferExamples<TSchema extends Schema> = TSchema extends
-  | SchemaWithPipe<infer TPipe>
-  | SchemaWithPipeAsync<infer TPipe>
+  SchemaWithPipe<infer TPipe> | SchemaWithPipeAsync<infer TPipe>
   ? Readonly<RecursiveConcat<TPipe>>
   : [];
 

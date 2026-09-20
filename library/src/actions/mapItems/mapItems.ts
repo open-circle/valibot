@@ -13,8 +13,10 @@ type ArrayAction<TInput extends ArrayInput, TOutput> = (
 /**
  * Map items action interface.
  */
-export interface MapItemsAction<TInput extends ArrayInput, TOutput>
-  extends BaseTransformation<TInput, TOutput[], never> {
+export interface MapItemsAction<
+  TInput extends ArrayInput,
+  TOutput,
+> extends BaseTransformation<TInput, TOutput[], never> {
   /**
    * The action type.
    */

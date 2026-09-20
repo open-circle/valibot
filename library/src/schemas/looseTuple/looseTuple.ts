@@ -19,10 +19,10 @@ export interface LooseTupleSchema<
   TItems extends TupleItems,
   TMessage extends ErrorMessage<LooseTupleIssue> | undefined,
 > extends BaseSchema<
-    [...InferTupleInput<TItems>, ...unknown[]],
-    [...InferTupleOutput<TItems>, ...unknown[]],
-    LooseTupleIssue | InferTupleIssue<TItems>
-  > {
+  [...InferTupleInput<TItems>, ...unknown[]],
+  [...InferTupleOutput<TItems>, ...unknown[]],
+  LooseTupleIssue | InferTupleIssue<TItems>
+> {
   /**
    * The schema type.
    */

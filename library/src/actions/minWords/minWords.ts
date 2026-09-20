@@ -42,8 +42,7 @@ export interface MinWordsAction<
   TLocales extends Intl.LocalesArgument,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<MinWordsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinWordsIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, MinWordsIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -102,8 +101,7 @@ export function minWords<
   TLocales extends Intl.LocalesArgument,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MinWordsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinWordsIssue<TInput, TRequirement>> | undefined,
 >(
   locales: TLocales,
   requirement: TRequirement,

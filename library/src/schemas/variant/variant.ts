@@ -23,10 +23,10 @@ export interface VariantSchema<
   TOptions extends VariantOptions<TKey>,
   TMessage extends ErrorMessage<VariantIssue> | undefined,
 > extends BaseSchema<
-    InferInput<TOptions[number]>,
-    InferOutput<TOptions[number]>,
-    VariantIssue | InferVariantIssue<TOptions>
-  > {
+  InferInput<TOptions[number]>,
+  InferOutput<TOptions[number]>,
+  VariantIssue | InferVariantIssue<TOptions>
+> {
   /**
    * The schema type.
    */
@@ -112,8 +112,7 @@ export function variant(
       if (input && typeof input === 'object') {
         // Create output dataset variable
         let outputDataset:
-          | OutputDataset<unknown, BaseIssue<unknown>>
-          | undefined;
+          OutputDataset<unknown, BaseIssue<unknown>> | undefined;
 
         // Create variables to store invalid discriminator information
         let maxDiscriminatorPriority = 0;

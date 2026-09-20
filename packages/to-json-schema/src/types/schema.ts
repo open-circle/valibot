@@ -1,19 +1,8 @@
 type JsonSchemaTypeName =
-  | 'string'
-  | 'number'
-  | 'integer'
-  | 'boolean'
-  | 'object'
-  | 'array'
-  | 'null';
+  'string' | 'number' | 'integer' | 'boolean' | 'object' | 'array' | 'null';
 
 type JsonSchemaType =
-  | string
-  | number
-  | boolean
-  | JsonSchemaObject
-  | JsonSchemaArray
-  | null;
+  string | number | boolean | JsonSchemaObject | JsonSchemaArray | null;
 
 interface JsonSchemaObject {
   [key: string]: JsonSchemaType;

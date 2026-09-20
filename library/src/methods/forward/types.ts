@@ -10,9 +10,9 @@ type KeyOf<TValue> =
       ? number extends TValue['length']
         ? number
         : {
-            [TKey in keyof TValue]: TKey extends `${infer TIndex extends number}`
-              ? TIndex
-              : never;
+            [
+              TKey in keyof TValue
+            ]: TKey extends `${infer TIndex extends number}` ? TIndex : never;
           }[number]
       : TValue extends Record<string, unknown>
         ? keyof TValue & (string | number)

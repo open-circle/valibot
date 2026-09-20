@@ -24,10 +24,10 @@ export interface LooseObjectSchema<
   TEntries extends ObjectEntries,
   TMessage extends ErrorMessage<LooseObjectIssue> | undefined,
 > extends BaseSchema<
-    InferObjectInput<TEntries> & { [key: string]: unknown },
-    InferObjectOutput<TEntries> & { [key: string]: unknown },
-    LooseObjectIssue | InferObjectIssue<TEntries>
-  > {
+  InferObjectInput<TEntries> & { [key: string]: unknown },
+  InferObjectOutput<TEntries> & { [key: string]: unknown },
+  LooseObjectIssue | InferObjectIssue<TEntries>
+> {
   /**
    * The schema type.
    */

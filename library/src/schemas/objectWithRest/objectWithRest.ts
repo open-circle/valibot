@@ -29,10 +29,10 @@ export interface ObjectWithRestSchema<
   TRest extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<ObjectWithRestIssue> | undefined,
 > extends BaseSchema<
-    InferObjectInput<TEntries> & { [key: string]: InferInput<TRest> },
-    InferObjectOutput<TEntries> & { [key: string]: InferOutput<TRest> },
-    ObjectWithRestIssue | InferObjectIssue<TEntries> | InferIssue<TRest>
-  > {
+  InferObjectInput<TEntries> & { [key: string]: InferInput<TRest> },
+  InferObjectOutput<TEntries> & { [key: string]: InferOutput<TRest> },
+  ObjectWithRestIssue | InferObjectIssue<TEntries> | InferIssue<TRest>
+> {
   /**
    * The schema type.
    */

@@ -13,8 +13,11 @@ type ReadonlyOutput<TInput> =
 /**
  * Readonly action interface.
  */
-export interface ReadonlyAction<TInput>
-  extends BaseTransformation<TInput, ReadonlyOutput<TInput>, never> {
+export interface ReadonlyAction<TInput> extends BaseTransformation<
+  TInput,
+  ReadonlyOutput<TInput>,
+  never
+> {
   /**
    * The action type.
    */

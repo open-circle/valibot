@@ -41,13 +41,12 @@ export interface StartsWithAction<
   TInput extends string,
   TRequirement extends string,
   TMessage extends
-    | ErrorMessage<StartsWithIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<StartsWithIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<
-    TInput,
-    TInput,
-    StartsWithIssue<TInput, TRequirement>
-  > {
+  TInput,
+  TInput,
+  StartsWithIssue<TInput, TRequirement>
+> {
   /**
    * The action type.
    */
@@ -94,8 +93,7 @@ export function startsWith<
   TInput extends string,
   const TRequirement extends string,
   const TMessage extends
-    | ErrorMessage<StartsWithIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<StartsWithIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

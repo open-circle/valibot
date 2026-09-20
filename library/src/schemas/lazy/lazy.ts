@@ -13,10 +13,10 @@ import { _standardSchema } from '../../utils/index.ts';
 export interface LazySchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
 > extends BaseSchema<
-    InferInput<TWrapped>,
-    InferOutput<TWrapped>,
-    InferIssue<TWrapped>
-  > {
+  InferInput<TWrapped>,
+  InferOutput<TWrapped>,
+  InferIssue<TWrapped>
+> {
   /**
    * The schema type.
    */

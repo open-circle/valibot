@@ -6,8 +6,9 @@ import type {
 /**
  * Await action async interface.
  */
-export interface AwaitActionAsync<TInput extends Promise<unknown>>
-  extends BaseTransformationAsync<TInput, Awaited<TInput>, never> {
+export interface AwaitActionAsync<
+  TInput extends Promise<unknown>,
+> extends BaseTransformationAsync<TInput, Awaited<TInput>, never> {
   /**
    * The action type.
    */

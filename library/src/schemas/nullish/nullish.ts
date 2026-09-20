@@ -17,10 +17,10 @@ export interface NullishSchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TDefault extends Default<TWrapped, null | undefined>,
 > extends BaseSchema<
-    InferInput<TWrapped> | null | undefined,
-    InferNullishOutput<TWrapped, TDefault>,
-    InferIssue<TWrapped>
-  > {
+  InferInput<TWrapped> | null | undefined,
+  InferNullishOutput<TWrapped, TDefault>,
+  InferIssue<TWrapped>
+> {
   /**
    * The schema type.
    */

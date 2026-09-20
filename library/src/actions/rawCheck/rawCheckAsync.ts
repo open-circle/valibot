@@ -5,8 +5,11 @@ import type { RawCheckContext, RawCheckIssue } from './types.ts';
 /**
  * Raw check action async interface.
  */
-export interface RawCheckActionAsync<TInput>
-  extends BaseValidationAsync<TInput, TInput, RawCheckIssue<TInput>> {
+export interface RawCheckActionAsync<TInput> extends BaseValidationAsync<
+  TInput,
+  TInput,
+  RawCheckIssue<TInput>
+> {
   /**
    * The action type.
    */

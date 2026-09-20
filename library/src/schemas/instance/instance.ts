@@ -37,10 +37,10 @@ export interface InstanceSchema<
   TClass extends Class,
   TMessage extends ErrorMessage<InstanceIssue> | undefined,
 > extends BaseSchema<
-    InstanceType<TClass>,
-    InstanceType<TClass>,
-    InstanceIssue
-  > {
+  InstanceType<TClass>,
+  InstanceType<TClass>,
+  InstanceIssue
+> {
   /**
    * The schema type.
    */

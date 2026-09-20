@@ -38,8 +38,7 @@ export interface NotValueAction<
   TInput extends ValueInput,
   TRequirement extends TInput,
   TMessage extends
-    | ErrorMessage<NotValueIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotValueIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, NotValueIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -87,8 +86,7 @@ export function notValue<
   TInput extends ValueInput,
   const TRequirement extends TInput,
   const TMessage extends
-    | ErrorMessage<NotValueIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotValueIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

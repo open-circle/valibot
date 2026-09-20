@@ -41,13 +41,12 @@ export interface NotGraphemesAction<
   TInput extends string,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<NotGraphemesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotGraphemesIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<
-    TInput,
-    TInput,
-    NotGraphemesIssue<TInput, TRequirement>
-  > {
+  TInput,
+  TInput,
+  NotGraphemesIssue<TInput, TRequirement>
+> {
   /**
    * The action type.
    */
@@ -96,8 +95,7 @@ export function notGraphemes<
   TInput extends string,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<NotGraphemesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotGraphemesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

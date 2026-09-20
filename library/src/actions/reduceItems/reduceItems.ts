@@ -14,8 +14,10 @@ type ArrayAction<TInput extends ArrayInput, TOutput> = (
 /**
  * Reduce items action interface.
  */
-export interface ReduceItemsAction<TInput extends ArrayInput, TOutput>
-  extends BaseTransformation<TInput, TOutput, never> {
+export interface ReduceItemsAction<
+  TInput extends ArrayInput,
+  TOutput,
+> extends BaseTransformation<TInput, TOutput, never> {
   /**
    * The action type.
    */

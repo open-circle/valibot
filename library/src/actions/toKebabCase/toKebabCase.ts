@@ -6,8 +6,11 @@ import { _formatCase } from '../../utils/index.ts';
  *
  * @beta
  */
-export interface ToKebabCaseAction
-  extends BaseTransformation<string, string, never> {
+export interface ToKebabCaseAction extends BaseTransformation<
+  string,
+  string,
+  never
+> {
   /**
    * The action type.
    */

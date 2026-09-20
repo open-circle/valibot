@@ -42,8 +42,7 @@ export interface MaxWordsAction<
   TLocales extends Intl.LocalesArgument,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<MaxWordsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxWordsIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, MaxWordsIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -102,8 +101,7 @@ export function maxWords<
   TLocales extends Intl.LocalesArgument,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MaxWordsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxWordsIssue<TInput, TRequirement>> | undefined,
 >(
   locales: TLocales,
   requirement: TRequirement,

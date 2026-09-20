@@ -6,8 +6,11 @@ import { _formatCase } from '../../utils/index.ts';
  *
  * @beta
  */
-export interface ToSnakeCaseAction
-  extends BaseTransformation<string, string, never> {
+export interface ToSnakeCaseAction extends BaseTransformation<
+  string,
+  string,
+  never
+> {
   /**
    * The action type.
    */

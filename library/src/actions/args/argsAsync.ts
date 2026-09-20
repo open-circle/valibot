@@ -61,10 +61,10 @@ export interface ArgsActionAsync<
   TInput extends (...args: any[]) => unknown,
   TSchema extends Schema,
 > extends BaseTransformation<
-    TInput,
-    (...args: InferInput<TSchema>) => Promise<Awaited<ReturnType<TInput>>>,
-    never
-  > {
+  TInput,
+  (...args: InferInput<TSchema>) => Promise<Awaited<ReturnType<TInput>>>,
+  never
+> {
   /**
    * The action type.
    */

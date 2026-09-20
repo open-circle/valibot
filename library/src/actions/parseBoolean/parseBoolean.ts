@@ -54,9 +54,8 @@ export interface ParseBooleanIssue<TInput> extends BaseIssue<TInput> {
 export interface ParseBooleanAction<
   TInput,
   TConfig extends ParseBooleanConfig | undefined,
-  TMessage extends
-    | ErrorMessage<ParseBooleanIssue<TInput>>
-    | undefined = undefined,
+  TMessage extends ErrorMessage<ParseBooleanIssue<TInput>> | undefined =
+    undefined,
 > extends BaseTransformation<TInput, boolean, ParseBooleanIssue<TInput>> {
   /**
    * The action type.

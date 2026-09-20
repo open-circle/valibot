@@ -42,8 +42,7 @@ export interface NotWordsAction<
   TLocales extends Intl.LocalesArgument,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<NotWordsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotWordsIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, NotWordsIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -102,8 +101,7 @@ export function notWords<
   TLocales extends Intl.LocalesArgument,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<NotWordsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotWordsIssue<TInput, TRequirement>> | undefined,
 >(
   locales: TLocales,
   requirement: TRequirement,

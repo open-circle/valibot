@@ -64,8 +64,7 @@ export function customAsync<TInput>(
 export function customAsync<
   TInput,
   const TMessage extends ErrorMessage<CustomIssue> | undefined =
-    | ErrorMessage<CustomIssue>
-    | undefined,
+    ErrorMessage<CustomIssue> | undefined,
 >(check: CheckAsync, message: TMessage): CustomSchemaAsync<TInput, TMessage>;
 
 // @__NO_SIDE_EFFECTS__

@@ -41,13 +41,12 @@ export interface CodePointsAction<
   TInput extends string,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<CodePointsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<CodePointsIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<
-    TInput,
-    TInput,
-    CodePointsIssue<TInput, TRequirement>
-  > {
+  TInput,
+  TInput,
+  CodePointsIssue<TInput, TRequirement>
+> {
   /**
    * The action type.
    */
@@ -94,8 +93,7 @@ export function codePoints<
   TInput extends string,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<CodePointsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<CodePointsIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

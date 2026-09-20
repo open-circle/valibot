@@ -34,8 +34,7 @@ export type MaybeReadonly<TValue> = TValue | Readonly<TValue>;
  * Constructs a type that is deeply readonly.
  */
 export type DeepReadonly<TValue> = TValue extends
-  | Record<string, unknown>
-  | readonly unknown[]
+  Record<string, unknown> | readonly unknown[]
   ? { readonly [TKey in keyof TValue]: DeepReadonly<TValue[TKey]> }
   : TValue;
 

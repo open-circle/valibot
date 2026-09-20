@@ -21,10 +21,10 @@ export interface StrictObjectSchemaAsync<
   TEntries extends ObjectEntriesAsync,
   TMessage extends ErrorMessage<StrictObjectIssue> | undefined,
 > extends BaseSchemaAsync<
-    InferObjectInput<TEntries>,
-    InferObjectOutput<TEntries>,
-    StrictObjectIssue | InferObjectIssue<TEntries>
-  > {
+  InferObjectInput<TEntries>,
+  InferObjectOutput<TEntries>,
+  StrictObjectIssue | InferObjectIssue<TEntries>
+> {
   /**
    * The schema type.
    */

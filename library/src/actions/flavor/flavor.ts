@@ -28,8 +28,10 @@ export interface Flavor<TName extends FlavorName> {
  *
  * @beta
  */
-export interface FlavorAction<TInput, TName extends FlavorName>
-  extends BaseTransformation<TInput, TInput & Flavor<TName>, never> {
+export interface FlavorAction<
+  TInput,
+  TName extends FlavorName,
+> extends BaseTransformation<TInput, TInput & Flavor<TName>, never> {
   /**
    * The action type.
    */

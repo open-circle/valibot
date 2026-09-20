@@ -10,8 +10,10 @@ import type { RawTransformContext, RawTransformIssue } from './types.ts';
 /**
  * Raw transform action async interface.
  */
-export interface RawTransformActionAsync<TInput, TOutput>
-  extends BaseTransformationAsync<TInput, TOutput, RawTransformIssue<TInput>> {
+export interface RawTransformActionAsync<
+  TInput,
+  TOutput,
+> extends BaseTransformationAsync<TInput, TOutput, RawTransformIssue<TInput>> {
   /**
    * The action type.
    */

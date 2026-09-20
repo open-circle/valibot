@@ -3,8 +3,11 @@ import type { BaseTransformation } from '../../types/index.ts';
 /**
  * To upper case action interface.
  */
-export interface ToUpperCaseAction
-  extends BaseTransformation<string, string, never> {
+export interface ToUpperCaseAction extends BaseTransformation<
+  string,
+  string,
+  never
+> {
   /**
    * The action type.
    */

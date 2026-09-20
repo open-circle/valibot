@@ -41,13 +41,12 @@ export interface MaxGraphemesAction<
   TInput extends string,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<MaxGraphemesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxGraphemesIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<
-    TInput,
-    TInput,
-    MaxGraphemesIssue<TInput, TRequirement>
-  > {
+  TInput,
+  TInput,
+  MaxGraphemesIssue<TInput, TRequirement>
+> {
   /**
    * The action type.
    */
@@ -96,8 +95,7 @@ export function maxGraphemes<
   TInput extends string,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MaxGraphemesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxGraphemesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

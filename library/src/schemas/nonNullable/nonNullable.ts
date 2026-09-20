@@ -19,10 +19,10 @@ export interface NonNullableSchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<NonNullableIssue> | undefined,
 > extends BaseSchema<
-    InferNonNullableInput<TWrapped>,
-    InferNonNullableOutput<TWrapped>,
-    NonNullableIssue | InferNonNullableIssue<TWrapped>
-  > {
+  InferNonNullableInput<TWrapped>,
+  InferNonNullableOutput<TWrapped>,
+  NonNullableIssue | InferNonNullableIssue<TWrapped>
+> {
   /**
    * The schema type.
    */

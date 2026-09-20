@@ -17,10 +17,10 @@ export interface MapSchema<
   TValue extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<MapIssue> | undefined,
 > extends BaseSchema<
-    InferMapInput<TKey, TValue>,
-    InferMapOutput<TKey, TValue>,
-    MapIssue | InferIssue<TKey> | InferIssue<TValue>
-  > {
+  InferMapInput<TKey, TValue>,
+  InferMapOutput<TKey, TValue>,
+  MapIssue | InferIssue<TKey> | InferIssue<TValue>
+> {
   /**
    * The schema type.
    */
