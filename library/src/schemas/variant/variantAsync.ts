@@ -15,6 +15,7 @@ import type {
   VariantOptionSchema,
   VariantOptionSchemaAsync,
 } from './types.ts';
+import { _buildDiscriminatorMap } from './utils/index.ts';
 import type { variant } from './variant.ts';
 
 /**
@@ -97,6 +98,16 @@ export function variantAsync(
   VariantOptionsAsync<string>,
   ErrorMessage<VariantIssue> | undefined
 > {
+  // Lazily built map from discriminator value to option for O(1) dispatch. It
+  // is `null` whenever the options cannot be unambiguously keyed by a single
+  // discriminator value, in which case the slow path is used. The cache lives
+  // in this closure so that parsing never adds observable properties to the
+  // returned schema object.
+  let discriminatorMap:
+    | Map<unknown, VariantOptionsAsync<string>[number]>
+    | null
+    | undefined;
+
   return _standardSchema({
     kind: 'schema',
     type: 'variant',
@@ -112,6 +123,29 @@ export function variantAsync(
 
       // If root type is valid, check nested types
       if (input && typeof input === 'object') {
+        // Build the discriminator map on first use. `null` is a cached result
+        // (fast path disabled), so only `undefined` triggers a rebuild.
+        if (discriminatorMap === undefined) {
+          discriminatorMap = _buildDiscriminatorMap(key, options);
+        }
+
+        // Fast path: dispatch directly to the single option whose discriminator
+        // matches the input. On a miss, fall through to the slow path so the
+        // discriminator issue and message are produced identically.
+        if (discriminatorMap && key in input) {
+          // @ts-expect-error
+          const option = discriminatorMap.get(input[key]);
+          if (option) {
+            return (await option['~run'](
+              { value: input },
+              config
+            )) as OutputDataset<
+              InferOutput<VariantOptionsAsync<string>[number]>,
+              VariantIssue | BaseIssue<unknown>
+            >;
+          }
+        }
+
         // Create output dataset variable
         let outputDataset:
           | OutputDataset<unknown, BaseIssue<unknown>>
