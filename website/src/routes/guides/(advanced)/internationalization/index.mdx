@@ -46,9 +46,14 @@ The language used is then selected by the `lang` configuration. You can set it g
 
 ```ts
 import * as v from 'valibot';
+import { getLocale } from "./paraglide/runtime";
+
 
 // Set the language configuration globally
 v.setGlobalConfig({ lang: 'de' });
+
+// Set the language dynamically using a callback
+v.setGlobalConfig({ lang: getLocale });
 
 // Set the language configuration locally
 v.parse(Schema, input, { lang: 'de' });
