@@ -89,6 +89,13 @@ export function picklist(
   options: PicklistOptions,
   message?: ErrorMessage<PicklistIssue>
 ): PicklistSchema<PicklistOptions, ErrorMessage<PicklistIssue> | undefined> {
+  // Set of the options for O(1) membership checks. `Set.has` uses the same
+  // SameValueZero comparison as `Array.includes`, so behavior is identical. It
+  // snapshots the options here, next to `expects`, so that the two can never
+  // disagree, and it lives in this closure so that parsing never adds
+  // observable properties to the returned schema object.
+  const optionsSet = new Set<unknown>(options);
+
   return _standardSchema({
     kind: 'schema',
     type: 'picklist',
@@ -98,8 +105,7 @@ export function picklist(
     options,
     message,
     '~run'(dataset, config) {
-      // @ts-expect-error
-      if (this.options.includes(dataset.value)) {
+      if (optionsSet.has(dataset.value)) {
         // @ts-expect-error
         dataset.typed = true;
       } else {
