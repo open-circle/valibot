@@ -43,7 +43,7 @@ This package is particularly popular for:
 | `object`         | ✅     |                                                                                                                                       |
 | `optional`       | ✅     |                                                                                                                                       |
 | `picklist`       | ⚠️     | Only JSON compatible values are supported                                                                                             |
-| `record`         | ⚠️     | Only `string` schemas for the key of the record are supported. Adds `propertyNames` for key validation (not available in OpenAPI 3.0) |
+| `record`         | ⚠️     | `string` keys; string-only `picklist` keys for draft-07/2020-12. Adds `propertyNames` for key validation (unavailable in OpenAPI 3.0) |
 | `strictObject`   | ✅     |                                                                                                                                       |
 | `strictTuple`    | ✅     |                                                                                                                                       |
 | `string`         | ✅     |                                                                                                                                       |
