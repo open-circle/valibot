@@ -1,4 +1,6 @@
 import { describe, expectTypeOf, test } from 'vitest';
+import { pipe } from '../../methods/index.ts';
+import { string } from '../../schemas/index.ts';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
 import { type Brand, brand, type BrandAction } from './brand.ts';
 
@@ -42,6 +44,25 @@ describe('brand', () => {
       expectTypeOf<
         InferOutput<BrandAction<string, 'bar'>>
       >().not.toExtend<Output>();
+    });
+  });
+
+  describe('should combine multiple brands', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const schema = pipe(string(), brand('foo'), brand('bar'));
+    type Output = InferOutput<typeof schema>;
+
+    test('should not be never', () => {
+      expectTypeOf<Output>().not.toBeNever();
+    });
+
+    test('should match each brand', () => {
+      expectTypeOf<Output>().toExtend<string & Brand<'foo'>>();
+      expectTypeOf<Output>().toExtend<string & Brand<'bar'>>();
+    });
+
+    test('should not match single brand', () => {
+      expectTypeOf<string & Brand<'foo'>>().not.toExtend<Output>();
     });
   });
 });
