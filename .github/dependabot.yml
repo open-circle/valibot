@@ -17,7 +17,6 @@ updates:
     commit-message:
       prefix: "dependabot"
     groups:
-      # Stable dependencies (>= 1.0.0). Safe to batch into a single PR.
       npm-deps:
         update-types:
           - "patch"
@@ -33,10 +32,7 @@ updates:
           - "sharp"
           - "tsdown"
           - "vite-plugin-node-polyfills"
-      # Dependencies still in v0. Semver allows breaking changes in minor
-      # releases, which Dependabot classifies as `semver-minor` and therefore
-      # does not filter out. Keep them in a separate PR so that each bump can
-      # be reviewed and verified on its own.
+      # v0 dependencies may introduce breaking changes in minor releases.
       unstable-deps:
         update-types:
           - "patch"
