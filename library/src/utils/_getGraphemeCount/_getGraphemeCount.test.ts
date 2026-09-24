@@ -5,7 +5,7 @@ describe('_getGraphemeCount', () => {
   test('without segmenting an empty input', () => {
     const segmentSpy = vi.spyOn(Intl.Segmenter.prototype, 'segment');
     try {
-      expect(_getGraphemeCount('', Infinity)).toBe(0);
+      expect(_getGraphemeCount('')).toBe(0);
       expect(segmentSpy).not.toHaveBeenCalled();
     } finally {
       segmentSpy.mockRestore();
@@ -13,11 +13,11 @@ describe('_getGraphemeCount', () => {
   });
 
   test('should return grapheme count', () => {
-    expect(_getGraphemeCount('hello world', Infinity)).toBe(11);
-    expect(_getGraphemeCount('😀', Infinity)).toBe(1);
-    expect(_getGraphemeCount('🧑🏻‍💻', Infinity)).toBe(1);
-    expect(_getGraphemeCount('𝄞', Infinity)).toBe(1);
-    expect(_getGraphemeCount('สวัสดี', Infinity)).toBe(4);
+    expect(_getGraphemeCount('hello world')).toBe(11);
+    expect(_getGraphemeCount('😀')).toBe(1);
+    expect(_getGraphemeCount('🧑🏻‍💻')).toBe(1);
+    expect(_getGraphemeCount('𝄞')).toBe(1);
+    expect(_getGraphemeCount('สวัสดี')).toBe(4);
   });
 
   test('should stop at the limit', () => {

@@ -135,7 +135,7 @@ export function maxWords(
         // Hint: Word count cannot exceed UTF-16 length, so skip counting when
         // the length is within the requirement
         if (dataset.value.length > this.requirement) {
-          const count = _getWordCount(this.locales, dataset.value, Infinity);
+          const count = _getWordCount(this.locales, dataset.value);
           if (count > this.requirement) {
             _addIssue(this, 'words', dataset, config, {
               received: `${count}`,

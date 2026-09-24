@@ -113,7 +113,7 @@ describe('notWords', () => {
         action,
         baseIssue,
         ['foo bar baz', 'Lorem ipsum dolor?', 'Hi, welcome home!'],
-        (value) => `${_getWordCount('en', value, Infinity)}`
+        (value) => `${_getWordCount('en', value)}`
       );
     });
   });

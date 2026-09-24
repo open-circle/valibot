@@ -117,7 +117,7 @@ describe('maxWords', () => {
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit?',
           'Hi, welcome home! How are you?',
         ],
-        (value) => `${_getWordCount('en', value, Infinity)}`
+        (value) => `${_getWordCount('en', value)}`
       );
     });
   });

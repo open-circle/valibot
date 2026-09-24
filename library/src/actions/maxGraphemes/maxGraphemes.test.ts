@@ -105,7 +105,7 @@ describe('maxGraphemes', () => {
         action,
         baseIssue,
         ['123456', '12345 ', '123456789', 'foo bar baz'],
-        (value) => `${_getGraphemeCount(value, Infinity)}`
+        (value) => `${_getGraphemeCount(value)}`
       );
     });
 
@@ -114,7 +114,7 @@ describe('maxGraphemes', () => {
         action,
         baseIssue,
         ['😀👋🏼🧩👩🏻‍🏫🫥🫠', '😀👋🏼🧩👩🏻‍🏫🫥🫠🧑‍💻👻🥎'],
-        (value) => `${_getGraphemeCount(value, Infinity)}`
+        (value) => `${_getGraphemeCount(value)}`
       );
     });
   });

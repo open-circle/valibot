@@ -119,7 +119,7 @@ describe('notGraphemes', () => {
         action,
         baseIssue,
         ['12345', '12 45', '1234 ', 'hello'],
-        (value) => `${_getGraphemeCount(value, Infinity)}`
+        (value) => `${_getGraphemeCount(value)}`
       );
     });
 
@@ -128,7 +128,7 @@ describe('notGraphemes', () => {
         action,
         baseIssue,
         ['😀👋🏼🧩👩🏻‍🏫🫥'],
-        (value) => `${_getGraphemeCount(value, Infinity)}`
+        (value) => `${_getGraphemeCount(value)}`
       );
     });
   });

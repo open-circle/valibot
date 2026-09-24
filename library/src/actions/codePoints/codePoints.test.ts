@@ -96,7 +96,7 @@ describe('codePoints', () => {
         action,
         baseIssue,
         ['', ' ', '1', '1234', '123 ', '123456', '12 456', '123456789'],
-        (value) => `${_getCodePointCount(value, Infinity)}`
+        (value) => `${_getCodePointCount(value)}`
       );
     });
 
@@ -105,7 +105,7 @@ describe('codePoints', () => {
         action,
         baseIssue,
         ['😀👋🏼🧩👩🏻‍🏫🫥', '㊙️㊙️0️⃣1️⃣2️⃣'],
-        (value) => `${_getCodePointCount(value, Infinity)}`
+        (value) => `${_getCodePointCount(value)}`
       );
     });
 
@@ -114,7 +114,7 @@ describe('codePoints', () => {
         action,
         baseIssue,
         ['竈門禰󠄀豆子', '葛󠄀城市'],
-        (value) => `${_getCodePointCount(value, Infinity)}`
+        (value) => `${_getCodePointCount(value)}`
       );
     });
   });

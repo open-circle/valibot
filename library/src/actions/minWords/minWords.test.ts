@@ -113,7 +113,7 @@ describe('minWords', () => {
           'Hi, ...',
           'Hi, welcome!',
         ],
-        (value) => `${_getWordCount('en', value, Infinity)}`
+        (value) => `${_getWordCount('en', value)}`
       );
     });
   });

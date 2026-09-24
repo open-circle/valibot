@@ -120,7 +120,7 @@ describe('maxCodePoints', () => {
         action,
         baseIssue,
         ['123456', '12345 ', '123456789', 'foo bar baz'],
-        (value) => `${_getCodePointCount(value, Infinity)}`
+        (value) => `${_getCodePointCount(value)}`
       );
     });
 
@@ -136,7 +136,7 @@ describe('maxCodePoints', () => {
           '😀👋🏼🧩👩🏻‍🏫🫥🫠',
           '😀👋🏼🧩👩🏻‍🏫🫥🫠🧑‍💻👻🥎',
         ],
-        (value) => `${_getCodePointCount(value, Infinity)}`
+        (value) => `${_getCodePointCount(value)}`
       );
     });
 
@@ -153,7 +153,7 @@ describe('maxCodePoints', () => {
           // 🍡: 1 code point emoji & U+3099 consumes one more code point
           '𛁟゙ん𛀸゙🍡',
         ],
-        (value) => `${_getCodePointCount(value, Infinity)}`
+        (value) => `${_getCodePointCount(value)}`
       );
     });
   });

@@ -92,7 +92,7 @@ describe('graphemes', () => {
         action,
         baseIssue,
         ['', ' ', '1', '1234', '123 ', '123456', '12 456', '123456789'],
-        (value) => `${_getGraphemeCount(value, Infinity)}`
+        (value) => `${_getGraphemeCount(value)}`
       );
     });
 
@@ -101,7 +101,7 @@ describe('graphemes', () => {
         action,
         baseIssue,
         ['😀', '😀👋🏼🧩👩🏻‍🏫', '😀👋🏼🧩👩🏻‍🏫🫥🫠', '😀👋🏼🧩👩🏻‍🏫🫥🫠🧑‍💻👻🥎'],
-        (value) => `${_getGraphemeCount(value, Infinity)}`
+        (value) => `${_getGraphemeCount(value)}`
       );
     });
   });

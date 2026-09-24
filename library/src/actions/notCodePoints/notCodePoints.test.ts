@@ -135,7 +135,7 @@ describe('notCodePoints', () => {
         action,
         baseIssue,
         ['12345', '12 45', '1234 ', 'hello'],
-        (value) => `${_getCodePointCount(value, Infinity)}`
+        (value) => `${_getCodePointCount(value)}`
       );
     });
 
@@ -144,7 +144,7 @@ describe('notCodePoints', () => {
         action,
         baseIssue,
         ['😀👍🧩😁🫥'],
-        (value) => `${_getCodePointCount(value, Infinity)}`
+        (value) => `${_getCodePointCount(value)}`
       );
     });
 
@@ -160,7 +160,7 @@ describe('notCodePoints', () => {
           'あ𛀙よろし',
           '𛁟゙ん𛀸゙', // だんご (including 2 combining voiced sound marks)
         ],
-        (value) => `${_getCodePointCount(value, Infinity)}`
+        (value) => `${_getCodePointCount(value)}`
       );
     });
   });
