@@ -30,7 +30,7 @@ const Action = v.iban<TInput, TMessage>(message);
 
 With `iban` you can validate the formatting of a string. If the input is not an IBAN, you can use `message` to customize the error message.
 
-This action checks the country code, the length for that country according to the [SWIFT IBAN Registry](https://www.swift.com/standards/data-standards/iban-international-bank-account-number) and the check digits using the ISO 7064 MOD 97-10 algorithm. It accepts the electronic format without spaces and the print format with single spaces between characters, which covers both groups of four and the national groupings used by some countries. Letters must be uppercase.
+This action checks the country code, the length and the BBAN structure (digits and letters at each position) for that country according to the [SWIFT IBAN Registry](https://www.swift.com/standards/data-standards/iban-international-bank-account-number) and the check digits using the ISO 7064 MOD 97-10 algorithm. It accepts the electronic format without spaces and the print format with single spaces between characters, which covers both groups of four and the national groupings used by some countries. Letters must be uppercase.
 
 ## Returns
 

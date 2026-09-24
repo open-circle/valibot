@@ -314,6 +314,19 @@ describe('iban', () => {
       ]);
     });
 
+    test('for invalid BBAN structure of country', () => {
+      // Hint: These pass the MOD 97-10 check and have the correct length
+      expectActionIssue(action, baseIssue, [
+        'DE793704004405W2013000', // letter in digits (DE 18n)
+        'DE32370400440532A13000', // letter in digits (DE 18n)
+        'GB31WE5T12345698765432', // digit in letters (GB 4a14n)
+        'GB55WEST1234569876543A', // letter in digits (GB 4a14n)
+        'IT4550542811101000000123456', // digit in letters (IT 1a10n12c)
+        'MU19BOMM0101101030300200000M0R', // digit in letters (MU 4a19n3a)
+        'NL251BNA0417164300', // digit in letters (NL 4a10n)
+      ]);
+    });
+
     test('for invalid length of country', () => {
       // Hint: These pass the MOD 97-10 check
       expectActionIssue(action, baseIssue, [
