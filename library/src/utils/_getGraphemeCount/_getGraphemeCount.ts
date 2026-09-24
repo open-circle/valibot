@@ -4,7 +4,8 @@ let segmenter: Intl.Segmenter;
  * Returns the grapheme count of the input.
  *
  * @param input The input to be measured.
- * @param limit The count limit. Pass `Infinity` to count the entire input.
+ * @param limit The count limit, at least 1. Pass `Infinity` to count the
+ * entire input.
  *
  * @returns The grapheme count, or the count at which the limit was reached.
  *
@@ -12,9 +13,6 @@ let segmenter: Intl.Segmenter;
  */
 // @__NO_SIDE_EFFECTS__
 export function _getGraphemeCount(input: string, limit: number): number {
-  if (limit <= 0) {
-    return 0;
-  }
   // Hint: An empty input has no graphemes, so skip the expensive segmentation
   // and avoid creating the segmenter
   if (input.length === 0) {

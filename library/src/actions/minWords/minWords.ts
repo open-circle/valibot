@@ -132,15 +132,19 @@ export function minWords(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getWordCount(
-          this.locales,
-          dataset.value,
-          this.requirement
-        );
-        if (count < this.requirement) {
-          _addIssue(this, 'words', dataset, config, {
-            received: `${count}`,
-          });
+        // Hint: Word count cannot be negative, so skip counting when the
+        // requirement is zero or less
+        if (this.requirement > 0) {
+          const count = _getWordCount(
+            this.locales,
+            dataset.value,
+            this.requirement
+          );
+          if (count < this.requirement) {
+            _addIssue(this, 'words', dataset, config, {
+              received: `${count}`,
+            });
+          }
         }
       }
       return dataset;

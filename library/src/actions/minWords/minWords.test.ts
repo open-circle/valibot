@@ -83,6 +83,10 @@ describe('minWords', () => {
         'Hi, welcome home! How are you?',
       ]);
     });
+
+    test('for any string if requirement is zero', () => {
+      expectNoActionIssue(minWords('en', 0), ['', ' ', 'foo', 'foo bar']);
+    });
   });
 
   describe('should return dataset with issues', () => {

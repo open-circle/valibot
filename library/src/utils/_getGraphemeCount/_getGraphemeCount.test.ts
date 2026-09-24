@@ -23,6 +23,5 @@ describe('_getGraphemeCount', () => {
   test('should stop at the limit', () => {
     expect(_getGraphemeCount('hello world', 5)).toBe(5);
     expect(_getGraphemeCount('hi', 5)).toBe(2);
-    expect(_getGraphemeCount('hello world', 0)).toBe(0);
   });
 });
