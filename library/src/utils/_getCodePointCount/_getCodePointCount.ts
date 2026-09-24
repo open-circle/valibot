@@ -13,9 +13,10 @@
 export function _getCodePointCount(input: string, limit: number): number {
   // Hint: The prefix up to index i contains i - pairs code points, so the limit
   // is reached at index limit + pairs. Using this as the loop end avoids an
-  // extra limit check per code unit
+  // extra limit check per code unit. The limit is rounded up because the
+  // count is an integer, which also keeps the loop end within the input.
   let pairs = 0;
-  let end = Math.min(input.length, limit);
+  let end = Math.min(input.length, Math.ceil(limit));
   let i = 0;
   while (i < end) {
     // codePointAt never returns undefined because i is always in bounds

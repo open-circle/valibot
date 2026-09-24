@@ -22,5 +22,7 @@ describe('_getCodePointCount', () => {
     expect(_getCodePointCount('😀👋🏼🧩', 2)).toBe(2);
     expect(_getCodePointCount('hello', 8)).toBe(5);
     expect(_getCodePointCount('😀😀', 3)).toBe(2);
+    expect(_getCodePointCount('a😀', 2.5)).toBe(2);
+    expect(_getCodePointCount('😀😀a', 2.5)).toBe(3);
   });
 });
