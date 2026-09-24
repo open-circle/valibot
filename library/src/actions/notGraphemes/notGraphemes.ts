@@ -122,11 +122,19 @@ export function notGraphemes(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getGraphemeCount(dataset.value);
-        if (count === this.requirement) {
-          _addIssue(this, 'graphemes', dataset, config, {
-            received: `${count}`,
-          });
+        // Hint: Grapheme count is between one and the UTF-16 length for a
+        // non-empty input, or zero for an empty input, so skip counting when
+        // the requirement is outside this range and cannot be matched
+        if (
+          this.requirement >= (dataset.value.length > 0 ? 1 : 0) &&
+          this.requirement <= dataset.value.length
+        ) {
+          const count = _getGraphemeCount(dataset.value, this.requirement + 1);
+          if (count === this.requirement) {
+            _addIssue(this, 'graphemes', dataset, config, {
+              received: `${count}`,
+            });
+          }
         }
       }
       return dataset;

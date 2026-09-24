@@ -116,11 +116,18 @@ export function notBytes(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const length = _getByteCount(dataset.value);
-        if (length === this.requirement) {
-          _addIssue(this, 'bytes', dataset, config, {
-            received: `${length}`,
-          });
+        // Hint: UTF-8 byte length is between the UTF-16 length and three times
+        // it, so skip counting when the requirement is outside this range
+        if (
+          this.requirement >= dataset.value.length &&
+          this.requirement <= dataset.value.length * 3
+        ) {
+          const length = _getByteCount(dataset.value);
+          if (length === this.requirement) {
+            _addIssue(this, 'bytes', dataset, config, {
+              received: `${length}`,
+            });
+          }
         }
       }
       return dataset;

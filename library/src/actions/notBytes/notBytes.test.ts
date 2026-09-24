@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
 import {
@@ -77,6 +77,26 @@ describe('notBytes', () => {
         '🤖', // '🤖' is 4 bytes
         'あい', // 'あい' is 6 bytes
       ]);
+    });
+
+    test('without encoding if the requirement exceeds the upper byte bound', () => {
+      const encodeSpy = vi.spyOn(TextEncoder.prototype, 'encode');
+      try {
+        notBytes(7)['~run']({ typed: true, value: 'ab' }, {});
+        expect(encodeSpy).not.toHaveBeenCalled();
+      } finally {
+        encodeSpy.mockRestore();
+      }
+    });
+
+    test('without encoding if the requirement is below the lower byte bound', () => {
+      const encodeSpy = vi.spyOn(TextEncoder.prototype, 'encode');
+      try {
+        notBytes(1)['~run']({ typed: true, value: 'ab' }, {});
+        expect(encodeSpy).not.toHaveBeenCalled();
+      } finally {
+        encodeSpy.mockRestore();
+      }
     });
   });
 

@@ -4,6 +4,7 @@ All notable changes to the library will be documented in this file.
 
 ## vX.X.X (Month DD, YYYY)
 
+- Change `minBytes`, `maxBytes`, `notBytes`, `minCodePoints`, `maxCodePoints`, `notCodePoints`, `minGraphemes`, `maxGraphemes`, `notGraphemes`, `minWords`, `maxWords` and `notWords` actions to stop counting early or skip counting entirely when the string length already decides the result to improve performance (pull request #1631)
 - Change `isbn`, `creditCard` and `imei` actions to check digits by character code instead of splitting and parsing the input to improve performance (pull request #1634)
 - Fix `uuid` action to reject UUIDs with a version outside 1 to 8 or a variant outside RFC 9562, while still accepting the Nil and Max UUIDs (pull request #1643)
 
