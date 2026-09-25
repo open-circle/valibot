@@ -61,32 +61,41 @@ export interface IbanAction<
 }
 
 /**
- * IBAN countries by length, starting with 15 characters, based on the
+ * IBAN countries by first letter of country code, based on the
  * [SWIFT IBAN Registry](https://www.swift.com/standards/data-standards/iban-international-bank-account-number).
  *
- * Hint: Each country code is followed by the BBAN structure, where `n` stands
- * for digits, `a` for uppercase letters and `c` for both.
+ * Hint: Each entry is the second letter of a country code followed by its
+ * BBAN structure, where `n` stands for digits, `a` for uppercase letters and
+ * `c` for both. For example, `E18n` in row `D` stands for `DE` with 18
+ * digits. The structure also defines the length of the IBAN.
  */
 const IBAN_COUNTRIES = [
-  'NO11n', // 15
-  'BE12n', // 16
-  '', // 17
-  'DK14n FI14n FK2a12n FO14n GL14n NL4a10n SD14n', // 18
-  'MK3n10c2n SI15n', // 19
-  'AT16n BA16n EE16n KZ3n13c LT16n LU3n13c MN16n XK16n', // 20
-  'CH5n12c HR17n LI5n12c LV4a13c', // 21
-  'BG4a6n8c BH4a14c CR18n DE18n GB4a14n GE2a16n IE4a14n ME18n RS18n VA18n', // 22
-  'AE19n GI4a15c IL19n IQ4a15n OM3n16c SO19n TL19n', // 23
-  'AD8n12c CZ20n ES20n MD20c PK4a16c RO4a16c SA2n18c SE20n SK20n TN20n VG4a16n', // 24
-  'LY21n PT21n ST21n', // 25
-  'IS22n TR6n16c', // 26
-  'BI23n DJ23n FR10n11c2n GR7n16c IT1a10n12c MC10n11c2n MR23n SM1a10n12c', // 27
-  'AL8n16c AZ4a20c BY4c4n16c CY8n16c DO4c20n GT24c HN4a20n HU24n LB4n20c NI4a20n PL24n SV4a20n', // 28
-  'BR8c15n2c EG25n PS4a21c QA4a21c UA6n19c', // 29
-  'JO4a4n18c KW4a22c MU4a19n3a YE4a4n18c', // 30
-  'MT4a5n18c SC4a20n3a', // 31
-  'LC4a24c', // 32
-  'RU14n15c', // 33
+  'D8n12c E19n L8n16c T16n Z4a20c', // A
+  'A16n E12n G4a6n8c H4a14c I23n R8c15n2c Y4c4n16c', // B
+  'H5n12c R18n Y8n16c Z20n', // C
+  'E18n J23n K14n O4c20n', // D
+  'E16n G25n S20n', // E
+  'I14n K2a12n O14n R10n11c2n', // F
+  'B4a14n E2a16n I4a15c L14n R7n16c T24c', // G
+  'N4a20n R17n U24n', // H
+  'E4a14n L19n Q4a15n S22n T1a10n12c', // I
+  'O4a4n18c', // J
+  'W4a22c Z3n13c', // K
+  'B4n20c C4a24c I5n12c T16n U3n13c V4a13c Y21n', // L
+  'C10n11c2n D20c E18n K3n10c2n N16n R23n T4a5n18c U4a19n3a', // M
+  'I4a20n L4a10n O11n', // N
+  'M3n16c', // O
+  'K4a16c L24n S4a21c T21n', // P
+  'A4a21c', // Q
+  'O4a16c S18n U14n15c', // R
+  'A2n18c C4a20n3a D14n E20n I15n K20n M1a10n12c O19n T21n V4a20n', // S
+  'L19n N20n R6n16c', // T
+  'A6n19c', // U
+  'A18n G4a16n', // V
+  '', // W
+  'K16n', // X
+  'E4a4n18c', // Y
+  '', // Z
 ];
 
 /**
@@ -128,15 +137,19 @@ export function iban(
         return false;
       }
 
-      // Create necessary variables
+      // Create necessary variables, starting with the segment of two letters
+      // of the country code
       let count = 0;
       let prefix = 0;
       let remainder = 0;
-      let letters = 0;
+      let structure = '';
+      let cursor = 0;
+      let size = 2;
+      let type = 97;
       let space = true;
 
-      // Validate characters and calculate ISO 7064 MOD 97-10 remainder of
-      // BBAN in a single pass
+      // Validate characters against segments of IBAN structure and calculate
+      // ISO 7064 MOD 97-10 remainder of BBAN in a single pass
       for (let index = 0; index < input.length; index++) {
         const charCode = input.charCodeAt(index);
 
@@ -148,78 +161,63 @@ export function iban(
         }
         space = false;
 
-        // Convert digits to 0 to 9 and uppercase letters to 10 to 35
+        // Start next segment, which is the check digits after the country
+        // code or the next segment of the BBAN structure
+        if (!size) {
+          if (count === 2) {
+            size = 2;
+            type = 110;
+          } else {
+            while ((type = structure.charCodeAt(cursor++)) < 58) {
+              size = size * 10 + type - 48;
+            }
+
+            // Reject characters after the end of the structure, where the
+            // size is negative for the separating space or zero for the end
+            // of the string
+            if (size < 1) {
+              return false;
+            }
+          }
+        }
+        size--;
+
+        // Convert digits to 0 to 9 and uppercase letters to 10 to 35 and
+        // check that the character matches the type of the segment
         const value =
           charCode < 58 ? charCode - 48 : charCode > 64 ? charCode - 55 : -1;
-        const isLetter = value > 9;
-
-        // Check for letters in country code, digits in check digits and
-        // digits or letters in BBAN
-        if (
-          value < 0 ||
-          value > 35 ||
-          (count < 2 ? !isLetter : count < 4 && isLetter)
-        ) {
+        if (value < (type === 97 ? 10 : 0) || value > (type === 110 ? 9 : 35)) {
           return false;
         }
 
         // Collect country code and check digits or add character to remainder
-        // and mark letter positions of BBAN
-        if (count++ < 4) {
-          prefix = prefix * (isLetter ? 100 : 10) + value;
+        if (count < 4) {
+          prefix = prefix * (value > 9 ? 100 : 10) + value;
         } else {
-          remainder = (remainder * (isLetter ? 100 : 10) + value) % 97;
-          if (isLetter) {
-            letters |= 1 << (count - 5);
+          remainder = (remainder * (value > 9 ? 100 : 10) + value) % 97;
+        }
+        count++;
+
+        // Find BBAN structure after second letter of country code
+        if (count === 2) {
+          structure = IBAN_COUNTRIES[input.charCodeAt(0) - 65];
+          cursor = structure.indexOf(input[index]) + 1;
+          if (!cursor) {
+            return false;
           }
         }
       }
 
-      // Check trailing space, check digits, as the algorithm only produces
-      // 02 to 98, and remainder with country code and check digits moved to
-      // the end
+      // Check trailing space, end of structure and that check digits match
+      // the ones calculated from BBAN and country code, which are moved to the
+      // end with `00` as check digits
       const checkDigits = prefix % 100;
-      if (
-        space ||
-        checkDigits < 2 ||
-        checkDigits > 98 ||
-        (remainder * 1000000 + prefix) % 97 !== 1
-      ) {
-        return false;
-      }
-
-      // Find BBAN structure of country with this length, as country codes are
-      // separated by structures without uppercase letters
-      const countries = IBAN_COUNTRIES[count - 15];
-      let index = countries
-        ? countries.indexOf(
-            String.fromCharCode(
-              ((prefix / 10000) | 0) + 55,
-              (((prefix / 100) | 0) % 100) + 55
-            )
-          )
-        : -1;
-      if (index < 0) {
-        return false;
-      }
-
-      // Check letter positions of BBAN against each segment of structure
-      index += 2;
-      for (let position = 0; position < count - 4; ) {
-        let size = 0;
-        let type = countries.charCodeAt(index++);
-        while (type < 58) {
-          size = size * 10 + type - 48;
-          type = countries.charCodeAt(index++);
-        }
-        const mask = (1 << size) - 1;
-        const segment = (letters >>> position) & mask;
-        if (type === 110 ? segment : type === 97 && segment !== mask) {
-          return false;
-        }
-        position += size;
-      }
-      return true;
+      return (
+        !space &&
+        !size &&
+        !(structure.charCodeAt(cursor) > 47) &&
+        checkDigits === 98 - ((remainder * 1000000 + prefix - checkDigits) % 97)
+      );
     },
     message,
     '~run'(dataset, config) {
