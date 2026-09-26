@@ -4,7 +4,7 @@ import type { ErrorMessage } from './other.ts';
 /**
  * Config interface.
  */
-export interface Config<TIssue extends BaseIssue<unknown>> {
+export interface Config<in TIssue extends BaseIssue<unknown>> {
   /**
    * The selected language.
    */

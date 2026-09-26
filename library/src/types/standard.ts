@@ -1,7 +1,7 @@
 /**
  * The Standard Schema properties interface.
  */
-export interface StandardProps<TInput, TOutput> {
+export interface StandardProps<out TInput, out TOutput> {
   /**
    * The version number of the standard.
    */
@@ -32,7 +32,7 @@ export type StandardResult<TOutput> =
 /**
  * The result interface if validation succeeds.
  */
-export interface StandardSuccessResult<TOutput> {
+export interface StandardSuccessResult<out TOutput> {
   /**
    * The typed output value.
    */
@@ -80,7 +80,7 @@ export interface StandardPathItem {
 /**
  * The Standard Schema types interface.
  */
-export interface StandardTypes<TInput, TOutput> {
+export interface StandardTypes<out TInput, out TOutput> {
   /**
    * The input type of the schema.
    */
