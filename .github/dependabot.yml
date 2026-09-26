@@ -23,33 +23,11 @@ updates:
           - "minor"
         patterns:
           - "*"
-        exclude-patterns:
-          - "@codemod.com/workflow"
-          - "@vercel/og"
-          - "monaco-editor"
-          - "prettier-plugin-tailwindcss"
-          - "satori-html"
-          - "sharp"
-          - "tsdown"
-          - "vite-plugin-node-polyfills"
-      # v0 dependencies may introduce breaking changes in minor releases.
-      unstable-deps:
-        update-types:
-          - "patch"
-          - "minor"
-        patterns:
-          - "@codemod.com/workflow"
-          - "@vercel/og"
-          - "monaco-editor"
-          - "prettier-plugin-tailwindcss"
-          - "satori-html"
-          - "sharp"
-          - "tsdown"
-          - "vite-plugin-node-polyfills"
     ignore:
       - dependency-name: "*"
         update-types:
           - "version-update:semver-major"
+        versions: ["<1.0.0"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
