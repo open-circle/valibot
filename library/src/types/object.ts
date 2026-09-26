@@ -69,8 +69,7 @@ export interface ObjectEntries {
     | SchemaWithFallback<
         BaseSchema<unknown, unknown, BaseIssue<unknown>>,
         unknown
-      >
-    | OptionalEntrySchema;
+      >;
 }
 
 /**
@@ -88,9 +87,7 @@ export interface ObjectEntriesAsync {
         | BaseSchema<unknown, unknown, BaseIssue<unknown>>
         | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
         unknown
-      >
-    | OptionalEntrySchema
-    | OptionalEntrySchemaAsync;
+      >;
 }
 
 /**
@@ -147,12 +144,22 @@ type InferEntriesOutput<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
 };
 
 /**
+ * Optional entry shape interface.
+ */
+interface OptionalEntryShape {
+  readonly type: 'exact_optional' | 'nullish' | 'optional';
+  readonly default: unknown;
+}
+
+/**
  * Optional input keys type.
  */
 type OptionalInputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
-  [TKey in keyof TEntries]: TEntries[TKey] extends
-    | OptionalEntrySchema
-    | OptionalEntrySchemaAsync
+  // NOTE: We use a structural check instead of `OptionalEntrySchema` because
+  // relating an entry to an instantiation of `OptionalSchema` forces TS to
+  // measure the variance of `OptionalSchema`, which is expensive (see issue
+  // #1663).
+  [TKey in keyof TEntries]: TEntries[TKey] extends OptionalEntryShape
     ? TKey
     : never;
 }[keyof TEntries];
@@ -161,9 +168,11 @@ type OptionalInputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
  * Optional output keys type.
  */
 type OptionalOutputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
-  [TKey in keyof TEntries]: TEntries[TKey] extends
-    | OptionalEntrySchema
-    | OptionalEntrySchemaAsync
+  // NOTE: We use a structural check instead of `OptionalEntrySchema` because
+  // relating an entry to an instantiation of `OptionalSchema` forces TS to
+  // measure the variance of `OptionalSchema`, which is expensive (see issue
+  // #1663).
+  [TKey in keyof TEntries]: TEntries[TKey] extends OptionalEntryShape
     ? undefined extends TEntries[TKey]['default']
       ? TKey
       : never
