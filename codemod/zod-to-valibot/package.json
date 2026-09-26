@@ -34,16 +34,16 @@
     "test": "vitest"
   },
   "dependencies": {
-    "jscodeshift": "^17.3.0"
+    "jscodeshift": "^17.4.0"
   },
   "devDependencies": {
     "@types/jscodeshift": "17.3.0",
-    "@types/node": "^24.10.1",
-    "tsdown": "^0.16.6",
+    "@types/node": "^24.13.6",
+    "tsdown": "^0.23.0",
     "typescript": "^5.9.3",
     "valibot": "workspace:*",
-    "vite-plugin-node-polyfills": "^0.24.0",
-    "vitest": "^4.1.8",
+    "vite-plugin-node-polyfills": "^0.28.0",
+    "vitest": "^4.1.11",
     "zod": "^3.25.76"
   }
 }

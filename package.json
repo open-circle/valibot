@@ -20,10 +20,10 @@
     "scan": "cve-lite . --report"
   },
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
-    "cve-lite-cli": "^1.17.3",
-    "prettier": "^3.6.2",
-    "prettier-plugin-tailwindcss": "^0.7.1",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "cve-lite-cli": "^1.35.0",
+    "prettier": "^3.9.8",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "typescript": "^5.9.3"
   }
 }
