@@ -4,7 +4,14 @@ All notable changes to the library will be documented in this file.
 
 ## vX.X.X (Month DD, YYYY)
 
+- Add translations for `partialCheckAsync`, `rawCheckAsync` and `rawTransformAsync` actions (pull request #1645)
+
+## v1.3.0 (September 13, 2026)
+
+- Add translations for `codePoints`, `maxCodePoints`, `minCodePoints`, `notCodePoints`, `ksuid` and `isoDateTimeSecond` actions
+- Change Valibot peer dependency and generated JSR imports to v1.5.0
 - Add Kinyarwanda (rw) translations (pull request #1489)
+- Add Norwegian Nynorsk (nn) translations (pull request #1512)
 
 ## v1.2.0 (May 05, 2026)
 

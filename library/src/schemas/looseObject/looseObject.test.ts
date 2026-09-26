@@ -73,6 +73,37 @@ describe('looseObject', () => {
         { key1: 'foo', key2: 123, other1: 'bar', other2: null },
       ]);
     });
+
+    test.each(['toString', 'valueOf', 'hasOwnProperty'])(
+      'for unknown %s key',
+      (key) => {
+        const schema = looseObject({ key: string() });
+        const input = { key: 'foo', [key]: 'bar' };
+        expectNoSchemaIssue(schema, [input]);
+      }
+    );
+
+    test.each([
+      'toString',
+      'valueOf',
+      'hasOwnProperty',
+      'constructor',
+      'prototype',
+    ])('for declared %s key', (key) => {
+      const schema = looseObject({ [key]: string() });
+      const input = { [key]: 'foo' };
+      expectNoSchemaIssue(schema, [input]);
+    });
+
+    test('without including excluded unknown keys', () => {
+      const schema = looseObject({ key: string() });
+      const input = JSON.parse(
+        '{"key":"foo","__proto__":{"admin":true},"constructor":"bar","prototype":"baz"}'
+      );
+      const dataset = schema['~run']({ value: input }, {});
+      expect(dataset).toStrictEqual({ typed: true, value: { key: 'foo' } });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+    });
   });
 
   describe('should return dataset with issues', () => {

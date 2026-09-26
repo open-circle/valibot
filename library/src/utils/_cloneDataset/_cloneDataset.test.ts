@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest';
 import type {
   BaseIssue,
   FailureDataset,
+  ObjectPathItem,
   PartialDataset,
   SuccessDataset,
 } from '../../types/index.ts';
@@ -51,7 +52,7 @@ describe('_cloneDataset', () => {
     expect(clonedDataset).not.toBe(dataset);
     expect(clonedDataset.issues).toBeDefined();
     expect(clonedDataset.issues).not.toBe(dataset.issues);
-    expect(clonedDataset.issues![0]).toBe(issue);
+    expect(clonedDataset.issues![0]).not.toBe(issue);
   });
 
   test('should clone failure dataset issues array', () => {
@@ -80,5 +81,40 @@ describe('_cloneDataset', () => {
     expect(clonedDataset).not.toBe(dataset);
     expect(clonedDataset.issues).toBeDefined();
     expect(clonedDataset.issues).not.toBe(dataset.issues);
+    expect(clonedDataset.issues![0]).not.toBe(issue);
+  });
+
+  test('should clone path of dataset issues', () => {
+    const pathItem: ObjectPathItem = {
+      type: 'object',
+      origin: 'value',
+      input: { key: 123 },
+      key: 'key',
+      value: 123,
+    };
+    const issue: BaseIssue<unknown> = {
+      kind: 'schema',
+      type: 'string',
+      input: 123,
+      expected: 'string',
+      received: '123',
+      message: 'Invalid type: Expected string but received 123',
+      requirement: undefined,
+      path: [pathItem],
+      issues: undefined,
+      lang: undefined,
+      abortEarly: undefined,
+      abortPipeEarly: undefined,
+    };
+    const dataset: FailureDataset<BaseIssue<unknown>> = {
+      typed: false,
+      value: { key: 123 },
+      issues: [issue],
+    };
+    const clonedDataset = _cloneDataset(dataset);
+
+    expect(clonedDataset).toStrictEqual(dataset);
+    expect(clonedDataset.issues![0].path).not.toBe(issue.path);
+    expect(clonedDataset.issues![0].path![0]).toBe(pathItem);
   });
 });

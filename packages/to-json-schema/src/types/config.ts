@@ -1,4 +1,5 @@
 import type * as v from 'valibot';
+import type { ReferenceMap } from '../utils/index.ts';
 import type { JsonSchema } from './schema.ts';
 
 /**
@@ -13,10 +14,7 @@ export interface ConversionContext {
    * The JSON Schema reference map that is used to look up the reference ID
    * for a given Valibot schema.
    */
-  readonly referenceMap: Map<
-    v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
-    string
-  >;
+  readonly referenceMap: ReferenceMap;
   /**
    * The lazy schema getter map that is used internally to ensure that
    * recursive lazy schemas are unwrapped only once.

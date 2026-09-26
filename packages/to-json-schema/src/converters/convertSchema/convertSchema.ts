@@ -134,9 +134,6 @@ function getDefinitionRef(referenceId: string): string {
   return `#/$defs/${referenceId.replaceAll('~', '~0').replaceAll('/', '~1')}`;
 }
 
-// Create global reference count
-let refCount = 0;
-
 /**
  * Converts any supported Valibot schema to the JSON Schema format.
  *
@@ -538,52 +535,39 @@ export function convertSchema(
           errors,
           'The value of the "literal" schema is not JSON compatible.'
         );
+        break;
       }
       if (config?.target === 'openapi-3.0') {
         // Hint: OpenAPI 3.0 does not support const. That's why we use an enum instead.
-        // @ts-expect-error
         jsonSchema.enum = [valibotSchema.literal];
       } else {
-        // @ts-expect-error
         jsonSchema.const = valibotSchema.literal;
       }
       break;
     }
 
-    case 'enum': {
-      jsonSchema.enum = valibotSchema.options;
-      if (valibotSchema.options.every((option) => typeof option === 'string')) {
-        jsonSchema.type = 'string';
-      } else if (
-        valibotSchema.options.every((option) => typeof option === 'number')
-      ) {
-        jsonSchema.type = 'number';
-      } else if (config?.target !== 'openapi-3.0') {
-        // Hint: OpenAPI 3.0 does not support multi-type arrays.
-        jsonSchema.type = ['string', 'number'];
-      }
-      break;
-    }
-
+    case 'enum':
     case 'picklist': {
-      const hasInvalidOption = valibotSchema.options.some(
-        (option) => typeof option !== 'number' && typeof option !== 'string'
-      );
-      if (hasInvalidOption) {
+      const options = valibotSchema.options;
+      if (
+        !options.every(
+          (option) =>
+            typeof option === 'string' ||
+            (typeof option === 'number' && Number.isFinite(option))
+        )
+      ) {
         errors = addError(
           errors,
-          'An option of the "picklist" schema is not JSON compatible.'
+          `An option of the "${valibotSchema.type}" schema is not JSON compatible.`
         );
+        break;
       }
-      // @ts-expect-error
-      jsonSchema.enum = valibotSchema.options;
-      if (valibotSchema.options.every((option) => typeof option === 'string')) {
+      jsonSchema.enum = options as (number | string)[];
+      if (options.every((option) => typeof option === 'string')) {
         jsonSchema.type = 'string';
-      } else if (
-        valibotSchema.options.every((option) => typeof option === 'number')
-      ) {
+      } else if (options.every((option) => typeof option === 'number')) {
         jsonSchema.type = 'number';
-      } else if (!hasInvalidOption && config?.target !== 'openapi-3.0') {
+      } else if (config?.target !== 'openapi-3.0') {
         // Hint: OpenAPI 3.0 does not support multi-type arrays.
         jsonSchema.type = ['string', 'number'];
       }
@@ -626,7 +610,7 @@ export function convertSchema(
 
       // Add wrapped Valibot schema to reference map and definitions, if necessary
       if (!referenceId) {
-        referenceId = `${refCount++}`;
+        referenceId = context.referenceMap.createId(context.definitions);
         context.referenceMap.set(wrappedValibotSchema, referenceId);
         context.definitions[referenceId] = convertSchema(
           {},

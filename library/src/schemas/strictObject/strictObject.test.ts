@@ -67,6 +67,18 @@ describe('strictObject', () => {
         { key1: 'foo', key2: 123 },
       ]);
     });
+
+    test.each([
+      'toString',
+      'valueOf',
+      'hasOwnProperty',
+      'constructor',
+      'prototype',
+    ])('for declared %s key', (key) => {
+      const schema = strictObject({ [key]: string() });
+      const input = { [key]: 'foo' };
+      expectNoSchemaIssue(schema, [input]);
+    });
   });
 
   describe('should return dataset with issues', () => {
@@ -689,6 +701,40 @@ describe('strictObject', () => {
                 input,
                 key: 'other1',
                 value: input.other1,
+              },
+            ],
+          },
+        ],
+      } satisfies FailureDataset<InferIssue<typeof schema>>);
+    });
+
+    test.each([
+      'toString',
+      'valueOf',
+      'hasOwnProperty',
+      'constructor',
+      '__proto__',
+    ])('for unknown %s key', (key) => {
+      const schema = strictObject({ key: string() });
+      const input = { key: 'foo', [key]: 'bar' };
+      expect(schema['~run']({ value: input }, {})).toStrictEqual({
+        typed: false,
+        value: { key: 'foo' },
+        issues: [
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'strict_object',
+            input: key,
+            expected: 'never',
+            received: `"${key}"`,
+            path: [
+              {
+                type: 'object',
+                origin: 'key',
+                input,
+                key,
+                value: input[key],
               },
             ],
           },

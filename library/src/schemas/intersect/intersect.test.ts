@@ -13,6 +13,7 @@ import { date } from '../date/index.ts';
 import { number } from '../number/index.ts';
 import { object } from '../object/index.ts';
 import { string } from '../string/index.ts';
+import { unknown } from '../unknown/index.ts';
 import { intersect, type IntersectSchema } from './intersect.ts';
 
 describe('intersect', () => {
@@ -63,6 +64,25 @@ describe('intersect', () => {
   });
 
   describe('should return dataset without issues', () => {
+    test('for JSON objects with own prototype keys', () => {
+      const input = JSON.parse(
+        '{"__proto__":{"admin":true},"prototype":"foo"}'
+      );
+      const schema = intersect([object({}), unknown()]);
+      const dataset = schema['~run']({ value: input }, {});
+      expect(dataset).toStrictEqual({ typed: true, value: input });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(dataset.value).not.toHaveProperty('admin');
+      expect(Object.getPrototypeOf(input)).toBe(Object.prototype);
+    });
+
+    test('for declared prototype entries', () => {
+      expectNoSchemaIssue(
+        intersect([object({}), object({ prototype: string() })]),
+        [{ prototype: 'foo' }]
+      );
+    });
+
     test('for valid values', () => {
       expectNoSchemaIssue(
         intersect([

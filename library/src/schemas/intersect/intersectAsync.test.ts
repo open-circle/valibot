@@ -14,6 +14,7 @@ import { date } from '../date/index.ts';
 import { number } from '../number/index.ts';
 import { object, objectAsync } from '../object/index.ts';
 import { string } from '../string/index.ts';
+import { unknown } from '../unknown/index.ts';
 import { intersectAsync, type IntersectSchemaAsync } from './intersectAsync.ts';
 
 describe('intersectAsync', () => {
@@ -64,6 +65,25 @@ describe('intersectAsync', () => {
   });
 
   describe('should return dataset without issues', () => {
+    test('for JSON objects with own prototype keys', async () => {
+      const input = JSON.parse(
+        '{"__proto__":{"admin":true},"prototype":"foo"}'
+      );
+      const schema = intersectAsync([objectAsync({}), unknown()]);
+      const dataset = await schema['~run']({ value: input }, {});
+      expect(dataset).toStrictEqual({ typed: true, value: input });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(dataset.value).not.toHaveProperty('admin');
+      expect(Object.getPrototypeOf(input)).toBe(Object.prototype);
+    });
+
+    test('for declared prototype entries', async () => {
+      await expectNoSchemaIssueAsync(
+        intersectAsync([object({}), objectAsync({ prototype: string() })]),
+        [{ prototype: 'foo' }]
+      );
+    });
+
     test('for valid values', async () => {
       await expectNoSchemaIssueAsync(
         intersectAsync([

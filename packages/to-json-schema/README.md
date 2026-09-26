@@ -27,7 +27,7 @@ This package is particularly popular for:
 | `any`            | ✅     |                                                                                                                                       |
 | `array`          | ✅     |                                                                                                                                       |
 | `boolean`        | ✅     |                                                                                                                                       |
-| `enum`           | ✅     |                                                                                                                                       |
+| `enum`           | ⚠️     | Only JSON compatible values are supported                                                                                             |
 | `exactOptional`  | ✅     |                                                                                                                                       |
 | `intersect`      | ✅     |                                                                                                                                       |
 | `lazy`           | ⚠️     | The `.getter` function is always executed with `undefined` as input                                                                   |
