@@ -18,7 +18,17 @@ export function _stringify(input: unknown): string {
     return `${input}`;
   }
   if (type === 'object' || type === 'function') {
-    return (input && Object.getPrototypeOf(input)?.constructor?.name) ?? 'null';
+    if (!input) {
+      return 'null';
+    }
+    // Hint: `input` may be a `Proxy` whose `getPrototypeOf` trap throws, so
+    // this is wrapped in a `try` block to fall back to a generic name
+    // instead of letting the exception escape.
+    try {
+      return Object.getPrototypeOf(input)?.constructor?.name ?? 'null';
+    } catch {
+      return 'Object';
+    }
   }
   return type;
 }
