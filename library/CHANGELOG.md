@@ -4,6 +4,7 @@ All notable changes to the library will be documented in this file.
 
 ## vX.X.X (Month DD, YYYY)
 
+- Change `Schema` constraints of `partial`, `partialAsync`, `required`, `requiredAsync`, `pick` and `omit` methods and `ObjectKeys` type to describe object schemas structurally to improve TypeScript performance (pull request #1677)
 - Change `SchemaWithPartial`, `SchemaWithPartialAsync`, `SchemaWithRequired`, `SchemaWithRequiredAsync`, `SchemaWithPick` and `SchemaWithOmit` types to match object schemas structurally to improve TypeScript performance (pull request #1676)
 - Change `isbn`, `creditCard` and `imei` actions to check digits by character code instead of splitting and parsing the input to improve performance (pull request #1634)
 - Fix `uuid` action to reject UUIDs with a version outside 1 to 8 or a variant outside RFC 9562, while still accepting the Nil and Max UUIDs (pull request #1643)

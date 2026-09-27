@@ -1,15 +1,7 @@
 import {
-  type LooseObjectIssue,
-  type LooseObjectSchemaAsync,
   nonOptionalAsync,
   type NonOptionalIssue,
   type NonOptionalSchemaAsync,
-  type ObjectIssue,
-  type ObjectSchemaAsync,
-  type ObjectWithRestIssue,
-  type ObjectWithRestSchemaAsync,
-  type StrictObjectIssue,
-  type StrictObjectSchemaAsync,
 } from '../../schemas/index.ts';
 import type {
   BaseIssue,
@@ -33,23 +25,34 @@ import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Schema type.
+ *
+ * Hint: We describe the object schemas structurally instead of using their
+ * interfaces, because relating an object schema to another instantiation of
+ * the same interface forces TypeScript to measure its variance, which is
+ * expensive (see issue #1663).
  */
 type Schema = SchemaWithoutPipe<
-  | LooseObjectSchemaAsync<
-      ObjectEntriesAsync,
-      ErrorMessage<LooseObjectIssue> | undefined
-    >
-  | ObjectSchemaAsync<ObjectEntriesAsync, ErrorMessage<ObjectIssue> | undefined>
-  | ObjectWithRestSchemaAsync<
-      ObjectEntriesAsync,
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  | StrictObjectSchemaAsync<
-      ObjectEntriesAsync,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
+  (
+    | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+    | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
+  ) &
+    (
+      | {
+          readonly type: 'object' | 'strict_object';
+          readonly entries: ObjectEntriesAsync;
+        }
+      | {
+          readonly type: 'loose_object';
+          readonly entries: ObjectEntriesAsync;
+        }
+      | {
+          readonly type: 'object_with_rest';
+          readonly entries: ObjectEntriesAsync;
+          readonly rest:
+            | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+            | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>;
+        }
+    )
 >;
 
 /**
@@ -364,6 +367,7 @@ export function requiredAsync(
   }
 
   // Return modified copy of schema
+  // @ts-expect-error
   return _standardSchema({
     ...schema,
     entries,

@@ -6,26 +6,13 @@ import type {
 import type {
   ExactOptionalSchema,
   ExactOptionalSchemaAsync,
-  LooseObjectIssue,
-  LooseObjectSchema,
-  LooseObjectSchemaAsync,
   NullishSchema,
   NullishSchemaAsync,
-  ObjectIssue,
-  ObjectSchema,
-  ObjectSchemaAsync,
-  ObjectWithRestIssue,
-  ObjectWithRestSchema,
-  ObjectWithRestSchemaAsync,
   OptionalSchema,
   OptionalSchemaAsync,
-  StrictObjectIssue,
-  StrictObjectSchema,
-  StrictObjectSchemaAsync,
 } from '../schemas/index.ts';
 import type { InferInput, InferIssue, InferOutput } from './infer.ts';
 import type { BaseIssue } from './issue.ts';
-import type { ErrorMessage } from './other.ts';
 import type { BaseSchema, BaseSchemaAsync } from './schema.ts';
 import type { MarkOptional, MaybeReadonly, Prettify } from './utils.ts';
 
@@ -97,39 +84,14 @@ export interface ObjectEntriesAsync {
  * Object keys type.
  */
 export type ObjectKeys<
-  TSchema extends
-    | LooseObjectSchema<
-        ObjectEntries,
-        ErrorMessage<LooseObjectIssue> | undefined
-      >
-    | LooseObjectSchemaAsync<
-        ObjectEntriesAsync,
-        ErrorMessage<LooseObjectIssue> | undefined
-      >
-    | ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined>
-    | ObjectSchemaAsync<
-        ObjectEntriesAsync,
-        ErrorMessage<ObjectIssue> | undefined
-      >
-    | ObjectWithRestSchema<
-        ObjectEntries,
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<ObjectWithRestIssue> | undefined
-      >
-    | ObjectWithRestSchemaAsync<
-        ObjectEntriesAsync,
-        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-        ErrorMessage<ObjectWithRestIssue> | undefined
-      >
-    | StrictObjectSchema<
-        ObjectEntries,
-        ErrorMessage<StrictObjectIssue> | undefined
-      >
-    | StrictObjectSchemaAsync<
-        ObjectEntriesAsync,
-        ErrorMessage<StrictObjectIssue> | undefined
-      >,
+  TSchema extends {
+    readonly type:
+      | 'loose_object'
+      | 'object'
+      | 'object_with_rest'
+      | 'strict_object';
+    readonly entries: ObjectEntries | ObjectEntriesAsync;
+  },
 > = MaybeReadonly<[keyof TSchema['entries'], ...(keyof TSchema['entries'])[]]>;
 
 /**
