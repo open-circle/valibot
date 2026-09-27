@@ -216,6 +216,8 @@ export const ULID_REGEX: RegExp = /^[0-7][\da-hjkmnp-tv-zA-HJKMNP-TV-Z]{25}$/u;
 
 /**
  * [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) regex.
+ *
+ * Hint: Following [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562), the version must be 1 to 8 and the variant must be `8`, `9`, `a` or `b`. The Nil and Max UUIDs follow neither rule but are valid as special cases.
  */
 export const UUID_REGEX: RegExp =
-  /^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/iu;
+  /^(?:[\da-f]{8}-[\da-f]{4}-[1-8][\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}|0{8}-0{4}-0{4}-0{4}-0{12}|f{8}-f{4}-f{4}-f{4}-f{12})$/iu;
