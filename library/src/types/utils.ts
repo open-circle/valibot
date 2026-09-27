@@ -60,10 +60,11 @@ export type Prettify<TObject> = { [TKey in keyof TObject]: TObject[TKey] } & {};
 /**
  * Marks specific keys as optional.
  */
-export type MarkOptional<TObject, TKeys extends keyof TObject> =
-  // Mapping any entry to unknown preserves key order in final output
-  { [TKey in keyof TObject]?: unknown } & Omit<TObject, TKeys> &
-    Partial<Pick<TObject, TKeys>>;
+export type MarkOptional<TObject, TKeys extends keyof TObject> = {
+  [TKey in keyof TObject as TKey extends TKeys ? never : TKey]: TObject[TKey];
+} & {
+  [TKey in keyof TObject as TKey extends TKeys ? TKey : never]?: TObject[TKey];
+};
 
 /**
  * Merges two objects. Overlapping entries from the second object overwrite
