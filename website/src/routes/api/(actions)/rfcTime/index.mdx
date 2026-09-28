@@ -1,0 +1,75 @@
+---
+title: rfcTime
+description: Creates an RFC 3339 full-time validation action.
+source: /actions/rfcTime/rfcTime.ts
+contributors:
+  - fabian-hiller
+  - tungyhardDevOps
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# rfcTime
+
+Creates an [RFC 3339 full-time](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) validation action.
+
+Format: `hh:mm:ss[.fffffffff](Z|±hh:mm)`
+
+```ts
+const Action = v.rfcTime<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `rfcTime` you can validate the formatting of a string that represents a time of day. It validates a full-time value as defined by [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6), which means seconds are required and a numeric offset designator (`Z` or `±hh:mm`) is mandatory.
+
+The action accepts leap seconds: a value of `60` in the seconds position is only allowed when it maps to `23:59:60Z`. If an offset is present, it is applied before the leap-second check. For example, `15:59:60-08:00` and `01:59:60+02:00` both map to `23:59:60Z` and are therefore valid.
+
+If the input is not a valid RFC 3339 full-time, you can use `message` to customize the error message.
+
+> This validation action is not a full [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339) parser. It validates the syntax and the leap-second rule described above, but it does not verify the actual date or time against a calendar. In particular, the offset itself is not checked against the real UTC offset of a concrete date and time, and fractional seconds beyond nine digits are not accepted. If you need to validate a complete date-time value, please use the <Link href="../isoDateTime/">`isoDateTime`</Link> or <Link href="../isoTimestamp/">`isoTimestamp`</Link> action instead.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `rfcTime` can be used.
+
+### Time schema
+
+Schema to validate an RFC 3339 full-time.
+
+```ts
+const TimeSchema = v.pipe(
+  v.string(),
+  v.rfcTime('The time is badly formatted.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `rfcTime`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
