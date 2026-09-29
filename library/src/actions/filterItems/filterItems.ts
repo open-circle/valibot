@@ -4,8 +4,10 @@ import type { ArrayInput, ArrayRequirement } from '../types.ts';
 /**
  * Filter items action interface.
  */
-export interface FilterItemsAction<TInput extends ArrayInput>
-  extends BaseTransformation<TInput, TInput, never> {
+export interface FilterItemsAction<
+  TInput extends ArrayInput,
+  TOutput extends ArrayInput = TInput,
+> extends BaseTransformation<TInput, TOutput, never> {
   /**
    * The action type.
    */
@@ -27,9 +29,24 @@ export interface FilterItemsAction<TInput extends ArrayInput>
  *
  * @returns A filter items action.
  */
+export function filterItems<
+  TInput extends ArrayInput,
+  TOutput extends TInput[number],
+>(
+  operation: (
+    item: TInput[number],
+    index: number,
+    array: TInput
+  ) => item is TOutput
+): FilterItemsAction<TInput, TOutput[]>;
+
 export function filterItems<TInput extends ArrayInput>(
-  operation: ArrayRequirement<TInput>
-): FilterItemsAction<TInput>;
+  operation: (
+    item: TInput[number],
+    index: number,
+    array: TInput
+  ) => boolean
+): FilterItemsAction<TInput, TInput>;
 
 // @__NO_SIDE_EFFECTS__
 export function filterItems(
