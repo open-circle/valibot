@@ -72,6 +72,10 @@ describe('ip', () => {
         '127.0.0.1',
         '0.0.0.0',
         '255.255.255.255',
+        // leading-zero octets – must be accepted by ip() just as by ipv4()
+        '00.00.00.00',
+        '09.09.09.09',
+        '001.002.003.004',
       ]);
     });
 
