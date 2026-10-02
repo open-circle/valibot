@@ -68,7 +68,6 @@ export type InferNonNullishIssue<
       UnionOptionsAsync,
       ErrorMessage<UnionIssue<BaseIssue<unknown>>> | undefined
     >
-  ?
-      | Exclude<InferIssue<TWrapped>, { type: 'null' | 'undefined' | 'union' }>
-      | UnionIssue<InferNonNullishIssue<TWrapped['options'][number]>>
+  ? | Exclude<InferIssue<TWrapped>, { type: 'null' | 'undefined' | 'union' }>
+    | UnionIssue<InferNonNullishIssue<TWrapped['options'][number]>>
   : Exclude<InferIssue<TWrapped>, { type: 'null' | 'undefined' }>;

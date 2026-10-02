@@ -90,8 +90,7 @@ export function values<
   TInput extends ValueInput,
   const TRequirement extends readonly TInput[],
   const TMessage extends
-    | ErrorMessage<ValuesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<ValuesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

@@ -25,10 +25,10 @@ export interface VariantSchemaAsync<
   TOptions extends VariantOptionsAsync<TKey>,
   TMessage extends ErrorMessage<VariantIssue> | undefined,
 > extends BaseSchemaAsync<
-    InferInput<TOptions[number]>,
-    InferOutput<TOptions[number]>,
-    VariantIssue | InferVariantIssue<TOptions>
-  > {
+  InferInput<TOptions[number]>,
+  InferOutput<TOptions[number]>,
+  VariantIssue | InferVariantIssue<TOptions>
+> {
   /**
    * The schema type.
    */
@@ -114,8 +114,7 @@ export function variantAsync(
       if (input && typeof input === 'object') {
         // Create output dataset variable
         let outputDataset:
-          | OutputDataset<unknown, BaseIssue<unknown>>
-          | undefined;
+          OutputDataset<unknown, BaseIssue<unknown>> | undefined;
 
         // Create variables to store invalid discriminator information
         let maxDiscriminatorPriority = 0;
@@ -125,8 +124,7 @@ export function variantAsync(
         // Create recursive function to parse nested variant options
         const parseOptions = async (
           variant:
-            | VariantOptionSchema<string>
-            | VariantOptionSchemaAsync<string>,
+            VariantOptionSchema<string> | VariantOptionSchemaAsync<string>,
           allKeys: Set<string>
         ) => {
           for (const schema of variant.options) {

@@ -21,10 +21,10 @@ export interface NullishSchemaAsync<
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   TDefault extends DefaultAsync<TWrapped, null | undefined>,
 > extends BaseSchemaAsync<
-    InferInput<TWrapped> | null | undefined,
-    InferNullishOutput<TWrapped, TDefault>,
-    InferIssue<TWrapped>
-  > {
+  InferInput<TWrapped> | null | undefined,
+  InferNullishOutput<TWrapped, TDefault>,
+  InferIssue<TWrapped>
+> {
   /**
    * The schema type.
    */

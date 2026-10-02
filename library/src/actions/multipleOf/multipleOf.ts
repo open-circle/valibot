@@ -46,13 +46,12 @@ export interface MultipleOfAction<
   TInput extends Input,
   TRequirement extends Input,
   TMessage extends
-    | ErrorMessage<MultipleOfIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MultipleOfIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<
-    TInput,
-    TInput,
-    MultipleOfIssue<TInput, TRequirement>
-  > {
+  TInput,
+  TInput,
+  MultipleOfIssue<TInput, TRequirement>
+> {
   /**
    * The action type.
    */
@@ -111,8 +110,7 @@ export function multipleOf<
   TInput extends number,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MultipleOfIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MultipleOfIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage
@@ -130,8 +128,7 @@ export function multipleOf<
   TInput extends bigint,
   const TRequirement extends bigint,
   const TMessage extends
-    | ErrorMessage<MultipleOfIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MultipleOfIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

@@ -8,8 +8,10 @@ import { _addIssue, _getWordCount } from '../../utils/index.ts';
 /**
  * Words issue interface.
  */
-export interface WordsIssue<TInput extends string, TRequirement extends number>
-  extends BaseIssue<TInput> {
+export interface WordsIssue<
+  TInput extends string,
+  TRequirement extends number,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */
@@ -98,8 +100,7 @@ export function words<
   const TLocales extends Intl.LocalesArgument,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<WordsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<WordsIssue<TInput, TRequirement>> | undefined,
 >(
   locales: TLocales,
   requirement: TRequirement,

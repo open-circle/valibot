@@ -3,8 +3,9 @@ import type { BaseIssue } from '../../types/index.ts';
 /**
  * Union issue interface.
  */
-export interface UnionIssue<TSubIssue extends BaseIssue<unknown>>
-  extends BaseIssue<unknown> {
+export interface UnionIssue<
+  TSubIssue extends BaseIssue<unknown>,
+> extends BaseIssue<unknown> {
   /**
    * The issue kind.
    */

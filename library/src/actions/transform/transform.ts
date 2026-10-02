@@ -3,8 +3,11 @@ import type { BaseTransformation, SuccessDataset } from '../../types/index.ts';
 /**
  * Transform action interface.
  */
-export interface TransformAction<TInput, TOutput>
-  extends BaseTransformation<TInput, TOutput, never> {
+export interface TransformAction<TInput, TOutput> extends BaseTransformation<
+  TInput,
+  TOutput,
+  never
+> {
   /**
    * The action type.
    */

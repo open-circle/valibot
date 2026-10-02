@@ -9,8 +9,9 @@ import { _addIssue } from '../../utils/index.ts';
 /**
  * Hex color issue interface.
  */
-export interface HexColorIssue<TInput extends string>
-  extends BaseIssue<TInput> {
+export interface HexColorIssue<
+  TInput extends string,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */

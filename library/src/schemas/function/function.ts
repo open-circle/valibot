@@ -30,10 +30,10 @@ export interface FunctionIssue extends BaseIssue<unknown> {
 export interface FunctionSchema<
   TMessage extends ErrorMessage<FunctionIssue> | undefined,
 > extends BaseSchema<
-    (...args: unknown[]) => unknown,
-    (...args: unknown[]) => unknown,
-    FunctionIssue
-  > {
+  (...args: unknown[]) => unknown,
+  (...args: unknown[]) => unknown,
+  FunctionIssue
+> {
   /**
    * The schema type.
    */

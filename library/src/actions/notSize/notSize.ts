@@ -89,8 +89,7 @@ export function notSize<
   TInput extends SizeInput,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<NotSizeIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotSizeIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

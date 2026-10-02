@@ -23,10 +23,10 @@ export interface NonNullableSchemaAsync<
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<NonNullableIssue> | undefined,
 > extends BaseSchemaAsync<
-    InferNonNullableInput<TWrapped>,
-    InferNonNullableOutput<TWrapped>,
-    NonNullableIssue | InferNonNullableIssue<TWrapped>
-  > {
+  InferNonNullableInput<TWrapped>,
+  InferNonNullableOutput<TWrapped>,
+  NonNullableIssue | InferNonNullableIssue<TWrapped>
+> {
   /**
    * The schema type.
    */

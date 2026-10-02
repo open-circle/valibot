@@ -9,8 +9,9 @@ import { _addIssue } from '../../utils/index.ts';
 /**
  * ISO time second issue interface.
  */
-export interface IsoTimeSecondIssue<TInput extends string>
-  extends BaseIssue<TInput> {
+export interface IsoTimeSecondIssue<
+  TInput extends string,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */

@@ -23,10 +23,10 @@ export interface MapSchemaAsync<
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<MapIssue> | undefined,
 > extends BaseSchemaAsync<
-    InferMapInput<TKey, TValue>,
-    InferMapOutput<TKey, TValue>,
-    MapIssue | InferIssue<TKey> | InferIssue<TValue>
-  > {
+  InferMapInput<TKey, TValue>,
+  InferMapOutput<TKey, TValue>,
+  MapIssue | InferIssue<TKey> | InferIssue<TValue>
+> {
   /**
    * The schema type.
    */

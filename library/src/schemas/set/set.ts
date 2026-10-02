@@ -16,10 +16,10 @@ export interface SetSchema<
   TValue extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<SetIssue> | undefined,
 > extends BaseSchema<
-    InferSetInput<TValue>,
-    InferSetOutput<TValue>,
-    SetIssue | InferIssue<TValue>
-  > {
+  InferSetInput<TValue>,
+  InferSetOutput<TValue>,
+  SetIssue | InferIssue<TValue>
+> {
   /**
    * The schema type.
    */

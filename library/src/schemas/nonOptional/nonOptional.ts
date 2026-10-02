@@ -19,10 +19,10 @@ export interface NonOptionalSchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<NonOptionalIssue> | undefined,
 > extends BaseSchema<
-    InferNonOptionalInput<TWrapped>,
-    InferNonOptionalOutput<TWrapped>,
-    NonOptionalIssue | InferNonOptionalIssue<TWrapped>
-  > {
+  InferNonOptionalInput<TWrapped>,
+  InferNonOptionalOutput<TWrapped>,
+  NonOptionalIssue | InferNonOptionalIssue<TWrapped>
+> {
   /**
    * The schema type.
    */

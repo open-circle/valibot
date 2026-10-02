@@ -4,8 +4,9 @@ import type { ArrayInput, ArrayRequirement } from '../types.ts';
 /**
  * Filter items action interface.
  */
-export interface FilterItemsAction<TInput extends ArrayInput>
-  extends BaseTransformation<TInput, TInput, never> {
+export interface FilterItemsAction<
+  TInput extends ArrayInput,
+> extends BaseTransformation<TInput, TInput, never> {
   /**
    * The action type.
    */

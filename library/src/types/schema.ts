@@ -76,9 +76,9 @@ export interface BaseSchemaAsync<
   TOutput,
   TIssue extends BaseIssue<unknown>,
 > extends Omit<
-    BaseSchema<TInput, TOutput, TIssue>,
-    'reference' | 'async' | '~run'
-  > {
+  BaseSchema<TInput, TOutput, TIssue>,
+  'reference' | 'async' | '~run'
+> {
   /**
    * The schema reference.
    */

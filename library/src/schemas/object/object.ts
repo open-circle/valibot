@@ -20,10 +20,10 @@ export interface ObjectSchema<
   TEntries extends ObjectEntries,
   TMessage extends ErrorMessage<ObjectIssue> | undefined,
 > extends BaseSchema<
-    InferObjectInput<TEntries>,
-    InferObjectOutput<TEntries>,
-    ObjectIssue | InferObjectIssue<TEntries>
-  > {
+  InferObjectInput<TEntries>,
+  InferObjectOutput<TEntries>,
+  ObjectIssue | InferObjectIssue<TEntries>
+> {
   /**
    * The schema type.
    */

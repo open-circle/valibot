@@ -22,10 +22,10 @@ export interface ArraySchemaAsync<
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<ArrayIssue> | undefined,
 > extends BaseSchemaAsync<
-    InferInput<TItem>[],
-    InferOutput<TItem>[],
-    ArrayIssue | InferIssue<TItem>
-  > {
+  InferInput<TItem>[],
+  InferOutput<TItem>[],
+  ArrayIssue | InferIssue<TItem>
+> {
   /**
    * The schema type.
    */

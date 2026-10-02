@@ -9,8 +9,7 @@ import type { MaybeDeepReadonly, MaybePromise } from './utils.ts';
  * Error message type.
  */
 export type ErrorMessage<TIssue extends BaseIssue<unknown>> =
-  | ((issue: TIssue) => string)
-  | string;
+  ((issue: TIssue) => string) | string;
 
 /**
  * Default type.

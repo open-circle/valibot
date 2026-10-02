@@ -41,8 +41,7 @@ export interface NotBytesAction<
   TInput extends string,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<NotBytesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotBytesIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, NotBytesIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -90,8 +89,7 @@ export function notBytes<
   TInput extends string,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<NotBytesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotBytesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

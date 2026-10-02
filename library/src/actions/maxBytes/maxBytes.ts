@@ -41,8 +41,7 @@ export interface MaxBytesAction<
   TInput extends string,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<MaxBytesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxBytesIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, MaxBytesIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -90,8 +89,7 @@ export function maxBytes<
   TInput extends string,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MaxBytesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxBytesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

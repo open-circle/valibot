@@ -33,13 +33,12 @@ export type UnionOptionsAsync = MaybeReadonly<
 export interface UnionSchemaAsync<
   TOptions extends UnionOptionsAsync,
   TMessage extends
-    | ErrorMessage<UnionIssue<InferIssue<TOptions[number]>>>
-    | undefined,
+    ErrorMessage<UnionIssue<InferIssue<TOptions[number]>>> | undefined,
 > extends BaseSchemaAsync<
-    InferInput<TOptions[number]>,
-    InferOutput<TOptions[number]>,
-    UnionIssue<InferIssue<TOptions[number]>> | InferIssue<TOptions[number]>
-  > {
+  InferInput<TOptions[number]>,
+  InferOutput<TOptions[number]>,
+  UnionIssue<InferIssue<TOptions[number]>> | InferIssue<TOptions[number]>
+> {
   /**
    * The schema type.
    */
@@ -80,8 +79,7 @@ export function unionAsync<const TOptions extends UnionOptionsAsync>(
 export function unionAsync<
   const TOptions extends UnionOptionsAsync,
   const TMessage extends
-    | ErrorMessage<UnionIssue<InferIssue<TOptions[number]>>>
-    | undefined,
+    ErrorMessage<UnionIssue<InferIssue<TOptions[number]>>> | undefined,
 >(options: TOptions, message: TMessage): UnionSchemaAsync<TOptions, TMessage>;
 
 // @__NO_SIDE_EFFECTS__
@@ -107,8 +105,7 @@ export function unionAsync(
       // Create variables to collect datasets
       let validDataset: SuccessDataset<unknown> | undefined;
       let typedDatasets:
-        | PartialDataset<unknown, BaseIssue<unknown>>[]
-        | undefined;
+        PartialDataset<unknown, BaseIssue<unknown>>[] | undefined;
       let untypedDatasets: FailureDataset<BaseIssue<unknown>>[] | undefined;
 
       // Parse schema of each option and collect datasets

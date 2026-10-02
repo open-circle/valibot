@@ -18,10 +18,10 @@ export interface ReturnsActionAsync<
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
 > extends BaseTransformation<
-    TInput,
-    (...args: Parameters<TInput>) => Promise<Awaited<InferOutput<TSchema>>>,
-    never
-  > {
+  TInput,
+  (...args: Parameters<TInput>) => Promise<Awaited<InferOutput<TSchema>>>,
+  never
+> {
   /**
    * The action type.
    */

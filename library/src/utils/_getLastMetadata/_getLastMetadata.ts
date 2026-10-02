@@ -15,8 +15,7 @@ import type {
  * Metadata action type.
  */
 type MetadataAction =
-  | TitleAction<unknown, string>
-  | DescriptionAction<unknown, string>;
+  TitleAction<unknown, string> | DescriptionAction<unknown, string>;
 
 /**
  * Schema type.

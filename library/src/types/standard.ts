@@ -26,8 +26,7 @@ export interface StandardProps<TInput, TOutput> {
  * The result interface of the validate function.
  */
 export type StandardResult<TOutput> =
-  | StandardSuccessResult<TOutput>
-  | StandardFailureResult;
+  StandardSuccessResult<TOutput> | StandardFailureResult;
 
 /**
  * The result interface if validation succeeds.

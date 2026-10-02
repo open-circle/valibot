@@ -27,8 +27,9 @@ export interface NanIssue extends BaseIssue<unknown> {
 /**
  * NaN schema interface.
  */
-export interface NanSchema<TMessage extends ErrorMessage<NanIssue> | undefined>
-  extends BaseSchema<number, number, NanIssue> {
+export interface NanSchema<
+  TMessage extends ErrorMessage<NanIssue> | undefined,
+> extends BaseSchema<number, number, NanIssue> {
   /**
    * The schema type.
    */

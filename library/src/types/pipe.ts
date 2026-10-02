@@ -30,8 +30,7 @@ export type PipeActionAsync<
  * Pipe item type.
  */
 export type PipeItem<TInput, TOutput, TIssue extends BaseIssue<unknown>> =
-  | BaseSchema<TInput, TOutput, TIssue>
-  | PipeAction<TInput, TOutput, TIssue>;
+  BaseSchema<TInput, TOutput, TIssue> | PipeAction<TInput, TOutput, TIssue>;
 
 /**
  * Pipe item async type.

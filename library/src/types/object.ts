@@ -151,8 +151,7 @@ type InferEntriesOutput<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
  */
 type OptionalInputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
   [TKey in keyof TEntries]: TEntries[TKey] extends
-    | OptionalEntrySchema
-    | OptionalEntrySchemaAsync
+    OptionalEntrySchema | OptionalEntrySchemaAsync
     ? TKey
     : never;
 }[keyof TEntries];
@@ -162,8 +161,7 @@ type OptionalInputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
  */
 type OptionalOutputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
   [TKey in keyof TEntries]: TEntries[TKey] extends
-    | OptionalEntrySchema
-    | OptionalEntrySchemaAsync
+    OptionalEntrySchema | OptionalEntrySchemaAsync
     ? undefined extends TEntries[TKey]['default']
       ? TKey
       : never

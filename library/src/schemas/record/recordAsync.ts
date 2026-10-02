@@ -31,10 +31,10 @@ export interface RecordSchemaAsync<
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<RecordIssue> | undefined,
 > extends BaseSchemaAsync<
-    InferRecordInput<TKey, TValue>,
-    InferRecordOutput<TKey, TValue>,
-    RecordIssue | InferIssue<TKey> | InferIssue<TValue>
-  > {
+  InferRecordInput<TKey, TValue>,
+  InferRecordOutput<TKey, TValue>,
+  RecordIssue | InferIssue<TKey> | InferIssue<TValue>
+> {
   /**
    * The schema type.
    */

@@ -42,8 +42,7 @@ export interface MaxLengthAction<
   TInput extends LengthInput,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<MaxLengthIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxLengthIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, MaxLengthIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -91,8 +90,7 @@ export function maxLength<
   TInput extends LengthInput,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MaxLengthIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxLengthIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

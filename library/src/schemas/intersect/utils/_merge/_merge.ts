@@ -4,8 +4,7 @@ import { _isSameValueZero } from '../../../../utils/index.ts';
  * Merge dataset type.
  */
 type MergeDataset =
-  | { value: unknown; issue?: undefined }
-  | { value?: undefined; issue: true };
+  { value: unknown; issue?: undefined } | { value?: undefined; issue: true };
 
 /**
  * Merges two values into one single output.

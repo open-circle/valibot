@@ -41,8 +41,7 @@ export interface EndsWithAction<
   TInput extends string,
   TRequirement extends string,
   TMessage extends
-    | ErrorMessage<EndsWithIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<EndsWithIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, EndsWithIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -90,8 +89,7 @@ export function endsWith<
   TInput extends string,
   const TRequirement extends string,
   const TMessage extends
-    | ErrorMessage<EndsWithIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<EndsWithIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

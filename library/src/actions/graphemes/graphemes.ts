@@ -41,8 +41,7 @@ export interface GraphemesAction<
   TInput extends string,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<GraphemesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<GraphemesIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, GraphemesIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -90,8 +89,7 @@ export function graphemes<
   TInput extends string,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<GraphemesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<GraphemesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

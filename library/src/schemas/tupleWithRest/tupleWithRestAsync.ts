@@ -27,10 +27,10 @@ export interface TupleWithRestSchemaAsync<
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<TupleWithRestIssue> | undefined,
 > extends BaseSchemaAsync<
-    [...InferTupleInput<TItems>, ...InferInput<TRest>[]],
-    [...InferTupleOutput<TItems>, ...InferOutput<TRest>[]],
-    TupleWithRestIssue | InferTupleIssue<TItems> | InferIssue<TRest>
-  > {
+  [...InferTupleInput<TItems>, ...InferInput<TRest>[]],
+  [...InferTupleOutput<TItems>, ...InferOutput<TRest>[]],
+  TupleWithRestIssue | InferTupleIssue<TItems> | InferIssue<TRest>
+> {
   /**
    * The schema type.
    */

@@ -3,8 +3,11 @@ import type { BaseTransformation, SuccessDataset } from '../../types/index.ts';
 /**
  * To boolean action interface.
  */
-export interface ToBooleanAction<TInput>
-  extends BaseTransformation<TInput, boolean, never> {
+export interface ToBooleanAction<TInput> extends BaseTransformation<
+  TInput,
+  boolean,
+  never
+> {
   /**
    * The action type.
    */

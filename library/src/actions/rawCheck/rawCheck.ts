@@ -5,8 +5,11 @@ import type { RawCheckContext, RawCheckIssue } from './types.ts';
 /**
  * Raw check action interface.
  */
-export interface RawCheckAction<TInput>
-  extends BaseValidation<TInput, TInput, RawCheckIssue<TInput>> {
+export interface RawCheckAction<TInput> extends BaseValidation<
+  TInput,
+  TInput,
+  RawCheckIssue<TInput>
+> {
   /**
    * The action type.
    */

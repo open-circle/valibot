@@ -41,13 +41,12 @@ export interface MinCodePointsAction<
   TInput extends string,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<MinCodePointsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinCodePointsIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<
-    TInput,
-    TInput,
-    MinCodePointsIssue<TInput, TRequirement>
-  > {
+  TInput,
+  TInput,
+  MinCodePointsIssue<TInput, TRequirement>
+> {
   /**
    * The action type.
    */
@@ -96,8 +95,7 @@ export function minCodePoints<
   TInput extends string,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MinCodePointsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinCodePointsIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

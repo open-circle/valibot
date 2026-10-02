@@ -8,8 +8,9 @@ import { _addIssue } from '../../utils/index.ts';
 /**
  * Safe integer issue interface.
  */
-export interface SafeIntegerIssue<TInput extends number>
-  extends BaseIssue<TInput> {
+export interface SafeIntegerIssue<
+  TInput extends number,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */

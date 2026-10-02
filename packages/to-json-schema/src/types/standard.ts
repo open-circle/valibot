@@ -13,8 +13,10 @@ export interface StandardJsonSchema<TInput, TOutput> {
 /**
  * The Standard JSON Schema properties interface.
  */
-interface StandardJsonProps<TInput, TOutput>
-  extends StandardProps<TInput, TOutput> {
+interface StandardJsonProps<TInput, TOutput> extends StandardProps<
+  TInput,
+  TOutput
+> {
   /**
    * Methods for generating the input/output JSON Schema.
    */
@@ -39,10 +41,7 @@ interface StandardJsonConverter {
  * The target version of the generated JSON Schema.
  */
 type StandardJsonTarget =
-  | 'draft-2020-12'
-  | 'draft-07'
-  | 'openapi-3.0'
-  | ({} & string);
+  'draft-2020-12' | 'draft-07' | 'openapi-3.0' | ({} & string);
 
 /**
  * The options for the input/output methods.

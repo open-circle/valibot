@@ -20,10 +20,10 @@ export interface SetSchemaAsync<
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<SetIssue> | undefined,
 > extends BaseSchemaAsync<
-    InferSetInput<TValue>,
-    InferSetOutput<TValue>,
-    SetIssue | InferIssue<TValue>
-  > {
+  InferSetInput<TValue>,
+  InferSetOutput<TValue>,
+  SetIssue | InferIssue<TValue>
+> {
   /**
    * The schema type.
    */

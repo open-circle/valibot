@@ -20,10 +20,10 @@ export interface StrictObjectSchema<
   TEntries extends ObjectEntries,
   TMessage extends ErrorMessage<StrictObjectIssue> | undefined,
 > extends BaseSchema<
-    InferObjectInput<TEntries>,
-    InferObjectOutput<TEntries>,
-    StrictObjectIssue | InferObjectIssue<TEntries>
-  > {
+  InferObjectInput<TEntries>,
+  InferObjectOutput<TEntries>,
+  StrictObjectIssue | InferObjectIssue<TEntries>
+> {
   /**
    * The schema type.
    */

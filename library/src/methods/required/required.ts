@@ -324,8 +324,7 @@ export function required(
   // Get keys and message from arguments
   const keys = Array.isArray(arg2) ? arg2 : undefined;
   const message = (Array.isArray(arg2) ? arg3 : arg2) as
-    | ErrorMessage<NonOptionalIssue>
-    | undefined;
+    ErrorMessage<NonOptionalIssue> | undefined;
 
   // Create modified object entries
   const entries: RequiredEntries<

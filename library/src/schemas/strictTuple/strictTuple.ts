@@ -19,10 +19,10 @@ export interface StrictTupleSchema<
   TItems extends TupleItems,
   TMessage extends ErrorMessage<StrictTupleIssue> | undefined,
 > extends BaseSchema<
-    InferTupleInput<TItems>,
-    InferTupleOutput<TItems>,
-    StrictTupleIssue | InferTupleIssue<TItems>
-  > {
+  InferTupleInput<TItems>,
+  InferTupleOutput<TItems>,
+  StrictTupleIssue | InferTupleIssue<TItems>
+> {
   /**
    * The schema type.
    */

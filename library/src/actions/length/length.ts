@@ -89,8 +89,7 @@ export function length<
   TInput extends LengthInput,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<LengthIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<LengthIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

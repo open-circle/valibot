@@ -13,8 +13,9 @@ export type PartialInput = Record<string, unknown> | ArrayLike<unknown>;
 /**
  * Partial check issue interface.
  */
-export interface PartialCheckIssue<TInput extends PartialInput>
-  extends BaseIssue<TInput> {
+export interface PartialCheckIssue<
+  TInput extends PartialInput,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */
@@ -43,9 +44,9 @@ type KeyOf<TValue> =
       ? number extends TValue['length']
         ? '$' // For arrays we use '$' as a wildcard
         : {
-            [TKey in keyof TValue]: TKey extends `${infer TIndex extends number}`
-              ? TIndex
-              : never;
+            [
+              TKey in keyof TValue
+            ]: TKey extends `${infer TIndex extends number}` ? TIndex : never;
           }[number]
       : TValue extends Record<string, unknown>
         ? keyof TValue & (string | number)
@@ -141,9 +142,9 @@ type DeepPick<TValue, TPath extends Path> = TPath extends readonly [
             : unknown;
         }
     : {
-        [TKey in keyof TValue as TKey extends TFirstKey
-          ? TKey
-          : never]: TPathRest extends readonly []
+        [
+          TKey in keyof TValue as TKey extends TFirstKey ? TKey : never
+        ]: TPathRest extends readonly []
           ? TValue[TKey]
           : DeepPick<TValue[TKey], TPathRest>;
       }

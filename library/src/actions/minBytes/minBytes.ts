@@ -41,8 +41,7 @@ export interface MinBytesAction<
   TInput extends string,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<MinBytesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinBytesIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, MinBytesIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -90,8 +89,7 @@ export function minBytes<
   TInput extends string,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MinBytesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinBytesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

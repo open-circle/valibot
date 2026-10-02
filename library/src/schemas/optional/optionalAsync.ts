@@ -21,10 +21,10 @@ export interface OptionalSchemaAsync<
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   TDefault extends DefaultAsync<TWrapped, undefined>,
 > extends BaseSchemaAsync<
-    InferInput<TWrapped> | undefined,
-    InferOptionalOutput<TWrapped, TDefault>,
-    InferIssue<TWrapped>
-  > {
+  InferInput<TWrapped> | undefined,
+  InferOptionalOutput<TWrapped, TDefault>,
+  InferIssue<TWrapped>
+> {
   /**
    * The schema type.
    */

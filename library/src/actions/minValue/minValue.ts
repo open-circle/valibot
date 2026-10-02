@@ -38,8 +38,7 @@ export interface MinValueAction<
   TInput extends ValueInput,
   TRequirement extends TInput,
   TMessage extends
-    | ErrorMessage<MinValueIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinValueIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, MinValueIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -87,8 +86,7 @@ export function minValue<
   TInput extends ValueInput,
   const TRequirement extends TInput,
   const TMessage extends
-    | ErrorMessage<MinValueIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinValueIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

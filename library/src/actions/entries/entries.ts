@@ -97,8 +97,7 @@ export function entries<
   TInput extends EntriesInput,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<EntriesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<EntriesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage
