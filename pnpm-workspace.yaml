@@ -32,5 +32,6 @@ overrides:
   # major lines are moved to the patched v7 version.
   'tar@6': '7.5.21'
   'tar@7': '7.5.21'
+# Remove this patch once https://github.com/QwikDev/qwik/pull/9024 is released.
 patchedDependencies:
-  '@builder.io/qwik-city@1.19.2': patches/@builder.io__qwik-city@1.19.2.patch
+  '@builder.io/qwik-city@1.20.0': patches/@builder.io__qwik-city@1.20.0.patch
