@@ -11,6 +11,7 @@ export * from './file/index.ts';
 export * from './function/index.ts';
 export * from './instance/index.ts';
 export * from './intersect/index.ts';
+export * from './jsonValue/index.ts';
 export * from './lazy/index.ts';
 export * from './literal/index.ts';
 export * from './looseObject/index.ts';
