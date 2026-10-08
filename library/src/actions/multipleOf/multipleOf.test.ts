@@ -68,6 +68,14 @@ describe('multipleOf', () => {
     test('for valid bigints', () => {
       expectNoActionIssue(multipleOf(5n), [-15n, -10n, -5n, 0n, 5n, 10n, 15n]);
     });
+
+    test('for valid numbers with a negative divisor', () => {
+      expectNoActionIssue(multipleOf(-5), [-15, -10, -5, 0, 5, 10, 15]);
+    });
+
+    test('for valid bigints with a negative divisor', () => {
+      expectNoActionIssue(multipleOf(-5n), [-15n, -10n, -5n, 0n, 5n, 10n, 15n]);
+    });
   });
 
   describe('should return dataset with issues', () => {
@@ -107,6 +115,22 @@ describe('multipleOf', () => {
         multipleOf(5n, 'message'),
         { ...baseIssue, requirement: 5n },
         [-14n, -9n, -4n, 1n, 3n, 6n, 11n]
+      );
+    });
+
+    test('for numbers with a zero divisor', () => {
+      expectActionIssue(
+        multipleOf(0, 'message'),
+        { ...baseIssue, expected: '%0', requirement: 0 },
+        [-5, 0, 5]
+      );
+    });
+
+    test('for bigints with a zero divisor', () => {
+      expectActionIssue(
+        multipleOf(0n, 'message'),
+        { ...baseIssue, expected: '%0', requirement: 0n },
+        [-5n, 0n, 5n]
       );
     });
   });
