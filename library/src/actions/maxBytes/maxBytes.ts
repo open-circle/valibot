@@ -116,11 +116,15 @@ export function maxBytes(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const length = _getByteCount(dataset.value);
-        if (length > this.requirement) {
-          _addIssue(this, 'bytes', dataset, config, {
-            received: `${length}`,
-          });
+        // Hint: UTF-8 byte length cannot exceed three times the UTF-16 length,
+        // so skip counting when this upper bound meets the requirement
+        if (dataset.value.length * 3 > this.requirement) {
+          const length = _getByteCount(dataset.value);
+          if (length > this.requirement) {
+            _addIssue(this, 'bytes', dataset, config, {
+              received: `${length}`,
+            });
+          }
         }
       }
       return dataset;

@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { _getGraphemeCount } from '../../utils/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
@@ -84,6 +84,16 @@ describe('minGraphemes', () => {
         '😀👋🏼🧩👩🏻‍🏫🫥🫠',
         '😀👋🏼🧩👩🏻‍🏫🫥🫠🧑‍💻👻🥎',
       ]);
+    });
+
+    test('without counting a non-empty input for a requirement of one', () => {
+      const segmentSpy = vi.spyOn(Intl.Segmenter.prototype, 'segment');
+      try {
+        minGraphemes(1)['~run']({ typed: true, value: 'foo' }, {});
+        expect(segmentSpy).not.toHaveBeenCalled();
+      } finally {
+        segmentSpy.mockRestore();
+      }
     });
   });
 

@@ -132,11 +132,15 @@ export function maxWords(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getWordCount(this.locales, dataset.value);
-        if (count > this.requirement) {
-          _addIssue(this, 'words', dataset, config, {
-            received: `${count}`,
-          });
+        // Hint: Word count cannot exceed UTF-16 length, so skip counting when
+        // the length is within the requirement
+        if (dataset.value.length > this.requirement) {
+          const count = _getWordCount(this.locales, dataset.value);
+          if (count > this.requirement) {
+            _addIssue(this, 'words', dataset, config, {
+              received: `${count}`,
+            });
+          }
         }
       }
       return dataset;
