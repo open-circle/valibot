@@ -68,15 +68,9 @@ describe('slug', () => {
       expectNoActionIssue(action, [
         'a',
         'z',
-        '0',
-        '9',
         'az',
-        '09',
-        '120',
         'abc129',
-        '968foo',
         'foo135bar',
-        '357ace642',
         'collection',
       ]);
     });
@@ -87,25 +81,20 @@ describe('slug', () => {
         'a_a',
         'z-z',
         'z_z',
-        '0-0',
-        '0_0',
-        '9-9',
-        '9_9',
+        'a-0',
+        'a_0',
+        'z-9',
+        'z_9',
         'az-az',
         'az_az',
-        '09-09',
-        '09_09',
-        '120-120',
-        '120_120',
+        'a-09',
+        'a_09',
+        'ab-120',
+        'ab_120',
         'abc129-abc129',
         'abc129_abc129',
-        '968foo-968foo',
-        '968foo_968foo',
-        'foo135bar-foo135bar',
-        'foo135bar_foo135bar',
-        '357ace642-357ace642',
-        '357ace642_357ace642',
         'this-that-other-outre-collection',
+
       ]);
     });
   });
@@ -217,6 +206,10 @@ describe('slug', () => {
         '-hello-',
         '_hello_',
       ]);
+    });
+
+    test('for invalid single word', () => {
+      expectActionIssue(action, baseIssue, ['968foo', '357ace642', '0', '9', '09', '120']);
     });
   });
 });
