@@ -9,6 +9,19 @@ export const properties: Record<string, PropertyProps> = {
       href: '../ArrayInput/',
     },
   },
+  TOutput: {
+    modifier: 'extends',
+    type: {
+      type: 'custom',
+      name: 'TInput',
+      indexes: ['number'],
+    },
+    default: {
+      type: 'custom',
+      name: 'TInput',
+      indexes: ['number'],
+    },
+  },
   BaseTransformation: {
     modifier: 'extends',
     type: {
@@ -21,8 +34,11 @@ export const properties: Record<string, PropertyProps> = {
           name: 'TInput',
         },
         {
-          type: 'custom',
-          name: 'TInput',
+          type: 'array',
+          item: {
+            type: 'custom',
+            name: 'TOutput',
+          },
         },
         'never',
       ],
@@ -44,13 +60,64 @@ export const properties: Record<string, PropertyProps> = {
   },
   operation: {
     type: {
-      type: 'custom',
-      name: 'ArrayRequirement',
-      href: '../ArrayRequirement/',
-      generics: [
+      type: 'union',
+      options: [
         {
-          type: 'custom',
-          name: 'TInput',
+          type: 'function',
+          params: [
+            {
+              name: 'item',
+              type: {
+                type: 'custom',
+                name: 'TInput',
+                indexes: ['number'],
+              },
+            },
+            {
+              name: 'index',
+              type: 'number',
+            },
+            {
+              name: 'array',
+              type: {
+                type: 'custom',
+                name: 'TInput',
+              },
+            },
+          ],
+          return: {
+            type: 'predicate',
+            param: 'item',
+            is: {
+              type: 'custom',
+              name: 'TOutput',
+            },
+          },
+        },
+        {
+          type: 'function',
+          params: [
+            {
+              name: 'item',
+              type: {
+                type: 'custom',
+                name: 'TInput',
+                indexes: ['number'],
+              },
+            },
+            {
+              name: 'index',
+              type: 'number',
+            },
+            {
+              name: 'array',
+              type: {
+                type: 'custom',
+                name: 'TInput',
+              },
+            },
+          ],
+          return: 'boolean',
         },
       ],
     },

@@ -5,15 +5,32 @@ describe('filterItems', () => {
   const operation = (item: number) => item > 9;
   const action = filterItems<number[]>(operation);
 
-  test('should return action object', () => {
-    expect(action).toStrictEqual({
-      kind: 'transformation',
-      type: 'filter_items',
-      reference: filterItems,
-      async: false,
-      operation,
-      '~run': expect.any(Function),
-    } satisfies FilterItemsAction<number[]>);
+  describe('should return action object', () => {
+    test('with one type argument', () => {
+      expect(action).toStrictEqual({
+        kind: 'transformation',
+        type: 'filter_items',
+        reference: filterItems,
+        async: false,
+        operation,
+        '~run': expect.any(Function),
+      } satisfies FilterItemsAction<number[]>);
+    });
+
+    test('with two type arguments', () => {
+      const predicate = (item: number | string): item is number =>
+        typeof item === 'number';
+      expect(filterItems<(number | string)[], number>(predicate)).toStrictEqual(
+        {
+          kind: 'transformation',
+          type: 'filter_items',
+          reference: filterItems,
+          async: false,
+          operation: predicate,
+          '~run': expect.any(Function),
+        } satisfies FilterItemsAction<(number | string)[], number>
+      );
+    });
   });
 
   test('should transform input', () => {
