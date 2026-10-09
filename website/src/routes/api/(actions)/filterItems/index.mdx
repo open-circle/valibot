@@ -30,7 +30,7 @@ const Action = v.filterItems<TInput, TOutput>(operation);
 
 With `filterItems` you can filter the items of an array. Returning `true` for an item will keep it in the array and returning `false` will remove it.
 
-If you pass a type predicate as `operation`, the output type of the action is narrowed to an array of the predicated type. If you specify `TOutput` yourself, `operation` must be a type predicate for that type. If `operation` only returns a boolean, the output type is not narrowed.
+If you pass a type predicate as `operation`, the output type of the action is narrowed to an array of the predicated type. This only works if you specify no generics or both `TInput` and `TOutput`. If you only specify `TInput`, the output type is not narrowed. If you specify `TOutput`, `operation` must be a type predicate for that type. If `operation` only returns a boolean, the output type is not narrowed.
 
 ## Returns
 
@@ -58,7 +58,7 @@ Schema to keep only the string items of an array.
 ```ts
 const StringItemsSchema = v.pipe(
   v.array(v.union([v.string(), v.number()])),
-  v.filterItems((item) => typeof item === 'string')
+  v.filterItems((item): item is string => typeof item === 'string')
 );
 ```
 
