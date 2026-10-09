@@ -1,0 +1,103 @@
+---
+title: iban
+description: Creates an IBAN validation action.
+source: /actions/iban/iban.ts
+contributors:
+  - yslpn
+---
+
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# iban
+
+Creates an [IBAN](https://en.wikipedia.org/wiki/International_Bank_Account_Number) validation action.
+
+```ts
+const Action = v.iban<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `iban` you can validate the formatting of a string. If the input is not an IBAN, you can use `message` to customize the error message.
+
+This action checks the country code, the length and the BBAN structure (digits and letters at each position) for that country according to the [SWIFT IBAN Registry](https://www.swift.com/standards/data-standards/iban-international-bank-account-number) and the check digits using the ISO 7064 MOD 97-10 algorithm. It accepts the electronic format without spaces and the print format with single spaces between characters, which covers both groups of four and the national groupings used by some countries. Letters must be uppercase.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `iban` can be used.
+
+### IBAN schema
+
+Schema to validate an IBAN.
+
+```ts
+const IbanSchema = v.pipe(v.string(), v.iban('The IBAN is badly formatted.'));
+
+// Valid electronic format:
+// 'DE89370400440532013000'
+
+// Valid print format:
+// 'DE89 3704 0044 0532 0130 00'
+```
+
+### Normalized IBAN schema
+
+Schema that trims and uppercases the input before validating an IBAN.
+
+```ts
+const IbanSchema = v.pipe(
+  v.string(),
+  v.trim(),
+  v.toUpperCase(),
+  v.iban('The IBAN is badly formatted.')
+);
+```
+
+### Electronic IBAN schema
+
+Schema that validates an IBAN and removes the spaces of the print format to output the electronic format.
+
+```ts
+const IbanSchema = v.pipe(
+  v.string(),
+  v.iban('The IBAN is badly formatted.'),
+  v.transform((input) => input.replaceAll(' ', ''))
+);
+
+const output = v.parse(IbanSchema, 'DE89 3704 0044 0532 0130 00');
+// 'DE89370400440532013000'
+```
+
+## Related
+
+The following APIs can be combined with `iban`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['bic', 'creditCard']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

@@ -1,0 +1,27 @@
+---
+title: IbanAction
+description: IBAN action interface.
+contributors:
+  - yslpn
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# IbanAction
+
+IBAN action interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Definition
+
+- `IbanAction` <Property {...properties.BaseValidation} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `requirement` <Property {...properties.requirement} />
+  - `message` <Property {...properties.message} />

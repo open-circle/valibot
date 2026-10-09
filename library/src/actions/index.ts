@@ -31,6 +31,7 @@ export * from './guard/index.ts';
 export * from './hash/index.ts';
 export * from './hexadecimal/index.ts';
 export * from './hexColor/index.ts';
+export * from './iban/index.ts';
 export * from './imei/index.ts';
 export * from './includes/index.ts';
 export * from './integer/index.ts';
