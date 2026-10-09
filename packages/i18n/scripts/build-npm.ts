@@ -22,6 +22,7 @@ import nb from '../src/nb';
 import nl from '../src/nl';
 import nn from '../src/nn';
 import pl from '../src/pl';
+import pseudo from '../src/pseudo';
 import pt from '../src/pt';
 import ro from '../src/ro';
 import ru from '../src/ru';
@@ -61,6 +62,7 @@ const languages = [
   nl,
   nn,
   pl,
+  pseudo,
   pt,
   ro,
   ru,
