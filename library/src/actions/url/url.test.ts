@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
 import { url, type UrlAction, type UrlIssue } from './url.ts';
@@ -37,6 +37,65 @@ describe('url', () => {
         ...baseAction,
         message,
       } satisfies UrlAction<string, typeof message>);
+    });
+  });
+
+  describe('should detect URL.canParse support', () => {
+    const inputs: [string, boolean][] = [
+      ['https://example.com', true],
+      ['example.com', false],
+      ['abc:1234', true],
+      ['mailto:user@example.com', true],
+      ['https://例え.テスト', true],
+      ['/relative/path', false],
+      ['https://', false],
+      ['https://[::1', false],
+    ];
+
+    afterEach(() => {
+      vi.unstubAllGlobals();
+      vi.restoreAllMocks();
+    });
+
+    test('for environment with URL.canParse', () => {
+      const canParseSpy = vi.spyOn(URL, 'canParse');
+      const action = url();
+      for (const [input, expected] of inputs) {
+        expect(action.requirement(input)).toBe(expected);
+      }
+      expect(canParseSpy).toHaveBeenCalledTimes(inputs.length);
+    });
+
+    test('for environment without URL.canParse', () => {
+      const constructorSpy = vi.fn();
+      class MockURL extends globalThis.URL {
+        constructor(input: string) {
+          constructorSpy(input);
+          super(input);
+        }
+      }
+      Object.defineProperty(MockURL, 'canParse', { value: undefined });
+      vi.stubGlobal('URL', MockURL);
+      expect(typeof URL.canParse).toBe('undefined');
+      const action = url();
+      for (const [input, expected] of inputs) {
+        expect(action.requirement(input)).toBe(expected);
+      }
+      expect(constructorSpy).toHaveBeenCalledTimes(inputs.length);
+    });
+
+    test('for environment without URL', () => {
+      const urlDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'URL');
+      if (!urlDescriptor) {
+        throw new Error('Expected URL to be defined on globalThis');
+      }
+      try {
+        expect(Reflect.deleteProperty(globalThis, 'URL')).toBe(true);
+        const action = url();
+        expect(action.requirement('https://example.com')).toBe(false);
+      } finally {
+        Object.defineProperty(globalThis, 'URL', urlDescriptor);
+      }
     });
   });
 

@@ -87,6 +87,40 @@ describe('objectWithRestAsync', () => {
         [{ key1: 'foo', key2: 123, other: true }]
       );
     });
+
+    test.each([
+      'toString',
+      'valueOf',
+      'hasOwnProperty',
+      'constructor',
+      'prototype',
+    ])('for declared %s key', async (key) => {
+      const schema = objectWithRestAsync({ [key]: string() }, number());
+      const input = { [key]: 'foo' };
+      expect(await schema['~run']({ value: input }, {})).toStrictEqual({
+        typed: true,
+        value: input,
+      });
+    });
+
+    test('without including excluded unknown keys', async () => {
+      const schema = objectWithRestAsync({ key: string() }, number());
+      const input = JSON.parse(
+        '{"key":"foo","__proto__":{"admin":true},"constructor":"bar","prototype":"baz"}'
+      );
+      const dataset = await schema['~run']({ value: input }, {});
+      expect(dataset).toStrictEqual({ typed: true, value: { key: 'foo' } });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+    });
+
+    test('for valid rest keys colliding with the object prototype', async () => {
+      const schema = objectWithRestAsync({ key: string() }, number());
+      const input = { key: 'foo', toString: 1, valueOf: 2, hasOwnProperty: 3 };
+      expect(await schema['~run']({ value: input }, {})).toStrictEqual({
+        typed: true,
+        value: input,
+      });
+    });
   });
 
   describe('should return dataset with issues', () => {
@@ -994,5 +1028,36 @@ describe('objectWithRestAsync', () => {
         ],
       } satisfies FailureDataset<InferIssue<typeof schema>>);
     });
+
+    test.each(['toString', 'valueOf', 'hasOwnProperty'])(
+      'for unknown %s key',
+      async (key) => {
+        const schema = objectWithRestAsync({ key: string() }, number());
+        const input = { key: 'foo', [key]: 'bar' };
+        expect(await schema['~run']({ value: input }, {})).toStrictEqual({
+          typed: false,
+          value: input,
+          issues: [
+            {
+              ...baseInfo,
+              kind: 'schema',
+              type: 'number',
+              input: 'bar',
+              expected: 'number',
+              received: '"bar"',
+              path: [
+                {
+                  type: 'object',
+                  origin: 'value',
+                  input,
+                  key,
+                  value: input[key],
+                },
+              ],
+            },
+          ],
+        } satisfies FailureDataset<InferIssue<typeof schema>>);
+      }
+    );
   });
 });

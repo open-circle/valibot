@@ -1,5 +1,5 @@
-import ko from './ko';
-import type { Language } from './types';
+import ko from './ko.ts';
+import type { Language } from './types.ts';
 
 /**
  * @deprecated Use 'ko.ts' instead. The correct ISO 639-1 code for Korean is 'ko'.

@@ -1,6 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
 import { minLength, transform } from '../../actions/index.ts';
-import { string } from '../../schemas/index.ts';
+import { object, string } from '../../schemas/index.ts';
+import { getDotPath } from '../../utils/index.ts';
 import { pipe } from '../index.ts';
 import { cache, type SchemaWithCache } from './cache.ts';
 
@@ -80,6 +81,17 @@ describe('cache', () => {
         issues: undefined,
       });
       expect(runSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('without adding the issue path of a parent schema twice', () => {
+      const schema = object({ key: cache(pipe(string(), minLength(3))) });
+      const dotPaths: (string | null)[] = [];
+      for (let index = 0; index < 3; index++) {
+        const dataset = schema['~run']({ value: { key: 'fo' } }, {});
+        dotPaths.push(getDotPath(dataset.issues![0]));
+      }
+
+      expect(dotPaths).toStrictEqual(['key', 'key', 'key']);
     });
   });
 
