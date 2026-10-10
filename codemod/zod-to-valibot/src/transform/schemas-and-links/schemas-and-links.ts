@@ -582,11 +582,35 @@ function transformSchemasAndLinksHelper(
           objectModifier
         );
       } else if (isZodMethodName(propertyName)) {
+        // Static namespace form: z.extend(BaseSchema, { ... })
+        // After import rewrite this becomes v.extend(BaseSchema, { ... }).
+        // In this form transformedExp is null (no schema has been built yet)
+        // and there are exactly 2 arguments: the base schema and the extension
+        // object. Swap schemaExp to args[0] and pass only args[1] onward so
+        // that transformExtend receives the same shape as the method form.
+        let schemaExpForMethod: j.CallExpression | j.MemberExpression | j.Identifier =
+          transformedExp ?? j.identifier(identifier);
+        let argsForMethod = cur.value.arguments;
+        if (
+          propertyName === 'extend' &&
+          transformedExp === null &&
+          cur.value.arguments.length === 2
+        ) {
+          const baseArg = cur.value.arguments[0];
+          if (
+            baseArg.type === 'Identifier' ||
+            baseArg.type === 'CallExpression' ||
+            baseArg.type === 'MemberExpression'
+          ) {
+            schemaExpForMethod = baseArg;
+            argsForMethod = [cur.value.arguments[1]];
+          }
+        }
         transformedExp = toValibotMethodExp(
           valibotIdentifier,
           propertyName,
-          transformedExp ?? j.identifier(identifier),
-          cur.value.arguments
+          schemaExpForMethod,
+          argsForMethod
         );
       } else if (isZodValidatorName(propertyName)) {
         if (curSchemaType === null) {
