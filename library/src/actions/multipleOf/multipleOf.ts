@@ -155,8 +155,18 @@ export function multipleOf(
     requirement,
     message,
     '~run'(dataset, config) {
-      // @ts-expect-error
-      if (dataset.typed && dataset.value % this.requirement != 0) {
+      // A divisor of zero is not valid: for numbers `value % 0` evaluates to
+      // NaN (which already yields an issue), but for bigints it throws an
+      // uncaught `RangeError: Division by zero`. Guard against it so that both
+      // types consistently return an issue instead of crashing the parser.
+      // Note: `0` and `0n` are never strictly equal, so both are checked.
+      if (
+        dataset.typed &&
+        (this.requirement === 0 ||
+          this.requirement === 0n ||
+          // @ts-expect-error
+          dataset.value % this.requirement != 0)
+      ) {
         _addIssue(this, 'multiple', dataset, config);
       }
       return dataset;
