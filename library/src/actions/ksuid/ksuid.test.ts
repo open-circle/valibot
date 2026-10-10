@@ -70,6 +70,48 @@ describe('ksuid', () => {
         '2EbKL0J9w8vLcK7BDmFnRQy0w1p',
         '1srOrx2ZWZBpBUvZwXKQmoEYga2',
         '36QGvpFmeYRDTH3mI14XJz31xUs',
+        '3epBpcELgAkFoNQy3BlK1J9BY57',
+        'Rmm5FKDviAXZql67OElDCp74v8s',
+        'WEr9YJoQFr7RJiPs5f8IXOQ1gTS',
+        'CJBS31EmdeKVGJ7W5aptJU0Lsk1',
+      ]);
+    });
+
+    test('for minimum and maximum KSUIDs', () => {
+      expectNoActionIssue(action, [
+        '000000000000000000000000000',
+        'aWgEPTl1tmebfsQzFP4bxwgy80V',
+      ]);
+    });
+
+    test('for greatest valid KSUIDs per digit', () => {
+      expectNoActionIssue(action, [
+        'Zzzzzzzzzzzzzzzzzzzzzzzzzzz',
+        'aVzzzzzzzzzzzzzzzzzzzzzzzzz',
+        'aWfzzzzzzzzzzzzzzzzzzzzzzzz',
+        'aWgDzzzzzzzzzzzzzzzzzzzzzzz',
+        'aWgEOzzzzzzzzzzzzzzzzzzzzzz',
+        'aWgEPSzzzzzzzzzzzzzzzzzzzzz',
+        'aWgEPTkzzzzzzzzzzzzzzzzzzzz',
+        'aWgEPTl0zzzzzzzzzzzzzzzzzzz',
+        'aWgEPTl1szzzzzzzzzzzzzzzzzz',
+        'aWgEPTl1tlzzzzzzzzzzzzzzzzz',
+        'aWgEPTl1tmdzzzzzzzzzzzzzzzz',
+        'aWgEPTl1tmeazzzzzzzzzzzzzzz',
+        'aWgEPTl1tmebezzzzzzzzzzzzzz',
+        'aWgEPTl1tmebfrzzzzzzzzzzzzz',
+        'aWgEPTl1tmebfsPzzzzzzzzzzzz',
+        'aWgEPTl1tmebfsQyzzzzzzzzzzz',
+        'aWgEPTl1tmebfsQzEzzzzzzzzzz',
+        'aWgEPTl1tmebfsQzFOzzzzzzzzz',
+        'aWgEPTl1tmebfsQzFP3zzzzzzzz',
+        'aWgEPTl1tmebfsQzFP4azzzzzzz',
+        'aWgEPTl1tmebfsQzFP4bwzzzzzz',
+        'aWgEPTl1tmebfsQzFP4bxvzzzzz',
+        'aWgEPTl1tmebfsQzFP4bxwfzzzz',
+        'aWgEPTl1tmebfsQzFP4bxwgxzzz',
+        'aWgEPTl1tmebfsQzFP4bxwgy7zz',
+        'aWgEPTl1tmebfsQzFP4bxwgy80U',
       ]);
     });
   });
@@ -114,6 +156,48 @@ describe('ksuid', () => {
       expectActionIssue(action, baseIssue, [
         '!ujsswThIGTUYm2K8FjOOfXtY1K',
         '0ujsswThIGTUYm2K8FjOOfXtY@1',
+      ]);
+    });
+
+    test('for overflowing KSUIDs', () => {
+      expectActionIssue(action, baseIssue, [
+        'aWgEPTl1tmebfsQzFP4bxwgy80W',
+        'zzzzzzzzzzzzzzzzzzzzzzzzzzz',
+        'aaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        'tssZmdDCLYi51BCXwHwSI6au096',
+        'iMjlE5HXV9kj7ld9YJHjqCVIW1I',
+        'n9ZJCRKHZO0OjWevHd8p44LubQG',
+        's2w9mpPIeWc4nQnYi375Mafq3Hg',
+      ]);
+    });
+
+    test('for smallest overflowing KSUIDs per digit', () => {
+      expectActionIssue(action, baseIssue, [
+        'b00000000000000000000000000',
+        'aX0000000000000000000000000',
+        'aWh000000000000000000000000',
+        'aWgF00000000000000000000000',
+        'aWgEQ0000000000000000000000',
+        'aWgEPU000000000000000000000',
+        'aWgEPTm00000000000000000000',
+        'aWgEPTl20000000000000000000',
+        'aWgEPTl1u000000000000000000',
+        'aWgEPTl1tn00000000000000000',
+        'aWgEPTl1tmf0000000000000000',
+        'aWgEPTl1tmec000000000000000',
+        'aWgEPTl1tmebg00000000000000',
+        'aWgEPTl1tmebft0000000000000',
+        'aWgEPTl1tmebfsR000000000000',
+        'aWgEPTl1tmebfsQzG0000000000',
+        'aWgEPTl1tmebfsQzFQ000000000',
+        'aWgEPTl1tmebfsQzFP500000000',
+        'aWgEPTl1tmebfsQzFP4c0000000',
+        'aWgEPTl1tmebfsQzFP4by000000',
+        'aWgEPTl1tmebfsQzFP4bxx00000',
+        'aWgEPTl1tmebfsQzFP4bxwh0000',
+        'aWgEPTl1tmebfsQzFP4bxwgz000',
+        'aWgEPTl1tmebfsQzFP4bxwgy900',
+        'aWgEPTl1tmebfsQzFP4bxwgy810',
       ]);
     });
   });
