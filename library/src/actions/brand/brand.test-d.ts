@@ -29,19 +29,19 @@ describe('brand', () => {
     type Output = InferOutput<Action>;
 
     test('should not match unbranded types', () => {
-      expectTypeOf<string>().not.toMatchTypeOf<Output>();
+      expectTypeOf<string>().not.toExtend<Output>();
     });
 
     test('should match types with same brand', () => {
       expectTypeOf<
         InferOutput<BrandAction<string, 'foo'>>
-      >().toMatchTypeOf<Output>();
+      >().toExtend<Output>();
     });
 
     test('should not match types with different brand', () => {
       expectTypeOf<
         InferOutput<BrandAction<string, 'bar'>>
-      >().not.toMatchTypeOf<Output>();
+      >().not.toExtend<Output>();
     });
   });
 });
