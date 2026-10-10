@@ -662,6 +662,65 @@ describe('convertSchema', () => {
       });
     });
 
+    test.each(['draft-07', 'draft-2020-12'] as const)(
+      'should convert record schema with string picklist keys for %s',
+      (target) => {
+        expect(
+          convertSchema(
+            {},
+            v.record(v.picklist(['foo', 'bar']), v.number()),
+            { target },
+            createContext()
+          )
+        ).toStrictEqual({
+          type: 'object',
+          propertyNames: { type: 'string', enum: ['foo', 'bar'] },
+          additionalProperties: { type: 'number' },
+        });
+      }
+    );
+
+    test('should convert record schema with piped string picklist keys', () => {
+      expect(
+        convertSchema(
+          {},
+          v.record(
+            v.pipe(v.picklist(['foo', 'bar']), v.startsWith('f')),
+            v.number()
+          ),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'object',
+        propertyNames: { type: 'string', enum: ['foo', 'bar'], pattern: '^f' },
+        additionalProperties: { type: 'number' },
+      });
+    });
+
+    test('should reject record picklist keys for openapi-3.0', () => {
+      expect(() =>
+        convertSchema(
+          {},
+          v.record(v.picklist(['foo', 'bar']), v.number()),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toThrowError(
+        'The "record" schema with the "picklist" schema for the key cannot be converted to JSON Schema.'
+      );
+    });
+
+    test('should reject record picklist keys with non-string options', () => {
+      // @ts-expect-error
+      const schema = v.record(v.picklist(['foo', 1]), v.number());
+      expect(() =>
+        convertSchema({}, schema, undefined, createContext())
+      ).toThrowError(
+        'The "record" schema with the "picklist" schema for the key cannot be converted to JSON Schema.'
+      );
+    });
+
     test('should convert record schema for openapi-3.0', () => {
       expect(
         convertSchema(
