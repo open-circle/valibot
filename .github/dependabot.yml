@@ -27,6 +27,7 @@ updates:
       - dependency-name: "*"
         update-types:
           - "version-update:semver-major"
+        versions: ["<1.0.0"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
