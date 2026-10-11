@@ -4,7 +4,12 @@ import type {
   ConversionContext,
   JsonSchema,
 } from '../../types/index.ts';
-import { addError, handleError, isJsonConstValue } from '../../utils/index.ts';
+import {
+  addError,
+  handleError,
+  isJsonConstValue,
+  setSchemaProperty,
+} from '../../utils/index.ts';
 import { convertAction } from '../convertAction/index.ts';
 
 /**
@@ -398,7 +403,11 @@ export function convertSchema(
       jsonSchema.required = [];
       for (const key in valibotSchema.entries) {
         const entry = valibotSchema.entries[key] as SchemaOrPipe;
-        jsonSchema.properties[key] = convertSchema({}, entry, config, context);
+        setSchemaProperty(
+          jsonSchema.properties,
+          key,
+          convertSchema({}, entry, config, context)
+        );
         if (
           entry.type !== 'exact_optional' &&
           entry.type !== 'nullish' &&
