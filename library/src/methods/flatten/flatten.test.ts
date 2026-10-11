@@ -6,7 +6,9 @@ import type {
   MinValueIssue,
 } from '../../actions';
 import type { NumberIssue, StringIssue } from '../../schemas';
+import { object, string } from '../../schemas/index.ts';
 import type { ArrayPathItem, ObjectPathItem, SetPathItem } from '../../types';
+import { safeParse } from '../safeParse/safeParse.ts';
 import { flatten } from './flatten.ts';
 
 describe('flatten', () => {
@@ -16,6 +18,35 @@ describe('flatten', () => {
     issues: undefined,
     lang: undefined,
   };
+
+  test('should keep an empty string key in nested errors', () => {
+    const result = safeParse(object({ '': string('Empty key error') }), {
+      '': 123,
+    });
+    expect(flatten(result.issues!)).toStrictEqual({
+      nested: { '': ['Empty key error'] },
+    });
+  });
+
+  test('should distinguish paths that start with empty string keys', () => {
+    const result = safeParse(
+      object({
+        '': object({
+          leaf: string('Nested empty key error'),
+          '': object({ leaf: string('Repeated empty key error') }),
+        }),
+        leaf: string('Root leaf error'),
+      }),
+      { '': { leaf: 123, '': { leaf: 456 } }, leaf: 789 }
+    );
+    expect(flatten(result.issues!)).toStrictEqual({
+      nested: {
+        '.leaf': ['Nested empty key error'],
+        '..leaf': ['Repeated empty key error'],
+        leaf: ['Root leaf error'],
+      },
+    });
+  });
 
   test('should return empty object', () => {
     // @ts-expect-error
