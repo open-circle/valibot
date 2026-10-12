@@ -1,0 +1,167 @@
+---
+title: recordWithPatterns
+description: Creates a record schema that matches patterns.
+source: /schemas/recordWithPatterns/recordWithPatterns.ts
+contributors:
+  - EskiMojo14
+---
+
+import { Link } from '@builder.io/qwik-city';
+import { ApiList, Property } from '~/components';
+import { properties } from './properties';
+
+# recordWithPatterns
+
+Creates a record schema that matches patterns.
+
+```ts
+const RecordWithPatternsSchema = v.recordWithPatterns<
+  TPatterns,
+  TRest,
+  TMessage
+>(patterns, rest, message);
+```
+
+## Generics
+
+- `TPatterns` <Property {...properties.TPatterns} />
+- `TRest` <Property {...properties.TRest} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `patterns` <Property {...properties.patterns} />
+- `rest` <Property {...properties.rest} />
+- `message` <Property {...properties.message} />
+
+## Returns
+
+- `Schema` <Property {...properties.Schema} />
+
+## Explanation
+
+Tuples of key and value schemas are iterated through until a key schema matches, and the value schema is used to validate the value. If no key schema matches, the rest schema is used.
+
+## Examples
+
+The following examples show how `recordWithPatterns` can be used. Please see the <Link href="/guides/objects/">object guide</Link> for more examples and explanations.
+
+```ts
+const RecordWithPatternsSchema = v.recordWithPatterns(
+  [
+    [v.pipe(v.string(), v.startsWith('str-')), v.string()],
+    [v.pipe(v.string(), v.startsWith('num-')), v.number()],
+  ],
+  v.boolean()
+);
+```
+
+## Related
+
+The following APIs can be combined with `recordWithPatterns`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'any',
+    'array',
+    'bigint',
+    'blob',
+    'boolean',
+    'custom',
+    'date',
+    'enum',
+    'exactOptional',
+    'file',
+    'function',
+    'instance',
+    'intersect',
+    'lazy',
+    'literal',
+    'looseObject',
+    'looseTuple',
+    'map',
+    'nan',
+    'never',
+    'nonNullable',
+    'nonNullish',
+    'nonOptional',
+    'null',
+    'nullable',
+    'nullish',
+    'number',
+    'object',
+    'objectWithRest',
+    'optional',
+    'picklist',
+    'promise',
+    'record',
+    'recordWithPatterns',
+    'set',
+    'strictObject',
+    'strictTuple',
+    'string',
+    'symbol',
+    'tuple',
+    'tupleWithRest',
+    'undefined',
+    'undefinedable',
+    'union',
+    'unknown',
+    'variant',
+    'void',
+  ]}
+/>
+
+### Methods
+
+<ApiList
+  items={[
+    'assert',
+    'config',
+    'fallback',
+    'forward',
+    'getDefault',
+    'getDefaults',
+    'getFallback',
+    'getFallbacks',
+    'is',
+    'keyof',
+    'message',
+    'omit',
+    'parse',
+    'parser',
+    'partial',
+    'pick',
+    'pipe',
+    'required',
+    'safeParse',
+    'safeParser',
+  ]}
+/>
+
+### Actions
+
+<ApiList
+  items={[
+    'check',
+    'brand',
+    'description',
+    'entries',
+    'maxEntries',
+    'metadata',
+    'minEntries',
+    'notEntries',
+    'partialCheck',
+    'rawCheck',
+    'rawTransform',
+    'readonly',
+    'title',
+    'transform',
+  ]}
+/>
+
+### Utils
+
+<ApiList items={['entriesFromList', 'isOfKind', 'isOfType']} />
