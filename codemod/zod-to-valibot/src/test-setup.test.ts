@@ -71,6 +71,7 @@ defineTests(transform, [
   'undefined-schema',
   'union-schema',
   'unknown-schema',
+  'v4-mini-import',
   'validation-error-msg',
   'void-schema',
   'zod-enum',
