@@ -4,6 +4,7 @@ import type {
   ErrorMessage,
 } from '../../types/index.ts';
 import { _addIssue } from '../../utils/index.ts';
+import { _getDecimalPlaces } from './utils/index.ts';
 
 /**
  * Input type
@@ -146,6 +147,8 @@ export function multipleOf(
   Input,
   ErrorMessage<MultipleOfIssue<Input, Input>> | undefined
 > {
+  const requirementDecimalPlaces =
+    typeof requirement === 'number' ? _getDecimalPlaces(requirement) : 0;
   return {
     kind: 'validation',
     type: 'multiple_of',
@@ -155,9 +158,45 @@ export function multipleOf(
     requirement,
     message,
     '~run'(dataset, config) {
-      // @ts-expect-error
-      if (dataset.typed && dataset.value % this.requirement != 0) {
-        _addIssue(this, 'multiple', dataset, config);
+      if (dataset.typed) {
+        if (
+          typeof dataset.value === 'number' &&
+          typeof this.requirement === 'number'
+        ) {
+          if (dataset.value === 0 && this.requirement !== 0 && Number.isFinite(this.requirement)) {
+            return dataset;
+          }
+
+          const decimalPlaces = Math.max(
+            _getDecimalPlaces(dataset.value),
+            requirementDecimalPlaces
+          );
+          const multiplier = 10 ** decimalPlaces;
+
+          if (!Number.isFinite(multiplier)) {
+            if (dataset.value % this.requirement !== 0) {
+              _addIssue(this, 'multiple', dataset, config);
+            }
+          } else if (
+            Math.round(dataset.value * multiplier) %
+              Math.round(this.requirement * multiplier) !==
+            0
+          ) {
+            _addIssue(this, 'multiple', dataset, config);
+          }
+        } else if (
+          typeof dataset.value === 'bigint' &&
+          typeof this.requirement === 'bigint'
+        ) {
+          if (this.requirement === 0n) {
+            _addIssue(this, 'multiple', dataset, config);
+            return dataset;
+          }
+
+          if (dataset.value % this.requirement !== 0n) {
+            _addIssue(this, 'multiple', dataset, config);
+          }
+        }
       }
       return dataset;
     },
