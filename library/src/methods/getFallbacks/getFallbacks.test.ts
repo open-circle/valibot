@@ -7,6 +7,7 @@ import {
   strictTuple,
   string,
   tuple,
+  unknown,
 } from '../../schemas/index.ts';
 import { fallback } from '../fallback/index.ts';
 import { getFallbacks } from './getFallbacks.ts';
@@ -27,6 +28,23 @@ describe('getFallbacks', () => {
   describe('should return object defaults', () => {
     test('for empty object', () => {
       expect(getFallbacks(object({}))).toStrictEqual({});
+    });
+
+    test('for own __proto__ entry', () => {
+      const result = getFallbacks(
+        object({ ['__proto__']: fallback(string(), 'foo' as const) })
+      );
+      expect(result).toStrictEqual({ ['__proto__']: 'foo' });
+      expect(Object.getPrototypeOf(result)).toBe(Object.prototype);
+    });
+
+    test('for own __proto__ entry with object value', () => {
+      const value = { key: 'foo' };
+      const result = getFallbacks(
+        object({ ['__proto__']: fallback(unknown(), value) })
+      );
+      expect(result).toStrictEqual({ ['__proto__']: value });
+      expect(Object.getPrototypeOf(result)).toBe(Object.prototype);
     });
 
     test('for simple object', () => {
