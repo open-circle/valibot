@@ -1,15 +1,5 @@
 import type { BaseTransformation } from '../../types/index.ts';
-import type { ArrayInput } from '../types.ts';
-
-/**
- * Array requirement type.
- */
-type ArrayRequirement<
-  TInput extends ArrayInput,
-  TOutput extends TInput[number] = TInput[number],
-> =
-  | ((item: TInput[number], index: number, array: TInput) => item is TOutput)
-  | ((item: TInput[number], index: number, array: TInput) => boolean);
+import type { ArrayInput, ArrayRequirement } from '../types.ts';
 
 /**
  * Filter items action interface.
