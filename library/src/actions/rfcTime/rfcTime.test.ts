@@ -6,6 +6,13 @@ import { expectNoActionIssue } from '../../vitest/expectNoActionIssue.ts';
 import { rfcTime, type RfcTimeAction, type RfcTimeIssue } from './rfcTime.ts';
 
 describe('rfcTime', () => {
+  test('should constrain seconds in exported regex', () => {
+    expect(RFC_3339_TIME_REGEX.test('23:59:59Z')).toBe(true);
+    expect(RFC_3339_TIME_REGEX.test('23:59:60Z')).toBe(true);
+    expect(RFC_3339_TIME_REGEX.test('23:59:61Z')).toBe(false);
+    expect(RFC_3339_TIME_REGEX.test('23:59:99Z')).toBe(false);
+  });
+
   describe('should return action object', () => {
     const baseAction: Omit<RfcTimeAction<string, never>, 'message'> = {
       kind: 'validation',

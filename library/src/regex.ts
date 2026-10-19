@@ -133,7 +133,7 @@ export const ISO_TIME_SECOND_REGEX: RegExp =
  * `00`–`23` and `00`–`59`.
  */
 export const RFC_3339_TIME_REGEX: RegExp =
-  /^(0\d|1\d|2[0-3]):([0-5]\d):(\d{2})(\.\d+)?(Z|[+-](0\d|1\d|2[0-3]):[0-5]\d)$/iu;
+  /^(0\d|1\d|2[0-3]):([0-5]\d):([0-5]\d|60)(\.\d+)?(Z|[+-](0\d|1\d|2[0-3]):[0-5]\d)$/iu;
 
 /**
  * [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp regex. Allows a
