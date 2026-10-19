@@ -132,10 +132,7 @@ describe('rfcTime', () => {
     });
 
     test('for invalid second', () => {
-      expectActionIssue(action, baseIssue, [
-        '14:30:61Z',
-        '14:30:99Z',
-      ]);
+      expectActionIssue(action, baseIssue, ['14:30:61Z', '14:30:99Z']);
     });
 
     test('for leap-second outside 23:59:60Z', () => {

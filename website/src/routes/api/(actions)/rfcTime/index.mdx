@@ -14,7 +14,7 @@ import { properties } from './properties';
 
 Creates an [RFC 3339 full-time](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) validation action.
 
-Format: `hh:mm:ss[.fffffffff](Z|±hh:mm)`
+Format: `hh:mm:ss[.fraction](Z|±hh:mm)`, where the optional fraction contains one or more digits with no upper limit.
 
 ```ts
 const Action = v.rfcTime<TInput, TMessage>(message);
@@ -37,7 +37,7 @@ The action accepts leap seconds: a value of `60` in the seconds position is only
 
 If the input is not a valid RFC 3339 full-time, you can use `message` to customize the error message.
 
-> This validation action is not a full [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339) parser. It validates the syntax and the leap-second rule described above, but it does not verify the actual date or time against a calendar. In particular, the offset itself is not checked against the real UTC offset of a concrete date and time, and fractional seconds beyond nine digits are not accepted. If you need to validate a complete date-time value, please use the <Link href="../isoDateTime/">`isoDateTime`</Link> or <Link href="../isoTimestamp/">`isoTimestamp`</Link> action instead.
+> This validation action is not a full [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339) parser. It validates the syntax and the leap-second rule described above, but it does not verify the actual date or time against a calendar. In particular, the offset itself is not checked against the real UTC offset of a concrete date and time. If you need to validate a complete date-time value, please use the <Link href="../isoDateTime/">`isoDateTime`</Link> or <Link href="../isoTimestamp/">`isoTimestamp`</Link> action instead.
 
 ## Returns
 

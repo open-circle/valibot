@@ -64,7 +64,7 @@ export interface RfcTimeAction<
 /**
  * Creates an [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) time validation action.
  *
- * Format: `hh:mm:ss[.fffffffff](Z|±hh:mm)`
+ * Format: `hh:mm:ss[.fraction](Z|±hh:mm)`, with one or more fractional digits.
  *
  * Supports leap-second `:60` when its local time maps to `23:59:60Z` (the
  * offset, if present, is applied before validating the leap second).
