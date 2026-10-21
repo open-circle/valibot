@@ -1546,6 +1546,33 @@ describe('convertSchema', () => {
       ).toStrictEqual({
         oneOf: [{ $ref: '#/$defs/innerVariant' }, bazJsonSchema],
       });
+      // A non-variant option whose `overrideSchema` returns a bare `oneOf`
+      // stays a single branch instead of being spliced into the outer array
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [
+            v.object({ type: v.literal('qux'), qux: v.string() }),
+            bazSchema,
+          ]),
+          {
+            overrideSchema({ valibotSchema }) {
+              if (
+                valibotSchema.type === 'object' &&
+                'qux' in valibotSchema.entries
+              ) {
+                return { oneOf: [{ type: 'string' }, { type: 'number' }] };
+              }
+            },
+          },
+          createContext()
+        )
+      ).toStrictEqual({
+        oneOf: [
+          { oneOf: [{ type: 'string' }, { type: 'number' }] },
+          bazJsonSchema,
+        ],
+      });
     });
 
     test('should convert intersect schema', () => {
