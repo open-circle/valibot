@@ -582,9 +582,18 @@ export function convertSchema(
     }
 
     case 'variant': {
-      jsonSchema.oneOf = valibotSchema.options.map((option) =>
-        convertSchema({}, option as SchemaOrPipe, config, context)
-      );
+      jsonSchema.oneOf = valibotSchema.options.flatMap((option) => {
+        const convertedOption = convertSchema(
+          {},
+          option as SchemaOrPipe,
+          config,
+          context
+        );
+        return Array.isArray(convertedOption.oneOf) &&
+          Object.keys(convertedOption).length === 1
+          ? convertedOption.oneOf
+          : [convertedOption];
+      });
       break;
     }
 

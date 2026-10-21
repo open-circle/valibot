@@ -1471,12 +1471,55 @@ describe('convertSchema', () => {
     });
 
     test('should convert variant schema', () => {
+      const fooSchema = v.object({ type: v.literal('foo'), foo: v.string() });
+      const barSchema = v.object({ type: v.literal('bar'), bar: v.number() });
+      const bazSchema = v.object({ type: v.literal('baz'), baz: v.boolean() });
+      const innerVariant = v.variant('type', [fooSchema, barSchema]);
+      const fooJsonSchema = {
+        type: 'object',
+        properties: {
+          type: { const: 'foo' },
+          foo: { type: 'string' },
+        },
+        required: ['type', 'foo'],
+      };
+      const barJsonSchema = {
+        type: 'object',
+        properties: {
+          type: { const: 'bar' },
+          bar: { type: 'number' },
+        },
+        required: ['type', 'bar'],
+      };
+      const bazJsonSchema = {
+        type: 'object',
+        properties: {
+          type: { const: 'baz' },
+          baz: { type: 'boolean' },
+        },
+        required: ['type', 'baz'],
+      };
+      expect(
+        convertSchema({}, innerVariant, undefined, createContext())
+      ).toStrictEqual({
+        oneOf: [fooJsonSchema, barJsonSchema],
+      });
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [innerVariant, bazSchema]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        oneOf: [fooJsonSchema, barJsonSchema, bazJsonSchema],
+      });
       expect(
         convertSchema(
           {},
           v.variant('type', [
-            v.object({ type: v.literal('foo'), foo: v.string() }),
-            v.object({ type: v.literal('bar'), bar: v.number() }),
+            v.pipe(innerVariant, v.description('inner')),
+            bazSchema,
           ]),
           undefined,
           createContext()
@@ -1484,22 +1527,24 @@ describe('convertSchema', () => {
       ).toStrictEqual({
         oneOf: [
           {
-            type: 'object',
-            properties: {
-              type: { const: 'foo' },
-              foo: { type: 'string' },
-            },
-            required: ['type', 'foo'],
+            oneOf: [fooJsonSchema, barJsonSchema],
+            description: 'inner',
           },
-          {
-            type: 'object',
-            properties: {
-              type: { const: 'bar' },
-              bar: { type: 'number' },
-            },
-            required: ['type', 'bar'],
-          },
+          bazJsonSchema,
         ],
+      });
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [innerVariant, bazSchema]),
+          undefined,
+          createContext({
+            definitions: {},
+            referenceMap: new ReferenceMap().set(innerVariant, 'innerVariant'),
+          })
+        )
+      ).toStrictEqual({
+        oneOf: [{ $ref: '#/$defs/innerVariant' }, bazJsonSchema],
       });
     });
 
