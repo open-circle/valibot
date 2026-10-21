@@ -758,6 +758,37 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should flatten nested union in nullable schema', () => {
+      expect(
+        convertSchema(
+          {},
+          v.nullable(v.union([v.string(), v.number()])),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        anyOf: [{ type: 'string' }, { type: 'number' }, { type: 'null' }],
+      });
+      expect(
+        convertSchema(
+          {},
+          v.nullable(
+            v.pipe(v.union([v.string(), v.number()]), v.description('foo'))
+          ),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        anyOf: [
+          {
+            anyOf: [{ type: 'string' }, { type: 'number' }],
+            description: 'foo',
+          },
+          { type: 'null' },
+        ],
+      });
+    });
+
     test('should convert nullable schema for openapi-3.0', () => {
       expect(
         convertSchema(
@@ -817,6 +848,37 @@ describe('convertSchema', () => {
         convertSchema({}, v.nullish(v.string()), undefined, createContext())
       ).toStrictEqual({
         anyOf: [{ type: 'string' }, { type: 'null' }],
+      });
+    });
+
+    test('should flatten nested union in nullish schema', () => {
+      expect(
+        convertSchema(
+          {},
+          v.nullish(v.union([v.string(), v.number()])),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        anyOf: [{ type: 'string' }, { type: 'number' }, { type: 'null' }],
+      });
+      expect(
+        convertSchema(
+          {},
+          v.nullish(
+            v.pipe(v.union([v.string(), v.number()]), v.description('foo'))
+          ),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        anyOf: [
+          {
+            anyOf: [{ type: 'string' }, { type: 'number' }],
+            description: 'foo',
+          },
+          { type: 'null' },
+        ],
       });
     });
 
@@ -1470,6 +1532,32 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should flatten nested union and nullable schemas in union schema', () => {
+      expect(
+        convertSchema(
+          {},
+          v.union([
+            v.union([v.string(), v.number()]),
+            v.nullable(v.boolean()),
+            v.pipe(v.union([v.string(), v.number()]), v.description('foo')),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        anyOf: [
+          { type: 'string' },
+          { type: 'number' },
+          { type: 'boolean' },
+          { type: 'null' },
+          {
+            anyOf: [{ type: 'string' }, { type: 'number' }],
+            description: 'foo',
+          },
+        ],
+      });
+    });
+
     test('should convert variant schema', () => {
       expect(
         convertSchema(
@@ -1529,6 +1617,73 @@ describe('convertSchema', () => {
               bar: { type: 'number' },
             },
             required: ['bar'],
+          },
+        ],
+      });
+    });
+
+    test('should flatten nested intersect schemas in intersect schema', () => {
+      expect(
+        convertSchema(
+          {},
+          v.intersect([
+            v.intersect([
+              v.object({ foo: v.string() }),
+              v.object({ bar: v.number() }),
+            ]),
+            v.object({ baz: v.boolean() }),
+            v.pipe(
+              v.intersect([
+                v.object({ qux: v.string() }),
+                v.object({ quux: v.number() }),
+              ]),
+              v.description('foo')
+            ),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        allOf: [
+          {
+            type: 'object',
+            properties: {
+              foo: { type: 'string' },
+            },
+            required: ['foo'],
+          },
+          {
+            type: 'object',
+            properties: {
+              bar: { type: 'number' },
+            },
+            required: ['bar'],
+          },
+          {
+            type: 'object',
+            properties: {
+              baz: { type: 'boolean' },
+            },
+            required: ['baz'],
+          },
+          {
+            allOf: [
+              {
+                type: 'object',
+                properties: {
+                  qux: { type: 'string' },
+                },
+                required: ['qux'],
+              },
+              {
+                type: 'object',
+                properties: {
+                  quux: { type: 'number' },
+                },
+                required: ['quux'],
+              },
+            ],
+            description: 'foo',
           },
         ],
       });
