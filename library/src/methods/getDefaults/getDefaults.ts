@@ -68,7 +68,12 @@ export function getDefaults<
   if ('entries' in schema) {
     const object: Record<string, unknown> = {};
     for (const key in schema.entries) {
-      object[key] = getDefaults(schema.entries[key]);
+      Object.defineProperty(object, key, {
+        value: getDefaults(schema.entries[key]),
+        enumerable: true,
+        configurable: true,
+        writable: true,
+      });
     }
     return object as InferDefaults<TSchema>;
   }

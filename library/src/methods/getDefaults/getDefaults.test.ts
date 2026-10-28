@@ -10,6 +10,7 @@ import {
   strictTuple,
   string,
   tuple,
+  unknown,
 } from '../../schemas/index.ts';
 import { getDefaults } from './getDefaults.ts';
 
@@ -29,6 +30,23 @@ describe('getDefaults', () => {
   describe('should return object defaults', () => {
     test('for empty object', () => {
       expect(getDefaults(object({}))).toStrictEqual({});
+    });
+
+    test('for own __proto__ entry', () => {
+      const result = getDefaults(
+        object({ ['__proto__']: optional(string(), 'foo') })
+      );
+      expect(result).toStrictEqual({ ['__proto__']: 'foo' });
+      expect(Object.getPrototypeOf(result)).toBe(Object.prototype);
+    });
+
+    test('for own __proto__ entry with object value', () => {
+      const value = { key: 'foo' };
+      const result = getDefaults(
+        object({ ['__proto__']: optional(unknown(), value) })
+      );
+      expect(result).toStrictEqual({ ['__proto__']: value });
+      expect(Object.getPrototypeOf(result)).toBe(Object.prototype);
     });
 
     test('for simple object', () => {

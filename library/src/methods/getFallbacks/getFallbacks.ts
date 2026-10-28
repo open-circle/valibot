@@ -68,7 +68,12 @@ export function getFallbacks<
   if ('entries' in schema) {
     const object: Record<string, unknown> = {};
     for (const key in schema.entries) {
-      object[key] = getFallbacks(schema.entries[key]);
+      Object.defineProperty(object, key, {
+        value: getFallbacks(schema.entries[key]),
+        enumerable: true,
+        configurable: true,
+        writable: true,
+      });
     }
     return object as InferFallbacks<TSchema>;
   }
