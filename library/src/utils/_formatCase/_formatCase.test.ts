@@ -291,6 +291,18 @@ describe('_formatCase', () => {
       );
     });
 
+    test('should split at supplementary-plane case boundaries', () => {
+      expect(_formatCase('foo\u{10400}pple', '_', false, false)).toBe(
+        'foo_\u{10428}pple'
+      );
+      expect(_formatCase('\u{10400}\u{10400}pple', '_', false, false)).toBe(
+        '\u{10428}_\u{10428}pple'
+      );
+      expect(_formatCase('AB\u{10428}c', '_', false, false)).toBe(
+        'a_b\u{10428}c'
+      );
+    });
+
     test('should handle complex mixed input', () => {
       expect(_formatCase('this_is-aTest_String', '_', false, false)).toBe(
         'this_is_a_test_string'
