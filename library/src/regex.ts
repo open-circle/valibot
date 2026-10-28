@@ -59,7 +59,7 @@ export const EMOJI_REGEX: RegExp =
  *
  * Hint: We decided against the `i` flag for better JSON Schema compatibility.
  */
-export const HEXADECIMAL_REGEX: RegExp = /^(?:0[hx])?[\da-fA-F]+$/u;
+export const HEXADECIMAL_REGEX: RegExp = /^(?:0[hHxX])?[\da-fA-F]+$/u;
 
 /**
  * [Hex color](https://en.wikipedia.org/wiki/Web_colors#Hex_triplet) regex.
@@ -188,7 +188,7 @@ export const NANO_ID_REGEX: RegExp = /^[\w-]+$/u;
 /**
  * [Octal](https://en.wikipedia.org/wiki/Octal) regex.
  */
-export const OCTAL_REGEX: RegExp = /^(?:0o)?[0-7]+$/u;
+export const OCTAL_REGEX: RegExp = /^(?:0[oO])?[0-7]+$/u;
 
 /**
  * [RFC 5322 email address](https://datatracker.ietf.org/doc/html/rfc5322#section-3.4.1) regex.
