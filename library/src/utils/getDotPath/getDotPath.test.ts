@@ -1,7 +1,33 @@
 import { describe, expect, test } from 'vitest';
+import type { BaseIssue } from '../../types/index.ts';
 import { getDotPath } from './getDotPath.ts';
 
 describe('getDotPath', () => {
+  test.each([
+    [[''], ''],
+    [['', 'leaf'], '.leaf'],
+    [['', '', 'leaf'], '..leaf'],
+    [['parent', ''], 'parent.'],
+    [[0, 'leaf'], '0.leaf'],
+  ] as const)('should preserve every segment of %j', (keys, expected) => {
+    const issue: BaseIssue<unknown> = {
+      kind: 'schema',
+      type: 'string',
+      input: 123,
+      expected: 'string',
+      received: '123',
+      message: 'Invalid type: Expected string but received 123',
+      path: keys.map((key) => ({
+        type: 'unknown',
+        origin: 'value',
+        input: {},
+        key,
+        value: 123,
+      })) as NonNullable<BaseIssue<unknown>['path']>,
+    };
+    expect(getDotPath(issue)).toBe(expected);
+  });
+
   test('should return null if path is undefined', () => {
     expect(
       getDotPath({

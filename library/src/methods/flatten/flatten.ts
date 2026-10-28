@@ -96,7 +96,7 @@ export function flatten(
       const dotPath = getDotPath(issue);
 
       // If path has valid keys, add message to nested errors
-      if (dotPath) {
+      if (dotPath !== null) {
         if (!flatErrors.nested) {
           // @ts-expect-error
           flatErrors.nested = {};
