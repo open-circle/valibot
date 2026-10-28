@@ -122,11 +122,15 @@ export function maxCodePoints(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getCodePointCount(dataset.value);
-        if (count > this.requirement) {
-          _addIssue(this, 'code points', dataset, config, {
-            received: `${count}`,
-          });
+        // Hint: Code point count cannot exceed UTF-16 length, so skip counting
+        // when the length is within the requirement
+        if (dataset.value.length > this.requirement) {
+          const count = _getCodePointCount(dataset.value);
+          if (count > this.requirement) {
+            _addIssue(this, 'code points', dataset, config, {
+              received: `${count}`,
+            });
+          }
         }
       }
       return dataset;

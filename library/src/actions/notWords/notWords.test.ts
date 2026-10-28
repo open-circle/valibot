@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { _getWordCount } from '../../utils/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
@@ -85,6 +85,16 @@ describe('notWords', () => {
         'Hi, welcome!',
         'Hi, welcome home! How are you?',
       ]);
+    });
+
+    test('without counting if the requirement exceeds the upper bound', () => {
+      const segmentSpy = vi.spyOn(Intl.Segmenter.prototype, 'segment');
+      try {
+        notWords('en', 5)['~run']({ typed: true, value: 'foo' }, {});
+        expect(segmentSpy).not.toHaveBeenCalled();
+      } finally {
+        segmentSpy.mockRestore();
+      }
     });
   });
 

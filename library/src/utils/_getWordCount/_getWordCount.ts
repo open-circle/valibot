@@ -5,16 +5,24 @@ let store: Map<string, Intl.Segmenter>;
  *
  * @param locales The locales to be used.
  * @param input The input to be measured.
+ * @param limit The optional count limit, at least 1. Defaults to counting
+ * the entire input.
  *
- * @returns The word count.
+ * @returns The word count, or the count at which the limit was reached.
  *
  * @internal
  */
 // @__NO_SIDE_EFFECTS__
 export function _getWordCount(
   locales: Intl.LocalesArgument,
-  input: string
+  input: string,
+  limit: number = Infinity
 ): number {
+  // Hint: An empty input has no words, so skip the expensive segmentation and
+  // avoid creating the segmenter
+  if (input.length === 0) {
+    return 0;
+  }
   if (!store) {
     store = new Map();
   }
@@ -33,6 +41,9 @@ export function _getWordCount(
   for (const segment of segments) {
     if (segment.isWordLike) {
       count++;
+      if (count >= limit) {
+        break;
+      }
     }
   }
   return count;
