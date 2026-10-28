@@ -131,7 +131,8 @@ function flattenPipe(pipe: Pipe): Pipe {
  * @returns The encoded JSON Pointer fragment.
  */
 function getDefinitionRef(referenceId: string): string {
-  return `#/$defs/${referenceId.replaceAll('~', '~0').replaceAll('/', '~1')}`;
+  const token = referenceId.replaceAll('~', '~0').replaceAll('/', '~1');
+  return `#/$defs/${encodeURIComponent(token)}`;
 }
 
 /**
