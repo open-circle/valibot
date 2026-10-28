@@ -1503,6 +1503,489 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should convert a variant with a shared discriminator as anyOf', () => {
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [
+            v.object({ type: v.literal('dog'), name: v.string() }),
+            v.object({ type: v.literal('dog'), breed: v.string() }),
+            v.object({ type: v.literal('cat'), indoor: v.boolean() }),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        anyOf: [
+          {
+            type: 'object',
+            properties: {
+              type: { const: 'dog' },
+              name: { type: 'string' },
+            },
+            required: ['type', 'name'],
+          },
+          {
+            type: 'object',
+            properties: {
+              type: { const: 'dog' },
+              breed: { type: 'string' },
+            },
+            required: ['type', 'breed'],
+          },
+          {
+            type: 'object',
+            properties: {
+              type: { const: 'cat' },
+              indoor: { type: 'boolean' },
+            },
+            required: ['type', 'indoor'],
+          },
+        ],
+      });
+    });
+
+    test('should convert a variant with an overlapping picklist as anyOf', () => {
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [
+            v.object({
+              type: v.picklist(['dog', 'wolf']),
+              name: v.string(),
+            }),
+            v.object({ type: v.literal('dog'), breed: v.string() }),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        anyOf: [
+          {
+            type: 'object',
+            properties: {
+              type: { type: 'string', enum: ['dog', 'wolf'] },
+              name: { type: 'string' },
+            },
+            required: ['type', 'name'],
+          },
+          {
+            type: 'object',
+            properties: {
+              type: { const: 'dog' },
+              breed: { type: 'string' },
+            },
+            required: ['type', 'breed'],
+          },
+        ],
+      });
+    });
+
+    test('should keep oneOf for nested variants with disjoint discriminators', () => {
+      expect(
+        convertSchema(
+          {},
+          v.variant('kind', [
+            v.variant('type', [
+              v.object({
+                kind: v.literal('fruit'),
+                type: v.literal('apple'),
+                name: v.string(),
+              }),
+              v.object({
+                kind: v.literal('fruit'),
+                type: v.literal('banana'),
+                name: v.string(),
+              }),
+            ]),
+            v.variant('type', [
+              v.object({
+                kind: v.literal('vegetable'),
+                type: v.literal('carrot'),
+                name: v.string(),
+              }),
+            ]),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        oneOf: [
+          {
+            oneOf: [
+              {
+                type: 'object',
+                properties: {
+                  kind: { const: 'fruit' },
+                  type: { const: 'apple' },
+                  name: { type: 'string' },
+                },
+                required: ['kind', 'type', 'name'],
+              },
+              {
+                type: 'object',
+                properties: {
+                  kind: { const: 'fruit' },
+                  type: { const: 'banana' },
+                  name: { type: 'string' },
+                },
+                required: ['kind', 'type', 'name'],
+              },
+            ],
+          },
+          {
+            oneOf: [
+              {
+                type: 'object',
+                properties: {
+                  kind: { const: 'vegetable' },
+                  type: { const: 'carrot' },
+                  name: { type: 'string' },
+                },
+                required: ['kind', 'type', 'name'],
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    test('should keep oneOf when picklist discriminators are disjoint', () => {
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [
+            v.object({ type: v.picklist(['dog', 'wolf']), name: v.string() }),
+            v.object({ type: v.picklist(['cat']), indoor: v.boolean() }),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        oneOf: [
+          {
+            type: 'object',
+            properties: {
+              type: { type: 'string', enum: ['dog', 'wolf'] },
+              name: { type: 'string' },
+            },
+            required: ['type', 'name'],
+          },
+          {
+            type: 'object',
+            properties: {
+              type: { type: 'string', enum: ['cat'] },
+              indoor: { type: 'boolean' },
+            },
+            required: ['type', 'indoor'],
+          },
+        ],
+      });
+    });
+
+    test('should convert a variant with a shared union value as anyOf', () => {
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [
+            v.object({
+              type: v.union([v.literal('dog'), v.literal('wolf')]),
+              name: v.string(),
+            }),
+            v.object({ type: v.literal('wolf'), breed: v.string() }),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        anyOf: [
+          {
+            type: 'object',
+            properties: {
+              type: { anyOf: [{ const: 'dog' }, { const: 'wolf' }] },
+              name: { type: 'string' },
+            },
+            required: ['type', 'name'],
+          },
+          {
+            type: 'object',
+            properties: {
+              type: { const: 'wolf' },
+              breed: { type: 'string' },
+            },
+            required: ['type', 'breed'],
+          },
+        ],
+      });
+    });
+
+    test('should convert nullable discriminators that share null as anyOf', () => {
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [
+            v.object({
+              type: v.nullable(v.literal('dog')),
+              name: v.string(),
+            }),
+            v.object({
+              type: v.nullable(v.literal('cat')),
+              indoor: v.boolean(),
+            }),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        anyOf: [
+          {
+            type: 'object',
+            properties: {
+              type: { anyOf: [{ const: 'dog' }, { type: 'null' }] },
+              name: { type: 'string' },
+            },
+            required: ['type', 'name'],
+          },
+          {
+            type: 'object',
+            properties: {
+              type: { anyOf: [{ const: 'cat' }, { type: 'null' }] },
+              indoor: { type: 'boolean' },
+            },
+            required: ['type', 'indoor'],
+          },
+        ],
+      });
+    });
+
+    test('should convert an unbounded discriminator that overlaps a literal as anyOf', () => {
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [
+            v.object({ type: v.string(), name: v.string() }),
+            v.object({ type: v.literal('dog'), breed: v.string() }),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        anyOf: [
+          {
+            type: 'object',
+            properties: {
+              type: { type: 'string' },
+              name: { type: 'string' },
+            },
+            required: ['type', 'name'],
+          },
+          {
+            type: 'object',
+            properties: {
+              type: { const: 'dog' },
+              breed: { type: 'string' },
+            },
+            required: ['type', 'breed'],
+          },
+        ],
+      });
+    });
+
+    test('should keep oneOf for disjoint undefinedable discriminators', () => {
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [
+            v.object({
+              type: v.undefinedable(v.literal('dog')),
+              name: v.string(),
+            }),
+            v.object({
+              type: v.undefinedable(v.literal('cat')),
+              indoor: v.boolean(),
+            }),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        oneOf: [
+          {
+            type: 'object',
+            properties: {
+              type: { const: 'dog' },
+              name: { type: 'string' },
+            },
+            required: ['type', 'name'],
+          },
+          {
+            type: 'object',
+            properties: {
+              type: { const: 'cat' },
+              indoor: { type: 'boolean' },
+            },
+            required: ['type', 'indoor'],
+          },
+        ],
+      });
+    });
+
+    test('should keep oneOf when optional is nested in a required union', () => {
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [
+            v.object({
+              type: v.union([v.optional(v.literal('dog')), v.literal('wolf')]),
+              name: v.string(),
+            }),
+            v.object({
+              type: v.union([v.optional(v.literal('cat')), v.literal('tiger')]),
+              indoor: v.boolean(),
+            }),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        oneOf: [
+          {
+            type: 'object',
+            properties: {
+              type: { anyOf: [{ const: 'dog' }, { const: 'wolf' }] },
+              name: { type: 'string' },
+            },
+            required: ['type', 'name'],
+          },
+          {
+            type: 'object',
+            properties: {
+              type: { anyOf: [{ const: 'cat' }, { const: 'tiger' }] },
+              indoor: { type: 'boolean' },
+            },
+            required: ['type', 'indoor'],
+          },
+        ],
+      });
+    });
+
+    test('should convert optional discriminators that can both be omitted as anyOf', () => {
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [
+            v.object({ type: v.optional(v.literal('dog')), name: v.string() }),
+            v.object({
+              type: v.optional(v.literal('cat')),
+              indoor: v.boolean(),
+            }),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        anyOf: [
+          {
+            type: 'object',
+            properties: {
+              type: { const: 'dog' },
+              name: { type: 'string' },
+            },
+            required: ['name'],
+          },
+          {
+            type: 'object',
+            properties: {
+              type: { const: 'cat' },
+              indoor: { type: 'boolean' },
+            },
+            required: ['indoor'],
+          },
+        ],
+      });
+    });
+
+    test('should keep oneOf for a null discriminator and a literal', () => {
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [
+            v.object({ type: v.null(), name: v.string() }),
+            v.object({ type: v.literal('dog'), breed: v.string() }),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        oneOf: [
+          {
+            type: 'object',
+            properties: {
+              type: { type: 'null' },
+              name: { type: 'string' },
+            },
+            required: ['type', 'name'],
+          },
+          {
+            type: 'object',
+            properties: {
+              type: { const: 'dog' },
+              breed: { type: 'string' },
+            },
+            required: ['type', 'breed'],
+          },
+        ],
+      });
+    });
+
+    test('should convert a nested variant that shares a discriminator as anyOf', () => {
+      expect(
+        convertSchema(
+          {},
+          v.variant('type', [
+            v.variant('type', [
+              v.object({ type: v.literal('dog'), name: v.string() }),
+              v.object({ type: v.literal('cat'), indoor: v.boolean() }),
+            ]),
+            v.object({ type: v.literal('dog'), breed: v.string() }),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        anyOf: [
+          {
+            oneOf: [
+              {
+                type: 'object',
+                properties: {
+                  type: { const: 'dog' },
+                  name: { type: 'string' },
+                },
+                required: ['type', 'name'],
+              },
+              {
+                type: 'object',
+                properties: {
+                  type: { const: 'cat' },
+                  indoor: { type: 'boolean' },
+                },
+                required: ['type', 'indoor'],
+              },
+            ],
+          },
+          {
+            type: 'object',
+            properties: {
+              type: { const: 'dog' },
+              breed: { type: 'string' },
+            },
+            required: ['type', 'breed'],
+          },
+        ],
+      });
+    });
+
     test('should convert intersect schema', () => {
       expect(
         convertSchema(

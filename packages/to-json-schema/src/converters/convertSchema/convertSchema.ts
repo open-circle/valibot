@@ -124,6 +124,241 @@ function flattenPipe(pipe: Pipe): Pipe {
 }
 
 /**
+ * Schema fields used to decide whether variant options can overlap.
+ */
+interface VariantShape {
+  readonly type: string;
+  readonly literal?: unknown;
+  readonly options?: readonly unknown[];
+  readonly wrapped?: VariantShape;
+  readonly entries?: Readonly<Record<string, VariantShape | undefined>>;
+}
+
+/**
+ * Finite discriminator values accepted by one variant option.
+ *
+ * `values` is `null` when the discriminator is not a finite set of JSON
+ * constants, so it can overlap any other option.
+ */
+interface DiscriminatorValues {
+  readonly values: ReadonlySet<unknown> | null;
+  readonly acceptsAbsence: boolean;
+}
+
+const OBJECT_SCHEMA_TYPES: ReadonlySet<string> = new Set([
+  'loose_object',
+  'object',
+  'object_with_rest',
+  'strict_object',
+]);
+
+/**
+ * Reads the finite JSON values accepted by a discriminator schema.
+ *
+ * A missing object key is not one of these values. Only an `optional`,
+ * `exact_optional`, or `nullish` object entry accepts an absent key.
+ *
+ * @param schema The discriminator schema.
+ *
+ * @returns The values that schema accepts, or `null` when the set is open.
+ */
+function finiteDiscriminatorValues(
+  schema: VariantShape
+): ReadonlySet<unknown> | null {
+  if (
+    schema.type === 'exact_optional' ||
+    schema.type === 'optional' ||
+    schema.type === 'undefinedable'
+  ) {
+    return schema.wrapped ? finiteDiscriminatorValues(schema.wrapped) : null;
+  }
+
+  if (schema.type === 'nullable' || schema.type === 'nullish') {
+    const wrapped = schema.wrapped
+      ? finiteDiscriminatorValues(schema.wrapped)
+      : null;
+    if (!wrapped) {
+      return null;
+    }
+    return new Set([...wrapped, null]);
+  }
+
+  if (schema.type === 'null') {
+    return new Set([null]);
+  }
+
+  if (schema.type === 'literal') {
+    return isJsonConstValue(schema.literal) ? new Set([schema.literal]) : null;
+  }
+
+  if (schema.type === 'enum' || schema.type === 'picklist') {
+    const values = new Set<unknown>();
+    for (const option of schema.options ?? []) {
+      if (!isJsonConstValue(option)) {
+        return null;
+      }
+      values.add(option);
+    }
+    return values;
+  }
+
+  if (schema.type === 'union') {
+    const values = new Set<unknown>();
+    for (const option of schema.options ?? []) {
+      const inner = finiteDiscriminatorValues(option as VariantShape);
+      if (!inner) {
+        return null;
+      }
+      for (const value of inner) {
+        values.add(value);
+      }
+    }
+    return values;
+  }
+
+  return null;
+}
+
+/**
+ * Reads one object entry, including whether that entry may be omitted.
+ *
+ * @param entry The object entry schema.
+ *
+ * @returns The discriminator values for that entry.
+ */
+function objectEntryDiscriminator(entry: VariantShape): DiscriminatorValues {
+  if (entry.type === 'exact_optional' || entry.type === 'optional') {
+    return {
+      values: entry.wrapped ? finiteDiscriminatorValues(entry.wrapped) : null,
+      acceptsAbsence: true,
+    };
+  }
+
+  if (entry.type === 'nullish') {
+    const wrapped = entry.wrapped
+      ? finiteDiscriminatorValues(entry.wrapped)
+      : null;
+    if (!wrapped) {
+      return { values: null, acceptsAbsence: true };
+    }
+    return {
+      values: new Set([...wrapped, null]),
+      acceptsAbsence: true,
+    };
+  }
+
+  return {
+    values: finiteDiscriminatorValues(entry),
+    acceptsAbsence: false,
+  };
+}
+
+/**
+ * Combines discriminator values from several schemas.
+ *
+ * @param sets The discriminator values of each schema.
+ *
+ * @returns The union of those values.
+ */
+function unionDiscriminatorValues(
+  sets: readonly DiscriminatorValues[]
+): DiscriminatorValues {
+  const values = new Set<unknown>();
+  let unbounded = false;
+  let acceptsAbsence = false;
+
+  for (const set of sets) {
+    if (set.acceptsAbsence) {
+      acceptsAbsence = true;
+    }
+    if (!set.values) {
+      unbounded = true;
+      continue;
+    }
+    for (const value of set.values) {
+      values.add(value);
+    }
+  }
+
+  return { values: unbounded ? null : values, acceptsAbsence };
+}
+
+/**
+ * Reads the discriminator values of one variant option for a key.
+ *
+ * @param key The discriminator key.
+ * @param option The variant option.
+ *
+ * @returns The values that option accepts for the key.
+ */
+function optionDiscriminatorValues(
+  key: string,
+  option: VariantShape
+): DiscriminatorValues {
+  if (option.type === 'variant') {
+    return unionDiscriminatorValues(
+      (option.options ?? []).map((nested) =>
+        optionDiscriminatorValues(key, nested as VariantShape)
+      )
+    );
+  }
+
+  if (OBJECT_SCHEMA_TYPES.has(option.type)) {
+    const entry =
+      option.entries &&
+      Object.prototype.hasOwnProperty.call(option.entries, key)
+        ? option.entries[key]
+        : undefined;
+    if (!entry) {
+      return { values: null, acceptsAbsence: true };
+    }
+    return objectEntryDiscriminator(entry);
+  }
+
+  return { values: null, acceptsAbsence: false };
+}
+
+/**
+ * Whether any two variant options can accept the same discriminator.
+ *
+ * @param key The discriminator key.
+ * @param options The variant options.
+ *
+ * @returns Whether the options overlap.
+ */
+function variantOptionsOverlap(
+  key: string,
+  options: readonly object[]
+): boolean {
+  const seen = new Set<string>();
+  let unbounded = 0;
+  let absence = 0;
+
+  for (const option of options) {
+    const set = optionDiscriminatorValues(key, option as VariantShape);
+    if (set.acceptsAbsence) {
+      absence++;
+      if (absence > 1) {
+        return true;
+      }
+    }
+    if (!set.values) {
+      unbounded++;
+      continue;
+    }
+    for (const value of set.values) {
+      const token = JSON.stringify(value);
+      if (seen.has(token)) {
+        return true;
+      }
+      seen.add(token);
+    }
+  }
+
+  return unbounded > 1 || (unbounded === 1 && seen.size > 0);
+}
+
+/**
  * Returns the JSON Pointer reference for a definition key.
  *
  * @param referenceId The unescaped definition key.
@@ -582,9 +817,18 @@ export function convertSchema(
     }
 
     case 'variant': {
-      jsonSchema.oneOf = valibotSchema.options.map((option) =>
+      const options = valibotSchema.options.map((option) =>
         convertSchema({}, option as SchemaOrPipe, config, context)
       );
+      // Hint: oneOf rejects a value that matches more than one option. A
+      // variant accepts the first matching option, so overlapping
+      // discriminators have to be written as anyOf. Disjoint discriminators
+      // stay oneOf, because a value can match only one option.
+      if (variantOptionsOverlap(valibotSchema.key, valibotSchema.options)) {
+        jsonSchema.anyOf = options;
+      } else {
+        jsonSchema.oneOf = options;
+      }
       break;
     }
 
