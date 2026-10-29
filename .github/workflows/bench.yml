@@ -1,0 +1,38 @@
+name: Benchmark
+
+on:
+  pull_request:
+    paths:
+      - 'library/**'
+      - 'bench/**'
+      - '.github/workflows/bench.yml'
+      - '.github/actions/environment/**'
+
+permissions:
+  contents: read
+
+jobs:
+  bench:
+    name: Run benchmarks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout pull request base
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.base.sha }}
+      - name: Setup environment
+        uses: ./.github/actions/environment
+      - name: Benchmark pull request base
+        run: pnpm exec vitest bench --run representative --outputJson=/tmp/valibot-baseline.json
+        working-directory: bench
+      - name: Checkout pull request
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Install pull request dependencies
+        run: pnpm install
+      - name: Compare pull request benchmarks
+        run: pnpm exec vitest bench --run representative --compare=/tmp/valibot-baseline.json
+        working-directory: bench
