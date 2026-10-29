@@ -105,7 +105,7 @@ import * as v from 'valibot';
 const Schema = v.object({
   value: v.pipe(
     v.optional(v.string()),
-    v.transform((input) => input.toUpperCase()) // Does not run for missing keys
+    v.transform((input) => input?.toUpperCase()) // Does not run for missing keys
   ),
 });
 
