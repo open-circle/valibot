@@ -50,9 +50,9 @@ Schema that contains only the selected keys of an existing schema.
 ```ts
 const PickedSchema = v.pick(
   v.object({
-    key1: string(),
-    key2: number(),
-    key3: boolean(),
+    key1: v.string(),
+    key2: v.number(),
+    key3: v.boolean(),
   }),
   ['key1', 'key3']
 ); // { key1: string; key3: boolean }
