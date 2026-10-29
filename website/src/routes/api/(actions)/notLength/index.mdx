@@ -61,7 +61,7 @@ Schema to validate the length of an array.
 
 ```ts
 const ArraySchema = v.pipe(
-  v.array(number()),
+  v.array(v.number()),
   v.notLength(10, 'The array must not contain 10 numbers.')
 );
 ```
