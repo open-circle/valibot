@@ -1,0 +1,25 @@
+---
+title: JsonValueSchema
+description: JSON value schema interface.
+contributors:
+  - ksaurav24
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# JsonValueSchema
+
+JSON value schema interface.
+
+## Generics
+
+- `TMessage` <Property {...properties.TMessage} />
+
+## Definition
+
+- `JsonValueSchema` <Property {...properties.BaseSchema} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `message` <Property {...properties.message} />
