@@ -71,8 +71,10 @@ export type SchemaWithCacheAsync<
 /**
  * Caches the output of a schema.
  *
- * Hint: Primitive inputs are cached by value. Object and function inputs are
- * cached by reference identity, so mutating input objects and reusing the same
+ * Hint: Primitive inputs are cached by value, except for Symbols, which are
+ * cached under a single shared key and are not distinguished from one another.
+ * Object and function inputs are cached by reference
+ * identity, so mutating input objects and reusing the same
  * reference can return a stale cached dataset. Returned objects are also
  * reused by reference, so mutating cached output can affect later cache hits.
  *
@@ -92,8 +94,10 @@ export function cacheAsync<
 /**
  * Caches the output of a schema.
  *
- * Hint: Primitive inputs are cached by value. Object and function inputs are
- * cached by reference identity, so mutating input objects and reusing the same
+ * Hint: Primitive inputs are cached by value, except for Symbols, which are
+ * cached under a single shared key and are not distinguished from one another.
+ * Object and function inputs are cached by reference
+ * identity, so mutating input objects and reusing the same
  * reference can return a stale cached dataset. Returned objects are also
  * reused by reference, so mutating cached output can affect later cache hits.
  *
