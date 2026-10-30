@@ -5,6 +5,7 @@ All notable changes to the library will be documented in this file.
 ## vX.X.X (Month DD, YYYY)
 
 - Change `isbn`, `creditCard` and `imei` actions to check digits by character code instead of splitting and parsing the input to improve performance (pull request #1634)
+- Change `summarize` method to list sub issues with a path, such as the nested issues of object options of a `union` schema, indented below their parent issue (issue #1337)
 - Fix `uuid` action to reject UUIDs with a version outside 1 to 8 or a variant outside RFC 9562, while still accepting the Nil and Max UUIDs (pull request #1643)
 
 ## v1.5.0 (September 09, 2026)
