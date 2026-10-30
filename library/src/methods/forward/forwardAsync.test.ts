@@ -198,6 +198,84 @@ describe('forwardAsync', () => {
     >);
   });
 
+
+  test('should stop forwarding if path input is null', async () => {
+    const input = { nested: null };
+    interface Input { nested: null }
+    const requirement = () => false;
+    expect(
+      await forwardAsync<Input, CheckIssue<Input>, ['nested', 'key']>(
+        check(requirement, 'message'),
+        ['nested', 'key']
+      )['~run']({ typed: true, value: input }, {})
+    ).toStrictEqual({
+      typed: true,
+      value: input,
+      issues: [
+        {
+          kind: 'validation',
+          type: 'check',
+          input,
+          expected: null,
+          received: 'Object',
+          message: 'message',
+          path: [
+            {
+              type: 'unknown',
+              origin: 'value',
+              input: input,
+              key: 'nested',
+              value: null,
+            },
+          ],
+          requirement,
+          issues: undefined,
+          lang: undefined,
+          abortEarly: undefined,
+          abortPipeEarly: undefined,
+        },
+      ],
+    } satisfies PartialDataset<Input, CheckIssue<Input>>);
+  });
+
+  test('should not stop forwarding if intermediate value is 0', async () => {
+    const input = { count: 0 };
+    interface Input { count: number }
+    const requirement = () => false;
+    expect(
+      await forwardAsync<Input, CheckIssue<Input>, ['count']>(
+        check(requirement, 'message'),
+        ['count']
+      )['~run']({ typed: true, value: input }, {})
+    ).toStrictEqual({
+      typed: true,
+      value: input,
+      issues: [
+        {
+          kind: 'validation',
+          type: 'check',
+          input,
+          expected: null,
+          received: 'Object',
+          message: 'message',
+          path: [
+            {
+              type: 'unknown',
+              origin: 'value',
+              input: input,
+              key: 'count',
+              value: 0,
+            },
+          ],
+          requirement,
+          issues: undefined,
+          lang: undefined,
+          abortEarly: undefined,
+          abortPipeEarly: undefined,
+        },
+      ],
+    } satisfies PartialDataset<Input, CheckIssue<Input>>);
+  });
   test('should do nothing if there are no issues', async () => {
     const input = { nested: [{ key: 'value_1' }, { key: 'value_2' }] };
     type Input = typeof input;
