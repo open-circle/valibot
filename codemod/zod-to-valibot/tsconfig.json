@@ -5,11 +5,12 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "skipLibCheck": true,
     "strict": true,
     "target": "ES6",
-    "allowJs": true
+    "allowJs": true,
+    "types": ["node"]
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["node_modules", "./dist/**/*", "./__testfixtures__/**/*"]

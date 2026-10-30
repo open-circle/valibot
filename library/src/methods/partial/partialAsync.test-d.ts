@@ -44,30 +44,30 @@ describe('partialAsync', () => {
     describe('should infer correct types', () => {
       test('of input', () => {
         expectTypeOf<InferInput<Schema1>>().toEqualTypeOf<{
-          key1?: string;
-          key2?: number;
-          key3?: string;
-          key4?: number | null;
+          key1?: string | undefined;
+          key2?: number | undefined;
+          key3?: string | undefined;
+          key4?: number | null | undefined;
         }>();
         expectTypeOf<InferInput<Schema2>>().toEqualTypeOf<{
-          key1?: string;
+          key1?: string | undefined;
           key2: number;
-          key3?: string;
-          key4?: number | null;
+          key3?: string | undefined;
+          key4?: number | null | undefined;
         }>();
       });
 
       test('of output', () => {
         expectTypeOf<InferOutput<Schema1>>().toEqualTypeOf<{
-          key1?: string;
-          key2?: number;
-          key3?: string;
-          key4?: number;
+          key1?: string | undefined;
+          key2?: number | undefined;
+          key3?: string | undefined;
+          key4?: number | undefined;
         }>();
         expectTypeOf<InferOutput<Schema2>>().toEqualTypeOf<{
-          key1?: string;
+          key1?: string | undefined;
           key2: number;
-          key3?: string;
+          key3?: string | undefined;
           key4: number;
         }>();
       });
@@ -105,18 +105,18 @@ describe('partialAsync', () => {
       test('of input', () => {
         expectTypeOf<InferInput<Schema1>>().toEqualTypeOf<
           {
-            key1?: string;
-            key2?: number;
-            key3?: string;
-            key4?: number | null;
+            key1?: string | undefined;
+            key2?: number | undefined;
+            key3?: string | undefined;
+            key4?: number | null | undefined;
           } & { [key: string]: boolean }
         >();
         expectTypeOf<InferInput<Schema2>>().toEqualTypeOf<
           {
             key1: string;
-            key2?: number;
-            key3?: string;
-            key4?: number | null;
+            key2?: number | undefined;
+            key3?: string | undefined;
+            key4?: number | null | undefined;
           } & { [key: string]: boolean }
         >();
       });
@@ -124,17 +124,17 @@ describe('partialAsync', () => {
       test('of output', () => {
         expectTypeOf<InferOutput<Schema1>>().toEqualTypeOf<
           {
-            key1?: string;
-            key2?: number;
-            key3?: string;
-            key4?: number;
+            key1?: string | undefined;
+            key2?: number | undefined;
+            key3?: string | undefined;
+            key4?: number | undefined;
           } & { [key: string]: boolean }
         >();
         expectTypeOf<InferOutput<Schema2>>().toEqualTypeOf<
           {
             key1: string;
-            key2?: number;
-            key3?: string;
+            key2?: number | undefined;
+            key3?: string | undefined;
             key4: number;
           } & { [key: string]: boolean }
         >();
