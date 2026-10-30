@@ -123,8 +123,11 @@ describe('ISBN', () => {
         '978487311873', // too short
         '97848731187345', // too long
         '978030640615X', // X not allowed
-        '9770000000001', // invalid prefix
-        '9800000000002', // invalid prefix
+        '9770000000003', // invalid prefix
+        '9800000000007', // invalid prefix
+        '977-0-000-00000-3', // invalid prefix with separators
+        '0000000000000', // invalid prefix
+        '4006381333931', // EAN-13 without ISBN prefix
       ]);
     });
 
