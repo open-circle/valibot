@@ -44,6 +44,13 @@ As we strive for excellence in our codebase, here are some guidelines to make yo
 - Size matters for PRs: Keep your pull requests concise and focused. Smaller PRs are easier to review and merge, speeding up the development process. This approach helps in isolating changes and simplifying troubleshooting.
 - Crafting a good commit message: Your commit messages are a roadmap of your changes. Make them informative and useful for everyone.
 
+## Benchmarking
+
+If your change is meant to improve performance, back it up with numbers. The repository has a
+runtime benchmark suite (`pnpm bench` in `library`); see [BENCHMARKING.md](BENCHMARKING.md) for how
+to run it, add a case, and record before/after results. Include the relevant baseline vs. optimized
+figures in your pull request.
+
 ## Issues
 
 Submit a [new issue][newissue] if there is a feature to be added, or if a bug was found in the existing code. Before submitting a new issue please review the [existing issues][issues] to avoid creating duplicates. Also, consider resolving current issues or contributing to the discussion on an issue.
