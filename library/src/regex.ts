@@ -1,8 +1,10 @@
 /**
  * [Base64](https://en.wikipedia.org/wiki/Base64) regex.
+ *
+ * Hint: We decided against the `i` flag to avoid matching non-ASCII characters.
  */
 export const BASE64_REGEX: RegExp =
-  /^(?:[\da-z+/]{4})*(?:[\da-z+/]{2}==|[\da-z+/]{3}=)?$/iu;
+  /^(?:[\da-zA-Z+/]{4})*(?:[\da-zA-Z+/]{2}==|[\da-zA-Z+/]{3}=)?$/u;
 
 /**
  * [BIC](https://en.wikipedia.org/wiki/ISO_9362) regex.
