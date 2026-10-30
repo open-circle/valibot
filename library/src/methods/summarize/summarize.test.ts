@@ -1,6 +1,13 @@
 import { describe, expect, test } from 'vitest';
 import type { IncludesIssue, MinLengthIssue } from '../../actions/index.ts';
-import type { NumberIssue, StringIssue } from '../../schemas/index.ts';
+import type {
+  BooleanIssue,
+  LiteralIssue,
+  NumberIssue,
+  ObjectIssue,
+  StringIssue,
+  UnionIssue,
+} from '../../schemas/index.ts';
 import type { ArrayPathItem, ObjectPathItem } from '../../types/issue.ts';
 import { summarize } from './summarize.ts';
 
@@ -200,6 +207,229 @@ describe('summarize', () => {
     expect(summarize([nestedIssue])).toBe(
       '× Invalid type: Expected number but received "foo"\n' +
         '  → at dot.0.path'
+    );
+  });
+
+  test('should return sub issues with path below parent issue', () => {
+    const input = { type: 'unknown', role: 123, age: 'invalid' };
+    const unionIssue: UnionIssue<LiteralIssue | StringIssue | NumberIssue> = {
+      ...commonIssueInfo,
+      kind: 'schema',
+      type: 'union',
+      input,
+      expected: 'Object',
+      received: 'Object',
+      message: 'Invalid type: Expected Object but received Object',
+      path: undefined,
+      issues: [
+        {
+          ...commonIssueInfo,
+          kind: 'schema',
+          type: 'literal',
+          input: 'unknown',
+          expected: '"admin"',
+          received: '"unknown"',
+          message: 'Invalid type: Expected "admin" but received "unknown"',
+          path: [
+            {
+              type: 'object',
+              origin: 'value',
+              input,
+              key: 'type',
+              value: input.type,
+            } satisfies ObjectPathItem,
+          ],
+        },
+        {
+          ...commonIssueInfo,
+          kind: 'schema',
+          type: 'string',
+          input: 123,
+          expected: 'string',
+          received: '123',
+          message: 'Invalid type: Expected string but received 123',
+          path: [
+            {
+              type: 'object',
+              origin: 'value',
+              input,
+              key: 'role',
+              value: input.role,
+            } satisfies ObjectPathItem,
+          ],
+        },
+        {
+          ...commonIssueInfo,
+          kind: 'schema',
+          type: 'literal',
+          input: 'unknown',
+          expected: '"user"',
+          received: '"unknown"',
+          message: 'Invalid type: Expected "user" but received "unknown"',
+          path: [
+            {
+              type: 'object',
+              origin: 'value',
+              input,
+              key: 'type',
+              value: input.type,
+            } satisfies ObjectPathItem,
+          ],
+        },
+        {
+          ...commonIssueInfo,
+          kind: 'schema',
+          type: 'number',
+          input: 'invalid',
+          expected: 'number',
+          received: '"invalid"',
+          message: 'Invalid type: Expected number but received "invalid"',
+          path: [
+            {
+              type: 'object',
+              origin: 'value',
+              input,
+              key: 'age',
+              value: input.age,
+            } satisfies ObjectPathItem,
+          ],
+        },
+      ],
+    };
+    expect(summarize([unionIssue])).toBe(
+      '× Invalid type: Expected Object but received Object\n' +
+        '  × Invalid type: Expected "admin" but received "unknown"\n' +
+        '    → at type\n' +
+        '  × Invalid type: Expected string but received 123\n' +
+        '    → at role\n' +
+        '  × Invalid type: Expected "user" but received "unknown"\n' +
+        '    → at type\n' +
+        '  × Invalid type: Expected number but received "invalid"\n' +
+        '    → at age'
+    );
+  });
+
+  test('should skip sub issues without path', () => {
+    const unionIssue: UnionIssue<StringIssue | NumberIssue | BooleanIssue> = {
+      ...commonIssueInfo,
+      kind: 'schema',
+      type: 'union',
+      input: null,
+      expected: '(string | number | boolean)',
+      received: 'null',
+      message:
+        'Invalid type: Expected (string | number | boolean) but received null',
+      path: undefined,
+      issues: [
+        {
+          ...commonIssueInfo,
+          kind: 'schema',
+          type: 'string',
+          input: null,
+          expected: 'string',
+          received: 'null',
+          message: 'Invalid type: Expected string but received null',
+          path: undefined,
+        },
+        {
+          ...commonIssueInfo,
+          kind: 'schema',
+          type: 'number',
+          input: null,
+          expected: 'number',
+          received: 'null',
+          message: 'Invalid type: Expected number but received null',
+          path: undefined,
+        },
+        {
+          ...commonIssueInfo,
+          kind: 'schema',
+          type: 'boolean',
+          input: null,
+          expected: 'boolean',
+          received: 'null',
+          message: 'Invalid type: Expected boolean but received null',
+          path: undefined,
+        },
+      ],
+    };
+    expect(summarize([unionIssue])).toBe(
+      '× Invalid type: Expected (string | number | boolean) but received null'
+    );
+  });
+
+  test('should prepend path of parent issue to path of sub issues', () => {
+    const input = { user: { user: { age: 'invalid' } } };
+    const unionIssue: UnionIssue<ObjectIssue | NumberIssue> = {
+      ...commonIssueInfo,
+      kind: 'schema',
+      type: 'union',
+      input: input.user,
+      expected: 'Object',
+      received: 'Object',
+      message: 'Invalid type: Expected Object but received Object',
+      path: [
+        {
+          type: 'object',
+          origin: 'value',
+          input,
+          key: 'user',
+          value: input.user,
+        } satisfies ObjectPathItem,
+      ],
+      issues: [
+        {
+          ...commonIssueInfo,
+          kind: 'schema',
+          type: 'object',
+          input: undefined,
+          expected: '"admin"',
+          received: 'undefined',
+          message: 'Invalid key: Expected "admin" but received undefined',
+          path: [
+            {
+              type: 'object',
+              origin: 'key',
+              input: input.user,
+              key: 'admin',
+              value: undefined,
+            } satisfies ObjectPathItem,
+          ],
+        },
+        {
+          ...commonIssueInfo,
+          kind: 'schema',
+          type: 'number',
+          input: 'invalid',
+          expected: 'number',
+          received: '"invalid"',
+          message: 'Invalid type: Expected number but received "invalid"',
+          path: [
+            {
+              type: 'object',
+              origin: 'value',
+              input: input.user,
+              key: 'user',
+              value: input.user.user,
+            } satisfies ObjectPathItem,
+            {
+              type: 'object',
+              origin: 'value',
+              input: input.user.user,
+              key: 'age',
+              value: input.user.user.age,
+            } satisfies ObjectPathItem,
+          ],
+        },
+      ],
+    };
+    expect(summarize([unionIssue])).toBe(
+      '× Invalid type: Expected Object but received Object\n' +
+        '  → at user\n' +
+        '  × Invalid key: Expected "admin" but received undefined\n' +
+        '    → at user.admin\n' +
+        '  × Invalid type: Expected number but received "invalid"\n' +
+        '    → at user.user.age'
     );
   });
 });
