@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import type { StringIssue } from '../../schemas/index.ts';
+import { pipeAsync, safeParseAsync } from '../../methods/index.ts';
+import { array, number, type StringIssue } from '../../schemas/index.ts';
 import type { PartialDataset } from '../../types/dataset.ts';
 import { expectNoActionIssueAsync } from '../../vitest/index.ts';
 import {
@@ -143,5 +144,66 @@ describe('checkItemsAsync', () => {
         ],
       } satisfies PartialDataset<number[], CheckItemsIssue<number[]>>);
     });
+  });
+
+  describe('abort configuration', () => {
+    test.each([
+      [{ abortEarly: true }, [1], [1, -2, -3]],
+      [{}, [1, 2], [1, -2, -3]],
+      [{ abortEarly: false }, [1, 2], [1, -2, -3]],
+      [{ abortPipeEarly: true }, [1, 2], [1, -2, -3]],
+    ])('should respect config %j', async (config, keys, expectedVisited) => {
+      const visited: number[] = [];
+      const messages: number[] = [];
+      const input = [1, -2, -3];
+      const schema = pipeAsync(
+        array(number()),
+        checkItemsAsync<number[], (issue: CheckItemsIssue<number[]>) => string>(
+          async (item, index, array) => {
+            expect(array).toStrictEqual(input);
+            expect(item).toBe(array[index]);
+            visited.push(item);
+            return item > 0;
+          },
+          (issue) => {
+            messages.push(issue.input);
+            return `Invalid item: ${issue.input}`;
+          }
+        )
+      );
+      const result = await safeParseAsync(schema, input, config);
+      expect(visited).toStrictEqual(expectedVisited);
+      expect(messages).toStrictEqual(keys.map((key) => input[key]));
+      expect(result.success).toBe(false);
+      expect(result.typed).toBe(true);
+      expect(result.output).toStrictEqual(input);
+      expect(result.issues).toHaveLength(keys.length);
+      expect(result.issues?.map((issue) => issue.path)).toStrictEqual(
+        keys.map((key) => [
+          { type: 'array', origin: 'value', input, key, value: input[key] },
+        ])
+      );
+      expect(result.issues?.map((issue) => issue.message)).toStrictEqual(
+        keys.map((key) => `Invalid item: ${input[key]}`)
+      );
+    });
+
+    test.each([{ input: [] }, { input: [1, 2, 3] }])(
+      'should accept valid input %j with abortEarly',
+      async ({ input }) => {
+        const schema = pipeAsync(
+          array(number()),
+          checkItemsAsync<number[]>(async (item) => item > 0)
+        );
+        expect(
+          await safeParseAsync(schema, input, { abortEarly: true })
+        ).toStrictEqual({
+          typed: true,
+          success: true,
+          output: input,
+          issues: undefined,
+        });
+      }
+    );
   });
 });

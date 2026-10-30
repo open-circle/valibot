@@ -95,6 +95,9 @@ export function checkItemsAsync(
                 },
               ],
             });
+            if (config.abortEarly) {
+              break;
+            }
           }
         }
       }
