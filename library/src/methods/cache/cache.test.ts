@@ -2,7 +2,7 @@ import { describe, expect, test, vi } from 'vitest';
 import { minLength, transform } from '../../actions/index.ts';
 import { object, string } from '../../schemas/index.ts';
 import { getDotPath } from '../../utils/index.ts';
-import { pipe } from '../index.ts';
+import { parse, pipe } from '../index.ts';
 import { cache, type SchemaWithCache } from './cache.ts';
 
 describe('cache', () => {
@@ -96,6 +96,17 @@ describe('cache', () => {
   });
 
   describe('should respect config changes', () => {
+    test('for strings containing key delimiters', () => {
+      const schema = cache(string());
+
+      expect(
+        parse(schema, 'foo"|"en"|"first', { lang: 'en', message: 'second' })
+      ).toBe('foo"|"en"|"first');
+      expect(
+        parse(schema, 'foo', { lang: 'en', message: 'first"|"en"|"second' })
+      ).toBe('foo');
+    });
+
     test('for lang config', () => {
       const baseSchema = string();
       const runSpy = vi.spyOn(baseSchema, '~run');
