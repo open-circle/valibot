@@ -432,4 +432,106 @@ describe('summarize', () => {
         '    → at user.user.age'
     );
   });
+
+  test('should return sub issues with path of sub issues without path', () => {
+    const input = { user: { a: 1, b: 'invalid', c: 'invalid' } };
+    const unionIssue: UnionIssue<
+      UnionIssue<StringIssue | NumberIssue> | BooleanIssue
+    > = {
+      ...commonIssueInfo,
+      kind: 'schema',
+      type: 'union',
+      input: input.user,
+      expected: 'Object',
+      received: 'Object',
+      message: 'Invalid type: Expected Object but received Object',
+      path: [
+        {
+          type: 'object',
+          origin: 'value',
+          input,
+          key: 'user',
+          value: input.user,
+        } satisfies ObjectPathItem,
+      ],
+      issues: [
+        {
+          ...commonIssueInfo,
+          kind: 'schema',
+          type: 'union',
+          input: input.user,
+          expected: 'Object',
+          received: 'Object',
+          message: 'Invalid type: Expected Object but received Object',
+          path: undefined,
+          issues: [
+            {
+              ...commonIssueInfo,
+              kind: 'schema',
+              type: 'string',
+              input: 1,
+              expected: 'string',
+              received: '1',
+              message: 'Invalid type: Expected string but received 1',
+              path: [
+                {
+                  type: 'object',
+                  origin: 'value',
+                  input: input.user,
+                  key: 'a',
+                  value: input.user.a,
+                } satisfies ObjectPathItem,
+              ],
+            },
+            {
+              ...commonIssueInfo,
+              kind: 'schema',
+              type: 'number',
+              input: 'invalid',
+              expected: 'number',
+              received: '"invalid"',
+              message: 'Invalid type: Expected number but received "invalid"',
+              path: [
+                {
+                  type: 'object',
+                  origin: 'value',
+                  input: input.user,
+                  key: 'b',
+                  value: input.user.b,
+                } satisfies ObjectPathItem,
+              ],
+            },
+          ],
+        },
+        {
+          ...commonIssueInfo,
+          kind: 'schema',
+          type: 'boolean',
+          input: 'invalid',
+          expected: 'boolean',
+          received: '"invalid"',
+          message: 'Invalid type: Expected boolean but received "invalid"',
+          path: [
+            {
+              type: 'object',
+              origin: 'value',
+              input: input.user,
+              key: 'c',
+              value: input.user.c,
+            } satisfies ObjectPathItem,
+          ],
+        },
+      ],
+    };
+    expect(summarize([unionIssue])).toBe(
+      '× Invalid type: Expected Object but received Object\n' +
+        '  → at user\n' +
+        '  × Invalid type: Expected string but received 1\n' +
+        '    → at user.a\n' +
+        '  × Invalid type: Expected number but received "invalid"\n' +
+        '    → at user.b\n' +
+        '  × Invalid type: Expected boolean but received "invalid"\n' +
+        '    → at user.c'
+    );
+  });
 });
