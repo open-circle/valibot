@@ -116,11 +116,20 @@ export function notBytes(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const length = _getByteCount(dataset.value);
-        if (length === this.requirement) {
-          _addIssue(this, 'bytes', dataset, config, {
-            received: `${length}`,
-          });
+        // Hint: A code unit is encoded as one to three bytes, so the byte count
+        // is always between the length of the input and three times that
+        // length. This allows us to skip the encoding if the requirement is
+        // outside of these bounds and therefore can never be matched
+        if (
+          this.requirement >= dataset.value.length &&
+          this.requirement <= dataset.value.length * 3
+        ) {
+          const length = _getByteCount(dataset.value);
+          if (length === this.requirement) {
+            _addIssue(this, 'bytes', dataset, config, {
+              received: `${length}`,
+            });
+          }
         }
       }
       return dataset;

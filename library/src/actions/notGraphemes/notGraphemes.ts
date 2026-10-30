@@ -122,11 +122,21 @@ export function notGraphemes(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getGraphemeCount(dataset.value);
-        if (count === this.requirement) {
-          _addIssue(this, 'graphemes', dataset, config, {
-            received: `${count}`,
-          });
+        // Hint: A grapheme consists of at least one code unit, so the grapheme
+        // count is always between 1 and the length of the input, or 0 if the
+        // input is empty. This allows us to skip the expensive segmentation if
+        // the requirement is outside of these bounds and therefore can never be
+        // matched
+        if (
+          this.requirement >= (dataset.value.length > 0 ? 1 : 0) &&
+          this.requirement <= dataset.value.length
+        ) {
+          const count = _getGraphemeCount(dataset.value);
+          if (count === this.requirement) {
+            _addIssue(this, 'graphemes', dataset, config, {
+              received: `${count}`,
+            });
+          }
         }
       }
       return dataset;
