@@ -135,6 +135,11 @@ window.onerror = (...args) => {
   };
 });
 
+// Clear logs in parent window
+console.clear = () => {
+  parent.postMessage({ type: 'clear' }, '*');
+};
+
 // Listen for code messages
 window.addEventListener('message', (event) => {
   if (event.data.type === 'code') {
