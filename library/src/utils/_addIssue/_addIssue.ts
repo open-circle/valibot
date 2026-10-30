@@ -106,7 +106,13 @@ export function _addIssue<const TContext extends Context>(
   const message =
     other?.message ??
     context.message ??
-    getSpecificMessage(context.reference, issue.lang) ??
+    getSpecificMessage(
+      // Hint: The reference of the base types returns `unknown`, but every
+      // reference passed here is a Valibot schema, validation or
+      // transformation function
+      context.reference as Parameters<typeof getSpecificMessage>[0],
+      issue.lang
+    ) ??
     (isSchema ? getSchemaMessage(issue.lang) : null) ??
     config.message ??
     getGlobalMessage(issue.lang);

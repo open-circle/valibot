@@ -27,11 +27,7 @@ export const properties: Record<string, PropertyProps> = {
           },
         },
       ],
-      return: {
-        type: 'custom',
-        name: 'BaseMetadata',
-        generics: ['any'],
-      },
+      return: 'unknown',
     },
   },
   '~types': {
