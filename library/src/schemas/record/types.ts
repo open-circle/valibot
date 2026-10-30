@@ -1,8 +1,9 @@
-import type { Brand, ReadonlyAction } from '../../actions/index.ts';
+import type { Brand, readonly } from '../../actions/index.ts';
 import type {
   BaseIssue,
   BaseSchema,
   BaseSchemaAsync,
+  BaseTransformation,
   InferInput,
   InferOutput,
   MarkOptional,
@@ -64,6 +65,27 @@ type WithQuestionMarks<
 > = MarkOptional<TObject, OptionalKeys<TObject>>;
 
 /**
+ * Readonly action shape interface.
+ *
+ * Hint: This interface is structurally equivalent to `ReadonlyAction<any>`.
+ * We use it instead of `ReadonlyAction<any>` because relating two
+ * instantiations of `ReadonlyAction` forces TypeScript to measure the variance
+ * of `ReadonlyAction`, which is expensive (see issue #1663).
+ */
+interface ReadonlyActionShape
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  extends BaseTransformation<any, any, never> {
+  /**
+   * The action type.
+   */
+  readonly type: 'readonly';
+  /**
+   * The action reference.
+   */
+  readonly reference: typeof readonly;
+}
+
+/**
  * With readonly type.
  */
 type WithReadonly<
@@ -79,8 +101,7 @@ type WithReadonly<
   TValue extends {
     readonly pipe: readonly unknown[];
   }
-    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ReadonlyAction<any> extends TValue['pipe'][number]
+    ? ReadonlyActionShape extends TValue['pipe'][number]
       ? Readonly<TObject>
       : TObject
     : TObject;
