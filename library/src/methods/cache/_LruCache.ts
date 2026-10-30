@@ -22,7 +22,7 @@ class _LruCache<TValue> implements Cache<TValue> {
   constructor(config?: CacheConfig) {
     this.maxSize = config?.maxSize ?? 1000;
     this.maxAge = config?.maxAge ?? Infinity;
-    this.hasMaxAge = isFinite(this.maxAge);
+    this.hasMaxAge = Number.isFinite(this.maxAge);
   }
 
   /**
