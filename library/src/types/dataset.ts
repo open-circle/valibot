@@ -21,7 +21,7 @@ export interface UnknownDataset {
 /**
  * Success dataset interface.
  */
-export interface SuccessDataset<TValue> {
+export interface SuccessDataset<out TValue> {
   /**
    * Whether it's typed.
    */
@@ -39,7 +39,10 @@ export interface SuccessDataset<TValue> {
 /**
  * Partial dataset interface.
  */
-export interface PartialDataset<TValue, TIssue extends BaseIssue<unknown>> {
+export interface PartialDataset<
+  out TValue,
+  out TIssue extends BaseIssue<unknown>,
+> {
   /**
    * Whether it's typed.
    */
@@ -57,7 +60,7 @@ export interface PartialDataset<TValue, TIssue extends BaseIssue<unknown>> {
 /**
  * Failure dataset interface.
  */
-export interface FailureDataset<TIssue extends BaseIssue<unknown>> {
+export interface FailureDataset<out TIssue extends BaseIssue<unknown>> {
   /**
    * Whether it's typed.
    */
