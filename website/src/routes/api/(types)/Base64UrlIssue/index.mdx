@@ -1,0 +1,26 @@
+---
+title: Base64UrlIssue
+description: Base64Url issue interface.
+contributors:
+  - EltonLobo07
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# Base64UrlIssue
+
+Base64Url issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `Base64UrlIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `received` <Property {...properties.received} />
+  - `requirement` <Property {...properties.requirement} />
