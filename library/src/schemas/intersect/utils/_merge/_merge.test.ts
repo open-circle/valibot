@@ -183,6 +183,54 @@ describe('_merge', () => {
       ).toStrictEqual({ value: { prototype: { a: 1, b: 2 } } });
     });
 
+    test.each(['foo', 123, null, undefined])(
+      'for own constructor property with value %j',
+      (constructor) => {
+        const value = { constructor };
+        expect(_merge(value, {})).toStrictEqual({ value });
+        expect(_merge({}, value)).toStrictEqual({ value });
+        expect(_merge(value, { constructor })).toStrictEqual({ value });
+      }
+    );
+
+    test('for own function constructor properties', () => {
+      expect(_merge({}, { constructor: Array })).toStrictEqual({
+        value: { constructor: Array },
+      });
+    });
+
+    test('for nested constructor properties', () => {
+      const result = _merge(
+        { constructor: { a: 1 } },
+        { constructor: { b: 2 } }
+      );
+      expect(result).toEqual({ value: { constructor: { a: 1, b: 2 } } });
+      expect(Object.getPrototypeOf(result.value)).toBe(Object.prototype);
+      expect(
+        _merge({ nested: { constructor: 'foo' } }, { nested: { key: 1 } })
+      ).toStrictEqual({ value: { nested: { constructor: 'foo', key: 1 } } });
+    });
+
+    test('for own constructor properties on custom-prototype objects', () => {
+      const value = Object.create({ inherited: 'bar' });
+      value.constructor = 'foo';
+      expect(_merge(value, { key: 1 })).toStrictEqual({
+        value: { constructor: 'foo', key: 1 },
+      });
+      expect(_merge({ key: 1 }, value)).toStrictEqual({
+        value: { key: 1, constructor: 'foo' },
+      });
+    });
+
+    test('for Object.prototype', () => {
+      expect(_merge(Object.prototype, { key: 1 })).toStrictEqual({
+        value: { key: 1 },
+      });
+      expect(_merge({ key: 1 }, Object.prototype)).toStrictEqual({
+        value: { key: 1 },
+      });
+    });
+
     test('for nested JSON objects with own __proto__ properties', () => {
       const input = JSON.parse('{"nested":{"__proto__":{"admin":true}}}');
       const result = _merge({ nested: { name: 'foo' } }, input);
@@ -244,7 +292,7 @@ describe('_merge', () => {
       expect(_merge({ key: 1 }, { key: '1' })).toStrictEqual({ issue: true });
     });
 
-    test.each(['__proto__', 'prototype'])(
+    test.each(['__proto__', 'prototype', 'constructor'])(
       'for conflicting own %s properties',
       (key) => {
         expect(_merge({ [key]: 1 }, { [key]: 2 })).toStrictEqual({
@@ -252,6 +300,20 @@ describe('_merge', () => {
         });
       }
     );
+
+    test('for class instances', () => {
+      class TestClass {
+        key = 'foo';
+      }
+      expect(_merge(new TestClass(), new TestClass())).toStrictEqual({
+        issue: true,
+      });
+    });
+
+    test('for objects without prototypes', () => {
+      expect(_merge(Object.create(null), {})).toStrictEqual({ issue: true });
+      expect(_merge({}, Object.create(null))).toStrictEqual({ issue: true });
+    });
 
     test('for invalid arrays', () => {
       expect(_merge([1], [1, 2])).toStrictEqual({ issue: true });

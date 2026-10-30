@@ -84,6 +84,16 @@ describe('intersectAsync', () => {
       );
     });
 
+    test('for declared constructor entries', async () => {
+      await expectNoSchemaIssueAsync(
+        intersectAsync([
+          object({ key: number() }),
+          objectAsync({ constructor: string() }),
+        ]),
+        [{ key: 123, constructor: 'foo' }]
+      );
+    });
+
     test('for valid values', async () => {
       await expectNoSchemaIssueAsync(
         intersectAsync([
