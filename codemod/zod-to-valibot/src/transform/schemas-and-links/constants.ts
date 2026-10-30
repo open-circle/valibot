@@ -135,6 +135,7 @@ export const ZOD_PROPERTIES = [
 
 export const ZOD_METHODS = [
   'array',
+  'catch',
   'catchall',
   'default',
   'deepPartial',
@@ -153,6 +154,7 @@ export const ZOD_METHODS = [
   'partial',
   'passthrough',
   'pick',
+  'pipe',
   'refine',
   'required',
   'rest',
