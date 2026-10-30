@@ -6,6 +6,7 @@ All notable changes to the library will be documented in this file.
 
 - Change `isbn`, `creditCard` and `imei` actions to check digits by character code instead of splitting and parsing the input to improve performance (pull request #1634)
 - Fix `uuid` action to reject UUIDs with a version outside 1 to 8 or a variant outside RFC 9562, while still accepting the Nil and Max UUIDs (pull request #1643)
+- Fix `ipv6` and `ip` actions to accept IPv6 addresses with an embedded IPv4 address in every form allowed by RFC 4291, such as `0:0:0:0:0:ffff:192.168.1.1` and `64:ff9b:1::10.0.0.1` (pull request #1681)
 
 ## v1.5.0 (September 09, 2026)
 
