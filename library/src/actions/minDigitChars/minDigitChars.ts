@@ -6,7 +6,7 @@ import type {
 import { _addIssue, _getDigitCount } from '../../utils/index.ts';
 
 /**
- * Min digits issue interface.
+ * Min digit chars issue interface.
  */
 export interface MinDigitCharsIssue<
   TInput extends string,
@@ -19,7 +19,7 @@ export interface MinDigitCharsIssue<
   /**
    * The issue type.
    */
-  readonly type: 'min_digits';
+  readonly type: 'min_digit_chars';
   /**
    * The expected property.
    */
@@ -29,13 +29,13 @@ export interface MinDigitCharsIssue<
    */
   readonly received: `${number}`;
   /**
-   * The minimum digits.
+   * The minimum digit chars.
    */
   readonly requirement: TRequirement;
 }
 
 /**
- * Min digits action interface.
+ * Min digit chars action interface.
  */
 export interface MinDigitCharsAction<
   TInput extends string,
@@ -51,7 +51,7 @@ export interface MinDigitCharsAction<
   /**
    * The action type.
    */
-  readonly type: 'min_digits';
+  readonly type: 'min_digit_chars';
   /**
    * The action reference.
    */
@@ -61,7 +61,7 @@ export interface MinDigitCharsAction<
    */
   readonly expects: `>=${TRequirement}`;
   /**
-   * The minimum digits.
+   * The minimum digit chars.
    */
   readonly requirement: TRequirement;
   /**
@@ -71,11 +71,11 @@ export interface MinDigitCharsAction<
 }
 
 /**
- * Creates a min digits validation action.
+ * Creates a min digit chars validation action.
  *
- * @param requirement The minimum digits.
+ * @param requirement The minimum digit chars.
  *
- * @returns A min digits action.
+ * @returns A min digit chars action.
  */
 export function minDigitChars<
   TInput extends string,
@@ -85,12 +85,12 @@ export function minDigitChars<
 ): MinDigitCharsAction<TInput, TRequirement, undefined>;
 
 /**
- * Creates a min digits validation action.
+ * Creates a min digit chars validation action.
  *
- * @param requirement The minimum digits.
+ * @param requirement The minimum digit chars.
  * @param message The error message.
  *
- * @returns A min digits action.
+ * @returns A min digit chars action.
  */
 export function minDigitChars<
   TInput extends string,
@@ -114,7 +114,7 @@ export function minDigitChars(
 > {
   return {
     kind: 'validation',
-    type: 'min_digits',
+    type: 'min_digit_chars',
     reference: minDigitChars,
     async: false,
     expects: `>=${requirement}`,

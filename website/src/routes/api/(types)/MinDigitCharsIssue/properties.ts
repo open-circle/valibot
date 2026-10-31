@@ -32,7 +32,7 @@ export const properties: Record<string, PropertyProps> = {
   type: {
     type: {
       type: 'string',
-      value: 'min_digits',
+      value: 'min_digit_chars',
     },
   },
   expected: {

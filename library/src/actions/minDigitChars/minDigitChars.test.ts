@@ -12,7 +12,7 @@ describe('minDigitChars', () => {
   describe('should return action object', () => {
     const baseAction: Omit<MinDigitCharsAction<string, 5, never>, 'message'> = {
       kind: 'validation',
-      type: 'min_digits',
+      type: 'min_digit_chars',
       reference: minDigitChars,
       expects: '>=5',
       requirement: 5,
@@ -80,7 +80,7 @@ describe('minDigitChars', () => {
       'input' | 'received'
     > = {
       kind: 'validation',
-      type: 'min_digits',
+      type: 'min_digit_chars',
       expected: '>=5',
       message: 'message',
       requirement: 5,
