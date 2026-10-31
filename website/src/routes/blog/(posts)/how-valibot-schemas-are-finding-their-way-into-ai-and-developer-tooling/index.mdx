@@ -31,7 +31,7 @@ With the Vercel AI SDK, a Valibot schema can be passed directly to a tool as its
 ```ts
 import { openai } from '@ai-sdk/openai';
 import { valibotSchema } from '@ai-sdk/valibot';
-import { generateText, tool } from 'ai';
+import { generateText, stepCountIs, tool } from 'ai';
 import * as v from 'valibot';
 
 const GetWeatherSchema = v.object({
@@ -42,6 +42,7 @@ const GetWeatherSchema = v.object({
 const result = await generateText({
   model: openai('gpt-4o'),
   prompt: 'What is the weather in Paris?',
+  stopWhen: stepCountIs(2),
   tools: {
     getWeather: tool({
       description: 'Get the current weather for a location',
@@ -56,7 +57,7 @@ const result = await generateText({
 
 MCP takes this further by moving the schema across an application boundary. An MCP server exposes tools to a client, so the client needs a representation of the structure those tools accept.
 
-The MCP TypeScript SDK supports Valibot through Standard Schema, while `@valibot/to-json-schema` can convert a Valibot schema into the JSON Schema representation that MCP clients consume. These solve different parts of the problem: Standard Schema allows the SDK to work with Valibot, while JSON Schema provides a format that clients can understand.
+The MCP TypeScript SDK accepts Valibot schemas through `toStandardJsonSchema()` from `@valibot/to-json-schema`, which adds the JSON Schema that MCP clients read. These solve different parts of the problem: Standard Schema allows the SDK to work with Valibot, while JSON Schema provides a format that clients can understand.
 
 ## Making Schemas Easier to Consume
 
