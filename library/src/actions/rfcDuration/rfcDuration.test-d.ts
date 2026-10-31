@@ -41,9 +41,9 @@ describe('rfcDuration', () => {
     });
 
     test('of issue', () => {
-      expectTypeOf<
-        InferIssue<Action>
-      >().toEqualTypeOf<RfcDurationIssue<string>>();
+      expectTypeOf<InferIssue<Action>>().toEqualTypeOf<
+        RfcDurationIssue<string>
+      >();
     });
   });
 });

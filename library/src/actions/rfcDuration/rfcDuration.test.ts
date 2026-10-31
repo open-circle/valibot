@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { RFC_3339_DURATION_REGEX } from '../../regex.ts';
+import { RFC_DURATION_REGEX } from '../../regex.ts';
 import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue } from '../../vitest/expectActionIssue.ts';
 import { expectNoActionIssue } from '../../vitest/expectNoActionIssue.ts';
@@ -16,7 +16,7 @@ describe('rfcDuration', () => {
       type: 'rfc_duration',
       reference: rfcDuration,
       expects: null,
-      requirement: RFC_3339_DURATION_REGEX,
+      requirement: RFC_DURATION_REGEX,
       async: false,
       '~run': expect.any(Function),
     };
@@ -83,6 +83,10 @@ describe('rfcDuration', () => {
         'P3DT4H5M6S',
       ]);
     });
+
+    test('for skipped intermediate components', () => {
+      expectNoActionIssue(action, ['P1Y1D', 'P1YT1S', 'PT1H1S', 'P1MT1M']);
+    });
   });
 
   describe('should return dataset with issues', () => {
@@ -92,7 +96,7 @@ describe('rfcDuration', () => {
       type: 'rfc_duration',
       expected: null,
       message: 'message',
-      requirement: RFC_3339_DURATION_REGEX,
+      requirement: RFC_DURATION_REGEX,
     };
 
     test('for empty strings', () => {
@@ -124,11 +128,17 @@ describe('rfcDuration', () => {
     });
 
     test('for fractional values', () => {
-      expectActionIssue(action, baseIssue, ['P1.5Y', 'PT1.5S', 'PT0.5H']);
+      expectActionIssue(action, baseIssue, [
+        'P1.5Y',
+        'PT1.5S',
+        'PT0.5H',
+        'P0,5Y',
+        'PT0,5S',
+      ]);
     });
 
     test('for negative values', () => {
-      expectActionIssue(action, baseIssue, ['P-1D', 'PT-5H']);
+      expectActionIssue(action, baseIssue, ['-P1D', 'P-1D', 'PT-5H']);
     });
   });
 });

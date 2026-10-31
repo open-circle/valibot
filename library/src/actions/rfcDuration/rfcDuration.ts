@@ -1,4 +1,4 @@
-import { RFC_3339_DURATION_REGEX } from '../../regex.ts';
+import { RFC_DURATION_REGEX } from '../../regex.ts';
 import type {
   BaseIssue,
   BaseValidation,
@@ -67,6 +67,12 @@ export interface RfcDurationAction<
  *
  * Format: PnYnMnDTnHnMnS or PnW
  *
+ * Hint: This action intentionally follows the practical duration profile of
+ * [ajv-formats](https://github.com/ajv-validator/ajv-formats), as used by JSON
+ * Schema and OpenAPI tooling, rather than the strict Appendix A ABNF. Skipped
+ * intermediate components such as `P1Y1D` are allowed, while fractional values
+ * such as `P0,5Y` and negative values such as `-P1D` are rejected.
+ *
  * @returns An RFC duration action.
  */
 export function rfcDuration<TInput extends string>(): RfcDurationAction<
@@ -78,6 +84,12 @@ export function rfcDuration<TInput extends string>(): RfcDurationAction<
  * Creates an [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#appendix-A) duration validation action.
  *
  * Format: PnYnMnDTnHnMnS or PnW
+ *
+ * Hint: This action intentionally follows the practical duration profile of
+ * [ajv-formats](https://github.com/ajv-validator/ajv-formats), as used by JSON
+ * Schema and OpenAPI tooling, rather than the strict Appendix A ABNF. Skipped
+ * intermediate components such as `P1Y1D` are allowed, while fractional values
+ * such as `P0,5Y` and negative values such as `-P1D` are rejected.
  *
  * @param message The error message.
  *
@@ -101,7 +113,7 @@ export function rfcDuration(
     reference: rfcDuration,
     async: false,
     expects: null,
-    requirement: RFC_3339_DURATION_REGEX,
+    requirement: RFC_DURATION_REGEX,
     message,
     '~run'(dataset, config) {
       if (dataset.typed && !this.requirement.test(dataset.value)) {
