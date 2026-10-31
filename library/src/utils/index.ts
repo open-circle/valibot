@@ -3,6 +3,7 @@ export * from './_cloneDataset/index.ts';
 export * from './_formatCase/index.ts';
 export * from './_getByteCount/index.ts';
 export * from './_getCodePointCount/index.ts';
+export * from './_getDigitCount/index.ts';
 export * from './_getGraphemeCount/index.ts';
 export * from './_getLastMetadata/index.ts';
 export * from './_getWordCount/index.ts';

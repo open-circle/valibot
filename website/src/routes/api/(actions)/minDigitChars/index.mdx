@@ -1,0 +1,78 @@
+---
+title: minDigitChars
+description: Creates a min digit chars validation action.
+source: /actions/minDigitChars/minDigitChars.ts
+contributors:
+  - will-stone
+  - dgesteves
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# minDigitChars
+
+Creates a min [digit](https://en.wikipedia.org/wiki/Numerical_digit) chars validation action.
+
+```ts
+const Action = v.minDigitChars<TInput, TRequirement, TMessage>(
+  requirement,
+  message
+);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `minDigitChars` you can validate the minimum number of digit characters in a string. Only the digits 0-9 are counted and the string may contain other characters as well. If the number of digits is below the `requirement`, you can use `message` to customize the error message.
+
+> If the string should consist only of digits, use <Link href="../digits/">`digits`</Link> instead.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `minDigitChars` can be used.
+
+### Min digit chars schema
+
+Schema to validate a string with a minimum of 2 digits.
+
+```ts
+const MinDigitCharsSchema = v.pipe(
+  v.string(),
+  v.minDigitChars(2, 'This string must include at least 2 digits.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `minDigitChars`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['digitChars', 'digits', 'maxDigitChars', 'notDigitChars']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

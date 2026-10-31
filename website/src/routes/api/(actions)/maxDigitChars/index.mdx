@@ -1,0 +1,77 @@
+---
+title: maxDigitChars
+description: Creates a max digit chars validation action.
+source: /actions/maxDigitChars/maxDigitChars.ts
+contributors:
+  - dgesteves
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# maxDigitChars
+
+Creates a max [digit](https://en.wikipedia.org/wiki/Numerical_digit) chars validation action.
+
+```ts
+const Action = v.maxDigitChars<TInput, TRequirement, TMessage>(
+  requirement,
+  message
+);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `maxDigitChars` you can validate the maximum number of digit characters in a string. Only the digits 0-9 are counted and the string may contain other characters as well. If the number of digits exceeds the `requirement`, you can use `message` to customize the error message.
+
+> If the string should consist only of digits, use <Link href="../digits/">`digits`</Link> instead.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `maxDigitChars` can be used.
+
+### Max digit chars schema
+
+Schema to validate a string with a maximum of 4 digits.
+
+```ts
+const MaxDigitCharsSchema = v.pipe(
+  v.string(),
+  v.maxDigitChars(4, 'This string must not include more than 4 digits.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `maxDigitChars`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['digitChars', 'digits', 'minDigitChars', 'notDigitChars']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
