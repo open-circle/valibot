@@ -11,4 +11,12 @@ describe('_getDigitCount', () => {
     expect(_getDigitCount('123')).toBe(3);
     expect(_getDigitCount('😀1')).toBe(1);
   });
+
+  test('should only count ASCII digits', () => {
+    expect(_getDigitCount('/:')).toBe(0);
+    expect(_getDigitCount('0/9:')).toBe(2);
+    expect(_getDigitCount('١٢٣')).toBe(0);
+    expect(_getDigitCount('１２３')).toBe(0);
+    expect(_getDigitCount('x²')).toBe(0);
+  });
 });
