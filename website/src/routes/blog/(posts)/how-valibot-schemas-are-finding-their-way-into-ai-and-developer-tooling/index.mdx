@@ -36,7 +36,7 @@ import * as v from 'valibot';
 
 const GetWeatherSchema = v.object({
   city: v.string(),
-  unit: v.fallback(v.picklist(['celsius', 'fahrenheit']), 'celsius'),
+  unit: v.optional(v.picklist(['celsius', 'fahrenheit']), 'celsius'),
 });
 
 const result = await generateText({
