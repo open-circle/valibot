@@ -1,0 +1,73 @@
+---
+title: digitChars
+description: Creates a digit chars validation action.
+source: /actions/digitChars/digitChars.ts
+contributors:
+  - dgesteves
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# digitChars
+
+Creates a [digit](https://en.wikipedia.org/wiki/Numerical_digit) chars validation action.
+
+```ts
+const Action = v.digitChars<TInput, TRequirement, TMessage>(
+  requirement,
+  message
+);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `digitChars` you can validate the number of digit characters in a string. Only the digits 0-9 are counted and the string may contain other characters as well. If the number of digits does not match the `requirement`, you can use `message` to customize the error message.
+
+> If the string should consist only of digits, use <Link href="../digits/">`digits`</Link> instead.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `digitChars` can be used.
+
+### Digit chars schema
+
+Schema to validate a string with exactly 6 digits.
+
+```ts
+const DigitCharsSchema = v.pipe(
+  v.string(),
+  v.digitChars(6, 'This string must include exactly 6 digits.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `digitChars`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string', 'unknown']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

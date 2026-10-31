@@ -1,0 +1,73 @@
+---
+title: notDigitChars
+description: Creates a not digit chars validation action.
+source: /actions/notDigitChars/notDigitChars.ts
+contributors:
+  - dgesteves
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# notDigitChars
+
+Creates a not [digit](https://en.wikipedia.org/wiki/Numerical_digit) chars validation action.
+
+```ts
+const Action = v.notDigitChars<TInput, TRequirement, TMessage>(
+  requirement,
+  message
+);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `requirement` <Property {...properties.requirement} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `notDigitChars` you can validate that a string does not have a specific number of digit characters. Only the digits 0-9 are counted and the string may contain other characters as well. If the number of digits equals the `requirement`, you can use `message` to customize the error message.
+
+> If the string should consist only of digits, use <Link href="../digits/">`digits`</Link> instead.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `notDigitChars` can be used.
+
+### Not digit chars schema
+
+Schema to validate a string with more or less than 4 digits.
+
+```ts
+const NotDigitCharsSchema = v.pipe(
+  v.string(),
+  v.notDigitChars(4, 'This string must not include exactly 4 digits.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `notDigitChars`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string', 'unknown']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
