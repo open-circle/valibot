@@ -1,0 +1,89 @@
+---
+cover: AI Tooling
+title: How Valibot Schemas Are Finding Their Way into AI and Developer Tooling
+description: Explore how Valibot schemas work with AI SDKs, MCP servers, frontend frameworks and developer tools through Standard Schema and JSON Schema.
+published: 2026-10-31
+authors:
+  - flySewa
+---
+
+We built Valibot to validate data inside an application, and over the past year we've watched our schemas turn up well beyond that. A schema you write to validate a single function can now describe a tool to an LLM, define inputs for an MCP server, power a UI form, or be converted into JSON Schema for other tools to consume.
+
+Here are 6 open-source projects where this shows up today:
+
+- [Vercel's AI SDK](https://ai-sdk.dev/docs/reference/ai-sdk-core/valibot-schema) uses `valibotSchema()`, a dedicated helper from `@ai-sdk/valibot`, for structured outputs and tool calling.
+- Astro's AI agent framework, [Flue](https://github.com/withastro/flue), uses Valibot schemas to define the parameters for its agent tools.
+- The [v2 TypeScript SDK for Model Context Protocol (MCP)](https://ts.sdk.modelcontextprotocol.io/v2/advanced/schema-libraries) supports Valibot through Standard Schema, alongside Zod and ArkType, and works with JSON Schema representations of those schemas for MCP tools.
+- [Svelte's official MCP server](https://github.com/sveltejs/mcp) uses `@tmcp/adapter-valibot` for schema validation.
+- [Nuxt UI](https://ui.nuxt.com/docs/components/form) accepts Valibot schemas for form validation alongside Zod.
+- [Nuxt Content](https://content.nuxt.com/docs/collections/validators) lists `@valibot/to-json-schema` as an optional dependency, allowing content collections to use Valibot schemas alongside Zod.
+
+Even though these projects live in different parts of the stack, they point to the same thing: a schema written for one part of an application can now be used by the tools around it too.
+
+## When a Schema Has a Second Consumer
+
+Historically, a validation schema had a fairly contained role. It defined the shape of data coming into an application, validated it at runtime, and could be used to infer the TypeScript types around it. The schema was mostly consumed within the application that defined it.
+
+Now, other tools can need that same structure. When an LLM interacts with an application through function calling, for example, it needs a description of the arguments a tool accepts. The application already has that information in its validation schema, so the schema can take on another role. This gives the same schema a second consumer.
+
+With the Vercel AI SDK, a Valibot schema can be passed directly to a tool as its input schema. The model gets the structure it needs for the tool call, while the application can continue using the schema for its own validation.
+
+```ts
+import { openai } from '@ai-sdk/openai';
+import { valibotSchema } from '@ai-sdk/valibot';
+import { generateText, tool } from 'ai';
+import * as v from 'valibot';
+
+const GetWeatherSchema = v.object({
+  city: v.string(),
+  unit: v.fallback(v.picklist(['celsius', 'fahrenheit']), 'celsius'),
+});
+
+const result = await generateText({
+  model: openai('gpt-4o'),
+  prompt: 'What is the weather in Paris?',
+  tools: {
+    getWeather: tool({
+      description: 'Get the current weather for a location',
+      inputSchema: valibotSchema(GetWeatherSchema),
+      execute: async ({ city, unit }) => {
+        return { city, temperature: 22, unit };
+      },
+    }),
+  },
+});
+```
+
+MCP takes this further by moving the schema across an application boundary. An MCP server exposes tools to a client, so the client needs a representation of the structure those tools accept.
+
+The MCP TypeScript SDK supports Valibot through Standard Schema, while `@valibot/to-json-schema` can convert a Valibot schema into the JSON Schema representation that MCP clients consume. These solve different parts of the problem: Standard Schema allows the SDK to work with Valibot, while JSON Schema provides a format that clients can understand.
+
+## Making Schemas Easier to Consume
+
+For a validation library to work with the wider ecosystem, other tools need to be able to read its schemas without having to understand how the library works under the hood. We support two main ways to make this happen.
+
+### JSON Schema as the Handoff Layer
+
+Using `@valibot/to-json-schema`, you can turn an executable JavaScript schema into standard JSON Schema. The conversion doesn't capture every runtime behavior, such as transformation actions that have no JSON Schema equivalent, but it gives external systems a portable representation they can work with for things like AI, API documentation, and code generation.
+
+This means a tool outside the JavaScript application can understand the structure of a schema without having to execute or depend on Valibot itself.
+
+### Standard Schema as the Shared Interface
+
+Standard Schema solves a different problem: giving JavaScript libraries a common interface for working with validation schemas.
+
+In the past, if a library like Nuxt UI wanted to support Zod and Valibot, it needed to account for each library's API separately. With Standard Schema, both libraries can expose their validation through the same interface, so Nuxt UI can work with either one without needing to know how each library works internally.
+
+This makes it easier for libraries to support more validation tools without implementing a separate integration for each one.
+
+### Why Size Counts Here
+
+Reusing schemas across different parts of the stack also makes Valibot's modular design useful. In client-side applications, the size of a validation schema contributes to the JavaScript users need to download. Because Valibot is composed of individual, tree-shakable functions, an application only includes the primitives its schema uses.
+
+[A simple login form schema comes to 1.37 kB with Valibot compared with 15.18 kB with Zod using Rolldown](https://valibot.dev/guides/comparison/), a 90% reduction. This comparison shows the difference Valibot's modular approach can make to the size of a validation schema in a client-side application. Developers can include the validation logic they need without shipping the rest of the library to their users.
+
+## Schemas Are Becoming Infrastructure
+
+As more developer tools find ways to consume structured information from application code, validation schemas can serve a wider role than they originally did. They can provide the structure that forms, AI tools, and MCP servers need without requiring developers to define the same rules separately for each integration.
+
+For us, this builds on a choice we made early. We built Valibot to be modular to reduce bundle size, back when a schema mostly stayed inside the app that defined it. Today, that same architecture makes it practical to use Valibot across different parts of the stack.
