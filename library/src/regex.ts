@@ -191,6 +191,19 @@ export const NANO_ID_REGEX: RegExp = /^[\w-]+$/u;
 export const OCTAL_REGEX: RegExp = /^(?:0o)?[0-7]+$/u;
 
 /**
+ * [RFC 3339 duration](https://datatracker.ietf.org/doc/html/rfc3339#appendix-A)
+ * regex. Follows the practical duration profile of
+ * [ajv-formats](https://github.com/ajv-validator/ajv-formats), as used by JSON
+ * Schema and OpenAPI tooling, rather than the strict Appendix A ABNF. It
+ * requires at least one component, enforces the `Y M D T H M S` order, treats
+ * the `W` (week) form as exclusive and allows skipped intermediate components
+ * such as `P1Y1D`. Fractional and negative values are rejected.
+ */
+export const RFC_DURATION_REGEX: RegExp =
+  // eslint-disable-next-line redos-detector/no-unsafe-regex -- false positive
+  /^P(?:\d+W|(?=\d|T\d)(?:\d+Y)?(?:\d+M)?(?:\d+D)?(?:T(?=\d)(?:\d+H)?(?:\d+M)?(?:\d+S)?)?)$/u;
+
+/**
  * [RFC 5322 email address](https://datatracker.ietf.org/doc/html/rfc5322#section-3.4.1) regex.
  *
  * Hint: This regex was taken from the [HTML Living Standard Specification](https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address) and does not perfectly represent RFC 5322.

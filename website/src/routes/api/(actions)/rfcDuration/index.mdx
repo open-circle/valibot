@@ -1,0 +1,73 @@
+---
+title: rfcDuration
+description: Creates an RFC 3339 duration validation action.
+source: /actions/rfcDuration/rfcDuration.ts
+contributors:
+  - fabian-hiller
+  - tungyhardDevOps
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# rfcDuration
+
+Creates an [RFC 3339 duration](https://datatracker.ietf.org/doc/html/rfc3339#appendix-A) validation action.
+
+Format: `PnYnMnDTnHnMnS` or `PnW`
+
+```ts
+const Action = v.rfcDuration<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `rfcDuration` you can validate the formatting of a string that represents a duration, such as `P1Y2M3DT4H5M6S`, `PT30M` or `P2W`. At least one component is required, the components must appear in the order `Y M D T H M S`, the time components must follow a `T`, and the week form `PnW` cannot be combined with any other component.
+
+If the input is not a valid duration, you can use `message` to customize the error message.
+
+> This validation action intentionally follows the practical duration profile of [ajv-formats](https://github.com/ajv-validator/ajv-formats), as used by JSON Schema and OpenAPI tooling, rather than the strict ABNF of [RFC 3339 Appendix A](https://datatracker.ietf.org/doc/html/rfc3339#appendix-A). Skipped intermediate components such as `P1Y1D` are allowed, while fractional values such as `P0,5Y` and negative values such as `-P1D` are rejected.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `rfcDuration` can be used.
+
+### Duration schema
+
+Schema to validate an RFC 3339 duration.
+
+```ts
+const DurationSchema = v.pipe(
+  v.string(),
+  v.rfcDuration('The duration is badly formatted.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `rfcDuration`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />
