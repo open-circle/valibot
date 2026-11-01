@@ -38,9 +38,9 @@ The following example show how `entriesFromObjects` can be used.
 ```ts
 const ObjectSchema = v.object(
   v.entriesFromObjects([
-     v.object({ foo:  v.string(), bar:  v.string() });
-     v.object({ baz:  v.number(), qux:  v.number() });
-     v.object({ foo:  v.boolean(), baz:  v.boolean() });
+    v.object({ foo: v.string(), bar: v.string() }),
+    v.object({ baz: v.number(), qux: v.number() }),
+    v.object({ foo: v.boolean(), baz: v.boolean() }),
   ])
 );
 ```
