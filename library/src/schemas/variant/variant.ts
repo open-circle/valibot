@@ -146,11 +146,11 @@ export function variant(
                     ? discriminatorSchema['~run'](
                         // @ts-expect-error
                         { typed: false, value: input[currentKey] },
-                        config['~direction']
+                        config['~direction'] === 'encode'
                           ? {
                               ...config,
                               ...ABORT_EARLY_CONFIG,
-                              '~direction': 'output',
+                              '~typeCheckOnly': true,
                             }
                           : ABORT_EARLY_CONFIG
                       ).issues

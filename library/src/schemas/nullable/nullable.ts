@@ -83,7 +83,7 @@ export function nullable(
     '~run'(dataset, config) {
       // If value is `null`, override it with default or return dataset
       if (
-        (!config['~direction'] || this.default === undefined) &&
+        (config['~direction'] !== 'encode' || this.default === undefined) &&
         dataset.value === null
       ) {
         // If default is specified, override value of dataset

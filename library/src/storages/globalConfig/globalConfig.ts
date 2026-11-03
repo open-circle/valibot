@@ -5,7 +5,7 @@ import type { BaseIssue, Config } from '../../types/index.ts';
  */
 export type GlobalConfig = Omit<
   Config<never>,
-  'message' | '~direction' | '~runPipe' | '~runPipeAsync'
+  'message' | '~direction' | '~typeCheckOnly' | '~runPipe' | '~runPipeAsync'
 >;
 
 // Create global configuration store

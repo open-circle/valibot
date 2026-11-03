@@ -8,11 +8,17 @@ import type { PipeItem, PipeItemAsync } from './pipe.ts';
  */
 export interface Config<TIssue extends BaseIssue<unknown>> {
   /**
-   * The internal execution direction. Output validation skips conversions.
+   * The internal execution direction. Defaults to decoding.
    *
    * @internal
    */
-  readonly '~direction'?: 'backward' | 'output' | undefined;
+  readonly '~direction'?: 'encode' | 'decode' | undefined;
+  /**
+   * Whether to check decoded types without conversions or pipeline checks.
+   *
+   * @internal
+   */
+  readonly '~typeCheckOnly'?: boolean | undefined;
   /**
    * The synchronous reverse pipeline runner, supplied only during encoding.
    *

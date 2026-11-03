@@ -30,7 +30,7 @@ export function encode<
     { value: input },
     {
       ...getGlobalConfig(config),
-      '~direction': 'backward',
+      '~direction': 'encode',
       '~runPipe': _runBackwardPipe,
     }
   );

@@ -84,7 +84,7 @@ export function cache(
     cacheConfig: config,
     cache: new _LruCache(config),
     '~run'(dataset, runConfig) {
-      if (runConfig['~direction']) {
+      if (runConfig['~direction'] === 'encode') {
         return schema['~run'](dataset, runConfig);
       }
       const key = this.cache.key(dataset.value, runConfig);

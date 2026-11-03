@@ -43,7 +43,7 @@ export async function _runBackwardPipeAsync(
     typed: true,
     value: dataset.value,
   };
-  if (config['~direction'] === 'output') {
+  if (config['~typeCheckOnly']) {
     for (let index = pipe.length - 1; index >= 0; index--) {
       const item = pipe[index];
       if (item.kind === 'schema') {
@@ -69,7 +69,7 @@ export async function _runBackwardPipeAsync(
             if (schema.kind === 'schema') {
               const guarded = await schema['~run'](
                 { value: output.value },
-                { ...config, '~direction': 'output' }
+                { ...config, '~typeCheckOnly': true }
               );
               if (!guarded.typed) {
                 return guarded;

@@ -133,7 +133,7 @@ export function objectWithRest(
           // parse input of key or default value
           if (
             isKeyPresent ||
-            (!config['~direction'] &&
+            (config['~direction'] !== 'encode' &&
               (valueSchema.type === 'exact_optional' ||
                 valueSchema.type === 'optional' ||
                 valueSchema.type === 'nullish') &&
@@ -191,7 +191,7 @@ export function objectWithRest(
 
             // Otherwise, if key is missing but has a fallback, use it
           } else if (
-            !config['~direction'] &&
+            config['~direction'] !== 'encode' &&
             // @ts-expect-error
             valueSchema.fallback !== undefined
           ) {
@@ -200,7 +200,7 @@ export function objectWithRest(
 
             // Otherwise, if key is missing and required, add issue
           } else if (
-            (config['~direction'] &&
+            (config['~direction'] === 'encode' &&
               // @ts-expect-error
               valueSchema.default !== undefined) ||
             (valueSchema.type !== 'exact_optional' &&

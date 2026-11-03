@@ -30,7 +30,7 @@ export function safeEncode<
     { value: input },
     {
       ...getGlobalConfig(config),
-      '~direction': 'backward',
+      '~direction': 'encode',
       '~runPipe': _runBackwardPipe,
     }
   );

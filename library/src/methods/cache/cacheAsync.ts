@@ -135,7 +135,7 @@ export function cacheAsync(
     cache: new _LruCache(config),
     async '~run'(dataset, runConfig) {
       // Create cache key based on input and config
-      if (runConfig['~direction']) {
+      if (runConfig['~direction'] === 'encode') {
         return schema['~run'](dataset, runConfig);
       }
       const key = this.cache.key(dataset.value, runConfig);

@@ -379,7 +379,38 @@ describe('codec', () => {
     const schema = v.config(dateCodec, { abortEarly: true });
     expect(v.encode(schema, date)).toBe(iso);
     expect(v.getGlobalConfig()).not.toHaveProperty('~direction');
+    expect(v.getGlobalConfig()).not.toHaveProperty('~typeCheckOnly');
     expect(v.parse(schema, iso)).toStrictEqual(date);
+  });
+
+  test('treats an explicit decode direction like ordinary forward parsing', () => {
+    const schema = v.object({
+      at: v.optional(dateCodec, iso),
+      recovered: v.fallback(dateCodec, date),
+    });
+    expect(
+      schema['~run']({ value: {} }, { '~direction': 'decode' })
+    ).toStrictEqual({
+      typed: true,
+      value: { at: date, recovered: date },
+    });
+  });
+
+  test('preserves encode direction without leaking the preliminary type-check phase', () => {
+    const encode = vi.fn((value: Date, context: v.CodecContext<Date>) => {
+      expect(context.config['~direction']).toBe('encode');
+      expect(context.config['~typeCheckOnly']).toBeUndefined();
+      return value.toISOString();
+    });
+    const schema = v.pipe(
+      v.codec(v.string(), v.date(), {
+        decode: (value) => new Date(value),
+        encode,
+      }),
+      v.check((value) => value.getUTCFullYear() >= 2000)
+    );
+    expect(v.encode(schema, date)).toBe(iso);
+    expect(encode).toHaveBeenCalledTimes(1);
   });
 
   test('supports ordinary schemas and preserves safe result narrowing', () => {

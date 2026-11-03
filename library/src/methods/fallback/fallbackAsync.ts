@@ -106,7 +106,7 @@ export function fallbackAsync(
     async: true,
     async '~run'(dataset, config) {
       const outputDataset = await schema['~run'](dataset, config);
-      return !config['~direction'] && outputDataset.issues
+      return config['~direction'] !== 'encode' && outputDataset.issues
         ? {
             typed: true,
             value: await getFallback(this, outputDataset, config),

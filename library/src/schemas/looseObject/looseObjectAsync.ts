@@ -112,7 +112,7 @@ export function looseObjectAsync(
             const isKeyPresent = key in input;
             if (
               isKeyPresent ||
-              (!config['~direction'] &&
+              (config['~direction'] !== 'encode' &&
                 (valueSchema.type === 'exact_optional' ||
                   valueSchema.type === 'optional' ||
                   valueSchema.type === 'nullish') &&
@@ -190,7 +190,7 @@ export function looseObjectAsync(
 
             // Otherwise, if key is missing but has a fallback, use it
           } else if (
-            !config['~direction'] &&
+            config['~direction'] !== 'encode' &&
             // @ts-expect-error
             valueSchema.fallback !== undefined
           ) {
@@ -199,7 +199,7 @@ export function looseObjectAsync(
 
             // Otherwise, if key is missing and required, add issue
           } else if (
-            (config['~direction'] &&
+            (config['~direction'] === 'encode' &&
               // @ts-expect-error
               valueSchema.default !== undefined) ||
             (valueSchema.type !== 'exact_optional' &&

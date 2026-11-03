@@ -58,15 +58,15 @@ export function codec<
     operations,
     '~run'(dataset, config) {
       // Validate the decoded representation without executing conversions.
-      if (config['~direction'] === 'output') {
+      if (config['~typeCheckOnly']) {
         return this.decoded['~run'](dataset, config) as OutputDataset<
           InferOutput<TDecoded>,
           InferIssue<TEncoded | TDecoded> | CodecIssue<unknown>
         >;
       }
-      const backward = config['~direction'] === 'backward';
+      const encoding = config['~direction'] === 'encode';
       let output: OutputDataset<unknown, BaseIssue<unknown>> = (
-        backward ? this.decoded : this.encoded
+        encoding ? this.decoded : this.encoded
       )['~run'](dataset, config);
       if (output.issues) {
         return { ...output, typed: false };
@@ -78,7 +78,7 @@ export function codec<
           _addIssue(this, info?.label ?? 'input', output, config, info),
         NEVER: null as never,
       };
-      const value = backward
+      const value = encoding
         ? this.operations.encode(
             output.value as InferInput<TDecoded>,
             context as CodecContext<InferInput<TDecoded>>
@@ -95,7 +95,7 @@ export function codec<
           InferIssue<TEncoded | TDecoded> | CodecIssue<unknown>
         >;
       } else {
-        output = (backward ? this.encoded : this.decoded)['~run'](
+        output = (encoding ? this.encoded : this.decoded)['~run'](
           { value },
           config
         );

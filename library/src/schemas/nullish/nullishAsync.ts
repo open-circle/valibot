@@ -101,7 +101,7 @@ export function nullishAsync(
       // If value is `null` or `undefined`, override it with default or return
       // dataset
       if (
-        (!config['~direction'] || this.default === undefined) &&
+        (config['~direction'] !== 'encode' || this.default === undefined) &&
         (dataset.value === null || dataset.value === undefined)
       ) {
         // If default is specified, override value of dataset

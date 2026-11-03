@@ -9,6 +9,19 @@ const dateCodec = v.codecAsync(v.pipe(v.string(), v.isoTimestamp()), v.date(), {
 });
 
 describe('codecAsync', () => {
+  test('supports explicit decode direction with async defaults and fallbacks', async () => {
+    const schema = v.objectAsync({
+      at: v.optionalAsync(dateCodec, async () => iso),
+      recovered: v.fallbackAsync(dateCodec, async () => date),
+    });
+    expect(
+      await schema['~run']({ value: {} }, { '~direction': 'decode' })
+    ).toStrictEqual({
+      typed: true,
+      value: { at: date, recovered: date },
+    });
+  });
+
   test('supports async conversions and all async entry points', async () => {
     expect(await v.parseAsync(dateCodec, iso)).toStrictEqual(date);
     expect(await v.decodeAsync(dateCodec, iso)).toStrictEqual(date);

@@ -36,7 +36,7 @@ export async function encodeAsync<
     { value: input },
     {
       ...getGlobalConfig(config),
-      '~direction': 'backward',
+      '~direction': 'encode',
       '~runPipe': _runBackwardPipe,
       '~runPipeAsync': _runBackwardPipeAsync,
     }
