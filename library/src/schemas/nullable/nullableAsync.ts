@@ -99,7 +99,10 @@ export function nullableAsync(
     default: default_,
     async '~run'(dataset, config) {
       // If value is `null`, override it with default or return dataset
-      if (dataset.value === null) {
+      if (
+        (!config['~direction'] || this.default === undefined) &&
+        dataset.value === null
+      ) {
         // If default is specified, override value of dataset
         if (this.default !== undefined) {
           dataset.value = await getDefault(this, dataset, config);

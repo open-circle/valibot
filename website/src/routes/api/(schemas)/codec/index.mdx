@@ -1,0 +1,98 @@
+---
+title: codec
+description: Creates a codec that validates and converts between two schemas.
+source: /schemas/codec/codec.ts
+contributors:
+  - javangriff
+---
+
+# codec
+
+Creates a codec that validates and converts between an encoded schema and a decoded schema.
+
+```ts
+const Schema = v.codec(encoded, decoded, { decode, encode });
+```
+
+## Parameters
+
+- `encoded`: The schema for the encoded representation.
+- `decoded`: The schema for the decoded representation.
+- `operations.decode`: Converts the encoded schema's output into the decoded schema's input.
+- `operations.encode`: Converts the decoded schema's input into the encoded schema's output.
+
+Both callbacks receive a second context argument with `dataset`, `config`, `addIssue`, and `NEVER`. The result exposes the original schemas as `.encoded` and `.decoded`.
+
+## Example
+
+```ts
+import * as v from 'valibot';
+
+const DateCodec = v.codec(v.pipe(v.string(), v.isoTimestamp()), v.date(), {
+  decode: (value) => new Date(value),
+  encode: (value) => value.toISOString(),
+});
+
+const Event = v.object({ title: v.string(), createdAt: DateCodec });
+const event = v.decode(Event, {
+  title: 'Launch',
+  createdAt: '2026-11-03T00:00:00.000Z',
+});
+const encoded = v.encode(Event, event);
+```
+
+Codecs work inside objects, arrays, tuples, records, maps, sets, unions, intersections, lazy schemas, and pipelines. Wrap a codec with `optional` when its containing object property can be omitted.
+
+## Validation and errors
+
+Decoding validates the encoded representation, calls `decode`, and validates the decoded representation. Encoding reverses these steps. Pipeline checks run in both directions on their respective representations. Union branches are tried in declaration order; the first successful branch wins.
+
+Use `context.addIssue()` to report an expected conversion failure, then return `context.NEVER`:
+
+```ts
+const JsonCodec = v.codec(v.string(), v.unknown(), {
+  decode: (value, context) => {
+    try {
+      return JSON.parse(value) as unknown;
+    } catch {
+      context.addIssue({ message: 'Invalid JSON' });
+      return context.NEVER;
+    }
+  },
+  encode: (value) => JSON.stringify(value),
+});
+```
+
+Reported issues retain their containing object and array paths. Uncaught callback exceptions propagate, including through safe entry points.
+
+Encoding throws an ordinary error when it encounters a one-way transformation such as `transform`, `rawTransform`, or `trim`. Safe entry points also propagate this error. The type-only `brand`, `flavor`, and `readonly` actions are allowed.
+
+Defaults and fallbacks apply during decoding only. Encoding does not insert defaults or recover from invalid values. A wrapper with a configured default requires the wrapped representation when encoding; an optional wrapper without a default still accepts omission.
+
+Codecs may normalize data. For example, a string-to-number codec can decode `"42.50"` and encode the result as `"42.5"`. Exact round-trip equality is not enforced.
+
+## Async codecs
+
+Use `codecAsync` when either endpoint or callback is asynchronous:
+
+```ts
+const DateCodec = v.codecAsync(v.string(), v.date(), {
+  decode: async (value) => new Date(value),
+  encode: async (value) => value.toISOString(),
+});
+
+const date = await v.decodeAsync(DateCodec, '2026-11-03T00:00:00.000Z');
+const result = await v.safeEncodeAsync(DateCodec, date);
+```
+
+Use async containers such as `objectAsync` and `arrayAsync` to nest async codecs.
+
+## Related
+
+- [decode](/api/decode/): Decode a value with a typed input.
+- [encode](/api/encode/): Encode a decoded value.
+- [safeDecode](/api/safeDecode/): Decode and return validation issues.
+- [safeEncode](/api/safeEncode/): Encode and return validation issues.
+- [parse](/api/parse/): Decode unknown input, including through Standard Schema integrations.
+
+JSON Schema conversion for codecs is not included. Support in `@valibot/to-json-schema` can be added separately.

@@ -135,6 +135,9 @@ export function cacheAsync(
     cache: new _LruCache(config),
     async '~run'(dataset, runConfig) {
       // Create cache key based on input and config
+      if (runConfig['~direction']) {
+        return schema['~run'](dataset, runConfig);
+      }
       const key = this.cache.key(dataset.value, runConfig);
 
       // Check and return cached output if exists

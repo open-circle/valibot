@@ -84,6 +84,9 @@ export function cache(
     cacheConfig: config,
     cache: new _LruCache(config),
     '~run'(dataset, runConfig) {
+      if (runConfig['~direction']) {
+        return schema['~run'](dataset, runConfig);
+      }
       const key = this.cache.key(dataset.value, runConfig);
       let outputDataset = this.cache.get(key);
       if (!outputDataset) {

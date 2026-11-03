@@ -146,7 +146,13 @@ export function variant(
                     ? discriminatorSchema['~run'](
                         // @ts-expect-error
                         { typed: false, value: input[currentKey] },
-                        ABORT_EARLY_CONFIG
+                        config['~direction']
+                          ? {
+                              ...config,
+                              ...ABORT_EARLY_CONFIG,
+                              '~direction': 'output',
+                            }
+                          : ABORT_EARLY_CONFIG
                       ).issues
                     : discriminatorSchema.type !== 'exact_optional' &&
                       discriminatorSchema.type !== 'optional' &&

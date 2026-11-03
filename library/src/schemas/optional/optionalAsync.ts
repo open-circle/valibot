@@ -99,7 +99,10 @@ export function optionalAsync(
     default: default_,
     async '~run'(dataset, config) {
       // If value is `undefined`, override it with default or return dataset
-      if (dataset.value === undefined) {
+      if (
+        (!config['~direction'] || this.default === undefined) &&
+        dataset.value === undefined
+      ) {
         // If default is specified, override value of dataset
         if (this.default !== undefined) {
           dataset.value = await getDefault(this, dataset, config);

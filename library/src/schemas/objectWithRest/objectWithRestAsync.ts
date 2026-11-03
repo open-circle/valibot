@@ -144,9 +144,10 @@ export function objectWithRestAsync(
               const isKeyPresent = key in input;
               if (
                 isKeyPresent ||
-                ((valueSchema.type === 'exact_optional' ||
-                  valueSchema.type === 'optional' ||
-                  valueSchema.type === 'nullish') &&
+                (!config['~direction'] &&
+                  (valueSchema.type === 'exact_optional' ||
+                    valueSchema.type === 'optional' ||
+                    valueSchema.type === 'nullish') &&
                   // @ts-expect-error
                   valueSchema.default !== undefined)
               ) {
@@ -240,16 +241,22 @@ export function objectWithRestAsync(
             dataset.value[key] = valueDataset.value;
 
             // Otherwise, if key is missing but has a fallback, use it
+          } else if (
+            !config['~direction'] &&
             // @ts-expect-error
-          } else if (valueSchema.fallback !== undefined) {
+            valueSchema.fallback !== undefined
+          ) {
             // @ts-expect-error
             dataset.value[key] = await getFallback(valueSchema);
 
             // Otherwise, if key is missing and required, add issue
           } else if (
-            valueSchema.type !== 'exact_optional' &&
-            valueSchema.type !== 'optional' &&
-            valueSchema.type !== 'nullish'
+            (config['~direction'] &&
+              // @ts-expect-error
+              valueSchema.default !== undefined) ||
+            (valueSchema.type !== 'exact_optional' &&
+              valueSchema.type !== 'optional' &&
+              valueSchema.type !== 'nullish')
           ) {
             _addIssue(this, 'key', dataset, config, {
               input: undefined,

@@ -1,10 +1,46 @@
+import type { OutputDataset, UnknownDataset } from './dataset.ts';
 import type { BaseIssue } from './issue.ts';
 import type { ErrorMessage } from './other.ts';
+import type { PipeItem, PipeItemAsync } from './pipe.ts';
 
 /**
  * Config interface.
  */
 export interface Config<TIssue extends BaseIssue<unknown>> {
+  /**
+   * The internal execution direction. Output validation skips conversions.
+   *
+   * @internal
+   */
+  readonly '~direction'?: 'backward' | 'output' | undefined;
+  /**
+   * The synchronous reverse pipeline runner, supplied only during encoding.
+   *
+   * @internal
+   */
+  readonly '~runPipe'?:
+    | ((
+        pipe: readonly PipeItem<unknown, unknown, BaseIssue<unknown>>[],
+        dataset: UnknownDataset,
+        config: Config<BaseIssue<unknown>>
+      ) => OutputDataset<unknown, BaseIssue<unknown>>)
+    | undefined;
+  /**
+   * The asynchronous reverse pipeline runner, supplied only during encoding.
+   *
+   * @internal
+   */
+  readonly '~runPipeAsync'?:
+    | ((
+        pipe: readonly (
+          | PipeItem<unknown, unknown, BaseIssue<unknown>>
+          | PipeItemAsync<unknown, unknown, BaseIssue<unknown>>
+        )[],
+        dataset: UnknownDataset,
+        config: Config<BaseIssue<unknown>>
+      ) => Promise<OutputDataset<unknown, BaseIssue<unknown>>>)
+    | undefined;
+
   /**
    * The selected language.
    */

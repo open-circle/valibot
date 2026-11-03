@@ -1,0 +1,26 @@
+---
+title: safeDecode
+description: Decodes a typed value and returns its validation result.
+source: /methods/safeDecode/safeDecode.ts
+contributors:
+  - javangriff
+---
+
+# safeDecode
+
+Decodes a typed input and returns a result with `typed`, `success`, `output`, and `issues`, following [safeParse](/api/safeParse/).
+
+```ts
+const result = v.safeDecode(schema, input, config);
+const asyncResult = await v.safeDecodeAsync(asyncSchema, input, config);
+
+if (result.success) {
+  console.log(result.output);
+} else {
+  console.log(result.issues);
+}
+```
+
+The arguments follow [decode](/api/decode/). A successful `output` has type `InferOutput<TSchema>`. Async variants return a promise of the same result shape.
+
+Reported validation issues are returned. Uncaught callback exceptions still propagate. See [codec](/api/codec/) for conversion and nesting examples.

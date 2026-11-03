@@ -2696,6 +2696,9 @@ export function pipe<
     ...pipe[0],
     pipe,
     '~run'(dataset, config) {
+      if (config['~runPipe']) {
+        return config['~runPipe'](pipe, dataset, config);
+      }
       // Execute pipeline items in sequence
       for (const item of pipe) {
         // Exclude metadata items from execution
