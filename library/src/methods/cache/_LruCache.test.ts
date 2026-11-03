@@ -41,9 +41,23 @@ describe('_LruCache', () => {
   test('should include symbol type for symbol input', () => {
     const cache = new _LruCache<unknown>();
 
-    expect(cache.key(Symbol('foo'), {})).toBe(
-      'symbol|undefined|undefined|undefined|undefined'
-    );
+    expect(cache.key(Symbol('foo'), {})).toMatch(/^symbol\|/u);
+  });
+
+  test('should separate encoding, decoding, and type-check entries', () => {
+    const cache = new _LruCache<unknown>();
+    const decode = cache.key('same', { '~direction': 'decode' });
+    const encode = cache.key('same', { '~direction': 'encode' });
+    const typeCheck = cache.key('same', {
+      '~direction': 'encode',
+      '~typeCheckOnly': true,
+    });
+
+    expect(new Set([decode, encode, typeCheck]).size).toBe(3);
+    expect(cache.key('same')).toBe(decode);
+    expect(
+      cache.key('same', { '~direction': 'encode', '~typeCheckOnly': false })
+    ).toBe(encode);
   });
 
   test('should create different keys for different object references', () => {

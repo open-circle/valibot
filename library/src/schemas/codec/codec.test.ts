@@ -363,16 +363,49 @@ describe('codec', () => {
   });
 
   test('isolates cached parsing results from encoding in both orders', () => {
-    const schema = v.cache(
-      v.codec(v.string(), v.string(), {
-        decode: (value) => `decoded:${value}`,
-        encode: (value) => `encoded:${value}`,
-      })
-    );
+    const decode = vi.fn((value: string) => `decoded:${value}`);
+    const encode = vi.fn((value: string) => `encoded:${value}`);
+    const schema = v.cache(v.codec(v.string(), v.string(), { decode, encode }));
     expect(v.decode(schema, 'same')).toBe('decoded:same');
     expect(v.encode(schema, 'same')).toBe('encoded:same');
     expect(v.encode(schema, 'other')).toBe('encoded:other');
     expect(v.decode(schema, 'other')).toBe('decoded:other');
+    expect(v.parse(schema, 'same')).toBe('decoded:same');
+    expect(v.encode(schema, 'same')).toBe('encoded:same');
+    expect(decode).toHaveBeenCalledTimes(2);
+    expect(encode).toHaveBeenCalledTimes(2);
+    schema.cache.clear();
+    expect(v.decode(schema, 'same')).toBe('decoded:same');
+    expect(v.encode(schema, 'same')).toBe('encoded:same');
+    expect(decode).toHaveBeenCalledTimes(3);
+    expect(encode).toHaveBeenCalledTimes(3);
+  });
+
+  test('caches encoding without reusing its preliminary type-check result', () => {
+    const encode = vi.fn((value: Date) => value.toISOString());
+    const check = vi.fn((value: Date) => value.getUTCFullYear() >= 2000);
+    const cached = v.cache(
+      v.pipe(
+        v.codec(v.string(), v.date(), {
+          decode: (value) => new Date(value),
+          encode,
+        }),
+        v.check(check)
+      )
+    );
+    const schema = v.pipe(
+      cached,
+      v.check((value) => value.getUTCFullYear() >= 2000)
+    );
+
+    expect(v.encode(schema, date)).toBe(iso);
+    expect(v.encode(schema, date)).toBe(iso);
+    expect(encode).toHaveBeenCalledTimes(1);
+    expect(check).toHaveBeenCalledTimes(1);
+
+    const invalid = new Date('1999-01-01');
+    expect(v.safeEncode(schema, invalid).success).toBe(false);
+    expect(encode).toHaveBeenCalledTimes(1);
   });
 
   test('preserves direction through local config without leaking it globally', () => {

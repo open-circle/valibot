@@ -39,7 +39,10 @@ export type SchemaWithCacheAsync<
    * The cache instance.
    */
   readonly cache: Cache<
-    OutputDataset<InferOutput<TSchema>, InferIssue<TSchema>>
+    OutputDataset<
+      InferInput<TSchema> | InferOutput<TSchema>,
+      InferIssue<TSchema>
+    >
   >;
 
   /**
@@ -135,9 +138,6 @@ export function cacheAsync(
     cache: new _LruCache(config),
     async '~run'(dataset, runConfig) {
       // Create cache key based on input and config
-      if (runConfig['~direction'] === 'encode') {
-        return schema['~run'](dataset, runConfig);
-      }
       const key = this.cache.key(dataset.value, runConfig);
 
       // Check and return cached output if exists

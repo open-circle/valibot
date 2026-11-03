@@ -219,19 +219,63 @@ describe('codecAsync', () => {
   });
 
   test('isolates concurrent async encoding and decoding through a cache', async () => {
+    const decode = vi.fn(async (value: string) => `decoded:${value}`);
+    const encode = vi.fn(async (value: string) => `encoded:${value}`);
     const schema = v.cacheAsync(
-      v.codecAsync(v.string(), v.string(), {
-        decode: async (value) => `decoded:${value}`,
-        encode: async (value) => `encoded:${value}`,
-      })
+      v.codecAsync(v.string(), v.string(), { decode, encode })
     );
     expect(
       await Promise.all([
         v.decodeAsync(schema, 'same'),
         v.encodeAsync(schema, 'same'),
+        v.decodeAsync(schema, 'same'),
+        v.encodeAsync(schema, 'same'),
       ])
-    ).toStrictEqual(['decoded:same', 'encoded:same']);
+    ).toStrictEqual([
+      'decoded:same',
+      'encoded:same',
+      'decoded:same',
+      'encoded:same',
+    ]);
     expect(await v.decodeAsync(schema, 'same')).toBe('decoded:same');
     expect(await v.encodeAsync(schema, 'same')).toBe('encoded:same');
+    expect(decode).toHaveBeenCalledTimes(1);
+    expect(encode).toHaveBeenCalledTimes(1);
+    schema.cache.clear();
+    expect(await v.decodeAsync(schema, 'same')).toBe('decoded:same');
+    expect(await v.encodeAsync(schema, 'same')).toBe('encoded:same');
+    expect(decode).toHaveBeenCalledTimes(2);
+    expect(encode).toHaveBeenCalledTimes(2);
+  });
+
+  test('deduplicates encoding and preliminary type checks independently', async () => {
+    const encode = vi.fn(async (value: Date) => value.toISOString());
+    const check = vi.fn(async (value: Date) => value.getUTCFullYear() >= 2000);
+    const cached = v.cacheAsync(
+      v.pipeAsync(
+        v.codecAsync(v.string(), v.date(), {
+          decode: async (value) => new Date(value),
+          encode,
+        }),
+        v.checkAsync(check)
+      )
+    );
+    const schema = v.pipeAsync(
+      cached,
+      v.checkAsync(async (value) => value.getUTCFullYear() >= 2000)
+    );
+
+    expect(
+      await Promise.all([
+        v.encodeAsync(schema, date),
+        v.encodeAsync(schema, date),
+      ])
+    ).toStrictEqual([iso, iso]);
+    expect(encode).toHaveBeenCalledTimes(1);
+    expect(check).toHaveBeenCalledTimes(1);
+
+    const invalid = new Date('1999-01-01');
+    expect((await v.safeEncodeAsync(schema, invalid)).success).toBe(false);
+    expect(encode).toHaveBeenCalledTimes(1);
   });
 });

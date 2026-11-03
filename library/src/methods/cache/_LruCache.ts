@@ -72,7 +72,7 @@ class _LruCache<TValue> implements Cache<TValue> {
       config.message
     )}|${this.stringify(config.abortEarly)}|${this.stringify(
       config.abortPipeEarly
-    )}`;
+    )}|${config['~direction'] ?? 'decode'}|${config['~typeCheckOnly'] ?? false}`;
   }
 
   /**
