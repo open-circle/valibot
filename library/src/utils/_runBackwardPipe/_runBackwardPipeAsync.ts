@@ -6,6 +6,8 @@ import type {
   PipeItemAsync,
   UnknownDataset,
 } from '../../types/index.ts';
+import { _assertPipeEncodable } from './_assertPipeEncodable.ts';
+import { _getPreviousSchema } from './_getPreviousSchema.ts';
 
 /**
  * Runs a pipeline backward or checks its output type without conversions.
@@ -26,64 +28,48 @@ export async function _runBackwardPipeAsync(
   dataset: UnknownDataset,
   config: Config<BaseIssue<unknown>>
 ): Promise<OutputDataset<unknown, BaseIssue<unknown>>> {
-  // Type-only actions are identities. Other transformations have no inverse.
-  for (const item of pipe) {
-    if (
-      item.kind === 'transformation' &&
-      item.type !== 'brand' &&
-      item.type !== 'flavor' &&
-      item.type !== 'readonly'
-    ) {
-      throw new Error(
-        `Cannot encode unidirectional transformation: ${item.type}`
-      );
-    }
-  }
+  _assertPipeEncodable(pipe);
   let output: OutputDataset<unknown, BaseIssue<unknown>> = {
     typed: true,
     value: dataset.value,
   };
   if (config['~typeCheckOnly']) {
-    for (let index = pipe.length - 1; index >= 0; index--) {
-      const item = pipe[index];
-      if (item.kind === 'schema') {
-        return item['~run']({ value: dataset.value }, config);
+    const schema = _getPreviousSchema(pipe, pipe.length);
+    return schema?.['~run']({ value: dataset.value }, config) ?? output;
+  }
+
+  let needsGuard = true;
+  for (let index = pipe.length - 1; index >= 0; index--) {
+    const item = pipe[index];
+    if (item.kind === 'schema') {
+      if (output.issues) {
+        output.typed = false;
+        return output;
       }
+      output = await item['~run']({ value: output.value }, config);
+      needsGuard = true;
+      continue;
     }
-  } else {
-    let needsGuard = true;
-    for (let index = pipe.length - 1; index >= 0; index--) {
-      const item = pipe[index];
-      if (item.kind === 'schema') {
-        if (output.issues) {
-          output.typed = false;
-          break;
-        }
-        output = await item['~run']({ value: output.value }, config);
-        needsGuard = true;
-      } else if (item.kind === 'validation') {
-        // Each group of checks belongs to the preceding schema's output.
-        if (needsGuard && output.typed) {
-          for (let guardIndex = index - 1; guardIndex >= 0; guardIndex--) {
-            const schema = pipe[guardIndex];
-            if (schema.kind === 'schema') {
-              const guarded = await schema['~run'](
-                { value: output.value },
-                { ...config, '~typeCheckOnly': true }
-              );
-              if (!guarded.typed) {
-                return guarded;
-              }
-              break;
-            }
-          }
-          needsGuard = false;
-        }
-        if (!output.issues || (!config.abortEarly && !config.abortPipeEarly)) {
-          output = await item['~run'](output, config);
-        }
+    if (item.kind !== 'validation') {
+      continue;
+    }
+
+    // Each group of checks belongs to the preceding schema's output.
+    if (needsGuard && output.typed) {
+      const schema = _getPreviousSchema(pipe, index);
+      const guarded = await schema?.['~run'](
+        { value: output.value },
+        { ...config, '~typeCheckOnly': true }
+      );
+      if (guarded && !guarded.typed) {
+        return guarded;
       }
+      needsGuard = false;
     }
+    if (output.issues && (config.abortEarly || config.abortPipeEarly)) {
+      continue;
+    }
+    output = await item['~run'](output, config);
   }
   return output;
 }
