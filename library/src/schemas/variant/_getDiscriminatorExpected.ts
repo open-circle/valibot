@@ -34,27 +34,11 @@ export function _getDiscriminatorExpected(
       schema.decoded as GenericSchema | GenericSchemaAsync
     );
   }
-  if (
-    'wrapped' in schema &&
-    (schema.type === 'optional' ||
-      schema.type === 'exact_optional' ||
-      schema.type === 'nullable' ||
-      schema.type === 'nullish' ||
-      schema.type === 'undefinedable')
-  ) {
-    const expected = _getDiscriminatorExpected(
-      schema.wrapped as GenericSchema | GenericSchemaAsync
+  if ('wrapped' in schema) {
+    const wrapped = schema.wrapped as GenericSchema | GenericSchemaAsync;
+    return schema.expects.replace(wrapped.expects, () =>
+      _getDiscriminatorExpected(wrapped)
     );
-    switch (schema.type) {
-      case 'exact_optional':
-        return expected;
-      case 'nullable':
-        return `(${expected} | null)`;
-      case 'nullish':
-        return `(${expected} | null | undefined)`;
-      default:
-        return `(${expected} | undefined)`;
-    }
   }
   return schema.expects;
 }
