@@ -92,20 +92,15 @@ export function undefinedable(
         const defaultValue =
           this.default !== undefined
             ? getDefault(this, dataset, config)
-            : undefined;
+            : dataset.value;
 
         // Apply defaults only when decoding
-        if (config['~direction'] !== 'encode' && this.default !== undefined) {
+        if (config['~direction'] !== 'encode') {
           dataset.value = defaultValue;
         }
 
         // Accept missing values only if the default preserves them when encoding
-        if (
-          dataset.value === undefined &&
-          (config['~direction'] !== 'encode' ||
-            this.default === undefined ||
-            defaultValue === dataset.value)
-        ) {
+        if (dataset.value === undefined && defaultValue === dataset.value) {
           // @ts-expect-error
           dataset.typed = true;
           // @ts-expect-error
