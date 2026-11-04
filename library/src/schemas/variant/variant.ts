@@ -142,11 +142,15 @@ export function variant(
               for (const currentKey of allKeys) {
                 // If any discriminator is invalid, mark keys as invalid
                 const discriminatorSchema = schema.entries[currentKey];
+                const isKeyPresent = currentKey in input;
+                const discriminatorValue: unknown = isKeyPresent
+                  ? // @ts-expect-error
+                    input[currentKey]
+                  : undefined;
                 if (
-                  currentKey in input
+                  isKeyPresent
                     ? discriminatorSchema['~run'](
-                        // @ts-expect-error
-                        { typed: false, value: input[currentKey] },
+                        { typed: false, value: discriminatorValue },
                         config['~direction'] === 'encode'
                           ? {
                               ...config,
@@ -184,8 +188,7 @@ export function variant(
                       config['~direction'] === 'encode'
                         ? _getDiscriminatorExpected(
                             discriminatorSchema,
-                            // @ts-expect-error
-                            input[currentKey]
+                            discriminatorValue
                           )
                         : discriminatorSchema.expects
                     );

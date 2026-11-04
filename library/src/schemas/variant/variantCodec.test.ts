@@ -9,6 +9,28 @@ describe('variant codec discriminator issues', () => {
   const pipeline = v.pipe(v.string(), discriminator);
 
   test.each([
+    { first: undefined, later: 'invalid', expected: '"decoded"' },
+    { first: 'invalid', later: undefined, expected: '("decoded" | undefined)' },
+  ])(
+    'uses the validated getter value for expectations ($first)',
+    ({ first, later, expected }) => {
+      const read = vi.fn().mockReturnValueOnce(first).mockReturnValue(later);
+      const input = {
+        get type() {
+          return read();
+        },
+      };
+      const schema = v.variant('type', [
+        v.object({ type: v.optional(discriminator, () => 'encoded') }),
+      ]);
+      expect(v.safeEncode(schema, input as never)).toMatchObject({
+        success: false,
+        issues: [{ type: 'variant', expected }],
+      });
+    }
+  );
+
+  test.each([
     { type: v.optional(discriminator, 'encoded'), expected: '"decoded"' },
     { type: v.undefinedable(discriminator, 'encoded'), expected: '"decoded"' },
     {
@@ -140,6 +162,36 @@ describe('variant codec discriminator issues', () => {
     }
   );
   const pipelineAsync = v.pipeAsync(v.string(), discriminatorAsync);
+
+  test.each([
+    { first: undefined, later: 'invalid', expected: '"decoded"' },
+    { first: 'invalid', later: undefined, expected: '("decoded" | undefined)' },
+  ])(
+    'uses the validated Proxy value for async expectations ($first)',
+    async ({ first, later, expected }) => {
+      const read = vi.fn().mockReturnValueOnce(first).mockReturnValue(later);
+      const input = new Proxy(
+        { type: 'invalid' },
+        {
+          get(target, key, receiver) {
+            return key === 'type' ? read() : Reflect.get(target, key, receiver);
+          },
+        }
+      );
+      const schema = v.variantAsync('type', [
+        v.objectAsync({
+          type: v.optionalAsync(
+            discriminatorAsync,
+            async () => 'encoded' as const
+          ),
+        }),
+      ]);
+      expect(await v.safeEncodeAsync(schema, input as never)).toMatchObject({
+        success: false,
+        issues: [{ type: 'variant', expected }],
+      });
+    }
+  );
 
   test('narrows constant defaults through async optional wrappers', async () => {
     const type = v.optionalAsync(v.nullableAsync(pipelineAsync), 'encoded');
