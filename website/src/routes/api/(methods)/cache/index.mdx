@@ -32,6 +32,8 @@ const Schema = v.cache<TSchema, TCacheConfig>(schema, config);
 
 The `cache` method creates a version of the given `schema` that caches its output. This can be useful for performance optimization, for example when validation performs an expensive computation or complex parsing that you want to avoid repeating for the same input.
 
+For codecs, decoding, encoding, and preliminary type checks use separate cache entries. Parsing and decoding share entries. `cacheAsync` also deduplicates concurrent calls within each direction and phase. All entries share the configured capacity and expiration policy, and `Schema.cache.clear()` clears them together.
+
 > Hint: Primitive inputs are cached by value. Object and function inputs are cached by reference identity, so mutating input objects and reusing the same reference can return a stale cached dataset. Returned objects are also reused by reference, so mutating cached output can affect later cache hits. For best results, use `cache` with immutable inputs and avoid mutating returned cached objects.
 
 ## Returns

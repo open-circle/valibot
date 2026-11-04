@@ -100,13 +100,18 @@ export function optionalAsync(
     async '~run'(dataset, config) {
       // If value is `undefined`, override it with default or return dataset
       if (dataset.value === undefined) {
-        // If default is specified, override value of dataset
-        if (this.default !== undefined) {
-          dataset.value = await getDefault(this, dataset, config);
+        const defaultValue =
+          this.default !== undefined
+            ? await getDefault(this, dataset, config)
+            : dataset.value;
+
+        // Apply defaults only when decoding
+        if (config['~direction'] !== 'encode') {
+          dataset.value = defaultValue;
         }
 
-        // If value is still `undefined`, return dataset
-        if (dataset.value === undefined) {
+        // Accept missing values only if the default preserves them when encoding
+        if (dataset.value === undefined && defaultValue === dataset.value) {
           // @ts-expect-error
           dataset.typed = true;
           // @ts-expect-error

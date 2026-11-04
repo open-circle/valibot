@@ -38,12 +38,70 @@ describe('_LruCache', () => {
     expect(cache.key(null, {})).toContain('null');
   });
 
-  test('should include symbol type for symbol input', () => {
-    const cache = new _LruCache<unknown>();
+  test('should preserve symbol identity across cache operations', () => {
+    const cache = new _LruCache<string>();
+    const first = Symbol('foo');
+    const second = Symbol('foo');
+    const firstKey = cache.key(first);
+    const secondKey = cache.key(second);
 
-    expect(cache.key(Symbol('foo'), {})).toBe(
-      'symbol|undefined|undefined|undefined|undefined'
-    );
+    expect(firstKey).not.toBe(secondKey);
+    cache.set(firstKey, 'first');
+    cache.set(secondKey, 'second');
+    expect(cache.get(cache.key(first))).toBe('first');
+    expect(cache.get(cache.key(second))).toBe('second');
+    expect(cache.key(Symbol.for('foo'))).toBe(cache.key(Symbol.for('foo')));
+    cache.clear();
+    expect(cache.get(firstKey)).toBeUndefined();
+    expect(cache.key(first)).not.toBe(firstKey);
+    expect(cache.key(second)).not.toBe(secondKey);
+    expect(cache.key(first)).toBe(cache.key(first));
+  });
+
+  test('should bound symbol identities without reusing evicted keys', () => {
+    const cache = new _LruCache<string>({ maxSize: 2 });
+    const first = Symbol('same');
+    const second = Symbol('same');
+    const third = Symbol('same');
+    const firstKey = cache.key(first);
+    cache.set(firstKey, 'first');
+    const secondKey = cache.key(second);
+    cache.set(secondKey, 'second');
+    const thirdKey = cache.key(third);
+    cache.set(thirdKey, 'third');
+
+    expect(cache.get(firstKey)).toBeUndefined();
+    expect(cache.get(secondKey)).toBe('second');
+    expect(cache.get(thirdKey)).toBe('third');
+    const nextFirstKey = cache.key(first);
+    expect([firstKey, secondKey, thirdKey]).not.toContain(nextFirstKey);
+    expect(cache.get(nextFirstKey)).toBeUndefined();
+    expect(cache.key(third)).toBe(thirdKey);
+  });
+
+  test('should bound symbol identities even without stored entries', () => {
+    const cache = new _LruCache<string>({ maxSize: 1 });
+    const first = Symbol('same');
+    const firstKey = cache.key(first);
+    const secondKey = cache.key(Symbol('same'));
+
+    expect([firstKey, secondKey]).not.toContain(cache.key(first));
+  });
+
+  test('should separate encoding, decoding, and type-check entries', () => {
+    const cache = new _LruCache<unknown>();
+    const decode = cache.key('same', { '~direction': 'decode' });
+    const encode = cache.key('same', { '~direction': 'encode' });
+    const typeCheck = cache.key('same', {
+      '~direction': 'encode',
+      '~typeCheckOnly': true,
+    });
+
+    expect(new Set([decode, encode, typeCheck]).size).toBe(3);
+    expect(cache.key('same')).toBe(decode);
+    expect(
+      cache.key('same', { '~direction': 'encode', '~typeCheckOnly': false })
+    ).toBe(encode);
   });
 
   test('should create different keys for different object references', () => {

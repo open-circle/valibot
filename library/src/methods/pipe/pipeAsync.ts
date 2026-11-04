@@ -3088,6 +3088,9 @@ export function pipeAsync<
     pipe,
     async: true,
     async '~run'(dataset, config) {
+      if (config['~runPipeAsync']) {
+        return config['~runPipeAsync'](pipe, dataset, config);
+      }
       // Execute pipeline items in sequence
       for (const item of pipe) {
         // Exclude metadata items from execution

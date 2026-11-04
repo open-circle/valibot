@@ -1,6 +1,7 @@
 import type {
   BaseIssue,
   BaseSchema,
+  InferInput,
   InferIssue,
   InferOutput,
   OutputDataset,
@@ -26,7 +27,10 @@ export type SchemaWithCache<
    * The cache instance.
    */
   readonly cache: Cache<
-    OutputDataset<InferOutput<TSchema>, InferIssue<TSchema>>
+    OutputDataset<
+      InferInput<TSchema> | InferOutput<TSchema>,
+      InferIssue<TSchema>
+    >
   >;
 };
 
