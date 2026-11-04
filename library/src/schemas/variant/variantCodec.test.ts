@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import * as v from '../../index.ts';
 
 describe('variant codec discriminator issues', () => {
@@ -7,6 +7,64 @@ describe('variant codec discriminator issues', () => {
     encode: () => 'encoded' as const,
   });
   const pipeline = v.pipe(v.string(), discriminator);
+
+  test.each([
+    { type: v.optional(discriminator, 'encoded'), expected: '"decoded"' },
+    { type: v.undefinedable(discriminator, 'encoded'), expected: '"decoded"' },
+    {
+      type: v.optional(v.nullable(pipeline), 'encoded'),
+      expected: '("decoded" | null)',
+    },
+  ])(
+    'excludes replaced undefined defaults for $type.type when encoding',
+    ({ type, expected }) => {
+      const schema = v.variant('type', [v.object({ type })]);
+      for (const value of [undefined, 'invalid']) {
+        expect(v.safeEncode(schema, { type: value } as never)).toMatchObject({
+          success: false,
+          issues: [{ type: 'variant', expected }],
+        });
+      }
+      expect(v.safeDecode(schema, { type: 'invalid' } as never)).toMatchObject({
+        success: false,
+        issues: [{ type: 'variant', expected: type.expects }],
+      });
+      expect(v.decode(schema, { type: undefined })).toStrictEqual({
+        type: 'decoded',
+      });
+    }
+  );
+
+  test('uses rejected undefined input to narrow function defaults without extra calls', () => {
+    const default_ = vi.fn(() => 'encoded' as const);
+    const schema = v.variant('type', [
+      v.object({ type: v.optional(v.nullable(pipeline), default_) }),
+    ]);
+    expect(v.safeEncode(schema, { type: undefined } as never)).toMatchObject({
+      success: false,
+      issues: [{ type: 'variant', expected: '("decoded" | null)' }],
+    });
+    expect(default_).toHaveBeenCalledTimes(1);
+    default_.mockClear();
+    expect(v.safeEncode(schema, { type: 'invalid' } as never)).toMatchObject({
+      success: false,
+      issues: [{ expected: '(("decoded" | null) | undefined)' }],
+    });
+    expect(default_).not.toHaveBeenCalled();
+  });
+
+  test('preserves undefined returned by function defaults when encoding', () => {
+    const schema = v.variant('type', [
+      v.object({ type: v.optional(discriminator, () => undefined) }),
+    ]);
+    expect(v.encode(schema, { type: undefined })).toStrictEqual({
+      type: undefined,
+    });
+    expect(v.safeEncode(schema, { type: 'invalid' } as never)).toMatchObject({
+      success: false,
+      issues: [{ expected: '("decoded" | undefined)' }],
+    });
+  });
 
   test.each([
     { type: discriminator, expected: '"encoded"' },
@@ -82,6 +140,58 @@ describe('variant codec discriminator issues', () => {
     }
   );
   const pipelineAsync = v.pipeAsync(v.string(), discriminatorAsync);
+
+  test('narrows constant defaults through async optional wrappers', async () => {
+    const type = v.optionalAsync(v.nullableAsync(pipelineAsync), 'encoded');
+    const schema = v.variantAsync('type', [v.objectAsync({ type })]);
+    for (const value of [undefined, 'invalid']) {
+      expect(
+        await v.safeEncodeAsync(schema, { type: value } as never)
+      ).toMatchObject({
+        success: false,
+        issues: [{ type: 'variant', expected: '("decoded" | null)' }],
+      });
+    }
+    expect(
+      await v.safeDecodeAsync(schema, { type: 'invalid' } as never)
+    ).toMatchObject({
+      success: false,
+      issues: [{ type: 'variant', expected: type.expects }],
+    });
+    expect(await v.decodeAsync(schema, { type: undefined })).toStrictEqual({
+      type: 'decoded',
+    });
+  });
+
+  test('awaits async defaults without evaluating them again for expectations', async () => {
+    const default_ = vi.fn(async () => 'encoded' as const);
+    const schema = v.variantAsync('type', [
+      v.objectAsync({ type: v.optionalAsync(discriminatorAsync, default_) }),
+    ]);
+    expect(
+      await v.safeEncodeAsync(schema, { type: undefined } as never)
+    ).toMatchObject({
+      success: false,
+      issues: [{ type: 'variant', expected: '"decoded"' }],
+    });
+    expect(default_).toHaveBeenCalledTimes(1);
+    default_.mockClear();
+    expect(
+      await v.safeEncodeAsync(schema, { type: 'invalid' } as never)
+    ).toMatchObject({
+      success: false,
+      issues: [{ expected: '("decoded" | undefined)' }],
+    });
+    expect(default_).not.toHaveBeenCalled();
+    const preserving = v.variantAsync('type', [
+      v.objectAsync({
+        type: v.optionalAsync(discriminatorAsync, async () => undefined),
+      }),
+    ]);
+    expect(await v.encodeAsync(preserving, { type: undefined })).toStrictEqual({
+      type: undefined,
+    });
+  });
 
   test.each([
     { type: discriminatorAsync, expected: '"encoded"' },

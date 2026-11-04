@@ -188,7 +188,11 @@ export function variantAsync(
                   if (invalidDiscriminatorKey === currentKey) {
                     expectedDiscriminators.push(
                       config['~direction'] === 'encode'
-                        ? _getDiscriminatorExpected(discriminatorSchema)
+                        ? _getDiscriminatorExpected(
+                            discriminatorSchema,
+                            // @ts-expect-error
+                            input[currentKey]
+                          )
                         : discriminatorSchema.expects
                     );
                   }

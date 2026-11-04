@@ -10,6 +10,7 @@ import { _getPreviousSchema } from '../../utils/_runBackwardPipe/_getPreviousSch
  * Returns the expected decoded discriminator without running the schema.
  *
  * @param schema The discriminator schema.
+ * @param input The rejected discriminator value.
  *
  * @returns The expected decoded discriminator.
  *
@@ -17,7 +18,8 @@ import { _getPreviousSchema } from '../../utils/_runBackwardPipe/_getPreviousSch
  */
 // @__NO_SIDE_EFFECTS__
 export function _getDiscriminatorExpected(
-  schema: GenericSchema | GenericSchemaAsync
+  schema: GenericSchema | GenericSchemaAsync,
+  input: unknown
 ): string {
   if ('pipe' in schema) {
     const pipe = schema.pipe as readonly (
@@ -26,19 +28,28 @@ export function _getDiscriminatorExpected(
     )[];
     const lastSchema = _getPreviousSchema(pipe, pipe.length);
     if (lastSchema) {
-      return _getDiscriminatorExpected(lastSchema);
+      return _getDiscriminatorExpected(lastSchema, input);
     }
   }
   if (schema.type === 'codec' && 'decoded' in schema) {
     return _getDiscriminatorExpected(
-      schema.decoded as GenericSchema | GenericSchemaAsync
+      schema.decoded as GenericSchema | GenericSchemaAsync,
+      input
     );
   }
   if ('wrapped' in schema) {
     const wrapped = schema.wrapped as GenericSchema | GenericSchemaAsync;
-    return schema.expects.replace(wrapped.expects, () =>
-      _getDiscriminatorExpected(wrapped)
-    );
+    const expected = _getDiscriminatorExpected(wrapped, input);
+    // Exclude replaced undefined defaults without evaluating callbacks again
+    if (
+      (schema.type === 'optional' || schema.type === 'undefinedable') &&
+      'default' in schema &&
+      schema.default !== undefined &&
+      (typeof schema.default !== 'function' || input === undefined)
+    ) {
+      return expected;
+    }
+    return schema.expects.replace(wrapped.expects, () => expected);
   }
   return schema.expects;
 }
