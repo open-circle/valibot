@@ -38,10 +38,22 @@ describe('_LruCache', () => {
     expect(cache.key(null, {})).toContain('null');
   });
 
-  test('should include symbol type for symbol input', () => {
-    const cache = new _LruCache<unknown>();
+  test('should preserve symbol identity across cache operations', () => {
+    const cache = new _LruCache<string>();
+    const first = Symbol('foo');
+    const second = Symbol('foo');
+    const firstKey = cache.key(first);
+    const secondKey = cache.key(second);
 
-    expect(cache.key(Symbol('foo'), {})).toMatch(/^symbol\|/u);
+    expect(firstKey).not.toBe(secondKey);
+    cache.set(firstKey, 'first');
+    cache.set(secondKey, 'second');
+    expect(cache.get(cache.key(first))).toBe('first');
+    expect(cache.get(cache.key(second))).toBe('second');
+    expect(cache.key(Symbol.for('foo'))).toBe(cache.key(Symbol.for('foo')));
+    cache.clear();
+    expect(cache.key(first)).toBe(firstKey);
+    expect(cache.key(second)).toBe(secondKey);
   });
 
   test('should separate encoding, decoding, and type-check entries', () => {

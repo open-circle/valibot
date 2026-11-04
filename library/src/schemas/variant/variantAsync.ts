@@ -8,6 +8,7 @@ import type {
   OutputDataset,
 } from '../../types/index.ts';
 import { _addIssue, _joinExpects, _standardSchema } from '../../utils/index.ts';
+import { _getDiscriminatorExpected } from './_getDiscriminatorExpected.ts';
 import type {
   InferVariantIssue,
   VariantIssue,
@@ -186,7 +187,9 @@ export function variantAsync(
                   // store its expected value
                   if (invalidDiscriminatorKey === currentKey) {
                     expectedDiscriminators.push(
-                      schema.entries[currentKey].expects
+                      config['~direction'] === 'encode'
+                        ? _getDiscriminatorExpected(discriminatorSchema)
+                        : discriminatorSchema.expects
                     );
                   }
 

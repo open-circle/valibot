@@ -100,17 +100,24 @@ export function nullishAsync(
     async '~run'(dataset, config) {
       // If value is `null` or `undefined`, override it with default or return
       // dataset
-      if (
-        (config['~direction'] !== 'encode' || this.default === undefined) &&
-        (dataset.value === null || dataset.value === undefined)
-      ) {
-        // If default is specified, override value of dataset
-        if (this.default !== undefined) {
-          dataset.value = await getDefault(this, dataset, config);
+      if (dataset.value === null || dataset.value === undefined) {
+        const defaultValue =
+          this.default !== undefined
+            ? await getDefault(this, dataset, config)
+            : undefined;
+
+        // Apply defaults only when decoding
+        if (config['~direction'] !== 'encode' && this.default !== undefined) {
+          dataset.value = defaultValue;
         }
 
-        // If value is still `null` or `undefined`, return dataset
-        if (dataset.value === null || dataset.value === undefined) {
+        // Accept missing values only if the default preserves them when encoding
+        if (
+          (dataset.value === null || dataset.value === undefined) &&
+          (config['~direction'] !== 'encode' ||
+            this.default === undefined ||
+            defaultValue === dataset.value)
+        ) {
           // @ts-expect-error
           dataset.typed = true;
           // @ts-expect-error

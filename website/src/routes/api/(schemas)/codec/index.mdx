@@ -67,7 +67,7 @@ Reported issues retain their containing object and array paths. Uncaught callbac
 
 Encoding throws an ordinary error when it encounters a one-way transformation such as `transform`, `rawTransform`, or `trim`. Safe entry points also propagate this error. The type-only `brand`, `flavor`, and `readonly` actions are allowed.
 
-Defaults and fallbacks apply during decoding only. Encoding does not insert defaults or recover from invalid values. A wrapper with a configured default requires the wrapped representation when encoding; an optional wrapper without a default still accepts omission.
+Defaults and fallbacks apply during decoding only. Encoding does not insert defaults or recover from invalid values. Nullable, optional, and nullish wrappers also accept their `null` or `undefined` value when no default is configured or the default returns that same value. Encoding evaluates a default getter for this check without replacing the value being encoded. An optional wrapper without a default still accepts omission.
 
 Codecs may normalize data. For example, a string-to-number codec can decode `"42.50"` and encode the result as `"42.5"`. Exact round-trip equality is not enforced.
 
@@ -93,4 +93,4 @@ Use async containers such as `objectAsync` and `arrayAsync` to nest async codecs
 - [encode](/api/encode/): Encode a decoded value.
 - [safeDecode](/api/safeDecode/): Decode and return validation issues.
 - [safeEncode](/api/safeEncode/): Encode and return validation issues.
-- [parse](/api/parse/): Decode unknown input, including through Standard Schema integrations.
+- [parse](/api/parse/): Decode unknown input with a Valibot schema.

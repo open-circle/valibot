@@ -41,6 +41,67 @@ describe('codecAsync', () => {
     });
   });
 
+  test('validates async conversion results', async () => {
+    const schema = v.codecAsync(v.pipe(v.string(), v.minLength(2)), v.date(), {
+      decode: async () => new Date(NaN),
+      encode: async () => '',
+    });
+    expect((await v.safeDecodeAsync(schema, 'ok')).success).toBe(false);
+    expect((await v.safeEncodeAsync(schema, date)).success).toBe(false);
+  });
+
+  test('forwards custom configuration messages through async entry points', async () => {
+    const config = { message: 'Custom codec input error' };
+    const invalid = 12 as never;
+    await expect(v.decodeAsync(dateCodec, invalid, config)).rejects.toThrow(
+      v.ValiError
+    );
+    await expect(
+      v.decodeAsync(dateCodec, invalid, config)
+    ).rejects.toMatchObject({
+      issues: [expect.objectContaining({ message: config.message })],
+    });
+    expect(await v.safeDecodeAsync(dateCodec, invalid, config)).toMatchObject({
+      success: false,
+      issues: [expect.objectContaining({ message: config.message })],
+    });
+    expect(await v.safeEncodeAsync(dateCodec, invalid, config)).toMatchObject({
+      success: false,
+      issues: [expect.objectContaining({ message: config.message })],
+    });
+  });
+
+  test('supports async codecs on both sides of another codec', async () => {
+    const numeric = v.codecAsync(v.string(), v.number(), {
+      decode: async (value) => Number(value),
+      encode: async (value) => String(value),
+    });
+    const epoch = v.codecAsync(v.number(), v.date(), {
+      decode: async (value) => new Date(value),
+      encode: async (value) => value.getTime(),
+    });
+    const schema = v.codecAsync(numeric, epoch, {
+      decode: async (value) => value * 1000,
+      encode: async (value) => value / 1000,
+    });
+    expect(await v.decodeAsync(schema, '1')).toStrictEqual(new Date(1000));
+    expect(await v.encodeAsync(schema, new Date(1000))).toBe('1');
+  });
+
+  test('composes async codec stages in a pipeline', async () => {
+    const numeric = v.codecAsync(v.string(), v.number(), {
+      decode: async (value) => Number(value),
+      encode: async (value) => String(value),
+    });
+    const epoch = v.codecAsync(v.number(), v.date(), {
+      decode: async (value) => new Date(value),
+      encode: async (value) => value.getTime(),
+    });
+    const schema = v.pipeAsync(numeric, epoch);
+    expect(await v.decodeAsync(schema, '1000')).toStrictEqual(new Date(1000));
+    expect(await v.encodeAsync(schema, new Date(1000))).toBe('1000');
+  });
+
   test('accepts async endpoint validation and synchronous conversions', async () => {
     const schema = v.codecAsync(
       v.pipeAsync(
@@ -128,31 +189,79 @@ describe('codecAsync', () => {
     expect(encode).toHaveBeenCalledTimes(1);
   });
 
-  test('does not evaluate async defaults or fallbacks during encoding', async () => {
-    const getDefault = vi.fn(async () => iso);
-    const getFallback = vi.fn(async () => date);
-    const schema = v.objectAsync({
-      at: v.optionalAsync(dateCodec, getDefault),
-      other: v.fallbackAsync(dateCodec, getFallback),
-    });
-    expect(await v.decodeAsync(schema, {} as never)).toStrictEqual({
-      at: date,
-      other: date,
-    });
-    getDefault.mockClear();
-    getFallback.mockClear();
-    expect((await v.safeEncodeAsync(schema, {} as never)).success).toBe(false);
-    expect(
-      (
-        await v.safeEncodeAsync(schema, {
-          at: undefined,
-          other: 'bad',
-        } as never)
-      ).success
-    ).toBe(false);
-    expect(getDefault).not.toHaveBeenCalled();
-    expect(getFallback).not.toHaveBeenCalled();
-  });
+  test.each([
+    (entries: v.ObjectEntriesAsync) => v.objectAsync(entries),
+    (entries: v.ObjectEntriesAsync) => v.looseObjectAsync(entries),
+    (entries: v.ObjectEntriesAsync) => v.strictObjectAsync(entries),
+    (entries: v.ObjectEntriesAsync) =>
+      v.objectWithRestAsync(entries, v.unknown()),
+  ])(
+    'does not insert async defaults or apply fallbacks during encoding %#',
+    async (factory) => {
+      const getDefault = vi.fn(async () => iso);
+      const getFallback = vi.fn(async () => date);
+      const schema = factory({
+        at: v.optionalAsync(dateCodec, getDefault),
+        other: v.fallbackAsync(dateCodec, getFallback),
+      });
+      expect(await v.decodeAsync(schema, {} as never)).toStrictEqual({
+        at: date,
+        other: date,
+      });
+      getDefault.mockClear();
+      getFallback.mockClear();
+      expect((await v.safeEncodeAsync(schema, {} as never)).success).toBe(
+        false
+      );
+      const missingDefaulted = await v.safeEncodeAsync(schema, { other: date });
+      expect(missingDefaulted.success).toBe(false);
+      expect(missingDefaulted.issues?.[0].path?.[0].key).toBe('at');
+      expect(getDefault).not.toHaveBeenCalled();
+      expect(
+        (
+          await v.safeEncodeAsync(schema, {
+            at: undefined,
+            other: 'bad',
+          } as never)
+        ).success
+      ).toBe(false);
+      expect(getDefault).toHaveBeenCalledTimes(1);
+      expect(getFallback).not.toHaveBeenCalled();
+    }
+  );
+
+  test.each([
+    [v.nullableAsync(dateCodec, null), null],
+    [v.nullableAsync(dateCodec, async () => null), null],
+    [v.optionalAsync(dateCodec, async () => undefined), undefined],
+    [v.nullishAsync(dateCodec, null), null],
+    [v.nullishAsync(dateCodec, async () => null), null],
+    [v.nullishAsync(dateCodec, async () => undefined), undefined],
+  ] as const)(
+    'encodes async wrapper outputs permitted by defaults %#',
+    async (schema, value) => {
+      expect(await v.safeEncodeAsync(schema, value as never)).toStrictEqual({
+        typed: true,
+        success: true,
+        output: value,
+        issues: undefined,
+      });
+    }
+  );
+
+  test.each([
+    [v.nullableAsync(dateCodec, async () => iso), null],
+    [v.optionalAsync(dateCodec, async () => iso), undefined],
+    [v.nullishAsync(dateCodec, async () => iso), null],
+    [v.nullishAsync(dateCodec, async () => iso), undefined],
+  ] as const)(
+    'rejects missing async wrapper outputs without replacing them %#',
+    async (schema, value) => {
+      const result = await v.safeEncodeAsync(schema, value as never);
+      expect(result.success).toBe(false);
+      expect(result.output).toBe(value);
+    }
+  );
 
   test('propagates encoding direction to variant discriminator checks', async () => {
     const encode = vi.fn(async () => 'wire' as const);
@@ -193,6 +302,28 @@ describe('codecAsync', () => {
     expect(encoded.issues?.[0].path?.[0].key).toBe('value');
     expect(encoded.typed).toBe(false);
   });
+
+  test.each([undefined, 'custom representation'])(
+    'uses the active async input representation for conversion issues (%s)',
+    async (expected) => {
+      const schema = v.codecAsync(v.string(), v.number(), {
+        decode: async (_value, context) => {
+          context.addIssue({ expected });
+          return context.NEVER;
+        },
+        encode: async (_value, context) => {
+          context.addIssue({ expected });
+          return context.NEVER;
+        },
+      });
+      const decoded = await v.safeDecodeAsync(schema, 'input');
+      const encoded = await v.safeEncodeAsync(schema, 12);
+      expect(decoded.success).toBe(false);
+      expect(encoded.success).toBe(false);
+      expect(decoded.issues?.[0].expected).toBe(expected ?? 'string');
+      expect(encoded.issues?.[0].expected).toBe(expected ?? 'number');
+    }
+  );
 
   test('rejects one-way async transformations without catching programming errors', async () => {
     const schema = v.pipeAsync(

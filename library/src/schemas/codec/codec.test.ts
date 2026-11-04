@@ -9,6 +9,88 @@ const dateCodec = v.codec(v.pipe(v.string(), v.isoTimestamp()), v.date(), {
 });
 
 describe('codec', () => {
+  test.each([undefined, 'custom expectation'])(
+    'reports direction-specific conversion expectations (%s)',
+    (expected) => {
+      const schema = v.codec(v.string(), v.number(), {
+        decode: (_value, context) => {
+          context.addIssue({ expected });
+          return context.NEVER;
+        },
+        encode: (_value, context) => {
+          context.addIssue({ expected, label: 'conversion' });
+          return context.NEVER;
+        },
+      });
+      expect(v.safeDecode(schema, '1').issues?.[0].expected).toBe(
+        expected ?? 'string'
+      );
+      const encoded = v.safeEncode(schema, 1);
+      expect(encoded.issues?.[0].expected).toBe(expected ?? 'number');
+      expect(encoded.issues?.[0].message).toContain('Invalid conversion:');
+      expect(encoded.output).toBe(1);
+    }
+  );
+
+  test('forwards call-specific messages through safe decoding and encoding', () => {
+    const message = 'Call-specific validation failure';
+    expect(
+      v.safeDecode(dateCodec, 123 as never, { message }).issues?.[0].message
+    ).toBe(message);
+    expect(
+      v.safeEncode(dateCodec, 'bad' as never, { message }).issues?.[0].message
+    ).toBe(message);
+  });
+
+  test('forwards call-specific messages through throwing decoding and encoding', () => {
+    const message = 'Call-specific validation failure';
+    expect.assertions(4);
+    for (const run of [
+      () => v.decode(dateCodec, 123 as never, { message }),
+      () => v.encode(dateCodec, 'bad' as never, { message }),
+    ]) {
+      try {
+        run();
+      } catch (error) {
+        expect(error).toBeInstanceOf(v.ValiError);
+        expect(error).toMatchObject({ issues: [{ message }] });
+      }
+    }
+  });
+
+  test('does not apply undefinedable defaults while encoding', () => {
+    const getDefault = vi.fn(() => iso);
+    const schema = v.undefinedable(dateCodec, getDefault);
+    expect(v.decode(schema, undefined)).toStrictEqual(date);
+    const result = v.safeEncode(schema, undefined as never);
+    expect(result.success).toBe(false);
+    expect(result.output).toBeUndefined();
+    expect(v.encode(v.undefinedable(dateCodec), undefined)).toBeUndefined();
+    expect(
+      v.encode(
+        v.undefinedable(dateCodec, () => undefined),
+        undefined
+      )
+    ).toBeUndefined();
+  });
+
+  test('does not apply async undefinedable defaults while encoding', async () => {
+    const schema = v.undefinedableAsync(dateCodec, async () => iso);
+    expect(await v.decodeAsync(schema, undefined)).toStrictEqual(date);
+    const result = await v.safeEncodeAsync(schema, undefined as never);
+    expect(result.success).toBe(false);
+    expect(result.output).toBeUndefined();
+    expect(
+      await v.encodeAsync(v.undefinedableAsync(dateCodec), undefined)
+    ).toBeUndefined();
+    expect(
+      await v.encodeAsync(
+        v.undefinedableAsync(dateCodec, async () => undefined),
+        undefined
+      )
+    ).toBeUndefined();
+  });
+
   test('validates and converts both representations', () => {
     expect(v.parse(dateCodec, iso)).toStrictEqual(date);
     expect(v.decode(dateCodec, iso)).toStrictEqual(date);
@@ -289,7 +371,36 @@ describe('codec', () => {
     const schema = wrapper(dateCodec, getDefault);
     expect(v.safeEncode(schema, undefined as never).success).toBe(false);
     expect(v.safeEncode(schema, null as never).success).toBe(false);
-    expect(getDefault).not.toHaveBeenCalled();
+    expect(getDefault).toHaveBeenCalled();
+  });
+
+  test.each([
+    [v.nullable(dateCodec, null), null],
+    [v.nullable(dateCodec, () => null), null],
+    [v.optional(dateCodec, () => undefined), undefined],
+    [v.nullish(dateCodec, null), null],
+    [v.nullish(dateCodec, () => null), null],
+    [v.nullish(dateCodec, () => undefined), undefined],
+  ] as const)(
+    'encodes sentinel defaults without conversion',
+    (schema, value) => {
+      expect(v.safeEncode(schema, value)).toMatchObject({
+        success: true,
+        output: value,
+      });
+    }
+  );
+
+  test('preserves nullish encode input instead of applying a different sentinel default', () => {
+    expect(
+      v.safeEncode(v.nullish(dateCodec, null), undefined as never).success
+    ).toBe(false);
+    expect(
+      v.safeEncode(
+        v.nullish(dateCodec, () => undefined),
+        null as never
+      ).success
+    ).toBe(false);
   });
 
   test('keeps ordinary optional properties optional in both directions', () => {

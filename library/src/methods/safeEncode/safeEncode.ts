@@ -14,9 +14,9 @@ import type { SafeEncodeResult } from '../safeEncode/types.ts';
  *
  * @param schema The schema to be used.
  * @param input The value to encode.
- * @param config The parse configuration.
+ * @param config The encoding configuration.
  *
- * @returns The parse result.
+ * @returns The encoding result.
  */
 // @__NO_SIDE_EFFECTS__
 export function safeEncode<

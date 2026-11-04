@@ -75,7 +75,12 @@ export function codec<
         dataset: output as SuccessDataset<unknown>,
         config,
         addIssue: (info) =>
-          _addIssue(this, info?.label ?? 'input', output, config, info),
+          _addIssue(this, info?.label ?? 'input', output, config, {
+            ...info,
+            expected:
+              info?.expected ??
+              (encoding ? this.decoded.expects : this.expects),
+          }),
         NEVER: null as never,
       };
       const value = encoding

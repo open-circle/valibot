@@ -82,17 +82,24 @@ export function nullable(
     default: default_,
     '~run'(dataset, config) {
       // If value is `null`, override it with default or return dataset
-      if (
-        (config['~direction'] !== 'encode' || this.default === undefined) &&
-        dataset.value === null
-      ) {
-        // If default is specified, override value of dataset
-        if (this.default !== undefined) {
-          dataset.value = getDefault(this, dataset, config);
+      if (dataset.value === null) {
+        const defaultValue =
+          this.default !== undefined
+            ? getDefault(this, dataset, config)
+            : undefined;
+
+        // Apply defaults only when decoding
+        if (config['~direction'] !== 'encode' && this.default !== undefined) {
+          dataset.value = defaultValue;
         }
 
-        // If value is still `null`, return dataset
-        if (dataset.value === null) {
+        // Accept missing values only if the default preserves them when encoding
+        if (
+          dataset.value === null &&
+          (config['~direction'] !== 'encode' ||
+            this.default === undefined ||
+            defaultValue === dataset.value)
+        ) {
           // @ts-expect-error
           dataset.typed = true;
           // @ts-expect-error
