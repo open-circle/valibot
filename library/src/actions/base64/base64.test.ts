@@ -85,6 +85,10 @@ describe('base64', () => {
         '8J+Mrg==', // '🌮'
       ]);
     });
+
+    test('for long Base64 strings', () => {
+      expectNoActionIssue(action, ['Zm9v'.repeat(2_500_000)]);
+    });
   });
 
   describe('should return dataset with issues', () => {

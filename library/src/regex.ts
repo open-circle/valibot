@@ -1,8 +1,11 @@
 /**
  * [Base64](https://en.wikipedia.org/wiki/Base64) regex.
+ *
+ * Hint: The group is written out instead of using `{4}` because V8 otherwise
+ * throws a `RangeError` for inputs longer than a few megabytes.
  */
 export const BASE64_REGEX: RegExp =
-  /^(?:[\da-z+/]{4})*(?:[\da-z+/]{2}==|[\da-z+/]{3}=)?$/iu;
+  /^(?:[\da-z+/][\da-z+/][\da-z+/][\da-z+/])*(?:[\da-z+/]{2}==|[\da-z+/]{3}=)?$/iu;
 
 /**
  * [BIC](https://en.wikipedia.org/wiki/ISO_9362) regex.
