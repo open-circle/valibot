@@ -52,8 +52,40 @@ describe('_LruCache', () => {
     expect(cache.get(cache.key(second))).toBe('second');
     expect(cache.key(Symbol.for('foo'))).toBe(cache.key(Symbol.for('foo')));
     cache.clear();
-    expect(cache.key(first)).toBe(firstKey);
-    expect(cache.key(second)).toBe(secondKey);
+    expect(cache.get(firstKey)).toBeUndefined();
+    expect(cache.key(first)).not.toBe(firstKey);
+    expect(cache.key(second)).not.toBe(secondKey);
+    expect(cache.key(first)).toBe(cache.key(first));
+  });
+
+  test('should bound symbol identities without reusing evicted keys', () => {
+    const cache = new _LruCache<string>({ maxSize: 2 });
+    const first = Symbol('same');
+    const second = Symbol('same');
+    const third = Symbol('same');
+    const firstKey = cache.key(first);
+    cache.set(firstKey, 'first');
+    const secondKey = cache.key(second);
+    cache.set(secondKey, 'second');
+    const thirdKey = cache.key(third);
+    cache.set(thirdKey, 'third');
+
+    expect(cache.get(firstKey)).toBeUndefined();
+    expect(cache.get(secondKey)).toBe('second');
+    expect(cache.get(thirdKey)).toBe('third');
+    const nextFirstKey = cache.key(first);
+    expect([firstKey, secondKey, thirdKey]).not.toContain(nextFirstKey);
+    expect(cache.get(nextFirstKey)).toBeUndefined();
+    expect(cache.key(third)).toBe(thirdKey);
+  });
+
+  test('should bound symbol identities even without stored entries', () => {
+    const cache = new _LruCache<string>({ maxSize: 1 });
+    const first = Symbol('same');
+    const firstKey = cache.key(first);
+    const secondKey = cache.key(Symbol('same'));
+
+    expect([firstKey, secondKey]).not.toContain(cache.key(first));
   });
 
   test('should separate encoding, decoding, and type-check entries', () => {

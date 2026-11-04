@@ -392,6 +392,18 @@ describe('codec', () => {
   );
 
   test('preserves nullish encode input instead of applying a different sentinel default', () => {
+    expect(v.safeEncode(v.nullish(v.unknown(), null), undefined)).toMatchObject(
+      {
+        success: true,
+        output: undefined,
+      }
+    );
+    expect(
+      v.safeEncode(
+        v.nullish(v.unknown(), () => undefined),
+        null
+      )
+    ).toMatchObject({ success: true, output: null });
     expect(
       v.safeEncode(v.nullish(dateCodec, null), undefined as never).success
     ).toBe(false);

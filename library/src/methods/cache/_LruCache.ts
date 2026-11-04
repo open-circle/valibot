@@ -11,7 +11,7 @@ class _LruCache<TValue> implements Cache<TValue> {
   // Assign stable IDs to references
   private refIds: WeakMap<WeakKey, number> | undefined;
 
-  // Retain symbol identities for this cache instance, including across clear().
+  // Bound strongly held symbol identities by the cache capacity.
   private symbolIds: Map<symbol, number> | undefined;
 
   // Counter for tracking references
@@ -53,6 +53,9 @@ class _LruCache<TValue> implements Cache<TValue> {
       if (!id) {
         id = ++this.refCount;
         this.symbolIds.set(input, id);
+        if (this.symbolIds.size > this.maxSize) {
+          this.symbolIds.delete(this.symbolIds.keys().next().value!);
+        }
       }
       return `symbol#${id}`;
     }
@@ -144,6 +147,7 @@ class _LruCache<TValue> implements Cache<TValue> {
    */
   clear(): void {
     this.store?.clear();
+    this.symbolIds?.clear();
   }
 }
 
