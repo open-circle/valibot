@@ -148,5 +148,9 @@ describe('base64', () => {
         'Zm9vYmE==', // = extra
       ]);
     });
+
+    test('for long invalid Base64 strings', () => {
+      expectActionIssue(action, baseIssue, [`${'Zm9v'.repeat(2_500_000)}Zm9!`]);
+    });
   });
 });
