@@ -1,16 +1,21 @@
 import { describe, expectTypeOf, test } from 'vitest';
-import { transform } from '../../actions/index.ts';
+import { readonly, transform } from '../../actions/index.ts';
 import { pipe } from '../../methods/index.ts';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
 import { array, type ArrayIssue, type ArraySchema } from '../array/index.ts';
 import { instance } from '../instance/index.ts';
+import { intersect } from '../intersect/index.ts';
+import { literal } from '../literal/index.ts';
 import { map } from '../map/index.ts';
+import { nullable } from '../nullable/index.ts';
+import { number } from '../number/index.ts';
 import {
   object,
   type ObjectIssue,
   type ObjectSchema,
 } from '../object/index.ts';
 import { optional } from '../optional/index.ts';
+import { record } from '../record/index.ts';
 import { set } from '../set/index.ts';
 import {
   string,
@@ -20,6 +25,7 @@ import {
 import { tuple } from '../tuple/index.ts';
 import { tupleWithRest } from '../tupleWithRest/index.ts';
 import { union, type UnionIssue, type UnionSchema } from '../union/index.ts';
+import { variant } from '../variant/index.ts';
 import {
   type GenericRecursiveSchema,
   recursive,
@@ -274,6 +280,93 @@ describe('recursive', () => {
     expectTypeOf<InferIssue<Schema>>().toEqualTypeOf<
       ObjectIssue | StringIssue | ArrayIssue
     >();
+  });
+
+  test('should resolve transforms and defaults at every recursive level', () => {
+    const Schema = recursive((self) =>
+      object({
+        value: pipe(string(), transform(Number)),
+        label: optional(string(), 'default'),
+        children: array(self),
+      })
+    );
+
+    interface Input {
+      value: string;
+      label?: string | undefined;
+      children: Input[];
+    }
+    interface Output {
+      value: number;
+      label: string;
+      children: Output[];
+    }
+
+    expectTypeOf(Schema).toHaveProperty('~run');
+    expectTypeOf<InferInput<typeof Schema>>().toEqualTypeOf<Input>();
+    expectTypeOf<InferOutput<typeof Schema>>().toEqualTypeOf<Output>();
+    expectTypeOf<{
+      value: string;
+      children: { value: number; children: [] }[];
+    }>().not.toExtend<InferInput<typeof Schema>>();
+    expectTypeOf<{
+      value: number;
+      label: string;
+      children: { value: number; children: [] }[];
+    }>().not.toExtend<InferOutput<typeof Schema>>();
+  });
+
+  test('should resolve nullable records and readonly recursive arrays', () => {
+    const Schema = recursive((self) =>
+      object({
+        children: record(string(), nullable(self)),
+        siblings: pipe(array(self), readonly()),
+        pair: tuple([string(), optional(self)]),
+      })
+    );
+
+    interface Input {
+      children: Record<string, Input | null>;
+      siblings: Input[];
+      pair: [string, Input | undefined];
+    }
+    interface Output {
+      children: Record<string, Output | null>;
+      readonly siblings: readonly Output[];
+      pair: [string, Output | undefined];
+    }
+
+    expectTypeOf(Schema).toHaveProperty('~run');
+    expectTypeOf<InferInput<typeof Schema>>().toEqualTypeOf<Input>();
+    expectTypeOf<InferOutput<typeof Schema>>().toEqualTypeOf<Output>();
+  });
+
+  test('should resolve recursive variants inside intersections', () => {
+    const Schema = recursive((self) =>
+      intersect([
+        object({ id: number() }),
+        variant('kind', [
+          object({ kind: literal('leaf'), value: string() }),
+          object({ kind: literal('branch'), children: array(self) }),
+        ]),
+      ])
+    );
+
+    type Node = { id: number } & (
+      | { kind: 'leaf'; value: string }
+      | { kind: 'branch'; children: Node[] }
+    );
+
+    expectTypeOf(Schema).toHaveProperty('~run');
+    expectTypeOf<InferInput<typeof Schema>>().toExtend<Node>();
+    expectTypeOf<Node>().toExtend<InferInput<typeof Schema>>();
+    expectTypeOf<InferOutput<typeof Schema>>().toExtend<Node>();
+    expectTypeOf<Node>().toExtend<InferOutput<typeof Schema>>();
+    expectTypeOf<{
+      id: number;
+      kind: 'branch';
+      children: { id: number; kind: 'leaf'; value: number }[];
+    }>().not.toExtend<InferOutput<typeof Schema>>();
   });
 
   test('should support generic schema interface', () => {

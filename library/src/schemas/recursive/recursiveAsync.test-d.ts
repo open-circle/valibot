@@ -1,4 +1,6 @@
 import { describe, expectTypeOf, test } from 'vitest';
+import { readonly, transformAsync } from '../../actions/index.ts';
+import { pipeAsync } from '../../methods/index.ts';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
 import {
   arrayAsync,
@@ -6,19 +8,27 @@ import {
   type ArraySchemaAsync,
 } from '../array/index.ts';
 import { instance } from '../instance/index.ts';
+import { intersectAsync } from '../intersect/index.ts';
+import { literal } from '../literal/index.ts';
 import { mapAsync } from '../map/index.ts';
+import { nullableAsync } from '../nullable/index.ts';
+import { number } from '../number/index.ts';
 import {
   objectAsync,
   type ObjectIssue,
   type ObjectSchemaAsync,
 } from '../object/index.ts';
+import { optional, optionalAsync } from '../optional/index.ts';
+import { recordAsync } from '../record/index.ts';
 import { setAsync } from '../set/index.ts';
 import {
   string,
   type StringIssue,
   type StringSchema,
 } from '../string/index.ts';
+import { tupleAsync } from '../tuple/index.ts';
 import type { UnionIssue, UnionSchemaAsync } from '../union/index.ts';
+import { variantAsync } from '../variant/index.ts';
 import {
   recursiveAsync,
   type RecursiveSchemaAsync,
@@ -146,6 +156,96 @@ describe('recursiveAsync', () => {
     expectTypeOf<InferIssue<Schema>>().toEqualTypeOf<
       StringIssue | ArrayIssue | UnionIssue<StringIssue | ArrayIssue>
     >();
+  });
+
+  test('should resolve async transforms and defaults at every recursive level', () => {
+    const Schema = recursiveAsync(async (self) =>
+      objectAsync({
+        value: pipeAsync(
+          string(),
+          transformAsync(async (value) => Number(value))
+        ),
+        label: optional(string(), 'default'),
+        children: arrayAsync(self),
+      })
+    );
+
+    interface Input {
+      value: string;
+      label?: string | undefined;
+      children: Input[];
+    }
+    interface Output {
+      value: number;
+      label: string;
+      children: Output[];
+    }
+
+    expectTypeOf(Schema).toHaveProperty('~run');
+    expectTypeOf<InferInput<typeof Schema>>().toEqualTypeOf<Input>();
+    expectTypeOf<InferOutput<typeof Schema>>().toEqualTypeOf<Output>();
+    expectTypeOf<{
+      value: string;
+      children: { value: number; children: [] }[];
+    }>().not.toExtend<InferInput<typeof Schema>>();
+    expectTypeOf<{
+      value: number;
+      label: string;
+      children: { value: number; children: [] }[];
+    }>().not.toExtend<InferOutput<typeof Schema>>();
+  });
+
+  test('should resolve nullable records and readonly arrays in async schemas', () => {
+    const Schema = recursiveAsync((self) =>
+      objectAsync({
+        children: recordAsync(string(), nullableAsync(self)),
+        siblings: pipeAsync(arrayAsync(self), readonly()),
+        pair: tupleAsync([string(), optionalAsync(self)]),
+      })
+    );
+
+    interface Input {
+      children: Record<string, Input | null>;
+      siblings: Input[];
+      pair: [string, Input | undefined];
+    }
+    interface Output {
+      children: Record<string, Output | null>;
+      readonly siblings: readonly Output[];
+      pair: [string, Output | undefined];
+    }
+
+    expectTypeOf(Schema).toHaveProperty('~run');
+    expectTypeOf<InferInput<typeof Schema>>().toEqualTypeOf<Input>();
+    expectTypeOf<InferOutput<typeof Schema>>().toEqualTypeOf<Output>();
+  });
+
+  test('should resolve recursive async variants inside intersections', () => {
+    const Schema = recursiveAsync((self) =>
+      intersectAsync([
+        objectAsync({ id: number() }),
+        variantAsync('kind', [
+          objectAsync({ kind: literal('leaf'), value: string() }),
+          objectAsync({ kind: literal('branch'), children: arrayAsync(self) }),
+        ]),
+      ])
+    );
+
+    type Node = { id: number } & (
+      | { kind: 'leaf'; value: string }
+      | { kind: 'branch'; children: Node[] }
+    );
+
+    expectTypeOf(Schema).toHaveProperty('~run');
+    expectTypeOf<InferInput<typeof Schema>>().toExtend<Node>();
+    expectTypeOf<Node>().toExtend<InferInput<typeof Schema>>();
+    expectTypeOf<InferOutput<typeof Schema>>().toExtend<Node>();
+    expectTypeOf<Node>().toExtend<InferOutput<typeof Schema>>();
+    expectTypeOf<{
+      id: number;
+      kind: 'branch';
+      children: { id: number; kind: 'leaf'; value: number }[];
+    }>().not.toExtend<InferOutput<typeof Schema>>();
   });
 
   test('should support schema interface', () => {
