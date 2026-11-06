@@ -16,7 +16,9 @@ export declare const RecursiveMarkerSymbol: unique symbol;
 /**
  * Recursive marker type.
  */
-export type RecursiveMarker = typeof RecursiveMarkerSymbol;
+export interface RecursiveMarker {
+  readonly [RecursiveMarkerSymbol]: true;
+}
 
 /**
  * Recursive self schema interface.
