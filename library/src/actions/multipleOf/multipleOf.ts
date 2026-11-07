@@ -11,6 +11,34 @@ import { _addIssue } from '../../utils/index.ts';
 type Input = number | bigint;
 
 /**
+ * Returns the remainder of `value / requirement` without the floating-point
+ * error of the native `%` operator (e.g. `0.3 % 0.1` is `0.0999…`, not `0`, so
+ * `multipleOf(0.1)` would wrongly reject `0.3`). Both operands are scaled to
+ * integers by their decimal-place count before the modulo. Falls back to the
+ * native operator for numbers in exponential notation, where the decimal count
+ * cannot be derived from the string representation.
+ *
+ * @param value The dividend.
+ * @param requirement The divisor.
+ *
+ * @returns The floating-point-safe remainder.
+ */
+// @__NO_SIDE_EFFECTS__
+function _floatSafeRemainder(value: number, requirement: number): number {
+  const valueString = `${value}`;
+  const requirementString = `${requirement}`;
+  if (valueString.includes('e') || requirementString.includes('e')) {
+    return value % requirement;
+  }
+  const decimals = Math.max(
+    valueString.split('.')[1]?.length ?? 0,
+    requirementString.split('.')[1]?.length ?? 0
+  );
+  const scale = 10 ** decimals;
+  return (Math.round(value * scale) % Math.round(requirement * scale)) / scale;
+}
+
+/**
  * Multiple of issue interface.
  */
 export interface MultipleOfIssue<
@@ -155,8 +183,16 @@ export function multipleOf(
     requirement,
     message,
     '~run'(dataset, config) {
-      // @ts-expect-error
-      if (dataset.typed && dataset.value % this.requirement != 0) {
+      if (
+        dataset.typed &&
+        (typeof dataset.value === 'bigint'
+          ? // @ts-expect-error
+            dataset.value % this.requirement !== 0n
+          : _floatSafeRemainder(
+              dataset.value,
+              this.requirement as number
+            ) !== 0)
+      ) {
         _addIssue(this, 'multiple', dataset, config);
       }
       return dataset;
