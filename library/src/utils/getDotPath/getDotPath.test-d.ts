@@ -10,7 +10,7 @@ import type {
   StringIssue,
   StringSchema,
 } from '../../schemas/index.ts';
-import type { RefAsync } from '../../schemas/recursive/recursive.ts';
+import type { RefAsync } from '../../schemas/recursive/_recursive.ts';
 import type { ArrayPathItem, ObjectPathItem } from '../../types/index.ts';
 import { getDotPath } from './getDotPath.ts';
 

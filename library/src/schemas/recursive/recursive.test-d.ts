@@ -26,7 +26,8 @@ import { tuple } from '../tuple/index.ts';
 import { tupleWithRest } from '../tupleWithRest/index.ts';
 import { union, type UnionIssue, type UnionSchema } from '../union/index.ts';
 import { variant } from '../variant/index.ts';
-import { recursive, type RecursiveSchema, type Ref } from './recursive.ts';
+import type { Ref } from './_recursive.ts';
+import { recursive, type RecursiveSchema } from './recursive.ts';
 
 describe('recursive', () => {
   test('rejects definition maps and callable self references', () => {

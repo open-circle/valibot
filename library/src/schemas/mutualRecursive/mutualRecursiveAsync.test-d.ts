@@ -19,19 +19,19 @@ import { number, type NumberIssue } from '../number/index.ts';
 import { objectAsync as object, type ObjectIssue } from '../object/index.ts';
 import { optionalAsync as optional } from '../optional/index.ts';
 import { recordAsync as record } from '../record/index.ts';
+import {
+  type RecursiveMarker,
+  type RecursiveReferences,
+  type ResolveRecursiveInput,
+  type ResolveRecursiveOutput,
+} from '../recursive/_recursive.ts';
 import { setAsync as set } from '../set/index.ts';
 import { string, type StringIssue } from '../string/index.ts';
 import { tupleAsync as tuple } from '../tuple/index.ts';
 import { tupleWithRestAsync as tupleWithRest } from '../tupleWithRest/index.ts';
 import { unionAsync as union, type UnionIssue } from '../union/index.ts';
 import { variantAsync as variant } from '../variant/index.ts';
-import type {
-  RecursiveMarker,
-  RecursiveReferences,
-  RefFactoryAsync,
-  ResolveRecursiveInput,
-  ResolveRecursiveOutput,
-} from './mutualRecursive.ts';
+import type { RefFactoryAsync } from './_mutualRecursive.ts';
 import {
   mutualRecursiveAsync as mutualRecursive,
   type MutualRecursiveSchemaAsync as MutualRecursiveSchema,

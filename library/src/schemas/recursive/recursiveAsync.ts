@@ -7,17 +7,12 @@ import type {
   InferIssue,
   InferOutput,
 } from '../../types/index.ts';
-import { _standardSchema } from '../../utils/index.ts';
+import { createRecursive } from './_createRecursive.ts';
 import {
-  checkRecursiveReferences,
-  type ConfigWithOwner,
-  createRef,
-  OwnerSymbol,
-  type RecursiveOwner,
   type RefAsync,
   type ResolveRecursiveInput,
   type ResolveRecursiveOutput,
-} from './recursive.ts';
+} from './_recursive.ts';
 
 /**
  * Recursive schema async interface.
@@ -76,28 +71,10 @@ export function recursiveAsync<const TWrapped extends SyncOrAsyncSchema>(
 export function recursiveAsync(
   definition: (self: RefAsync) => SyncOrAsyncSchema
 ): unknown {
-  const owner = {
-    async: true,
-    reference: recursiveAsync<SyncOrAsyncSchema>,
-    get definition() {
-      return wrapped;
-    },
-  } satisfies RecursiveOwner;
-  const wrapped = definition(createRef(owner));
-  checkRecursiveReferences(wrapped, owner);
-  return _standardSchema<RecursiveSchemaAsync>({
-    kind: 'schema',
+  return createRecursive({
     type: 'recursiveAsync',
-    reference: recursiveAsync<SyncOrAsyncSchema>,
-    expects: 'unknown',
     async: true,
-    wrapped,
-    async '~run'(dataset, config) {
-      const configWithOwner: ConfigWithOwner = {
-        ...config,
-        [OwnerSymbol]: owner,
-      };
-      return wrapped['~run'](dataset, configWithOwner);
-    },
+    reference: recursiveAsync<SyncOrAsyncSchema>,
+    build: definition,
   });
 }

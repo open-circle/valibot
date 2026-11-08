@@ -10,7 +10,7 @@ import { arrayAsync } from '../array/index.ts';
 import { objectAsync } from '../object/index.ts';
 import { optional } from '../optional/index.ts';
 import { string } from '../string/index.ts';
-import type { RefAsync } from './recursive.ts';
+import type { RefAsync } from './_recursive.ts';
 import { recursiveAsync } from './recursiveAsync.ts';
 
 describe('recursiveAsync execution', () => {

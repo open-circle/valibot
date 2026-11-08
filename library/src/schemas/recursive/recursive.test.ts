@@ -7,7 +7,8 @@ import { any } from '../any/index.ts';
 import { array } from '../array/index.ts';
 import { object } from '../object/index.ts';
 import { string } from '../string/index.ts';
-import { recursive, type RecursiveSchema, type Ref } from './recursive.ts';
+import type { Ref } from './_recursive.ts';
+import { recursive, type RecursiveSchema } from './recursive.ts';
 
 describe('recursive', () => {
   test('should return schema object', () => {

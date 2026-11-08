@@ -8,7 +8,7 @@ import type {
   StringIssue,
   StringSchema,
 } from '../../schemas/index.ts';
-import type { Ref } from '../../schemas/recursive/recursive.ts';
+import type { Ref } from '../../schemas/recursive/_recursive.ts';
 import type { ArrayPathItem, ObjectPathItem } from '../../types/index.ts';
 import { flatten } from './flatten.ts';
 

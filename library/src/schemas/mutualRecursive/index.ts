@@ -6,9 +6,9 @@ export type {
   RefFactory,
   RefFactoryAsync,
   ResolvedRecursiveSchema as ResolvedMutualRecursiveSchema,
-} from './mutualRecursive.ts';
+  ResolvedRecursiveSchemaAsync as ResolvedMutualRecursiveSchemaAsync,
+} from './_mutualRecursive.ts';
 export {
   mutualRecursiveAsync,
   type MutualRecursiveSchemaAsync,
-  type ResolvedRecursiveSchemaAsync as ResolvedMutualRecursiveSchemaAsync,
 } from './mutualRecursiveAsync.ts';

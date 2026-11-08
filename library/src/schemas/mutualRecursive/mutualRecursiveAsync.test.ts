@@ -11,7 +11,7 @@ import { recordAsync } from '../record/index.ts';
 import { setAsync } from '../set/index.ts';
 import { string, type StringIssue } from '../string/index.ts';
 import { tupleAsync } from '../tuple/index.ts';
-import type { RefFactoryAsync } from './mutualRecursive.ts';
+import type { RefFactoryAsync } from './_mutualRecursive.ts';
 import { mutualRecursiveAsync as recursiveAsync } from './mutualRecursiveAsync.ts';
 
 interface AInput {

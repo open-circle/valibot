@@ -12,7 +12,7 @@ import { objectAsync } from '../object/index.ts';
 import { optionalAsync } from '../optional/index.ts';
 import { recursiveAsync } from '../recursive/recursiveAsync.ts';
 import { string } from '../string/index.ts';
-import type { RefFactoryAsync } from './mutualRecursive.ts';
+import type { RefFactoryAsync } from './_mutualRecursive.ts';
 import { mutualRecursive } from './mutualRecursive.ts';
 import { mutualRecursiveAsync } from './mutualRecursiveAsync.ts';
 

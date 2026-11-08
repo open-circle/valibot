@@ -71,7 +71,7 @@ import type {
   VariantSchema,
   VariantSchemaAsync,
 } from '../schemas/index.ts';
-import type { Ref, RefAsync } from '../schemas/recursive/recursive.ts';
+import type { Ref, RefAsync } from '../schemas/recursive/_recursive.ts';
 import type { Config } from './config.ts';
 import type { InferInput } from './infer.ts';
 import type { ObjectEntries, ObjectEntriesAsync } from './object.ts';

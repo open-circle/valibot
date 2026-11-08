@@ -29,7 +29,7 @@ import {
 import { tupleAsync } from '../tuple/index.ts';
 import type { UnionIssue, UnionSchemaAsync } from '../union/index.ts';
 import { variantAsync } from '../variant/index.ts';
-import type { RefAsync } from './recursive.ts';
+import type { RefAsync } from './_recursive.ts';
 import { recursiveAsync, type RecursiveSchemaAsync } from './recursiveAsync.ts';
 
 describe('recursiveAsync', () => {

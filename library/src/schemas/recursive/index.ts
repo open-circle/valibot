@@ -10,7 +10,7 @@ export {
   type RecursiveReadonlyArray,
   type Ref,
   type RefAsync,
-} from './recursive.ts';
+} from './_recursive.ts';
 export {
   recursiveAsync,
   type RecursiveSchemaAsync,

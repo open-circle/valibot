@@ -5,7 +5,7 @@ import { expectNoSchemaIssueAsync } from '../../vitest/index.ts';
 import { array, arrayAsync } from '../array/index.ts';
 import { object, objectAsync } from '../object/index.ts';
 import { string } from '../string/index.ts';
-import type { RefAsync } from './recursive.ts';
+import type { RefAsync } from './_recursive.ts';
 import { recursive } from './recursive.ts';
 import { recursiveAsync, type RecursiveSchemaAsync } from './recursiveAsync.ts';
 
