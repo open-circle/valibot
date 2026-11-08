@@ -11,6 +11,7 @@ contributors:
   - yicrotkd
   - gotnoklu
   - yslpn
+  - james-tindal
 ---
 
 import { ApiList, Link } from '~/components';
@@ -114,6 +115,7 @@ Beyond primitive and complex values, there are also schema functions for more sp
     'intersect',
     'lazy',
     'literal',
+    'mutualRecursive',
     'nan',
     'never',
     'nonNullable',
@@ -143,6 +145,10 @@ const InstanceSchema = v.instance(Error); // Error
 const LazySchema = v.lazy(() => v.string()); // string
 const IntersectSchema = v.intersect([v.string(), v.literal('a')]); // string & 'a'
 const LiteralSchema = v.literal('foo'); // 'foo'
+const MutualRecursiveSchemas = v.mutualRecursive((ref) => ({
+  a: v.object({ b: v.optional(ref('b')) }),
+  b: v.object({ a: v.optional(ref('a')) }),
+})); // { a: ..., b: ... }
 const NanSchema = v.nan(); // NaN
 const NeverSchema = v.never(); // never
 const NonNullableSchema = v.nonNullable(v.nullable(v.string())); // string

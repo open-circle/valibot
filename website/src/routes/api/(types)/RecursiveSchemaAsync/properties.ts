@@ -39,6 +39,21 @@ export const properties: Record<string, PropertyProps> = {
       ],
     },
   },
+  TInput: {
+    type: 'unknown',
+  },
+  TOutput: {
+    type: 'unknown',
+  },
+  TIssue: {
+    modifier: 'extends',
+    type: {
+      type: 'custom',
+      name: 'BaseIssue',
+      href: '../BaseIssue/',
+      generics: ['unknown'],
+    },
+  },
   BaseSchemaAsync: {
     modifier: 'extends',
     type: {
@@ -46,75 +61,39 @@ export const properties: Record<string, PropertyProps> = {
       name: 'BaseSchemaAsync',
       href: '../BaseSchemaAsync/',
       generics: [
-        {
-          type: 'custom',
-          name: 'ResolveRecursiveInput',
-          generics: [
-            {
-              type: 'custom',
-              name: 'InferInput',
-              href: '../InferInput/',
-              generics: [
-                {
-                  type: 'custom',
-                  name: 'TWrapped',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: 'custom',
-          name: 'ResolveRecursiveOutput',
-          generics: [
-            {
-              type: 'custom',
-              name: 'InferOutput',
-              href: '../InferOutput/',
-              generics: [
-                {
-                  type: 'custom',
-                  name: 'TWrapped',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: 'custom',
-          name: 'InferIssue',
-          href: '../InferIssue/',
-          generics: [
-            {
-              type: 'custom',
-              name: 'TWrapped',
-            },
-          ],
-        },
+        { type: 'custom', name: 'TInput' },
+        { type: 'custom', name: 'TOutput' },
+        { type: 'custom', name: 'TIssue' },
       ],
     },
   },
   type: {
     type: {
       type: 'string',
-      value: 'recursive',
+      value: 'recursiveAsync',
     },
   },
   reference: {
     type: {
-      type: 'union',
-      options: [
+      type: 'custom',
+      modifier: 'typeof',
+      name: 'recursiveAsync',
+      href: '../recursiveAsync/',
+      generics: [
         {
-          type: 'custom',
-          modifier: 'typeof',
-          name: 'recursive',
-          href: '../recursive/',
-        },
-        {
-          type: 'custom',
-          modifier: 'typeof',
-          name: 'recursiveAsync',
-          href: '../recursiveAsync/',
+          type: 'union',
+          options: [
+            {
+              type: 'custom',
+              name: 'GenericSchema',
+              href: '../GenericSchema/',
+            },
+            {
+              type: 'custom',
+              name: 'GenericSchemaAsync',
+              href: '../GenericSchemaAsync/',
+            },
+          ],
         },
       ],
     },
@@ -125,30 +104,7 @@ export const properties: Record<string, PropertyProps> = {
       value: 'unknown',
     },
   },
-  getter: {
-    type: {
-      type: 'function',
-      params: [
-        {
-          name: 'self',
-          type: {
-            type: 'custom',
-            name: 'RecursiveMarkerSchemaAsync',
-            href: '../RecursiveMarkerSchemaAsync/',
-          },
-        },
-      ],
-      return: {
-        type: 'custom',
-        name: 'MaybePromise',
-        href: '../MaybePromise/',
-        generics: [
-          {
-            type: 'custom',
-            name: 'TWrapped',
-          },
-        ],
-      },
-    },
+  wrapped: {
+    type: { type: 'custom', name: 'TWrapped' },
   },
 };

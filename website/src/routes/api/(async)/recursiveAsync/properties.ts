@@ -39,7 +39,7 @@ export const properties: Record<string, PropertyProps> = {
       ],
     },
   },
-  getter: {
+  definition: {
     type: {
       type: 'function',
       params: [
@@ -47,29 +47,21 @@ export const properties: Record<string, PropertyProps> = {
           name: 'self',
           type: {
             type: 'custom',
-            name: 'RecursiveMarkerSchemaAsync',
-            href: '../RecursiveMarkerSchemaAsync/',
+            name: 'RefAsync',
+            href: '../RefAsync/',
           },
         },
       ],
       return: {
         type: 'custom',
-        name: 'MaybePromise',
-        href: '../MaybePromise/',
-        generics: [
-          {
-            type: 'custom',
-            name: 'TWrapped',
-          },
-        ],
+        name: 'TWrapped',
       },
     },
   },
   Schema: {
     type: {
       type: 'custom',
-      name: 'RecursiveSchemaAsync',
-      href: '../RecursiveSchemaAsync/',
+      name: 'ResolvedRecursiveSchemaAsync',
       generics: [
         {
           type: 'custom',

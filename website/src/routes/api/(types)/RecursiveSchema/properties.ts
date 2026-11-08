@@ -19,6 +19,21 @@ export const properties: Record<string, PropertyProps> = {
       ],
     },
   },
+  TInput: {
+    type: 'unknown',
+  },
+  TOutput: {
+    type: 'unknown',
+  },
+  TIssue: {
+    modifier: 'extends',
+    type: {
+      type: 'custom',
+      name: 'BaseIssue',
+      href: '../BaseIssue/',
+      generics: ['unknown'],
+    },
+  },
   BaseSchema: {
     modifier: 'extends',
     type: {
@@ -26,51 +41,9 @@ export const properties: Record<string, PropertyProps> = {
       name: 'BaseSchema',
       href: '../BaseSchema/',
       generics: [
-        {
-          type: 'custom',
-          name: 'ResolveRecursiveInput',
-          generics: [
-            {
-              type: 'custom',
-              name: 'InferInput',
-              href: '../InferInput/',
-              generics: [
-                {
-                  type: 'custom',
-                  name: 'TWrapped',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: 'custom',
-          name: 'ResolveRecursiveOutput',
-          generics: [
-            {
-              type: 'custom',
-              name: 'InferOutput',
-              href: '../InferOutput/',
-              generics: [
-                {
-                  type: 'custom',
-                  name: 'TWrapped',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: 'custom',
-          name: 'InferIssue',
-          href: '../InferIssue/',
-          generics: [
-            {
-              type: 'custom',
-              name: 'TWrapped',
-            },
-          ],
-        },
+        { type: 'custom', name: 'TInput' },
+        { type: 'custom', name: 'TOutput' },
+        { type: 'custom', name: 'TIssue' },
       ],
     },
   },
@@ -86,6 +59,9 @@ export const properties: Record<string, PropertyProps> = {
       modifier: 'typeof',
       name: 'recursive',
       href: '../recursive/',
+      generics: [
+        { type: 'custom', name: 'GenericSchema', href: '../GenericSchema/' },
+      ],
     },
   },
   expects: {
@@ -94,23 +70,7 @@ export const properties: Record<string, PropertyProps> = {
       value: 'unknown',
     },
   },
-  getter: {
-    type: {
-      type: 'function',
-      params: [
-        {
-          name: 'self',
-          type: {
-            type: 'custom',
-            name: 'RecursiveMarkerSchema',
-            href: '../RecursiveMarkerSchema/',
-          },
-        },
-      ],
-      return: {
-        type: 'custom',
-        name: 'TWrapped',
-      },
-    },
+  wrapped: {
+    type: { type: 'custom', name: 'TWrapped' },
   },
 };

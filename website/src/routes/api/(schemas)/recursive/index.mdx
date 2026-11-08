@@ -4,6 +4,7 @@ description: Creates a recursive schema.
 source: /schemas/recursive/recursive.ts
 contributors:
   - yslpn
+  - james-tindal
 ---
 
 import { ApiList, Link, Property } from '~/components';
@@ -14,7 +15,7 @@ import { properties } from './properties';
 Creates a recursive schema.
 
 ```ts
-const Schema = v.recursive<TWrapped>(getter);
+const Schema = v.recursive<TWrapped>(definition);
 ```
 
 ## Generics
@@ -23,13 +24,13 @@ const Schema = v.recursive<TWrapped>(getter);
 
 ## Parameters
 
-- `getter` <Property {...properties.getter} />
+- `definition` <Property {...properties.definition} />
 
 ### Explanation
 
-The `getter` function receives a `self` schema that can be used inside the schema returned by `getter`. This allows Valibot to infer recursive input and output types automatically.
+The `definition` callback receives a `self` reference for use inside the returned schema. Valibot infers recursive input and output types from this definition.
 
-> If you need to choose a schema based on the input value, use <Link href="/api/lazy/">`lazy`</Link> instead.
+For schemas that reference each other, use <Link href="/api/mutualRecursive/">`mutualRecursive`</Link>.
 
 ## Returns
 

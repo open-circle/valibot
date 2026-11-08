@@ -1,0 +1,106 @@
+---
+title: mutualRecursiveAsync
+description: Creates a map of mutually recursive async schemas.
+source: /schemas/mutualRecursive/mutualRecursiveAsync.ts
+contributors:
+  - yslpn
+  - james-tindal
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# mutualRecursiveAsync
+
+Creates a map of mutually recursive async schemas.
+
+```ts
+const Schemas = v.mutualRecursiveAsync<TEntries>(build);
+```
+
+## Generics
+
+- `TEntries` <Property {...properties.TEntries} />
+
+## Parameters
+
+- `build` <Property {...properties.build} />
+
+### Explanation
+
+The `build` callback receives a `ref` function. Call `ref` with the key of another entry to reference that entry inside the returned object. Valibot infers the recursive input and output types of each entry from this object.
+
+> If a name does not match an entry, TypeScript reports an error. At runtime, Valibot throws an error for the same case.
+
+## Returns
+
+- `Schemas` <Property {...properties.Schemas} />
+
+## Examples
+
+The following examples show how `mutualRecursiveAsync` can be used.
+
+### Category and product schemas
+
+Schemas that reference each other.
+
+```ts
+const { category, product } = v.mutualRecursiveAsync((ref) => ({
+  category: v.objectAsync({
+    name: v.string(),
+    products: v.arrayAsync(ref('product')),
+  }),
+  product: v.objectAsync({
+    name: v.string(),
+    category: v.optionalAsync(ref('category')),
+  }),
+}));
+```
+
+## Related
+
+The following APIs can be combined with `mutualRecursiveAsync`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'array',
+    'lazy',
+    'nullable',
+    'nullish',
+    'object',
+    'optional',
+    'record',
+    'recursive',
+    'union',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['transform']} />
+
+### Async
+
+<ApiList
+  items={[
+    'arrayAsync',
+    'lazyAsync',
+    'nullableAsync',
+    'nullishAsync',
+    'objectAsync',
+    'optionalAsync',
+    'parseAsync',
+    'pipeAsync',
+    'recordAsync',
+    'recursiveAsync',
+    'safeParseAsync',
+    'transformAsync',
+    'unionAsync',
+  ]}
+/>

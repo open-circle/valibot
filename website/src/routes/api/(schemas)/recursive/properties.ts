@@ -19,7 +19,7 @@ export const properties: Record<string, PropertyProps> = {
       ],
     },
   },
-  getter: {
+  definition: {
     type: {
       type: 'function',
       params: [
@@ -27,8 +27,8 @@ export const properties: Record<string, PropertyProps> = {
           name: 'self',
           type: {
             type: 'custom',
-            name: 'RecursiveMarkerSchema',
-            href: '../RecursiveMarkerSchema/',
+            name: 'Ref',
+            href: '../Ref/',
           },
         },
       ],
@@ -41,8 +41,7 @@ export const properties: Record<string, PropertyProps> = {
   Schema: {
     type: {
       type: 'custom',
-      name: 'RecursiveSchema',
-      href: '../RecursiveSchema/',
+      name: 'ResolvedRecursiveSchema',
       generics: [
         {
           type: 'custom',

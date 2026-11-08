@@ -1,0 +1,86 @@
+---
+title: mutualRecursive
+description: Creates a map of mutually recursive schemas.
+source: /schemas/mutualRecursive/mutualRecursive.ts
+contributors:
+  - yslpn
+  - james-tindal
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# mutualRecursive
+
+Creates a map of mutually recursive schemas.
+
+```ts
+const Schemas = v.mutualRecursive<TEntries>(build);
+```
+
+## Generics
+
+- `TEntries` <Property {...properties.TEntries} />
+
+## Parameters
+
+- `build` <Property {...properties.build} />
+
+### Explanation
+
+The `build` callback receives a `ref` function. Call `ref` with the key of another entry to reference that entry inside the returned object. Valibot infers the recursive input and output types of each entry from this object.
+
+> If a name does not match an entry, TypeScript reports an error. At runtime, Valibot throws an error for the same case.
+
+## Returns
+
+- `Schemas` <Property {...properties.Schemas} />
+
+## Examples
+
+The following examples show how `mutualRecursive` can be used.
+
+### Category and product schemas
+
+Schemas that reference each other.
+
+```ts
+const { category, product } = v.mutualRecursive((ref) => ({
+  category: v.object({
+    name: v.string(),
+    products: v.array(ref('product')),
+  }),
+  product: v.object({
+    name: v.string(),
+    category: v.optional(ref('category')),
+  }),
+}));
+```
+
+## Related
+
+The following APIs can be combined with `mutualRecursive`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'array',
+    'lazy',
+    'nullable',
+    'nullish',
+    'object',
+    'optional',
+    'record',
+    'recursive',
+    'union',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['parse', 'pipe', 'safeParse']} />
+
+### Actions
+
+<ApiList items={['transform']} />
