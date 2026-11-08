@@ -10,7 +10,7 @@ import type {
   StringIssue,
   StringSchema,
 } from '../../schemas/index.ts';
-import type { RecursiveSelfSchemaAsync } from '../../schemas/recursive/recursiveAsync.ts';
+import type { RefAsync } from '../../schemas/recursive/recursive.ts';
 import type { ArrayPathItem, ObjectPathItem } from '../../types/index.ts';
 import { getDotPath } from './getDotPath.ts';
 
@@ -110,7 +110,7 @@ describe('getDotPath', () => {
       ObjectSchemaAsync<
         {
           name: StringSchema<undefined>;
-          subcategories: ArraySchemaAsync<RecursiveSelfSchemaAsync, undefined>;
+          subcategories: ArraySchemaAsync<RefAsync, undefined>;
         },
         undefined
       >

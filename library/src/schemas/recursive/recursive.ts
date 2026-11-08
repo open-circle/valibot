@@ -1,63 +1,36 @@
 import type {
   BaseIssue,
   BaseSchema,
+  BaseSchemaAsync,
+  Config,
+  GenericSchema,
+  GenericSchemaAsync,
   InferInput,
   InferIssue,
   InferOutput,
-  OutputDataset,
+  IsAny,
+  UnknownDataset,
 } from '../../types/index.ts';
 import { _standardSchema } from '../../utils/index.ts';
 
 /**
- * Recursive marker symbol.
+ * The recursive owner currently running.
+ *
+ * @internal
  */
-export declare const RecursiveMarkerSymbol: unique symbol;
+export const OwnerSymbol: unique symbol = Symbol('recursive owner');
 
 /**
- * Recursive marker type.
+ * Configuration that carries the recursive owner.
+ *
+ * @internal
  */
-export interface RecursiveMarker {
-  readonly [RecursiveMarkerSymbol]: true;
-}
-
-/**
- * Recursive self schema interface.
- */
-export interface RecursiveSelfSchema
-  extends BaseSchema<RecursiveMarker, RecursiveMarker, never> {
+export interface ConfigWithOwner extends Config<BaseIssue<unknown>> {
   /**
-   * The schema type.
+   * The authorized recursive owner.
    */
-  readonly type: 'recursive';
+  readonly [OwnerSymbol]?: RecursiveOwner;
 }
-
-// Only resolve object shapes that contain the hidden recursive marker so
-// inferred class and object instances stay structurally intact.
-type ContainsRecursiveMarker<
-  TValue,
-  TSeen = never,
-> = TValue extends RecursiveMarker
-  ? true
-  : [TValue] extends [TSeen]
-    ? false
-    : TValue extends
-          | Map<infer TKey, infer TItem>
-          | ReadonlyMap<infer TKey, infer TItem>
-      ? ContainsRecursiveMarker<TKey | TItem, TSeen | TValue>
-      : TValue extends Set<infer TItem> | ReadonlySet<infer TItem>
-        ? ContainsRecursiveMarker<TItem, TSeen | TValue>
-        : TValue extends Promise<infer TItem>
-          ? ContainsRecursiveMarker<TItem, TSeen | TValue>
-          : TValue extends readonly (infer TItem)[]
-            ? ContainsRecursiveMarker<TItem, TSeen | TValue>
-            : TValue extends object
-              ? {
-                  [TKey in keyof TValue]: ContainsRecursiveMarker<
-                    TValue[TKey],
-                    TSeen | TValue
-                  >;
-                }[keyof TValue]
-              : false;
 
 // Named interfaces keep recursive array output from collapsing into circular
 // type aliases while preserving normal array behavior.
@@ -83,6 +56,92 @@ type ResolveRecursiveTuple<TValue extends readonly unknown[], TRoot> = {
   [TKey in keyof TValue]: ResolveRecursiveValue<TValue[TKey], TRoot>;
 };
 
+// Literal tuple branches defer recursive elements without a spread or mapped
+// tuple. Optional, readonly, and longer tuples retain the existing resolver.
+type ResolveRecursiveFixedTuple<
+  TValue extends readonly unknown[],
+  TRoot,
+> = TValue extends [infer A]
+  ? [ResolveRecursiveValue<A, TRoot>]
+  : TValue extends [infer A, infer B]
+    ? [ResolveRecursiveValue<A, TRoot>, ResolveRecursiveValue<B, TRoot>]
+    : TValue extends [infer A, infer B, infer C]
+      ? [
+          ResolveRecursiveValue<A, TRoot>,
+          ResolveRecursiveValue<B, TRoot>,
+          ResolveRecursiveValue<C, TRoot>,
+        ]
+      : TValue extends [infer A, infer B, infer C, infer D]
+        ? [
+            ResolveRecursiveValue<A, TRoot>,
+            ResolveRecursiveValue<B, TRoot>,
+            ResolveRecursiveValue<C, TRoot>,
+            ResolveRecursiveValue<D, TRoot>,
+          ]
+        : TValue extends [infer A, infer B, infer C, infer D, infer E]
+          ? [
+              ResolveRecursiveValue<A, TRoot>,
+              ResolveRecursiveValue<B, TRoot>,
+              ResolveRecursiveValue<C, TRoot>,
+              ResolveRecursiveValue<D, TRoot>,
+              ResolveRecursiveValue<E, TRoot>,
+            ]
+          : TValue extends [
+                infer A,
+                infer B,
+                infer C,
+                infer D,
+                infer E,
+                infer F,
+              ]
+            ? [
+                ResolveRecursiveValue<A, TRoot>,
+                ResolveRecursiveValue<B, TRoot>,
+                ResolveRecursiveValue<C, TRoot>,
+                ResolveRecursiveValue<D, TRoot>,
+                ResolveRecursiveValue<E, TRoot>,
+                ResolveRecursiveValue<F, TRoot>,
+              ]
+            : TValue extends [
+                  infer A,
+                  infer B,
+                  infer C,
+                  infer D,
+                  infer E,
+                  infer F,
+                  infer G,
+                ]
+              ? [
+                  ResolveRecursiveValue<A, TRoot>,
+                  ResolveRecursiveValue<B, TRoot>,
+                  ResolveRecursiveValue<C, TRoot>,
+                  ResolveRecursiveValue<D, TRoot>,
+                  ResolveRecursiveValue<E, TRoot>,
+                  ResolveRecursiveValue<F, TRoot>,
+                  ResolveRecursiveValue<G, TRoot>,
+                ]
+              : TValue extends [
+                    infer A,
+                    infer B,
+                    infer C,
+                    infer D,
+                    infer E,
+                    infer F,
+                    infer G,
+                    infer H,
+                  ]
+                ? [
+                    ResolveRecursiveValue<A, TRoot>,
+                    ResolveRecursiveValue<B, TRoot>,
+                    ResolveRecursiveValue<C, TRoot>,
+                    ResolveRecursiveValue<D, TRoot>,
+                    ResolveRecursiveValue<E, TRoot>,
+                    ResolveRecursiveValue<F, TRoot>,
+                    ResolveRecursiveValue<G, TRoot>,
+                    ResolveRecursiveValue<H, TRoot>,
+                  ]
+                : ResolveRecursiveTuple<TValue, TRoot>;
+
 type ResolveRecursiveArray<
   TValue extends readonly unknown[],
   TRoot,
@@ -95,15 +154,19 @@ type ResolveRecursiveArray<
       | readonly [...unknown[], unknown]
     ? ResolveRecursiveTuple<TValue, TRoot>
     : TValue extends (infer TItem)[]
-      ? RecursiveMarker extends TItem
+      ? true extends (
+          TItem extends RecursiveMarker<string | undefined> ? true : false
+        )
         ? RecursiveArray<TItem, TRoot>
         : ResolveRecursiveValue<TItem, TRoot>[]
       : TValue extends readonly (infer TItem)[]
-        ? RecursiveMarker extends TItem
+        ? true extends (
+            TItem extends RecursiveMarker<string | undefined> ? true : false
+          )
           ? RecursiveReadonlyArray<TItem, TRoot>
           : readonly ResolveRecursiveValue<TItem, TRoot>[]
         : never
-  : ResolveRecursiveTuple<TValue, TRoot>;
+  : ResolveRecursiveFixedTuple<TValue, TRoot>;
 
 // Rebuilds a container with its type arguments resolved. TypeScript cannot
 // reconstruct an arbitrary generic with substituted type arguments, so each
@@ -139,11 +202,30 @@ type ResolveRecursiveContainer<TValue, TRoot> =
                   }
                 : TValue;
 
-type ResolveRecursiveValue<TValue, TRoot> = TValue extends RecursiveMarker
-  ? ResolveRecursiveValue<TRoot, TRoot>
-  : true extends ContainsRecursiveMarker<TValue>
-    ? ResolveRecursiveContainer<TValue, TRoot>
-    : TValue;
+type MergeReference<TValue, TExtra> = {
+  [TKey in keyof (TValue & TExtra)]: (TValue & TExtra)[TKey];
+};
+
+type ResolveRecursiveValue<TValue, TRoot> =
+  IsAny<TValue> extends true
+    ? TValue
+    : TValue extends RecursiveMarker<infer TKey>
+      ? TKey extends undefined
+        ? ResolveRecursiveValue<TRoot, TRoot>
+        : TKey extends keyof TRoot
+          ? Exclude<keyof TValue, typeof RecursiveMarkerSymbol> extends never
+            ? ResolveRecursiveValue<TRoot[TKey], TRoot>
+            : MergeReference<
+                ResolveRecursiveValue<TRoot[TKey], TRoot>,
+                ResolveRecursiveContainer<
+                  Omit<TValue, typeof RecursiveMarkerSymbol>,
+                  TRoot
+                >
+              >
+          : never
+      : [RecursiveReferences<TValue>] extends [never]
+        ? TValue
+        : ResolveRecursiveContainer<TValue, TRoot>;
 
 /**
  * Resolve recursive input type.
@@ -166,36 +248,14 @@ export type ResolveRecursiveOutput<
 > = ResolveRecursiveValue<TValue, TRoot>;
 
 /**
- * Generic recursive schema interface.
- */
-export interface GenericRecursiveSchema
-  extends BaseSchema<unknown, unknown, BaseIssue<unknown>> {
-  /**
-   * The schema type.
-   */
-  readonly type: 'recursive';
-  /**
-   * The expected property.
-   */
-  readonly expects: 'unknown';
-  /**
-   * The schema getter.
-   */
-  readonly getter: (
-    self: RecursiveSelfSchema
-  ) => BaseSchema<unknown, unknown, BaseIssue<unknown>>;
-}
-
-/**
  * Recursive schema interface.
  */
 export interface RecursiveSchema<
-  TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-> extends BaseSchema<
-    ResolveRecursiveInput<InferInput<TWrapped>>,
-    ResolveRecursiveOutput<InferOutput<TWrapped>>,
-    InferIssue<TWrapped>
-  > {
+  TWrapped extends GenericSchema = GenericSchema,
+  TInput = unknown,
+  TOutput = unknown,
+  TIssue extends BaseIssue<unknown> = BaseIssue<unknown>,
+> extends BaseSchema<TInput, TOutput, TIssue> {
   /**
    * The schema type.
    */
@@ -203,43 +263,298 @@ export interface RecursiveSchema<
   /**
    * The schema reference.
    */
-  readonly reference: typeof recursive;
+  readonly reference: typeof recursive<GenericSchema>;
   /**
    * The expected property.
    */
   readonly expects: 'unknown';
   /**
-   * The schema getter.
+   * The wrapped schema.
    */
-  readonly getter: (self: RecursiveSelfSchema) => TWrapped;
+  readonly wrapped: TWrapped;
 }
+
+type SyncOrAsyncSchema = GenericSchema | GenericSchemaAsync;
+
+/**
+ * Common runtime contract for recursive reference owners.
+ *
+ * @internal
+ */
+export interface RecursiveOwner {
+  /**
+   * The callback result that references resolve against.
+   */
+  readonly definition: SyncOrAsyncSchema | Record<string, SyncOrAsyncSchema>;
+  /**
+   * Whether references execute asynchronously.
+   */
+  readonly async: boolean;
+  /**
+   * The owner schema factory.
+   */
+  readonly reference: SyncOrAsyncSchema['reference'];
+}
+
+/**
+ * Collects recursive references from a value.
+ */
+export type RecursiveReferences<TValue, TSeen = never> =
+  IsAny<TValue> extends true
+    ? never
+    : TValue extends RecursiveMarker<string | undefined>
+      ? TValue
+      : [TValue] extends [TSeen]
+        ? never
+        : TValue extends
+              | Map<infer TKey, infer TItem>
+              | ReadonlyMap<infer TKey, infer TItem>
+          ? RecursiveReferences<TKey | TItem, TSeen | TValue>
+          : TValue extends
+                | Set<infer TItem>
+                | ReadonlySet<infer TItem>
+                | Promise<infer TItem>
+            ? RecursiveReferences<TItem, TSeen | TValue>
+            : TValue extends readonly (infer TItem)[]
+              ? RecursiveReferences<TItem, TSeen | TValue>
+              : TValue extends object
+                ? {
+                    [TKey in keyof TValue]-?: RecursiveReferences<
+                      TValue[TKey],
+                      TSeen | TValue
+                    >;
+                  }[keyof TValue]
+                : never;
+
+/**
+ * Resolved recursive schema interface.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- A named interface defers recursive type resolution.
+export interface ResolvedRecursiveSchema<
+  TWrapped extends GenericSchema,
+  TInputRoot = InferInput<TWrapped>,
+  TOutputRoot = InferOutput<TWrapped>,
+  TIssue extends BaseIssue<unknown> = InferIssue<TWrapped>,
+> extends RecursiveSchema<
+    TWrapped,
+    ResolveRecursiveInput<InferInput<TWrapped>, TInputRoot>,
+    ResolveRecursiveOutput<InferOutput<TWrapped>, TOutputRoot>,
+    TIssue
+  > {}
 
 /**
  * Creates a recursive schema.
  *
- * @param getter The schema getter.
+ * @param definition The schema definition. It runs once during construction.
  *
  * @returns A recursive schema.
  */
-// @__NO_SIDE_EFFECTS__
-export function recursive<
-  const TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
->(getter: (self: RecursiveSelfSchema) => TWrapped): RecursiveSchema<TWrapped> {
-  return _standardSchema({
+export function recursive<const TWrapped extends GenericSchema>(
+  definition: (self: Ref) => TWrapped
+): ResolvedRecursiveSchema<TWrapped>;
+export function recursive(definition: (self: Ref) => GenericSchema): unknown {
+  const owner = {
+    async: false,
+    reference: recursive<GenericSchema>,
+    get definition(): GenericSchema {
+      return wrapped;
+    },
+  } satisfies RecursiveOwner;
+  const wrapped = definition(createRef(owner));
+  checkRecursiveReferences(wrapped, owner, new Set<object>());
+  return _standardSchema<RecursiveSchema>({
     kind: 'schema',
     type: 'recursive',
-    reference: recursive,
+    reference: recursive<GenericSchema>,
     expects: 'unknown',
     async: false,
-    getter,
+    wrapped,
     '~run'(dataset, config) {
-      return this.getter(this as unknown as RecursiveSelfSchema)['~run'](
-        dataset,
-        config
-      ) as OutputDataset<
-        ResolveRecursiveOutput<InferOutput<TWrapped>>,
-        InferIssue<TWrapped>
-      >;
+      const executionConfig: ConfigWithOwner = {
+        ...config,
+        [OwnerSymbol]: owner,
+      };
+      return wrapped['~run'](dataset, executionConfig);
     },
   });
+}
+
+/**
+ * Rejects references with a foreign owner or an unmatched definition name.
+ *
+ * @param value The schema.
+ * @param owner The owner of the refs.
+ * @param seen The schemas already visited.
+ */
+export function checkRecursiveReferences(
+  value: unknown,
+  owner: Pick<RecursiveOwner, 'definition'>,
+  seen: Set<object> = new Set<object>()
+): void {
+  if (
+    !value ||
+    (typeof value !== 'object' && typeof value !== 'function') ||
+    seen.has(value)
+  ) {
+    return;
+  }
+  seen.add(value);
+  const schema = value as Record<string, unknown>;
+  if (schema.kind === 'schema' || schema.kind === 'transformation') {
+    if (schema.owner !== undefined && schema.owner !== owner) {
+      throw Error('Recursive reference used outside its recursive schema');
+    }
+    if (schema.owner === owner) {
+      const name = schema.name as string | undefined;
+      if (name === undefined) {
+        if (owner.definition.kind !== 'schema') {
+          throw Error(
+            'Recursive reference in a definitions object must be named'
+          );
+        }
+      } else if (
+        owner.definition.kind === 'schema' ||
+        !Object.hasOwn(owner.definition, name)
+      ) {
+        throw Error(`Unmatched recursive reference: '${name}'`);
+      }
+    }
+  }
+  for (const key in schema) {
+    if (
+      key !== 'owner' &&
+      key !== 'reference' &&
+      key !== '~standard' &&
+      key !== '~types' &&
+      !(
+        key === 'wrapped' &&
+        [
+          'recursive',
+          'recursiveAsync',
+          'mutualRecursive',
+          'mutualRecursiveAsync',
+        ].includes(schema.type as string)
+      )
+    ) {
+      checkRecursiveReferences(schema[key], owner, seen);
+    }
+  }
+}
+
+/**
+ * Recursive marker symbol.
+ */
+export declare const RecursiveMarkerSymbol: unique symbol;
+
+/**
+ * Recursive marker type.
+ */
+export interface RecursiveMarker<TKey extends string | undefined = undefined> {
+  readonly [RecursiveMarkerSymbol]: TKey;
+}
+
+/**
+ * Recursive reference interface.
+ */
+export interface Ref<TName extends string | undefined = undefined>
+  extends BaseSchema<RecursiveMarker<TName>, RecursiveMarker<TName>, never> {
+  /**
+   * The schema type.
+   */
+  readonly type: 'ref';
+  /**
+   * The recursive schema that owns the reference.
+   */
+  readonly owner: RecursiveOwner;
+  /**
+   * The referenced definition name.
+   */
+  readonly name: TName;
+}
+
+/**
+ * Async recursive reference interface.
+ */
+export interface RefAsync<TName extends string | undefined = undefined>
+  extends BaseSchemaAsync<
+    RecursiveMarker<TName>,
+    RecursiveMarker<TName>,
+    never
+  > {
+  /**
+   * The schema type.
+   */
+  readonly type: 'refAsync';
+  /**
+   * The recursive schema that owns the reference.
+   */
+  readonly owner: RecursiveOwner;
+  /**
+   * The referenced definition name.
+   */
+  readonly name: TName;
+}
+
+/**
+ * Creates a reference to a recursive owner's schema.
+ *
+ * @param owner The owner of the reference.
+ * @param name The definition name, for mutual recursion.
+ *
+ * @returns A recursive reference.
+ *
+ * @internal
+ */
+export function createRef<TName extends string | undefined = undefined>(
+  owner: RecursiveOwner & { readonly async: false },
+  name?: TName
+): Ref<TName>;
+export function createRef<TName extends string | undefined = undefined>(
+  owner: RecursiveOwner & { readonly async: true },
+  name?: TName
+): RefAsync<TName>;
+export function createRef<TName extends string | undefined = undefined>(
+  owner: RecursiveOwner,
+  name?: TName
+): Ref<TName> | RefAsync<TName>;
+export function createRef<TName extends string | undefined = undefined>(
+  owner: RecursiveOwner,
+  name?: TName
+): Ref<TName> | RefAsync<TName> {
+  function run(dataset: UnknownDataset, config: ConfigWithOwner) {
+    if (config[OwnerSymbol] !== owner) {
+      throw Error('Recursive reference used outside its recursive schema');
+    }
+    if (
+      name !== undefined &&
+      (owner.definition.kind === 'schema' ||
+        !Object.hasOwn(owner.definition, name))
+    ) {
+      throw Error(`Unmatched recursive reference: '${name}'`);
+    }
+    const target =
+      name === undefined
+        ? (owner.definition as SyncOrAsyncSchema)
+        : (owner.definition as Record<string, SyncOrAsyncSchema>)[name];
+    return target['~run'](dataset, config);
+  }
+
+  const reference = {
+    kind: 'schema' as const,
+    type: owner.async ? ('refAsync' as const) : ('ref' as const),
+    expects: 'unknown',
+    owner,
+    async: owner.async,
+    reference: owner.reference,
+    name,
+    '~run': owner.async
+      ? async (dataset: UnknownDataset, config: ConfigWithOwner) =>
+          run(dataset, config)
+      : run,
+  };
+  // The marker describes a type-level reference, not the delegated runtime value.
+  // The recursive resolver replaces it with the target schema's input and output.
+  return _standardSchema<Ref<TName> | RefAsync<TName>>(
+    reference as Omit<Ref<TName> | RefAsync<TName>, '~standard'>
+  );
 }

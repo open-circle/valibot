@@ -26,22 +26,36 @@ import { tuple } from '../tuple/index.ts';
 import { tupleWithRest } from '../tupleWithRest/index.ts';
 import { union, type UnionIssue, type UnionSchema } from '../union/index.ts';
 import { variant } from '../variant/index.ts';
-import {
-  type GenericRecursiveSchema,
-  recursive,
-  type RecursiveSchema,
-  type RecursiveSelfSchema,
-} from './recursive.ts';
+import { recursive, type RecursiveSchema, type Ref } from './recursive.ts';
 
 describe('recursive', () => {
+  test('rejects definition maps and callable self references', () => {
+    // @ts-expect-error Mutual recursion belongs to mutualRecursive.
+    recursive(() => ({ a: string() }));
+    recursive((self) => {
+      // @ts-expect-error A self reference is a schema, not a named-reference factory.
+      self('a');
+      return string();
+    });
+  });
   test('should return schema object', () => {
-    const getter = (self: RecursiveSelfSchema) =>
+    const definition = (self: Ref) =>
       object({
         name: string(),
         subcategories: array(self),
       });
-    expectTypeOf(recursive(getter)).toEqualTypeOf<
-      RecursiveSchema<ReturnType<typeof getter>>
+    interface Category {
+      name: string;
+      subcategories: Category[];
+    }
+
+    expectTypeOf(recursive(definition)).toEqualTypeOf<
+      RecursiveSchema<
+        ReturnType<typeof definition>,
+        Category,
+        Category,
+        ObjectIssue | ArrayIssue | StringIssue
+      >
     >();
   });
 
@@ -173,6 +187,17 @@ describe('recursive', () => {
     expectTypeOf<InferOutput<typeof Category>>().toEqualTypeOf<Category>();
   });
 
+  test('should infer recursive tuples without an enclosing object', () => {
+    const List = recursive((self) =>
+      union([tuple([string()]), tuple([string(), self])])
+    );
+
+    type List = [string] | [string, List];
+
+    expectTypeOf<InferInput<typeof List>>().toEqualTypeOf<List>();
+    expectTypeOf<InferOutput<typeof List>>().toEqualTypeOf<List>();
+  });
+
   test('should infer nested recursive schema types', () => {
     const Category = recursive((category) =>
       object({
@@ -207,12 +232,12 @@ describe('recursive', () => {
   test('should infer recursive union issues', () => {
     type Schema = RecursiveSchema<
       UnionSchema<
-        readonly [
-          StringSchema<undefined>,
-          ArraySchema<RecursiveSelfSchema, undefined>,
-        ],
+        readonly [StringSchema<undefined>, ArraySchema<Ref, undefined>],
         undefined
-      >
+      >,
+      Json,
+      Json,
+      StringIssue | ArrayIssue | UnionIssue<StringIssue | ArrayIssue>
     >;
 
     type Json = string | Json[];
@@ -264,10 +289,13 @@ describe('recursive', () => {
       ObjectSchema<
         {
           name: StringSchema<undefined>;
-          subcategories: ArraySchema<RecursiveSelfSchema, undefined>;
+          subcategories: ArraySchema<Ref, undefined>;
         },
         undefined
-      >
+      >,
+      Input,
+      Input,
+      ObjectIssue | StringIssue | ArrayIssue
     >;
 
     interface Input {
@@ -377,6 +405,6 @@ describe('recursive', () => {
       })
     );
 
-    expectTypeOf(Category).toExtend<GenericRecursiveSchema>();
+    expectTypeOf(Category).toExtend<RecursiveSchema>();
   });
 });

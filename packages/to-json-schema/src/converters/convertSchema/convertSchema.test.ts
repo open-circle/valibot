@@ -1726,14 +1726,17 @@ describe('convertSchema', () => {
     });
 
     test('should convert recursive schema', () => {
-      const schema = v.recursive((self) =>
+      const definition = vi.fn((self: v.Ref) =>
         v.object({
           name: v.string(),
           subcategories: v.array(self),
         })
       );
+      const schema = v.recursive(definition);
       const context = createContext();
       const jsonSchema = convertSchema({}, schema, undefined, context);
+      expect(definition).toHaveBeenCalledTimes(1);
+      expect(schema.wrapped).toBe(definition.mock.results[0].value);
       const referenceId = context.referenceMap.get(schema);
 
       expect(jsonSchema).toStrictEqual({
@@ -1903,6 +1906,44 @@ describe('convertSchema', () => {
           createContext()
         )
       ).toStrictEqual({ $ref: '#/$custom/reference' });
+    });
+  });
+
+  describe('mutual recursive schemas', () => {
+    test('should convert a cycle between named definitions', () => {
+      const schemas = v.mutualRecursive((ref) => ({
+        parent: v.object({ children: v.array(ref('child')) }),
+        child: v.object({ parent: ref('parent') }),
+      }));
+      const context = createContext();
+      const jsonSchema = convertSchema({}, schemas.parent, undefined, context);
+      const parentId = context.referenceMap.get(schemas.parent);
+      const childId = context.referenceMap.get(schemas.child.wrapped);
+
+      expect(parentId).toBeDefined();
+      expect(childId).toBeDefined();
+      expect(childId).not.toBe(parentId);
+      expect(jsonSchema).toStrictEqual({ $ref: `#/$defs/${parentId}` });
+      expect(context.definitions).toStrictEqual({
+        [parentId!]: {
+          type: 'object',
+          properties: {
+            children: {
+              type: 'array',
+              items: { $ref: `#/$defs/${childId}` },
+            },
+          },
+          required: ['children'],
+        },
+        [childId!]: {
+          type: 'object',
+          properties: { parent: { $ref: `#/$defs/${parentId}` } },
+          required: ['parent'],
+        },
+      });
+      expect(
+        convertSchema({}, schemas.child, undefined, context)
+      ).toStrictEqual({ $ref: `#/$defs/${childId}` });
     });
   });
 

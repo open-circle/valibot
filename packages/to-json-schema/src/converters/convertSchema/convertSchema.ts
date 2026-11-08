@@ -97,7 +97,9 @@ type Schema =
       v.ErrorMessage<v.ArrayIssue> | undefined
     >
   | v.NeverSchema<v.ErrorMessage<v.NeverIssue> | undefined>
-  | v.GenericRecursiveSchema
+  | v.RecursiveSchema
+  | v.MutualRecursiveSchema
+  | v.Ref<string | undefined>
   | v.LazySchema<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>>;
 
 /**
@@ -155,7 +157,13 @@ export function convertSchema(
 ): JsonSchema {
   if (!skipRef) {
     // If schema is in reference map use reference and skip conversion
-    const referenceId = context.referenceMap.get(valibotSchema);
+    const referenceId =
+      context.referenceMap.get(valibotSchema) ??
+      ('wrapped' in valibotSchema &&
+      (valibotSchema.type === 'recursive' ||
+        valibotSchema.type === 'mutualRecursive')
+        ? context.referenceMap.get(valibotSchema.wrapped)
+        : undefined);
     if (referenceId) {
       jsonSchema.$ref = getDefinitionRef(referenceId);
       if (config?.overrideRef) {
@@ -596,28 +604,47 @@ export function convertSchema(
       break;
     }
 
+    case 'ref':
+    case 'mutualRecursive':
     case 'recursive': {
-      const recursiveSchema: v.GenericRecursiveSchema = valibotSchema;
+      const recursiveSchema = valibotSchema;
+      const wrapped = (
+        recursiveSchema.type === 'ref'
+          ? recursiveSchema.name === undefined
+            ? recursiveSchema.owner.definition
+            : (
+                recursiveSchema.owner.definition as Record<
+                  string,
+                  v.GenericSchema | v.GenericSchemaAsync
+                >
+              )[recursiveSchema.name]
+          : recursiveSchema.wrapped
+      ) as SchemaOrPipe;
+
+      // Reuse a registered target without expanding its references again.
+      if (recursiveSchema.type === 'ref' && context.referenceMap.has(wrapped)) {
+        return convertSchema(jsonSchema, wrapped, config, context);
+      }
 
       // Get reference ID of recursive Valibot schema
-      let referenceId = context.referenceMap.get(recursiveSchema);
+      let referenceId =
+        context.referenceMap.get(recursiveSchema) ??
+        context.referenceMap.get(wrapped);
 
       // Add recursive Valibot schema to reference map, if necessary
       if (!referenceId) {
         referenceId = context.referenceMap.createId(context.definitions);
         context.referenceMap.set(recursiveSchema, referenceId);
       }
+      context.referenceMap.set(wrapped, referenceId);
 
       // Add recursive Valibot schema to definitions, if necessary
       if (
         !Object.prototype.hasOwnProperty.call(context.definitions, referenceId)
       ) {
-        const recursiveSelfSchema = recursiveSchema as Parameters<
-          typeof recursiveSchema.getter
-        >[0];
         context.definitions[referenceId] = convertSchema(
           {},
-          recursiveSchema.getter(recursiveSelfSchema) as SchemaOrPipe,
+          wrapped,
           config,
           context,
           true

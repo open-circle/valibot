@@ -8,7 +8,7 @@ import type {
   StringIssue,
   StringSchema,
 } from '../../schemas/index.ts';
-import type { RecursiveSelfSchema } from '../../schemas/recursive/recursive.ts';
+import type { Ref } from '../../schemas/recursive/recursive.ts';
 import type { ArrayPathItem, ObjectPathItem } from '../../types/index.ts';
 import { flatten } from './flatten.ts';
 
@@ -127,7 +127,7 @@ describe('flatten', () => {
       ObjectSchema<
         {
           name: StringSchema<undefined>;
-          subcategories: ArraySchema<RecursiveSelfSchema, undefined>;
+          subcategories: ArraySchema<Ref, undefined>;
         },
         undefined
       >

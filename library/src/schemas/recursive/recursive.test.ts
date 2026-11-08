@@ -1,28 +1,31 @@
 import { describe, expect, test, vi } from 'vitest';
+import { returns } from '../../actions/index.ts';
+import { parse, pipe } from '../../methods/index.ts';
 import type { FailureDataset, InferIssue } from '../../types/index.ts';
 import { expectNoSchemaIssue } from '../../vitest/index.ts';
+import { any } from '../any/index.ts';
 import { array } from '../array/index.ts';
 import { object } from '../object/index.ts';
 import { string } from '../string/index.ts';
-import {
-  recursive,
-  type RecursiveSchema,
-  type RecursiveSelfSchema,
-} from './recursive.ts';
+import { recursive, type RecursiveSchema, type Ref } from './recursive.ts';
 
 describe('recursive', () => {
   test('should return schema object', () => {
-    const getter = (self: RecursiveSelfSchema) =>
+    const definition = vi.fn((self: Ref) =>
       object({
         name: string(),
         subcategories: array(self),
-      });
-    expect(recursive(getter)).toStrictEqual({
+      })
+    );
+    const schema = recursive(definition);
+    expect(schema.wrapped).toBe(definition.mock.results[0].value);
+    expect(definition).toHaveBeenCalledTimes(1);
+    expect(schema).toStrictEqual({
       kind: 'schema',
       type: 'recursive',
       reference: recursive,
       expects: 'unknown',
-      getter,
+      wrapped: definition.mock.results[0].value,
       async: false,
       '~standard': {
         version: 1,
@@ -30,7 +33,7 @@ describe('recursive', () => {
         validate: expect.any(Function),
       },
       '~run': expect.any(Function),
-    } satisfies RecursiveSchema<ReturnType<typeof getter>>);
+    } satisfies RecursiveSchema<ReturnType<typeof definition>>);
   });
 
   describe('should return dataset without issues', () => {
@@ -54,50 +57,6 @@ describe('recursive', () => {
           ],
         },
       ]);
-    });
-
-    test('for nested recursive schemas', () => {
-      const schema = recursive((category) =>
-        object({
-          name: string(),
-          subcategories: array(category),
-          links: array(
-            recursive((link) =>
-              object({
-                name: string(),
-                target: category,
-                alternatives: array(link),
-              })
-            )
-          ),
-        })
-      );
-      const input = {
-        name: 'Root',
-        subcategories: [{ name: 'Child', subcategories: [], links: [] }],
-        links: [
-          {
-            name: 'Primary',
-            target: { name: 'Target', subcategories: [], links: [] },
-            alternatives: [
-              {
-                name: 'Fallback',
-                target: {
-                  name: 'Fallback target',
-                  subcategories: [],
-                  links: [],
-                },
-                alternatives: [],
-              },
-            ],
-          },
-        ],
-      };
-
-      expect(schema['~run']({ value: input }, {})).toStrictEqual({
-        typed: true,
-        value: input,
-      });
     });
   });
 
@@ -156,15 +115,51 @@ describe('recursive', () => {
     } satisfies FailureDataset<InferIssue<typeof schema>>);
   });
 
-  test('should call getter with self', () => {
-    const getter = vi.fn((self: RecursiveSelfSchema) => {
-      expect(self.type).toBe('recursive');
+  test('rejects direct self execution without preventing recursive parsing', () => {
+    const definition = vi.fn((self: Ref) => object({ children: array(self) }));
+    const schema = recursive(definition);
+    const self = definition.mock.calls[0][0];
+    const input = { children: [{ children: [] }] };
+    const config = { abortEarly: true };
+    const message = 'Recursive reference used outside its recursive schema';
+
+    expect(() => parse(self, input, config)).toThrowError(message);
+    expect(() => self['~run']({ value: input }, config)).toThrowError(message);
+    expect(() => self['~standard'].validate(input)).toThrowError(message);
+    expect(() =>
+      recursive(() => object({ children: array(self) }))
+    ).toThrowError(message);
+    expect(parse(schema, input, config)).toStrictEqual(input);
+    expect(schema['~standard'].validate(input)).toStrictEqual({
+      typed: true,
+      value: input,
+    });
+    expect(() => parse(self, input, config)).toThrowError(message);
+    expect(Reflect.ownKeys(config)).toStrictEqual(['abortEarly']);
+  });
+
+  test('rejects a foreign reference inside a returns action during construction', () => {
+    const definition = vi.fn((self: Ref) => object({ children: array(self) }));
+    recursive(definition);
+    const self = definition.mock.calls[0][0];
+
+    expect(() => recursive(() => pipe(any(), returns(self)))).toThrowError(
+      'Recursive reference used outside its recursive schema'
+    );
+  });
+
+  test('should construct once with a schema-compatible self marker', () => {
+    const definition = vi.fn((self: Ref) => {
+      expect(typeof self).toBe('object');
+      expect(self.type).toBe('ref');
       return string();
     });
-    const schema = recursive(getter);
-    expect(getter).not.toHaveBeenCalled();
+    const schema = recursive(definition);
+    expect(definition).toHaveBeenCalledTimes(1);
+    const self = definition.mock.calls[0][0];
+    expect(self.kind).toBe('schema');
     schema['~run']({ value: 'foo' }, {});
-    expect(getter).toHaveBeenCalledTimes(1);
-    expect(getter).toHaveBeenCalledWith(schema);
+    schema['~run']({ value: 'bar' }, {});
+    expect(definition).toHaveBeenCalledTimes(1);
   });
 });

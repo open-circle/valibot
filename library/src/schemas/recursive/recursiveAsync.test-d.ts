@@ -29,21 +29,51 @@ import {
 import { tupleAsync } from '../tuple/index.ts';
 import type { UnionIssue, UnionSchemaAsync } from '../union/index.ts';
 import { variantAsync } from '../variant/index.ts';
-import {
-  recursiveAsync,
-  type RecursiveSchemaAsync,
-  type RecursiveSelfSchemaAsync,
-} from './recursiveAsync.ts';
+import type { RefAsync } from './recursive.ts';
+import { recursiveAsync, type RecursiveSchemaAsync } from './recursiveAsync.ts';
 
 describe('recursiveAsync', () => {
+  test('rejects maps, invalid definitions, and named references', () => {
+    // @ts-expect-error Mutual recursion belongs to mutualRecursiveAsync.
+    recursiveAsync(() => ({ a: string() }));
+    // @ts-expect-error A definition must return a schema, not a promise.
+    recursiveAsync(async () => string());
+    // @ts-expect-error A definition must return a schema.
+    recursiveAsync(() => undefined);
+    recursiveAsync((self) => {
+      // @ts-expect-error A self reference is not callable.
+      self('a');
+      return string();
+    });
+  });
+
+  test('accepts synchronous schemas and preserves literal outputs', () => {
+    const schema = recursiveAsync(() => literal('leaf'));
+    expectTypeOf(schema.async).toEqualTypeOf<true>();
+    expectTypeOf<InferInput<typeof schema>>().toEqualTypeOf<'leaf'>();
+    expectTypeOf<InferOutput<typeof schema>>().toEqualTypeOf<'leaf'>();
+    expectTypeOf(schema.wrapped).toEqualTypeOf<
+      ReturnType<typeof literal<'leaf'>>
+    >();
+  });
   test('should return schema object', () => {
-    const getter = (self: RecursiveSelfSchemaAsync) =>
+    const definition = (self: RefAsync) =>
       objectAsync({
         name: string(),
         subcategories: arrayAsync(self),
       });
-    expectTypeOf(recursiveAsync(getter)).toEqualTypeOf<
-      RecursiveSchemaAsync<ReturnType<typeof getter>>
+    interface Category {
+      name: string;
+      subcategories: Category[];
+    }
+
+    expectTypeOf(recursiveAsync(definition)).toEqualTypeOf<
+      RecursiveSchemaAsync<
+        ReturnType<typeof definition>,
+        Category,
+        Category,
+        ObjectIssue | ArrayIssue | StringIssue
+      >
     >();
   });
 
@@ -143,10 +173,13 @@ describe('recursiveAsync', () => {
       UnionSchemaAsync<
         readonly [
           StringSchema<undefined>,
-          ArraySchemaAsync<RecursiveSelfSchemaAsync, undefined>,
+          ArraySchemaAsync<RefAsync, undefined>,
         ],
         undefined
-      >
+      >,
+      Json,
+      Json,
+      StringIssue | ArrayIssue | UnionIssue<StringIssue | ArrayIssue>
     >;
 
     type Json = string | Json[];
@@ -159,7 +192,7 @@ describe('recursiveAsync', () => {
   });
 
   test('should resolve async transforms and defaults at every recursive level', () => {
-    const Schema = recursiveAsync(async (self) =>
+    const Schema = recursiveAsync((self) =>
       objectAsync({
         value: pipeAsync(
           string(),
@@ -253,10 +286,13 @@ describe('recursiveAsync', () => {
       ObjectSchemaAsync<
         {
           name: StringSchema<undefined>;
-          subcategories: ArraySchemaAsync<RecursiveSelfSchemaAsync, undefined>;
+          subcategories: ArraySchemaAsync<RefAsync, undefined>;
         },
         undefined
-      >
+      >,
+      Input,
+      Input,
+      ObjectIssue | StringIssue | ArrayIssue
     >;
 
     interface Input {

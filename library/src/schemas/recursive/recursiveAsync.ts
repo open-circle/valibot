@@ -1,92 +1,103 @@
 import type {
   BaseIssue,
-  BaseSchema,
   BaseSchemaAsync,
+  GenericSchema,
+  GenericSchemaAsync,
   InferInput,
   InferIssue,
   InferOutput,
-  MaybePromise,
-  OutputDataset,
 } from '../../types/index.ts';
 import { _standardSchema } from '../../utils/index.ts';
-import type {
-  recursive,
-  RecursiveMarker,
-  ResolveRecursiveInput,
-  ResolveRecursiveOutput,
+import {
+  checkRecursiveReferences,
+  type ConfigWithOwner,
+  createRef,
+  OwnerSymbol,
+  type RecursiveOwner,
+  type RefAsync,
+  type ResolveRecursiveInput,
+  type ResolveRecursiveOutput,
 } from './recursive.ts';
-
-/**
- * Recursive self schema async interface.
- */
-export interface RecursiveSelfSchemaAsync
-  extends BaseSchemaAsync<RecursiveMarker, RecursiveMarker, never> {
-  /**
-   * The schema type.
-   */
-  readonly type: 'recursive';
-}
 
 /**
  * Recursive schema async interface.
  */
 export interface RecursiveSchemaAsync<
-  TWrapped extends
-    | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-    | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-> extends BaseSchemaAsync<
-    ResolveRecursiveInput<InferInput<TWrapped>>,
-    ResolveRecursiveOutput<InferOutput<TWrapped>>,
-    InferIssue<TWrapped>
-  > {
+  TWrapped extends SyncOrAsyncSchema = SyncOrAsyncSchema,
+  TInput = unknown,
+  TOutput = unknown,
+  TIssue extends BaseIssue<unknown> = BaseIssue<unknown>,
+> extends BaseSchemaAsync<TInput, TOutput, TIssue> {
   /**
    * The schema type.
    */
-  readonly type: 'recursive';
+  readonly type: 'recursiveAsync';
   /**
    * The schema reference.
    */
-  readonly reference: typeof recursive | typeof recursiveAsync;
+  readonly reference: typeof recursiveAsync<SyncOrAsyncSchema>;
   /**
    * The expected property.
    */
   readonly expects: 'unknown';
   /**
-   * The schema getter.
+   * The wrapped schema.
    */
-  readonly getter: (self: RecursiveSelfSchemaAsync) => MaybePromise<TWrapped>;
+  readonly wrapped: TWrapped;
 }
+
+type SyncOrAsyncSchema = GenericSchema | GenericSchemaAsync;
+/**
+ * Resolved recursive schema async interface.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- A named interface defers recursive type resolution.
+export interface ResolvedRecursiveSchemaAsync<
+  TWrapped extends SyncOrAsyncSchema,
+  TInputRoot = InferInput<TWrapped>,
+  TOutputRoot = InferOutput<TWrapped>,
+  TIssue extends BaseIssue<unknown> = InferIssue<TWrapped>,
+> extends RecursiveSchemaAsync<
+    TWrapped,
+    ResolveRecursiveInput<InferInput<TWrapped>, TInputRoot>,
+    ResolveRecursiveOutput<InferOutput<TWrapped>, TOutputRoot>,
+    TIssue
+  > {}
 
 /**
  * Creates a recursive schema.
  *
- * @param getter The schema getter.
+ * @param definition The schema definition. It runs once during construction.
  *
  * @returns A recursive schema.
  */
-// @__NO_SIDE_EFFECTS__
-export function recursiveAsync<
-  const TWrapped extends
-    | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-    | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
->(
-  getter: (self: RecursiveSelfSchemaAsync) => MaybePromise<TWrapped>
-): RecursiveSchemaAsync<TWrapped> {
-  return _standardSchema({
+export function recursiveAsync<const TWrapped extends SyncOrAsyncSchema>(
+  definition: (self: RefAsync) => TWrapped
+): ResolvedRecursiveSchemaAsync<TWrapped>;
+export function recursiveAsync(
+  definition: (self: RefAsync) => SyncOrAsyncSchema
+): unknown {
+  const owner = {
+    async: true,
+    reference: recursiveAsync<SyncOrAsyncSchema>,
+    get definition() {
+      return wrapped;
+    },
+  } satisfies RecursiveOwner;
+  const wrapped = definition(createRef(owner));
+  checkRecursiveReferences(wrapped, owner);
+  return _standardSchema<RecursiveSchemaAsync>({
     kind: 'schema',
-    type: 'recursive',
-    reference: recursiveAsync,
+    type: 'recursiveAsync',
+    reference: recursiveAsync<SyncOrAsyncSchema>,
     expects: 'unknown',
     async: true,
-    getter,
+    wrapped,
     async '~run'(dataset, config) {
-      const outputDataset = await (
-        await this.getter(this as unknown as RecursiveSelfSchemaAsync)
-      )['~run'](dataset, config);
-      return outputDataset as OutputDataset<
-        ResolveRecursiveOutput<InferOutput<TWrapped>>,
-        InferIssue<TWrapped>
-      >;
+      const configWithOwner: ConfigWithOwner = {
+        ...config,
+        [OwnerSymbol]: owner,
+      };
+      return wrapped['~run'](dataset, configWithOwner);
     },
   });
 }

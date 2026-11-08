@@ -19,6 +19,8 @@ import type {
   MapIssue,
   MapSchema,
   MapSchemaAsync,
+  MutualRecursiveSchema,
+  MutualRecursiveSchemaAsync,
   NonNullableIssue,
   NonNullableSchema,
   NonNullableSchemaAsync,
@@ -69,8 +71,7 @@ import type {
   VariantSchema,
   VariantSchemaAsync,
 } from '../schemas/index.ts';
-import type { RecursiveSelfSchema } from '../schemas/recursive/recursive.ts';
-import type { RecursiveSelfSchemaAsync } from '../schemas/recursive/recursiveAsync.ts';
+import type { Ref, RefAsync } from '../schemas/recursive/recursive.ts';
 import type { Config } from './config.ts';
 import type { InferInput } from './infer.ts';
 import type { ObjectEntries, ObjectEntriesAsync } from './object.ts';
@@ -516,6 +517,9 @@ export type IssueDotPath<
                                               >
                                             | LazySchema<infer TWrapped>
                                             | RecursiveSchema<infer TWrapped>
+                                            | MutualRecursiveSchema<
+                                                infer TWrapped
+                                              >
                                             | NonNullableSchema<
                                                 infer TWrapped,
                                                 | ErrorMessage<NonNullableIssue>
@@ -595,6 +599,9 @@ export type IssueDotPath<
                                                   >
                                                 >
                                               | LazySchemaAsync<infer TWrapped>
+                                              | MutualRecursiveSchemaAsync<
+                                                  infer TWrapped
+                                                >
                                               | RecursiveSchemaAsync<
                                                   infer TWrapped
                                                 >
@@ -680,8 +687,8 @@ export type IssueDotPath<
                                           ? IssueDotPath<TWrapped>
                                           : // Recursive self
                                             TSchema extends
-                                                | RecursiveSelfSchema
-                                                | RecursiveSelfSchemaAsync
+                                                | Ref<string | undefined>
+                                                | RefAsync<string | undefined>
                                             ? string
                                             : // Otherwise
                                               never;

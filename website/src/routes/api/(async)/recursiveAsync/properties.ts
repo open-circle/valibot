@@ -47,8 +47,8 @@ export const properties: Record<string, PropertyProps> = {
           name: 'self',
           type: {
             type: 'custom',
-            name: 'RecursiveSelfSchemaAsync',
-            href: '../RecursiveSelfSchemaAsync/',
+            name: 'RecursiveMarkerSchemaAsync',
+            href: '../RecursiveMarkerSchemaAsync/',
           },
         },
       ],
