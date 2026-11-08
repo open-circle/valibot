@@ -410,6 +410,22 @@ describe('convertSchema', () => {
         minItems: 2,
         additionalItems: false,
       });
+      expect(
+        convertSchema(
+          {},
+          v.tuple([
+            v.string(),
+            v.exactOptional(v.number()),
+            v.undefinedable(v.boolean()),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        items: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }],
+        minItems: 3,
+      });
     });
 
     test('should not require optional items at the end of tuple schema for draft-2020-12', () => {
