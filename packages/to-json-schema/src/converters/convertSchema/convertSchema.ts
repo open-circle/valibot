@@ -622,8 +622,12 @@ export function convertSchema(
       ) as SchemaOrPipe;
 
       // Reuse a registered target without expanding its references again.
-      if (recursiveSchema.type === 'ref' && context.referenceMap.has(wrapped)) {
-        return convertSchema(jsonSchema, wrapped, config, context);
+      if (recursiveSchema.type === 'ref') {
+        const referenceId = context.referenceMap.get(wrapped);
+        if (referenceId !== undefined) {
+          context.referenceMap.set(recursiveSchema, referenceId);
+          return convertSchema(jsonSchema, recursiveSchema, config, context);
+        }
       }
 
       // Get reference ID of recursive Valibot schema
