@@ -315,6 +315,13 @@ export const OwnerSymbol: unique symbol = Symbol('recursive owner');
  */
 const RecursiveSchemaSymbol: unique symbol = Symbol('recursive schema');
 
+/**
+ * Recursive reference brand.
+ *
+ * @internal
+ */
+const RefSymbol: unique symbol = Symbol('recursive reference');
+
 type AnyRecursiveSchema =
   | RecursiveSchema
   | RecursiveSchemaAsync
@@ -425,7 +432,7 @@ export function checkRecursiveReferences(
   }
   seen.add(value);
   const object = value as Record<string, unknown>;
-  if (['schema', 'transformation'].includes(object.kind as string)) {
+  if (RefSymbol in object) {
     if (object.owner !== undefined && object.owner !== owner) {
       throw Error('Recursive reference used outside its recursive schema');
     }
@@ -561,6 +568,7 @@ export function createRef<TName extends string | undefined = undefined>(
   // The marker describes a type-level reference, not the delegated runtime value.
   // The recursive resolver replaces it with the target schema's input and output.
   return _standardSchema({
+    [RefSymbol]: true,
     kind: 'schema' as const,
     type: owner.async ? ('refAsync' as const) : ('ref' as const),
     expects: 'unknown',
