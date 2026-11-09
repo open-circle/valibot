@@ -209,7 +209,9 @@ type ResolveRecursiveContainer<TValue, TRoot> =
               ? ResolveRecursiveArray<TValue, TRoot>
               : [RegisteredGeneric<TValue>] extends [never]
                 ? TValue extends (...args: infer TArgs) => infer TReturn
-                  ? (...args: TArgs) => ResolveRecursiveValue<TReturn, TRoot>
+                  ? (
+                      ...args: ResolveRecursiveTuple<TArgs, TRoot>
+                    ) => ResolveRecursiveValue<TReturn, TRoot>
                   : TValue extends object
                     ? {
                         [TKey in keyof TValue]: ResolveRecursiveValue<
@@ -307,8 +309,10 @@ export type RecursiveReferences<TValue, TSeen = never> =
             : TValue extends readonly (infer TItem)[]
               ? RecursiveReferences<TItem, TSeen | TValue>
               : [RegisteredGeneric<TValue>] extends [never]
-                ? TValue extends (...args: never[]) => infer TReturn
-                  ? RecursiveReferences<TReturn, TSeen | TValue>
+                ? TValue extends (...args: infer TArgs) => infer TReturn
+                  ?
+                      | RecursiveReferences<TArgs, TSeen | TValue>
+                      | RecursiveReferences<TReturn, TSeen | TValue>
                   : TValue extends object
                     ? {
                         [TKey in keyof TValue]-?: RecursiveReferences<
