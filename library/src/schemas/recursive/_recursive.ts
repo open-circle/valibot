@@ -208,14 +208,16 @@ type ResolveRecursiveContainer<TValue, TRoot> =
             : TValue extends readonly unknown[]
               ? ResolveRecursiveArray<TValue, TRoot>
               : [RegisteredGeneric<TValue>] extends [never]
-                ? TValue extends object
-                  ? {
-                      [TKey in keyof TValue]: ResolveRecursiveValue<
-                        TValue[TKey],
-                        TRoot
-                      >;
-                    }
-                  : TValue
+                ? TValue extends (...args: infer TArgs) => infer TReturn
+                  ? (...args: TArgs) => ResolveRecursiveValue<TReturn, TRoot>
+                  : TValue extends object
+                    ? {
+                        [TKey in keyof TValue]: ResolveRecursiveValue<
+                          TValue[TKey],
+                          TRoot
+                        >;
+                      }
+                    : TValue
                 : ResolveRegisteredGeneric<TValue, TRoot>;
 
 type MergeReference<TValue, TExtra> = TValue extends object
@@ -305,14 +307,16 @@ export type RecursiveReferences<TValue, TSeen = never> =
             : TValue extends readonly (infer TItem)[]
               ? RecursiveReferences<TItem, TSeen | TValue>
               : [RegisteredGeneric<TValue>] extends [never]
-                ? TValue extends object
-                  ? {
-                      [TKey in keyof TValue]-?: RecursiveReferences<
-                        TValue[TKey],
-                        TSeen | TValue
-                      >;
-                    }[keyof TValue]
-                  : never
+                ? TValue extends (...args: never[]) => infer TReturn
+                  ? RecursiveReferences<TReturn, TSeen | TValue>
+                  : TValue extends object
+                    ? {
+                        [TKey in keyof TValue]-?: RecursiveReferences<
+                          TValue[TKey],
+                          TSeen | TValue
+                        >;
+                      }[keyof TValue]
+                    : never
                 : RegisteredGeneric<TValue> extends {
                       readonly args: infer TArgs extends readonly unknown[];
                     }

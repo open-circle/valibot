@@ -136,12 +136,14 @@ describe('recursive reference traversal', () => {
       foreignMessage
     );
     expect(() =>
+      // @ts-expect-error An unnamed foreign reference is invalid in mutual definitions.
       mutualRecursive(() => ({ root: pipe(inner, returns(foreign)) }))
     ).toThrowError(foreignMessage);
     expect(() =>
       recursiveAsync(() => pipeAsync(innerAsync, returns(foreign)))
     ).toThrowError(foreignMessage);
     expect(() =>
+      // @ts-expect-error An unnamed foreign reference is invalid in mutual definitions.
       mutualRecursiveAsync(() => ({
         root: pipeAsync(innerAsync, returns(foreign)),
       }))
