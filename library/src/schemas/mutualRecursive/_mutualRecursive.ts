@@ -118,10 +118,14 @@ export function createMutualRecursive(
 }
 
 type EntryInputs<TEntries extends Entries> = {
-  [TKey in keyof TEntries]: InferInput<TEntries[TKey]>;
+  [TKey in keyof TEntries as `${TKey & (string | number)}`]: InferInput<
+    TEntries[TKey]
+  >;
 };
 type EntryOutputs<TEntries extends Entries> = {
-  [TKey in keyof TEntries]: InferOutput<TEntries[TKey]>;
+  [TKey in keyof TEntries as `${TKey & (string | number)}`]: InferOutput<
+    TEntries[TKey]
+  >;
 };
 
 type ReferenceNames<TReference> =
@@ -131,7 +135,7 @@ type UnmatchedReferences<TEntries extends Entries> = Exclude<
   ReferenceNames<
     RecursiveReferences<EntryInputs<TEntries> | EntryOutputs<TEntries>>
   >,
-  keyof TEntries
+  keyof EntryInputs<TEntries>
 >;
 
 interface Error<TReason extends string> {
