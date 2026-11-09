@@ -82,6 +82,49 @@ const CategoryWithLabelSchema = v.pipe(
 );
 ```
 
+## Unrecognised Generics
+
+When your recursive root is a type parameter of an unrecognised generic, the generic can vanish and be replaced with a strange object in the output type.
+
+For example, this transform puts recursive children into an unregistered `WeakMap`:
+
+```ts
+const NodeSchema = v.recursive((self) =>
+  v.pipe(
+    v.object({ name: v.string(), children: v.array(self) }),
+    v.transform((node) => ({
+      name: node.name,
+      children: new WeakMap(node.children.map((child) => [child, child])),
+    }))
+  )
+);
+
+type Output = v.InferOutput<typeof NodeSchema>;
+```
+
+The expected `Output` type is:
+
+```ts
+interface Node {
+  name: string;
+  children: WeakMap<Node, Node>;
+}
+```
+
+But the actual `Output['children']` type comes out as:
+
+```ts
+{
+  delete: (key: any) => boolean;
+  get: (key: any) => any | undefined;
+  has: (key: any) => boolean;
+  set: (key: any, value: any) => any;
+  readonly [Symbol.toStringTag]: string;
+}
+```
+
+The fix is to extend `Generics` as explained on the <Link href="/api/Generics/">Generics</Link> page.
+
 ## Related
 
 The following APIs can be combined with `recursive`.
@@ -108,3 +151,7 @@ The following APIs can be combined with `recursive`.
 ### Actions
 
 <ApiList items={['transform']} />
+
+### Types
+
+<ApiList items={['Generics']} />

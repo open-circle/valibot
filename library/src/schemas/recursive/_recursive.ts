@@ -3,6 +3,8 @@ import type {
   BaseSchema,
   BaseSchemaAsync,
   Config,
+  GenericConstraintError,
+  Generics,
   GenericSchema,
   GenericSchemaAsync,
   IsAny,
@@ -150,12 +152,42 @@ type ResolveRecursiveArray<
         : never
   : ResolveRecursiveFixedTuple<TValue, TRoot>;
 
-// Rebuilds a container with its type arguments resolved. TypeScript cannot
-// reconstruct an arbitrary generic with substituted type arguments, so each
-// container kind must be enumerated explicitly. This list must cover every
-// container a Valibot schema can infer; an unlisted generic (e.g. `WeakMap`)
-// falls through to the object branch, which maps over its methods and leaves
-// the marker in its type arguments unresolved.
+// Extract arguments and names of matching registered generics
+type RegisteredGeneric<TValue> = {
+  [TName in keyof Generics<TValue, never>]: Generics<
+    TValue,
+    never
+  >[TName] extends {
+    readonly getArgs: infer TArgs extends readonly unknown[];
+  }
+    ? [TArgs] extends [never]
+      ? never
+      : { readonly name: TName; readonly args: TArgs }
+    : never;
+}[keyof Generics<TValue, never>];
+
+// Reconstruct registered generics with resolved arguments
+type ResolveRegisteredGeneric<
+  TValue,
+  TRoot,
+  TGeneric = RegisteredGeneric<TValue>,
+> = TGeneric extends {
+  readonly name: infer TName extends keyof Generics<TValue, never>;
+  readonly args: infer TArgs extends readonly unknown[];
+}
+  ? Generics<TValue, ResolveRecursiveTuple<TArgs, TRoot>>[TName] extends {
+      readonly applyArgs: infer TOutput;
+    }
+    ? [TOutput] extends [never]
+      ? GenericConstraintError<{
+          generic: TName;
+          received: ResolveRecursiveTuple<TArgs, TRoot>;
+        }>
+      : TOutput
+    : never
+  : never;
+
+// Preserve built-in container handling before registered generics and objects
 type ResolveRecursiveContainer<TValue, TRoot> =
   TValue extends Map<infer TKey, infer TItem>
     ? Map<
@@ -175,14 +207,16 @@ type ResolveRecursiveContainer<TValue, TRoot> =
             ? Promise<ResolveRecursiveValue<TItem, TRoot>>
             : TValue extends readonly unknown[]
               ? ResolveRecursiveArray<TValue, TRoot>
-              : TValue extends object
-                ? {
-                    [TKey in keyof TValue]: ResolveRecursiveValue<
-                      TValue[TKey],
-                      TRoot
-                    >;
-                  }
-                : TValue;
+              : [RegisteredGeneric<TValue>] extends [never]
+                ? TValue extends object
+                  ? {
+                      [TKey in keyof TValue]: ResolveRecursiveValue<
+                        TValue[TKey],
+                        TRoot
+                      >;
+                    }
+                  : TValue
+                : ResolveRegisteredGeneric<TValue, TRoot>;
 
 type MergeReference<TValue, TExtra> = {
   [TKey in keyof (TValue & TExtra)]: (TValue & TExtra)[TKey];
@@ -252,14 +286,20 @@ export type RecursiveReferences<TValue, TSeen = never> =
             ? RecursiveReferences<TItem, TSeen | TValue>
             : TValue extends readonly (infer TItem)[]
               ? RecursiveReferences<TItem, TSeen | TValue>
-              : TValue extends object
-                ? {
-                    [TKey in keyof TValue]-?: RecursiveReferences<
-                      TValue[TKey],
-                      TSeen | TValue
-                    >;
-                  }[keyof TValue]
-                : never;
+              : [RegisteredGeneric<TValue>] extends [never]
+                ? TValue extends object
+                  ? {
+                      [TKey in keyof TValue]-?: RecursiveReferences<
+                        TValue[TKey],
+                        TSeen | TValue
+                      >;
+                    }[keyof TValue]
+                  : never
+                : RegisteredGeneric<TValue> extends {
+                      readonly args: infer TArgs extends readonly unknown[];
+                    }
+                  ? RecursiveReferences<TArgs[number], TSeen | TValue>
+                  : never;
 
 /**
  * The recursive owner currently running.

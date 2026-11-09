@@ -403,6 +403,7 @@
 - [GenericPipeActionAsync](/api/GenericPipeActionAsync/)
 - [GenericPipeItem](/api/GenericPipeItem/)
 - [GenericPipeItemAsync](/api/GenericPipeItemAsync/)
+- [Generics](/api/Generics/)
 - [GenericSchema](/api/GenericSchema/)
 - [GenericSchemaAsync](/api/GenericSchemaAsync/)
 - [GenericTransformation](/api/GenericTransformation/)
