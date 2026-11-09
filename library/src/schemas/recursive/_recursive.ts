@@ -296,11 +296,13 @@ interface RecursiveUnionIssue<TIssue extends BaseIssue<unknown>, TRoot>
  */
 export type ResolveRecursiveIssue<TIssue, TRoot = TIssue, TSeen = never> =
   TIssue extends RecursiveIssueMarker<infer TName>
-    ? TName extends undefined
-      ? [TIssue] extends [TSeen]
-        ? never
-        : ResolveRecursiveIssue<TRoot, TRoot, TSeen | TIssue>
-      : never
+    ? [TIssue] extends [TSeen]
+      ? never
+      : TName extends undefined
+        ? ResolveRecursiveIssue<TRoot, TRoot, TSeen | TIssue>
+        : TName extends keyof TRoot
+          ? ResolveRecursiveIssue<TRoot[TName], TRoot, TSeen | TIssue>
+          : never
     : TIssue extends UnionIssue<infer TSubIssue>
       ? RecursiveUnionIssue<TSubIssue, TRoot>
       : TIssue extends BaseIssue<unknown>

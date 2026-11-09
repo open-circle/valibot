@@ -12,6 +12,19 @@ import type { Ref } from './_recursive.ts';
 import { recursive, type RecursiveSchema } from './recursive.ts';
 
 describe('recursive', () => {
+  test('includes referenced issues in mutual union subissues', () => {
+    const group = v.mutualRecursive((ref) => ({
+      a: v.union([string(), ref('b')]),
+      b: v.number(),
+    }));
+    expect(v.safeParse(group.a, false).issues).toMatchObject([
+      {
+        type: 'union',
+        issues: [{ type: 'string' }, { type: 'number' }],
+      },
+    ]);
+  });
+
   test('includes nested union issues from recursive references', () => {
     const schema = recursive((self) => v.union([string(), array(self)]));
     const result = v.safeParse(schema, [false]);

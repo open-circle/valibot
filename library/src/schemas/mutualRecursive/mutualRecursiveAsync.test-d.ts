@@ -275,10 +275,9 @@ describe('mutualRecursiveAsync', () => {
     }));
     type A = string | B[];
     type B = string | A[];
-    type Issues =
-      | StringIssue
-      | ArrayIssue
-      | UnionIssue<StringIssue | ArrayIssue>;
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- A named interface represents recursive union subissues.
+    interface RecursiveUnionIssue extends UnionIssue<Issues> {}
+    type Issues = StringIssue | ArrayIssue | RecursiveUnionIssue;
     expectTypeOf<InferInput<typeof group.a>>().toEqualTypeOf<A>();
     expectTypeOf<InferOutput<typeof group.b>>().toEqualTypeOf<B>();
     expectTypeOf<InferIssue<typeof group.a>>().toEqualTypeOf<Issues>();

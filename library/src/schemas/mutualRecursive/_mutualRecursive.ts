@@ -129,6 +129,12 @@ type EntryOutputs<TEntries extends Entries> = {
   >;
 };
 
+type EntryIssues<TEntries extends Entries> = {
+  [TKey in keyof TEntries as `${TKey & (string | number)}`]: InferIssue<
+    TEntries[TKey]
+  >;
+};
+
 type ReferenceNames<TReference> =
   TReference extends RecursiveMarker<infer TName> ? TName : never;
 
@@ -164,11 +170,12 @@ export interface ResolvedRecursiveSchema<
   TInputRoot,
   TOutputRoot,
   TIssue extends BaseIssue<unknown>,
+  TIssueRoot = TIssue,
 > extends MutualRecursiveSchema<
     TWrapped,
     ResolveRecursiveInput<InferInput<TWrapped>, TInputRoot>,
     ResolveRecursiveOutput<InferOutput<TWrapped>, TOutputRoot>,
-    ResolveRecursiveIssue<TIssue>
+    ResolveRecursiveIssue<TIssue, TIssueRoot>
   > {}
 
 /**
@@ -180,11 +187,12 @@ export interface ResolvedRecursiveSchemaAsync<
   TInputRoot,
   TOutputRoot,
   TIssue extends BaseIssue<unknown>,
+  TIssueRoot = TIssue,
 > extends MutualRecursiveSchemaAsync<
     TWrapped,
     ResolveRecursiveInput<InferInput<TWrapped>, TInputRoot>,
     ResolveRecursiveOutput<InferOutput<TWrapped>, TOutputRoot>,
-    ResolveRecursiveIssue<TIssue>
+    ResolveRecursiveIssue<TIssue, TIssueRoot>
   > {}
 
 /**
@@ -197,7 +205,8 @@ export type RecursiveSchemas<TEntries extends Record<string, GenericSchema>> = {
     TEntries[TName],
     EntryInputs<TEntries>,
     EntryOutputs<TEntries>,
-    InferIssue<TEntries[keyof TEntries]>
+    InferIssue<TEntries[keyof TEntries]>,
+    EntryIssues<TEntries>
   >;
 };
 
@@ -211,6 +220,7 @@ export type RecursiveSchemasAsync<TEntries extends Entries> = {
     TEntries[TName],
     EntryInputs<TEntries>,
     EntryOutputs<TEntries>,
-    InferIssue<TEntries[keyof TEntries]>
+    InferIssue<TEntries[keyof TEntries]>,
+    EntryIssues<TEntries>
   >;
 };
