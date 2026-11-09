@@ -277,7 +277,12 @@ export type RecursiveReferences<TValue, TSeen = never> =
   IsAny<TValue> extends true
     ? never
     : TValue extends RecursiveMarker<string | undefined>
-      ? TValue
+      ?
+          | TValue
+          | RecursiveReferences<
+              Omit<TValue, typeof RecursiveMarkerSymbol>,
+              TSeen
+            >
       : [TValue] extends [TSeen]
         ? never
         : TValue extends
