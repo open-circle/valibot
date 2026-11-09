@@ -83,6 +83,7 @@ describe('mutualRecursiveAsync execution', () => {
     );
     await expect(parseAsync(marker, input, config)).rejects.toThrow(outside);
     expect(Reflect.ownKeys(config)).toStrictEqual(['abortEarly']);
+    expect(config).toStrictEqual({ abortEarly: true });
   });
 
   test('rejects foreign references in schemas and async return actions', () => {
