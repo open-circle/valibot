@@ -270,6 +270,14 @@ export type ResolveRecursiveOutput<
 
 type SyncOrAsyncSchema = GenericSchema | GenericSchemaAsync;
 
+type Equal<A, B> = B extends unknown
+  ? [A] extends [B]
+    ? [B] extends [A]
+      ? true
+      : false
+    : false
+  : never;
+
 /**
  * Collects recursive references from a value.
  */
@@ -283,7 +291,7 @@ export type RecursiveReferences<TValue, TSeen = never> =
               Omit<TValue, typeof RecursiveMarkerSymbol>,
               TSeen
             >
-      : [TValue] extends [TSeen]
+      : true extends Equal<TValue, TSeen>
         ? never
         : TValue extends
               | Map<infer TKey, infer TItem>
