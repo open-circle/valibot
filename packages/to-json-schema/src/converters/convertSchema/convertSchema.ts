@@ -642,13 +642,12 @@ export function convertSchema(
       if (
         !Object.prototype.hasOwnProperty.call(context.definitions, referenceId)
       ) {
-        context.definitions[referenceId] = convertSchema(
-          {},
-          wrapped,
-          config,
-          context,
-          true
-        );
+        Object.defineProperty(context.definitions, referenceId, {
+          value: convertSchema({}, wrapped, config, context, true),
+          enumerable: true,
+          writable: true,
+          configurable: true,
+        });
       }
 
       // Return definition directly, if reference is skipped

@@ -46,14 +46,19 @@ export function toJsonSchemaDefs<
     }
   }
   for (const key in definitions) {
-    context.definitions[key] = convertSchema(
-      {},
-      // @ts-expect-error
-      definitions[key],
-      config,
-      context,
-      true
-    );
+    Object.defineProperty(context.definitions, key, {
+      value: convertSchema(
+        {},
+        // @ts-expect-error
+        definitions[key],
+        config,
+        context,
+        true
+      ),
+      enumerable: true,
+      writable: true,
+      configurable: true,
+    });
   }
 
   // Return JSON Schema definitions
