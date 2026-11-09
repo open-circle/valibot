@@ -224,22 +224,25 @@ type MergeReference<TValue, TExtra> = TValue extends object
     }
   : TValue & TExtra;
 
+type ResolveRecursiveReference<TValue, TRoot, TTarget> =
+  Exclude<keyof TValue, typeof RecursiveMarkerSymbol> extends never
+    ? ResolveRecursiveValue<TTarget, TRoot>
+    : MergeReference<
+        ResolveRecursiveValue<TTarget, TRoot>,
+        ResolveRecursiveContainer<
+          Omit<TValue, typeof RecursiveMarkerSymbol>,
+          TRoot
+        >
+      >;
+
 type ResolveRecursiveValue<TValue, TRoot> =
   IsAny<TValue> extends true
     ? TValue
     : TValue extends RecursiveMarker<infer TKey>
       ? TKey extends undefined
-        ? ResolveRecursiveValue<TRoot, TRoot>
+        ? ResolveRecursiveReference<TValue, TRoot, TRoot>
         : TKey extends keyof TRoot
-          ? Exclude<keyof TValue, typeof RecursiveMarkerSymbol> extends never
-            ? ResolveRecursiveValue<TRoot[TKey], TRoot>
-            : MergeReference<
-                ResolveRecursiveValue<TRoot[TKey], TRoot>,
-                ResolveRecursiveContainer<
-                  Omit<TValue, typeof RecursiveMarkerSymbol>,
-                  TRoot
-                >
-              >
+          ? ResolveRecursiveReference<TValue, TRoot, TRoot[TKey]>
           : never
       : [RecursiveReferences<TValue>] extends [never]
         ? TValue
