@@ -106,12 +106,13 @@ export function createMutualRecursive(
   const entries = owner.build(createRefFactory(owner));
   setEntries(entries);
   const seen = new Set<object>();
-  const schemas: Record<string, Entries[string]> = Object.create(null);
-  for (const key of Object.keys(entries)) {
-    checkRecursiveReferences(entries[key], owner, seen);
+  const schemas: Record<PropertyKey, Entries[string]> = Object.create(null);
+  for (const key of Reflect.ownKeys(entries)) {
+    const entry = (entries as Record<PropertyKey, Entries[string]>)[key];
+    checkRecursiveReferences(entry, owner, seen);
     schemas[key] = createRecursiveSchema<
       Entries[string] & { readonly wrapped: Entries[string] }
-    >(entries[key], owner, owner.type, owner.reference);
+    >(entry, owner, owner.type, owner.reference);
   }
   return schemas;
 }
