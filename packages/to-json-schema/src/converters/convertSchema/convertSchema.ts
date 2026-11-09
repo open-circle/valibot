@@ -164,7 +164,7 @@ export function convertSchema(
         valibotSchema.type === 'mutualRecursive')
         ? context.referenceMap.get(valibotSchema.wrapped)
         : undefined);
-    if (referenceId) {
+    if (referenceId !== undefined) {
       jsonSchema.$ref = getDefinitionRef(referenceId);
       if (config?.overrideRef) {
         const refOverride = config.overrideRef({
@@ -632,7 +632,7 @@ export function convertSchema(
         context.referenceMap.get(wrapped);
 
       // Add recursive Valibot schema to reference map, if necessary
-      if (!referenceId) {
+      if (referenceId === undefined) {
         referenceId = context.referenceMap.createId(context.definitions);
         context.referenceMap.set(recursiveSchema, referenceId);
       }

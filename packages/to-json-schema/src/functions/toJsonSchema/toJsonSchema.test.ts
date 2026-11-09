@@ -393,6 +393,28 @@ describe('toJsonSchema', () => {
       });
     });
 
+    test('preserves an empty recursive definition name', () => {
+      const schema = v.recursive((self) =>
+        v.object({ children: v.array(self) })
+      );
+
+      expect(
+        toJsonSchema(schema, { definitions: { '': schema } })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        $ref: '#/$defs/',
+        $defs: {
+          '': {
+            type: 'object',
+            properties: {
+              children: { type: 'array', items: { $ref: '#/$defs/' } },
+            },
+            required: ['children'],
+          },
+        },
+      });
+    });
+
     test('for recursive definitions with JSON Pointer special characters', () => {
       const category = v.recursive((self) =>
         v.object({
