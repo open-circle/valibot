@@ -415,6 +415,36 @@ describe('toJsonSchema', () => {
       });
     });
 
+    test.each([false, true])(
+      'reuses named mutual definitions (reverse order: %s)',
+      (reverse) => {
+        const schemas = v.mutualRecursive((ref) => ({
+          a: v.object({ next: v.optional(ref('b')) }),
+          b: v.object({ next: v.optional(ref('a')) }),
+        }));
+        const definitions = reverse
+          ? { b: schemas.b, a: schemas.a }
+          : { a: schemas.a, b: schemas.b };
+
+        expect(toJsonSchema(schemas.a, { definitions })).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          $ref: '#/$defs/a',
+          $defs: {
+            a: {
+              type: 'object',
+              properties: { next: { $ref: '#/$defs/b' } },
+              required: [],
+            },
+            b: {
+              type: 'object',
+              properties: { next: { $ref: '#/$defs/a' } },
+              required: [],
+            },
+          },
+        });
+      }
+    );
+
     test('for recursive definitions with JSON Pointer special characters', () => {
       const category = v.recursive((self) =>
         v.object({
