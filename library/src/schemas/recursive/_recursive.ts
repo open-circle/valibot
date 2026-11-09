@@ -13,6 +13,7 @@ import type {
 import { _standardSchema } from '../../utils/_standardSchema/index.ts';
 import type { MutualRecursiveSchema } from '../mutualRecursive/mutualRecursive.ts';
 import type { MutualRecursiveSchemaAsync } from '../mutualRecursive/mutualRecursiveAsync.ts';
+import type { UnionIssue } from '../union/types.ts';
 import type { RecursiveSchema } from './recursive.ts';
 import type { RecursiveSchemaAsync } from './recursiveAsync.ts';
 
@@ -274,6 +275,38 @@ export type ResolveRecursiveOutput<
 
 type SyncOrAsyncSchema = GenericSchema | GenericSchemaAsync;
 
+/**
+ * Recursive issue marker interface.
+ *
+ * @internal
+ */
+interface RecursiveIssueMarker<TName extends string | undefined>
+  extends BaseIssue<unknown>,
+    RecursiveMarker<TName> {}
+
+// A named interface defers recursive subissues until TypeScript needs them.
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- This interface provides recursive issue indirection.
+interface RecursiveUnionIssue<TIssue extends BaseIssue<unknown>, TRoot>
+  extends UnionIssue<ResolveRecursiveIssue<TIssue, TRoot>> {}
+
+/**
+ * Resolves recursive references in issue types.
+ *
+ * @internal
+ */
+export type ResolveRecursiveIssue<TIssue, TRoot = TIssue, TSeen = never> =
+  TIssue extends RecursiveIssueMarker<infer TName>
+    ? TName extends undefined
+      ? [TIssue] extends [TSeen]
+        ? never
+        : ResolveRecursiveIssue<TRoot, TRoot, TSeen | TIssue>
+      : never
+    : TIssue extends UnionIssue<infer TSubIssue>
+      ? RecursiveUnionIssue<TSubIssue, TRoot>
+      : TIssue extends BaseIssue<unknown>
+        ? TIssue
+        : never;
+
 type Equal<A, B> = B extends unknown
   ? [A] extends [B]
     ? [B] extends [A]
@@ -501,7 +534,11 @@ export interface RecursiveMarker<TKey extends string | undefined = undefined> {
  * Recursive reference interface.
  */
 export interface Ref<TName extends string | undefined = undefined>
-  extends BaseSchema<RecursiveMarker<TName>, RecursiveMarker<TName>, never> {
+  extends BaseSchema<
+    RecursiveMarker<TName>,
+    RecursiveMarker<TName>,
+    RecursiveIssueMarker<TName>
+  > {
   /**
    * The schema type.
    */
@@ -523,7 +560,7 @@ export interface RefAsync<TName extends string | undefined = undefined>
   extends BaseSchemaAsync<
     RecursiveMarker<TName>,
     RecursiveMarker<TName>,
-    never
+    RecursiveIssueMarker<TName>
   > {
   /**
    * The schema type.

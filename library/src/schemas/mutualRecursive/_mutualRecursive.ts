@@ -16,6 +16,7 @@ import {
   type Ref,
   type RefAsync,
   type ResolveRecursiveInput,
+  type ResolveRecursiveIssue,
   type ResolveRecursiveOutput,
 } from '../recursive/_recursive.ts';
 import type { MutualRecursiveSchema } from './mutualRecursive.ts';
@@ -167,7 +168,7 @@ export interface ResolvedRecursiveSchema<
     TWrapped,
     ResolveRecursiveInput<InferInput<TWrapped>, TInputRoot>,
     ResolveRecursiveOutput<InferOutput<TWrapped>, TOutputRoot>,
-    TIssue
+    ResolveRecursiveIssue<TIssue>
   > {}
 
 /**
@@ -183,7 +184,7 @@ export interface ResolvedRecursiveSchemaAsync<
     TWrapped,
     ResolveRecursiveInput<InferInput<TWrapped>, TInputRoot>,
     ResolveRecursiveOutput<InferOutput<TWrapped>, TOutputRoot>,
-    TIssue
+    ResolveRecursiveIssue<TIssue>
   > {}
 
 /**

@@ -12,6 +12,23 @@ import type { Ref } from './_recursive.ts';
 import { recursive, type RecursiveSchema } from './recursive.ts';
 
 describe('recursive', () => {
+  test('includes nested union issues from recursive references', () => {
+    const schema = recursive((self) => v.union([string(), array(self)]));
+    const result = v.safeParse(schema, [false]);
+    expect(result.issues).toMatchObject([
+      {
+        type: 'union',
+        issues: [
+          { type: 'string' },
+          {
+            type: 'union',
+            issues: [{ type: 'string' }, { type: 'array' }],
+          },
+        ],
+      },
+    ]);
+  });
+
   test('should return schema object', () => {
     const definition = vi.fn((self: Ref) =>
       object({

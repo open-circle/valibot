@@ -11,6 +11,7 @@ import { createRecursive } from './_createRecursive.ts';
 import {
   type RefAsync,
   type ResolveRecursiveInput,
+  type ResolveRecursiveIssue,
   type ResolveRecursiveOutput,
 } from './_recursive.ts';
 
@@ -55,7 +56,7 @@ export interface ResolvedRecursiveSchemaAsync<
     TWrapped,
     ResolveRecursiveInput<InferInput<TWrapped>, TInputRoot>,
     ResolveRecursiveOutput<InferOutput<TWrapped>, TOutputRoot>,
-    TIssue
+    ResolveRecursiveIssue<TIssue>
   > {}
 
 /**

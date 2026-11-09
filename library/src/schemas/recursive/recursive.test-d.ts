@@ -258,8 +258,11 @@ describe('recursive', () => {
 
     expectTypeOf<InferInput<typeof Json>>().toEqualTypeOf<Json>();
     expectTypeOf<InferOutput<typeof Json>>().toEqualTypeOf<Json>();
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- A named interface represents recursive union subissues.
+    interface JsonUnionIssue
+      extends UnionIssue<StringIssue | ArrayIssue | JsonUnionIssue> {}
     expectTypeOf<InferIssue<typeof Json>>().toEqualTypeOf<
-      StringIssue | ArrayIssue | UnionIssue<StringIssue | ArrayIssue>
+      StringIssue | ArrayIssue | JsonUnionIssue
     >();
   });
 

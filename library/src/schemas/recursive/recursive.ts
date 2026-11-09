@@ -10,6 +10,7 @@ import { createRecursive } from './_createRecursive.ts';
 import {
   type Ref,
   type ResolveRecursiveInput,
+  type ResolveRecursiveIssue,
   type ResolveRecursiveOutput,
 } from './_recursive.ts';
 
@@ -53,7 +54,7 @@ export interface ResolvedRecursiveSchema<
     TWrapped,
     ResolveRecursiveInput<InferInput<TWrapped>, TInputRoot>,
     ResolveRecursiveOutput<InferOutput<TWrapped>, TOutputRoot>,
-    TIssue
+    ResolveRecursiveIssue<TIssue>
   > {}
 
 /**
