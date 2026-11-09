@@ -258,6 +258,19 @@ export function convertSchema(
       }
     }
 
+    // Preserve pipeline constraints when reference siblings are ignored.
+    if (
+      config?.target !== 'draft-2020-12' &&
+      jsonSchema.$ref !== undefined &&
+      Object.keys(jsonSchema).length > 1
+    ) {
+      const { $ref, ...constraints } = jsonSchema;
+      return {
+        ...constraints,
+        allOf: [{ $ref }, ...(constraints.allOf ?? [])],
+      };
+    }
+
     // Return converted JSON Schema
     return jsonSchema;
   }
