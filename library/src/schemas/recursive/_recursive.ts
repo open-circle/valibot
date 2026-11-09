@@ -9,6 +9,10 @@ import type {
   UnknownDataset,
 } from '../../types/index.ts';
 import { _standardSchema } from '../../utils/_standardSchema/index.ts';
+import type { MutualRecursiveSchema } from '../mutualRecursive/mutualRecursive.ts';
+import type { MutualRecursiveSchemaAsync } from '../mutualRecursive/mutualRecursiveAsync.ts';
+import type { RecursiveSchema } from './recursive.ts';
+import type { RecursiveSchemaAsync } from './recursiveAsync.ts';
 
 // Named interfaces keep recursive array output from collapsing into circular
 // type aliases while preserving normal array behavior.
@@ -265,6 +269,19 @@ export type RecursiveReferences<TValue, TSeen = never> =
 export const OwnerSymbol: unique symbol = Symbol('recursive owner');
 
 /**
+ * Recursive schema brand.
+ *
+ * @internal
+ */
+const RecursiveSchemaSymbol: unique symbol = Symbol('recursive schema');
+
+type AnyRecursiveSchema =
+  | RecursiveSchema
+  | RecursiveSchemaAsync
+  | MutualRecursiveSchema
+  | MutualRecursiveSchemaAsync;
+
+/**
  * Configuration that carries the recursive owner.
  *
  * @internal
@@ -293,7 +310,7 @@ export interface RecursiveOwner {
   /**
    * The owner schema factory.
    */
-  readonly reference: SyncOrAsyncSchema['reference'];
+  readonly reference: AnyRecursiveSchema['reference'];
 }
 
 /**
@@ -316,13 +333,13 @@ export function createRecursiveSchema<
   wrapped: TSchema['wrapped'],
   owner: RecursiveOwner & { readonly async: TSchema['async'] },
   type: TSchema['type'],
-  reference: SyncOrAsyncSchema['reference']
+  reference: AnyRecursiveSchema['reference']
 ): TSchema;
 export function createRecursiveSchema(
   wrapped: SyncOrAsyncSchema,
   owner: RecursiveOwner,
-  type: string,
-  reference: SyncOrAsyncSchema['reference']
+  type: AnyRecursiveSchema['type'],
+  reference: AnyRecursiveSchema['reference']
 ): unknown {
   const withOwner = (config: ConfigWithOwner): ConfigWithOwner => ({
     ...config,
@@ -331,9 +348,8 @@ export function createRecursiveSchema(
   const run = (dataset: UnknownDataset, config: ConfigWithOwner) =>
     wrapped['~run'](dataset, withOwner(config));
 
-  return _standardSchema<
-    SyncOrAsyncSchema & { readonly wrapped: SyncOrAsyncSchema }
-  >({
+  return _standardSchema<AnyRecursiveSchema>({
+    [RecursiveSchemaSymbol]: true,
     kind: 'schema',
     type,
     reference,
@@ -362,19 +378,19 @@ export function checkRecursiveReferences(
 ): void {
   if (
     !value ||
-    !['object', 'function'].includes(typeof value) ||
+    (typeof value !== 'object' && typeof value !== 'function') ||
     seen.has(value)
   ) {
     return;
   }
   seen.add(value);
-  const schema = value as Record<string, unknown>;
-  if (['schema', 'transformation'].includes(schema.kind as string)) {
-    if (schema.owner !== undefined && schema.owner !== owner) {
+  const object = value as Record<string, unknown>;
+  if (['schema', 'transformation'].includes(object.kind as string)) {
+    if (object.owner !== undefined && object.owner !== owner) {
       throw Error('Recursive reference used outside its recursive schema');
     }
-    if (schema.owner === owner) {
-      const name = schema.name as string | undefined;
+    if (object.owner === owner) {
+      const name = object.name as string | undefined;
       if (name === undefined) {
         if (owner.definition.kind !== 'schema') {
           throw Error(
@@ -389,20 +405,9 @@ export function checkRecursiveReferences(
       }
     }
   }
-  for (const key in schema) {
-    if (
-      !['owner', 'reference', '~standard', '~types'].includes(key) &&
-      !(
-        key === 'wrapped' &&
-        [
-          'recursive',
-          'recursiveAsync',
-          'mutualRecursive',
-          'mutualRecursiveAsync',
-        ].includes(schema.type as string)
-      )
-    ) {
-      checkRecursiveReferences(schema[key], owner, seen);
+  for (const key in object) {
+    if (key !== 'wrapped' || !(RecursiveSchemaSymbol in object)) {
+      checkRecursiveReferences(object[key], owner, seen);
     }
   }
 }

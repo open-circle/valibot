@@ -20,7 +20,9 @@ describe('recursiveAsync', () => {
     const schema = recursiveAsync(definition);
     expect(schema.wrapped).toBe(definition.mock.results[0].value);
     expect(definition).toHaveBeenCalledTimes(1);
+    expect(Object.getOwnPropertySymbols(schema)).toHaveLength(1);
     expect(schema).toStrictEqual({
+      [Object.getOwnPropertySymbols(schema)[0]]: true,
       kind: 'schema',
       type: 'recursiveAsync',
       reference: recursiveAsync,
