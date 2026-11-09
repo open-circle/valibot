@@ -1,5 +1,6 @@
 import * as v from 'valibot';
 import { describe, expect, test, vi } from 'vitest';
+import { toJsonSchema } from '../../functions/toJsonSchema/toJsonSchema.ts';
 import { ReferenceMap } from '../../utils/index.ts';
 import { createContext } from '../../vitest/index.ts';
 import { convertSchema } from './convertSchema.ts';
@@ -2044,5 +2045,70 @@ describe('convertSchema', () => {
         format: 'date-time',
       });
     });
+  });
+});
+
+describe('CodeRabbit recursive conversion regressions', () => {
+  test('preserves child Ref identity for reference overrides', () => {
+    let child: v.GenericSchema = v.never();
+    const schema = v.recursive((self) => {
+      child = self;
+      return v.object({ child: v.optional(self) });
+    });
+    const result = toJsonSchema(schema, {
+      overrideRef: ({ valibotSchema }) =>
+        valibotSchema === child ? '#/external/child' : undefined,
+    });
+    const definition = Object.values(result.$defs ?? {})[0];
+    expect(definition.properties?.child.$ref).toBe('#/external/child');
+  });
+
+  test('does not emit Draft-07 constraints as ignored Ref siblings', () => {
+    const schema = v.recursive((self) =>
+      v.object({
+        child: v.optional(v.pipe(self, v.metadata({ minProperties: 2 }))),
+      })
+    );
+    const result = toJsonSchema(schema, { target: 'draft-07' });
+    const definition = Object.values(result.$defs ?? {})[0];
+    const child = definition.properties?.child;
+    expect(child).toBeDefined();
+    expect(JSON.stringify(child)).toContain('"minProperties":2');
+    expect(child?.$ref !== undefined && child.minProperties !== undefined).toBe(
+      false
+    );
+  });
+
+  test('preserves an empty configured definition ID', () => {
+    const schema = v.recursive((self) => v.object({ child: v.optional(self) }));
+    const result = toJsonSchema(schema, { definitions: { '': schema } });
+    expect(result.$ref).toBe('#/$defs/');
+    expect(Object.keys(result.$defs ?? {})).toStrictEqual(['']);
+    expect(result.$defs?.[''].properties?.child.$ref).toBe('#/$defs/');
+  });
+
+  test('registers named mutual targets before converting parents', () => {
+    const group = v.mutualRecursive((ref) => ({
+      parent: v.object({ child: ref('child') }),
+      child: v.string(),
+    }));
+    const result = toJsonSchema(group.parent, { definitions: group });
+    expect(Object.keys(result.$defs ?? {}).sort()).toStrictEqual([
+      'child',
+      'parent',
+    ]);
+    expect(result.$defs?.parent.properties?.child.$ref).toBe('#/$defs/child');
+  });
+
+  test('serializes a recursive __proto__ definition as an own property', () => {
+    const schema = v.recursive((self) => v.object({ child: v.optional(self) }));
+    const result = toJsonSchema(schema, {
+      definitions: { ['__proto__']: schema },
+    });
+    expect(result.$ref).toBe('#/$defs/__proto__');
+    expect(Object.hasOwn(result.$defs ?? {}, '__proto__')).toBe(true);
+    expect(JSON.parse(JSON.stringify(result)).$defs).toHaveProperty(
+      '__proto__'
+    );
   });
 });

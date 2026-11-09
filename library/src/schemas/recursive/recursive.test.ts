@@ -1,5 +1,6 @@
 import { describe, expect, test, vi } from 'vitest';
 import { returns } from '../../actions/index.ts';
+import * as v from '../../index.ts';
 import { parse, pipe } from '../../methods/index.ts';
 import type { FailureDataset, InferIssue } from '../../types/index.ts';
 import { expectNoSchemaIssue } from '../../vitest/index.ts';
@@ -164,5 +165,63 @@ describe('recursive', () => {
     schema['~run']({ value: 'foo' }, {});
     schema['~run']({ value: 'bar' }, {});
     expect(definition).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('CodeRabbit recursive runtime regressions', () => {
+  test('constructs symbol-keyed mutual entries', () => {
+    const key = Symbol('entry');
+    const group = v.mutualRecursive(() => ({ [key]: v.string() }));
+    expect(group[key]).toBeDefined();
+    expect(v.parse(group[key], 'value')).toBe('value');
+  });
+
+  test('constructs non-enumerable mutual entries', () => {
+    const entries = { node: v.string() };
+    Object.defineProperty(entries, 'node', { enumerable: false });
+    const group = v.mutualRecursive(() => entries);
+    expect(group.node).toBeDefined();
+    expect(v.parse(group.node, 'value')).toBe('value');
+  });
+
+  test('accepts schema-shaped application defaults', () => {
+    const value = { kind: 'schema', owner: 'application' };
+    const schema = v.recursive(() =>
+      v.object({ value: v.optional(v.any(), value) })
+    );
+    expect(v.parse(schema, {})).toStrictEqual({ value });
+  });
+
+  test.each(['owner', 'reference', '~standard', '~types'])(
+    'rejects foreign references in an entry named %s',
+    (key) => {
+      let foreign: v.GenericSchema = v.never();
+      v.recursive((self) => {
+        foreign = self;
+        return v.string();
+      });
+      expect(() => v.recursive(() => v.object({ [key]: foreign }))).toThrow(
+        'Recursive reference used outside its recursive schema'
+      );
+    }
+  );
+
+  test('returns recursive union issues at runtime', () => {
+    const schema = v.recursive((self) => v.union([v.string(), v.array(self)]));
+    const result = v.safeParse(schema, [false]);
+    expect(result.issues?.[0].issues).toEqual(
+      expect.arrayContaining([expect.objectContaining({ type: 'union' })])
+    );
+  });
+
+  test('returns referenced issues inside mutual union issues', () => {
+    const group = v.mutualRecursive((ref) => ({
+      a: v.union([v.string(), ref('b')]),
+      b: v.number(),
+    }));
+    const result = v.safeParse(group.a, false);
+    expect(result.issues?.[0].issues).toEqual(
+      expect.arrayContaining([expect.objectContaining({ type: 'number' })])
+    );
   });
 });

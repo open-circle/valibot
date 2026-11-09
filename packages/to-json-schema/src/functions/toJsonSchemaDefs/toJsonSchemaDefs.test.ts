@@ -7,6 +7,16 @@ import { toJsonSchemaDefs } from './toJsonSchemaDefs.ts';
 console.warn = vi.fn();
 
 describe('toJsonSchemaDefs', () => {
+  test('reuses the named mutual target when the parent is converted first', () => {
+    const group = v.mutualRecursive((ref) => ({
+      parent: v.object({ child: ref('child') }),
+      child: v.string(),
+    }));
+    const definitions = toJsonSchemaDefs(group);
+    expect(definitions.parent.properties?.child.$ref).toBe('#/$defs/child');
+    expect(Object.keys(definitions).sort()).toStrictEqual(['child', 'parent']);
+  });
+
   describe('should convert schema', () => {
     test('for simple schema', () => {
       expect(

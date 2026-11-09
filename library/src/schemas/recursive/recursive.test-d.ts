@@ -1,5 +1,6 @@
 import { describe, expectTypeOf, test } from 'vitest';
 import { readonly, transform } from '../../actions/index.ts';
+import * as v from '../../index.ts';
 import { pipe } from '../../methods/index.ts';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
 import { array, type ArrayIssue, type ArraySchema } from '../array/index.ts';
@@ -407,5 +408,114 @@ describe('recursive', () => {
     );
 
     expectTypeOf(Category).toExtend<RecursiveSchema>();
+  });
+});
+
+describe('CodeRabbit recursive type regressions', () => {
+  test('resolves string references to numeric entry keys', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const group = v.mutualRecursive((ref) => ({
+      0: v.string(),
+      node: v.object({ value: ref('0') }),
+    }));
+    expectTypeOf<v.InferOutput<typeof group.node>>().toEqualTypeOf<{
+      value: string;
+    }>();
+  });
+
+  test('preserves branded primitive references', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const group = v.mutualRecursive((ref) => ({
+      leaf: v.number(),
+      node: v.object({ value: v.pipe(ref('leaf'), v.brand('Leaf')) }),
+    }));
+    type Output = v.InferOutput<typeof group.node>;
+    expectTypeOf<Output['value']>().toExtend<number>();
+  });
+
+  test('preserves properties added to unnamed references', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const schema = v.recursive((self) =>
+      v.object({
+        child: v.optional(
+          v.pipe(
+            self,
+            v.transform((value) => ({ ...value, label: 'child' }))
+          )
+        ),
+      })
+    );
+    type Output = v.InferOutput<typeof schema>;
+    expectTypeOf<NonNullable<Output['child']>>().toExtend<{ label: string }>();
+  });
+
+  test('rejects unmatched references in marker intersections', () => {
+    // @ts-expect-error The extra property references an absent definition.
+    v.mutualRecursive((ref) => ({
+      a: v.intersect([ref('b'), v.object({ extra: ref('missing') })]),
+      b: v.object({ value: v.string() }),
+    }));
+  });
+
+  test('resolves references in distinct subtype children', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const schema = v.recursive((self) =>
+      v.object({
+        next: v.optional(
+          v.object({ next: v.optional(v.never()), child: self })
+        ),
+      })
+    );
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- The fixture requires this exact subtype relationship to reproduce ancestor skipping.
+    expectTypeOf<{ next: { child: {} } }>().toExtend<
+      v.InferInput<typeof schema>
+    >();
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- The fixture requires this exact subtype relationship to reproduce ancestor skipping.
+    expectTypeOf<{ next: { child: {} } }>().toExtend<
+      v.InferOutput<typeof schema>
+    >();
+  });
+
+  test('includes recursive unions in nested issue types', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const schema = v.recursive((self) => v.union([v.string(), v.array(self)]));
+    type Issue = v.InferIssue<typeof schema>;
+    type Subissue = NonNullable<Issue['issues']>[number];
+    expectTypeOf<Extract<Subissue, { type: 'union' }>>().not.toBeNever();
+  });
+
+  test('includes referenced issues in mutual union subissues', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const group = v.mutualRecursive((ref) => ({
+      a: v.union([v.string(), ref('b')]),
+      b: v.number(),
+    }));
+    type Issue = Extract<v.InferIssue<typeof group.a>, { type: 'union' }>;
+    type Subissue = NonNullable<Issue['issues']>[number];
+    expectTypeOf<v.NumberIssue>().toExtend<Subissue>();
+  });
+
+  test('resolves markers in function return types', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const schema = v.recursive((self) =>
+      v.object({
+        name: v.string(),
+        getChild: v.pipe(v.any(), v.returns(self)),
+      })
+    );
+    type Output = v.InferOutput<typeof schema>;
+    expectTypeOf<ReturnType<Output['getChild']>>().toEqualTypeOf<Output>();
+  });
+
+  test('resolves markers in function parameter types', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const schema = v.recursive((self) =>
+      v.object({
+        name: v.string(),
+        setChild: v.pipe(v.any(), v.args(v.tuple([self]))),
+      })
+    );
+    type Output = v.InferOutput<typeof schema>;
+    expectTypeOf<Parameters<Output['setChild']>[0]>().toEqualTypeOf<Output>();
   });
 });
