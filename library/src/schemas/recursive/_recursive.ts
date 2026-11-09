@@ -218,9 +218,11 @@ type ResolveRecursiveContainer<TValue, TRoot> =
                   : TValue
                 : ResolveRegisteredGeneric<TValue, TRoot>;
 
-type MergeReference<TValue, TExtra> = {
-  [TKey in keyof (TValue & TExtra)]: (TValue & TExtra)[TKey];
-};
+type MergeReference<TValue, TExtra> = TValue extends object
+  ? {
+      [TKey in keyof (TValue & TExtra)]: (TValue & TExtra)[TKey];
+    }
+  : TValue & TExtra;
 
 type ResolveRecursiveValue<TValue, TRoot> =
   IsAny<TValue> extends true
