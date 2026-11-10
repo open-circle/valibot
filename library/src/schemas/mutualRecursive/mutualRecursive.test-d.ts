@@ -25,6 +25,7 @@ import { string, type StringIssue } from '../string/index.ts';
 import { tuple } from '../tuple/index.ts';
 import { tupleWithRest } from '../tupleWithRest/index.ts';
 import { union, type UnionIssue } from '../union/index.ts';
+import { unknown } from '../unknown/index.ts';
 import { variant } from '../variant/index.ts';
 import {
   mutualRecursive,
@@ -37,6 +38,26 @@ import {
 } from './mutualRecursive.ts';
 
 describe('mutualRecursive', () => {
+  test('resolves recursive map values beside unknown keys', () => {
+    const group = mutualRecursive((ref) => ({
+      node: object({
+        name: string(),
+        children: map(unknown(), ref('node')),
+      }),
+    }));
+    interface Node {
+      name: string;
+      children: Map<unknown, Node>;
+    }
+
+    expectTypeOf(group.node)
+      .toHaveProperty('~types')
+      .exclude<undefined>()
+      .toHaveProperty('output')
+      .toEqualTypeOf<Node>();
+    expectTypeOf<InferInput<typeof group.node>>().toEqualTypeOf<Node>();
+  });
+
   const definition = (ref: RefFactory) => ({
     a: object({ name: string(), bs: array(ref('b')) }),
     b: object({ score: number(), parent: optional(ref('a')) }),
@@ -442,6 +463,24 @@ describe('mutualRecursive', () => {
         next: RecursiveMarker<'node'>;
       }>
     >().toEqualTypeOf<RecursiveMarker<'node'>>();
+  });
+
+  test('collects map value references beside unknown and any keys', () => {
+    type Reference = RecursiveMarker<'value'>;
+    expectTypeOf<
+      RecursiveReferences<Map<unknown, Reference>>
+    >().toEqualTypeOf<Reference>();
+    expectTypeOf<
+      RecursiveReferences<ReadonlyMap<unknown, Reference>>
+    >().toEqualTypeOf<Reference>();
+    expectTypeOf<
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Regression coverage requires any.
+      RecursiveReferences<Map<any, Reference>>
+    >().toEqualTypeOf<Reference>();
+    expectTypeOf<
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Regression coverage requires any.
+      RecursiveReferences<ReadonlyMap<any, Reference>>
+    >().toEqualTypeOf<Reference>();
   });
 
   test('collects references through containers and cyclic objects', () => {

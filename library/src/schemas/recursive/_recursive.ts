@@ -335,7 +335,9 @@ export type RecursiveReferences<TValue, TSeen = never> =
         : TValue extends
               | Map<infer TKey, infer TItem>
               | ReadonlyMap<infer TKey, infer TItem>
-          ? RecursiveReferences<TKey | TItem, TSeen | TValue>
+          ?
+              | RecursiveReferences<TKey, TSeen | TValue>
+              | RecursiveReferences<TItem, TSeen | TValue>
           : TValue extends
                 | Set<infer TItem>
                 | ReadonlySet<infer TItem>
