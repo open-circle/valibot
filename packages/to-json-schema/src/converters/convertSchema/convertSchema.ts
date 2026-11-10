@@ -97,6 +97,9 @@ type Schema =
       v.ErrorMessage<v.ArrayIssue> | undefined
     >
   | v.NeverSchema<v.ErrorMessage<v.NeverIssue> | undefined>
+  | v.RecursiveSchema
+  | v.MutualRecursiveSchema
+  | v.Ref<string | undefined>
   | v.LazySchema<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>>;
 
 /**
@@ -154,8 +157,14 @@ export function convertSchema(
 ): JsonSchema {
   if (!skipRef) {
     // If schema is in reference map use reference and skip conversion
-    const referenceId = context.referenceMap.get(valibotSchema);
-    if (referenceId) {
+    const referenceId =
+      context.referenceMap.get(valibotSchema) ??
+      ('wrapped' in valibotSchema &&
+      (valibotSchema.type === 'recursive' ||
+        valibotSchema.type === 'mutualRecursive')
+        ? context.referenceMap.get(valibotSchema.wrapped)
+        : undefined);
+    if (referenceId !== undefined) {
       jsonSchema.$ref = getDefinitionRef(referenceId);
       if (config?.overrideRef) {
         const refOverride = config.overrideRef({
@@ -247,6 +256,19 @@ export function convertSchema(
         // @ts-expect-error
         jsonSchema = convertAction(jsonSchema, valibotPipeItem, config);
       }
+    }
+
+    // Preserve pipeline constraints when reference siblings are ignored.
+    if (
+      config?.target !== 'draft-2020-12' &&
+      jsonSchema.$ref !== undefined &&
+      Object.keys(jsonSchema).length > 1
+    ) {
+      const { $ref, ...constraints } = jsonSchema;
+      return {
+        ...constraints,
+        allOf: [{ $ref }, ...(constraints.allOf ?? [])],
+      };
     }
 
     // Return converted JSON Schema
@@ -592,6 +614,81 @@ export function convertSchema(
       jsonSchema.allOf = valibotSchema.options.map((option) =>
         convertSchema({}, option as SchemaOrPipe, config, context)
       );
+      break;
+    }
+
+    case 'ref':
+    case 'mutualRecursive':
+    case 'recursive': {
+      const recursiveSchema = valibotSchema;
+      const wrapped = (
+        recursiveSchema.type === 'ref'
+          ? recursiveSchema.name === undefined
+            ? recursiveSchema.owner.definition
+            : (
+                recursiveSchema.owner.definition as Record<
+                  string,
+                  v.GenericSchema | v.GenericSchemaAsync
+                >
+              )[recursiveSchema.name]
+          : recursiveSchema.wrapped
+      ) as SchemaOrPipe;
+
+      // Reuse a registered target without expanding its references again.
+      if (recursiveSchema.type === 'ref') {
+        const referenceId = context.referenceMap.get(wrapped);
+        if (referenceId !== undefined) {
+          context.referenceMap.set(recursiveSchema, referenceId);
+          return convertSchema(jsonSchema, recursiveSchema, config, context);
+        }
+      }
+
+      // Get reference ID of recursive Valibot schema
+      let referenceId =
+        context.referenceMap.get(recursiveSchema) ??
+        context.referenceMap.get(wrapped);
+
+      // Add recursive Valibot schema to reference map, if necessary
+      if (referenceId === undefined) {
+        referenceId = context.referenceMap.createId(context.definitions);
+        context.referenceMap.set(recursiveSchema, referenceId);
+      }
+      context.referenceMap.set(wrapped, referenceId);
+
+      // Add recursive Valibot schema to definitions, if necessary
+      if (
+        !Object.prototype.hasOwnProperty.call(context.definitions, referenceId)
+      ) {
+        Object.defineProperty(context.definitions, referenceId, {
+          value: convertSchema({}, wrapped, config, context, true),
+          enumerable: true,
+          writable: true,
+          configurable: true,
+        });
+      }
+
+      // Return definition directly, if reference is skipped
+      if (skipRef) {
+        Object.assign(jsonSchema, context.definitions[referenceId]);
+
+        // Otherwise, add reference to JSON Schema object
+      } else {
+        jsonSchema.$ref = getDefinitionRef(referenceId);
+
+        // Override reference, if necessary
+        if (config?.overrideRef) {
+          const refOverride = config.overrideRef({
+            ...context,
+            referenceId,
+            valibotSchema: recursiveSchema,
+            jsonSchema,
+          });
+          if (refOverride) {
+            jsonSchema.$ref = refOverride;
+          }
+        }
+      }
+
       break;
     }
 

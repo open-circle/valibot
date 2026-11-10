@@ -1,0 +1,25 @@
+---
+title: RefAsync
+description: Recursive reference async interface.
+contributors:
+  - yslpn
+  - james-tindal
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# RefAsync
+
+Recursive reference async interface.
+
+## Generics
+
+- `TName` <Property {...properties.TName} />
+
+## Definition
+
+- `RefAsync` <Property {...properties.BaseSchemaAsync} />
+  - `type` <Property {...properties.type} />
+  - `owner` <Property {...properties.owner} />
+  - `name` <Property {...properties.name} />

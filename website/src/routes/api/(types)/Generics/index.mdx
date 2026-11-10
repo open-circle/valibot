@@ -1,0 +1,45 @@
+---
+title: Generics
+description: Extensible registry for generic type constructors.
+contributors:
+  - james-tindal
+---
+
+import { Link, Property } from '~/components';
+import { GenericsGenerator } from './GenericsGenerator';
+import { properties } from './properties';
+
+# Generics
+
+Extensible registry for generic type constructors.
+
+## Generics
+
+- `T` <Property {...properties.T} />
+- `TArgs` <Property {...properties.TArgs} />
+
+## Definition
+
+- `Generics` <Property {...properties.Generics} />
+
+The interface has no entries by default. Each registration describes how to extract and apply the arguments of a generic constructor.
+
+| Property    | Purpose                                                                                |
+| ----------- | -------------------------------------------------------------------------------------- |
+| `getArgs`   | Extracts the arguments of `T` as a tuple. Returns `never` for types that do not match. |
+| `applyArgs` | Reconstructs the generic from the resolved arguments in `TArgs`.                       |
+
+## Recursive schemas
+
+Currently, only the four recursive APIs use this registry:
+
+- <Link href="/api/recursive/">`recursive`</Link>
+- <Link href="/api/recursiveAsync/">`recursiveAsync`</Link>
+- <Link href="/api/mutualRecursive/">`mutualRecursive`</Link>
+- <Link href="/api/mutualRecursiveAsync/">`mutualRecursiveAsync`</Link>
+
+## Register a generic
+
+Add a module augmentation to a TypeScript file that your project includes.
+
+<GenericsGenerator />

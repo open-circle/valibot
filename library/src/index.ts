@@ -19,6 +19,8 @@ export type {
   DefaultValue,
   ErrorMessage,
   FailureDataset,
+  GenericConstraintError,
+  Generics,
   GenericIssue,
   GenericMetadata,
   GenericSchema,

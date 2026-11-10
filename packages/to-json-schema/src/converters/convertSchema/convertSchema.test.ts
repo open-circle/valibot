@@ -1,5 +1,6 @@
 import * as v from 'valibot';
 import { describe, expect, test, vi } from 'vitest';
+import { toJsonSchema } from '../../functions/toJsonSchema/toJsonSchema.ts';
 import { ReferenceMap } from '../../utils/index.ts';
 import { createContext } from '../../vitest/index.ts';
 import { convertSchema } from './convertSchema.ts';
@@ -1724,6 +1725,227 @@ describe('convertSchema', () => {
         )
       ).toStrictEqual({ $ref: '#/$custom/reference' });
     });
+
+    test('should convert recursive schema', () => {
+      const definition = vi.fn((self: v.Ref) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const schema = v.recursive(definition);
+      const context = createContext();
+      const jsonSchema = convertSchema({}, schema, undefined, context);
+      expect(definition).toHaveBeenCalledTimes(1);
+      expect(schema.wrapped).toBe(definition.mock.results[0].value);
+      const referenceId = context.referenceMap.get(schema);
+
+      expect(jsonSchema).toStrictEqual({
+        $ref: `#/$defs/${referenceId}`,
+      });
+      expect(context.definitions).toStrictEqual({
+        [referenceId!]: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            subcategories: {
+              type: 'array',
+              items: { $ref: `#/$defs/${referenceId}` },
+            },
+          },
+          required: ['name', 'subcategories'],
+        },
+      });
+    });
+
+    test('should convert recursive schema without colliding with existing definitions', () => {
+      const schema = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const definitions = Object.fromEntries(
+        Array.from({ length: 100 }, (_, index) => [
+          `${index}`,
+          { type: 'string' as const },
+        ])
+      );
+      const expectedDefinitions = { ...definitions };
+      const existingReferenceIds = new Set([
+        '100',
+        ...Object.keys(definitions),
+      ]);
+      const context = createContext({
+        definitions,
+        referenceMap: new ReferenceMap().set(v.string(), '100'),
+      });
+
+      const jsonSchema = convertSchema({}, schema, undefined, context);
+      const referenceId = context.referenceMap.get(schema);
+
+      expect(referenceId).toBeDefined();
+      expect(existingReferenceIds.has(referenceId!)).toBe(false);
+      expect(context.definitions).toMatchObject(expectedDefinitions);
+      expect(context.definitions['100']).toBeUndefined();
+      expect(jsonSchema).toStrictEqual({
+        $ref: `#/$defs/${referenceId}`,
+      });
+      expect(context.definitions[referenceId!]).toStrictEqual({
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          subcategories: {
+            type: 'array',
+            items: { $ref: `#/$defs/${referenceId}` },
+          },
+        },
+        required: ['name', 'subcategories'],
+      });
+    });
+
+    test('should convert recursive schema as definition', () => {
+      const schema = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const context = createContext({
+        definitions: {},
+        referenceMap: new ReferenceMap().set(schema, 'Category'),
+      });
+
+      expect(convertSchema({}, schema, undefined, context, true)).toStrictEqual(
+        {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            subcategories: {
+              type: 'array',
+              items: { $ref: '#/$defs/Category' },
+            },
+          },
+          required: ['name', 'subcategories'],
+        }
+      );
+      expect(context.definitions).toStrictEqual({
+        Category: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            subcategories: {
+              type: 'array',
+              items: { $ref: '#/$defs/Category' },
+            },
+          },
+          required: ['name', 'subcategories'],
+        },
+      });
+    });
+
+    test('should convert recursive schema with inherited definition key', () => {
+      const schema = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const context = createContext({
+        definitions: {},
+        referenceMap: new ReferenceMap().set(schema, 'toString'),
+      });
+
+      expect(convertSchema({}, schema, undefined, context, true)).toStrictEqual(
+        {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            subcategories: {
+              type: 'array',
+              items: { $ref: '#/$defs/toString' },
+            },
+          },
+          required: ['name', 'subcategories'],
+        }
+      );
+      expect(
+        Object.prototype.hasOwnProperty.call(context.definitions, 'toString')
+      ).toBe(true);
+      expect(context.definitions.toString).toStrictEqual({
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          subcategories: {
+            type: 'array',
+            items: { $ref: '#/$defs/toString' },
+          },
+        },
+        required: ['name', 'subcategories'],
+      });
+    });
+
+    test('should convert recursive schema without custom reference ID', () => {
+      const schema = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const schemaReference: unknown = schema;
+      expect(
+        convertSchema(
+          {},
+          schema,
+          {
+            overrideRef({ valibotSchema }) {
+              if (valibotSchema === schemaReference) {
+                return '#/$custom/reference';
+              }
+            },
+          },
+          createContext()
+        )
+      ).toStrictEqual({ $ref: '#/$custom/reference' });
+    });
+  });
+
+  describe('mutual recursive schemas', () => {
+    test('should convert a cycle between named definitions', () => {
+      const schemas = v.mutualRecursive((ref) => ({
+        parent: v.object({ children: v.array(ref('child')) }),
+        child: v.object({ parent: ref('parent') }),
+      }));
+      const context = createContext();
+      const jsonSchema = convertSchema({}, schemas.parent, undefined, context);
+      const parentId = context.referenceMap.get(schemas.parent);
+      const childId = context.referenceMap.get(schemas.child.wrapped);
+
+      expect(parentId).toBeDefined();
+      expect(childId).toBeDefined();
+      expect(childId).not.toBe(parentId);
+      expect(jsonSchema).toStrictEqual({ $ref: `#/$defs/${parentId}` });
+      expect(context.definitions).toStrictEqual({
+        [parentId!]: {
+          type: 'object',
+          properties: {
+            children: {
+              type: 'array',
+              items: { $ref: `#/$defs/${childId}` },
+            },
+          },
+          required: ['children'],
+        },
+        [childId!]: {
+          type: 'object',
+          properties: { parent: { $ref: `#/$defs/${parentId}` } },
+          required: ['parent'],
+        },
+      });
+      expect(
+        convertSchema({}, schemas.child, undefined, context)
+      ).toStrictEqual({ $ref: `#/$defs/${childId}` });
+    });
   });
 
   describe('other schemas', () => {
@@ -1823,5 +2045,70 @@ describe('convertSchema', () => {
         format: 'date-time',
       });
     });
+  });
+});
+
+describe('CodeRabbit recursive conversion regressions', () => {
+  test('preserves child Ref identity for reference overrides', () => {
+    let child: v.GenericSchema = v.never();
+    const schema = v.recursive((self) => {
+      child = self;
+      return v.object({ child: v.optional(self) });
+    });
+    const result = toJsonSchema(schema, {
+      overrideRef: ({ valibotSchema }) =>
+        valibotSchema === child ? '#/external/child' : undefined,
+    });
+    const definition = Object.values(result.$defs ?? {})[0];
+    expect(definition.properties?.child.$ref).toBe('#/external/child');
+  });
+
+  test('does not emit Draft-07 constraints as ignored Ref siblings', () => {
+    const schema = v.recursive((self) =>
+      v.object({
+        child: v.optional(v.pipe(self, v.metadata({ minProperties: 2 }))),
+      })
+    );
+    const result = toJsonSchema(schema, { target: 'draft-07' });
+    const definition = Object.values(result.$defs ?? {})[0];
+    const child = definition.properties?.child;
+    expect(child).toBeDefined();
+    expect(JSON.stringify(child)).toContain('"minProperties":2');
+    expect(child?.$ref !== undefined && child.minProperties !== undefined).toBe(
+      false
+    );
+  });
+
+  test('preserves an empty configured definition ID', () => {
+    const schema = v.recursive((self) => v.object({ child: v.optional(self) }));
+    const result = toJsonSchema(schema, { definitions: { '': schema } });
+    expect(result.$ref).toBe('#/$defs/');
+    expect(Object.keys(result.$defs ?? {})).toStrictEqual(['']);
+    expect(result.$defs?.[''].properties?.child.$ref).toBe('#/$defs/');
+  });
+
+  test('registers named mutual targets before converting parents', () => {
+    const group = v.mutualRecursive((ref) => ({
+      parent: v.object({ child: ref('child') }),
+      child: v.string(),
+    }));
+    const result = toJsonSchema(group.parent, { definitions: group });
+    expect(Object.keys(result.$defs ?? {}).sort()).toStrictEqual([
+      'child',
+      'parent',
+    ]);
+    expect(result.$defs?.parent.properties?.child.$ref).toBe('#/$defs/child');
+  });
+
+  test('serializes a recursive __proto__ definition as an own property', () => {
+    const schema = v.recursive((self) => v.object({ child: v.optional(self) }));
+    const result = toJsonSchema(schema, {
+      definitions: { ['__proto__']: schema },
+    });
+    expect(result.$ref).toBe('#/$defs/__proto__');
+    expect(Object.hasOwn(result.$defs ?? {}, '__proto__')).toBe(true);
+    expect(JSON.parse(JSON.stringify(result)).$defs).toHaveProperty(
+      '__proto__'
+    );
   });
 });

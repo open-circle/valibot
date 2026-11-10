@@ -186,8 +186,11 @@
   .mdx > :is(ul, ol) {
     @apply mr-8 ml-12 lg:mr-10 lg:ml-14;
   }
-  .mdx > :is(img, .code-wrapper, .table-wrapper) {
+  .mdx > :is(img, .table-wrapper) {
     @apply mx-3 lg:mx-10 2xl:mx-0;
+  }
+  .mdx > .code-wrapper {
+    @apply mx-8 lg:mx-10;
   }
 
   /* Vertical spacing */

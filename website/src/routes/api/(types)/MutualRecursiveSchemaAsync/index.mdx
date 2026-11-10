@@ -1,0 +1,29 @@
+---
+title: MutualRecursiveSchemaAsync
+description: Mutual recursive schema async interface.
+contributors:
+  - yslpn
+  - james-tindal
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# MutualRecursiveSchemaAsync
+
+Mutual recursive schema async interface.
+
+## Generics
+
+- `TWrapped` <Property {...properties.TWrapped} />
+- `TInput` <Property {...properties.TInput} />
+- `TOutput` <Property {...properties.TOutput} />
+- `TIssue` <Property {...properties.TIssue} />
+
+## Definition
+
+- `MutualRecursiveSchemaAsync` <Property {...properties.BaseSchemaAsync} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `wrapped` <Property {...properties.wrapped} />

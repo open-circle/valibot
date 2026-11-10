@@ -22,37 +22,39 @@ This package is particularly popular for:
 
 **Note**: Converted schemas may behave slightly differently in JSON schema validators (especially for string format) because their implementation is different from Valibot's.
 
-| Schema           | Status | Note                                                                                                                                  |
-| ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `any`            | ✅     |                                                                                                                                       |
-| `array`          | ✅     |                                                                                                                                       |
-| `boolean`        | ✅     |                                                                                                                                       |
-| `enum`           | ⚠️     | Only JSON compatible values are supported                                                                                             |
-| `exactOptional`  | ✅     |                                                                                                                                       |
-| `intersect`      | ✅     |                                                                                                                                       |
-| `lazy`           | ⚠️     | The `.getter` function is always executed with `undefined` as input                                                                   |
-| `literal`        | ⚠️     | Only JSON compatible values are supported                                                                                             |
-| `looseObject`    | ✅     |                                                                                                                                       |
-| `looseTuple`     | ✅     |                                                                                                                                       |
-| `never`          | ✅     |                                                                                                                                       |
-| `null`           | ✅     |                                                                                                                                       |
-| `nullable`       | ✅     |                                                                                                                                       |
-| `nullish`        | ✅     |                                                                                                                                       |
-| `number`         | ✅     |                                                                                                                                       |
-| `objectWithRest` | ✅     |                                                                                                                                       |
-| `object`         | ✅     |                                                                                                                                       |
-| `optional`       | ✅     |                                                                                                                                       |
-| `picklist`       | ⚠️     | Only JSON compatible values are supported                                                                                             |
-| `record`         | ⚠️     | Only `string` schemas for the key of the record are supported. Adds `propertyNames` for key validation (not available in OpenAPI 3.0) |
-| `strictObject`   | ✅     |                                                                                                                                       |
-| `strictTuple`    | ✅     |                                                                                                                                       |
-| `string`         | ✅     |                                                                                                                                       |
-| `tupleWithRest`  | ✅     |                                                                                                                                       |
-| `tuple`          | ✅     |                                                                                                                                       |
-| `union`          | ✅     |                                                                                                                                       |
-| `undefinedable`  | ✅     |                                                                                                                                       |
-| `unknown`        | ✅     |                                                                                                                                       |
-| `variant`        | ⚠️     | The discriminator key will be ignored                                                                                                 |
+| Schema            | Status | Note                                                                                                                                  |
+| ----------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `any`             | ✅     |                                                                                                                                       |
+| `array`           | ✅     |                                                                                                                                       |
+| `boolean`         | ✅     |                                                                                                                                       |
+| `enum`            | ⚠️     | Only JSON compatible values are supported                                                                                             |
+| `exactOptional`   | ✅     |                                                                                                                                       |
+| `intersect`       | ✅     |                                                                                                                                       |
+| `lazy`            | ⚠️     | The `.getter` function is always executed with `undefined` as input                                                                   |
+| `literal`         | ⚠️     | Only JSON compatible values are supported                                                                                             |
+| `looseObject`     | ✅     |                                                                                                                                       |
+| `looseTuple`      | ✅     |                                                                                                                                       |
+| `mutualRecursive` | ✅     | Missing definitions will be generated automatically                                                                                   |
+| `never`           | ✅     |                                                                                                                                       |
+| `null`            | ✅     |                                                                                                                                       |
+| `nullable`        | ✅     |                                                                                                                                       |
+| `nullish`         | ✅     |                                                                                                                                       |
+| `number`          | ✅     |                                                                                                                                       |
+| `objectWithRest`  | ✅     |                                                                                                                                       |
+| `object`          | ✅     |                                                                                                                                       |
+| `optional`        | ✅     |                                                                                                                                       |
+| `picklist`        | ⚠️     | Only JSON compatible values are supported                                                                                             |
+| `record`          | ⚠️     | Only `string` schemas for the key of the record are supported. Adds `propertyNames` for key validation (not available in OpenAPI 3.0) |
+| `recursive`       | ✅     | Missing definitions will be generated automatically                                                                                   |
+| `strictObject`    | ✅     |                                                                                                                                       |
+| `strictTuple`     | ✅     |                                                                                                                                       |
+| `string`          | ✅     |                                                                                                                                       |
+| `tupleWithRest`   | ✅     |                                                                                                                                       |
+| `tuple`           | ✅     |                                                                                                                                       |
+| `union`           | ✅     |                                                                                                                                       |
+| `undefinedable`   | ✅     |                                                                                                                                       |
+| `unknown`         | ✅     |                                                                                                                                       |
+| `variant`         | ⚠️     | The discriminator key will be ignored                                                                                                 |
 
 | Actions         | Status | Note                                                   |
 | --------------- | ------ | ------------------------------------------------------ |
