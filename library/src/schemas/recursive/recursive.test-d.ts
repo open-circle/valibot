@@ -27,10 +27,81 @@ import { tuple } from '../tuple/index.ts';
 import { tupleWithRest } from '../tupleWithRest/index.ts';
 import { union, type UnionIssue, type UnionSchema } from '../union/index.ts';
 import { variant } from '../variant/index.ts';
-import type { Ref } from './_recursive.ts';
+import type {
+  RecursiveMarker,
+  RecursiveReferences,
+  Ref,
+  ResolveRecursiveInput,
+  ResolveRecursiveOutput,
+} from './_recursive.ts';
 import { recursive, type RecursiveSchema } from './recursive.ts';
 
 describe('recursive', () => {
+  test('preserves attached function properties in transformed schema output', () => {
+    const schema = recursive((self) =>
+      pipe(
+        object({ label: string(), children: array(self) }),
+        transform((node) =>
+          Object.assign((index: number) => node.children[index], {
+            label: node.label,
+            children: node.children,
+          })
+        )
+      )
+    );
+    type Output = InferOutput<typeof schema>;
+
+    expectTypeOf(schema)
+      .toHaveProperty('~types')
+      .exclude<undefined>()
+      .toHaveProperty('output')
+      .toHaveProperty('label')
+      .toEqualTypeOf<string>();
+    expectTypeOf<Output['children']>().toEqualTypeOf<Output[]>();
+    expectTypeOf<ReturnType<Output>>().toEqualTypeOf<Output>();
+  });
+
+  test('resolves references used only in callable properties', () => {
+    type Marker = RecursiveMarker<'node'>;
+    type Callable = (() => void) & { extra: Marker };
+    interface Root {
+      node: { name: string };
+    }
+    type Expected = (() => void) & { extra: Root['node'] };
+
+    expectTypeOf<RecursiveReferences<Callable>>().toEqualTypeOf<Marker>();
+    expectTypeOf<
+      ResolveRecursiveInput<Callable, Root>
+    >().toEqualTypeOf<Expected>();
+    expectTypeOf<
+      ResolveRecursiveOutput<Callable, Root>
+    >().toEqualTypeOf<Expected>();
+  });
+
+  test('preserves callable properties while resolving the signature', () => {
+    type Marker = RecursiveMarker<'node'>;
+    type Callable = ((value: Marker) => Marker) & {
+      readonly extra: Marker;
+      optional?: Marker;
+    };
+    interface Root {
+      node: { name: string };
+    }
+    type Expected = ((value: Root['node']) => Root['node']) & {
+      readonly extra: Root['node'];
+      optional?: Root['node'];
+    };
+    type Output = ResolveRecursiveOutput<Callable, Root>;
+
+    expectTypeOf<RecursiveReferences<Callable>>().toEqualTypeOf<Marker>();
+    expectTypeOf<
+      ResolveRecursiveInput<Callable, Root>
+    >().toEqualTypeOf<Expected>();
+    expectTypeOf<Output>().toEqualTypeOf<Expected>();
+    expectTypeOf<Parameters<Output>>().toEqualTypeOf<[Root['node']]>();
+    expectTypeOf<Output>().not.toExtend<(value: Marker) => Marker>();
+  });
+
   test('rejects definition maps and callable self references', () => {
     // @ts-expect-error Mutual recursion belongs to mutualRecursive.
     recursive(() => ({ a: string() }));
