@@ -1,5 +1,16 @@
 import { describe, expectTypeOf, test } from 'vitest';
 import * as v from '../../index.ts';
+import type {
+  RecursiveMarker,
+  RecursiveReferences,
+  ResolveRecursiveInput,
+  ResolveRecursiveOutput,
+} from './_recursive.ts';
+
+interface Pair<TFirst, TSecond> {
+  readonly first: TFirst;
+  readonly second: TSecond;
+}
 
 interface Box<T> {
   readonly kind: 'box';
@@ -13,6 +24,10 @@ declare module '../../types/generics.ts' {
       applyArgs: TArgs extends [infer K extends object, infer V]
         ? WeakMap<K, V>
         : never;
+    };
+    Pair: {
+      getArgs: T extends Pair<infer A, infer B> ? [A, B] : never;
+      applyArgs: TArgs extends [infer A, infer B] ? Pair<A, B> : never;
     };
     Box: {
       getArgs: T extends Box<infer V> ? [V] : never;
@@ -32,6 +47,70 @@ interface OutputNode {
 }
 
 describe('registered recursive generics', () => {
+  test('resolves recursive children wrapped with unknown metadata', () => {
+    const schema = v.recursive((self) =>
+      v.pipe(
+        v.object({
+          name: v.string(),
+          child: v.optional(self),
+          metadata: v.unknown(),
+        }),
+        v.transform((node) => ({
+          name: node.name,
+          child: {
+            first: node.metadata,
+            second: node.child,
+          } satisfies Pair<unknown, typeof node.child>,
+        }))
+      )
+    );
+    interface Node {
+      name: string;
+      child: Pair<unknown, Node | undefined>;
+    }
+
+    expectTypeOf(schema)
+      .toHaveProperty('~types')
+      .exclude<undefined>()
+      .toHaveProperty('output')
+      .toEqualTypeOf<Node>();
+  });
+
+  test('preserves references beside unknown generic arguments', () => {
+    type Marker = RecursiveMarker<'node'>;
+    type Value = Pair<unknown, Marker>;
+    interface Root {
+      node: { name: string };
+    }
+
+    expectTypeOf<RecursiveReferences<Value>>().toEqualTypeOf<Marker>();
+    expectTypeOf<ResolveRecursiveInput<Value, Root>>().toEqualTypeOf<
+      Pair<unknown, Root['node']>
+    >();
+    expectTypeOf<ResolveRecursiveOutput<Value, Root>>().toEqualTypeOf<
+      Pair<unknown, Root['node']>
+    >();
+  });
+
+  test('preserves references beside any generic arguments', () => {
+    type Marker = RecursiveMarker<'node'>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Reproduces reference erasure beside an any argument.
+    type Value = Pair<any, Marker>;
+    interface Root {
+      node: { name: string };
+    }
+
+    expectTypeOf<RecursiveReferences<Value>>().toEqualTypeOf<Marker>();
+    expectTypeOf<ResolveRecursiveInput<Value, Root>>().toEqualTypeOf<
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The resolved input must preserve the any argument.
+      Pair<any, Root['node']>
+    >();
+    expectTypeOf<ResolveRecursiveOutput<Value, Root>>().toEqualTypeOf<
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The resolved output must preserve the any argument.
+      Pair<any, Root['node']>
+    >();
+  });
+
   test('extracts and applies generic arguments', () => {
     expectTypeOf<
       v.Generics<WeakMap<object, string>, never>['WeakMap']['getArgs']

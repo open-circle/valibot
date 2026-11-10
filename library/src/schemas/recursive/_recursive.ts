@@ -361,7 +361,12 @@ export type RecursiveReferences<TValue, TSeen = never> =
                 : RegisteredGeneric<TValue> extends {
                       readonly args: infer TArgs extends readonly unknown[];
                     }
-                  ? RecursiveReferences<TArgs[number], TSeen | TValue>
+                  ? {
+                      [TKey in keyof TArgs]: RecursiveReferences<
+                        TArgs[TKey],
+                        TSeen | TValue
+                      >;
+                    }[number]
                   : never;
 
 /**
