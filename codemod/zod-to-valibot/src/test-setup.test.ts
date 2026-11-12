@@ -4,6 +4,7 @@ import { defineTests } from './utils';
 // maintain the sorted order
 defineTests(transform, [
   'any-schema',
+  'brand-schema',
   'array-element',
   'array-nonempty',
   'array-schema',
@@ -45,6 +46,7 @@ defineTests(transform, [
   'object-merge',
   'object-omit',
   'object-partial',
+  'object-partial-function-form',
   'object-passthrough',
   'object-pick',
   'object-required',

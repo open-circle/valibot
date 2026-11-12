@@ -135,6 +135,7 @@ export const ZOD_PROPERTIES = [
 
 export const ZOD_METHODS = [
   'array',
+  'brand',
   'catchall',
   'default',
   'deepPartial',

@@ -11,6 +11,7 @@ import {
 import { addToPipe } from './helpers';
 import {
   transformArray as transformArrayMethod,
+  transformBrand,
   transformCatchall,
   transformDeepPartial,
   transformDefault,
@@ -373,12 +374,15 @@ function toValibotMethodExp(
   valibotIdentifier: string,
   zodMethodName: ZodMethodName,
   schemaExp: j.CallExpression | j.MemberExpression | j.Identifier,
-  inputArgs: j.CallExpression['arguments']
+  inputArgs: j.CallExpression['arguments'],
+  isStandaloneCall = false
 ) {
   const args = [valibotIdentifier, schemaExp, inputArgs] as const;
   switch (zodMethodName) {
     case 'array':
       return transformArrayMethod(...args);
+    case 'brand':
+      return transformBrand(...args);
     case 'catchall':
       return transformCatchall(valibotIdentifier, schemaExp, inputArgs);
     case 'default':
@@ -408,7 +412,7 @@ function toValibotMethodExp(
     case 'parseAsync':
       return transformParseAsync(...args);
     case 'partial':
-      return transformPartial(...args);
+      return transformPartial(valibotIdentifier, schemaExp, inputArgs, isStandaloneCall);
     case 'passthrough':
       return transformPassthrough(valibotIdentifier, schemaExp);
     case 'pick':
@@ -582,11 +586,13 @@ function transformSchemasAndLinksHelper(
           objectModifier
         );
       } else if (isZodMethodName(propertyName)) {
++        const isStandaloneCall = transformedExp === null && identifier === valibotIdentifier;
         transformedExp = toValibotMethodExp(
           valibotIdentifier,
           propertyName,
           transformedExp ?? j.identifier(identifier),
-          cur.value.arguments
+          cur.value.arguments,
+          isStandaloneCall
         );
       } else if (isZodValidatorName(propertyName)) {
         if (curSchemaType === null) {
