@@ -81,7 +81,7 @@ const PROVIDER_REGEX_LIST = [
   // Diners Club
   /^3(?:0[0-5]|[68]\d)\d{11,13}$/u,
   // Discover
-  /^6(?:011|5\d{2})\d{12,15}$/u,
+  /^6(?:011|4[4-9]\d|5\d{2})\d{12,15}$/u,
   // JCB
   /^(?:2131|1800|35\d{3})\d{11}$/u,
   // Mastercard
