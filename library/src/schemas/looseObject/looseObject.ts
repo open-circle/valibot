@@ -104,10 +104,7 @@ export function looseObject(
         // Process each object entry of schema
         for (const key in this.entries) {
           const valueSchema = this.entries[key];
-          const isKeyPresent =
-            key === '__proto__'
-              ? Object.prototype.hasOwnProperty.call(input, key)
-              : key in input;
+          const isKeyPresent = Object.prototype.hasOwnProperty.call(input, key);
 
           // If key is present or its an optional schema with a default value,
           // parse input of key or default value
@@ -197,8 +194,7 @@ export function looseObject(
                   origin: 'key',
                   input: input as Record<string, unknown>,
                   key,
-                  // @ts-expect-error
-                  value: input[key],
+                  value: undefined,
                 },
               ],
             });

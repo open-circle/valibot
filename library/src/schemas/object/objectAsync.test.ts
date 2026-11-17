@@ -137,6 +137,92 @@ describe('objectAsync', () => {
         configurable: true,
       });
     });
+
+    test('for declared __proto__, constructor, and toString with defaults', async () => {
+      const schema = objectAsync({
+        ['__proto__']: optional(string(), 'default_proto'),
+        constructor: optional(string(), 'default_constructor'),
+        toString: optional(string(), 'default_toString'),
+      });
+      const dataset = await schema['~run']({ value: {} }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: {
+          ['__proto__']: 'default_proto',
+          constructor: 'default_constructor',
+          toString: 'default_toString',
+        },
+      });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(
+        Object.prototype.hasOwnProperty.call(dataset.value, '__proto__')
+      ).toBe(true);
+    });
+
+    test('for declared constructor and toString with fallback', async () => {
+      const schema = objectAsync({
+        constructor: fallback(string(), 'fallback_constructor'),
+        toString: fallback(string(), 'fallback_toString'),
+      });
+      const dataset = await schema['~run']({ value: {} }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: {
+          constructor: 'fallback_constructor',
+          toString: 'fallback_toString',
+        },
+      });
+    });
+
+    test('for valid own constructor, toString, and __proto__ entries', async () => {
+      const schema = objectAsync({
+        ['__proto__']: string(),
+        constructor: string(),
+        toString: string(),
+      });
+      const input = JSON.parse(
+        '{"__proto__":"custom_proto","constructor":"custom_constructor","toString":"custom_toString"}'
+      );
+      const dataset = await schema['~run']({ value: input }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: {
+          ['__proto__']: 'custom_proto',
+          constructor: 'custom_constructor',
+          toString: 'custom_toString',
+        },
+      });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(
+        Object.prototype.hasOwnProperty.call(dataset.value, '__proto__')
+      ).toBe(true);
+    });
+
+    test('for class instances with own properties', async () => {
+      class TestClass {
+        foo: string = 'bar';
+        num: number = 123;
+      }
+      const instance = new TestClass();
+      const schema = objectAsync({ foo: string(), num: number() });
+      expect(await schema['~run']({ value: instance }, {})).toStrictEqual({
+        typed: true,
+        value: { foo: 'bar', num: 123 },
+      });
+    });
+
+    test('for object with own getter', async () => {
+      const input = {};
+      Object.defineProperty(input, 'getter', {
+        get: () => 'foo',
+        enumerable: true,
+      });
+      const schema = objectAsync({ getter: string() });
+      expect(await schema['~run']({ value: input }, {})).toStrictEqual({
+        typed: true,
+        value: { getter: 'foo' },
+      });
+    });
   });
 
   describe('should return dataset with issues', () => {
@@ -717,6 +803,146 @@ describe('objectAsync', () => {
           },
         ],
       } satisfies FailureDataset<InferIssue<typeof schema>>);
+    });
+
+    test('for missing constructor, toString, and __proto__ entries', async () => {
+      const missingSchema = objectAsync({
+        constructor: string(),
+        toString: string(),
+        ['__proto__']: string(),
+      });
+      const input = {};
+      expect(await missingSchema['~run']({ value: input }, {})).toStrictEqual({
+        typed: false,
+        value: input,
+        issues: [
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'object',
+            input: undefined,
+            expected: '"constructor"',
+            received: 'undefined',
+            path: [
+              {
+                type: 'object',
+                origin: 'key',
+                input,
+                key: 'constructor',
+                value: undefined,
+              },
+            ],
+          },
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'object',
+            input: undefined,
+            expected: '"toString"',
+            received: 'undefined',
+            path: [
+              {
+                type: 'object',
+                origin: 'key',
+                input,
+                key: 'toString',
+                value: undefined,
+              },
+            ],
+          },
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'object',
+            input: undefined,
+            expected: '"__proto__"',
+            received: 'undefined',
+            path: [
+              {
+                type: 'object',
+                origin: 'key',
+                input,
+                key: '__proto__',
+                value: undefined,
+              },
+            ],
+          },
+        ],
+      } satisfies FailureDataset<InferIssue<typeof missingSchema>>);
+    });
+
+    test('for class instance with inherited getter treated as missing', async () => {
+      class BaseClass {
+        ownProp: string = 'foo';
+        get inheritedGetter(): string {
+          return `${this.ownProp}_getter`;
+        }
+      }
+      const instance = new BaseClass();
+      const instanceSchema = objectAsync({
+        ownProp: string(),
+        inheritedGetter: string(),
+      });
+      expect(
+        await instanceSchema['~run']({ value: instance }, {})
+      ).toStrictEqual({
+        typed: false,
+        value: { ownProp: 'foo' },
+        issues: [
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'object',
+            input: undefined,
+            expected: '"inheritedGetter"',
+            received: 'undefined',
+            path: [
+              {
+                type: 'object',
+                origin: 'key',
+                input: instance as unknown as Record<string, unknown>,
+                key: 'inheritedGetter',
+                value: undefined,
+              },
+            ],
+          },
+        ],
+      } satisfies FailureDataset<InferIssue<typeof instanceSchema>>);
+    });
+
+    test('for object inheriting properties via prototype treated as missing', async () => {
+      const proto = { inherited: 'foo' };
+      const input = Object.create(proto);
+      input.own = 'bar';
+      const inheritedSchema = objectAsync({
+        own: string(),
+        inherited: string(),
+      });
+      expect(await inheritedSchema['~run']({ value: input }, {})).toStrictEqual(
+        {
+          typed: false,
+          value: input,
+          issues: [
+            {
+              ...baseInfo,
+              kind: 'schema',
+              type: 'object',
+              input: undefined,
+              expected: '"inherited"',
+              received: 'undefined',
+              path: [
+                {
+                  type: 'object',
+                  origin: 'key',
+                  input,
+                  key: 'inherited',
+                  value: undefined,
+                },
+              ],
+            },
+          ],
+        } satisfies FailureDataset<InferIssue<typeof inheritedSchema>>
+      );
     });
 
     test('for invalid entries', async () => {
