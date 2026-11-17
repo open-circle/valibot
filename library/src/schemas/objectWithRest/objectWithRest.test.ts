@@ -95,6 +95,59 @@ describe('objectWithRest', () => {
       });
     });
 
+    test('for declared __proto__ key without prototype pollution', () => {
+      const schema = objectWithRest(
+        {
+          ['__proto__']: string(),
+        },
+        number()
+      );
+      const input = JSON.parse('{"__proto__":"foo"}');
+      const dataset = schema['~run']({ value: input }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: { ['__proto__']: 'foo' },
+      });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(
+        Object.prototype.hasOwnProperty.call(dataset.value, '__proto__')
+      ).toBe(true);
+      expect(
+        Object.getOwnPropertyDescriptor(dataset.value, '__proto__')
+      ).toStrictEqual({
+        value: 'foo',
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    });
+
+    test('for declared __proto__ key with fallback', () => {
+      const schema = objectWithRest(
+        {
+          ['__proto__']: fallback(string(), 'foo'),
+        },
+        number()
+      );
+      const dataset = schema['~run']({ value: {} }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: { ['__proto__']: 'foo' },
+      });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(
+        Object.prototype.hasOwnProperty.call(dataset.value, '__proto__')
+      ).toBe(true);
+      expect(
+        Object.getOwnPropertyDescriptor(dataset.value, '__proto__')
+      ).toStrictEqual({
+        value: 'foo',
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    });
+
     test('without including excluded unknown keys', () => {
       const schema = objectWithRest({ key: string() }, number());
       const input = JSON.parse(

@@ -106,6 +106,53 @@ describe('looseObjectAsync', () => {
       await expectNoSchemaIssueAsync(schema, [input]);
     });
 
+    test('for declared __proto__ key without prototype pollution', async () => {
+      const schema = looseObjectAsync({
+        ['__proto__']: string(),
+      });
+      const input = JSON.parse('{"__proto__":"foo"}');
+      const dataset = await schema['~run']({ value: input }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: { ['__proto__']: 'foo' },
+      });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(
+        Object.prototype.hasOwnProperty.call(dataset.value, '__proto__')
+      ).toBe(true);
+      expect(
+        Object.getOwnPropertyDescriptor(dataset.value, '__proto__')
+      ).toStrictEqual({
+        value: 'foo',
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    });
+
+    test('for declared __proto__ key with fallback', async () => {
+      const schema = looseObjectAsync({
+        ['__proto__']: fallback(string(), 'foo'),
+      });
+      const dataset = await schema['~run']({ value: {} }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: { ['__proto__']: 'foo' },
+      });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(
+        Object.prototype.hasOwnProperty.call(dataset.value, '__proto__')
+      ).toBe(true);
+      expect(
+        Object.getOwnPropertyDescriptor(dataset.value, '__proto__')
+      ).toStrictEqual({
+        value: 'foo',
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    });
+
     test('without including excluded unknown keys', async () => {
       const schema = looseObjectAsync({ key: string() });
       const input = JSON.parse(

@@ -46,5 +46,55 @@ describe('entriesFromObjects', () => {
         {}
       );
     });
+
+    test('for schemas with __proto__ key without prototype pollution', () => {
+      const protoEntries = {};
+      const schema = string();
+      Object.defineProperty(protoEntries, '__proto__', {
+        value: schema,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+      const protoSchema = object(protoEntries);
+      const entries = entriesFromObjects([protoSchema, schema1]);
+      expect(Object.getPrototypeOf(entries)).toBe(Object.prototype);
+      expect(Object.prototype.hasOwnProperty.call(entries, '__proto__')).toBe(
+        true
+      );
+      expect(
+        Object.getOwnPropertyDescriptor(entries, '__proto__')
+      ).toStrictEqual({
+        value: schema,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+      expect(entries.foo).toBe(schema1.entries.foo);
+      expect(entries.bar).toBe(schema1.entries.bar);
+    });
+
+    test('for schemas with symbol keys', () => {
+      const symbol = Symbol('test');
+      const schemaWithSymbol = object({ [symbol]: string() });
+      const entries = entriesFromObjects([schemaWithSymbol, schema1]);
+      expect(entries[symbol]).toBe(schemaWithSymbol.entries[symbol]);
+      expect(entries.foo).toBe(schema1.entries.foo);
+      expect(entries.bar).toBe(schema1.entries.bar);
+    });
+
+    test('without copying non-enumerable properties', () => {
+      const nonEnumEntries = {};
+      Object.defineProperty(nonEnumEntries, 'nonEnum', {
+        value: string(),
+        enumerable: false,
+        configurable: true,
+      });
+      const nonEnumSchema = object(nonEnumEntries);
+      const entries = entriesFromObjects([nonEnumSchema, schema1]);
+      expect('nonEnum' in entries).toBe(false);
+      expect(entries.foo).toBe(schema1.entries.foo);
+      expect(entries.bar).toBe(schema1.entries.bar);
+    });
   });
 });

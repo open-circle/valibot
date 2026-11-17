@@ -3,6 +3,7 @@ import { fallback } from '../../methods/index.ts';
 import type { FailureDataset, InferIssue } from '../../types/index.ts';
 import { expectNoSchemaIssue, expectSchemaIssue } from '../../vitest/index.ts';
 import { any } from '../any/index.ts';
+import { boolean } from '../boolean/index.ts';
 import { exactOptional } from '../exactOptional/exactOptional.ts';
 import { nullish } from '../nullish/index.ts';
 import { number } from '../number/index.ts';
@@ -76,6 +77,60 @@ describe('object', () => {
       ).toStrictEqual({
         typed: true,
         value: { key1: 'foo' },
+      });
+    });
+
+    test('for declared __proto__ key without prototype pollution', () => {
+      const schema = object({
+        ['__proto__']: object({
+          isAdmin: boolean(),
+        }),
+      });
+      const input = JSON.parse('{"__proto__":{"isAdmin":true}}');
+      const dataset = schema['~run']({ value: input }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: { ['__proto__']: { isAdmin: true } },
+      });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(
+        Object.prototype.hasOwnProperty.call(dataset.value, '__proto__')
+      ).toBe(true);
+      expect(
+        Object.getOwnPropertyDescriptor(dataset.value, '__proto__')
+      ).toStrictEqual({
+        value: { isAdmin: true },
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    });
+
+    test('for declared __proto__ key with fallback', () => {
+      const schema = object({
+        ['__proto__']: fallback(
+          object({
+            isAdmin: boolean(),
+          }),
+          { isAdmin: true }
+        ),
+      });
+      const dataset = schema['~run']({ value: {} }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: { ['__proto__']: { isAdmin: true } },
+      });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(
+        Object.prototype.hasOwnProperty.call(dataset.value, '__proto__')
+      ).toBe(true);
+      expect(
+        Object.getOwnPropertyDescriptor(dataset.value, '__proto__')
+      ).toStrictEqual({
+        value: { isAdmin: true },
+        writable: true,
+        enumerable: true,
+        configurable: true,
       });
     });
   });

@@ -22,7 +22,12 @@ export function entriesFromList<
   // @ts-expect-error
   const entries: Record<TList[number], TSchema> = {};
   for (const key of list) {
-    entries[key as TList[number]] = schema;
+    Object.defineProperty(entries, key, {
+      value: schema,
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    });
   }
   return entries;
 }
