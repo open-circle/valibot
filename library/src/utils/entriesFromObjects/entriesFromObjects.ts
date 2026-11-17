@@ -91,7 +91,17 @@ export function entriesFromObjects(
 ): MergedEntries<[Schema, ...Schema[]]> {
   const entries = {};
   for (const schema of schemas) {
-    Object.assign(entries, schema.entries);
+    for (const key of Reflect.ownKeys(schema.entries)) {
+      const descriptor = Object.getOwnPropertyDescriptor(schema.entries, key);
+      if (descriptor?.enumerable) {
+        Object.defineProperty(entries, key, {
+          value: schema.entries[key as keyof typeof schema.entries],
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        });
+      }
+    }
   }
   // @ts-expect-error
   return entries;

@@ -100,7 +100,7 @@ export function strictObject(
         // Process each object entry of schema
         for (const key in this.entries) {
           const valueSchema = this.entries[key];
-          const isKeyPresent = key in input;
+          const isKeyPresent = Object.prototype.hasOwnProperty.call(input, key);
 
           // If key is present or its an optional schema with a default value,
           // parse input of key or default value
@@ -158,14 +158,22 @@ export function strictObject(
             }
 
             // Add entry to dataset
-            // @ts-expect-error
-            dataset.value[key] = valueDataset.value;
+            Object.defineProperty(dataset.value, key, {
+              value: valueDataset.value,
+              writable: true,
+              enumerable: true,
+              configurable: true,
+            });
 
             // Otherwise, if key is missing but has a fallback, use it
             // @ts-expect-error
           } else if (valueSchema.fallback !== undefined) {
-            // @ts-expect-error
-            dataset.value[key] = getFallback(valueSchema);
+            Object.defineProperty(dataset.value, key, {
+              value: getFallback(valueSchema),
+              writable: true,
+              enumerable: true,
+              configurable: true,
+            });
 
             // Otherwise, if key is missing and required, add issue
           } else if (
@@ -182,8 +190,7 @@ export function strictObject(
                   origin: 'key',
                   input: input as Record<string, unknown>,
                   key,
-                  // @ts-expect-error
-                  value: input[key],
+                  value: undefined,
                 },
               ],
             });

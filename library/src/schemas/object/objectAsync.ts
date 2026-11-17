@@ -112,7 +112,10 @@ export function objectAsync(
         // parse input of key or default value asynchronously
         const valueDatasets = await Promise.all(
           Object.entries(this.entries).map(async ([key, valueSchema]) => {
-            const isKeyPresent = key in input;
+            const isKeyPresent = Object.prototype.hasOwnProperty.call(
+              input,
+              key
+            );
             if (
               isKeyPresent ||
               ((valueSchema.type === 'exact_optional' ||
@@ -132,13 +135,7 @@ export function objectAsync(
                 await valueSchema['~run']({ value }, config),
               ] as const;
             }
-            return [
-              key,
-              // @ts-expect-error
-              input[key] as unknown,
-              valueSchema,
-              null,
-            ] as const;
+            return [key, undefined, valueSchema, null] as const;
           })
         );
 
@@ -187,14 +184,22 @@ export function objectAsync(
             }
 
             // Add entry to dataset
-            // @ts-expect-error
-            dataset.value[key] = valueDataset.value;
+            Object.defineProperty(dataset.value, key, {
+              value: valueDataset.value,
+              writable: true,
+              enumerable: true,
+              configurable: true,
+            });
 
             // Otherwise, if key is missing but has a fallback, use it
             // @ts-expect-error
           } else if (valueSchema.fallback !== undefined) {
-            // @ts-expect-error
-            dataset.value[key] = await getFallback(valueSchema);
+            Object.defineProperty(dataset.value, key, {
+              value: await getFallback(valueSchema),
+              writable: true,
+              enumerable: true,
+              configurable: true,
+            });
 
             // Otherwise, if key is missing and required, add issue
           } else if (

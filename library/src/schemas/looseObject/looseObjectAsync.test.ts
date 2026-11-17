@@ -106,6 +106,89 @@ describe('looseObjectAsync', () => {
       await expectNoSchemaIssueAsync(schema, [input]);
     });
 
+    test('for declared __proto__ key without prototype pollution', async () => {
+      const schema = looseObjectAsync({
+        ['__proto__']: string(),
+      });
+      const input = JSON.parse('{"__proto__":"foo"}');
+      const dataset = await schema['~run']({ value: input }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: { ['__proto__']: 'foo' },
+      });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(
+        Object.prototype.hasOwnProperty.call(dataset.value, '__proto__')
+      ).toBe(true);
+      expect(
+        Object.getOwnPropertyDescriptor(dataset.value, '__proto__')
+      ).toStrictEqual({
+        value: 'foo',
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    });
+
+    test('for declared __proto__ key with fallback', async () => {
+      const schema = looseObjectAsync({
+        ['__proto__']: fallback(string(), 'foo'),
+      });
+      const dataset = await schema['~run']({ value: {} }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: { ['__proto__']: 'foo' },
+      });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(
+        Object.prototype.hasOwnProperty.call(dataset.value, '__proto__')
+      ).toBe(true);
+      expect(
+        Object.getOwnPropertyDescriptor(dataset.value, '__proto__')
+      ).toStrictEqual({
+        value: 'foo',
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    });
+
+    test('for declared __proto__, constructor, and toString with defaults', async () => {
+      const schema = looseObjectAsync({
+        ['__proto__']: optional(string(), 'default_proto'),
+        constructor: optional(string(), 'default_constructor'),
+        toString: optional(string(), 'default_toString'),
+      });
+      const dataset = await schema['~run']({ value: {} }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: {
+          ['__proto__']: 'default_proto',
+          constructor: 'default_constructor',
+          toString: 'default_toString',
+        },
+      });
+      expect(Object.getPrototypeOf(dataset.value)).toBe(Object.prototype);
+      expect(
+        Object.prototype.hasOwnProperty.call(dataset.value, '__proto__')
+      ).toBe(true);
+    });
+
+    test('for declared constructor and toString with fallback', async () => {
+      const schema = looseObjectAsync({
+        constructor: fallback(string(), 'fallback_constructor'),
+        toString: fallback(string(), 'fallback_toString'),
+      });
+      const dataset = await schema['~run']({ value: {} }, {});
+      expect(dataset).toStrictEqual({
+        typed: true,
+        value: {
+          constructor: 'fallback_constructor',
+          toString: 'fallback_toString',
+        },
+      });
+    });
+
     test('without including excluded unknown keys', async () => {
       const schema = looseObjectAsync({ key: string() });
       const input = JSON.parse(
@@ -682,6 +765,72 @@ describe('looseObjectAsync', () => {
           },
         ],
       } satisfies FailureDataset<InferIssue<typeof schema>>);
+    });
+
+    test('for missing constructor, toString, and __proto__ entries', async () => {
+      const missingSchema = looseObjectAsync({
+        constructor: string(),
+        toString: string(),
+        ['__proto__']: string(),
+      });
+      const input = {};
+      expect(await missingSchema['~run']({ value: input }, {})).toStrictEqual({
+        typed: false,
+        value: input,
+        issues: [
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'loose_object',
+            input: undefined,
+            expected: '"constructor"',
+            received: 'undefined',
+            path: [
+              {
+                type: 'object',
+                origin: 'key',
+                input,
+                key: 'constructor',
+                value: undefined,
+              },
+            ],
+          },
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'loose_object',
+            input: undefined,
+            expected: '"toString"',
+            received: 'undefined',
+            path: [
+              {
+                type: 'object',
+                origin: 'key',
+                input,
+                key: 'toString',
+                value: undefined,
+              },
+            ],
+          },
+          {
+            ...baseInfo,
+            kind: 'schema',
+            type: 'loose_object',
+            input: undefined,
+            expected: '"__proto__"',
+            received: 'undefined',
+            path: [
+              {
+                type: 'object',
+                origin: 'key',
+                input,
+                key: '__proto__',
+                value: undefined,
+              },
+            ],
+          },
+        ],
+      } satisfies FailureDataset<InferIssue<typeof missingSchema>>);
     });
 
     test('for invalid entries', async () => {

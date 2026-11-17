@@ -23,5 +23,23 @@ describe('entriesFromList', () => {
         [symbol]: schema,
       });
     });
+
+    test('for __proto__ key without prototype pollution', () => {
+      const schema = string();
+      const entries = entriesFromList(['__proto__', 'foo'], schema);
+      expect(Object.getPrototypeOf(entries)).toBe(Object.prototype);
+      expect(Object.prototype.hasOwnProperty.call(entries, '__proto__')).toBe(
+        true
+      );
+      expect(
+        Object.getOwnPropertyDescriptor(entries, '__proto__')
+      ).toStrictEqual({
+        value: schema,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+      expect(entries.foo).toBe(schema);
+    });
   });
 });
