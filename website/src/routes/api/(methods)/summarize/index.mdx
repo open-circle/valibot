@@ -25,6 +25,8 @@ const errors = v.summarize(issues);
 
 If an issue in `issues` contains a path that can be converted to a dot path, the dot path will be displayed in the `errors` output just below the issue's error message.
 
+If an issue contains sub issues with a path, such as the nested issues of the object options of a <Link href="../union/">`union`</Link> schema, they are displayed indented below the issue's error message. The dot path of each sub issue includes the path of its parent issue. Sub issues without a path are skipped, as the parent issue's error message already covers them, but their own sub issues with a path, such as those of a nested union, are still displayed.
+
 ## Returns
 
 - `errors` <Property {...properties.errors} />
