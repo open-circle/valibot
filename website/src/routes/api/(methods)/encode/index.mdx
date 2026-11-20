@@ -1,0 +1,24 @@
+---
+title: encode
+description: Encodes a typed value based on a schema.
+source: /methods/encode/encode.ts
+contributors:
+  - javangriff
+---
+
+# encode
+
+Validates and converts a schema's decoded representation into its encoded representation, including nested codecs.
+
+```ts
+const output = v.encode(schema, input, config);
+const asyncOutput = await v.encodeAsync(asyncSchema, input, config);
+```
+
+`input` must match `InferOutput<TSchema>` at compile time. The returned value has type `InferInput<TSchema>`. The optional `config` argument uses the same configuration as `parse`.
+
+`schema` can be any synchronous schema. `encodeAsync` also accepts asynchronous schemas. Ordinary schemas validate without conversion.
+
+Validation failures throw `ValiError`. Use [safeEncode](/api/safeEncode/) to return validation issues instead. Callback exceptions and unsupported one-way transformations throw through both entry points.
+
+Defaults and fallbacks are not applied during encoding. See [codec](/api/codec/) for examples and conversion rules.

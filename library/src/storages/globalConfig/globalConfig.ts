@@ -3,7 +3,10 @@ import type { BaseIssue, Config } from '../../types/index.ts';
 /**
  * The global config type.
  */
-export type GlobalConfig = Omit<Config<never>, 'message'>;
+export type GlobalConfig = Omit<
+  Config<never>,
+  'message' | '~direction' | '~typeCheckOnly' | '~runPipe' | '~runPipeAsync'
+>;
 
 // Create global configuration store
 let store: GlobalConfig | undefined;

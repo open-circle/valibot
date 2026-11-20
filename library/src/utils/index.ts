@@ -11,6 +11,7 @@ export * from './_isSameValueZero/index.ts';
 export * from './_isValidObjectKey/index.ts';
 export * from './_isValueMatch/index.ts';
 export * from './_joinExpects/index.ts';
+export * from './_runBackwardPipe/index.ts';
 export * from './_standardSchema/index.ts';
 export * from './_stringify/index.ts';
 export * from './entriesFromList/index.ts';
