@@ -6,6 +6,7 @@ All notable changes to the library will be documented in this file.
 
 - Change `isbn`, `creditCard` and `imei` actions to check digits by character code instead of splitting and parsing the input to improve performance (pull request #1634)
 - Fix `uuid` action to reject UUIDs with a version outside 1 to 8 or a variant outside RFC 9562, while still accepting the Nil and Max UUIDs (pull request #1643)
+- Fix `hexadecimal` and `octal` actions to accept uppercase `0X`, `0H` and `0O` prefixes (pull request #1720)
 
 ## v1.5.0 (September 09, 2026)
 
