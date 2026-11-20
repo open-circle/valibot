@@ -114,6 +114,10 @@ describe('hexadecimal', () => {
         '0h123456789abcdef',
         '0h123456789ABCDEF',
         '0hFFFFFFFFFFFFFFF',
+        '0H000000000000000',
+        '0H123456789abcdef',
+        '0H123456789ABCDEF',
+        '0HFFFFFFFFFFFFFFF',
       ]);
     });
 
@@ -123,6 +127,10 @@ describe('hexadecimal', () => {
         '0x123456789abcdef',
         '0x123456789ABCDEF',
         '0xFFFFFFFFFFFFFFF',
+        '0X000000000000000',
+        '0X123456789abcdef',
+        '0X123456789ABCDEF',
+        '0XFFFFFFFFFFFFFFF',
       ]);
     });
   });
