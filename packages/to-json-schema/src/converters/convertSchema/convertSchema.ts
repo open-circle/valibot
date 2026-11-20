@@ -582,9 +582,24 @@ export function convertSchema(
     }
 
     case 'variant': {
-      jsonSchema.oneOf = valibotSchema.options.map((option) =>
-        convertSchema({}, option as SchemaOrPipe, config, context)
-      );
+      jsonSchema.oneOf = valibotSchema.options.flatMap((option) => {
+        const convertedOption = convertSchema(
+          {},
+          option as SchemaOrPipe,
+          config,
+          context
+        );
+        // Hint: Flatten only options that are themselves a variant (or a
+        // variant wrapped in a pipe). A `oneOf` that `overrideSchema` returns
+        // for a non-variant option must stay a single branch, since splicing
+        // it would change the exactly-one-match semantics of the outer `oneOf`.
+        const unwrapped = option.type === 'pipe' ? option.pipe[0] : option;
+        return unwrapped.type === 'variant' &&
+          Array.isArray(convertedOption.oneOf) &&
+          Object.keys(convertedOption).length === 1
+          ? convertedOption.oneOf
+          : [convertedOption];
+      });
       break;
     }
 
