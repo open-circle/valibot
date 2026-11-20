@@ -1,8 +1,10 @@
 /**
  * [Base64](https://en.wikipedia.org/wiki/Base64) regex.
+ *
+ * Hint: We decided against the `i` flag to avoid matching non-ASCII characters.
  */
 export const BASE64_REGEX: RegExp =
-  /^(?:[\da-z+/]{4})*(?:[\da-z+/]{2}==|[\da-z+/]{3}=)?$/iu;
+  /^(?:[\da-zA-Z+/]{4})*(?:[\da-zA-Z+/]{2}==|[\da-zA-Z+/]{3}=)?$/u;
 
 /**
  * [BIC](https://en.wikipedia.org/wiki/ISO_9362) regex.
@@ -59,7 +61,7 @@ export const EMOJI_REGEX: RegExp =
  *
  * Hint: We decided against the `i` flag for better JSON Schema compatibility.
  */
-export const HEXADECIMAL_REGEX: RegExp = /^(?:0[hx])?[\da-fA-F]+$/u;
+export const HEXADECIMAL_REGEX: RegExp = /^(?:0[hHxX])?[\da-fA-F]+$/u;
 
 /**
  * [Hex color](https://en.wikipedia.org/wiki/Web_colors#Hex_triplet) regex.
@@ -188,7 +190,7 @@ export const NANO_ID_REGEX: RegExp = /^[\w-]+$/u;
 /**
  * [Octal](https://en.wikipedia.org/wiki/Octal) regex.
  */
-export const OCTAL_REGEX: RegExp = /^(?:0o)?[0-7]+$/u;
+export const OCTAL_REGEX: RegExp = /^(?:0[oO])?[0-7]+$/u;
 
 /**
  * [RFC 5322 email address](https://datatracker.ietf.org/doc/html/rfc5322#section-3.4.1) regex.
