@@ -301,6 +301,33 @@ describe('_formatCase', () => {
       expect(_formatCase('AB\u{10428}c', '_', false, false)).toBe(
         'a_b\u{10428}c'
       );
+      expect(_formatCase('foo\u{10400}pple', '', false, true)).toBe(
+        'foo\u{10400}pple'
+      );
+      expect(_formatCase('foo\u{10400}pple', '', true, true)).toBe(
+        'Foo\u{10400}pple'
+      );
+    });
+
+    test('should treat supplementary-plane chars without case as part of word', () => {
+      expect(_formatCase('foo\u{1F600}bar', '_', false, false)).toBe(
+        'foo\u{1F600}bar'
+      );
+      expect(_formatCase('foo\u{1F600}Bar', '_', false, false)).toBe(
+        'foo\u{1F600}_bar'
+      );
+    });
+
+    test('should handle lone surrogates', () => {
+      expect(_formatCase('foo\uD800Bar', '_', false, false)).toBe(
+        'foo\uD800_bar'
+      );
+      expect(_formatCase('foo\uDC00Bar', '_', false, false)).toBe(
+        'foo\uDC00_bar'
+      );
+      expect(_formatCase('fooBar\uD800', '_', false, false)).toBe(
+        'foo_bar\uD800'
+      );
     });
 
     test('should handle complex mixed input', () => {

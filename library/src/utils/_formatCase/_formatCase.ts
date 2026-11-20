@@ -96,6 +96,9 @@ export function _formatCase(
       type = code >= 65 && code <= 90 ? 1 : code >= 97 && code <= 122 ? 2 : 3;
 
       // Otherwise, fall back to case folding for non-ASCII chars
+      // Hint: The full code point is read so that supplementary-plane
+      // letters (e.g. Deseret, Adlam), which consist of two code units, are
+      // classified as a single char.
     } else {
       const char = String.fromCodePoint(input.codePointAt(index)!);
       charLen = char.length;
@@ -127,6 +130,8 @@ export function _formatCase(
     prevPrev = prev;
     prev = type;
     prevStart = index;
+
+    // Skip second code unit of supplementary-plane chars
     index += charLen - 1;
   }
 
