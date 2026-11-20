@@ -1,0 +1,9 @@
+{
+  "name": "@valibot/config-loader",
+  "version": "0.0.1",
+  "exports": "./src/index.ts",
+  "publish": {
+    "include": ["src/**/*.ts", "README.md"],
+    "exclude": ["src/**/*.test.ts"]
+  }
+}
