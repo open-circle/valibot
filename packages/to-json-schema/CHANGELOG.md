@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Add support for `gtValue` and `ltValue` actions with the OpenAPI 3.0 target by converting them to `minimum` and `maximum` with boolean `exclusiveMinimum` and `exclusiveMaximum` (pull request #1718)
+
 ## v1.8.0 (September 11, 2026)
 
 - Add support for `ksuid` action (pull request #1370)
