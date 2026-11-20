@@ -2,7 +2,7 @@ import { describe, expect, test, vi } from 'vitest';
 import { minLength, transform } from '../../actions/index.ts';
 import { object, string } from '../../schemas/index.ts';
 import { getDotPath } from '../../utils/index.ts';
-import { parse, pipe } from '../index.ts';
+import { pipe } from '../index.ts';
 import { cache, type SchemaWithCache } from './cache.ts';
 
 describe('cache', () => {
@@ -96,17 +96,6 @@ describe('cache', () => {
   });
 
   describe('should respect config changes', () => {
-    test('for strings containing key delimiters', () => {
-      const schema = cache(string());
-
-      expect(
-        parse(schema, 'foo"|"en"|"first', { lang: 'en', message: 'second' })
-      ).toBe('foo"|"en"|"first');
-      expect(
-        parse(schema, 'foo', { lang: 'en', message: 'first"|"en"|"second' })
-      ).toBe('foo');
-    });
-
     test('for lang config', () => {
       const baseSchema = string();
       const runSpy = vi.spyOn(baseSchema, '~run');
@@ -153,6 +142,24 @@ describe('cache', () => {
       expect(defaultDataset).not.toBe(abortDataset);
       expect(defaultDataset.issues).toHaveLength(2);
       expect(abortDataset.issues).toHaveLength(1);
+    });
+
+    test('for strings containing key delimiters', () => {
+      const baseSchema = string();
+      const runSpy = vi.spyOn(baseSchema, '~run');
+      const schema = cache(baseSchema);
+      const dataset1 = schema['~run'](
+        { value: 'foo"|"en"|"first' },
+        { lang: 'en', message: 'second' }
+      );
+      const dataset2 = schema['~run'](
+        { value: 'foo' },
+        { lang: 'en', message: 'first"|"en"|"second' }
+      );
+
+      expect(dataset1.value).toBe('foo"|"en"|"first');
+      expect(dataset2.value).toBe('foo');
+      expect(runSpy).toHaveBeenCalledTimes(2);
     });
   });
 

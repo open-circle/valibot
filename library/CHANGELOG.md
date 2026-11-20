@@ -6,7 +6,7 @@ All notable changes to the library will be documented in this file.
 
 - Change `isbn`, `creditCard` and `imei` actions to check digits by character code instead of splitting and parsing the input to improve performance (pull request #1634)
 - Fix `uuid` action to reject UUIDs with a version outside 1 to 8 or a variant outside RFC 9562, while still accepting the Nil and Max UUIDs (pull request #1643)
-- Fix `cache` and `cacheAsync` methods to escape strings in cache keys, preventing different inputs and configs from sharing the same cache entry (pull request #1691)
+- Fix `cache` and `cacheAsync` methods to escape strings in cache keys, preventing key collisions between string inputs and config values (pull request #1691)
 
 ## v1.5.0 (September 09, 2026)
 

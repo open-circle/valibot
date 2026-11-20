@@ -2,7 +2,7 @@ import { describe, expect, test, vi } from 'vitest';
 import { minLength, transformAsync } from '../../actions/index.ts';
 import { objectAsync, string } from '../../schemas/index.ts';
 import { getDotPath } from '../../utils/index.ts';
-import { parseAsync, pipe, pipeAsync } from '../index.ts';
+import { pipe, pipeAsync } from '../index.ts';
 import { cacheAsync, type SchemaWithCacheAsync } from './cacheAsync.ts';
 
 describe('cacheAsync', () => {
@@ -159,6 +159,25 @@ describe('cacheAsync', () => {
       expect(defaultDataset.issues).toHaveLength(2);
       expect(abortDataset.issues).toHaveLength(1);
     });
+
+    test('for strings containing key delimiters', async () => {
+      const baseSchema = string();
+      const runSpy = vi.spyOn(baseSchema, '~run');
+      const schema = cacheAsync(baseSchema);
+      const promise1 = schema['~run'](
+        { value: 'foo"|"en"|"first' },
+        { lang: 'en', message: 'second' }
+      );
+      const promise2 = schema['~run'](
+        { value: 'foo' },
+        { lang: 'en', message: 'first"|"en"|"second' }
+      );
+      const [dataset1, dataset2] = await Promise.all([promise1, promise2]);
+
+      expect(dataset1.value).toBe('foo"|"en"|"first');
+      expect(dataset2.value).toBe('foo');
+      expect(runSpy).toHaveBeenCalledTimes(2);
+    });
   });
 
   describe('should expose cache for manual clearing', () => {
@@ -197,23 +216,6 @@ describe('cacheAsync', () => {
   });
 
   describe('should deduplicate concurrent calls', () => {
-    test('but not strings containing key delimiters', async () => {
-      const schema = cacheAsync(string());
-      const promise1 = parseAsync(schema, 'foo"|"en"|"first', {
-        lang: 'en',
-        message: 'second',
-      });
-      const promise2 = parseAsync(schema, 'foo', {
-        lang: 'en',
-        message: 'first"|"en"|"second',
-      });
-
-      expect(await Promise.all([promise1, promise2])).toStrictEqual([
-        'foo"|"en"|"first',
-        'foo',
-      ]);
-    });
-
     test('for matching input and config', async () => {
       const baseSchema = string();
       const runSpy = vi.spyOn(baseSchema, '~run');
