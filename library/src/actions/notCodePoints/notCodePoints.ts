@@ -122,11 +122,20 @@ export function notCodePoints(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getCodePointCount(dataset.value);
-        if (count === this.requirement) {
-          _addIssue(this, 'code points', dataset, config, {
-            received: `${count}`,
-          });
+        // Hint: A code point consists of one or two code units, so the code
+        // point count is always between half the length of the input and its
+        // full length. This allows us to skip the counting if the requirement
+        // is outside of these bounds and therefore can never be matched
+        if (
+          this.requirement >= Math.ceil(dataset.value.length / 2) &&
+          this.requirement <= dataset.value.length
+        ) {
+          const count = _getCodePointCount(dataset.value);
+          if (count === this.requirement) {
+            _addIssue(this, 'code points', dataset, config, {
+              received: `${count}`,
+            });
+          }
         }
       }
       return dataset;

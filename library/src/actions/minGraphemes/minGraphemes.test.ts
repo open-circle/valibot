@@ -85,6 +85,11 @@ describe('minGraphemes', () => {
         '😀👋🏼🧩👩🏻‍🏫🫥🫠🧑‍💻👻🥎',
       ]);
     });
+
+    test('for lowest requirements', () => {
+      expectNoActionIssue(minGraphemes(0), ['', ' ', 'foo', '😀', '👨‍👩‍👧‍👦']);
+      expectNoActionIssue(minGraphemes(1), [' ', 'foo', '😀', '👨‍👩‍👧‍👦']);
+    });
   });
 
   describe('should return dataset with issues', () => {
@@ -114,6 +119,21 @@ describe('minGraphemes', () => {
         action,
         baseIssue,
         ['😀', '😀👋🏼', '😀👋🏼🧩👩🏻‍🏫'],
+        (value) => `${_getGraphemeCount(value)}`
+      );
+    });
+
+    test('for empty string with lowest requirement', () => {
+      expectActionIssue(
+        minGraphemes(1, 'message'),
+        {
+          kind: 'validation',
+          type: 'min_graphemes',
+          expected: '>=1',
+          message: 'message',
+          requirement: 1,
+        } satisfies Omit<MinGraphemesIssue<string, 1>, 'input' | 'received'>,
+        [''],
         (value) => `${_getGraphemeCount(value)}`
       );
     });

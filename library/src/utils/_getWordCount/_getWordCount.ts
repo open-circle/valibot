@@ -15,6 +15,11 @@ export function _getWordCount(
   locales: Intl.LocalesArgument,
   input: string
 ): number {
+  // Hint: An empty input has no words, so the expensive segmentation can be
+  // skipped and the segmenter does not even have to be created
+  if (input === '') {
+    return 0;
+  }
   if (!store) {
     store = new Map();
   }

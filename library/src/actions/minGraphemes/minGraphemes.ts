@@ -122,11 +122,16 @@ export function minGraphemes(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getGraphemeCount(dataset.value);
-        if (count < this.requirement) {
-          _addIssue(this, 'graphemes', dataset, config, {
-            received: `${count}`,
-          });
+        // Hint: A grapheme consists of at least one code unit, so an input that
+        // is not empty always contains at least one grapheme. This allows us to
+        // skip the expensive segmentation for a requirement of 1 or less
+        if (this.requirement > (dataset.value.length > 0 ? 1 : 0)) {
+          const count = _getGraphemeCount(dataset.value);
+          if (count < this.requirement) {
+            _addIssue(this, 'graphemes', dataset, config, {
+              received: `${count}`,
+            });
+          }
         }
       }
       return dataset;
