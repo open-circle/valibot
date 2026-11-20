@@ -73,7 +73,7 @@ This package is particularly popular for:
 | `hash`          | ✅     |                                                        |
 | `hexadecimal`   | ✅     |                                                        |
 | `hexColor`      | ✅     |                                                        |
-| `includes`      | ✅     |                                                        |
+| `includes`      | ⚠️     | Only JSON compatible values are supported for arrays   |
 | `integer`       | ✅     |                                                        |
 | `ipv4`          | ✅     |                                                        |
 | `ipv6`          | ✅     |                                                        |

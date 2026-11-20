@@ -386,6 +386,17 @@ describe('toJsonSchema', () => {
         },
       });
     });
+
+    test('for array schema with includes action', () => {
+      expect(
+        toJsonSchema(v.pipe(v.array(v.number()), v.includes(5)))
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'array',
+        items: { type: 'number' },
+        contains: { const: 5 },
+      });
+    });
   });
 
   describe('should throw error', () => {

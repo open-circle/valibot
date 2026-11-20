@@ -519,7 +519,7 @@ describe('convertAction', () => {
     expect(
       convertAction(
         { type: 'string' },
-        v.includes<string, 'foo'>('foo'),
+        v.includes<v.ContentInput, 'foo'>('foo'),
         undefined
       )
     ).toStrictEqual({
@@ -532,7 +532,7 @@ describe('convertAction', () => {
     expect(
       convertAction(
         { type: 'string' },
-        v.includes<string, 'foo.bar'>('foo.bar'),
+        v.includes<v.ContentInput, 'foo.bar'>('foo.bar'),
         undefined
       )
     ).toStrictEqual({
@@ -545,7 +545,7 @@ describe('convertAction', () => {
     expect(
       convertAction(
         { type: 'string', pattern: '^pre' },
-        v.includes<string, 'foo'>('foo'),
+        v.includes<v.ContentInput, 'foo'>('foo'),
         { errorMode: 'warn' }
       )
     ).toStrictEqual({
@@ -555,6 +555,86 @@ describe('convertAction', () => {
     expect(console.warn).toHaveBeenLastCalledWith(
       'The "includes" action is not supported in combination with another regex action.'
     );
+  });
+
+  test('should convert includes action for arrays', () => {
+    expect(
+      convertAction(
+        { type: 'array', items: { type: 'number' } },
+        v.includes<v.ContentInput, 5>(5),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'array',
+      items: { type: 'number' },
+      contains: { const: 5 },
+    });
+    expect(
+      convertAction(
+        { type: 'array', items: { type: 'string' } },
+        v.includes<v.ContentInput, 'foo.bar'>('foo.bar'),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'array',
+      items: { type: 'string' },
+      contains: { const: 'foo.bar' },
+    });
+    expect(
+      convertAction(
+        { type: 'array' },
+        v.includes<v.ContentInput, null>(null),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'array',
+      contains: { const: null },
+    });
+  });
+
+  test('should throw error for unsupported includes action for arrays', () => {
+    const error =
+      'The requirement of the "includes" action is not JSON compatible.';
+    expect(() =>
+      convertAction(
+        { type: 'array' },
+        v.includes<v.ContentInput, object>({}),
+        undefined
+      )
+    ).toThrowError(error);
+  });
+
+  test('should throw error for includes action for arrays with openapi-3.0', () => {
+    const error =
+      'The "includes" action on arrays is not supported for OpenAPI 3.0.';
+    expect(() =>
+      convertAction({ type: 'array' }, v.includes<v.ContentInput, 5>(5), {
+        target: 'openapi-3.0',
+      })
+    ).toThrowError(error);
+  });
+
+  test('should warn error for includes action with existing contains', () => {
+    expect(
+      convertAction(
+        { type: 'array', contains: { const: 'foo' } },
+        v.includes<v.ContentInput, 'bar'>('bar'),
+        { errorMode: 'warn' }
+      )
+    ).toStrictEqual({
+      type: 'array',
+      contains: { const: 'foo' },
+    });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The "includes" action is not supported in combination with another "contains" restriction.'
+    );
+  });
+
+  test('should throw error for includes action with invalid type', () => {
+    const error = 'The "includes" action is not supported on type "undefined".';
+    expect(() =>
+      convertAction({}, v.includes<v.ContentInput, 5>(5), undefined)
+    ).toThrowError(error);
   });
 
   test('should convert integer action', () => {
