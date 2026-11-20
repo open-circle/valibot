@@ -39,6 +39,7 @@ export function _formatCase(
   let start = 0;
   let prev = 0;
   let prevPrev = 0;
+  let prevStart = 0;
 
   // Append current word slice to result, applying capitalization
   const flush = (end: number): void => {
@@ -72,6 +73,7 @@ export function _formatCase(
   for (let index = 0; index < input.length; index++) {
     const code = input.charCodeAt(index);
     let type: number;
+    let charLen = 1;
 
     // If char is `_`, `-`, ` `, `\t`, `\n`, `\v`, `\f` or `\r`, flush
     // current word and skip char
@@ -94,8 +96,12 @@ export function _formatCase(
       type = code >= 65 && code <= 90 ? 1 : code >= 97 && code <= 122 ? 2 : 3;
 
       // Otherwise, fall back to case folding for non-ASCII chars
+      // Hint: The full code point is read so that supplementary-plane
+      // letters (e.g. Deseret, Adlam), which consist of two code units, are
+      // classified as a single char.
     } else {
-      const char = input[index];
+      const char = String.fromCodePoint(input.codePointAt(index)!);
+      charLen = char.length;
       const charLower = char.toLowerCase();
       type = charLower === char.toUpperCase() ? 3 : char === charLower ? 2 : 1;
     }
@@ -114,15 +120,19 @@ export function _formatCase(
       type === 2 &&
       prev === 1 &&
       prevPrev === 1 &&
-      index - 1 > start
+      prevStart > start
     ) {
-      flush(index - 1);
-      start = index - 1;
+      flush(prevStart);
+      start = prevStart;
     }
 
     // Update char type history for next iteration
     prevPrev = prev;
     prev = type;
+    prevStart = index;
+
+    // Skip second code unit of supplementary-plane chars
+    index += charLen - 1;
   }
 
   // Flush trailing word

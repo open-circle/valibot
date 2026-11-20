@@ -291,6 +291,45 @@ describe('_formatCase', () => {
       );
     });
 
+    test('should split at supplementary-plane case boundaries', () => {
+      expect(_formatCase('foo\u{10400}pple', '_', false, false)).toBe(
+        'foo_\u{10428}pple'
+      );
+      expect(_formatCase('\u{10400}\u{10400}pple', '_', false, false)).toBe(
+        '\u{10428}_\u{10428}pple'
+      );
+      expect(_formatCase('AB\u{10428}c', '_', false, false)).toBe(
+        'a_b\u{10428}c'
+      );
+      expect(_formatCase('foo\u{10400}pple', '', false, true)).toBe(
+        'foo\u{10400}pple'
+      );
+      expect(_formatCase('foo\u{10400}pple', '', true, true)).toBe(
+        'Foo\u{10400}pple'
+      );
+    });
+
+    test('should treat supplementary-plane chars without case as part of word', () => {
+      expect(_formatCase('foo\u{1F600}bar', '_', false, false)).toBe(
+        'foo\u{1F600}bar'
+      );
+      expect(_formatCase('foo\u{1F600}Bar', '_', false, false)).toBe(
+        'foo\u{1F600}_bar'
+      );
+    });
+
+    test('should handle lone surrogates', () => {
+      expect(_formatCase('foo\uD800Bar', '_', false, false)).toBe(
+        'foo\uD800_bar'
+      );
+      expect(_formatCase('foo\uDC00Bar', '_', false, false)).toBe(
+        'foo\uDC00_bar'
+      );
+      expect(_formatCase('fooBar\uD800', '_', false, false)).toBe(
+        'foo_bar\uD800'
+      );
+    });
+
     test('should handle complex mixed input', () => {
       expect(_formatCase('this_is-aTest_String', '_', false, false)).toBe(
         'this_is_a_test_string'
