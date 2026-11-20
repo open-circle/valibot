@@ -8,11 +8,12 @@ export type ArrayInput = MaybeReadonly<unknown[]>;
 /**
  * Array requirement type.
  */
-export type ArrayRequirement<TInput extends ArrayInput> = (
-  item: TInput[number],
-  index: number,
-  array: TInput
-) => boolean;
+export type ArrayRequirement<
+  TInput extends ArrayInput,
+  TOutput extends TInput[number] = TInput[number],
+> =
+  | ((item: TInput[number], index: number, array: TInput) => item is TOutput)
+  | ((item: TInput[number], index: number, array: TInput) => boolean);
 
 /**
  * Array requirement async type.
