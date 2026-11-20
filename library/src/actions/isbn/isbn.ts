@@ -72,9 +72,9 @@ const ISBN_SEPARATOR_REGEX = /[- ]/gu;
 const ISBN_10_DETECTION_REGEX = /^\d{9}[\dX]$/u;
 
 /**
- * ISBN-13 detection regex.
+ * ISBN-13 detection regex (978 or 979 prefix).
  */
-const ISBN_13_DETECTION_REGEX = /^\d{13}$/u;
+const ISBN_13_DETECTION_REGEX = /^97[89]\d{10}$/u;
 
 /**
  * Creates an [ISBN](https://en.wikipedia.org/wiki/ISBN) action.

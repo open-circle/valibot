@@ -82,11 +82,11 @@ const MergedObjectSchema = v.objectWithRest(
 Schema to validate an object with partial entries.
 
 ```ts
-const PartialObjectSchema = partial(
-  objectWithRest(
+const PartialObjectSchema = v.partial(
+  v.objectWithRest(
     {
-      key1: string(),
-      key2: number(),
+      key1: v.string(),
+      key2: v.number(),
     },
     v.undefined()
   )

@@ -57,7 +57,7 @@ Schema to validate a set with a minimum of 8 numbers.
 
 ```ts
 const SetSchema = v.pipe(
-  v.set(number()),
+  v.set(v.number()),
   v.minSize(8, 'The set must contain at least 8 numbers.')
 );
 ```

@@ -36,7 +36,7 @@ class _LruCache<TValue> implements Cache<TValue> {
   private stringify(input: unknown): string {
     const type = typeof input;
     if (type === 'string') {
-      return `"${input}"`;
+      return JSON.stringify(input);
     }
     if (type === 'number' || type === 'boolean') {
       return `${input}`;
