@@ -145,6 +145,18 @@ for (const language of languages) {
     },
   };
 
+  // Add subpath pattern for language submodules
+  exports[`./${language.code}/*`] = {
+    import: {
+      types: `./${language.code}/*.d.mts`,
+      default: `./${language.code}/*.mjs`,
+    },
+    require: {
+      types: `./${language.code}/*.d.cts`,
+      default: `./${language.code}/*.cjs`,
+    },
+  };
+
   // Add index imports to root index files
   rootModuleImports.push(`import "@valibot/i18n/${language.code}";`);
   rootCommonImports.push(
@@ -154,18 +166,6 @@ for (const language of languages) {
   // Create language import variables
   const languageModuleImports: string[] = [];
   const languageCommonImports: string[] = ['"use strict";'];
-
-  // Add schema files to exports
-  exports[`./${language.code}/schema`] = {
-    import: {
-      types: `./${language.code}/schema.d.mts`,
-      default: `./${language.code}/schema.mjs`,
-    },
-    require: {
-      types: `./${language.code}/schema.d.cts`,
-      default: `./${language.code}/schema.cjs`,
-    },
-  };
 
   // Add schema import to language index file
   languageModuleImports.push(`import "@valibot/i18n/${language.code}/schema";`);
@@ -206,18 +206,6 @@ var import_valibot = require("valibot");
 
   // Create submodules for specific messages
   for (const [reference, message] of Object.entries(language.specific)) {
-    // Add files to exports
-    exports[`./${language.code}/${reference}`] = {
-      import: {
-        types: `./${language.code}/${reference}.d.mts`,
-        default: `./${language.code}/${reference}.mjs`,
-      },
-      require: {
-        types: `./${language.code}/${reference}.d.cts`,
-        default: `./${language.code}/${reference}.cjs`,
-      },
-    };
-
     // Add import to language index file
     languageModuleImports.push(
       `import "@valibot/i18n/${language.code}/${reference}";`
