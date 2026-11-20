@@ -380,6 +380,87 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should not require optional items at the end of tuple schema', () => {
+      expect(
+        convertSchema(
+          {},
+          v.tuple([v.string(), v.optional(v.number()), v.nullish(v.boolean())]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        items: [
+          { type: 'string' },
+          { type: 'number' },
+          { anyOf: [{ type: 'boolean' }, { type: 'null' }] },
+        ],
+        minItems: 1,
+      });
+      expect(
+        convertSchema(
+          {},
+          v.strictTuple([v.optional(v.string()), v.number()]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        items: [{ type: 'string' }, { type: 'number' }],
+        minItems: 2,
+        additionalItems: false,
+      });
+      expect(
+        convertSchema(
+          {},
+          v.tuple([
+            v.string(),
+            v.exactOptional(v.number()),
+            v.undefinedable(v.boolean()),
+          ]),
+          undefined,
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        items: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }],
+        minItems: 3,
+      });
+    });
+
+    test('should not require optional items at the end of tuple schema for draft-2020-12', () => {
+      expect(
+        convertSchema(
+          {},
+          v.tupleWithRest([v.string(), v.optional(v.number())], v.boolean()),
+          { target: 'draft-2020-12' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        prefixItems: [{ type: 'string' }, { type: 'number' }],
+        minItems: 1,
+        items: { type: 'boolean' },
+      });
+    });
+
+    test('should not require optional items at the end of tuple schema for openapi-3.0', () => {
+      expect(
+        convertSchema(
+          {},
+          v.looseTuple([v.string(), v.optional(v.number())]),
+          { target: 'openapi-3.0' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        items: {
+          anyOf: [{ type: 'string' }, { type: 'number' }],
+        },
+        minItems: 1,
+      });
+    });
+
     test('should convert tuple with rest schema', () => {
       expect(
         convertSchema(
