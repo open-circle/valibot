@@ -10,6 +10,7 @@ All notable changes to the library will be documented in this file.
 - Fix `hexadecimal` and `octal` actions to accept uppercase `0X`, `0H` and `0O` prefixes (pull request #1720)
 - Fix `base64` action to reject non-ASCII characters accepted by Unicode case folding (pull request #1719)
 - Fix `isbn` action to reject ISBN-13 values that do not start with the 978 or 979 prefix (pull request #1705)
+- Fix `cache` and `cacheAsync` methods to escape strings in cache keys, preventing key collisions between string inputs and config values (pull request #1691)
 
 ## v1.5.0 (September 09, 2026)
 

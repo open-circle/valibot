@@ -159,6 +159,25 @@ describe('cacheAsync', () => {
       expect(defaultDataset.issues).toHaveLength(2);
       expect(abortDataset.issues).toHaveLength(1);
     });
+
+    test('for strings containing key delimiters', async () => {
+      const baseSchema = string();
+      const runSpy = vi.spyOn(baseSchema, '~run');
+      const schema = cacheAsync(baseSchema);
+      const promise1 = schema['~run'](
+        { value: 'foo"|"en"|"first' },
+        { lang: 'en', message: 'second' }
+      );
+      const promise2 = schema['~run'](
+        { value: 'foo' },
+        { lang: 'en', message: 'first"|"en"|"second' }
+      );
+      const [dataset1, dataset2] = await Promise.all([promise1, promise2]);
+
+      expect(dataset1.value).toBe('foo"|"en"|"first');
+      expect(dataset2.value).toBe('foo');
+      expect(runSpy).toHaveBeenCalledTimes(2);
+    });
   });
 
   describe('should expose cache for manual clearing', () => {
