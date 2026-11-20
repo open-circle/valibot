@@ -43,20 +43,7 @@ export const properties: Record<string, PropertyProps> = {
           },
         },
       ],
-      return: {
-        type: 'custom',
-        name: 'BaseSchema',
-        generics: [
-          'unknown',
-          'unknown',
-          {
-            type: 'custom',
-            name: 'BaseIssue',
-            href: '../BaseIssue/',
-            generics: ['unknown'],
-          },
-        ],
-      },
+      return: 'unknown',
     },
   },
   async: {

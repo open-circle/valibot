@@ -76,40 +76,7 @@ export const properties: Record<string, PropertyProps> = {
           },
         },
       ],
-      return: {
-        type: 'union',
-        options: [
-          {
-            type: 'custom',
-            name: 'BaseValidation',
-            href: '../BaseValidation/',
-            generics: [
-              'any',
-              'any',
-              {
-                type: 'custom',
-                name: 'BaseIssue',
-                href: '../BaseIssue/',
-                generics: ['unknown'],
-              },
-            ],
-          },
-          {
-            type: 'custom',
-            name: 'BaseValidationAsync',
-            generics: [
-              'any',
-              'any',
-              {
-                type: 'custom',
-                name: 'BaseIssue',
-                href: '../BaseIssue/',
-                generics: ['unknown'],
-              },
-            ],
-          },
-        ],
-      },
+      return: 'unknown',
     },
   },
   async: {
