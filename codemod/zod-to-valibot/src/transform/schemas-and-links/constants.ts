@@ -76,6 +76,7 @@ export const ZOD_VALUE_TYPE_SCHEMAS: readonly (typeof ZOD_SCHEMAS)[number][] = [
 export const ZOD_VALIDATORS = [
   'base64',
   'base64url',
+  'brand',
   'cidr',
   'cuid',
   'cuid2',
