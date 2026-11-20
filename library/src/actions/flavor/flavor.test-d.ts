@@ -29,19 +29,19 @@ describe('flavor', () => {
     type Output = InferOutput<Action>;
 
     test('should match unflavored types', () => {
-      expectTypeOf<string>().toMatchTypeOf<Output>();
+      expectTypeOf<string>().toExtend<Output>();
     });
 
     test('should match types with same flavor', () => {
       expectTypeOf<
         InferOutput<FlavorAction<string, 'foo'>>
-      >().toMatchTypeOf<Output>();
+      >().toExtend<Output>();
     });
 
     test('should not match types with different flavor', () => {
       expectTypeOf<
         InferOutput<FlavorAction<string, 'bar'>>
-      >().not.toMatchTypeOf<Output>();
+      >().not.toExtend<Output>();
     });
   });
 });
