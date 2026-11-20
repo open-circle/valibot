@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
 import {
@@ -76,6 +76,16 @@ describe('maxBytes', () => {
         'あ', // 'あ' is 3 bytes
         '🤖!', // '🤖' is 4 bytes
       ]);
+    });
+
+    test('without encoding if the upper byte bound meets the requirement', () => {
+      const encodeSpy = vi.spyOn(TextEncoder.prototype, 'encode');
+      try {
+        maxBytes(6)['~run']({ typed: true, value: 'ab' }, {});
+        expect(encodeSpy).not.toHaveBeenCalled();
+      } finally {
+        encodeSpy.mockRestore();
+      }
     });
   });
 

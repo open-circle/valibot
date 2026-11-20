@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { _getGraphemeCount } from '../../utils/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
@@ -88,6 +88,16 @@ describe('notGraphemes', () => {
         '😀👋🏼🧩👩🏻‍🏫🫥🫠',
         '😀👋🏼🧩👩🏻‍🏫🫥🫠🧑‍💻👻🥎',
       ]);
+    });
+
+    test('without counting if the requirement is below the lower bound', () => {
+      const segmentSpy = vi.spyOn(Intl.Segmenter.prototype, 'segment');
+      try {
+        notGraphemes(0)['~run']({ typed: true, value: 'foo' }, {});
+        expect(segmentSpy).not.toHaveBeenCalled();
+      } finally {
+        segmentSpy.mockRestore();
+      }
     });
   });
 

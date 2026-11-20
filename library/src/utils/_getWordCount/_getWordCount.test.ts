@@ -6,6 +6,17 @@ describe('_getWordCount', () => {
     vi.restoreAllMocks();
   });
 
+  test('without creating a segmenter for an empty input', () => {
+    const OriginalSegmenter = Intl.Segmenter;
+    const segmenterSpy = vi
+      .spyOn(Intl, 'Segmenter')
+      .mockImplementation(function (locales, options) {
+        return new OriginalSegmenter(locales, options);
+      });
+    expect(_getWordCount('en', '')).toBe(0);
+    expect(segmenterSpy).not.toHaveBeenCalled();
+  });
+
   test('should return word count', () => {
     expect(_getWordCount('en', '')).toBe(0);
     expect(_getWordCount('en', 'h')).toBe(1);
@@ -13,6 +24,11 @@ describe('_getWordCount', () => {
     expect(_getWordCount('en', 'hello world')).toBe(2);
     expect(_getWordCount('en', '🧑🏻‍💻')).toBe(0);
     expect(_getWordCount('th', 'สวัสดี')).toBe(1);
+  });
+
+  test('should stop at the limit', () => {
+    expect(_getWordCount('en', 'hello world from Valibot', 2)).toBe(2);
+    expect(_getWordCount('en', 'hello world', 5)).toBe(2);
   });
 
   test('should cache segmenter for non-primitive locales', () => {
