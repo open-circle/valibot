@@ -9,8 +9,9 @@ export interface Cache<TValue> {
   /**
    * Creates a cache key from input and config.
    *
-   * Hint: Primitive inputs are keyed by value. Object and function inputs are
-   * keyed by reference identity.
+   * Hint: Primitive inputs are keyed by value, except for Symbols, which are
+   * keyed under a single shared key and are not distinguished from one another.
+   * Object and function inputs are keyed by reference identity.
    */
   key(input: unknown, config?: Config<BaseIssue<unknown>>): string;
   /**
