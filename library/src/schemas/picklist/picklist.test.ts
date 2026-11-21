@@ -125,4 +125,15 @@ describe('picklist', () => {
       expectSchemaIssue(schema, baseIssue, [{}, { key: 'value' }]);
     });
   });
+
+  test('should not mutate the schema object', () => {
+    const schema = picklist(['foo', 'bar']);
+    const keys = Reflect.ownKeys(schema);
+    Object.freeze(schema);
+    expect(schema['~run']({ value: 'bar' }, {})).toStrictEqual({
+      typed: true,
+      value: 'bar',
+    });
+    expect(Reflect.ownKeys(schema)).toStrictEqual(keys);
+  });
 });
