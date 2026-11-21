@@ -86,9 +86,7 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
 ): SchemaWithPipe<readonly [TSchema, TItem1]>;
 
 /**
@@ -114,12 +112,8 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
 ): SchemaWithPipe<readonly [TSchema, TItem1, TItem2]>;
 
 /**
@@ -151,15 +145,9 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
 ): SchemaWithPipe<readonly [TSchema, TItem1, TItem2, TItem3]>;
 
 /**
@@ -197,18 +185,10 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
 ): SchemaWithPipe<readonly [TSchema, TItem1, TItem2, TItem3, TItem4]>;
 
 /**
@@ -252,21 +232,11 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
 ): SchemaWithPipe<readonly [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5]>;
 
 /**
@@ -316,24 +286,12 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
 ): SchemaWithPipe<
   readonly [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5, TItem6]
 >;
@@ -391,27 +349,13 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
 ): SchemaWithPipe<
   readonly [TSchema, TItem1, TItem2, TItem3, TItem4, TItem5, TItem6, TItem7]
 >;
@@ -475,30 +419,14 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
 ): SchemaWithPipe<
   readonly [
     TSchema,
@@ -578,33 +506,15 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>,
-  item9:
-    | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>,
+  item9: TItem9 | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>
 ): SchemaWithPipe<
   readonly [
     TSchema,
@@ -691,36 +601,16 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>,
-  item9:
-    | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>,
-  item10:
-    | TItem10
-    | PipeAction<InferOutput<TItem9>, InferOutput<TItem10>, InferIssue<TItem10>>
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>,
+  item9: TItem9 | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>,
+  item10: TItem10 | PipeAction<InferOutput<TItem9>, unknown, BaseIssue<unknown>>
 ): SchemaWithPipe<
   readonly [
     TSchema,
@@ -814,33 +704,15 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>,
-  item9:
-    | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>,
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>,
+  item9: TItem9 | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>,
   item10:
     | TItem10
     | PipeAction<
@@ -955,33 +827,15 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>,
-  item9:
-    | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>,
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>,
+  item9: TItem9 | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>,
   item10:
     | TItem10
     | PipeAction<
@@ -1110,33 +964,15 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>,
-  item9:
-    | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>,
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>,
+  item9: TItem9 | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>,
   item10:
     | TItem10
     | PipeAction<
@@ -1279,33 +1115,15 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>,
-  item9:
-    | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>,
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>,
+  item9: TItem9 | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>,
   item10:
     | TItem10
     | PipeAction<
@@ -1462,33 +1280,15 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>,
-  item9:
-    | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>,
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>,
+  item9: TItem9 | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>,
   item10:
     | TItem10
     | PipeAction<
@@ -1659,33 +1459,15 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>,
-  item9:
-    | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>,
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>,
+  item9: TItem9 | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>,
   item10:
     | TItem10
     | PipeAction<
@@ -1864,33 +1646,15 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>,
-  item9:
-    | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>,
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>,
+  item9: TItem9 | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>,
   item10:
     | TItem10
     | PipeAction<
@@ -2075,33 +1839,15 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>,
-  item9:
-    | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>,
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>,
+  item9: TItem9 | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>,
   item10:
     | TItem10
     | PipeAction<
@@ -2300,33 +2046,15 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>,
-  item9:
-    | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>,
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>,
+  item9: TItem9 | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>,
   item10:
     | TItem10
     | PipeAction<
@@ -2539,33 +2267,15 @@ export function pipe<
   >,
 >(
   schema: TSchema,
-  item1:
-    | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>,
-  item2:
-    | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>,
-  item3:
-    | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>,
-  item4:
-    | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>,
-  item5:
-    | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>,
-  item6:
-    | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>,
-  item7:
-    | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>,
-  item8:
-    | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>,
-  item9:
-    | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>,
+  item1: TItem1 | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
+  item2: TItem2 | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>,
+  item3: TItem3 | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>,
+  item4: TItem4 | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>,
+  item5: TItem5 | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>,
+  item6: TItem6 | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>,
+  item7: TItem7 | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>,
+  item8: TItem8 | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>,
+  item9: TItem9 | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>,
   item10:
     | TItem10
     | PipeAction<
