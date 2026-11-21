@@ -485,13 +485,17 @@ export function convertSchema(
 
         // Otherwise, use union of wrapped schema and null
       } else {
+        const wrappedSchema = convertSchema(
+          {},
+          valibotSchema.wrapped as SchemaOrPipe,
+          config,
+          context
+        );
         jsonSchema.anyOf = [
-          convertSchema(
-            {},
-            valibotSchema.wrapped as SchemaOrPipe,
-            config,
-            context
-          ),
+          ...(wrappedSchema.anyOf !== undefined &&
+          Object.keys(wrappedSchema).length === 1
+            ? wrappedSchema.anyOf
+            : [wrappedSchema]),
           { type: 'null' },
         ];
       }
@@ -575,9 +579,18 @@ export function convertSchema(
     }
 
     case 'union': {
-      jsonSchema.anyOf = valibotSchema.options.map((option) =>
-        convertSchema({}, option as SchemaOrPipe, config, context)
-      );
+      jsonSchema.anyOf = valibotSchema.options.flatMap((option) => {
+        const optionSchema = convertSchema(
+          {},
+          option as SchemaOrPipe,
+          config,
+          context
+        );
+        return optionSchema.anyOf !== undefined &&
+          Object.keys(optionSchema).length === 1
+          ? optionSchema.anyOf
+          : optionSchema;
+      });
       break;
     }
 
@@ -589,9 +602,18 @@ export function convertSchema(
     }
 
     case 'intersect': {
-      jsonSchema.allOf = valibotSchema.options.map((option) =>
-        convertSchema({}, option as SchemaOrPipe, config, context)
-      );
+      jsonSchema.allOf = valibotSchema.options.flatMap((option) => {
+        const optionSchema = convertSchema(
+          {},
+          option as SchemaOrPipe,
+          config,
+          context
+        );
+        return optionSchema.allOf !== undefined &&
+          Object.keys(optionSchema).length === 1
+          ? optionSchema.allOf
+          : optionSchema;
+      });
       break;
     }
 
