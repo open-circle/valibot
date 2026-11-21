@@ -70,6 +70,7 @@ export interface IsoTimestampAction<
  * - yyyy-mm-ddThh:mm:ss.sssZ
  * - yyyy-mm-ddThh:mm:ss.sss±hh:mm
  * - yyyy-mm-ddThh:mm:ss.sss±hhmm
+ * - yyyy-mm-ddThh:mm:ss.sss±hh
  *
  * Hint: To support timestamps with lower or higher accuracy, the millisecond
  * specification can be removed or contain up to 9 digits.
@@ -83,6 +84,11 @@ export interface IsoTimestampAction<
  *
  * Hint: The regex also allows a space before the UTC offset (e.g., " +00:00")
  * to support PostgreSQL's `timestamptz` output format.
+ *
+ * Hint: This action validates formatting, not whether JavaScript's `Date` can
+ * parse the string. Some accepted formats, such as an hour-only UTC offset,
+ * may produce an invalid date. Use `toDate` to transform the string and reject
+ * invalid dates, or `check` with `Date.parse` to keep the string.
  *
  * @returns An ISO timestamp action.
  */
@@ -113,6 +119,11 @@ export function isoTimestamp<TInput extends string>(): IsoTimestampAction<
  *
  * Hint: The regex also allows a space before the UTC offset (e.g., " +00:00")
  * to support PostgreSQL's `timestamptz` output format.
+ *
+ * Hint: This action validates formatting, not whether JavaScript's `Date` can
+ * parse the string. Some accepted formats, such as an hour-only UTC offset,
+ * may produce an invalid date. Use `toDate` to transform the string and reject
+ * invalid dates, or `check` with `Date.parse` to keep the string.
  *
  * @param message The error message.
  *

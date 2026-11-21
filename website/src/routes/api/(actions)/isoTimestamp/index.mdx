@@ -6,14 +6,14 @@ contributors:
   - fabian-hiller
 ---
 
-import { ApiList, Property } from '~/components';
+import { ApiList, Link, Property } from '~/components';
 import { properties } from './properties';
 
 # isoTimestamp
 
 Creates an [ISO timestamp](https://en.wikipedia.org/wiki/ISO_8601) validation action.
 
-Formats: `yyyy-mm-ddThh:mm:ss.sssZ`, `yyyy-mm-ddThh:mm:ss.sss±hh:mm`, `yyyy-mm-ddThh:mm:ss.sss±hhmm`
+Formats: `yyyy-mm-ddThh:mm:ss.sssZ`, `yyyy-mm-ddThh:mm:ss.sss±hh:mm`, `yyyy-mm-ddThh:mm:ss.sss±hhmm`, `yyyy-mm-ddThh:mm:ss.sss±hh`
 
 > To support timestamps with lower or higher accuracy, the millisecond specification can be removed or contain up to 9 digits.
 
@@ -40,6 +40,8 @@ const Action = v.isoTimestamp<TInput, TMessage>(message);
 
 With `isoTimestamp` you can validate the formatting of a string. If the input is not an ISO timestamp, you can use `message` to customize the error message.
 
+> This action validates formatting, not whether JavaScript's `Date` can parse the string. For example, `2026-06-12T10:00:00.000+05` and `2026-06-12T10:00:00 +05:00` pass `isoTimestamp`, but can produce an `Invalid Date`. Parsing these formats depends on the JavaScript runtime. Add <Link href="../toDate/">`toDate`</Link> to transform the string and reject invalid dates, or <Link href="../check/">`check`</Link> with `Date.parse` to keep the string.
+
 ## Returns
 
 - `Action` <Property {...properties.Action} />
@@ -59,6 +61,45 @@ const IsoTimestampSchema = v.pipe(
 );
 ```
 
+### Transform to a date
+
+Schema to validate an ISO timestamp and transform it to a JavaScript `Date`. If the runtime cannot parse the timestamp, `toDate` returns an issue instead of a successful result containing an `Invalid Date`.
+
+```ts
+import * as v from 'valibot';
+
+const TimestampDateSchema = v.pipe(
+  v.string(),
+  v.isoTimestamp('The timestamp is badly formatted.'),
+  v.toDate('The timestamp cannot be converted to a date.')
+);
+
+const output = v.parse(TimestampDateSchema, '2026-06-12T10:00:00.000+05:00');
+// Date representing 2026-06-12T05:00:00.000Z
+```
+
+### Keep a date-compatible string
+
+Schema to validate an ISO timestamp that the current runtime can parse, while keeping the output as a string.
+
+```ts
+import * as v from 'valibot';
+
+const TimestampStringSchema = v.pipe(
+  v.string(),
+  v.isoTimestamp('The timestamp is badly formatted.'),
+  v.check(
+    (input) => !Number.isNaN(Date.parse(input)),
+    'The timestamp cannot be converted to a date.'
+  )
+);
+
+const output = v.parse(TimestampStringSchema, '2026-06-12T10:00:00.000+05:00');
+// '2026-06-12T10:00:00.000+05:00'
+```
+
+These schemas check whether the runtime can parse the string. They do not reject calendar dates that `Date` normalizes, such as June 31 becoming July 1.
+
 ## Related
 
 The following APIs can be combined with `isoTimestamp`.
@@ -70,6 +111,10 @@ The following APIs can be combined with `isoTimestamp`.
 ### Methods
 
 <ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['check', 'toDate']} />
 
 ### Utils
 
