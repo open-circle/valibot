@@ -218,7 +218,7 @@ export type IssuePathItem =
 /**
  * Base issue interface.
  */
-export interface BaseIssue<TInput> extends Config<BaseIssue<TInput>> {
+export interface BaseIssue<out TInput> extends Config<BaseIssue<TInput>> {
   /**
    * The issue kind.
    */

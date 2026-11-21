@@ -7,9 +7,9 @@ import type { StandardProps } from './standard.ts';
  * Base schema interface.
  */
 export interface BaseSchema<
-  TInput,
-  TOutput,
-  TIssue extends BaseIssue<unknown>,
+  out TInput,
+  out TOutput,
+  out TIssue extends BaseIssue<unknown>,
 > {
   /**
    * The object kind.
