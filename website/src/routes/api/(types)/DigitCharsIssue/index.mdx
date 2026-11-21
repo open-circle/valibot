@@ -1,0 +1,27 @@
+---
+title: DigitCharsIssue
+description: Digit chars issue interface.
+contributors:
+  - dgesteves
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# DigitCharsIssue
+
+Digit chars issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+
+## Definition
+
+- `DigitCharsIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `received` <Property {...properties.received} />
+  - `requirement` <Property {...properties.requirement} />

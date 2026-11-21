@@ -1,0 +1,28 @@
+---
+title: MaxDigitCharsAction
+description: Max digit chars action interface.
+contributors:
+  - dgesteves
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# MaxDigitCharsAction
+
+Max digit chars action interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Definition
+
+- `MaxDigitCharsAction` <Property {...properties.BaseValidation} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `requirement` <Property {...properties.requirement} />
+  - `message` <Property {...properties.message} />

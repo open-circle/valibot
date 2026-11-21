@@ -9,6 +9,7 @@ server
 
 # Tests
 coverage
+tsconfig.vitest-temp.json
 
 # Backups
 backups
