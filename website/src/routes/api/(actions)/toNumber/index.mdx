@@ -51,6 +51,8 @@ const NumberSchema = v.pipe(v.string(), v.toNumber());
 Check for a non-empty string after trimming, since `toNumber` converts empty and whitespace-only strings to `0`.
 
 ```ts
+import * as v from 'valibot';
+
 const RequiredIntegerSchema = v.pipe(
   v.string(),
   v.trim(),
