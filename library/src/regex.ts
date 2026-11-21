@@ -7,6 +7,12 @@ export const BASE64_REGEX: RegExp =
   /^(?:[\da-zA-Z+/]{4})*(?:[\da-zA-Z+/]{2}==|[\da-zA-Z+/]{3}=)?$/u;
 
 /**
+ * [Base64url](https://datatracker.ietf.org/doc/html/rfc4648#section-5) regex.
+ */
+export const BASE64_URL_REGEX: RegExp =
+  /^(?:[\w-]{4})*(?:[\w-]{2}(?:==)?|[\w-]{3}=?)?$/iu;
+
+/**
  * [BIC](https://en.wikipedia.org/wiki/ISO_9362) regex.
  */
 export const BIC_REGEX: RegExp = /^[A-Z]{6}(?!00)[\dA-Z]{2}(?:[\dA-Z]{3})?$/u;
