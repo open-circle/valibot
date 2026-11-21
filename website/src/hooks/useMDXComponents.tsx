@@ -14,7 +14,7 @@ import { trackEvent } from '~/utils';
 /**
  * Pre component for rendering code snippets.
  */
-const Pre = component$(() => {
+export const Pre = component$(() => {
   // Use element and state signals
   const preElement = useSignal<HTMLPreElement>();
   const isValibotCode = useSignal(false);

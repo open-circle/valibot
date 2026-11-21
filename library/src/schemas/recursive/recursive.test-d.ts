@@ -1,0 +1,595 @@
+import { describe, expectTypeOf, test } from 'vitest';
+import { readonly, transform } from '../../actions/index.ts';
+import * as v from '../../index.ts';
+import { pipe } from '../../methods/index.ts';
+import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
+import { array, type ArrayIssue, type ArraySchema } from '../array/index.ts';
+import { instance } from '../instance/index.ts';
+import { intersect } from '../intersect/index.ts';
+import { literal } from '../literal/index.ts';
+import { map } from '../map/index.ts';
+import { nullable } from '../nullable/index.ts';
+import { number } from '../number/index.ts';
+import {
+  object,
+  type ObjectIssue,
+  type ObjectSchema,
+} from '../object/index.ts';
+import { optional } from '../optional/index.ts';
+import { record } from '../record/index.ts';
+import { set } from '../set/index.ts';
+import {
+  string,
+  type StringIssue,
+  type StringSchema,
+} from '../string/index.ts';
+import { tuple } from '../tuple/index.ts';
+import { tupleWithRest } from '../tupleWithRest/index.ts';
+import { union, type UnionIssue, type UnionSchema } from '../union/index.ts';
+import { variant } from '../variant/index.ts';
+import type {
+  RecursiveMarker,
+  RecursiveReferences,
+  Ref,
+  ResolveRecursiveInput,
+  ResolveRecursiveOutput,
+} from './_recursive.ts';
+import { recursive, type RecursiveSchema } from './recursive.ts';
+
+describe('recursive', () => {
+  test('preserves attached function properties in transformed schema output', () => {
+    const schema = recursive((self) =>
+      pipe(
+        object({ label: string(), children: array(self) }),
+        transform((node) =>
+          Object.assign((index: number) => node.children[index], {
+            label: node.label,
+            children: node.children,
+          })
+        )
+      )
+    );
+    type Output = InferOutput<typeof schema>;
+
+    expectTypeOf(schema)
+      .toHaveProperty('~types')
+      .exclude<undefined>()
+      .toHaveProperty('output')
+      .toHaveProperty('label')
+      .toEqualTypeOf<string>();
+    expectTypeOf<Output['children']>().toEqualTypeOf<Output[]>();
+    expectTypeOf<ReturnType<Output>>().toEqualTypeOf<Output>();
+  });
+
+  test('resolves references used only in callable properties', () => {
+    type Marker = RecursiveMarker<'node'>;
+    type Callable = (() => void) & { extra: Marker };
+    interface Root {
+      node: { name: string };
+    }
+    type Expected = (() => void) & { extra: Root['node'] };
+
+    expectTypeOf<RecursiveReferences<Callable>>().toEqualTypeOf<Marker>();
+    expectTypeOf<
+      ResolveRecursiveInput<Callable, Root>
+    >().toEqualTypeOf<Expected>();
+    expectTypeOf<
+      ResolveRecursiveOutput<Callable, Root>
+    >().toEqualTypeOf<Expected>();
+  });
+
+  test('preserves callable properties while resolving the signature', () => {
+    type Marker = RecursiveMarker<'node'>;
+    type Callable = ((value: Marker) => Marker) & {
+      readonly extra: Marker;
+      optional?: Marker;
+    };
+    interface Root {
+      node: { name: string };
+    }
+    type Expected = ((value: Root['node']) => Root['node']) & {
+      readonly extra: Root['node'];
+      optional?: Root['node'];
+    };
+    type Output = ResolveRecursiveOutput<Callable, Root>;
+
+    expectTypeOf<RecursiveReferences<Callable>>().toEqualTypeOf<Marker>();
+    expectTypeOf<
+      ResolveRecursiveInput<Callable, Root>
+    >().toEqualTypeOf<Expected>();
+    expectTypeOf<Output>().toEqualTypeOf<Expected>();
+    expectTypeOf<Parameters<Output>>().toEqualTypeOf<[Root['node']]>();
+    expectTypeOf<Output>().not.toExtend<(value: Marker) => Marker>();
+  });
+
+  test('rejects definition maps and callable self references', () => {
+    // @ts-expect-error Mutual recursion belongs to mutualRecursive.
+    recursive(() => ({ a: string() }));
+    recursive((self) => {
+      // @ts-expect-error A self reference is a schema, not a named-reference factory.
+      self('a');
+      return string();
+    });
+  });
+  test('should return schema object', () => {
+    const definition = (self: Ref) =>
+      object({
+        name: string(),
+        subcategories: array(self),
+      });
+    interface Category {
+      name: string;
+      subcategories: Category[];
+    }
+
+    expectTypeOf(recursive(definition)).toEqualTypeOf<
+      RecursiveSchema<
+        ReturnType<typeof definition>,
+        Category,
+        Category,
+        ObjectIssue | ArrayIssue | StringIssue
+      >
+    >();
+  });
+
+  describe('should infer correct types', () => {
+    const Category = recursive((Category) =>
+      object({
+        name: string(),
+        subcategories: array(Category),
+      })
+    );
+
+    interface Category {
+      name: string;
+      subcategories: Category[];
+    }
+
+    test('of input', () => {
+      expectTypeOf<InferInput<typeof Category>>().toEqualTypeOf<Category>();
+    });
+
+    test('of output', () => {
+      expectTypeOf<InferOutput<typeof Category>>().toEqualTypeOf<Category>();
+    });
+
+    test('of issue', () => {
+      expectTypeOf<InferIssue<typeof Category>>().toEqualTypeOf<
+        ObjectIssue | ArrayIssue | StringIssue
+      >();
+    });
+  });
+
+  test('should infer optional recursive fields', () => {
+    const Category = recursive((self) =>
+      object({
+        name: string(),
+        parent: optional(self),
+      })
+    );
+
+    interface Category {
+      name: string;
+      parent?: Category | undefined;
+    }
+
+    expectTypeOf<InferInput<typeof Category>>().toEqualTypeOf<Category>();
+    expectTypeOf<InferOutput<typeof Category>>().toEqualTypeOf<Category>();
+  });
+
+  test('should preserve non-recursive object instances', () => {
+    class User {
+      private readonly _brand!: 'User';
+    }
+    class CustomMap extends Map<string, string> {
+      private readonly _brand!: 'CustomMap';
+    }
+    class CustomSet extends Set<string> {
+      private readonly _brand!: 'CustomSet';
+    }
+    class CustomArray extends Array<string> {
+      private readonly _brand!: 'CustomArray';
+    }
+
+    const Category = recursive((self) =>
+      object({
+        name: string(),
+        subcategories: array(self),
+        owner: instance(User),
+        url: instance(URL),
+        error: instance(Error),
+        bytes: instance(Uint8Array),
+        customMap: instance(CustomMap),
+        customSet: instance(CustomSet),
+        customArray: instance(CustomArray),
+      })
+    );
+
+    interface Category {
+      name: string;
+      subcategories: Category[];
+      owner: User;
+      url: URL;
+      error: Error;
+      bytes: InstanceType<typeof Uint8Array>;
+      customMap: CustomMap;
+      customSet: CustomSet;
+      customArray: CustomArray;
+    }
+
+    expectTypeOf<InferInput<typeof Category>>().toEqualTypeOf<Category>();
+    expectTypeOf<InferOutput<typeof Category>>().toEqualTypeOf<Category>();
+  });
+
+  test('should infer recursive collection fields', () => {
+    const Category = recursive((self) =>
+      object({
+        name: string(),
+        childrenByName: map(string(), self),
+        related: set(self),
+        pair: tuple([string(), self]),
+      })
+    );
+
+    interface Category {
+      name: string;
+      childrenByName: Map<string, Category>;
+      related: Set<Category>;
+      pair: [string, Category];
+    }
+
+    expectTypeOf<InferInput<typeof Category>>().toEqualTypeOf<Category>();
+    expectTypeOf<InferOutput<typeof Category>>().toEqualTypeOf<Category>();
+  });
+
+  test('should infer recursive tuple with rest', () => {
+    const Category = recursive((self) =>
+      object({
+        name: string(),
+        // Variadic tuple: a fixed leading element followed by a recursive rest
+        children: tupleWithRest([string()], self),
+      })
+    );
+
+    interface Category {
+      name: string;
+      children: [string, ...Category[]];
+    }
+
+    expectTypeOf<InferInput<typeof Category>>().toEqualTypeOf<Category>();
+    expectTypeOf<InferOutput<typeof Category>>().toEqualTypeOf<Category>();
+  });
+
+  test('should infer recursive tuples without an enclosing object', () => {
+    const List = recursive((self) =>
+      union([tuple([string()]), tuple([string(), self])])
+    );
+
+    type List = [string] | [string, List];
+
+    expectTypeOf<InferInput<typeof List>>().toEqualTypeOf<List>();
+    expectTypeOf<InferOutput<typeof List>>().toEqualTypeOf<List>();
+  });
+
+  test('should infer nested recursive schema types', () => {
+    const Category = recursive((category) =>
+      object({
+        name: string(),
+        subcategories: array(category),
+        tags: array(
+          recursive((tag) =>
+            object({
+              name: string(),
+              aliases: array(tag),
+            })
+          )
+        ),
+      })
+    );
+
+    interface Tag {
+      name: string;
+      aliases: Tag[];
+    }
+
+    interface Category {
+      name: string;
+      subcategories: Category[];
+      tags: Tag[];
+    }
+
+    expectTypeOf<InferInput<typeof Category>>().toEqualTypeOf<Category>();
+    expectTypeOf<InferOutput<typeof Category>>().toEqualTypeOf<Category>();
+  });
+
+  test('should infer recursive union issues', () => {
+    type Schema = RecursiveSchema<
+      UnionSchema<
+        readonly [StringSchema<undefined>, ArraySchema<Ref, undefined>],
+        undefined
+      >,
+      Json,
+      Json,
+      StringIssue | ArrayIssue | UnionIssue<StringIssue | ArrayIssue>
+    >;
+
+    type Json = string | Json[];
+
+    expectTypeOf<InferInput<Schema>>().toEqualTypeOf<Json>();
+    expectTypeOf<InferOutput<Schema>>().toEqualTypeOf<Json>();
+    expectTypeOf<InferIssue<Schema>>().toEqualTypeOf<
+      StringIssue | ArrayIssue | UnionIssue<StringIssue | ArrayIssue>
+    >();
+  });
+
+  test('should infer recursive union values', () => {
+    const Json = recursive((self) => union([string(), array(self)]));
+
+    type Json = string | Json[];
+
+    expectTypeOf<InferInput<typeof Json>>().toEqualTypeOf<Json>();
+    expectTypeOf<InferOutput<typeof Json>>().toEqualTypeOf<Json>();
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- A named interface represents recursive union subissues.
+    interface JsonUnionIssue
+      extends UnionIssue<StringIssue | ArrayIssue | JsonUnionIssue> {}
+    expectTypeOf<InferIssue<typeof Json>>().toEqualTypeOf<
+      StringIssue | ArrayIssue | JsonUnionIssue
+    >();
+  });
+
+  test('should infer recursive output in pipes', () => {
+    const Category = pipe(
+      recursive((self) =>
+        object({
+          name: string(),
+          subcategories: array(self),
+        })
+      ),
+      transform((category) => ({ ...category, label: category.name }))
+    );
+
+    interface Subcategory {
+      name: string;
+      subcategories: Subcategory[];
+    }
+
+    interface Category extends Subcategory {
+      label: string;
+    }
+
+    expectTypeOf<InferOutput<typeof Category>>().toEqualTypeOf<Category>();
+  });
+
+  test('should support schema interface', () => {
+    type Schema = RecursiveSchema<
+      ObjectSchema<
+        {
+          name: StringSchema<undefined>;
+          subcategories: ArraySchema<Ref, undefined>;
+        },
+        undefined
+      >,
+      Input,
+      Input,
+      ObjectIssue | StringIssue | ArrayIssue
+    >;
+
+    interface Input {
+      name: string;
+      subcategories: Input[];
+    }
+
+    expectTypeOf<InferInput<Schema>>().toEqualTypeOf<Input>();
+    expectTypeOf<InferOutput<Schema>>().toEqualTypeOf<Input>();
+    expectTypeOf<InferIssue<Schema>>().toEqualTypeOf<
+      ObjectIssue | StringIssue | ArrayIssue
+    >();
+  });
+
+  test('should resolve transforms and defaults at every recursive level', () => {
+    const Schema = recursive((self) =>
+      object({
+        value: pipe(string(), transform(Number)),
+        label: optional(string(), 'default'),
+        children: array(self),
+      })
+    );
+
+    interface Input {
+      value: string;
+      label?: string | undefined;
+      children: Input[];
+    }
+    interface Output {
+      value: number;
+      label: string;
+      children: Output[];
+    }
+
+    expectTypeOf(Schema).toHaveProperty('~run');
+    expectTypeOf<InferInput<typeof Schema>>().toEqualTypeOf<Input>();
+    expectTypeOf<InferOutput<typeof Schema>>().toEqualTypeOf<Output>();
+    expectTypeOf<{
+      value: string;
+      children: { value: number; children: [] }[];
+    }>().not.toExtend<InferInput<typeof Schema>>();
+    expectTypeOf<{
+      value: number;
+      label: string;
+      children: { value: number; children: [] }[];
+    }>().not.toExtend<InferOutput<typeof Schema>>();
+  });
+
+  test('should resolve nullable records and readonly recursive arrays', () => {
+    const Schema = recursive((self) =>
+      object({
+        children: record(string(), nullable(self)),
+        siblings: pipe(array(self), readonly()),
+        pair: tuple([string(), optional(self)]),
+      })
+    );
+
+    interface Input {
+      children: Record<string, Input | null>;
+      siblings: Input[];
+      pair: [string, Input | undefined];
+    }
+    interface Output {
+      children: Record<string, Output | null>;
+      readonly siblings: readonly Output[];
+      pair: [string, Output | undefined];
+    }
+
+    expectTypeOf(Schema).toHaveProperty('~run');
+    expectTypeOf<InferInput<typeof Schema>>().toEqualTypeOf<Input>();
+    expectTypeOf<InferOutput<typeof Schema>>().toEqualTypeOf<Output>();
+  });
+
+  test('should resolve recursive variants inside intersections', () => {
+    const Schema = recursive((self) =>
+      intersect([
+        object({ id: number() }),
+        variant('kind', [
+          object({ kind: literal('leaf'), value: string() }),
+          object({ kind: literal('branch'), children: array(self) }),
+        ]),
+      ])
+    );
+
+    type Node = { id: number } & (
+      | { kind: 'leaf'; value: string }
+      | { kind: 'branch'; children: Node[] }
+    );
+
+    expectTypeOf(Schema).toHaveProperty('~run');
+    expectTypeOf<InferInput<typeof Schema>>().toExtend<Node>();
+    expectTypeOf<Node>().toExtend<InferInput<typeof Schema>>();
+    expectTypeOf<InferOutput<typeof Schema>>().toExtend<Node>();
+    expectTypeOf<Node>().toExtend<InferOutput<typeof Schema>>();
+    expectTypeOf<{
+      id: number;
+      kind: 'branch';
+      children: { id: number; kind: 'leaf'; value: number }[];
+    }>().not.toExtend<InferOutput<typeof Schema>>();
+  });
+
+  test('should support generic schema interface', () => {
+    const Category = recursive((self) =>
+      object({
+        name: string(),
+        subcategories: array(self),
+      })
+    );
+
+    expectTypeOf(Category).toExtend<RecursiveSchema>();
+  });
+});
+
+describe('CodeRabbit recursive type regressions', () => {
+  test('resolves string references to numeric entry keys', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const group = v.mutualRecursive((ref) => ({
+      0: v.string(),
+      node: v.object({ value: ref('0') }),
+    }));
+    expectTypeOf<v.InferOutput<typeof group.node>>().toEqualTypeOf<{
+      value: string;
+    }>();
+  });
+
+  test('preserves branded primitive references', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const group = v.mutualRecursive((ref) => ({
+      leaf: v.number(),
+      node: v.object({ value: v.pipe(ref('leaf'), v.brand('Leaf')) }),
+    }));
+    type Output = v.InferOutput<typeof group.node>;
+    expectTypeOf<Output['value']>().toExtend<number>();
+  });
+
+  test('preserves properties added to unnamed references', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const schema = v.recursive((self) =>
+      v.object({
+        child: v.optional(
+          v.pipe(
+            self,
+            v.transform((value) => ({ ...value, label: 'child' }))
+          )
+        ),
+      })
+    );
+    type Output = v.InferOutput<typeof schema>;
+    expectTypeOf<NonNullable<Output['child']>>().toExtend<{ label: string }>();
+  });
+
+  test('rejects unmatched references in marker intersections', () => {
+    // @ts-expect-error The extra property references an absent definition.
+    v.mutualRecursive((ref) => ({
+      a: v.intersect([ref('b'), v.object({ extra: ref('missing') })]),
+      b: v.object({ value: v.string() }),
+    }));
+  });
+
+  test('resolves references in distinct subtype children', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const schema = v.recursive((self) =>
+      v.object({
+        next: v.optional(
+          v.object({ next: v.optional(v.never()), child: self })
+        ),
+      })
+    );
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- The fixture requires this exact subtype relationship to reproduce ancestor skipping.
+    expectTypeOf<{ next: { child: {} } }>().toExtend<
+      v.InferInput<typeof schema>
+    >();
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- The fixture requires this exact subtype relationship to reproduce ancestor skipping.
+    expectTypeOf<{ next: { child: {} } }>().toExtend<
+      v.InferOutput<typeof schema>
+    >();
+  });
+
+  test('includes recursive unions in nested issue types', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const schema = v.recursive((self) => v.union([v.string(), v.array(self)]));
+    type Issue = v.InferIssue<typeof schema>;
+    type Subissue = NonNullable<Issue['issues']>[number];
+    expectTypeOf<Extract<Subissue, { type: 'union' }>>().not.toBeNever();
+  });
+
+  test('includes referenced issues in mutual union subissues', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const group = v.mutualRecursive((ref) => ({
+      a: v.union([v.string(), ref('b')]),
+      b: v.number(),
+    }));
+    type Issue = Extract<v.InferIssue<typeof group.a>, { type: 'union' }>;
+    type Subissue = NonNullable<Issue['issues']>[number];
+    expectTypeOf<v.NumberIssue>().toExtend<Subissue>();
+  });
+
+  test('resolves markers in function return types', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const schema = v.recursive((self) =>
+      v.object({
+        name: v.string(),
+        getChild: v.pipe(v.any(), v.returns(self)),
+      })
+    );
+    type Output = v.InferOutput<typeof schema>;
+    expectTypeOf<ReturnType<Output['getChild']>>().toEqualTypeOf<Output>();
+  });
+
+  test('resolves markers in function parameter types', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The schema is used only in type assertions.
+    const schema = v.recursive((self) =>
+      v.object({
+        name: v.string(),
+        setChild: v.pipe(v.any(), v.args(v.tuple([self]))),
+      })
+    );
+    type Output = v.InferOutput<typeof schema>;
+    expectTypeOf<Parameters<Output['setChild']>[0]>().toEqualTypeOf<Output>();
+  });
+});

@@ -33,17 +33,32 @@ export function toJsonSchemaDefs<
 
   // Add provided definitions to context, if necessary
   for (const key in definitions) {
-    context.referenceMap.set(definitions[key], key);
+    const definition = definitions[key];
+    context.referenceMap.set(definition, key);
+    if (
+      definition.type === 'recursive' ||
+      definition.type === 'mutualRecursive'
+    ) {
+      context.referenceMap.set(
+        (definition as v.RecursiveSchema | v.MutualRecursiveSchema).wrapped,
+        key
+      );
+    }
   }
   for (const key in definitions) {
-    context.definitions[key] = convertSchema(
-      {},
-      // @ts-expect-error
-      definitions[key],
-      config,
-      context,
-      true
-    );
+    Object.defineProperty(context.definitions, key, {
+      value: convertSchema(
+        {},
+        // @ts-expect-error
+        definitions[key],
+        config,
+        context,
+        true
+      ),
+      enumerable: true,
+      writable: true,
+      configurable: true,
+    });
   }
 
   // Return JSON Schema definitions
