@@ -232,4 +232,24 @@ describe('enum_', () => {
       >);
     });
   });
+
+  test('should snapshot the options at creation', () => {
+    // `expects` is built from the options at creation, so membership is too
+    const schema = enum_({ FOO: 'foo', BAR: 'bar' });
+    // @ts-expect-error
+    schema.options.push('baz');
+    expect(schema.expects).toBe('("foo" | "bar")');
+    expect(schema['~run']({ value: 'baz' }, {}).issues).toBeDefined();
+  });
+
+  test('should not mutate the schema object', () => {
+    const schema = enum_({ FOO: 'foo', BAR: 'bar' });
+    const keys = Reflect.ownKeys(schema);
+    Object.freeze(schema);
+    expect(schema['~run']({ value: 'bar' }, {})).toStrictEqual({
+      typed: true,
+      value: 'bar',
+    });
+    expect(Reflect.ownKeys(schema)).toStrictEqual(keys);
+  });
 });
