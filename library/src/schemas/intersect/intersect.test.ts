@@ -83,6 +83,16 @@ describe('intersect', () => {
       );
     });
 
+    test('for declared constructor entries', () => {
+      expectNoSchemaIssue(
+        intersect([
+          object({ key: number() }),
+          object({ constructor: string() }),
+        ]),
+        [{ key: 123, constructor: 'foo' }]
+      );
+    });
+
     test('for valid values', () => {
       expectNoSchemaIssue(
         intersect([
