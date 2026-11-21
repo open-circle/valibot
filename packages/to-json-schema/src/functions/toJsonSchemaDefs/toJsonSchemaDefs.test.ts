@@ -7,6 +7,15 @@ import { toJsonSchemaDefs } from './toJsonSchemaDefs.ts';
 console.warn = vi.fn();
 
 describe('toJsonSchemaDefs', () => {
+  test('preserves an own __proto__ definition when serialized', () => {
+    const converted = JSON.parse(
+      JSON.stringify(toJsonSchemaDefs({ ['__proto__']: v.string() }))
+    );
+    expect(converted).toStrictEqual(
+      JSON.parse('{"__proto__":{"type":"string"}}')
+    );
+  });
+
   describe('should convert schema', () => {
     test('for simple schema', () => {
       expect(

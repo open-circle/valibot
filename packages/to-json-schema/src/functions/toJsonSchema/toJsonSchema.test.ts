@@ -7,6 +7,28 @@ import { toJsonSchema } from './toJsonSchema.ts';
 console.warn = vi.fn();
 
 describe('toJsonSchema', () => {
+  test('preserves an own __proto__ object property when serialized', () => {
+    const schema = v.object({ ['__proto__']: v.string() });
+    const converted = JSON.parse(JSON.stringify(toJsonSchema(schema)));
+    expect(converted.properties).toStrictEqual(
+      JSON.parse('{"__proto__":{"type":"string"}}')
+    );
+    expect(converted.required).toStrictEqual(['__proto__']);
+  });
+
+  test('preserves a __proto__ definition and its reference', () => {
+    const schema = v.string();
+    const converted = JSON.parse(
+      JSON.stringify(
+        toJsonSchema(schema, { definitions: { ['__proto__']: schema } })
+      )
+    );
+    expect(converted.$defs).toStrictEqual(
+      JSON.parse('{"__proto__":{"type":"string"}}')
+    );
+    expect(converted.$ref).toBe('#/$defs/__proto__');
+  });
+
   describe('should convert schema', () => {
     test('for simple string schema', () => {
       expect(toJsonSchema(v.string())).toStrictEqual({
