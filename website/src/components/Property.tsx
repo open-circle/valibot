@@ -54,6 +54,7 @@ type DefinitionData =
       type: 'tuple';
       modifier?: string;
       items: DefinitionData[];
+      itemLabels?: (string | undefined)[];
     }
   | {
       type: 'function';
@@ -256,6 +257,12 @@ const Definition = component$<DefinitionProps>(({ parent, data }) => (
           {data.items.map((item, index) => (
             <Fragment key={index}>
               {index > 0 && ', '}
+              {data.itemLabels?.[index] && (
+                <span class="text-sky-600 dark:text-sky-400">
+                  {data.itemLabels[index]}
+                  {': '}
+                </span>
+              )}
               <Definition parent={data.type} data={item} />
             </Fragment>
           ))}
