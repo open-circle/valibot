@@ -46,6 +46,20 @@ Schema to validate a string and transform it to a number.
 const NumberSchema = v.pipe(v.string(), v.toNumber());
 ```
 
+### Required integer from text
+
+Check for a non-empty string after trimming, since `toNumber` converts empty and whitespace-only strings to `0`.
+
+```ts
+const RequiredIntegerSchema = v.pipe(
+  v.string(),
+  v.trim(),
+  v.nonEmpty('Enter a number.'),
+  v.toNumber('Enter a valid number.'),
+  v.integer('Enter a whole number.')
+);
+```
+
 ## Related
 
 The following APIs can be combined with `toNumber`.
