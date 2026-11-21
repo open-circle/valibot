@@ -11,6 +11,7 @@ import {
 import { addToPipe } from './helpers';
 import {
   transformArray as transformArrayMethod,
+  transformCatch,
   transformCatchall,
   transformDeepPartial,
   transformDefault,
@@ -29,6 +30,7 @@ import {
   transformPartial,
   transformPassthrough,
   transformPick,
+  transformPipe,
   transformRefine,
   transformRequired,
   transformRest,
@@ -379,6 +381,8 @@ function toValibotMethodExp(
   switch (zodMethodName) {
     case 'array':
       return transformArrayMethod(...args);
+    case 'catch':
+      return transformCatch(...args);
     case 'catchall':
       return transformCatchall(valibotIdentifier, schemaExp, inputArgs);
     case 'default':
@@ -413,6 +417,8 @@ function toValibotMethodExp(
       return transformPassthrough(valibotIdentifier, schemaExp);
     case 'pick':
       return transformPick(...args);
+    case 'pipe':
+      return transformPipe(...args);
     case 'refine':
       return transformRefine(...args);
     case 'required':
