@@ -28,6 +28,7 @@ export interface Language {
     | 'nn'
     | 'pl'
     | 'pt'
+    | 'pseudo'
     | 'ro'
     | 'ru'
     | 'rw'
