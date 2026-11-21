@@ -7,6 +7,22 @@ import { toJsonSchema } from './toJsonSchema.ts';
 console.warn = vi.fn();
 
 describe('toJsonSchema', () => {
+  test.each([
+    ['c%d', '#/$defs/c%25d'],
+    ['c%20d', '#/$defs/c%2520d'],
+    ['a b', '#/$defs/a%20b'],
+    ['中文', '#/$defs/%E4%B8%AD%E6%96%87'],
+    ['a~/b%', '#/$defs/a~0~1b%25'],
+  ])('encodes the URI fragment for definition %s', (key, reference) => {
+    const schema = v.string();
+    const converted = toJsonSchema(schema, { definitions: { [key]: schema } });
+    expect(converted.$ref).toBe(reference);
+    const token = decodeURIComponent(converted.$ref!.slice('#/$defs/'.length))
+      .replaceAll('~1', '/')
+      .replaceAll('~0', '~');
+    expect(converted.$defs![token]).toStrictEqual({ type: 'string' });
+  });
+
   describe('should convert schema', () => {
     test('for simple string schema', () => {
       expect(toJsonSchema(v.string())).toStrictEqual({
