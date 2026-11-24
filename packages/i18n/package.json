@@ -99,6 +99,7 @@
         "default": "./ar/index.cjs"
       }
     },
+    "./ar/index": null,
     "./ar/*": {
       "import": {
         "types": "./ar/*.d.mts",
@@ -119,6 +120,7 @@
         "default": "./az/index.cjs"
       }
     },
+    "./az/index": null,
     "./az/*": {
       "import": {
         "types": "./az/*.d.mts",
@@ -139,6 +141,7 @@
         "default": "./ca/index.cjs"
       }
     },
+    "./ca/index": null,
     "./ca/*": {
       "import": {
         "types": "./ca/*.d.mts",
@@ -159,6 +162,7 @@
         "default": "./cs/index.cjs"
       }
     },
+    "./cs/index": null,
     "./cs/*": {
       "import": {
         "types": "./cs/*.d.mts",
@@ -179,6 +183,7 @@
         "default": "./de/index.cjs"
       }
     },
+    "./de/index": null,
     "./de/*": {
       "import": {
         "types": "./de/*.d.mts",
@@ -199,6 +204,7 @@
         "default": "./el/index.cjs"
       }
     },
+    "./el/index": null,
     "./el/*": {
       "import": {
         "types": "./el/*.d.mts",
@@ -219,6 +225,7 @@
         "default": "./es/index.cjs"
       }
     },
+    "./es/index": null,
     "./es/*": {
       "import": {
         "types": "./es/*.d.mts",
@@ -239,6 +246,7 @@
         "default": "./fa/index.cjs"
       }
     },
+    "./fa/index": null,
     "./fa/*": {
       "import": {
         "types": "./fa/*.d.mts",
@@ -259,6 +267,7 @@
         "default": "./fi/index.cjs"
       }
     },
+    "./fi/index": null,
     "./fi/*": {
       "import": {
         "types": "./fi/*.d.mts",
@@ -279,6 +288,7 @@
         "default": "./fr/index.cjs"
       }
     },
+    "./fr/index": null,
     "./fr/*": {
       "import": {
         "types": "./fr/*.d.mts",
@@ -299,6 +309,7 @@
         "default": "./hu/index.cjs"
       }
     },
+    "./hu/index": null,
     "./hu/*": {
       "import": {
         "types": "./hu/*.d.mts",
@@ -319,6 +330,7 @@
         "default": "./id/index.cjs"
       }
     },
+    "./id/index": null,
     "./id/*": {
       "import": {
         "types": "./id/*.d.mts",
@@ -339,6 +351,7 @@
         "default": "./it/index.cjs"
       }
     },
+    "./it/index": null,
     "./it/*": {
       "import": {
         "types": "./it/*.d.mts",
@@ -359,6 +372,7 @@
         "default": "./ja/index.cjs"
       }
     },
+    "./ja/index": null,
     "./ja/*": {
       "import": {
         "types": "./ja/*.d.mts",
@@ -379,6 +393,7 @@
         "default": "./ko/index.cjs"
       }
     },
+    "./ko/index": null,
     "./ko/*": {
       "import": {
         "types": "./ko/*.d.mts",
@@ -399,6 +414,7 @@
         "default": "./kr/index.cjs"
       }
     },
+    "./kr/index": null,
     "./kr/*": {
       "import": {
         "types": "./kr/*.d.mts",
@@ -419,6 +435,7 @@
         "default": "./mn/index.cjs"
       }
     },
+    "./mn/index": null,
     "./mn/*": {
       "import": {
         "types": "./mn/*.d.mts",
@@ -439,6 +456,7 @@
         "default": "./nb/index.cjs"
       }
     },
+    "./nb/index": null,
     "./nb/*": {
       "import": {
         "types": "./nb/*.d.mts",
@@ -459,6 +477,7 @@
         "default": "./nl/index.cjs"
       }
     },
+    "./nl/index": null,
     "./nl/*": {
       "import": {
         "types": "./nl/*.d.mts",
@@ -479,6 +498,7 @@
         "default": "./nn/index.cjs"
       }
     },
+    "./nn/index": null,
     "./nn/*": {
       "import": {
         "types": "./nn/*.d.mts",
@@ -499,6 +519,7 @@
         "default": "./pl/index.cjs"
       }
     },
+    "./pl/index": null,
     "./pl/*": {
       "import": {
         "types": "./pl/*.d.mts",
@@ -519,6 +540,7 @@
         "default": "./pt/index.cjs"
       }
     },
+    "./pt/index": null,
     "./pt/*": {
       "import": {
         "types": "./pt/*.d.mts",
@@ -539,6 +561,7 @@
         "default": "./ro/index.cjs"
       }
     },
+    "./ro/index": null,
     "./ro/*": {
       "import": {
         "types": "./ro/*.d.mts",
@@ -559,6 +582,7 @@
         "default": "./ru/index.cjs"
       }
     },
+    "./ru/index": null,
     "./ru/*": {
       "import": {
         "types": "./ru/*.d.mts",
@@ -579,6 +603,7 @@
         "default": "./rw/index.cjs"
       }
     },
+    "./rw/index": null,
     "./rw/*": {
       "import": {
         "types": "./rw/*.d.mts",
@@ -599,6 +624,7 @@
         "default": "./sk/index.cjs"
       }
     },
+    "./sk/index": null,
     "./sk/*": {
       "import": {
         "types": "./sk/*.d.mts",
@@ -619,6 +645,7 @@
         "default": "./sl/index.cjs"
       }
     },
+    "./sl/index": null,
     "./sl/*": {
       "import": {
         "types": "./sl/*.d.mts",
@@ -639,6 +666,7 @@
         "default": "./sv/index.cjs"
       }
     },
+    "./sv/index": null,
     "./sv/*": {
       "import": {
         "types": "./sv/*.d.mts",
@@ -659,6 +687,7 @@
         "default": "./tr/index.cjs"
       }
     },
+    "./tr/index": null,
     "./tr/*": {
       "import": {
         "types": "./tr/*.d.mts",
@@ -679,6 +708,7 @@
         "default": "./uk/index.cjs"
       }
     },
+    "./uk/index": null,
     "./uk/*": {
       "import": {
         "types": "./uk/*.d.mts",
@@ -699,6 +729,7 @@
         "default": "./uz/index.cjs"
       }
     },
+    "./uz/index": null,
     "./uz/*": {
       "import": {
         "types": "./uz/*.d.mts",
@@ -719,6 +750,7 @@
         "default": "./vi/index.cjs"
       }
     },
+    "./vi/index": null,
     "./vi/*": {
       "import": {
         "types": "./vi/*.d.mts",
@@ -739,6 +771,7 @@
         "default": "./zh-CN/index.cjs"
       }
     },
+    "./zh-CN/index": null,
     "./zh-CN/*": {
       "import": {
         "types": "./zh-CN/*.d.mts",
@@ -759,6 +792,7 @@
         "default": "./zh-TW/index.cjs"
       }
     },
+    "./zh-TW/index": null,
     "./zh-TW/*": {
       "import": {
         "types": "./zh-TW/*.d.mts",

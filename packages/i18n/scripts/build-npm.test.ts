@@ -19,10 +19,13 @@ describe('createPackageExports', () => {
     assert.deepEqual(Object.keys(exports), [
       '.',
       './de',
+      './de/index',
       './de/*',
       './ru',
+      './ru/index',
       './ru/*',
       './zh-CN',
+      './zh-CN/index',
       './zh-CN/*',
     ]);
 
@@ -34,6 +37,7 @@ describe('createPackageExports', () => {
       import: { types: './ru/index.d.mts', default: './ru/index.mjs' },
       require: { types: './ru/index.d.cts', default: './ru/index.cjs' },
     });
+    assert.equal(exports['./ru/index'], null);
     assert.deepEqual(exports['./ru/*'], {
       import: { types: './ru/*.d.mts', default: './ru/*.mjs' },
       require: { types: './ru/*.d.cts', default: './ru/*.cjs' },
@@ -163,7 +167,7 @@ describe('createPackageExports', () => {
           await import('@valibot/i18n/ru/email');
           await import('@valibot/i18n/zh-CN/minLength');
           const errors = [];
-          for (const bad of ['@valibot/i18n/ru/nonExistent', '@valibot/i18n/ru/email.mjs', '@valibot/i18n/xx/email']) {
+          for (const bad of ['@valibot/i18n/ru/index', '@valibot/i18n/ru/nonExistent', '@valibot/i18n/ru/email.mjs', '@valibot/i18n/xx/email']) {
             try {
               await import(bad);
               errors.push('UNEXPECTED_OK:' + bad);
@@ -192,6 +196,7 @@ describe('createPackageExports', () => {
         'zh-CN/minLength:esm',
       ]);
       assert.deepEqual(esmErrors, [
+        'ERR_PACKAGE_PATH_NOT_EXPORTED',
         'ERR_MODULE_NOT_FOUND',
         'ERR_MODULE_NOT_FOUND',
         'ERR_PACKAGE_PATH_NOT_EXPORTED',
@@ -210,7 +215,7 @@ describe('createPackageExports', () => {
           require('@valibot/i18n/ru/email');
           require('@valibot/i18n/zh-CN/minLength');
           const errors = [];
-          for (const bad of ['@valibot/i18n/ru/nonExistent', '@valibot/i18n/ru/email.cjs', '@valibot/i18n/xx/email']) {
+          for (const bad of ['@valibot/i18n/ru/index', '@valibot/i18n/ru/nonExistent', '@valibot/i18n/ru/email.cjs', '@valibot/i18n/xx/email']) {
             try {
               require(bad);
               errors.push('UNEXPECTED_OK:' + bad);
@@ -239,6 +244,7 @@ describe('createPackageExports', () => {
         'zh-CN/minLength:cjs',
       ]);
       assert.deepEqual(cjsErrors, [
+        'ERR_PACKAGE_PATH_NOT_EXPORTED',
         'MODULE_NOT_FOUND',
         'MODULE_NOT_FOUND',
         'ERR_PACKAGE_PATH_NOT_EXPORTED',
@@ -256,6 +262,14 @@ describe('createPackageExports', () => {
           "import '@valibot/i18n/zh-CN/minLength';",
         ].join('\n') + '\n'
       );
+      fs.writeFileSync(
+        path.join(tempDir, 'invalid-index.ts'),
+        "import '@valibot/i18n/ru/index';\n"
+      );
+      fs.writeFileSync(
+        path.join(tempDir, 'invalid-missing.ts'),
+        "import '@valibot/i18n/ru/nonExistent';\n"
+      );
 
       for (const config of [
         { module: 'nodenext', moduleResolution: 'nodenext' },
@@ -271,6 +285,7 @@ describe('createPackageExports', () => {
             {
               compilerOptions: {
                 strict: true,
+                noUncheckedSideEffectImports: true,
                 noEmit: true,
                 module: config.module,
                 moduleResolution: config.moduleResolution,
@@ -285,6 +300,37 @@ describe('createPackageExports', () => {
           cwd: tempDir,
           encoding: 'utf8',
         });
+
+        for (const invalidFile of ['invalid-index.ts', 'invalid-missing.ts']) {
+          const invalidTsconfigPath = path.join(
+            tempDir,
+            `tsconfig.${config.moduleResolution}.${invalidFile}.json`
+          );
+          fs.writeFileSync(
+            invalidTsconfigPath,
+            JSON.stringify(
+              {
+                compilerOptions: {
+                  strict: true,
+                  noUncheckedSideEffectImports: true,
+                  noEmit: true,
+                  module: config.module,
+                  moduleResolution: config.moduleResolution,
+                },
+                include: [invalidFile],
+              },
+              null,
+              2
+            )
+          );
+          assert.throws(() =>
+            execFileSync(
+              process.execPath,
+              [tscPath, '-p', invalidTsconfigPath],
+              { cwd: tempDir, encoding: 'utf8', stdio: 'pipe' }
+            )
+          );
+        }
       }
     } finally {
       fs.rmSync(tempDir, { recursive: true, force: true });

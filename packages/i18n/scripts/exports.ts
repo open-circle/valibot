@@ -16,8 +16,10 @@ export interface ExportTarget {
 
 /**
  * Package `exports` map keyed by export subpath or subpath pattern.
+ * Explicit `null` values block internal implementation subpaths such as
+ * `./<code>/index` from being matched by `./<code>/*`.
  */
-export type PackageExports = Record<string, ExportTarget>;
+export type PackageExports = Record<string, ExportTarget | null>;
 
 /**
  * Creates the `exports` map for `@valibot/i18n` using one subpath pattern per
@@ -54,6 +56,7 @@ export function createPackageExports(
         default: `./${code}/index.cjs`,
       },
     };
+    exports[`./${code}/index`] = null;
     exports[`./${code}/*`] = {
       import: {
         types: `./${code}/*.d.mts`,
