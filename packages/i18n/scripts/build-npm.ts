@@ -35,6 +35,7 @@ import uz from '../src/uz';
 import vi from '../src/vi';
 import zhCN from '../src/zh-CN';
 import zhTW from '../src/zh-TW';
+import { createPackageExports } from './exports.ts';
 
 // Create languages array
 // Note: The language file `en` does not need to be added as the default
@@ -89,36 +90,10 @@ const files: string[] = [
   'index.d.cts',
 ];
 
-/**
- * Exports type.
- */
-type Exports = Record<
-  string,
-  {
-    import: {
-      types: string;
-      default: string;
-    };
-    require: {
-      types: string;
-      default: string;
-    };
-  }
->;
-
-// Create exports object with index files
-const exports: Exports = {
-  '.': {
-    import: {
-      types: './index.d.mts',
-      default: './index.mjs',
-    },
-    require: {
-      types: './index.d.cts',
-      default: './index.cjs',
-    },
-  },
-};
+// Create exports object using one subpath pattern per language
+const exports = createPackageExports(
+  languages.map((language) => language.code)
+);
 
 // Clean root directory
 for (const file of package_.files) {
@@ -133,18 +108,6 @@ for (const language of languages) {
   // Add language to files
   files.push(language.code);
 
-  // Add index files to exports
-  exports[`./${language.code}`] = {
-    import: {
-      types: `./${language.code}/index.d.mts`,
-      default: `./${language.code}/index.mjs`,
-    },
-    require: {
-      types: `./${language.code}/index.d.cts`,
-      default: `./${language.code}/index.cjs`,
-    },
-  };
-
   // Add index imports to root index files
   rootModuleImports.push(`import "@valibot/i18n/${language.code}";`);
   rootCommonImports.push(
@@ -154,18 +117,6 @@ for (const language of languages) {
   // Create language import variables
   const languageModuleImports: string[] = [];
   const languageCommonImports: string[] = ['"use strict";'];
-
-  // Add schema files to exports
-  exports[`./${language.code}/schema`] = {
-    import: {
-      types: `./${language.code}/schema.d.mts`,
-      default: `./${language.code}/schema.mjs`,
-    },
-    require: {
-      types: `./${language.code}/schema.d.cts`,
-      default: `./${language.code}/schema.cjs`,
-    },
-  };
 
   // Add schema import to language index file
   languageModuleImports.push(`import "@valibot/i18n/${language.code}/schema";`);
@@ -206,18 +157,6 @@ var import_valibot = require("valibot");
 
   // Create submodules for specific messages
   for (const [reference, message] of Object.entries(language.specific)) {
-    // Add files to exports
-    exports[`./${language.code}/${reference}`] = {
-      import: {
-        types: `./${language.code}/${reference}.d.mts`,
-        default: `./${language.code}/${reference}.mjs`,
-      },
-      require: {
-        types: `./${language.code}/${reference}.d.cts`,
-        default: `./${language.code}/${reference}.cjs`,
-      },
-    };
-
     // Add import to language index file
     languageModuleImports.push(
       `import "@valibot/i18n/${language.code}/${reference}";`
@@ -300,7 +239,7 @@ fs.writeFileSync('index.d.cts', 'export { }');
 // Write root package.json file
 fs.writeFileSync(
   'package.json',
-  JSON.stringify({ ...package_, files, exports }, null, 2)
+  `${JSON.stringify({ ...package_, files, exports }, null, 2)}\n`
 );
 
 // Write root .gitignore file
