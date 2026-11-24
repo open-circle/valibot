@@ -86,6 +86,11 @@ describe('base64', () => {
         'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/', // Base64 alphabet
       ]);
     });
+
+    test('for large Base64 strings', () => {
+      const largeValid = `${'AAAA'.repeat(2_100_000)}Zg==`;
+      expectNoActionIssue(action, [largeValid]);
+    });
   });
 
   describe('should return dataset with issues', () => {
@@ -146,12 +151,27 @@ describe('base64', () => {
 
     test('for invalid padding', () => {
       expectActionIssue(action, baseIssue, [
+        '=',
+        '==',
+        '===',
+        '====',
+        'a===',
+        'a==',
+        'a=',
+        'ab=',
+        'a=bc',
         'dmFsaWJvdA', // == missing
         'dmFsaWJvdA=', // = missing
         'dmFsaWJvdA===', // = extra
         'Zm9vYmE', // = missing
         'Zm9vYmE==', // = extra
       ]);
+    });
+
+    test('for large invalid Base64 strings', () => {
+      const largeInvalidChar = `${'AAAA'.repeat(2_100_000)}AAA!`;
+      const largeInvalidLen = `${'AAAA'.repeat(2_100_000)}A`;
+      expectActionIssue(action, baseIssue, [largeInvalidChar, largeInvalidLen]);
     });
   });
 });
