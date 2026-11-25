@@ -30,6 +30,7 @@ import rw from '../src/rw';
 import sk from '../src/sk';
 import sl from '../src/sl';
 import sv from '../src/sv';
+import tg from '../src/tg';
 import tr from '../src/tr';
 import uk from '../src/uk';
 import uz from '../src/uz';
@@ -69,6 +70,7 @@ const languages = [
   sk,
   sl,
   sv,
+  tg,
   tr,
   uk,
   uz,

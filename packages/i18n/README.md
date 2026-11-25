@@ -38,6 +38,7 @@ Valibot ships English messages by default, so this package publishes translated 
 | Slovenian (sl)         | [#422][pr-422-url]   | ✅     |
 | Spanish (es)           | [#581][pr-581-url]   | ✅     |
 | Swedish (sv)           | [#606][pr-606-url]   | ✅     |
+| Tajik (tg)             | [#1754][pr-1754-url] | ✅     |
 | Turkish (tr)           | [#549][pr-549-url]   | ✅     |
 | Ukrainian (uk)         | [#423][pr-423-url]   | ✅     |
 | Uzbek (uz)             | [#1452][pr-1452-url] | ✅     |
@@ -78,6 +79,7 @@ The deprecated `kr` submodule remains available as an alias of `ko` for compatib
 [pr-1452-url]: https://github.com/open-circle/valibot/pull/1452
 [pr-1489-url]: https://github.com/open-circle/valibot/pull/1489
 [pr-1512-url]: https://github.com/open-circle/valibot/pull/1512
+[pr-1754-url]: https://github.com/open-circle/valibot/pull/1754
 
 ## Getting started
 
