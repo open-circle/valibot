@@ -63,6 +63,16 @@ In addition, it allows you to easily extend my functionality with external code 
 
 > Coming from [Zod](https://zod.dev/)? Read our [migration article](https://valibot.dev/blog/why-migrate-to-valibot/) to see the benefits of Valibot, and use our [migration guide](https://valibot.dev/guides/migrate-from-zod/) to migrate your schemas with confidence.
 
+## Agent skill
+
+The npm package includes the [official Valibot agent skill](https://valibot.dev/.well-known/agent-skills/valibot/SKILL.md)
+at `skills/valibot/SKILL.md`.
+
+With pnpm 12.11.0 or later, installing Valibot as a direct dependency makes the
+skill available for review. Run `pnpm approve` and choose the Valibot skill and
+the agent directories to link it into. Skills are not linked until you approve
+them. See [pnpm's agent skills guide](https://pnpm.io/agent-skills) for details.
+
 ## Partners
 
 Thanks to our partners who support my development! [Join them](https://github.com/sponsors/fabian-hiller) and contribute to the sustainability of open source software!

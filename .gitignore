@@ -25,6 +25,9 @@ logs
 temp
 tmp
 
+# Generated package skills
+/library/skills/
+
 # Local env files
 .env*.local
 

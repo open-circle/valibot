@@ -40,12 +40,14 @@
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "skills"
   ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
+    "prepack": "node ./scripts/prepare-skill.mjs",
     "play": "tsm ./playground.ts",
     "test": "vitest --typecheck",
     "coverage": "vitest run --coverage --isolate",
