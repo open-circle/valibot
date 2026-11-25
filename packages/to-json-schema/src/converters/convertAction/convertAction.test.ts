@@ -1187,6 +1187,120 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert repeated multiple of actions', () => {
+    expect(
+      convertAction(
+        convertAction(
+          { type: 'number' },
+          v.multipleOf<number, 2>(2),
+          undefined
+        ),
+        v.multipleOf<number, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      multipleOf: 2,
+      allOf: [{ multipleOf: 3 }],
+    });
+    expect(
+      convertAction(
+        convertAction(
+          { type: 'number' },
+          v.multipleOf<number, 3>(3),
+          undefined
+        ),
+        v.multipleOf<number, 2>(2),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      multipleOf: 3,
+      allOf: [{ multipleOf: 2 }],
+    });
+  });
+
+  test('should keep every requirement of repeated multiple of actions', () => {
+    expect(
+      convertAction(
+        convertAction(
+          convertAction(
+            { type: 'number' },
+            v.multipleOf<number, 2>(2),
+            undefined
+          ),
+          v.multipleOf<number, 3>(3),
+          undefined
+        ),
+        v.multipleOf<number, 5>(5),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      multipleOf: 2,
+      allOf: [{ multipleOf: 3 }, { multipleOf: 5 }],
+    });
+  });
+
+  test('should ignore duplicate multiple of requirements', () => {
+    expect(
+      convertAction(
+        convertAction(
+          convertAction(
+            { type: 'number' },
+            v.multipleOf<number, 2>(2),
+            undefined
+          ),
+          v.multipleOf<number, 2>(2),
+          undefined
+        ),
+        v.multipleOf<number, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      multipleOf: 2,
+      allOf: [{ multipleOf: 3 }],
+    });
+    expect(
+      convertAction(
+        convertAction(
+          convertAction(
+            { type: 'number' },
+            v.multipleOf<number, 2>(2),
+            undefined
+          ),
+          v.multipleOf<number, 3>(3),
+          undefined
+        ),
+        v.multipleOf<number, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      multipleOf: 2,
+      allOf: [{ multipleOf: 3 }],
+    });
+  });
+
+  test('should preserve existing allOf constraints for multiple of action', () => {
+    expect(
+      convertAction(
+        convertAction(
+          { type: 'number', allOf: [{ minimum: 0 }] },
+          v.multipleOf<number, 2>(2),
+          undefined
+        ),
+        v.multipleOf<number, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      multipleOf: 2,
+      allOf: [{ minimum: 0 }, { multipleOf: 3 }],
+    });
+  });
+
   test('should convert non empty action for strings', () => {
     expect(
       convertAction({ type: 'string' }, v.nonEmpty(), undefined)

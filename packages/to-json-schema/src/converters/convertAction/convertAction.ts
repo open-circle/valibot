@@ -720,7 +720,23 @@ export function convertAction(
     }
 
     case 'multiple_of': {
-      jsonSchema.multipleOf = valibotAction.requirement;
+      if (jsonSchema.multipleOf === undefined) {
+        jsonSchema.multipleOf = valibotAction.requirement;
+      } else if (
+        jsonSchema.multipleOf !== valibotAction.requirement &&
+        !jsonSchema.allOf?.some(
+          (option) =>
+            typeof option !== 'boolean' &&
+            option.multipleOf === valibotAction.requirement
+        )
+      ) {
+        // A schema can only hold one "multipleOf" keyword, so every additional
+        // constraint is preserved as a separate schema inside "allOf".
+        jsonSchema.allOf = [
+          ...(jsonSchema.allOf ?? []),
+          { multipleOf: valibotAction.requirement },
+        ];
+      }
       break;
     }
 
