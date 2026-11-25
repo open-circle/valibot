@@ -71,7 +71,12 @@ at `skills/valibot/SKILL.md`.
 With pnpm 12.11.0 or later, installing Valibot as a direct dependency makes the
 skill available for review. Run `pnpm approve` and choose the Valibot skill and
 the agent directories to link it into. Skills are not linked until you approve
-them. See [pnpm's agent skills guide](https://pnpm.io/agent-skills) for details.
+them.
+
+If pnpm detects no agent skill directory, create `.agents/skills` or configure
+`skills.dirs` in `pnpm-workspace.yaml` before approving. If the skill is already
+approved, run `pnpm install` again after creating or configuring the directory.
+See [pnpm's agent skills guide](https://pnpm.io/agent-skills) for details.
 
 ## Partners
 
