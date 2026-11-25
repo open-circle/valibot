@@ -34,6 +34,7 @@ export interface Language {
     | 'sk'
     | 'sl'
     | 'sv'
+    | 'tg'
     | 'tr'
     | 'uk'
     | 'uz'
