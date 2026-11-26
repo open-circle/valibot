@@ -1301,6 +1301,52 @@ describe('convertAction', () => {
     });
   });
 
+  test('should not duplicate multiple of constraints already in allOf', () => {
+    expect(
+      convertAction(
+        { type: 'number', allOf: [{ multipleOf: 2 }] },
+        v.multipleOf<number, 2>(2),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      allOf: [{ multipleOf: 2 }],
+    });
+  });
+
+  test('should not treat draft 7 ref siblings as multiple of constraints', () => {
+    expect(
+      convertAction(
+        {
+          type: 'number',
+          allOf: [{ $ref: '#/$defs/nonnegative', multipleOf: 2 }],
+        },
+        v.multipleOf<number, 2>(2),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      multipleOf: 2,
+      allOf: [{ $ref: '#/$defs/nonnegative', multipleOf: 2 }],
+    });
+  });
+
+  test('should treat draft 2020-12 ref siblings as multiple of constraints', () => {
+    expect(
+      convertAction(
+        {
+          type: 'number',
+          allOf: [{ $ref: '#/$defs/nonnegative', multipleOf: 2 }],
+        },
+        v.multipleOf<number, 2>(2),
+        { target: 'draft-2020-12' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      allOf: [{ $ref: '#/$defs/nonnegative', multipleOf: 2 }],
+    });
+  });
+
   test('should convert non empty action for strings', () => {
     expect(
       convertAction({ type: 'string' }, v.nonEmpty(), undefined)
