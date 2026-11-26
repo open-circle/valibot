@@ -68,6 +68,13 @@ describe('multipleOf', () => {
     test('for valid bigints', () => {
       expectNoActionIssue(multipleOf(5n), [-15n, -10n, -5n, 0n, 5n, 10n, 15n]);
     });
+
+    test('for valid decimal numbers', () => {
+      expectNoActionIssue(multipleOf(0.01), [-3, -0.03, 0, 0.03, 3]);
+      expectNoActionIssue(multipleOf(0.1), [-3.3, 0, 3.3]);
+      expectNoActionIssue(multipleOf(0.07), [-2.03, 2.03]);
+      expectNoActionIssue(multipleOf(1e-7), [-2e-7, 1e-7, 2e-7]);
+    });
   });
 
   describe('should return dataset with issues', () => {
@@ -83,6 +90,31 @@ describe('multipleOf', () => {
         multipleOf(5, 'message'),
         { ...baseIssue, requirement: 5 },
         [-14, -9, -4, 1, 3, 6, 11]
+      );
+    });
+
+    test('for invalid decimal numbers', () => {
+      expectActionIssue(
+        multipleOf(0.1, 'message'),
+        {
+          kind: 'validation',
+          type: 'multiple_of',
+          expected: '%0.1',
+          message: 'message',
+          requirement: 0.1,
+        },
+        [-3.03, 3.03]
+      );
+      expectActionIssue(
+        multipleOf(1e-7, 'message'),
+        {
+          kind: 'validation',
+          type: 'multiple_of',
+          expected: '%1e-7',
+          message: 'message',
+          requirement: 1e-7,
+        },
+        [-1.5e-7, 1.5e-7]
       );
     });
 

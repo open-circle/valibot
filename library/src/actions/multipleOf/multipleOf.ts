@@ -10,6 +10,45 @@ import { _addIssue } from '../../utils/index.ts';
  */
 type Input = number | bigint;
 
+function decimalParts(value: number): [bigint, number] {
+  const [mantissa, exponent = '0'] = value.toString().toLowerCase().split('e');
+  const point = mantissa.indexOf('.');
+  const fraction = point === -1 ? 0 : mantissa.length - point - 1;
+  const negative = mantissa.startsWith('-');
+  const digits = mantissa.replace('.', '').replace('-', '');
+  return [BigInt((negative ? '-' : '') + digits), Number(exponent) - fraction];
+}
+
+function isDecimalMultiple(value: number, requirement: number): boolean {
+  if (!Number.isFinite(value) || !Number.isFinite(requirement)) {
+    return value % requirement === 0;
+  }
+
+  const [valueCoefficient, valueExponent] = decimalParts(value);
+  const [requirementCoefficient, requirementExponent] =
+    decimalParts(requirement);
+  if (requirementCoefficient === 0n) {
+    return false;
+  }
+
+  const shift = valueExponent - requirementExponent;
+  return shift >= 0
+    ? (valueCoefficient * 10n ** BigInt(shift)) % requirementCoefficient === 0n
+    : valueCoefficient % (requirementCoefficient * 10n ** BigInt(-shift)) ===
+        0n;
+}
+
+function isMultiple(value: Input, requirement: Input): boolean {
+  if (typeof value === 'number' && typeof requirement === 'number') {
+    return isDecimalMultiple(value, requirement);
+  }
+  if (typeof value === 'bigint' && typeof requirement === 'bigint') {
+    return value % requirement === 0n;
+  }
+  // @ts-expect-error
+  return value % requirement == 0;
+}
+
 /**
  * Multiple of issue interface.
  */
@@ -155,8 +194,7 @@ export function multipleOf(
     requirement,
     message,
     '~run'(dataset, config) {
-      // @ts-expect-error
-      if (dataset.typed && dataset.value % this.requirement != 0) {
+      if (dataset.typed && !isMultiple(dataset.value, this.requirement)) {
         _addIssue(this, 'multiple', dataset, config);
       }
       return dataset;
