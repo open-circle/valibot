@@ -143,5 +143,35 @@ describe('checkItemsAsync', () => {
         ],
       } satisfies PartialDataset<number[], CheckItemsIssue<number[]>>);
     });
+
+    test('with abort early', async () => {
+      const input = [-12, 345, 6, 10];
+      expect(
+        await action['~run'](
+          { typed: true, value: input },
+          { abortEarly: true }
+        )
+      ).toStrictEqual({
+        typed: true,
+        value: input,
+        issues: [
+          {
+            ...baseIssue,
+            abortEarly: true,
+            input: input[0],
+            received: `${input[0]}`,
+            path: [
+              {
+                type: 'array',
+                origin: 'value',
+                input,
+                key: 0,
+                value: input[0],
+              },
+            ],
+          },
+        ],
+      } satisfies PartialDataset<number[], CheckItemsIssue<number[]>>);
+    });
   });
 });
