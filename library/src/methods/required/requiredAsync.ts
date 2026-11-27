@@ -32,10 +32,7 @@ import { _standardSchema } from '../../utils/index.ts';
  * expensive (see issue #1663).
  */
 type Schema = SchemaWithoutPipe<
-  (
-    | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-    | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
-  ) &
+  BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>> &
     (
       | {
           readonly type: 'object' | 'strict_object';
