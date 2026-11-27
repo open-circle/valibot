@@ -179,12 +179,9 @@ type InputWithQuestionMarks<
 > =
   // NOTE: We short-circuit to `TObject` when no entry is optional to avoid
   // building the `Omit`, `Pick` and `Partial` types of `MarkOptional` in the
-  // common case. Entries with an index signature still use `MarkOptional`,
-  // because `Omit` drops their known keys (see issue #1663).
+  // common case (see issue #1663).
   [OptionalInputKeys<TEntries>] extends [never]
-    ? string extends keyof TEntries
-      ? MarkOptional<TObject, never>
-      : TObject
+    ? TObject
     : MarkOptional<TObject, OptionalInputKeys<TEntries>>;
 
 /**
@@ -196,12 +193,9 @@ type OutputWithQuestionMarks<
 > =
   // NOTE: We short-circuit to `TObject` when no entry is optional to avoid
   // building the `Omit`, `Pick` and `Partial` types of `MarkOptional` in the
-  // common case. Entries with an index signature still use `MarkOptional`,
-  // because `Omit` drops their known keys (see issue #1663).
+  // common case (see issue #1663).
   [OptionalOutputKeys<TEntries>] extends [never]
-    ? string extends keyof TEntries
-      ? MarkOptional<TObject, never>
-      : TObject
+    ? TObject
     : MarkOptional<TObject, OptionalOutputKeys<TEntries>>;
 
 /**
