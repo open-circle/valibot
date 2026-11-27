@@ -39,9 +39,9 @@ export interface JsonSchema {
   const?: JsonSchemaType | undefined;
   multipleOf?: number | undefined;
   maximum?: number | undefined;
-  exclusiveMaximum?: number | undefined;
+  exclusiveMaximum?: boolean | number | undefined;
   minimum?: number | undefined;
-  exclusiveMinimum?: number | undefined;
+  exclusiveMinimum?: boolean | number | undefined;
   maxLength?: number | undefined;
   minLength?: number | undefined;
   pattern?: string | undefined;

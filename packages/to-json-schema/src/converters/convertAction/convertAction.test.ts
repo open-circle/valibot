@@ -506,13 +506,51 @@ describe('convertAction', () => {
     ).toStrictEqual({ type: 'string' });
   });
 
-  test('should throw error for gt value action with openapi-3.0', () => {
-    const error = 'The "gt_value" action is not supported for OpenAPI 3.0.';
-    expect(() =>
+  test('should convert gt value action for openapi-3.0', () => {
+    expect(
       convertAction({ type: 'number' }, v.gtValue<v.ValueInput, 3>(3), {
         target: 'openapi-3.0',
       })
-    ).toThrowError(error);
+    ).toStrictEqual({
+      type: 'number',
+      minimum: 3,
+      exclusiveMinimum: true,
+    });
+  });
+
+  test('should keep stricter lower bound for gt and min value actions with openapi-3.0', () => {
+    const config = { target: 'openapi-3.0' } as const;
+    const convert = (
+      actions: (
+        | v.GtValueAction<v.ValueInput, number, undefined>
+        | v.MinValueAction<v.ValueInput, number, undefined>
+      )[]
+    ) => {
+      const jsonSchema = { type: 'number' as const };
+      for (const action of actions) {
+        convertAction(jsonSchema, action, config);
+      }
+      return jsonSchema;
+    };
+    for (const actions of [
+      [v.gtValue(0), v.minValue(5)],
+      [v.minValue(5), v.gtValue(0)],
+    ]) {
+      expect(convert(actions)).toStrictEqual({ type: 'number', minimum: 5 });
+    }
+    for (const actions of [
+      [v.gtValue(5), v.minValue(0)],
+      [v.minValue(0), v.gtValue(5)],
+      [v.gtValue(5), v.minValue(5)],
+      [v.minValue(5), v.gtValue(5)],
+      [v.gtValue(0), v.gtValue(5)],
+    ]) {
+      expect(convert(actions)).toStrictEqual({
+        type: 'number',
+        minimum: 5,
+        exclusiveMinimum: true,
+      });
+    }
   });
 
   test('should convert includes action', () => {
@@ -783,13 +821,72 @@ describe('convertAction', () => {
     ).toStrictEqual({ type: 'string' });
   });
 
-  test('should throw error for lt value action with openapi-3.0', () => {
-    const error = 'The "lt_value" action is not supported for OpenAPI 3.0.';
-    expect(() =>
+  test('should convert lt value action for openapi-3.0', () => {
+    expect(
       convertAction({ type: 'number' }, v.ltValue<v.ValueInput, 10>(10), {
         target: 'openapi-3.0',
       })
-    ).toThrowError(error);
+    ).toStrictEqual({
+      type: 'number',
+      maximum: 10,
+      exclusiveMaximum: true,
+    });
+  });
+
+  test('should keep stricter upper bound for lt and max value actions with openapi-3.0', () => {
+    const config = { target: 'openapi-3.0' } as const;
+    const convert = (
+      actions: (
+        | v.LtValueAction<v.ValueInput, number, undefined>
+        | v.MaxValueAction<v.ValueInput, number, undefined>
+      )[]
+    ) => {
+      const jsonSchema = { type: 'number' as const };
+      for (const action of actions) {
+        convertAction(jsonSchema, action, config);
+      }
+      return jsonSchema;
+    };
+    for (const actions of [
+      [v.ltValue(10), v.maxValue(5)],
+      [v.maxValue(5), v.ltValue(10)],
+    ]) {
+      expect(convert(actions)).toStrictEqual({ type: 'number', maximum: 5 });
+    }
+    for (const actions of [
+      [v.ltValue(5), v.maxValue(10)],
+      [v.maxValue(10), v.ltValue(5)],
+      [v.ltValue(5), v.maxValue(5)],
+      [v.maxValue(5), v.ltValue(5)],
+      [v.ltValue(10), v.ltValue(5)],
+    ]) {
+      expect(convert(actions)).toStrictEqual({
+        type: 'number',
+        maximum: 5,
+        exclusiveMaximum: true,
+      });
+    }
+  });
+
+  test('should keep gt and lt value actions as separate bounds for JSON Schema targets', () => {
+    for (const target of ['draft-07', 'draft-2020-12'] as const) {
+      const jsonSchema = { type: 'number' as const };
+      for (const action of [
+        v.gtValue<v.ValueInput, 5>(5),
+        v.minValue<v.ValueInput, 5>(5),
+        v.ltValue<v.ValueInput, 10>(10),
+        v.maxValue<v.ValueInput, 10>(10),
+      ]) {
+        convertAction(jsonSchema, action, { target });
+      }
+      expect(jsonSchema).toStrictEqual({
+        type: 'number',
+        exclusiveMinimum: 5,
+        minimum: 5,
+        exclusiveMaximum: 10,
+        maximum: 10,
+      });
+    }
   });
 
   test('should convert max entries action', () => {
@@ -1481,6 +1578,19 @@ describe('convertAction', () => {
       maximum: Number.MAX_SAFE_INTEGER,
       exclusiveMinimum: 10,
       exclusiveMaximum: 20,
+    });
+  });
+
+  test('should replace broader exclusive bounds with safe integer bounds for openapi-3.0', () => {
+    const config = { target: 'openapi-3.0' } as const;
+    const jsonSchema = { type: 'number' as const };
+    convertAction(jsonSchema, v.gtValue<v.ValueInput, number>(-1e20), config);
+    convertAction(jsonSchema, v.ltValue<v.ValueInput, number>(1e20), config);
+    convertAction(jsonSchema, v.safeInteger<number>(), config);
+    expect(jsonSchema).toStrictEqual({
+      type: 'integer',
+      minimum: Number.MIN_SAFE_INTEGER,
+      maximum: Number.MAX_SAFE_INTEGER,
     });
   });
 
