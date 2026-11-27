@@ -1,0 +1,22 @@
+---
+title: decode
+description: Decodes a typed value based on a schema.
+source: /methods/decode/decode.ts
+contributors:
+  - javangriff
+---
+
+# decode
+
+Decodes a value and returns the schema's output. Its runtime behavior is the same as [parse](/api/parse/), but its input must match `InferInput<TSchema>` at compile time.
+
+```ts
+const output = v.decode(schema, input, config);
+const asyncOutput = await v.decodeAsync(asyncSchema, input, config);
+```
+
+`schema` can be any synchronous schema. `decodeAsync` also accepts asynchronous schemas. The optional `config` argument uses the same configuration as `parse`.
+
+Validation failures throw `ValiError`. Use [safeDecode](/api/safeDecode/) to return validation issues instead. For unknown external data, use `parse` or `safeParse`.
+
+See [codec](/api/codec/) for conversion, nesting, and callback examples. Ordinary schemas without codecs are also supported.

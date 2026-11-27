@@ -1,0 +1,26 @@
+---
+title: safeEncode
+description: Encodes a typed value and returns its validation result.
+source: /methods/safeEncode/safeEncode.ts
+contributors:
+  - javangriff
+---
+
+# safeEncode
+
+Encodes a decoded value and returns a result with `typed`, `success`, `output`, and `issues`, following [safeParse](/api/safeParse/).
+
+```ts
+const result = v.safeEncode(schema, input, config);
+const asyncResult = await v.safeEncodeAsync(asyncSchema, input, config);
+
+if (result.success) {
+  console.log(result.output);
+} else {
+  console.log(result.issues);
+}
+```
+
+The arguments follow [encode](/api/encode/). A successful `output` has type `InferInput<TSchema>`. Async variants return a promise of the same result shape.
+
+Reported validation issues are returned. Uncaught callback exceptions and unsupported one-way transformations still throw. Defaults and fallbacks are not applied. See [codec](/api/codec/) for conversion rules.

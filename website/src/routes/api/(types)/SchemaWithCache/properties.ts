@@ -51,13 +51,19 @@ export const properties: Record<string, PropertyProps> = {
           href: '../OutputDataset/',
           generics: [
             {
-              type: 'custom',
-              name: 'InferOutput',
-              href: '../InferOutput/',
-              generics: [
+              type: 'union',
+              options: [
                 {
                   type: 'custom',
-                  name: 'TSchema',
+                  name: 'InferInput',
+                  href: '../InferInput/',
+                  generics: [{ type: 'custom', name: 'TSchema' }],
+                },
+                {
+                  type: 'custom',
+                  name: 'InferOutput',
+                  href: '../InferOutput/',
+                  generics: [{ type: 'custom', name: 'TSchema' }],
                 },
               ],
             },

@@ -8,6 +8,7 @@ import type {
   OutputDataset,
 } from '../../types/index.ts';
 import { _addIssue, _joinExpects, _standardSchema } from '../../utils/index.ts';
+import { _getDiscriminatorExpected } from './_getDiscriminatorExpected.ts';
 import type {
   InferVariantIssue,
   VariantIssue,
@@ -141,12 +142,22 @@ export function variant(
               for (const currentKey of allKeys) {
                 // If any discriminator is invalid, mark keys as invalid
                 const discriminatorSchema = schema.entries[currentKey];
+                const isKeyPresent = currentKey in input;
+                const discriminatorValue: unknown = isKeyPresent
+                  ? // @ts-expect-error
+                    input[currentKey]
+                  : undefined;
                 if (
-                  currentKey in input
+                  isKeyPresent
                     ? discriminatorSchema['~run'](
-                        // @ts-expect-error
-                        { typed: false, value: input[currentKey] },
-                        ABORT_EARLY_CONFIG
+                        { typed: false, value: discriminatorValue },
+                        config['~direction'] === 'encode'
+                          ? {
+                              ...config,
+                              ...ABORT_EARLY_CONFIG,
+                              '~typeCheckOnly': true,
+                            }
+                          : ABORT_EARLY_CONFIG
                       ).issues
                     : discriminatorSchema.type !== 'exact_optional' &&
                       discriminatorSchema.type !== 'optional' &&
@@ -174,7 +185,12 @@ export function variant(
                   // store its expected value
                   if (invalidDiscriminatorKey === currentKey) {
                     expectedDiscriminators.push(
-                      schema.entries[currentKey].expects
+                      config['~direction'] === 'encode'
+                        ? _getDiscriminatorExpected(
+                            discriminatorSchema,
+                            discriminatorValue
+                          )
+                        : discriminatorSchema.expects
                     );
                   }
 

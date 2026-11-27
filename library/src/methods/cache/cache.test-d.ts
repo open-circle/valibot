@@ -1,6 +1,6 @@
 import { describe, expectTypeOf, test } from 'vitest';
 import type { StringIssue, StringSchema } from '../../schemas/index.ts';
-import { string } from '../../schemas/index.ts';
+import { codec, date, string } from '../../schemas/index.ts';
 import type {
   InferInput,
   InferIssue,
@@ -12,6 +12,20 @@ import { cache } from './cache.ts';
 import type { Cache } from './types.ts';
 
 describe('cache', () => {
+  test('types the cache for both encoded and decoded values', () => {
+    const schema = cache(
+      codec(string(), date(), {
+        decode: (value) => new Date(value),
+        encode: (value) => value.toISOString(),
+      })
+    );
+    expectTypeOf(schema.cache).toEqualTypeOf<
+      Cache<OutputDataset<string | Date, InferIssue<typeof schema>>>
+    >();
+    expectTypeOf<InferInput<typeof schema>>().toEqualTypeOf<string>();
+    expectTypeOf<InferOutput<typeof schema>>().toEqualTypeOf<Date>();
+  });
+
   describe('should return schema object', () => {
     test('without config', () => {
       const schema = string();

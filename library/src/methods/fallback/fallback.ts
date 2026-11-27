@@ -56,7 +56,7 @@ export function fallback<
     fallback,
     '~run'(dataset, config) {
       const outputDataset = schema['~run'](dataset, config);
-      return outputDataset.issues
+      return config['~direction'] !== 'encode' && outputDataset.issues
         ? { typed: true, value: getFallback(this, outputDataset, config) }
         : outputDataset;
     },
