@@ -405,14 +405,21 @@ export function convertAction(
         break;
       }
       if (config?.target === 'openapi-3.0') {
-        errors = addError(
-          errors,
-          'The "gt_value" action is not supported for OpenAPI 3.0.'
-        );
+        const requirement = valibotAction.requirement as number;
+        if (
+          typeof jsonSchema.minimum !== 'number' ||
+          !Number.isFinite(jsonSchema.minimum) ||
+          requirement >= jsonSchema.minimum
+        ) {
+          jsonSchema.minimum = requirement;
+          jsonSchema.exclusiveMinimum = true;
+        }
         break;
       }
       jsonSchema.exclusiveMinimum = getLowerBound(
-        jsonSchema.exclusiveMinimum,
+        typeof jsonSchema.exclusiveMinimum === 'number'
+          ? jsonSchema.exclusiveMinimum
+          : undefined,
         valibotAction.requirement as number
       );
       break;
@@ -528,14 +535,21 @@ export function convertAction(
         break;
       }
       if (config?.target === 'openapi-3.0') {
-        errors = addError(
-          errors,
-          'The "lt_value" action is not supported for OpenAPI 3.0.'
-        );
+        const requirement = valibotAction.requirement as number;
+        if (
+          typeof jsonSchema.maximum !== 'number' ||
+          !Number.isFinite(jsonSchema.maximum) ||
+          requirement <= jsonSchema.maximum
+        ) {
+          jsonSchema.maximum = requirement;
+          jsonSchema.exclusiveMaximum = true;
+        }
         break;
       }
       jsonSchema.exclusiveMaximum = getUpperBound(
-        jsonSchema.exclusiveMaximum,
+        typeof jsonSchema.exclusiveMaximum === 'number'
+          ? jsonSchema.exclusiveMaximum
+          : undefined,
         valibotAction.requirement as number
       );
       break;
@@ -604,6 +618,15 @@ export function convertAction(
           'The requirement of the "max_value" action is not JSON compatible.'
         );
         break;
+      }
+      if (
+        config?.target === 'openapi-3.0' &&
+        jsonSchema.exclusiveMaximum === true &&
+        typeof jsonSchema.maximum === 'number' &&
+        Number.isFinite(jsonSchema.maximum) &&
+        (valibotAction.requirement as number) < jsonSchema.maximum
+      ) {
+        delete jsonSchema.exclusiveMaximum;
       }
       jsonSchema.maximum = getUpperBound(
         jsonSchema.maximum,
@@ -712,6 +735,15 @@ export function convertAction(
         );
         break;
       }
+      if (
+        config?.target === 'openapi-3.0' &&
+        jsonSchema.exclusiveMinimum === true &&
+        typeof jsonSchema.minimum === 'number' &&
+        Number.isFinite(jsonSchema.minimum) &&
+        (valibotAction.requirement as number) > jsonSchema.minimum
+      ) {
+        delete jsonSchema.exclusiveMinimum;
+      }
       jsonSchema.minimum = getLowerBound(
         jsonSchema.minimum,
         valibotAction.requirement as number
@@ -792,10 +824,28 @@ export function convertAction(
 
     case 'safe_integer': {
       jsonSchema.type = 'integer';
+      if (
+        config?.target === 'openapi-3.0' &&
+        jsonSchema.exclusiveMinimum === true &&
+        typeof jsonSchema.minimum === 'number' &&
+        Number.isFinite(jsonSchema.minimum) &&
+        Number.MIN_SAFE_INTEGER > jsonSchema.minimum
+      ) {
+        delete jsonSchema.exclusiveMinimum;
+      }
       jsonSchema.minimum = getLowerBound(
         jsonSchema.minimum,
         Number.MIN_SAFE_INTEGER
       );
+      if (
+        config?.target === 'openapi-3.0' &&
+        jsonSchema.exclusiveMaximum === true &&
+        typeof jsonSchema.maximum === 'number' &&
+        Number.isFinite(jsonSchema.maximum) &&
+        Number.MAX_SAFE_INTEGER < jsonSchema.maximum
+      ) {
+        delete jsonSchema.exclusiveMaximum;
+      }
       jsonSchema.maximum = getUpperBound(
         jsonSchema.maximum,
         Number.MAX_SAFE_INTEGER

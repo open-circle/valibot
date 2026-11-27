@@ -506,13 +506,97 @@ describe('convertAction', () => {
     ).toStrictEqual({ type: 'string' });
   });
 
-  test('should throw error for gt value action with openapi-3.0', () => {
-    const error = 'The "gt_value" action is not supported for OpenAPI 3.0.';
-    expect(() =>
+  test('should convert gt value action with openapi-3.0', () => {
+    expect(
       convertAction({ type: 'number' }, v.gtValue<v.ValueInput, 3>(3), {
         target: 'openapi-3.0',
       })
-    ).toThrowError(error);
+    ).toStrictEqual({
+      type: 'number',
+      minimum: 3,
+      exclusiveMinimum: true,
+    });
+    expect(
+      convertAction(
+        { type: 'number', minimum: 5 },
+        v.gtValue<v.ValueInput, 0>(0),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      minimum: 5,
+    });
+    expect(
+      convertAction(
+        { type: 'number', minimum: 0 },
+        v.gtValue<v.ValueInput, 5>(5),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      minimum: 5,
+      exclusiveMinimum: true,
+    });
+    expect(
+      convertAction(
+        { type: 'number', minimum: 5 },
+        v.gtValue<v.ValueInput, 5>(5),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      minimum: 5,
+      exclusiveMinimum: true,
+    });
+    expect(
+      convertAction(
+        { type: 'number', minimum: 0, exclusiveMinimum: true },
+        v.minValue<v.ValueInput, 5>(5),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      minimum: 5,
+    });
+    expect(
+      convertAction(
+        { type: 'number', minimum: 5, exclusiveMinimum: true },
+        v.minValue<v.ValueInput, 0>(0),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      minimum: 5,
+      exclusiveMinimum: true,
+    });
+    expect(
+      convertAction(
+        { type: 'number', minimum: 5, exclusiveMinimum: true },
+        v.minValue<v.ValueInput, 5>(5),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      minimum: 5,
+      exclusiveMinimum: true,
+    });
+    expect(
+      convertAction(
+        {
+          type: 'number',
+          minimum: Number.MIN_SAFE_INTEGER - 1,
+          exclusiveMinimum: true,
+          maximum: Number.MAX_SAFE_INTEGER + 1,
+          exclusiveMaximum: true,
+        },
+        v.safeInteger<number>(),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'integer',
+      minimum: Number.MIN_SAFE_INTEGER,
+      maximum: Number.MAX_SAFE_INTEGER,
+    });
   });
 
   test('should convert includes action', () => {
@@ -783,13 +867,80 @@ describe('convertAction', () => {
     ).toStrictEqual({ type: 'string' });
   });
 
-  test('should throw error for lt value action with openapi-3.0', () => {
-    const error = 'The "lt_value" action is not supported for OpenAPI 3.0.';
-    expect(() =>
+  test('should convert lt value action with openapi-3.0', () => {
+    expect(
       convertAction({ type: 'number' }, v.ltValue<v.ValueInput, 10>(10), {
         target: 'openapi-3.0',
       })
-    ).toThrowError(error);
+    ).toStrictEqual({
+      type: 'number',
+      maximum: 10,
+      exclusiveMaximum: true,
+    });
+    expect(
+      convertAction(
+        { type: 'number', maximum: 5 },
+        v.ltValue<v.ValueInput, 10>(10),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      maximum: 5,
+    });
+    expect(
+      convertAction(
+        { type: 'number', maximum: 10 },
+        v.ltValue<v.ValueInput, 5>(5),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      maximum: 5,
+      exclusiveMaximum: true,
+    });
+    expect(
+      convertAction(
+        { type: 'number', maximum: 5 },
+        v.ltValue<v.ValueInput, 5>(5),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      maximum: 5,
+      exclusiveMaximum: true,
+    });
+    expect(
+      convertAction(
+        { type: 'number', maximum: 10, exclusiveMaximum: true },
+        v.maxValue<v.ValueInput, 5>(5),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      maximum: 5,
+    });
+    expect(
+      convertAction(
+        { type: 'number', maximum: 5, exclusiveMaximum: true },
+        v.maxValue<v.ValueInput, 10>(10),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      maximum: 5,
+      exclusiveMaximum: true,
+    });
+    expect(
+      convertAction(
+        { type: 'number', maximum: 5, exclusiveMaximum: true },
+        v.maxValue<v.ValueInput, 5>(5),
+        { target: 'openapi-3.0' }
+      )
+    ).toStrictEqual({
+      type: 'number',
+      maximum: 5,
+      exclusiveMaximum: true,
+    });
   });
 
   test('should convert max entries action', () => {
