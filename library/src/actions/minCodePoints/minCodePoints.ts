@@ -121,7 +121,10 @@ export function minCodePoints(
     requirement,
     message,
     '~run'(dataset, config) {
-      if (dataset.typed) {
+      if (
+        dataset.typed &&
+        Math.ceil(dataset.value.length / 2) < this.requirement
+      ) {
         const count = _getCodePointCount(dataset.value);
         if (count < this.requirement) {
           _addIssue(this, 'code points', dataset, config, {

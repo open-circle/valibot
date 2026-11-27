@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { _getCodePointCount } from '../../utils/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
@@ -152,6 +152,28 @@ describe('minCodePoints', () => {
         ],
         (value) => `${_getCodePointCount(value)}`
       );
+    });
+  });
+
+  describe('should skip scan when string length settles verdict', () => {
+    test('when lower bound satisfies requirement', () => {
+      const codePointAtSpy = vi.spyOn(String.prototype, 'codePointAt');
+      try {
+        expectNoActionIssue(minCodePoints(5), ['123456789', '😀😀😀😀a']);
+        expect(codePointAtSpy).not.toHaveBeenCalled();
+      } finally {
+        codePointAtSpy.mockRestore();
+      }
+    });
+
+    test('when lower bound does not satisfy requirement', () => {
+      const codePointAtSpy = vi.spyOn(String.prototype, 'codePointAt');
+      try {
+        expectNoActionIssue(minCodePoints(5), ['12345']);
+        expect(codePointAtSpy).toHaveBeenCalled();
+      } finally {
+        codePointAtSpy.mockRestore();
+      }
     });
   });
 });

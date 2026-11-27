@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { _getGraphemeCount } from '../../utils/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
@@ -120,6 +120,42 @@ describe('notGraphemes', () => {
         ['😀👋🏼🧩👩🏻‍🏫🫥'],
         (value) => `${_getGraphemeCount(value)}`
       );
+    });
+  });
+
+  describe('should skip scan when string length settles verdict', () => {
+    test('when grapheme bounds exclude requirement', () => {
+      const segmentSpy = vi.spyOn(Intl.Segmenter.prototype, 'segment');
+      try {
+        expectNoActionIssue(notGraphemes(5), ['', '1234', '😀']);
+        expectNoActionIssue(notGraphemes(0), ['a']);
+        expectNoActionIssue(notGraphemes(-1), ['']);
+        expect(segmentSpy).not.toHaveBeenCalled();
+      } finally {
+        segmentSpy.mockRestore();
+      }
+    });
+
+    test('when grapheme bounds include requirement', () => {
+      const segmentSpy = vi.spyOn(Intl.Segmenter.prototype, 'segment');
+      try {
+        expectNoActionIssue(notGraphemes(5), ['😀👋🏼🧩👩🏻‍🏫']);
+        expectActionIssue(
+          notGraphemes(0, 'message'),
+          {
+            kind: 'validation',
+            type: 'not_graphemes',
+            expected: '!0',
+            message: 'message',
+            requirement: 0,
+          },
+          [''],
+          () => '0'
+        );
+        expect(segmentSpy).toHaveBeenCalled();
+      } finally {
+        segmentSpy.mockRestore();
+      }
     });
   });
 });

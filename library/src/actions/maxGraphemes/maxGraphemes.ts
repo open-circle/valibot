@@ -121,7 +121,7 @@ export function maxGraphemes(
     requirement,
     message,
     '~run'(dataset, config) {
-      if (dataset.typed) {
+      if (dataset.typed && dataset.value.length > this.requirement) {
         const count = _getGraphemeCount(dataset.value);
         if (count > this.requirement) {
           _addIssue(this, 'graphemes', dataset, config, {

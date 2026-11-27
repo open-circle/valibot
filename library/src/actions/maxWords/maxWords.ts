@@ -131,7 +131,7 @@ export function maxWords(
     requirement,
     message,
     '~run'(dataset, config) {
-      if (dataset.typed) {
+      if (dataset.typed && dataset.value.length > this.requirement) {
         const count = _getWordCount(this.locales, dataset.value);
         if (count > this.requirement) {
           _addIssue(this, 'words', dataset, config, {

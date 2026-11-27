@@ -121,7 +121,11 @@ export function notGraphemes(
     requirement,
     message,
     '~run'(dataset, config) {
-      if (dataset.typed) {
+      if (
+        dataset.typed &&
+        this.requirement >= (dataset.value ? 1 : 0) &&
+        this.requirement <= dataset.value.length
+      ) {
         const count = _getGraphemeCount(dataset.value);
         if (count === this.requirement) {
           _addIssue(this, 'graphemes', dataset, config, {
