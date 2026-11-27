@@ -858,5 +858,62 @@ describe('toJsonSchema', () => {
         not: { anyOf: [{ const: 1 }, { const: 2 }] },
       });
     });
+
+    test.each(['draft-07', 'draft-2020-12', 'openapi-3.0'] as const)(
+      'for repeated multiple of actions with %s',
+      (target) => {
+        for (const [first, second] of [
+          [2, 3],
+          [3, 2],
+        ]) {
+          expect(
+            toJsonSchema(
+              v.pipe(v.number(), v.multipleOf(first), v.multipleOf(second)),
+              { target }
+            )
+          ).toStrictEqual({
+            ...(target !== 'openapi-3.0' && {
+              $schema:
+                target === 'draft-07'
+                  ? 'http://json-schema.org/draft-07/schema#'
+                  : 'https://json-schema.org/draft/2020-12/schema',
+            }),
+            type: 'number',
+            multipleOf: first,
+            allOf: [{ multipleOf: second }],
+          });
+        }
+      }
+    );
+
+    test('for multiple of actions in nested pipelines', () => {
+      expect(
+        toJsonSchema(
+          v.pipe(
+            v.pipe(v.number(), v.multipleOf(2), v.multipleOf(3)),
+            v.multipleOf(3),
+            v.multipleOf(5),
+            v.maxValue(60)
+          )
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'number',
+        multipleOf: 2,
+        allOf: [{ multipleOf: 3 }, { multipleOf: 5 }],
+        maximum: 60,
+      });
+    });
+
+    test('for multiple of actions with fractional requirements', () => {
+      expect(
+        toJsonSchema(v.pipe(v.number(), v.multipleOf(0.5), v.multipleOf(0.75)))
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'number',
+        multipleOf: 0.5,
+        allOf: [{ multipleOf: 0.75 }],
+      });
+    });
   });
 });
