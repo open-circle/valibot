@@ -280,44 +280,50 @@ export type IssueDotPath<
             : // Object with Rest
               TSchema extends { readonly type: 'object_with_rest' }
               ? string
-              : // Tuple
+              : // Set
                 TSchema extends {
-                    readonly type: 'loose_tuple' | 'strict_tuple' | 'tuple';
-                    readonly items: infer TItems extends
-                      | TupleItems
-                      | TupleItemsAsync;
+                    readonly type: 'set';
+                    readonly value: infer TValue extends AnySchema;
                   }
-                ? TuplePath<TItems>
-                : // Tuple with Rest
+                ? DotPath<number, TValue>
+                : // Tuple
                   TSchema extends {
-                      readonly type: 'tuple_with_rest';
+                      readonly type: 'loose_tuple' | 'strict_tuple' | 'tuple';
                       readonly items: infer TItems extends
                         | TupleItems
                         | TupleItemsAsync;
-                      readonly rest: infer TRest extends AnySchema;
                     }
-                  ? TuplePath<TItems> | DotPath<number, TRest>
-                  : // Wrapped
+                  ? TuplePath<TItems>
+                  : // Tuple with Rest
                     TSchema extends {
-                        readonly type:
-                          | 'exact_optional'
-                          | 'non_nullable'
-                          | 'non_nullish'
-                          | 'non_optional'
-                          | 'nullable'
-                          | 'nullish'
-                          | 'optional'
-                          | 'undefinedable';
-                        readonly wrapped: infer TWrapped extends AnySchema;
+                        readonly type: 'tuple_with_rest';
+                        readonly items: infer TItems extends
+                          | TupleItems
+                          | TupleItemsAsync;
+                        readonly rest: infer TRest extends AnySchema;
                       }
-                    ? IssueDotPath<TWrapped>
-                    : // Lazy
+                    ? TuplePath<TItems> | DotPath<number, TRest>
+                    : // Wrapped
                       TSchema extends {
-                          readonly type: 'lazy';
-                          readonly getter: (
-                            input: unknown
-                          ) => MaybePromise<infer TWrapped extends AnySchema>;
+                          readonly type:
+                            | 'exact_optional'
+                            | 'non_nullable'
+                            | 'non_nullish'
+                            | 'non_optional'
+                            | 'nullable'
+                            | 'nullish'
+                            | 'optional'
+                            | 'undefinedable';
+                          readonly wrapped: infer TWrapped extends AnySchema;
                         }
                       ? IssueDotPath<TWrapped>
-                      : // Otherwise
-                        never;
+                      : // Lazy
+                        TSchema extends {
+                            readonly type: 'lazy';
+                            readonly getter: (
+                              input: unknown
+                            ) => MaybePromise<infer TWrapped extends AnySchema>;
+                          }
+                        ? IssueDotPath<TWrapped>
+                        : // Otherwise
+                          never;

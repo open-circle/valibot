@@ -20,6 +20,8 @@ import {
   optional,
   picklist,
   record,
+  set,
+  setAsync,
   strictObject,
   strictTuple,
   string,
@@ -123,6 +125,21 @@ describe('IssueDotPath', () => {
     >();
   });
 
+  test('should return set paths', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const schema = object({
+      key1: set(object({ key2: string() })),
+      key3: set(string()),
+    });
+    expectTypeOf<IssueDotPath<typeof schema>>().toEqualTypeOf<
+      | 'key1'
+      | `key1.${number}`
+      | `key1.${number}.key2`
+      | 'key3'
+      | `key3.${number}`
+    >();
+  });
+
   test('should return wrapped, lazy and piped paths', () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const schema = object({
@@ -162,6 +179,7 @@ describe('IssueDotPath', () => {
       ),
       key3: unionAsync([objectAsync({ key4: string() }), string()]),
       key5: lazyAsync(() => objectAsync({ key6: string() })),
+      key7: setAsync(objectAsync({ key8: string() })),
     });
     expectTypeOf<IssueDotPath<typeof schema>>().toEqualTypeOf<
       | 'key1'
@@ -171,6 +189,9 @@ describe('IssueDotPath', () => {
       | 'key3.key4'
       | 'key5'
       | 'key5.key6'
+      | 'key7'
+      | `key7.${number}`
+      | `key7.${number}.key8`
     >();
   });
 });
