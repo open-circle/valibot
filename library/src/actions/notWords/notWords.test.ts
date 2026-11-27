@@ -133,8 +133,20 @@ describe('notWords', () => {
             message: 'message',
             requirement: 0,
           },
-          ['   '],
+          ['', '   '],
           () => '0'
+        );
+        expectActionIssue(
+          notWords('en', 1, 'message'),
+          {
+            kind: 'validation',
+            type: 'not_words',
+            expected: '!1',
+            message: 'message',
+            requirement: 1,
+          },
+          ['a'],
+          () => '1'
         );
         expect(segmentSpy).toHaveBeenCalled();
       } finally {
