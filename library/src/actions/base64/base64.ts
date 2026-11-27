@@ -62,6 +62,11 @@ export interface Base64Action<
 }
 
 /**
+ * Base64 characters regex without repeated groups to avoid stack overflows on large inputs.
+ */
+const BASE64_CHARS_REGEX = /^[\da-zA-Z+/]*={0,2}$/u;
+
+/**
  * Creates a [Base64](https://en.wikipedia.org/wiki/Base64) validation action.
  *
  * @returns A Base64 action.
@@ -96,7 +101,11 @@ export function base64(
     requirement: BASE64_REGEX,
     message,
     '~run'(dataset, config) {
-      if (dataset.typed && !this.requirement.test(dataset.value)) {
+      if (
+        dataset.typed &&
+        (dataset.value.length % 4 !== 0 ||
+          !BASE64_CHARS_REGEX.test(dataset.value))
+      ) {
         _addIssue(this, 'Base64', dataset, config);
       }
       return dataset;
