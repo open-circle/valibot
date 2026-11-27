@@ -51,9 +51,12 @@ type Action =
       v.ErrorMessage<v.HexColorIssue<string>> | undefined
     >
   | v.IncludesAction<
-      string,
-      string,
-      v.ErrorMessage<v.IncludesIssue<string, string>> | undefined
+      v.ContentInput,
+      v.ContentRequirement<v.ContentInput>,
+      | v.ErrorMessage<
+          v.IncludesIssue<v.ContentInput, v.ContentRequirement<v.ContentInput>>
+        >
+      | undefined
     >
   | v.IntegerAction<number, v.ErrorMessage<v.IntegerIssue<number>> | undefined>
   | v.Ipv4Action<string, v.ErrorMessage<v.Ipv4Issue<string>> | undefined>
@@ -419,7 +422,36 @@ export function convertAction(
     }
 
     case 'includes': {
-      if (jsonSchema.pattern) {
+      // Hint: The "pattern" keyword only applies to strings, so arrays use
+      // "contains" instead.
+      if (jsonSchema.type === 'array') {
+        if (
+          valibotAction.requirement !== null &&
+          !isJsonConstValue(valibotAction.requirement)
+        ) {
+          errors = addError(
+            errors,
+            'The requirement of the "includes" action is not JSON compatible.'
+          );
+        } else if (config?.target === 'openapi-3.0') {
+          errors = addError(
+            errors,
+            'The "includes" action on arrays is not supported for OpenAPI 3.0.'
+          );
+        } else if (jsonSchema.contains !== undefined) {
+          errors = addError(
+            errors,
+            'The "includes" action is not supported in combination with another "contains" restriction.'
+          );
+        } else {
+          jsonSchema.contains = { const: valibotAction.requirement };
+        }
+      } else if (typeof valibotAction.requirement !== 'string') {
+        errors = addError(
+          errors,
+          `The "${valibotAction.type}" action is not supported on type "${jsonSchema.type}".`
+        );
+      } else if (jsonSchema.pattern) {
         errors = addError(
           errors,
           `The "${valibotAction.type}" action is not supported in combination with another regex action.`

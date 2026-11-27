@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Fix `includes` action to convert arrays to a `contains` restriction, which previously produced a `pattern` that only applies to strings or threw a `TypeError` for non-string requirements (pull request #1701)
+
 ## v1.8.0 (September 11, 2026)
 
 - Add support for `ksuid` action (pull request #1370)
