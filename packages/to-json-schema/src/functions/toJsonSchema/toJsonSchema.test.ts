@@ -15,6 +15,17 @@ describe('toJsonSchema', () => {
       });
     });
 
+    test('for record with string picklist keys without requiring every key', () => {
+      expect(
+        toJsonSchema(v.record(v.picklist(['foo', 'bar']), v.string()))
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        propertyNames: { type: 'string', enum: ['foo', 'bar'] },
+        additionalProperties: { type: 'string' },
+      });
+    });
+
     test('for complex schema with definitions', () => {
       const stringSchema = v.string();
       const complexSchema = v.pipe(

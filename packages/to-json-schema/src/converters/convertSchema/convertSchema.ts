@@ -424,16 +424,22 @@ export function convertSchema(
     }
 
     case 'record': {
-      if (config?.target === 'openapi-3.0' && 'pipe' in valibotSchema.key) {
+      const keySchema = valibotSchema.key as Schema;
+      if (config?.target === 'openapi-3.0' && 'pipe' in keySchema) {
         errors = addError(
           errors,
           'The "record" schema with a schema for the key that contains a "pipe" cannot be converted to JSON Schema.'
         );
       }
-      if (valibotSchema.key.type !== 'string') {
+      if (
+        keySchema.type !== 'string' &&
+        (keySchema.type !== 'picklist' ||
+          config?.target === 'openapi-3.0' ||
+          !keySchema.options.every((option) => typeof option === 'string'))
+      ) {
         errors = addError(
           errors,
-          `The "record" schema with the "${valibotSchema.key.type}" schema for the key cannot be converted to JSON Schema.`
+          `The "record" schema with the "${keySchema.type}" schema for the key cannot be converted to JSON Schema.`
         );
       }
 
@@ -443,7 +449,7 @@ export function convertSchema(
       if (config?.target !== 'openapi-3.0') {
         jsonSchema.propertyNames = convertSchema(
           {},
-          valibotSchema.key as SchemaOrPipe,
+          keySchema,
           config,
           context
         );
