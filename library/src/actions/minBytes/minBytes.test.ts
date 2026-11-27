@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
 import {
@@ -106,6 +106,28 @@ describe('minBytes', () => {
         ],
         getReceived
       );
+    });
+  });
+
+  describe('should skip scan when string length settles verdict', () => {
+    test('when min possible byte count satisfies requirement', () => {
+      const encodeSpy = vi.spyOn(TextEncoder.prototype, 'encode');
+      try {
+        expectNoActionIssue(minBytes(5), ['12345', '123456', 'あいうえお']);
+        expect(encodeSpy).not.toHaveBeenCalled();
+      } finally {
+        encodeSpy.mockRestore();
+      }
+    });
+
+    test('when min possible byte count is below requirement', () => {
+      const encodeSpy = vi.spyOn(TextEncoder.prototype, 'encode');
+      try {
+        expectNoActionIssue(minBytes(5), ['🤖!']);
+        expect(encodeSpy).toHaveBeenCalled();
+      } finally {
+        encodeSpy.mockRestore();
+      }
     });
   });
 });

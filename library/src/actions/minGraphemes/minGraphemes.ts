@@ -121,7 +121,7 @@ export function minGraphemes(
     requirement,
     message,
     '~run'(dataset, config) {
-      if (dataset.typed) {
+      if (dataset.typed && this.requirement > (dataset.value ? 1 : 0)) {
         const count = _getGraphemeCount(dataset.value);
         if (count < this.requirement) {
           _addIssue(this, 'graphemes', dataset, config, {

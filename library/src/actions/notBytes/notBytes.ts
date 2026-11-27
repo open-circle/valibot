@@ -115,7 +115,11 @@ export function notBytes(
     requirement,
     message,
     '~run'(dataset, config) {
-      if (dataset.typed) {
+      if (
+        dataset.typed &&
+        dataset.value.length <= this.requirement &&
+        dataset.value.length * 3 >= this.requirement
+      ) {
         const length = _getByteCount(dataset.value);
         if (length === this.requirement) {
           _addIssue(this, 'bytes', dataset, config, {

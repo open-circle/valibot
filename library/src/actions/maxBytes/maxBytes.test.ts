@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
 import {
@@ -110,6 +110,28 @@ describe('maxBytes', () => {
         ],
         getReceived
       );
+    });
+  });
+
+  describe('should skip scan when string length settles verdict', () => {
+    test('when max possible byte count is within requirement', () => {
+      const encodeSpy = vi.spyOn(TextEncoder.prototype, 'encode');
+      try {
+        expectNoActionIssue(maxBytes(6), ['', 'ab', 'あ']);
+        expect(encodeSpy).not.toHaveBeenCalled();
+      } finally {
+        encodeSpy.mockRestore();
+      }
+    });
+
+    test('when max possible byte count exceeds requirement', () => {
+      const encodeSpy = vi.spyOn(TextEncoder.prototype, 'encode');
+      try {
+        expectNoActionIssue(maxBytes(6), ['123456', 'あa']);
+        expect(encodeSpy).toHaveBeenCalled();
+      } finally {
+        encodeSpy.mockRestore();
+      }
     });
   });
 });

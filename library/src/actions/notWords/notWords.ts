@@ -131,7 +131,11 @@ export function notWords(
     requirement,
     message,
     '~run'(dataset, config) {
-      if (dataset.typed) {
+      if (
+        dataset.typed &&
+        this.requirement >= 0 &&
+        this.requirement <= dataset.value.length
+      ) {
         const count = _getWordCount(this.locales, dataset.value);
         if (count === this.requirement) {
           _addIssue(this, 'words', dataset, config, {

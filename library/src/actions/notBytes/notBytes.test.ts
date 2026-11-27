@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
 import {
@@ -107,6 +107,28 @@ describe('notBytes', () => {
         ],
         getReceived
       );
+    });
+  });
+
+  describe('should skip scan when string length settles verdict', () => {
+    test('when byte count bounds exclude requirement', () => {
+      const encodeSpy = vi.spyOn(TextEncoder.prototype, 'encode');
+      try {
+        expectNoActionIssue(notBytes(5), ['', '1', '123456']);
+        expect(encodeSpy).not.toHaveBeenCalled();
+      } finally {
+        encodeSpy.mockRestore();
+      }
+    });
+
+    test('when byte count bounds include requirement', () => {
+      const encodeSpy = vi.spyOn(TextEncoder.prototype, 'encode');
+      try {
+        expectNoActionIssue(notBytes(5), ['🤖']);
+        expect(encodeSpy).toHaveBeenCalled();
+      } finally {
+        encodeSpy.mockRestore();
+      }
     });
   });
 });

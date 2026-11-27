@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { _getCodePointCount } from '../../utils/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
@@ -145,6 +145,28 @@ describe('maxCodePoints', () => {
         ],
         (value) => `${_getCodePointCount(value)}`
       );
+    });
+  });
+
+  describe('should skip scan when string length settles verdict', () => {
+    test('when length is within requirement', () => {
+      const codePointAtSpy = vi.spyOn(String.prototype, 'codePointAt');
+      try {
+        expectNoActionIssue(maxCodePoints(5), ['', 'ab', '12345']);
+        expect(codePointAtSpy).not.toHaveBeenCalled();
+      } finally {
+        codePointAtSpy.mockRestore();
+      }
+    });
+
+    test('when length exceeds requirement', () => {
+      const codePointAtSpy = vi.spyOn(String.prototype, 'codePointAt');
+      try {
+        expectNoActionIssue(maxCodePoints(5), ['😀😀😀']);
+        expect(codePointAtSpy).toHaveBeenCalled();
+      } finally {
+        codePointAtSpy.mockRestore();
+      }
     });
   });
 });

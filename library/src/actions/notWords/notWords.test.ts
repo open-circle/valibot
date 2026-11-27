@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { _getWordCount } from '../../utils/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
@@ -105,6 +105,41 @@ describe('notWords', () => {
         ['foo bar baz', 'Lorem ipsum dolor?', 'Hi, welcome home!'],
         (value) => `${_getWordCount('en', value)}`
       );
+    });
+  });
+
+  describe('should skip scan when string length settles verdict', () => {
+    test('when word bounds exclude requirement', () => {
+      const segmentSpy = vi.spyOn(Intl.Segmenter.prototype, 'segment');
+      try {
+        expectNoActionIssue(notWords('en', 3), ['', 'hi']);
+        expectNoActionIssue(notWords('en', -1), ['hi']);
+        expect(segmentSpy).not.toHaveBeenCalled();
+      } finally {
+        segmentSpy.mockRestore();
+      }
+    });
+
+    test('when word bounds include requirement', () => {
+      const segmentSpy = vi.spyOn(Intl.Segmenter.prototype, 'segment');
+      try {
+        expectNoActionIssue(notWords('en', 3), ['foo bar']);
+        expectActionIssue(
+          notWords('en', 0, 'message'),
+          {
+            kind: 'validation',
+            type: 'not_words',
+            expected: '!0',
+            message: 'message',
+            requirement: 0,
+          },
+          ['   '],
+          () => '0'
+        );
+        expect(segmentSpy).toHaveBeenCalled();
+      } finally {
+        segmentSpy.mockRestore();
+      }
     });
   });
 });
