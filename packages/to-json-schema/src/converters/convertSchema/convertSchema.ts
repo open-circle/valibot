@@ -305,11 +305,22 @@ export function convertSchema(
     case 'strict_tuple': {
       jsonSchema.type = 'array';
 
+      // Get minimum number of items
+      // Hint: Optional items at the end of a tuple can be omitted
+      let minItems = valibotSchema.items.length;
+      while (
+        minItems > 0 &&
+        (valibotSchema.items[minItems - 1].type === 'optional' ||
+          valibotSchema.items[minItems - 1].type === 'nullish')
+      ) {
+        minItems--;
+      }
+
       // If target is OpenAPI 3.0
       if (config?.target === 'openapi-3.0') {
         // Uses anyOf pattern with minItems/maxItems
         jsonSchema.items = { anyOf: [] };
-        jsonSchema.minItems = valibotSchema.items.length;
+        jsonSchema.minItems = minItems;
         for (const item of valibotSchema.items) {
           // @ts-expect-error
           jsonSchema.items.anyOf.push(
@@ -341,7 +352,7 @@ export function convertSchema(
       } else if (config?.target === 'draft-2020-12') {
         // Use prefixItems for draft-2020-12
         jsonSchema.prefixItems = [];
-        jsonSchema.minItems = valibotSchema.items.length;
+        jsonSchema.minItems = minItems;
         for (const item of valibotSchema.items) {
           jsonSchema.prefixItems.push(
             convertSchema({}, item as SchemaOrPipe, config, context)
@@ -364,7 +375,7 @@ export function convertSchema(
       } else {
         // Use items array for draft-07
         jsonSchema.items = [];
-        jsonSchema.minItems = valibotSchema.items.length;
+        jsonSchema.minItems = minItems;
         for (const item of valibotSchema.items) {
           jsonSchema.items.push(
             convertSchema({}, item as SchemaOrPipe, config, context)
