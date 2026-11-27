@@ -67,16 +67,20 @@ type PartialEntries<
 
 /**
  * Schema with partial type.
+ *
+ * Hint: We match the object schemas structurally instead of inferring from
+ * their interfaces, because relating an object schema to another
+ * instantiation of the same interface forces TypeScript to measure its
+ * variance, which is expensive (see issue #1663).
  */
 export type SchemaWithPartialAsync<
   TSchema extends Schema,
   TKeys extends ObjectKeys<TSchema> | undefined,
-> = TSchema extends
-  | ObjectSchemaAsync<infer TEntries, ErrorMessage<ObjectIssue> | undefined>
-  | StrictObjectSchemaAsync<
-      infer TEntries,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
+> = TSchema extends {
+  readonly type: 'object' | 'strict_object';
+  readonly async: true;
+  readonly entries: infer TEntries extends ObjectEntriesAsync;
+}
   ? Omit<TSchema, 'entries' | '~standard' | '~run' | '~types'> & {
       /**
        * The object entries.
@@ -123,10 +127,11 @@ export type SchemaWithPartialAsync<
           }
         | undefined;
     }
-  : TSchema extends LooseObjectSchemaAsync<
-        infer TEntries,
-        ErrorMessage<LooseObjectIssue> | undefined
-      >
+  : TSchema extends {
+        readonly type: 'loose_object';
+        readonly async: true;
+        readonly entries: infer TEntries extends ObjectEntriesAsync;
+      }
     ? Omit<TSchema, 'entries' | '~standard' | '~run' | '~types'> & {
         /**
          * The object entries.
@@ -187,11 +192,14 @@ export type SchemaWithPartialAsync<
             }
           | undefined;
       }
-    : TSchema extends ObjectWithRestSchemaAsync<
-          infer TEntries,
-          infer TRest,
-          ErrorMessage<ObjectWithRestIssue> | undefined
-        >
+    : TSchema extends {
+          readonly type: 'object_with_rest';
+          readonly async: true;
+          readonly entries: infer TEntries extends ObjectEntriesAsync;
+          readonly rest: infer TRest extends
+            | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+            | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>;
+        }
       ? Omit<TSchema, 'entries' | '~standard' | '~run' | '~types'> & {
           /**
            * The object entries.

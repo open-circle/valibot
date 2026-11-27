@@ -62,16 +62,20 @@ type PartialEntries<
 
 /**
  * Schema with partial type.
+ *
+ * Hint: We match the object schemas structurally instead of inferring from
+ * their interfaces, because relating an object schema to another
+ * instantiation of the same interface forces TypeScript to measure its
+ * variance, which is expensive (see issue #1663).
  */
 export type SchemaWithPartial<
   TSchema extends Schema,
   TKeys extends ObjectKeys<TSchema> | undefined,
-> = TSchema extends
-  | ObjectSchema<infer TEntries, ErrorMessage<ObjectIssue> | undefined>
-  | StrictObjectSchema<
-      infer TEntries,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
+> = TSchema extends {
+  readonly type: 'object' | 'strict_object';
+  readonly async: false;
+  readonly entries: infer TEntries extends ObjectEntries;
+}
   ? Omit<TSchema, 'entries' | '~standard' | '~run' | '~types'> & {
       /**
        * The object entries.
@@ -116,10 +120,11 @@ export type SchemaWithPartial<
           }
         | undefined;
     }
-  : TSchema extends LooseObjectSchema<
-        infer TEntries,
-        ErrorMessage<LooseObjectIssue> | undefined
-      >
+  : TSchema extends {
+        readonly type: 'loose_object';
+        readonly async: false;
+        readonly entries: infer TEntries extends ObjectEntries;
+      }
     ? Omit<TSchema, 'entries' | '~standard' | '~run' | '~types'> & {
         /**
          * The object entries.
@@ -178,11 +183,16 @@ export type SchemaWithPartial<
             }
           | undefined;
       }
-    : TSchema extends ObjectWithRestSchema<
-          infer TEntries,
-          infer TRest,
-          ErrorMessage<ObjectWithRestIssue> | undefined
-        >
+    : TSchema extends {
+          readonly type: 'object_with_rest';
+          readonly async: false;
+          readonly entries: infer TEntries extends ObjectEntries;
+          readonly rest: infer TRest extends BaseSchema<
+            unknown,
+            unknown,
+            BaseIssue<unknown>
+          >;
+        }
       ? Omit<TSchema, 'entries' | '~standard' | '~run' | '~types'> & {
           /**
            * The object entries.
