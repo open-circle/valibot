@@ -362,6 +362,120 @@ describe('toJsonSchema', () => {
       });
     });
 
+    test('for generated recursive schema definition', () => {
+      const category = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+      const jsonSchema = toJsonSchema(category);
+      const referenceIds = Object.keys(jsonSchema.$defs ?? {});
+      expect(referenceIds).toHaveLength(1);
+      const referenceId = referenceIds[0]!;
+
+      expect(jsonSchema).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        $ref: `#/$defs/${referenceId}`,
+        $defs: {
+          [referenceId]: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              subcategories: {
+                type: 'array',
+                items: { $ref: `#/$defs/${referenceId}` },
+              },
+            },
+            required: ['name', 'subcategories'],
+          },
+        },
+      });
+    });
+
+    test('preserves an empty recursive definition name', () => {
+      const schema = v.recursive((self) =>
+        v.object({ children: v.array(self) })
+      );
+
+      expect(
+        toJsonSchema(schema, { definitions: { '': schema } })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        $ref: '#/$defs/',
+        $defs: {
+          '': {
+            type: 'object',
+            properties: {
+              children: { type: 'array', items: { $ref: '#/$defs/' } },
+            },
+            required: ['children'],
+          },
+        },
+      });
+    });
+
+    test.each([false, true])(
+      'reuses named mutual definitions (reverse order: %s)',
+      (reverse) => {
+        const schemas = v.mutualRecursive((ref) => ({
+          a: v.object({ next: v.optional(ref('b')) }),
+          b: v.object({ next: v.optional(ref('a')) }),
+        }));
+        const definitions = reverse
+          ? { b: schemas.b, a: schemas.a }
+          : { a: schemas.a, b: schemas.b };
+
+        expect(toJsonSchema(schemas.a, { definitions })).toStrictEqual({
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          $ref: '#/$defs/a',
+          $defs: {
+            a: {
+              type: 'object',
+              properties: { next: { $ref: '#/$defs/b' } },
+              required: [],
+            },
+            b: {
+              type: 'object',
+              properties: { next: { $ref: '#/$defs/a' } },
+              required: [],
+            },
+          },
+        });
+      }
+    );
+
+    test('for recursive definitions with JSON Pointer special characters', () => {
+      const category = v.recursive((self) =>
+        v.object({
+          name: v.string(),
+          subcategories: v.array(self),
+        })
+      );
+
+      expect(
+        toJsonSchema(category, {
+          definitions: { 'Category/Node~': category },
+        })
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        $ref: '#/$defs/Category~1Node~0',
+        $defs: {
+          'Category/Node~': {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              subcategories: {
+                type: 'array',
+                items: { $ref: '#/$defs/Category~1Node~0' },
+              },
+            },
+            required: ['name', 'subcategories'],
+          },
+        },
+      });
+    });
+
     test('for definitions with JSON Pointer special characters', () => {
       const sharedSchema = v.object({ name: v.string() });
       expect(

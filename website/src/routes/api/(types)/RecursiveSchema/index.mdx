@@ -1,0 +1,31 @@
+---
+title: RecursiveSchema
+description: Recursive schema interface.
+contributors:
+  - yslpn
+  - james-tindal
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# RecursiveSchema
+
+Recursive schema interface.
+
+## Generics
+
+- `TWrapped` <Property {...properties.TWrapped} />
+- `TInput` <Property {...properties.TInput} />
+- `TOutput` <Property {...properties.TOutput} />
+- `TIssue` <Property {...properties.TIssue} />
+
+`TWrapped` defaults to `GenericSchema`. `TInput` and `TOutput` default to `unknown`. `TIssue` defaults to `BaseIssue<unknown>`.
+
+## Definition
+
+- `RecursiveSchema` <Property {...properties.BaseSchema} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `wrapped` <Property {...properties.wrapped} />

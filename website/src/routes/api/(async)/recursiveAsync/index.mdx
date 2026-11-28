@@ -1,0 +1,150 @@
+---
+title: recursiveAsync
+description: Creates a recursive schema.
+source: /schemas/recursive/recursiveAsync.ts
+contributors:
+  - yslpn
+  - james-tindal
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# recursiveAsync
+
+Creates a recursive schema.
+
+```ts
+const Schema = v.recursiveAsync<TWrapped>(definition);
+```
+
+## Generics
+
+- `TWrapped` <Property {...properties.TWrapped} />
+
+## Parameters
+
+- `definition` <Property {...properties.definition} />
+
+### Explanation
+
+The `definition` callback receives a `self` reference for use inside the returned schema. Valibot infers recursive input and output types from this definition.
+
+The callback returns a schema directly, not a promise. The returned schema can perform asynchronous validation.
+
+> When you nest `self`, use async-compatible schemas such as <Link href="/api/objectAsync/">`objectAsync`</Link> and <Link href="/api/arrayAsync/">`arrayAsync`</Link>.
+
+## Returns
+
+- `Schema` <Property {...properties.Schema} />
+
+## Examples
+
+The following examples show how `recursiveAsync` can be used.
+
+### Category schema
+
+Recursive schema to validate nested categories asynchronously.
+
+```ts
+const CategorySchema = v.recursiveAsync((self) =>
+  v.objectAsync({
+    name: v.string(),
+    subcategories: v.arrayAsync(self),
+  })
+);
+```
+
+## Unrecognised Generics
+
+When your recursive root is a type parameter of an unrecognised generic, the generic can vanish and be replaced with a strange object in the output type.
+
+For example, this transform puts recursive children into an unregistered `WeakMap`:
+
+```ts
+const NodeSchema = v.recursiveAsync((self) =>
+  v.pipeAsync(
+    v.objectAsync({ name: v.string(), children: v.arrayAsync(self) }),
+    v.transform((node) => ({
+      name: node.name,
+      children: new WeakMap(node.children.map((child) => [child, child])),
+    }))
+  )
+);
+
+type Output = v.InferOutput<typeof NodeSchema>;
+```
+
+The expected `Output` type is:
+
+```ts
+interface Node {
+  name: string;
+  children: WeakMap<Node, Node>;
+}
+```
+
+But the actual `Output['children']` type comes out as:
+
+```ts
+{
+  delete: (key: any) => boolean;
+  get: (key: any) => any | undefined;
+  has: (key: any) => boolean;
+  set: (key: any, value: any) => any;
+  readonly [Symbol.toStringTag]: string;
+}
+```
+
+The fix is to extend `Generics` as explained on the <Link href="/api/Generics/">Generics</Link> page.
+
+## Related
+
+The following APIs can be combined with `recursiveAsync`.
+
+### Schemas
+
+<ApiList
+  items={[
+    'array',
+    'lazy',
+    'nullable',
+    'nullish',
+    'object',
+    'optional',
+    'record',
+    'recursive',
+    'union',
+  ]}
+/>
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['transform']} />
+
+### Types
+
+<ApiList items={['Generics']} />
+
+### Async
+
+<ApiList
+  items={[
+    'arrayAsync',
+    'lazyAsync',
+    'nullableAsync',
+    'nullishAsync',
+    'objectAsync',
+    'optionalAsync',
+    'parseAsync',
+    'pipeAsync',
+    'recordAsync',
+    'safeParseAsync',
+    'transformAsync',
+    'unionAsync',
+  ]}
+/>
