@@ -8,8 +8,9 @@ export type NormalizeForm = 'NFC' | 'NFD' | 'NFKC' | 'NFKD';
 /**
  * Normalize action interface.
  */
-export interface NormalizeAction<TForm extends NormalizeForm | undefined>
-  extends BaseTransformation<string, string, never> {
+export interface NormalizeAction<
+  TForm extends NormalizeForm | undefined,
+> extends BaseTransformation<string, string, never> {
   /**
    * The action type.
    */

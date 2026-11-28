@@ -25,10 +25,10 @@ export interface RecordSchema<
   TValue extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<RecordIssue> | undefined,
 > extends BaseSchema<
-    InferRecordInput<TKey, TValue>,
-    InferRecordOutput<TKey, TValue>,
-    RecordIssue | InferIssue<TKey> | InferIssue<TValue>
-  > {
+  InferRecordInput<TKey, TValue>,
+  InferRecordOutput<TKey, TValue>,
+  RecordIssue | InferIssue<TKey> | InferIssue<TValue>
+> {
   /**
    * The schema type.
    */

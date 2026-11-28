@@ -20,10 +20,10 @@ export interface TupleSchemaAsync<
   TItems extends TupleItemsAsync,
   TMessage extends ErrorMessage<TupleIssue> | undefined,
 > extends BaseSchemaAsync<
-    InferTupleInput<TItems>,
-    InferTupleOutput<TItems>,
-    TupleIssue | InferTupleIssue<TItems>
-  > {
+  InferTupleInput<TItems>,
+  InferTupleOutput<TItems>,
+  TupleIssue | InferTupleIssue<TItems>
+> {
   /**
    * The schema type.
    */

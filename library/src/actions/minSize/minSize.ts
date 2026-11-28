@@ -89,8 +89,7 @@ export function minSize<
   TInput extends SizeInput,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MinSizeIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinSizeIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

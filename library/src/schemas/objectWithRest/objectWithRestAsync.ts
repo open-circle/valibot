@@ -33,10 +33,10 @@ export interface ObjectWithRestSchemaAsync<
     | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<ObjectWithRestIssue> | undefined,
 > extends BaseSchemaAsync<
-    InferObjectInput<TEntries> & { [key: string]: InferInput<TRest> },
-    InferObjectOutput<TEntries> & { [key: string]: InferOutput<TRest> },
-    ObjectWithRestIssue | InferObjectIssue<TEntries> | InferIssue<TRest>
-  > {
+  InferObjectInput<TEntries> & { [key: string]: InferInput<TRest> },
+  InferObjectOutput<TEntries> & { [key: string]: InferOutput<TRest> },
+  ObjectWithRestIssue | InferObjectIssue<TEntries> | InferIssue<TRest>
+> {
   /**
    * The schema type.
    */

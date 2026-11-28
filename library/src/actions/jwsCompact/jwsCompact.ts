@@ -11,8 +11,9 @@ import { _addIssue } from '../../utils/index.ts';
  *
  * @beta
  */
-export interface JwsCompactIssue<TInput extends string>
-  extends BaseIssue<TInput> {
+export interface JwsCompactIssue<
+  TInput extends string,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */

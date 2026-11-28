@@ -6,8 +6,11 @@ import { _formatCase } from '../../utils/index.ts';
  *
  * @beta
  */
-export interface ToPascalCaseAction
-  extends BaseTransformation<string, string, never> {
+export interface ToPascalCaseAction extends BaseTransformation<
+  string,
+  string,
+  never
+> {
   /**
    * The action type.
    */

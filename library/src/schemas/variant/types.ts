@@ -32,8 +32,11 @@ export interface VariantIssue extends BaseIssue<unknown> {
 /**
  * Variant option schema interface.
  */
-export interface VariantOptionSchema<TKey extends string>
-  extends BaseSchema<unknown, unknown, VariantIssue | BaseIssue<unknown>> {
+export interface VariantOptionSchema<TKey extends string> extends BaseSchema<
+  unknown,
+  unknown,
+  VariantIssue | BaseIssue<unknown>
+> {
   readonly type: 'variant';
   readonly reference: typeof variant;
   readonly key: string;
@@ -44,8 +47,9 @@ export interface VariantOptionSchema<TKey extends string>
 /**
  * Variant option schema async interface.
  */
-export interface VariantOptionSchemaAsync<TKey extends string>
-  extends BaseSchemaAsync<unknown, unknown, VariantIssue | BaseIssue<unknown>> {
+export interface VariantOptionSchemaAsync<
+  TKey extends string,
+> extends BaseSchemaAsync<unknown, unknown, VariantIssue | BaseIssue<unknown>> {
   readonly type: 'variant';
   readonly reference: typeof variant | typeof variantAsync;
   readonly key: string;
@@ -88,16 +92,16 @@ type VariantObjectEntriesAsync<TKey extends string> = Record<
  * interface forces TypeScript to measure its variance, which is expensive
  * (see issue #1663).
  */
-interface VariantObjectOption<TKey extends string>
-  extends BaseSchema<unknown, unknown, BaseIssue<unknown>> {
+interface VariantObjectOption<TKey extends string> extends BaseSchema<
+  unknown,
+  unknown,
+  BaseIssue<unknown>
+> {
   /**
    * The schema type.
    */
   readonly type:
-    | 'loose_object'
-    | 'object'
-    | 'object_with_rest'
-    | 'strict_object';
+    'loose_object' | 'object' | 'object_with_rest' | 'strict_object';
   /**
    * The entries schema.
    */
@@ -112,16 +116,16 @@ interface VariantObjectOption<TKey extends string>
  * interface forces TypeScript to measure its variance, which is expensive
  * (see issue #1663).
  */
-interface VariantObjectOptionAsync<TKey extends string>
-  extends BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>> {
+interface VariantObjectOptionAsync<TKey extends string> extends BaseSchemaAsync<
+  unknown,
+  unknown,
+  BaseIssue<unknown>
+> {
   /**
    * The schema type.
    */
   readonly type:
-    | 'loose_object'
-    | 'object'
-    | 'object_with_rest'
-    | 'strict_object';
+    'loose_object' | 'object' | 'object_with_rest' | 'strict_object';
   /**
    * The entries schema.
    */
@@ -132,15 +136,13 @@ interface VariantObjectOptionAsync<TKey extends string>
  * Variant option type.
  */
 type VariantOption<TKey extends string> =
-  | VariantObjectOption<TKey>
-  | VariantOptionSchema<TKey>;
+  VariantObjectOption<TKey> | VariantOptionSchema<TKey>;
 
 /**
  * Variant option async type.
  */
 type VariantOptionAsync<TKey extends string> =
-  | VariantObjectOptionAsync<TKey>
-  | VariantOptionSchemaAsync<TKey>;
+  VariantObjectOptionAsync<TKey> | VariantOptionSchemaAsync<TKey>;
 
 /**
  * Variant options type.

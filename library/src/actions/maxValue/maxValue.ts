@@ -38,8 +38,7 @@ export interface MaxValueAction<
   TInput extends ValueInput,
   TRequirement extends TInput,
   TMessage extends
-    | ErrorMessage<MaxValueIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxValueIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, MaxValueIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -87,8 +86,7 @@ export function maxValue<
   TInput extends ValueInput,
   const TRequirement extends TInput,
   const TMessage extends
-    | ErrorMessage<MaxValueIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxValueIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

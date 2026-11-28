@@ -6,8 +6,10 @@ import type {
 /**
  * Transform action async interface.
  */
-export interface TransformActionAsync<TInput, TOutput>
-  extends BaseTransformationAsync<TInput, TOutput, never> {
+export interface TransformActionAsync<
+  TInput,
+  TOutput,
+> extends BaseTransformationAsync<TInput, TOutput, never> {
   /**
    * The action type.
    */

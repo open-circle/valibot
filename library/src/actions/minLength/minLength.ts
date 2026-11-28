@@ -42,8 +42,7 @@ export interface MinLengthAction<
   TInput extends LengthInput,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<MinLengthIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinLengthIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<TInput, TInput, MinLengthIssue<TInput, TRequirement>> {
   /**
    * The action type.
@@ -91,8 +90,7 @@ export function minLength<
   TInput extends LengthInput,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MinLengthIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinLengthIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

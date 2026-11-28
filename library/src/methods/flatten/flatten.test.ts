@@ -229,26 +229,24 @@ describe('flatten', () => {
       'hasOwnProperty',
       'constructor',
     ] as const;
-    const issues = keys.map(
-      (key): NumberIssue => ({
-        ...commonIssueInfo,
-        kind: 'schema',
-        type: 'number',
-        input: 'foo',
-        expected: 'number',
-        received: '"foo"',
-        message: 'Invalid type: Expected number but received "foo"',
-        path: [
-          {
-            type: 'object',
-            origin: 'value',
-            input: { [key]: 'foo' },
-            key,
-            value: 'foo',
-          } satisfies ObjectPathItem,
-        ],
-      })
-    ) as [NumberIssue, ...NumberIssue[]];
+    const issues = keys.map((key): NumberIssue => ({
+      ...commonIssueInfo,
+      kind: 'schema',
+      type: 'number',
+      input: 'foo',
+      expected: 'number',
+      received: '"foo"',
+      message: 'Invalid type: Expected number but received "foo"',
+      path: [
+        {
+          type: 'object',
+          origin: 'value',
+          input: { [key]: 'foo' },
+          key,
+          value: 'foo',
+        } satisfies ObjectPathItem,
+      ],
+    })) as [NumberIssue, ...NumberIssue[]];
     const flatErrors = flatten(issues);
     for (const key of keys) {
       expect(flatErrors.nested?.[key]).toEqual([

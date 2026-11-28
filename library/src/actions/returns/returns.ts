@@ -14,10 +14,10 @@ export interface ReturnsAction<
   TInput extends (...args: any[]) => unknown,
   TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
 > extends BaseTransformation<
-    TInput,
-    (...args: Parameters<TInput>) => InferOutput<TSchema>,
-    never
-  > {
+  TInput,
+  (...args: Parameters<TInput>) => InferOutput<TSchema>,
+  never
+> {
   /**
    * The action type.
    */

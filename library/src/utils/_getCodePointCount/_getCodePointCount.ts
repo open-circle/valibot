@@ -13,7 +13,7 @@ export function _getCodePointCount(input: string): number {
   // A surrogate pair cannot start at the last code unit, so no iteration needs
   // to start there
   const lengthMinus1 = input.length - 1;
-  for (let i = 0; i < lengthMinus1; ) {
+  for (let i = 0; i < lengthMinus1;) {
     // codePointAt never returns undefined because i is always in bounds
     if (input.codePointAt(i)! <= 0xffff) {
       i++;

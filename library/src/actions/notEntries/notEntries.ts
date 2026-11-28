@@ -46,13 +46,12 @@ export interface NotEntriesAction<
   TInput extends EntriesInput,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<NotEntriesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotEntriesIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<
-    TInput,
-    TInput,
-    NotEntriesIssue<TInput, TRequirement>
-  > {
+  TInput,
+  TInput,
+  NotEntriesIssue<TInput, TRequirement>
+> {
   /**
    * The action type.
    */
@@ -103,8 +102,7 @@ export function notEntries<
   TInput extends EntriesInput,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<NotEntriesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotEntriesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

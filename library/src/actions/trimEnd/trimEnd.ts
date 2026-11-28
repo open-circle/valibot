@@ -3,8 +3,11 @@ import type { BaseTransformation } from '../../types/index.ts';
 /**
  * Trim end action interface.
  */
-export interface TrimEndAction
-  extends BaseTransformation<string, string, never> {
+export interface TrimEndAction extends BaseTransformation<
+  string,
+  string,
+  never
+> {
   /**
    * The action type.
    */

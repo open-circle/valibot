@@ -46,13 +46,12 @@ export interface MaxEntriesAction<
   TInput extends EntriesInput,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<MaxEntriesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxEntriesIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<
-    TInput,
-    TInput,
-    MaxEntriesIssue<TInput, TRequirement>
-  > {
+  TInput,
+  TInput,
+  MaxEntriesIssue<TInput, TRequirement>
+> {
   /**
    * The action type.
    */
@@ -103,8 +102,7 @@ export function maxEntries<
   TInput extends EntriesInput,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MaxEntriesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxEntriesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

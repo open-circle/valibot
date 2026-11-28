@@ -21,10 +21,10 @@ export interface IntersectSchema<
   TOptions extends IntersectOptions,
   TMessage extends ErrorMessage<IntersectIssue> | undefined,
 > extends BaseSchema<
-    InferIntersectInput<TOptions>,
-    InferIntersectOutput<TOptions>,
-    IntersectIssue | InferIssue<TOptions[number]>
-  > {
+  InferIntersectInput<TOptions>,
+  InferIntersectOutput<TOptions>,
+  IntersectIssue | InferIssue<TOptions[number]>
+> {
   /**
    * The schema type.
    */

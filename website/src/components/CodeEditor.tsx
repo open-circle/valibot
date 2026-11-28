@@ -113,9 +113,9 @@ export const CodeEditor = component$<CodeEditorProps>(
 
     // Update value of model on change
     useTask$(({ track }) => {
-      track(value);
-      if (isBrowser && model.value && value.value !== model.value.getValue()) {
-        model.value.setValue(value.value);
+      const nextValue = track(() => value.value);
+      if (isBrowser && model.value && nextValue !== model.value.getValue()) {
+        model.value.setValue(nextValue);
       }
     });
 

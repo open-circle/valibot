@@ -85,8 +85,7 @@ export function gtValue<
   TInput extends ValueInput,
   const TRequirement extends TInput,
   const TMessage extends
-    | ErrorMessage<GtValueIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<GtValueIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

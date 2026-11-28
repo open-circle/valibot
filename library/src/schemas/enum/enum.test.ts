@@ -143,9 +143,9 @@ describe('enum_', () => {
         option1 = 'foo',
         option2 = 0,
         option3,
-        'Infinity',
+        Infinity,
         '-Infinity',
-        'NaN',
+        NaN,
       }
       expect(enum_(specialEnum)).toMatchObject({
         enum: specialEnum,

@@ -39,10 +39,10 @@ export interface ArgsAction<
   TInput extends (...args: any[]) => unknown,
   TSchema extends Schema,
 > extends BaseTransformation<
-    TInput,
-    (...args: InferInput<TSchema>) => ReturnType<TInput>,
-    never
-  > {
+  TInput,
+  (...args: InferInput<TSchema>) => ReturnType<TInput>,
+  never
+> {
   /**
    * The action type.
    */

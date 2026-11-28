@@ -8,8 +8,9 @@ import { _addIssue, _isLuhnAlgo } from '../../utils/index.ts';
 /**
  * Credit card issue interface.
  */
-export interface CreditCardIssue<TInput extends string>
-  extends BaseIssue<TInput> {
+export interface CreditCardIssue<
+  TInput extends string,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */

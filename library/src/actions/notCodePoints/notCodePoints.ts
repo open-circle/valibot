@@ -41,13 +41,12 @@ export interface NotCodePointsAction<
   TInput extends string,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<NotCodePointsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotCodePointsIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<
-    TInput,
-    TInput,
-    NotCodePointsIssue<TInput, TRequirement>
-  > {
+  TInput,
+  TInput,
+  NotCodePointsIssue<TInput, TRequirement>
+> {
   /**
    * The action type.
    */
@@ -96,8 +95,7 @@ export function notCodePoints<
   TInput extends string,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<NotCodePointsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<NotCodePointsIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

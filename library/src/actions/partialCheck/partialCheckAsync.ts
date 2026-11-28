@@ -80,8 +80,7 @@ export function partialCheckAsync<
   const TPaths extends RequiredPaths,
   const TSelection extends DeepPickN<TInput, TPaths>,
   const TMessage extends
-    | ErrorMessage<PartialCheckIssue<TSelection>>
-    | undefined,
+    ErrorMessage<PartialCheckIssue<TSelection>> | undefined,
 >(
   paths: ValidPaths<TInput, TPaths>,
   requirement: (input: TSelection) => MaybePromise<boolean>,

@@ -8,8 +8,9 @@ import { _addIssue } from '../../utils/index.ts';
 /**
  * Non trimmed issue interface.
  */
-export interface NonTrimmedIssue<TInput extends string>
-  extends BaseIssue<TInput> {
+export interface NonTrimmedIssue<
+  TInput extends string,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */
