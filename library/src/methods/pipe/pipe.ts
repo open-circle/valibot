@@ -1780,6 +1780,7 @@ export function pipe<
  *
  * @returns A schema with a pipeline.
  */
+// eslint-disable-next-line @typescript-eslint/unified-signatures
 export function pipe<
   const TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   const TItem1 extends PipeItem<
