@@ -18,6 +18,16 @@ describe('_LruCache', () => {
     );
   });
 
+  test('should distinguish string segments containing key delimiters', () => {
+    const cache = new _LruCache<unknown>();
+
+    expect(
+      cache.key('foo"|"en"|"first', { lang: 'en', message: 'second' })
+    ).not.toBe(
+      cache.key('foo', { lang: 'en', message: 'first"|"en"|"second' })
+    );
+  });
+
   test('should create different keys for different abort configs', () => {
     const cache = new _LruCache<unknown>();
 
