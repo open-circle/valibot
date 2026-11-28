@@ -1,4 +1,4 @@
-import type { ReadonlyAction } from '../actions/index.ts';
+import type { readonly } from '../actions/index.ts';
 import type {
   ExactOptionalSchema,
   ExactOptionalSchemaAsync,
@@ -23,6 +23,7 @@ import type { InferInput, InferIssue, InferOutput } from './infer.ts';
 import type { BaseIssue } from './issue.ts';
 import type { ErrorMessage } from './other.ts';
 import type { BaseSchema, BaseSchemaAsync } from './schema.ts';
+import type { BaseTransformation } from './transformation.ts';
 import type { MarkOptional, MaybeReadonly, Prettify } from './utils.ts';
 
 /**
@@ -205,6 +206,27 @@ type OutputWithQuestionMarks<
     : MarkOptional<TObject, OptionalOutputKeys<TEntries>>;
 
 /**
+ * Readonly action shape interface.
+ *
+ * Hint: This interface is structurally equivalent to `ReadonlyAction<any>`.
+ * We use it instead of `ReadonlyAction<any>` because relating two
+ * instantiations of `ReadonlyAction` forces TypeScript to measure the variance
+ * of `ReadonlyAction`, which is expensive (see issue #1663).
+ */
+export interface ReadonlyActionShape
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  extends BaseTransformation<any, any, never> {
+  /**
+   * The action type.
+   */
+  readonly type: 'readonly';
+  /**
+   * The action reference.
+   */
+  readonly reference: typeof readonly;
+}
+
+/**
  * Readonly output keys type.
  */
 
@@ -217,8 +239,7 @@ type ReadonlyOutputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
   [TKey in keyof TEntries]: TEntries[TKey] extends {
     readonly pipe: readonly unknown[];
   }
-    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ReadonlyAction<any> extends TEntries[TKey]['pipe'][number]
+    ? ReadonlyActionShape extends TEntries[TKey]['pipe'][number]
       ? TKey
       : never
     : never;

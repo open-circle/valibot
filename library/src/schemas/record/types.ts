@@ -1,4 +1,4 @@
-import type { Brand, ReadonlyAction } from '../../actions/index.ts';
+import type { Brand } from '../../actions/index.ts';
 import type {
   BaseIssue,
   BaseSchema,
@@ -7,6 +7,7 @@ import type {
   InferOutput,
   MarkOptional,
   Prettify,
+  ReadonlyActionShape,
 } from '../../types/index.ts';
 
 /**
@@ -79,8 +80,7 @@ type WithReadonly<
   TValue extends {
     readonly pipe: readonly unknown[];
   }
-    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ReadonlyAction<any> extends TValue['pipe'][number]
+    ? ReadonlyActionShape extends TValue['pipe'][number]
       ? Readonly<TObject>
       : TObject
     : TObject;
