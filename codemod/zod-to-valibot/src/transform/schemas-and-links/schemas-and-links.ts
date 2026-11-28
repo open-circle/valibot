@@ -566,7 +566,13 @@ function transformSchemasAndLinksHelper(
         break;
       }
       const propertyName = cur.value.callee.property.name;
-      if (curSchemaType === null && isZodSchemaName(propertyName)) {
+      if (
+        curSchemaType === null &&
+        // a schema name that follows another call or property (e.g.
+        // `z.partial(Schema).optional()`) is a method and not a new schema
+        transformedExp === null &&
+        isZodSchemaName(propertyName)
+      ) {
         curSchemaType = ZOD_SCHEMA_TO_TYPE[propertyName];
         useBigInt = propertyName === 'bigint';
 
@@ -596,6 +602,15 @@ function transformSchemasAndLinksHelper(
           cur.value.callee.object.type === 'Identifier' &&
           cur.value.callee.object.name === valibotIdentifier &&
           cur.value.arguments.length > 0;
+        if (
+          isStaticNamespaceCall &&
+          cur.value.arguments[0].type === 'SpreadElement'
+        ) {
+          // the schema can't be extracted from a spread argument
+          // it's not safe to transform the chain
+          transformLinks = false;
+          break;
+        }
         const schemaExp = isStaticNamespaceCall
           ? (cur.value.arguments[0] as
               | j.CallExpression
