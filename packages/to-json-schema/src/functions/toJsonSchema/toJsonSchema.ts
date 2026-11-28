@@ -6,7 +6,7 @@ import type {
   ConversionContext,
   JsonSchema,
 } from '../../types/index.ts';
-import { ReferenceMap } from '../../utils/index.ts';
+import { ReferenceMap, setSchemaProperty } from '../../utils/index.ts';
 
 /**
  * Converts a Valibot schema to the JSON Schema format.
@@ -36,13 +36,17 @@ export function toJsonSchema(
       context.referenceMap.set(definitions[key], key);
     }
     for (const key in definitions) {
-      context.definitions[key] = convertSchema(
-        {},
-        // @ts-expect-error
-        definitions[key],
-        config,
-        context,
-        true
+      setSchemaProperty(
+        context.definitions,
+        key,
+        convertSchema(
+          {},
+          // @ts-expect-error
+          definitions[key],
+          config,
+          context,
+          true
+        )
       );
     }
   }
