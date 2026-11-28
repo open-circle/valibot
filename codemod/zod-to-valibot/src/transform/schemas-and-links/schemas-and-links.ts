@@ -78,6 +78,7 @@ import {
 import { ObjectModifier, ZodSchemaType } from './types';
 import {
   transformBase64,
+  transformBrand,
   transformCUID2,
   transformDateTime,
   transformDate as transformDateValidator,
@@ -251,6 +252,8 @@ function toValibotActionExp(
   valibotIdentifier: string,
   zodValidatorName: ZodValidatorName,
   inputArgs: j.CallExpression['arguments'],
+  // no type definition found
+  typeParameters: any,
   schemaType: ZodSchemaType,
   useBigInt: boolean
 ) {
@@ -260,6 +263,8 @@ function toValibotActionExp(
       return transformBase64(...args);
     case 'base64url':
       return transformUnimplemented(...args, 'base64url');
+    case 'brand':
+      return transformBrand(...args, typeParameters);
     case 'cidr':
       return transformUnimplemented(...args, 'cidr');
     case 'cuid':
@@ -582,11 +587,29 @@ function transformSchemasAndLinksHelper(
           objectModifier
         );
       } else if (isZodMethodName(propertyName)) {
+        // When transformedExp is null and the method is called directly on the
+        // valibot namespace (e.g. v.partial(Schema)), this is a static-style
+        // call where the first argument is the schema, not a chain call.
+        const isStaticNamespaceCall =
+          transformedExp === null &&
+          cur.value.callee.type === 'MemberExpression' &&
+          cur.value.callee.object.type === 'Identifier' &&
+          cur.value.callee.object.name === valibotIdentifier &&
+          cur.value.arguments.length > 0;
+        const schemaExp = isStaticNamespaceCall
+          ? (cur.value.arguments[0] as
+              | j.CallExpression
+              | j.MemberExpression
+              | j.Identifier)
+          : (transformedExp ?? j.identifier(identifier));
+        const methodArgs = isStaticNamespaceCall
+          ? cur.value.arguments.slice(1)
+          : cur.value.arguments;
         transformedExp = toValibotMethodExp(
           valibotIdentifier,
           propertyName,
-          transformedExp ?? j.identifier(identifier),
-          cur.value.arguments
+          schemaExp,
+          methodArgs
         );
       } else if (isZodValidatorName(propertyName)) {
         if (curSchemaType === null) {
@@ -601,6 +624,9 @@ function transformSchemasAndLinksHelper(
             valibotIdentifier,
             propertyName,
             cur.value.arguments,
+            // parser and types are not in sync
+            // @ts-expect-error
+            cur.value.typeParameters,
             curSchemaType,
             useBigInt
           )

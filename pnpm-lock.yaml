@@ -5,9 +5,10 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  shell-quote@1: 1.8.4
+  shell-quote@1: 1.11.0
   tar@6: 7.5.21
   tar@7: 7.5.21
+  simple-git@3: 4.0.2
 
 patchedDependencies:
   '@builder.io/qwik-city@1.19.2': 2195348d10017bf69653482d128f793158a82c1d0eeb0e3fd909db4c503493a1
@@ -2102,11 +2103,11 @@ packages:
     engines: {node: '>= 8.0.0'}
     hasBin: true
 
-  '@simple-git/args-pathspec@1.0.3':
-    resolution: {integrity: sha512-ngJMaHlsWDTfjyq9F3VIQ8b7NXbBLq5j9i5bJ6XLYtD6qlDXT7fdKY2KscWWUF8t18xx052Y/PUO1K1TRc9yKA==}
+  '@simple-git/args-pathspec@1.0.4':
+    resolution: {integrity: sha512-EtMX6XjRWSastG2SdkmSQByPtJ9dx/NIjnHbpQPCYt62j4RmSx5rgLTGpw0YCjF5h191gZOmBfheOT23cRSFdw==}
 
-  '@simple-git/argv-parser@1.1.1':
-    resolution: {integrity: sha512-Q9lBcfQ+VQCpQqGJFHe5yooOS5hGdLFFbJ5R+R5aDsnkPCahtn1hSkMcORX65J2Z5lxSkD0lQorMsncuBQxYUw==}
+  '@simple-git/argv-parser@2.0.1':
+    resolution: {integrity: sha512-M++IaVWrN+vYalilOHfwvT2IL3wYZtVEBQpmX6DLSOJLtxbZ+SUeIDE3IiPogzhPACLajwtxfa5rp+ZX1FczzQ==}
 
   '@sinclair/typebox@0.25.24':
     resolution: {integrity: sha512-XJfwUVUKDHF5ugKwIcxEgc9k8b7HbznCp6eUfWgu710hMPNIO4aw4/zB5RogDQz8nd6gyCDpU9O/m6qYEWY6yQ==}
@@ -5759,8 +5760,8 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
-  shell-quote@1.8.4:
-    resolution: {integrity: sha512-VsC6n6vz1ihYYyZZwX7YZSF5l5x36ca17OC+a69h94YqB7X6XLwf+5MOgynYir2SLFUbl8gIYvBo8K8RoNQ6bQ==}
+  shell-quote@1.11.0:
+    resolution: {integrity: sha512-JdxDPD0DBTyu08pq0kPC0xSNet/qsU07qT6IsX1AS8oO2ICNRY4ldNa8OAI6PuwAH8tG3lxEhbqmyp4Dw4036g==}
     engines: {node: '>= 0.4'}
 
   shiki@4.1.0:
@@ -5803,8 +5804,8 @@ packages:
   simple-get@4.0.1:
     resolution: {integrity: sha512-brv7p5WgH0jmQJr1ZDDfKDOSeWWg+OVypG99A/5vYGPqJ6pxiaHLy8nxtFjBA7oMa01ebA9gfh1uMCFqOuXxvA==}
 
-  simple-git@3.36.0:
-    resolution: {integrity: sha512-cGQjLjK8bxJw4QuYT7gxHw3/IouVESbhahSsHrX97MzCL1gu2u7oy38W6L2ZIGECEfIBG4BabsWDPjBxJENv9Q==}
+  simple-git@4.0.2:
+    resolution: {integrity: sha512-l0sIsv9VrPwovKELFDBOj/lhmIcbMvxBk2B+hRhsMM4/VL3gKtuZvYnBNixVo+N/0HnqQx2cBdLvxnAbygHpqA==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -7090,7 +7091,7 @@ snapshots:
       magic-string: 0.30.21
       openai: 4.23.0
       prettier: 3.6.2
-      simple-git: 3.36.0
+      simple-git: 4.0.2
       tree-kill: 1.2.2
       ts-invariant: 0.10.3
       yaml: 2.8.1
@@ -8078,11 +8079,11 @@ snapshots:
       fflate: 0.7.4
       string.prototype.codepointat: 0.2.1
 
-  '@simple-git/args-pathspec@1.0.3': {}
+  '@simple-git/args-pathspec@1.0.4': {}
 
-  '@simple-git/argv-parser@1.1.1':
+  '@simple-git/argv-parser@2.0.1':
     dependencies:
-      '@simple-git/args-pathspec': 1.0.3
+      '@simple-git/args-pathspec': 1.0.4
 
   '@sinclair/typebox@0.25.24': {}
 
@@ -10948,7 +10949,7 @@ snapshots:
   launch-editor@2.12.0:
     dependencies:
       picocolors: 1.1.1
-      shell-quote: 1.8.4
+      shell-quote: 1.11.0
 
   levn@0.4.1:
     dependencies:
@@ -12378,7 +12379,7 @@ snapshots:
 
   shebang-regex@3.0.0: {}
 
-  shell-quote@1.8.4: {}
+  shell-quote@1.11.0: {}
 
   shiki@4.1.0:
     dependencies:
@@ -12435,12 +12436,12 @@ snapshots:
       once: 1.4.0
       simple-concat: 1.0.1
 
-  simple-git@3.36.0:
+  simple-git@4.0.2:
     dependencies:
       '@kwsites/file-exists': 1.1.1
       '@kwsites/promise-deferred': 1.1.1
-      '@simple-git/args-pathspec': 1.0.3
-      '@simple-git/argv-parser': 1.1.1
+      '@simple-git/args-pathspec': 1.0.4
+      '@simple-git/argv-parser': 2.0.1
       debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
