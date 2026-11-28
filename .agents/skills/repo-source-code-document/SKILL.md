@@ -50,7 +50,7 @@ export interface SuccessDataset<out TValue> {}
 
 **Rules:**
 
-- `out` if only read, `in` if only consumed, `in out` if both (give the reason in the hint)
+- `out` or `in`, whichever `tsc` accepts, and `in out` only if it rejects both (give the reason in the hint)
 - Not for schema, action or method interfaces
 
 ### Function Overloads
