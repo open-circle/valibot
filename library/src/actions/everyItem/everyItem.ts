@@ -9,8 +9,9 @@ import type { ArrayInput, ArrayRequirement } from '../types.ts';
 /**
  * Every item issue interface.
  */
-export interface EveryItemIssue<TInput extends ArrayInput>
-  extends BaseIssue<TInput> {
+export interface EveryItemIssue<
+  TInput extends ArrayInput,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */

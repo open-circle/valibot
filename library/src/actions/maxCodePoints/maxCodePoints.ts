@@ -41,13 +41,12 @@ export interface MaxCodePointsAction<
   TInput extends string,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<MaxCodePointsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxCodePointsIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<
-    TInput,
-    TInput,
-    MaxCodePointsIssue<TInput, TRequirement>
-  > {
+  TInput,
+  TInput,
+  MaxCodePointsIssue<TInput, TRequirement>
+> {
   /**
    * The action type.
    */
@@ -96,8 +95,7 @@ export function maxCodePoints<
   TInput extends string,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MaxCodePointsIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxCodePointsIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

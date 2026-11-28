@@ -18,10 +18,10 @@ export interface ArraySchema<
   TItem extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TMessage extends ErrorMessage<ArrayIssue> | undefined,
 > extends BaseSchema<
-    InferInput<TItem>[],
-    InferOutput<TItem>[],
-    ArrayIssue | InferIssue<TItem>
-  > {
+  InferInput<TItem>[],
+  InferOutput<TItem>[],
+  ArrayIssue | InferIssue<TItem>
+> {
   /**
    * The schema type.
    */

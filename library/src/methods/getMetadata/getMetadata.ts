@@ -61,8 +61,7 @@ type RecursiveMerge<
   ...infer TPipeRest extends readonly BasicPipeItem[],
 ]
   ? TFirstItem extends
-      | SchemaWithPipe<infer TNestedPipe>
-      | SchemaWithPipeAsync<infer TNestedPipe>
+      SchemaWithPipe<infer TNestedPipe> | SchemaWithPipeAsync<infer TNestedPipe>
     ? RecursiveMerge<TPipeRest, RecursiveMerge<TNestedPipe, TCollectedMetadata>>
     : TFirstItem extends MetadataAction<unknown, infer TCurrentMetadata>
       ? RecursiveMerge<TPipeRest, Merge<TCollectedMetadata, TCurrentMetadata>>
@@ -82,8 +81,7 @@ export type InferMetadata<TSchema extends Schema> =
       BaseSchemaAsync<any, any, any> extends TSchema
       ? Record<string, unknown>
       : TSchema extends
-            | SchemaWithPipe<infer TPipe>
-            | SchemaWithPipeAsync<infer TPipe>
+            SchemaWithPipe<infer TPipe> | SchemaWithPipeAsync<infer TPipe>
         ? Prettify<RecursiveMerge<TPipe>>
         : // eslint-disable-next-line @typescript-eslint/no-empty-object-type
           {};

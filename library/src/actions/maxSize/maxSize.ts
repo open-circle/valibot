@@ -89,8 +89,7 @@ export function maxSize<
   TInput extends SizeInput,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MaxSizeIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MaxSizeIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

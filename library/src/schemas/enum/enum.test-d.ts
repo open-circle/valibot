@@ -52,9 +52,9 @@ describe('enum_', () => {
         option1 = 'foo',
         option2 = 0,
         option3,
-        'Infinity',
+        Infinity,
         '-Infinity',
-        'NaN',
+        NaN,
       }
       type SpecialEnum = typeof specialEnum;
       type SpecialEnumSchema = EnumSchema<SpecialEnum, undefined>;

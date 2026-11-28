@@ -8,8 +8,10 @@ import { _addIssue, _getByteCount } from '../../utils/index.ts';
 /**
  * Bytes issue interface.
  */
-export interface BytesIssue<TInput extends string, TRequirement extends number>
-  extends BaseIssue<TInput> {
+export interface BytesIssue<
+  TInput extends string,
+  TRequirement extends number,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */
@@ -85,8 +87,7 @@ export function bytes<
   TInput extends string,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<BytesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<BytesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

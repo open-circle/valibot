@@ -17,10 +17,10 @@ export interface OptionalSchema<
   TWrapped extends BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   TDefault extends Default<TWrapped, undefined>,
 > extends BaseSchema<
-    InferInput<TWrapped> | undefined,
-    InferOptionalOutput<TWrapped, TDefault>,
-    InferIssue<TWrapped>
-  > {
+  InferInput<TWrapped> | undefined,
+  InferOptionalOutput<TWrapped, TDefault>,
+  InferIssue<TWrapped>
+> {
   /**
    * The schema type.
    */

@@ -60,8 +60,7 @@ export function custom<TInput>(check: Check): CustomSchema<TInput, undefined>;
 export function custom<
   TInput,
   const TMessage extends ErrorMessage<CustomIssue> | undefined =
-    | ErrorMessage<CustomIssue>
-    | undefined,
+    ErrorMessage<CustomIssue> | undefined,
 >(check: Check, message: TMessage): CustomSchema<TInput, TMessage>;
 
 // @__NO_SIDE_EFFECTS__

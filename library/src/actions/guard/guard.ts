@@ -30,8 +30,10 @@ export type InferGuardOutput<TGuard extends GuardFunction<any>> =
  *
  * @beta
  */
-export interface GuardIssue<TInput, TGuard extends GuardFunction<TInput>>
-  extends BaseIssue<TInput> {
+export interface GuardIssue<
+  TInput,
+  TGuard extends GuardFunction<TInput>,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */
@@ -56,11 +58,11 @@ export interface GuardAction<
   TGuard extends GuardFunction<TInput>,
   TMessage extends ErrorMessage<GuardIssue<TInput, TGuard>> | undefined,
 > extends BaseTransformation<
-    TInput,
-    // intersect in case guard is actually wider
-    TInput & InferGuardOutput<TGuard>,
-    GuardIssue<TInput, TGuard>
-  > {
+  TInput,
+  // intersect in case guard is actually wider
+  TInput & InferGuardOutput<TGuard>,
+  GuardIssue<TInput, TGuard>
+> {
   /**
    * The action type.
    */
@@ -143,8 +145,7 @@ export function guard<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const TGuard extends GuardFunction<any>,
   const TMessage extends
-    | ErrorMessage<GuardIssue<Parameters<TGuard>[0], TGuard>>
-    | undefined,
+    ErrorMessage<GuardIssue<Parameters<TGuard>[0], TGuard>> | undefined,
 >(
   requirement: TGuard,
   message: TMessage

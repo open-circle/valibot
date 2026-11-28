@@ -23,8 +23,9 @@ export interface ParseJsonConfig {
  *
  * @beta
  */
-export interface ParseJsonIssue<TInput extends string>
-  extends BaseIssue<TInput> {
+export interface ParseJsonIssue<
+  TInput extends string,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */

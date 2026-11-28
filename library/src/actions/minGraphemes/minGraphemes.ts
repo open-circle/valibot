@@ -41,13 +41,12 @@ export interface MinGraphemesAction<
   TInput extends string,
   TRequirement extends number,
   TMessage extends
-    | ErrorMessage<MinGraphemesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinGraphemesIssue<TInput, TRequirement>> | undefined,
 > extends BaseValidation<
-    TInput,
-    TInput,
-    MinGraphemesIssue<TInput, TRequirement>
-  > {
+  TInput,
+  TInput,
+  MinGraphemesIssue<TInput, TRequirement>
+> {
   /**
    * The action type.
    */
@@ -96,8 +95,7 @@ export function minGraphemes<
   TInput extends string,
   const TRequirement extends number,
   const TMessage extends
-    | ErrorMessage<MinGraphemesIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<MinGraphemesIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

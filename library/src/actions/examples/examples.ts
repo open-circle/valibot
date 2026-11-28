@@ -3,8 +3,10 @@ import type { BaseMetadata } from '../../types/index.ts';
 /**
  * Examples action interface.
  */
-export interface ExamplesAction<TInput, TExamples extends readonly TInput[]>
-  extends BaseMetadata<TInput> {
+export interface ExamplesAction<
+  TInput,
+  TExamples extends readonly TInput[],
+> extends BaseMetadata<TInput> {
   /**
    * The action type.
    */

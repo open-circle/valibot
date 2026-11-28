@@ -9,8 +9,9 @@ import type { LengthInput } from '../types.ts';
 /**
  * Empty issue interface.
  */
-export interface EmptyIssue<TInput extends LengthInput>
-  extends BaseIssue<TInput> {
+export interface EmptyIssue<
+  TInput extends LengthInput,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */

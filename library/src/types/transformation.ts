@@ -66,17 +66,18 @@ export interface BaseTransformationAsync<
   TOutput,
   TIssue extends BaseIssue<unknown>,
 > extends Omit<
-    BaseTransformation<TInput, TOutput, TIssue>,
-    'reference' | 'async' | '~run'
-  > {
+  BaseTransformation<TInput, TOutput, TIssue>,
+  'reference' | 'async' | '~run'
+> {
   /**
    * The transformation reference.
    */
   readonly reference: (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ...args: any[]
-  ) => // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  | BaseTransformation<any, any, BaseIssue<unknown>>
+  ) =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    | BaseTransformation<any, any, BaseIssue<unknown>>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     | BaseTransformationAsync<any, any, BaseIssue<unknown>>;
   /**

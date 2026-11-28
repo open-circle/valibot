@@ -85,8 +85,7 @@ export function value<
   TInput extends ValueInput,
   const TRequirement extends TInput,
   const TMessage extends
-    | ErrorMessage<ValueIssue<TInput, TRequirement>>
-    | undefined,
+    ErrorMessage<ValueIssue<TInput, TRequirement>> | undefined,
 >(
   requirement: TRequirement,
   message: TMessage

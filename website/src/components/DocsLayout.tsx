@@ -209,8 +209,7 @@ interface NavButtonsWithoutChaptersProps extends NavButtonsBaseProps {
 }
 
 type NavButtonsProps =
-  | NavButtonsWithChaptersProps
-  | NavButtonsWithoutChaptersProps;
+  NavButtonsWithChaptersProps | NavButtonsWithoutChaptersProps;
 
 /**
  * Buttons to navigate to the previous or next page.

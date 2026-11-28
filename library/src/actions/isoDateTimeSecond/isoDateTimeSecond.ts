@@ -9,8 +9,9 @@ import { _addIssue } from '../../utils/index.ts';
 /**
  * ISO date time second issue interface.
  */
-export interface IsoDateTimeSecondIssue<TInput extends string>
-  extends BaseIssue<TInput> {
+export interface IsoDateTimeSecondIssue<
+  TInput extends string,
+> extends BaseIssue<TInput> {
   /**
    * The issue kind.
    */
@@ -99,8 +100,7 @@ export function isoDateTimeSecond<
 export function isoDateTimeSecond<
   TInput extends string,
   const TMessage extends
-    | ErrorMessage<IsoDateTimeSecondIssue<TInput>>
-    | undefined,
+    ErrorMessage<IsoDateTimeSecondIssue<TInput>> | undefined,
 >(message: TMessage): IsoDateTimeSecondAction<TInput, TMessage>;
 
 // @__NO_SIDE_EFFECTS__

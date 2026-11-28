@@ -9,8 +9,11 @@ import type { RawTransformContext, RawTransformIssue } from './types.ts';
 /**
  * Raw transform action interface.
  */
-export interface RawTransformAction<TInput, TOutput>
-  extends BaseTransformation<TInput, TOutput, RawTransformIssue<TInput>> {
+export interface RawTransformAction<TInput, TOutput> extends BaseTransformation<
+  TInput,
+  TOutput,
+  RawTransformIssue<TInput>
+> {
   /**
    * The action type.
    */

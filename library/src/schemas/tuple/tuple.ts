@@ -19,10 +19,10 @@ export interface TupleSchema<
   TItems extends TupleItems,
   TMessage extends ErrorMessage<TupleIssue> | undefined,
 > extends BaseSchema<
-    InferTupleInput<TItems>,
-    InferTupleOutput<TItems>,
-    TupleIssue | InferTupleIssue<TItems>
-  > {
+  InferTupleInput<TItems>,
+  InferTupleOutput<TItems>,
+  TupleIssue | InferTupleIssue<TItems>
+> {
   /**
    * The schema type.
    */
