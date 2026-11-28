@@ -239,6 +239,11 @@ type TuplePath<TItems extends TupleItems | TupleItemsAsync> = {
 
 /**
  * Issue dot path type.
+ *
+ * Hint: We dispatch on the `type` property of the schema with small structural
+ * patterns instead of matching the schema interfaces, because relating a
+ * schema to another instantiation of the same interface forces TypeScript to
+ * measure its variance, which is expensive (see issue #1663).
  */
 export type IssueDotPath<
   TSchema extends
