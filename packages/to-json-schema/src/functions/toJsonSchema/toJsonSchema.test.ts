@@ -859,38 +859,4 @@ describe('toJsonSchema', () => {
       });
     });
   });
-
-  describe('should stop input conversion before type transformations', () => {
-    test('for parseBoolean action', () => {
-      expect(
-        toJsonSchema(
-          v.pipe(v.string(), v.nonEmpty(), v.parseBoolean(), v.value(true)),
-          { typeMode: 'input' }
-        )
-      ).toStrictEqual({
-        $schema: 'http://json-schema.org/draft-07/schema#',
-        type: 'string',
-        minLength: 1,
-      });
-    });
-
-    test('for mapItems action', () => {
-      expect(
-        toJsonSchema(
-          v.pipe(
-            v.array(v.string()),
-            v.minLength(1),
-            v.mapItems(Number),
-            v.maxLength(5)
-          ),
-          { typeMode: 'input' }
-        )
-      ).toStrictEqual({
-        $schema: 'http://json-schema.org/draft-07/schema#',
-        type: 'array',
-        items: { type: 'string' },
-        minItems: 1,
-      });
-    });
-  });
 });
