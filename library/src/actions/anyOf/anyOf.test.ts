@@ -447,6 +447,33 @@ describe('anyOf', () => {
     });
   });
 
+  test('should retry with the original value after a failed conversion', () => {
+    const schema = pipe(string(), anyOf([toNumber(), email(), trim()]));
+    expect(safeParse(schema, '  text  ')).toStrictEqual({
+      typed: true,
+      success: true,
+      output: 'text',
+      issues: undefined,
+    });
+  });
+
+  test('should preserve the error tree when nested alternatives fail', () => {
+    const schema = pipe(
+      string(),
+      anyOf([anyOf([email(), url()]), minLength(5)])
+    );
+    const result = safeParse(schema, 'x');
+    expect(result.issues).toMatchObject([
+      {
+        type: 'any_of',
+        issues: [
+          { type: 'any_of', issues: [{ type: 'email' }, { type: 'url' }] },
+          { type: 'min_length' },
+        ],
+      },
+    ]);
+  });
+
   test('should return the output of a nested transformation', () => {
     const schema = pipe(string(), anyOf([anyOf([toNumber(), email()]), url()]));
     expect(parse(schema, '123')).toBe(123);
@@ -456,10 +483,7 @@ describe('anyOf', () => {
     'should skip transforming alternatives after an issue with %o',
     async (config) => {
       const convert = vi.fn((value: string) => value.length);
-      const action = anyOf([
-        anyOf([transform(convert), toNumber()]),
-        toNumber(),
-      ]);
+      const action = anyOf([email(), anyOf([transform(convert), toNumber()])]);
       const expected = { typed: false, success: false, output: 'x' };
       expect(
         safeParse(pipe(string(), minLength(4), action), 'x', config)

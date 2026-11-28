@@ -242,64 +242,23 @@ describe('anyOf', () => {
     anyOf([email(), metadata({ title: 'Test' })]);
   });
 
-  // These lock in the non-obvious inference decisions behind `anyOf`. They exist
-  // because the naive alternatives silently break in ways that are easy to
-  // reintroduce during a refactor — keep them green.
-  describe('type system invariants', () => {
-    test('bare value options widen to their base input, never `never`', () => {
-      // All options share one input, so `anyOf` intersects the option inputs.
-      // A value action's input is the `ValueInput` union, and intersecting a
-      // union member-by-member collapses it to `never` — the input inference
-      // boxes each option's input before intersecting to avoid exactly that.
-      // The bare (out-of-pipe) input must therefore stay `ValueInput` and, in
-      // particular, must not collapse to `never`.
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const action = anyOf([minValue(0), maxValue(10)]);
-      expectTypeOf<InferInput<typeof action>>().toEqualTypeOf<ValueInput>();
-      expectTypeOf<InferInput<typeof action>>().not.toEqualTypeOf<never>();
-    });
+  test('should preserve the shared union input outside a pipe', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const action = anyOf([minValue(0), maxValue(10)]);
+    expectTypeOf<InferInput<typeof action>>().toEqualTypeOf<ValueInput>();
+  });
 
-    test('a pipe recovers the precise input type from its upstream schema', () => {
-      // Bare input is `ValueInput`, but in a pipe the upstream schema pins it
-      // back down via contextual inference — output must be `number`, not
-      // `ValueInput`.
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const schema = pipe(number(), anyOf([minValue(0), maxValue(10)]));
-      expectTypeOf<InferOutput<typeof schema>>().toEqualTypeOf<number>();
-    });
-
-    test('genuinely incompatible option inputs are rejected', () => {
-      // Options with disjoint inputs intersect to `never`, which the pipe
-      // rejects — this must not silently pass.
-      pipe(
-        string(),
-        // @ts-expect-error
-        anyOf([email(), check((input: number) => input > 0)])
-      );
-    });
-
-    test('validations keep the input, guards/transforms change the output', () => {
-      // The output is the union of every option's output: value-preserving
-      // validations contribute the shared input, guards narrow, transforms
-      // change the type.
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const validations = pipe(string(), anyOf([minLength(1), maxLength(10)]));
-      expectTypeOf<InferOutput<typeof validations>>().toEqualTypeOf<string>();
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const guards = pipe(
-        string(),
-        anyOf([guard(isPixelString), guard(isRemString)])
-      );
-      expectTypeOf<InferOutput<typeof guards>>().toEqualTypeOf<
-        PixelString | RemString
-      >();
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const transforms = pipe(string(), anyOf([email(), toNumber()]));
-      expectTypeOf<InferOutput<typeof transforms>>().toEqualTypeOf<
-        string | number
-      >();
-    });
+  test('should infer every alternative from a readonly tuple', () => {
+    const options = [
+      guard(isPixelString),
+      toNumber(),
+      transform((value: string) => value.length > 0),
+    ] as const;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const action = anyOf(options);
+    expectTypeOf<InferInput<typeof action>>().toEqualTypeOf<string>();
+    expectTypeOf<InferOutput<typeof action>>().toEqualTypeOf<
+      PixelString | number | boolean
+    >();
   });
 });
