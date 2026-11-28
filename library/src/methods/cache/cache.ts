@@ -33,12 +33,12 @@ export type SchemaWithCache<
 /**
  * Caches the output of a schema.
  *
- * Hint: Primitive inputs are cached by value, except for Symbols, which are
- * cached under a single shared key and are not distinguished from one another.
- * Object and function inputs are cached by reference identity, so mutating
- * input objects and reusing the same reference can return a stale cached
- * dataset. Returned objects are also reused by reference, so mutating cached
- * output can affect later cache hits.
+ * Hint: Primitive inputs are cached by value, except for Symbols, which all
+ * share a single cache key, so a cache hit can return the output of a different
+ * Symbol. Object and function inputs are cached by reference identity, so
+ * mutating input objects and reusing the same reference can return a stale
+ * cached dataset. Returned objects are also reused by reference, so mutating
+ * cached output can affect later cache hits.
  *
  * @param schema The schema to cache.
  *
@@ -53,12 +53,12 @@ export function cache<
 /**
  * Caches the output of a schema.
  *
- * Hint: Primitive inputs are cached by value, except for Symbols, which are
- * cached under a single shared key and are not distinguished from one another.
- * Object and function inputs are cached by reference identity, so mutating
- * input objects and reusing the same reference can return a stale cached
- * dataset. Returned objects are also reused by reference, so mutating cached
- * output can affect later cache hits.
+ * Hint: Primitive inputs are cached by value, except for Symbols, which all
+ * share a single cache key, so a cache hit can return the output of a different
+ * Symbol. Object and function inputs are cached by reference identity, so
+ * mutating input objects and reusing the same reference can return a stale
+ * cached dataset. Returned objects are also reused by reference, so mutating
+ * cached output can affect later cache hits.
  *
  * @param schema The schema to cache.
  * @param config The cache config.
