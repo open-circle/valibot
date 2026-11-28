@@ -3,8 +3,11 @@ import type { ErrorMessage } from './other.ts';
 
 /**
  * Config interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663).
  */
-export interface Config<TIssue extends BaseIssue<unknown>> {
+export interface Config<in TIssue extends BaseIssue<unknown>> {
   /**
    * The selected language.
    */

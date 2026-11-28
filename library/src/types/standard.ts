@@ -1,7 +1,10 @@
 /**
  * The Standard Schema properties interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663).
  */
-export interface StandardProps<TInput, TOutput> {
+export interface StandardProps<out TInput, out TOutput> {
   /**
    * The version number of the standard.
    */
@@ -31,8 +34,11 @@ export type StandardResult<TOutput> =
 
 /**
  * The result interface if validation succeeds.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663).
  */
-export interface StandardSuccessResult<TOutput> {
+export interface StandardSuccessResult<out TOutput> {
   /**
    * The typed output value.
    */
@@ -79,8 +85,11 @@ export interface StandardPathItem {
 
 /**
  * The Standard Schema types interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663).
  */
-export interface StandardTypes<TInput, TOutput> {
+export interface StandardTypes<out TInput, out TOutput> {
   /**
    * The input type of the schema.
    */

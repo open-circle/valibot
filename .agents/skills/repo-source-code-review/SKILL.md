@@ -62,6 +62,7 @@ export function string(message?: ErrorMessage<StringIssue>): StringSchema {
 | Constraints       | Generic parameters have appropriate `extends` clauses |
 | Return types      | Explicit return types on exported functions           |
 | Type tests        | `.test-d.ts` file covers type inference scenarios     |
+| Variance          | Interfaces in `types/` annotate every generic         |
 
 **Good — constrained generic:**
 
@@ -127,6 +128,7 @@ See `repo-source-code-document` skill for full documentation rules.
 - [ ] Runtime tests in `.test.ts`
 - [ ] Type tests in `.test-d.ts`
 - [ ] Naming conventions followed
+- [ ] Variance annotations on generics of `types/` interfaces
 
 ## Related Skills
 

@@ -20,8 +20,11 @@ export interface UnknownDataset {
 
 /**
  * Success dataset interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663).
  */
-export interface SuccessDataset<TValue> {
+export interface SuccessDataset<out TValue> {
   /**
    * Whether it's typed.
    */
@@ -38,8 +41,14 @@ export interface SuccessDataset<TValue> {
 
 /**
  * Partial dataset interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663).
  */
-export interface PartialDataset<TValue, TIssue extends BaseIssue<unknown>> {
+export interface PartialDataset<
+  out TValue,
+  out TIssue extends BaseIssue<unknown>,
+> {
   /**
    * Whether it's typed.
    */
@@ -56,8 +65,11 @@ export interface PartialDataset<TValue, TIssue extends BaseIssue<unknown>> {
 
 /**
  * Failure dataset interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663).
  */
-export interface FailureDataset<TIssue extends BaseIssue<unknown>> {
+export interface FailureDataset<out TIssue extends BaseIssue<unknown>> {
   /**
    * Whether it's typed.
    */

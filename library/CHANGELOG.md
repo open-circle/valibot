@@ -4,6 +4,7 @@ All notable changes to the library will be documented in this file.
 
 ## vX.X.X (Month DD, YYYY)
 
+- Add variance annotations to all generic base interfaces (schema, validation, transformation, metadata, issue, config, dataset and Standard Schema interfaces) to improve TypeScript performance (pull request #1669)
 - Add `trimmed` and `nonTrimmed` validation actions to validate whether a string has leading or trailing whitespace (pull request #1761)
 - Change internal `ReadonlyOutputKeys` type of `object` schemas and `WithReadonly` type of `record` schema to use a structural readonly action type to improve TypeScript performance (pull request #1671)
 - Change internal `InputWithQuestionMarks` and `OutputWithQuestionMarks` types of `object` schemas to skip `MarkOptional` when no entry is optional to improve TypeScript performance (pull request #1666)

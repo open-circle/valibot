@@ -4,11 +4,15 @@ import type { BaseIssue } from './issue.ts';
 
 /**
  * Base validation interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663). `TInput`
+ * is invariant, because it is consumed by `~run` and exposed by `~types`.
  */
 export interface BaseValidation<
-  TInput,
-  TOutput,
-  TIssue extends BaseIssue<unknown>,
+  in out TInput,
+  out TOutput,
+  out TIssue extends BaseIssue<unknown>,
 > {
   /**
    * The object kind.
@@ -64,11 +68,15 @@ export interface BaseValidation<
 
 /**
  * Base validation async interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663). `TInput`
+ * is invariant, because it is consumed by `~run` and exposed by `~types`.
  */
 export interface BaseValidationAsync<
-  TInput,
-  TOutput,
-  TIssue extends BaseIssue<unknown>,
+  in out TInput,
+  out TOutput,
+  out TIssue extends BaseIssue<unknown>,
 > extends Omit<
     BaseValidation<TInput, TOutput, TIssue>,
     'reference' | 'async' | '~run'

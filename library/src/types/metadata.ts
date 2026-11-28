@@ -1,7 +1,10 @@
 /**
  * Base metadata interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663).
  */
-export interface BaseMetadata<TInput> {
+export interface BaseMetadata<out TInput> {
   /**
    * The object kind.
    */
