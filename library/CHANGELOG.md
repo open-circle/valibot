@@ -5,6 +5,7 @@ All notable changes to the library will be documented in this file.
 ## vX.X.X (Month DD, YYYY)
 
 - Add `trimmed` and `nonTrimmed` validation actions to validate whether a string has leading or trailing whitespace (pull request #1761)
+- Change `ObjectEntries` and `ObjectEntriesAsync` types to only contain base schema types to improve TypeScript performance (pull request #1668)
 - Change internal `OptionalInputKeys` and `OptionalOutputKeys` types to detect optional entries structurally to improve TypeScript performance (pull request #1667)
 - Change internal `VariantOption` and `VariantOptionAsync` types of `variant` schema to use a structural object option type to improve TypeScript performance (pull request #1670)
 - Change `isbn`, `creditCard` and `imei` actions to check digits by character code instead of splitting and parsing the input to improve performance (pull request #1634)
