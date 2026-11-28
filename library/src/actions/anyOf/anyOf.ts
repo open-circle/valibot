@@ -40,14 +40,7 @@ interface RuntimeAnyOfOption {
  * used only to probe whether it looks like a sync validation or
  * transformation action.
  */
-interface UncheckedAnyOfOption {
-  readonly async?: unknown;
-  readonly kind?: unknown;
-  readonly expects?: unknown;
-  readonly reference?: unknown;
-  readonly type?: unknown;
-  readonly '~run'?: unknown;
-}
+type UncheckedAnyOfOption = Partial<Record<keyof GenericValidation, unknown>>;
 
 /**
  * Infers the input type shared by all options.
@@ -71,11 +64,6 @@ type InferAnyOfInput<TOptions extends readonly unknown[]> =
     ? TInput
     : never;
 
-type ExtractAnyOfOption<TOptions extends AnyOfOptionsConstraint> = Extract<
-  TOptions[number],
-  AnyOfOption
->;
-
 /**
  * Extracts options whose input type could not be resolved.
  *
@@ -94,11 +82,11 @@ type ExtractAnyOfOption<TOptions extends AnyOfOptionsConstraint> = Extract<
 type UnresolvedAnyOfOption<TOption> =
   IsAny<TOption> extends true
     ? never
-    : TOption extends AnyOfOption
-      ? TOption extends { readonly type: 'readonly' | 'brand' | 'flavor' }
-        ? [unknown] extends [InferInput<TOption>]
-          ? TOption
-          : never
+    : TOption extends AnyOfOption & {
+          readonly type: 'readonly' | 'brand' | 'flavor';
+        }
+      ? [unknown] extends [InferInput<TOption>]
+        ? TOption
         : never
       : never;
 
@@ -113,19 +101,10 @@ type InferAnyOfOptionOutput<TOption, TInput> = TOption extends GenericValidation
     ? InferOutput<TOption>
     : never;
 
-/**
- * Infers the output type, which is the union of every option's output because
- * the first option that succeeds decides the result.
- */
-type InferAnyOfOutput<
+type InferAnyOfIssue<
   TOptions extends AnyOfOptionsConstraint,
-  TInput,
-> = InferAnyOfOptionOutput<TOptions[number], TInput>;
-
-type InferAnyOfIssue<TOptions extends AnyOfOptionsConstraint> =
-  IsNever<ExtractAnyOfOption<TOptions>> extends true
-    ? BaseIssue<unknown>
-    : InferIssue<ExtractAnyOfOption<TOptions>>;
+  TOption extends AnyOfOption = Extract<TOptions[number], AnyOfOption>,
+> = IsNever<TOption> extends true ? BaseIssue<unknown> : InferIssue<TOption>;
 
 type ValidAnyOfOptions<TOptions extends AnyOfOptionsConstraint> =
   IsNever<InferAnyOfInput<TOptions>> extends true
@@ -170,7 +149,7 @@ export interface AnyOfAction<
   TInput extends InferAnyOfInput<TOptions> = InferAnyOfInput<TOptions>,
 > extends BaseValidation<
     TInput,
-    InferAnyOfOutput<TOptions, TInput>,
+    InferAnyOfOptionOutput<TOptions[number], TInput>,
     AnyOfIssue<InferAnyOfIssue<TOptions>> | InferAnyOfIssue<TOptions>
   > {
   /**
@@ -334,7 +313,7 @@ export function anyOf(
       dataset.typed = datasets.some((optionDataset) => optionDataset.typed);
 
       return dataset as OutputDataset<
-        InferAnyOfOutput<AnyOfOptions, unknown>,
+        InferAnyOfOptionOutput<AnyOfOptions[number], unknown>,
         AnyOfIssue<BaseIssue<unknown>> | BaseIssue<unknown>
       >;
     },

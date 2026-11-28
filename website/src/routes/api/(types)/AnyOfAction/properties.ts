@@ -92,11 +92,12 @@ export const properties: Record<string, PropertyProps> = {
         },
         {
           type: 'custom',
-          name: 'InferAnyOfOutput',
+          name: 'InferAnyOfOptionOutput',
           generics: [
             {
               type: 'custom',
               name: 'TOptions',
+              indexes: ['number'],
             },
             {
               type: 'custom',
