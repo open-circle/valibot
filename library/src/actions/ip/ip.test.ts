@@ -125,6 +125,7 @@ describe('ip', () => {
         'test:test:test:test:test:test:test:test',
       ]);
     });
+
     test('for non ASCII chars', () => {
       expectActionIssue(action, baseIssue, [
         'fe80::1%é',
