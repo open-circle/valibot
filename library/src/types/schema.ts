@@ -5,6 +5,9 @@ import type { StandardProps } from './standard.ts';
 
 /**
  * Base schema interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663).
  */
 export interface BaseSchema<
   out TInput,
@@ -70,11 +73,14 @@ export interface BaseSchema<
 
 /**
  * Base schema async interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663).
  */
 export interface BaseSchemaAsync<
-  TInput,
-  TOutput,
-  TIssue extends BaseIssue<unknown>,
+  out TInput,
+  out TOutput,
+  out TIssue extends BaseIssue<unknown>,
 > extends Omit<
     BaseSchema<TInput, TOutput, TIssue>,
     'reference' | 'async' | '~run'

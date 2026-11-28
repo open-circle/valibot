@@ -217,6 +217,9 @@ export type IssuePathItem =
 
 /**
  * Base issue interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663).
  */
 export interface BaseIssue<out TInput> extends Config<BaseIssue<TInput>> {
   /**
