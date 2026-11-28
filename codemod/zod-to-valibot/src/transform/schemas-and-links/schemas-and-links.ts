@@ -626,6 +626,14 @@ function transformSchemasAndLinksHelper(
           schemaExp,
           methodArgs
         );
+        // Update the schema type so that following validators and links are
+        // converted (e.g. `z.partial(Schema).array().min(1)`)
+        if (propertyName === 'array') {
+          curSchemaType = 'length';
+          useBigInt = false;
+        } else if (isStaticNamespaceCall) {
+          curSchemaType = 'none';
+        }
       } else if (isZodValidatorName(propertyName)) {
         if (curSchemaType === null) {
           // validators can only be applied to parsed schemas
