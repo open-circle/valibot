@@ -70,17 +70,22 @@ type InferAnyOfInput<TOptions extends readonly unknown[]> =
  * Validations preserve the shared input. Type-only transformations with an
  * inferred unknown input apply their output type to that shared input.
  */
-type InferAnyOfOptionOutput<TOption, TInput> = TOption extends GenericValidation
-  ? TInput
-  : TOption extends BrandAction<unknown, infer TName>
-    ? InferOutput<BrandAction<TInput, TName>>
-    : TOption extends FlavorAction<unknown, infer TName>
-      ? InferOutput<FlavorAction<TInput, TName>>
-      : TOption extends ReadonlyAction<unknown>
-        ? InferOutput<ReadonlyAction<TInput>>
-        : TOption extends AnyOfOption
-          ? InferOutput<TOption>
-          : never;
+type InferAnyOfOptionOutput<TOption, TInput> = TOption extends {
+  readonly type: 'any_of';
+  readonly options: infer TOptions extends AnyOfOptionsConstraint;
+}
+  ? InferAnyOfOptionOutput<TOptions[number], TInput>
+  : TOption extends GenericValidation
+    ? TInput
+    : TOption extends BrandAction<unknown, infer TName>
+      ? InferOutput<BrandAction<TInput, TName>>
+      : TOption extends FlavorAction<unknown, infer TName>
+        ? InferOutput<FlavorAction<TInput, TName>>
+        : TOption extends ReadonlyAction<unknown>
+          ? InferOutput<ReadonlyAction<TInput>>
+          : TOption extends AnyOfOption
+            ? InferOutput<TOption>
+            : never;
 
 type InferAnyOfIssue<
   TOptions extends AnyOfOptionsConstraint,
@@ -283,8 +288,13 @@ export function anyOf(
 
       _addIssue(this, 'input', dataset, config, { issues });
 
-      // @ts-expect-error
-      dataset.typed = datasets.some((optionDataset) => optionDataset.typed);
+      const partial = datasets?.find((optionDataset) => optionDataset.typed);
+      if (partial) {
+        dataset.value = partial.value;
+      } else {
+        // @ts-expect-error
+        dataset.typed = false;
+      }
 
       return dataset as OutputDataset<
         InferAnyOfOptionOutput<AnyOfOptions[number], unknown>,

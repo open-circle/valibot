@@ -206,6 +206,21 @@ describe('anyOf', () => {
     >();
   });
 
+  test('should include the outputs of nested alternatives', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const schema = pipe(string(), anyOf([anyOf([toNumber(), email()]), url()]));
+    expectTypeOf<InferOutput<typeof schema>>().toEqualTypeOf<string | number>();
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const branded = pipe(
+      string(),
+      anyOf([anyOf([toNumber(), brand('id')]), guard(isPixelString)])
+    );
+    expectTypeOf<InferOutput<typeof branded>>().toEqualTypeOf<
+      number | (string & Brand<'id'>) | PixelString
+    >();
+  });
+
   test('should infer transform output union', () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const schema = pipe(string(), anyOf([email(), toNumber()]));

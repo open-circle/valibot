@@ -265,13 +265,15 @@ function intersectEnum(
  * @param jsonSchema The JSON Schema object.
  * @param valibotAction The Valibot action object.
  * @param config The conversion configuration.
+ * @param onError The handler for unresolved conversion errors.
  *
  * @returns The converted JSON Schema.
  */
 export function convertAction(
   jsonSchema: JsonSchema,
   valibotAction: Action,
-  config: ConversionConfig | undefined
+  config: ConversionConfig | undefined,
+  onError = (message: string): void => handleError(message, config)
 ): JsonSchema {
   // Ignore action if specified in configuration
   if (config?.ignoreActions?.includes(valibotAction.type)) {
@@ -286,9 +288,16 @@ export function convertAction(
     case 'any_of': {
       const anyOf = valibotAction.options.map((option: unknown) =>
         convertAction(
-          jsonSchema.type ? { type: jsonSchema.type } : {},
+          config?.target === 'openapi-3.0' && jsonSchema.type === 'array'
+            ? { type: 'array', items: {} }
+            : jsonSchema.type
+              ? { type: jsonSchema.type }
+              : {},
           option as Action,
-          config
+          config,
+          (message) => {
+            errors = addError(errors, message);
+          }
         )
       );
 
@@ -935,7 +944,7 @@ export function convertAction(
   // Handle errors based on configuration
   if (errors) {
     for (const message of errors) {
-      handleError(message, config);
+      onError(message);
     }
   }
 

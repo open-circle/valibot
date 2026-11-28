@@ -1,6 +1,18 @@
 import { describe, expect, test, vi } from 'vitest';
-import type { StringIssue } from '../../schemas/index.ts';
-import type { BaseIssue, FailureDataset } from '../../types/index.ts';
+import {
+  parse,
+  pipe,
+  pipeAsync,
+  safeParse,
+  safeParseAsync,
+} from '../../methods/index.ts';
+import { string, type StringIssue } from '../../schemas/index.ts';
+import type {
+  BaseIssue,
+  FailureDataset,
+  GenericTransformation,
+  InferIssue,
+} from '../../types/index.ts';
 import { expectNoActionIssue } from '../../vitest/index.ts';
 import { guard, type GuardIssue } from '../guard/index.ts';
 import {
@@ -11,8 +23,10 @@ import {
   email,
   flavor,
   minLength,
+  minValue,
   readonly,
   toNumber,
+  transform,
   trim,
   url,
 } from '../index.ts';
@@ -149,15 +163,10 @@ describe('anyOf', () => {
       });
     });
 
-    test('for explicitly typed readonly/brand/flavor fallback', () => {
-      // `readonly`/`brand`/`flavor` are no-ops at runtime regardless of their
-      // type argument, so this only confirms they still run correctly as
-      // options once the type-level restriction on bare calls is satisfied.
-      expectNoActionIssue(anyOf([email(), readonly<string>()]), ['foo']);
-      expectNoActionIssue(anyOf([email(), brand<string, 'id'>('id')]), ['foo']);
-      expectNoActionIssue(anyOf([email(), flavor<string, 'id'>('id')]), [
-        'foo',
-      ]);
+    test('for readonly/brand/flavor fallback', () => {
+      expectNoActionIssue(anyOf([email(), readonly()]), ['foo']);
+      expectNoActionIssue(anyOf([email(), brand('id')]), ['foo']);
+      expectNoActionIssue(anyOf([email(), flavor('id')]), ['foo']);
     });
 
     test('for a matching option, preserves issues already on the dataset', () => {
@@ -435,6 +444,73 @@ describe('anyOf', () => {
           }),
         ],
       });
+    });
+  });
+
+  test('should return the output of a nested transformation', () => {
+    const schema = pipe(string(), anyOf([anyOf([toNumber(), email()]), url()]));
+    expect(parse(schema, '123')).toBe(123);
+  });
+
+  test.each([{}, { abortEarly: true }, { abortPipeEarly: true }])(
+    'should skip transforming alternatives after an issue with %o',
+    async (config) => {
+      const convert = vi.fn((value: string) => value.length);
+      const action = anyOf([
+        anyOf([transform(convert), toNumber()]),
+        toNumber(),
+      ]);
+      const expected = { typed: false, success: false, output: 'x' };
+      expect(
+        safeParse(pipe(string(), minLength(4), action), 'x', config)
+      ).toMatchObject(expected);
+      expect(
+        await safeParseAsync(
+          pipeAsync(string(), minLength(4), action),
+          'x',
+          config
+        )
+      ).toMatchObject(expected);
+      expect(convert).not.toHaveBeenCalled();
+    }
+  );
+
+  test('should collect later validation-only alternatives after an issue', () => {
+    const schema = pipe(string(), minLength(4), anyOf([email(), url()]));
+    const result = safeParse(schema, 'x');
+    expect(result.typed).toBe(true);
+    expect(result.issues?.map((issue) => issue.type)).toEqual([
+      'min_length',
+      'any_of',
+    ]);
+  });
+
+  test('should return the value of a partially successful transformation', () => {
+    const positive = pipe(string(), toNumber(), minValue(1));
+    const option: GenericTransformation<
+      string,
+      number,
+      InferIssue<typeof positive>
+    > = {
+      ...toNumber<string>(),
+      type: 'positive_number',
+      '~run'(dataset, config) {
+        return positive['~run']({ value: dataset.value }, config);
+      },
+    };
+    const schema = pipe(string(), anyOf([guard(isPixelString), option]));
+    const result = safeParse(schema, '0');
+    expect(result).toMatchObject({
+      typed: true,
+      success: false,
+      output: 0,
+      issues: [
+        {
+          type: 'any_of',
+          input: '0',
+          issues: [{ type: 'guard' }, { type: 'min_value' }],
+        },
+      ],
     });
   });
 

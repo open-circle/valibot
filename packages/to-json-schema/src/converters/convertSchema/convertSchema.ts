@@ -111,6 +111,41 @@ type Pipe = readonly (Schema | v.PipeAction<any, any, v.BaseIssue<unknown>>)[];
 type SchemaOrPipe = Schema | v.SchemaWithPipe<readonly [Schema, ...Pipe]>;
 
 /**
+ * Checks whether input conversion stops at a pipe item or its alternatives.
+ *
+ * @param item The pipe item.
+ *
+ * @returns Whether the item can change the input type.
+ */
+function isInputBoundary(item: Pipe[number]): boolean {
+  if (
+    item.kind === 'validation' &&
+    item.type === 'any_of' &&
+    'options' in item &&
+    Array.isArray(item.options)
+  ) {
+    return item.options.some(isInputBoundary);
+  }
+  return (
+    item.kind === 'schema' ||
+    (item.kind === 'transformation' &&
+      (item.type === 'find_item' ||
+        item.type === 'map_items' ||
+        item.type === 'parse_boolean' ||
+        item.type === 'parse_json' ||
+        item.type === 'raw_transform' ||
+        item.type === 'reduce_items' ||
+        item.type === 'stringify_json' ||
+        item.type === 'to_bigint' ||
+        item.type === 'to_boolean' ||
+        item.type === 'to_date' ||
+        item.type === 'to_number' ||
+        item.type === 'to_string' ||
+        item.type === 'transform'))
+  );
+}
+
+/**
  * Flattens a Valibot pipe by recursively expanding nested pipes.
  *
  * @param pipe The pipeline to flatten.
@@ -183,26 +218,7 @@ export function convertSchema(
 
     // If type mode is set to input, update stop index
     if (config?.typeMode === 'input') {
-      const inputStopIndex = flatPipe
-        .slice(1)
-        .findIndex(
-          (item) =>
-            item.kind === 'schema' ||
-            (item.kind === 'transformation' &&
-              (item.type === 'find_item' ||
-                item.type === 'map_items' ||
-                item.type === 'parse_boolean' ||
-                item.type === 'parse_json' ||
-                item.type === 'raw_transform' ||
-                item.type === 'reduce_items' ||
-                item.type === 'stringify_json' ||
-                item.type === 'to_bigint' ||
-                item.type === 'to_boolean' ||
-                item.type === 'to_date' ||
-                item.type === 'to_number' ||
-                item.type === 'to_string' ||
-                item.type === 'transform'))
-        );
+      const inputStopIndex = flatPipe.slice(1).findIndex(isInputBoundary);
       if (inputStopIndex !== -1) {
         stopIndex = inputStopIndex;
       }
