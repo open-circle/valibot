@@ -213,7 +213,7 @@ type OutputWithQuestionMarks<
  * instantiations of `ReadonlyAction` forces TypeScript to measure the variance
  * of `ReadonlyAction`, which is expensive (see issue #1663).
  */
-interface ReadonlyActionShape
+export interface ReadonlyActionShape
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   extends BaseTransformation<any, any, never> {
   /**

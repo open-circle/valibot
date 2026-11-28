@@ -1,13 +1,13 @@
-import type { Brand, readonly } from '../../actions/index.ts';
+import type { Brand } from '../../actions/index.ts';
 import type {
   BaseIssue,
   BaseSchema,
   BaseSchemaAsync,
-  BaseTransformation,
   InferInput,
   InferOutput,
   MarkOptional,
   Prettify,
+  ReadonlyActionShape,
 } from '../../types/index.ts';
 
 /**
@@ -63,27 +63,6 @@ type OptionalKeys<TObject extends Record<string | number | symbol, unknown>> = {
 type WithQuestionMarks<
   TObject extends Record<string | number | symbol, unknown>,
 > = MarkOptional<TObject, OptionalKeys<TObject>>;
-
-/**
- * Readonly action shape interface.
- *
- * Hint: This interface is structurally equivalent to `ReadonlyAction<any>`.
- * We use it instead of `ReadonlyAction<any>` because relating two
- * instantiations of `ReadonlyAction` forces TypeScript to measure the variance
- * of `ReadonlyAction`, which is expensive (see issue #1663).
- */
-interface ReadonlyActionShape
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  extends BaseTransformation<any, any, never> {
-  /**
-   * The action type.
-   */
-  readonly type: 'readonly';
-  /**
-   * The action reference.
-   */
-  readonly reference: typeof readonly;
-}
 
 /**
  * With readonly type.
