@@ -14,7 +14,7 @@ import type {
   UnknownDataset,
 } from '../../types/index.ts';
 import { _standardSchema } from '../../utils/index.ts';
-import { _isTransformationBoundary } from './_isTransformationBoundary.ts';
+import { _isTransformationBoundary } from './utils/index.ts';
 
 /**
  * Schema with pipe type.
