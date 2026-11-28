@@ -7,13 +7,15 @@ import type {
   InferInput,
   InferIssue,
   InferOutput,
-  IsAny,
   IsNever,
   MaybeReadonly,
   OutputDataset,
   UnionToIntersect,
 } from '../../types/index.ts';
 import { _addIssue, _joinExpects, _subIssues } from '../../utils/index.ts';
+import type { BrandAction } from '../brand/index.ts';
+import type { FlavorAction } from '../flavor/index.ts';
+import type { ReadonlyAction } from '../readonly/index.ts';
 
 type AnyOfOption = GenericValidation | GenericTransformation;
 
@@ -65,41 +67,20 @@ type InferAnyOfInput<TOptions extends readonly unknown[]> =
     : never;
 
 /**
- * Extracts options whose input type could not be resolved.
- *
- * `readonly()`, `brand(...)` and `flavor(...)` take no other argument that
- * ties their input to a concrete type, so calling them bare (e.g.
- * `readonly()`) silently defaults their input to `unknown` instead of
- * inferring it from context, corrupting the output union with a wrong type.
- * Passing an explicit type argument (e.g. `readonly<string>()`) resolves the
- * input normally and is unaffected by this check.
- *
- * The `IsAny` guard rules out `any` first: without it, the structural check of
- * `anyOf`'s own `reference` against `BaseValidation`'s `(...args: any[]) =>
- * ...` signature probes this type with `TOption = any`, and `any`
- * short-circuits every later branch to `any` instead of `never`.
- */
-type UnresolvedAnyOfOption<TOption> =
-  IsAny<TOption> extends true
-    ? never
-    : TOption extends AnyOfOption & {
-          readonly type: 'readonly' | 'brand' | 'flavor';
-        }
-      ? [unknown] extends [InferInput<TOption>]
-        ? TOption
-        : never
-      : never;
-
-/**
- * Infers a single option's contribution to the output union. Value-preserving
- * validations contribute the shared (narrowed) input, whereas guards and
- * transforms contribute their own output type.
+ * Validations preserve the shared input. Type-only transformations with an
+ * inferred unknown input apply their output type to that shared input.
  */
 type InferAnyOfOptionOutput<TOption, TInput> = TOption extends GenericValidation
   ? TInput
-  : TOption extends AnyOfOption
-    ? InferOutput<TOption>
-    : never;
+  : TOption extends BrandAction<unknown, infer TName>
+    ? InferOutput<BrandAction<TInput, TName>>
+    : TOption extends FlavorAction<unknown, infer TName>
+      ? InferOutput<FlavorAction<TInput, TName>>
+      : TOption extends ReadonlyAction<unknown>
+        ? InferOutput<ReadonlyAction<TInput>>
+        : TOption extends AnyOfOption
+          ? InferOutput<TOption>
+          : never;
 
 type InferAnyOfIssue<
   TOptions extends AnyOfOptionsConstraint,
@@ -109,11 +90,9 @@ type InferAnyOfIssue<
 type ValidAnyOfOptions<TOptions extends AnyOfOptionsConstraint> =
   IsNever<InferAnyOfInput<TOptions>> extends true
     ? never
-    : IsNever<UnresolvedAnyOfOption<TOptions[number]>> extends false
-      ? never
-      : TOptions[number] extends AnyOfOption
-        ? unknown
-        : never;
+    : TOptions[number] extends AnyOfOption
+      ? unknown
+      : never;
 
 /**
  * Any of issue interface.
@@ -184,11 +163,6 @@ export interface AnyOfAction<
  * transformations that always succeed (e.g. `trim`) are guaranteed to
  * short-circuit the rest, so place those last. If every option fails, the
  * option issues are collected as subissues of a single any of issue.
- *
- * `readonly()`, `brand(...)` and `flavor(...)` take no other argument that
- * ties their input to a concrete type, so a bare call (e.g. `readonly()`) is
- * rejected as an option — pass an explicit type argument instead, e.g.
- * `readonly<string>()`.
  *
  * @param options The any of options.
  *

@@ -34,7 +34,7 @@ With `anyOf` you can combine alternative constraints for a value that was alread
 
 The `options` array must contain at least two sync validation or transformation actions (including the sync `guard` action). The output type is the union of every option's output: value-preserving validations keep the input type, while guards and transformations contribute their own output type. Guards and other conditional transformations (like `toNumber`) can still fail and contribute their issues like validations do — only transformations that always succeed (like `trim`) are guaranteed to short-circuit the rest, so place those last. Async and metadata actions are not supported.
 
-<Link href="../readonly/">`readonly`</Link>, <Link href="../brand/">`brand`</Link> and <Link href="../flavor/">`flavor`</Link> take no other argument that ties their input to a concrete type, so calling them bare (e.g. `v.readonly()`) inside `anyOf` is rejected — their input would silently default to `unknown` and corrupt the output type. Pass an explicit type argument instead, e.g. `v.readonly<string>()`, `v.brand<string, 'id'>('id')`.
+<Link href="../readonly/">`readonly`</Link>, <Link href="../brand/">`brand`</Link> and <Link href="../flavor/">`flavor`</Link> use the shared input type of the alternatives. For example, in `v.pipe(v.string(), v.anyOf([v.toNumber(), v.brand('id')]))`, the output is `number | (string & v.Brand<'id'>)`.
 
 Use <Link href="../union/">`union`</Link> when alternatives have different input data types. Use <Link href="../variant/">`variant`</Link> for discriminated object unions.
 

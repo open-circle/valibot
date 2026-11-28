@@ -1,6 +1,6 @@
 import { describe, expectTypeOf, test } from 'vitest';
 import { pipe } from '../../methods/index.ts';
-import { number, string, type StringIssue } from '../../schemas/index.ts';
+import { map, number, string, type StringIssue } from '../../schemas/index.ts';
 import type {
   BaseIssue,
   InferInput,
@@ -9,6 +9,7 @@ import type {
 } from '../../types/index.ts';
 import { guard, type GuardIssue } from '../guard/index.ts';
 import {
+  type Brand,
   brand,
   check,
   checkAsync,
@@ -16,6 +17,7 @@ import {
   email,
   type EmailAction,
   endsWith,
+  type Flavor,
   flavor,
   maxLength,
   maxValue,
@@ -170,20 +172,38 @@ describe('anyOf', () => {
     anyOf([email(), brand<string, 'id'>('id')]);
     anyOf([email(), flavor<string, 'id'>('id')]);
     anyOf([email(), readonly<string>()]);
+    // @ts-expect-error Explicit input types must still agree.
+    anyOf([email(), readonly<number>()]);
   });
 
-  test('should reject options with unresolved input', () => {
-    // `readonly()`/`brand(...)`/`flavor(...)` take no other argument that
-    // ties their input to a concrete type, so calling them bare silently
-    // defaults their input to `unknown` instead of inferring it from
-    // context, corrupting the output union. An explicit type argument (see
-    // "should accept transformation options" above) resolves this.
-    // @ts-expect-error
-    anyOf([email(), brand('id')]);
-    // @ts-expect-error
-    anyOf([email(), flavor('id')]);
-    // @ts-expect-error
-    anyOf([email(), readonly()]);
+  test('should infer type-only transformations from the pipe input', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const branded = pipe(string(), anyOf([toNumber(), brand('id')]));
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const flavored = pipe(string(), anyOf([toNumber(), flavor('tag')]));
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const immutable = pipe(
+      map(string(), number()),
+      anyOf([toNumber(), readonly()])
+    );
+    expectTypeOf<InferOutput<typeof branded>>().toEqualTypeOf<
+      number | (string & Brand<'id'>)
+    >();
+    expectTypeOf<InferOutput<typeof flavored>>().toEqualTypeOf<
+      number | (string & Flavor<'tag'>)
+    >();
+    expectTypeOf<InferOutput<typeof immutable>>().toEqualTypeOf<
+      number | ReadonlyMap<string, number>
+    >();
+  });
+
+  test('should infer the input from sibling options outside a pipe', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const action = anyOf([guard(isPixelString), brand('id')]);
+    expectTypeOf<InferInput<typeof action>>().toEqualTypeOf<string>();
+    expectTypeOf<InferOutput<typeof action>>().toEqualTypeOf<
+      PixelString | (string & Brand<'id'>)
+    >();
   });
 
   test('should infer transform output union', () => {
