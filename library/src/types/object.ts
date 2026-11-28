@@ -182,7 +182,13 @@ type OptionalOutputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
 type InputWithQuestionMarks<
   TEntries extends ObjectEntries | ObjectEntriesAsync,
   TObject extends InferEntriesInput<TEntries>,
-> = MarkOptional<TObject, OptionalInputKeys<TEntries>>;
+> =
+  // NOTE: We short-circuit to `TObject` when no entry is optional to avoid
+  // building the `Omit`, `Pick` and `Partial` types of `MarkOptional` in the
+  // common case (see issue #1663).
+  [OptionalInputKeys<TEntries>] extends [never]
+    ? TObject
+    : MarkOptional<TObject, OptionalInputKeys<TEntries>>;
 
 /**
  * Output with question marks type.
@@ -190,7 +196,13 @@ type InputWithQuestionMarks<
 type OutputWithQuestionMarks<
   TEntries extends ObjectEntries | ObjectEntriesAsync,
   TObject extends InferEntriesOutput<TEntries>,
-> = MarkOptional<TObject, OptionalOutputKeys<TEntries>>;
+> =
+  // NOTE: We short-circuit to `TObject` when no entry is optional to avoid
+  // building the `Omit`, `Pick` and `Partial` types of `MarkOptional` in the
+  // common case (see issue #1663).
+  [OptionalOutputKeys<TEntries>] extends [never]
+    ? TObject
+    : MarkOptional<TObject, OptionalOutputKeys<TEntries>>;
 
 /**
  * Readonly output keys type.
