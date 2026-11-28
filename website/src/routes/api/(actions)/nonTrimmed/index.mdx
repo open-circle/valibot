@@ -1,0 +1,68 @@
+---
+title: nonTrimmed
+description: Creates a non-trimmed validation action.
+source: /actions/nonTrimmed/nonTrimmed.ts
+contributors:
+  - fabian-hiller
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# nonTrimmed
+
+Creates a non-trimmed validation action.
+
+> `nonTrimmed` is the opposite of <Link href="../trimmed/">`trimmed`</Link>. Since an empty string has no leading or trailing whitespace, it is also rejected.
+
+```ts
+const Action = v.nonTrimmed<TInput, TMessage>(message);
+```
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TMessage` <Property {...properties.TMessage} />
+
+## Parameters
+
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+With `nonTrimmed` you can validate that a string has leading or trailing whitespace. If the input is trimmed, you can use `message` to customize the error message.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+The following examples show how `nonTrimmed` can be used.
+
+### Indented line schema
+
+Schema to validate that a line starts or ends with whitespace.
+
+```ts
+const IndentedLineSchema = v.pipe(
+  v.string(),
+  v.nonTrimmed('The line must start or end with whitespace.')
+);
+```
+
+## Related
+
+The following APIs can be combined with `nonTrimmed`.
+
+### Schemas
+
+<ApiList items={['any', 'custom', 'string']} />
+
+### Methods
+
+<ApiList items={['pipe']} />
+
+### Utils
+
+<ApiList items={['isOfKind', 'isOfType']} />

@@ -190,6 +190,8 @@ export function convertSchema(
             item.kind === 'schema' ||
             (item.kind === 'transformation' &&
               (item.type === 'find_item' ||
+                item.type === 'map_items' ||
+                item.type === 'parse_boolean' ||
                 item.type === 'parse_json' ||
                 item.type === 'raw_transform' ||
                 item.type === 'reduce_items' ||

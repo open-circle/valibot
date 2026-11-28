@@ -76,6 +76,7 @@ export const ZOD_VALUE_TYPE_SCHEMAS: readonly (typeof ZOD_SCHEMAS)[number][] = [
 export const ZOD_VALIDATORS = [
   'base64',
   'base64url',
+  'brand',
   'cidr',
   'cuid',
   'cuid2',
@@ -164,5 +165,13 @@ export const ZOD_METHODS = [
   'transform',
   'unwrap',
 ] as const;
+
+export const ZOD_PARSE_METHODS: readonly (typeof ZOD_METHODS)[number][] = [
+  'parse',
+  'parseAsync',
+  'safeParse',
+  'safeParseAsync',
+  'spa',
+];
 
 export const ZOD_TYPES = ['infer', 'input', 'output'] as const;
