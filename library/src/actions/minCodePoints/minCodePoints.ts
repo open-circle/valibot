@@ -122,11 +122,17 @@ export function minCodePoints(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getCodePointCount(dataset.value);
-        if (count < this.requirement) {
-          _addIssue(this, 'code points', dataset, config, {
-            received: `${count}`,
-          });
+        // Hint: A code point consists of at most two code units, so the code
+        // point count is never less than half the length of the input. This
+        // allows us to skip the counting if that lower bound already satisfies
+        // the requirement
+        if (Math.ceil(dataset.value.length / 2) < this.requirement) {
+          const count = _getCodePointCount(dataset.value);
+          if (count < this.requirement) {
+            _addIssue(this, 'code points', dataset, config, {
+              received: `${count}`,
+            });
+          }
         }
       }
       return dataset;

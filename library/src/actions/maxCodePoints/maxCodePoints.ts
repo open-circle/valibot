@@ -122,11 +122,16 @@ export function maxCodePoints(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getCodePointCount(dataset.value);
-        if (count > this.requirement) {
-          _addIssue(this, 'code points', dataset, config, {
-            received: `${count}`,
-          });
+        // Hint: A code point consists of one or two code units, so the code
+        // point count never exceeds the length of the input. This allows us to
+        // skip the counting if the length already satisfies the requirement
+        if (dataset.value.length > this.requirement) {
+          const count = _getCodePointCount(dataset.value);
+          if (count > this.requirement) {
+            _addIssue(this, 'code points', dataset, config, {
+              received: `${count}`,
+            });
+          }
         }
       }
       return dataset;

@@ -122,11 +122,17 @@ export function maxGraphemes(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const count = _getGraphemeCount(dataset.value);
-        if (count > this.requirement) {
-          _addIssue(this, 'graphemes', dataset, config, {
-            received: `${count}`,
-          });
+        // Hint: A grapheme consists of at least one code unit, so the grapheme
+        // count never exceeds the length of the input. This allows us to skip
+        // the expensive segmentation if the length already satisfies the
+        // requirement
+        if (dataset.value.length > this.requirement) {
+          const count = _getGraphemeCount(dataset.value);
+          if (count > this.requirement) {
+            _addIssue(this, 'graphemes', dataset, config, {
+              received: `${count}`,
+            });
+          }
         }
       }
       return dataset;

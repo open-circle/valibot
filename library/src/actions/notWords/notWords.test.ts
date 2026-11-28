@@ -86,6 +86,10 @@ describe('notWords', () => {
         'Hi, welcome home! How are you?',
       ]);
     });
+
+    test('for requirements no word count can match', () => {
+      expectNoActionIssue(notWords('en', -1), ['', 'foo', 'foo bar baz']);
+    });
   });
 
   describe('should return dataset with issues', () => {

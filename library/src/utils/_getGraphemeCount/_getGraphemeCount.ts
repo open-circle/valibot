@@ -11,6 +11,11 @@ let segmenter: Intl.Segmenter;
  */
 // @__NO_SIDE_EFFECTS__
 export function _getGraphemeCount(input: string): number {
+  // Hint: An empty input has no graphemes, so the expensive segmentation can be
+  // skipped and the segmenter does not even have to be created
+  if (input === '') {
+    return 0;
+  }
   if (!segmenter) {
     segmenter = new Intl.Segmenter();
   }

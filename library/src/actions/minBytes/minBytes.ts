@@ -116,11 +116,16 @@ export function minBytes(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const length = _getByteCount(dataset.value);
-        if (length < this.requirement) {
-          _addIssue(this, 'bytes', dataset, config, {
-            received: `${length}`,
-          });
+        // Hint: A code unit is encoded as at least one byte, so the byte count
+        // is never less than the length of the input. This allows us to skip
+        // the encoding if that lower bound already satisfies the requirement
+        if (dataset.value.length < this.requirement) {
+          const length = _getByteCount(dataset.value);
+          if (length < this.requirement) {
+            _addIssue(this, 'bytes', dataset, config, {
+              received: `${length}`,
+            });
+          }
         }
       }
       return dataset;

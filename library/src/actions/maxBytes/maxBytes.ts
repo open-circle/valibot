@@ -116,11 +116,17 @@ export function maxBytes(
     message,
     '~run'(dataset, config) {
       if (dataset.typed) {
-        const length = _getByteCount(dataset.value);
-        if (length > this.requirement) {
-          _addIssue(this, 'bytes', dataset, config, {
-            received: `${length}`,
-          });
+        // Hint: A code unit is encoded as at most three bytes, so the byte
+        // count never exceeds three times the length of the input. This allows
+        // us to skip the encoding if that upper bound already satisfies the
+        // requirement
+        if (dataset.value.length * 3 > this.requirement) {
+          const length = _getByteCount(dataset.value);
+          if (length > this.requirement) {
+            _addIssue(this, 'bytes', dataset, config, {
+              received: `${length}`,
+            });
+          }
         }
       }
       return dataset;
