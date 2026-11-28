@@ -56,12 +56,13 @@ export function string(message?: ErrorMessage<StringIssue>): StringSchema {
 
 ### Type Safety
 
-| Check             | Requirement                                           |
-| ----------------- | ----------------------------------------------------- |
-| Generic inference | Types infer correctly without explicit annotations    |
-| Constraints       | Generic parameters have appropriate `extends` clauses |
-| Return types      | Explicit return types on exported functions           |
-| Type tests        | `.test-d.ts` file covers type inference scenarios     |
+| Check                | Requirement                                                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Generic inference    | Types infer correctly without explicit annotations                                                          |
+| Constraints          | Generic parameters have appropriate `extends` clauses                                                       |
+| Return types         | Explicit return types on exported functions                                                                 |
+| Type tests           | `.test-d.ts` file covers type inference scenarios                                                           |
+| Variance annotations | Every generic interface in `/library/src/types/` annotates all type parameters with `in`, `out` or `in out` |
 
 **Good — constrained generic:**
 
@@ -108,14 +109,15 @@ See `repo-source-code-document` skill for full documentation rules.
 
 ## Common Issues
 
-| Issue                     | What to Look For                                             |
-| ------------------------- | ------------------------------------------------------------ |
-| Missing purity annotation | Factory function without `// @__NO_SIDE_EFFECTS__`           |
-| Incomplete JSDoc          | Missing `@param` or `@returns`, wrong description format     |
-| No type tests             | New API without `.test-d.ts` file                            |
-| Wrong import extension    | Imports without `.ts` suffix                                 |
-| Inconsistent naming       | Schema not ending in `Schema`, action not ending in `Action` |
-| Side effects in pure code | Mutations, I/O, or global state in schema/action creation    |
+| Issue                       | What to Look For                                                              |
+| --------------------------- | ----------------------------------------------------------------------------- |
+| Missing purity annotation   | Factory function without `// @__NO_SIDE_EFFECTS__`                            |
+| Incomplete JSDoc            | Missing `@param` or `@returns`, wrong description format                      |
+| No type tests               | New API without `.test-d.ts` file                                             |
+| Wrong import extension      | Imports without `.ts` suffix                                                  |
+| Inconsistent naming         | Schema not ending in `Schema`, action not ending in `Action`                  |
+| Side effects in pure code   | Mutations, I/O, or global state in schema/action creation                     |
+| Missing variance annotation | Generic interface in `/library/src/types/` with an unannotated type parameter |
 
 ## Checklist
 
@@ -127,6 +129,7 @@ See `repo-source-code-document` skill for full documentation rules.
 - [ ] Runtime tests in `.test.ts`
 - [ ] Type tests in `.test-d.ts`
 - [ ] Naming conventions followed
+- [ ] Variance annotations on generic interfaces in `/library/src/types/`
 
 ## Related Skills
 

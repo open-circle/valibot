@@ -34,6 +34,28 @@ export interface StringIssue extends BaseIssue<unknown> {
 - All properties use `readonly`
 - No blank lines between property and its comment
 
+### Variance Annotations
+
+Every generic interface in `/library/src/types/` annotates all of its type parameters and explains it with a hint:
+
+```typescript
+/**
+ * Success dataset interface.
+ *
+ * Hint: The explicit variance annotations of the generics spare TypeScript
+ * from measuring the variance of this interface (see issue #1663).
+ */
+export interface SuccessDataset<out TValue> {
+  // ...
+}
+```
+
+**Rules:**
+
+- Use `out` if the type parameter is only read (property and return types), `in` if it is only consumed (function parameter types) and `in out` if both apply
+- TypeScript verifies `in` and `out` when it type-checks the library, but not `in out`, so state the reason for an invariant type parameter in the hint
+- Only annotate the interfaces in `/library/src/types/`. Do not annotate schema, action or method interfaces, because TypeScript rejects the annotations for many of them
+
 ### Function Overloads
 
 Each overload gets its own complete JSDoc:
@@ -300,6 +322,7 @@ Use consistently:
 
 - [ ] Interfaces: `[Name] [category] interface.`
 - [ ] Properties: `The [description].`
+- [ ] Interfaces in `/library/src/types/`: variance annotations with hint
 - [ ] Overloads: Complete JSDoc each
 - [ ] Implementation: NO JSDoc
 - [ ] Pure functions: `// @__NO_SIDE_EFFECTS__`
