@@ -12,10 +12,14 @@ import type {
   PartialDataset,
   SuccessDataset,
 } from '../../types/index.ts';
-import { _addIssue, _joinExpects, _standardSchema } from '../../utils/index.ts';
+import {
+  _addIssue,
+  _joinExpects,
+  _standardSchema,
+  _subIssues,
+} from '../../utils/index.ts';
 import type { UnionIssue } from './types.ts';
 import type { union } from './union.ts';
-import { _subIssues } from './utils/index.ts';
 
 /**
  * Union options async type.

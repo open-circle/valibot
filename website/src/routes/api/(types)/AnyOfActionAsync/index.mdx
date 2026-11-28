@@ -1,0 +1,28 @@
+---
+title: AnyOfActionAsync
+description: Asynchronous any of action interface.
+contributors:
+  - yslpn
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# AnyOfActionAsync
+
+Asynchronous any of action interface.
+
+## Generics
+
+- `TOptions` <Property {...properties.TOptions} />
+- `TMessage` <Property {...properties.TMessage} />
+- `TInput` <Property {...properties.TInput} />
+
+## Definition
+
+- `AnyOfActionAsync` <Property {...properties.BaseValidationAsync} />
+  - `type` <Property {...properties.type} />
+  - `reference` <Property {...properties.reference} />
+  - `expects` <Property {...properties.expects} />
+  - `options` <Property {...properties.options} />
+  - `message` <Property {...properties.message} />

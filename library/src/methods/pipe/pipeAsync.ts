@@ -17,6 +17,7 @@ import type {
   UnknownDataset,
 } from '../../types/index.ts';
 import { _standardSchema } from '../../utils/index.ts';
+import { _isTransformationBoundary } from './utils/index.ts';
 
 /**
  * Schema with pipe async type.
@@ -3092,12 +3093,9 @@ export function pipeAsync<
       for (const item of pipe) {
         // Exclude metadata items from execution
         if (item.kind !== 'metadata') {
-          // Mark dataset as untyped and break pipe if there are issues and pipe
-          // item is schema or transformation
-          if (
-            dataset.issues &&
-            (item.kind === 'schema' || item.kind === 'transformation')
-          ) {
+          // After an issue, stop before a schema or any item that can run a
+          // transformation, including one nested inside an alternative.
+          if (dataset.issues && _isTransformationBoundary(item)) {
             dataset.typed = false;
             break;
           }

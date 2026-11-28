@@ -13,6 +13,7 @@ export * from './_isValueMatch/index.ts';
 export * from './_joinExpects/index.ts';
 export * from './_standardSchema/index.ts';
 export * from './_stringify/index.ts';
+export * from './_subIssues/index.ts';
 export * from './entriesFromList/index.ts';
 export * from './entriesFromObjects/index.ts';
 export * from './getDotPath/index.ts';

@@ -12,6 +12,7 @@ contributors:
   - jasperteo
   - daxeh
   - ariskemper
+  - yslpn
 ---
 
 import { ApiList, Link } from '~/components';
@@ -41,13 +42,14 @@ const EmailSchema = v.pipe(
 
 ## Validations
 
-Pipeline validation actions examine the input and, if the input does not meet a certain condition, return an issue. If the input is valid, it is returned as the output and, if present, picked up by the next action in the pipeline.
+Pipeline validation actions examine the input and, if the input does not meet a certain condition, return an issue. A successful validation usually passes the input on to the next pipeline item. With <Link href="/api/anyOf/">`anyOf`</Link>, a successful transformation supplies its own output. For example, `v.anyOf([v.email(), v.toNumber()])` can pass a number to the next item.
 
 > Whenever possible, pipelines are run completely, even if an issue has occurred, to collect all possible issues. If you want to abort the pipeline early after the first issue, you need to set the `abortPipeEarly` option to `true`. Learn more about <Link href="/guides/parse-data/#configuration">parsing configuration</Link>, or use the <Link href="/api/config/">`config`</Link> method for more granular control over individual pipelines.
 
 <ApiList
   label="Validation actions"
   items={[
+    'anyOf',
     'base64',
     'bic',
     'bytes',

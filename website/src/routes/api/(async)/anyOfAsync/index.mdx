@@ -1,0 +1,58 @@
+---
+title: anyOfAsync
+description: Creates an asynchronous any of validation action.
+source: /actions/anyOf/anyOfAsync.ts
+contributors:
+  - yslpn
+---
+
+import { ApiList, Link, Property } from '~/components';
+import { properties } from './properties';
+
+# anyOfAsync
+
+Creates an asynchronous any of validation action.
+
+```ts
+const Action = v.anyOfAsync<TOptions, TMessage, TInput>(options, message);
+```
+
+## Generics
+
+- `TOptions` <Property {...properties.TOptions} />
+- `TMessage` <Property {...properties.TMessage} />
+- `TInput` <Property {...properties.TInput} />
+
+## Parameters
+
+- `options` <Property {...properties.options} />
+- `message` <Property {...properties.message} />
+
+### Explanation
+
+Use `anyOfAsync` in a <Link href="../pipeAsync/">`pipeAsync`</Link> with at least two synchronous or asynchronous validation or transformation actions. Each option receives the same input. The options run in order, and the first successful option supplies the output. If every option fails validation, the resulting `any_of` issue contains the individual issues in order. A rejected promise propagates to the caller.
+
+## Returns
+
+- `Action` <Property {...properties.Action} />
+
+## Examples
+
+### Local or registered identifier
+
+The lookup runs only when the identifier does not match the local format.
+
+```ts
+import { isRegisteredId } from '~/api';
+
+const IdSchema = v.pipeAsync(
+  v.string(),
+  v.anyOfAsync([v.regex(/^local-\d+$/u), v.checkAsync(isRegisteredId)])
+);
+```
+
+## Related
+
+<ApiList
+  items={['anyOf', 'checkAsync', 'parseAsync', 'pipeAsync', 'transformAsync']}
+/>

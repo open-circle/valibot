@@ -1,9 +1,11 @@
-import type { BaseIssue, OutputDataset } from '../../../../types/index.ts';
+import type { BaseIssue, OutputDataset } from '../../types/index.ts';
 
 /**
- * Returns the sub issues of the provided datasets for the union issue.
+ * Returns the sub issues of the provided datasets for a combinator issue
+ * (for example `union` or `anyOf`).
  *
- * @param datasets The datasets.
+ * @param datasets The datasets. Every dataset must have its `issues`
+ * defined, as guaranteed by the caller.
  *
  * @returns The sub issues.
  *
@@ -17,8 +19,8 @@ export function _subIssues(
   if (datasets) {
     for (const dataset of datasets) {
       if (issues) {
-        // Hint: According to the implementation of `union` and `unionAsync`,
-        // `dataset.issues` can never be `undefined`.
+        // Hint: The caller only passes datasets whose `issues` is defined,
+        // so `dataset.issues` can never be `undefined` here.
         for (const issue of dataset.issues!) {
           issues.push(issue);
         }

@@ -82,6 +82,7 @@
 
 ## Actions
 
+- [anyOf](/api/anyOf/)
 - [args](/api/args/)
 - [base64](/api/base64/)
 - [bic](/api/bic/)
@@ -240,6 +241,7 @@
 
 ## Async
 
+- [anyOfAsync](/api/anyOfAsync/)
 - [argsAsync](/api/argsAsync/)
 - [arrayAsync](/api/arrayAsync/)
 - [awaitAsync](/api/awaitAsync/)
@@ -289,6 +291,11 @@
 
 ## Types
 
+- [AnyOfAction](/api/AnyOfAction/)
+- [AnyOfActionAsync](/api/AnyOfActionAsync/)
+- [AnyOfIssue](/api/AnyOfIssue/)
+- [AnyOfOptions](/api/AnyOfOptions/)
+- [AnyOfOptionsAsync](/api/AnyOfOptionsAsync/)
 - [AnySchema](/api/AnySchema/)
 - [ArgsAction](/api/ArgsAction/)
 - [ArgsActionAsync](/api/ArgsActionAsync/)

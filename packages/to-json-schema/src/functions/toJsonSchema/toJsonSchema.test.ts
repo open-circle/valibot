@@ -15,6 +15,111 @@ describe('toJsonSchema', () => {
       });
     });
 
+    test('for any of action', () => {
+      expect(
+        toJsonSchema(v.pipe(v.string(), v.anyOf([v.domain(), v.url()])))
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'string',
+        anyOf: [
+          { type: 'string', pattern: v.DOMAIN_REGEX.source },
+          { type: 'string', format: 'uri' },
+        ],
+      });
+    });
+
+    test('for input before a nested type-changing alternative', () => {
+      const schema = v.pipe(
+        v.string(),
+        v.minLength(1),
+        v.anyOf([v.email(), v.anyOf([v.url(), v.toNumber()])])
+      );
+      expect(toJsonSchema(schema, { typeMode: 'input' })).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'string',
+        minLength: 1,
+      });
+      expect(
+        toJsonSchema(v.pipe(v.string(), v.anyOf([v.email(), v.url()])), {
+          typeMode: 'input',
+        })
+      ).toHaveProperty('anyOf');
+    });
+
+    test('for array alternatives in OpenAPI 3.0', () => {
+      const schema = v.pipe(
+        v.array(v.string()),
+        v.anyOf([v.minLength(3), v.maxLength(1)])
+      );
+      expect(toJsonSchema(schema, { target: 'openapi-3.0' })).toStrictEqual({
+        type: 'array',
+        items: { type: 'string' },
+        anyOf: [
+          { type: 'array', items: {}, minItems: 3 },
+          { type: 'array', items: {}, maxItems: 1 },
+        ],
+      });
+    });
+
+    test('for an override of an any of action with unsupported options', () => {
+      const schema = v.pipe(
+        v.string(),
+        v.anyOf([v.email(), v.anyOf([v.url(), v.check(() => false)])])
+      );
+      const message = 'The "check" action cannot be converted to JSON Schema.';
+      expect(() => toJsonSchema(schema)).toThrow(message);
+      expect(
+        toJsonSchema(schema, {
+          overrideAction({ valibotAction, errors }) {
+            if (valibotAction === schema.pipe[1]) {
+              expect(errors).toEqual([message]);
+              return { type: 'string', format: 'email' };
+            }
+          },
+        })
+      ).toHaveProperty('format', 'email');
+    });
+
+    test('for any of action after existing constraints', () => {
+      expect(
+        toJsonSchema(
+          v.pipe(v.string(), v.minLength(5), v.anyOf([v.domain(), v.url()]))
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'string',
+        minLength: 5,
+        anyOf: [
+          { type: 'string', pattern: v.DOMAIN_REGEX.source },
+          { type: 'string', format: 'uri' },
+        ],
+      });
+    });
+
+    test('for any of action after lazy schema', () => {
+      // Hint: `lazy` always sets `$ref`, which draft-07 (the default target)
+      // treats as replacing the whole schema — any sibling keyword, like the
+      // `anyOf` added here, would otherwise be silently ignored by
+      // conforming validators unless moved into `allOf`.
+      expect(
+        toJsonSchema(
+          v.pipe(
+            v.lazy(() => v.string()),
+            v.anyOf([v.domain(), v.url()])
+          )
+        )
+      ).toStrictEqual({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        allOf: [
+          { $ref: '#/$defs/0' },
+          {
+            anyOf: [{ pattern: v.DOMAIN_REGEX.source }, { format: 'uri' }],
+          },
+        ],
+        $defs: { '0': { type: 'string' } },
+      });
+    });
+
     test('for complex schema with definitions', () => {
       const stringSchema = v.string();
       const complexSchema = v.pipe(
