@@ -7,8 +7,6 @@ import type {
   MaybeReadonly,
   ObjectEntries,
   ObjectEntriesAsync,
-  OptionalEntrySchema,
-  OptionalEntrySchemaAsync,
 } from '../../types/index.ts';
 import type { variant } from './variant.ts';
 import type { variantAsync } from './variantAsync.ts';
@@ -60,7 +58,7 @@ export interface VariantOptionSchemaAsync<TKey extends string>
  */
 type VariantObjectEntries<TKey extends string> = Record<
   TKey,
-  BaseSchema<unknown, unknown, BaseIssue<unknown>> | OptionalEntrySchema
+  BaseSchema<unknown, unknown, BaseIssue<unknown>>
 > &
   ObjectEntries;
 
@@ -71,8 +69,6 @@ type VariantObjectEntriesAsync<TKey extends string> = Record<
   TKey,
   | BaseSchema<unknown, unknown, BaseIssue<unknown>>
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
-  | OptionalEntrySchema
-  | OptionalEntrySchemaAsync
 > &
   ObjectEntriesAsync;
 
