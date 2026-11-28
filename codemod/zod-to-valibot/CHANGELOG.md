@@ -6,6 +6,7 @@ All notable changes to the library will be documented in this file.
 
 - Add support for converting the `.brand()` method to the `brand` action (pull request #1560)
 - Change build target to ES2020 so distributed output stays compatible with environments that lack support for newer syntax (pull request #1455)
+- Fix conversion of static method calls like `z.partial(Schema)` and `z.extend(Schema, {...})` (pull request #1506)
 
 ## v0.1.2 (December 07, 2025)
 
