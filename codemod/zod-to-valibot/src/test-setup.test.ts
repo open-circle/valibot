@@ -32,6 +32,7 @@ defineTests(transform, [
   'named-import-with-alias',
   'named-import-with-specific-alias',
   'namespace-import',
+  'namespace-import-v4-mini',
   'nan-schema',
   'native-enum',
   'never-schema',
