@@ -78,6 +78,7 @@ import {
 import { ObjectModifier, ZodSchemaType } from './types';
 import {
   transformBase64,
+  transformBrand,
   transformCUID2,
   transformDateTime,
   transformDate as transformDateValidator,
@@ -251,6 +252,8 @@ function toValibotActionExp(
   valibotIdentifier: string,
   zodValidatorName: ZodValidatorName,
   inputArgs: j.CallExpression['arguments'],
+  // no type definition found
+  typeParameters: any,
   schemaType: ZodSchemaType,
   useBigInt: boolean
 ) {
@@ -260,6 +263,8 @@ function toValibotActionExp(
       return transformBase64(...args);
     case 'base64url':
       return transformUnimplemented(...args, 'base64url');
+    case 'brand':
+      return transformBrand(...args, typeParameters);
     case 'cidr':
       return transformUnimplemented(...args, 'cidr');
     case 'cuid':
@@ -601,6 +606,9 @@ function transformSchemasAndLinksHelper(
             valibotIdentifier,
             propertyName,
             cur.value.arguments,
+            // parser and types are not in sync
+            // @ts-expect-error
+            cur.value.typeParameters,
             curSchemaType,
             useBigInt
           )

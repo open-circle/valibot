@@ -4,9 +4,24 @@ All notable changes to the library will be documented in this file.
 
 ## vX.X.X (Month DD, YYYY)
 
+- Add `trimmed` and `nonTrimmed` validation actions to validate whether a string has leading or trailing whitespace (pull request #1761)
 - Change internal `ReadonlyOutputKeys` type of `object` schemas and `WithReadonly` type of `record` schema to use a structural readonly action type to improve TypeScript performance (pull request #1671)
+- Change internal `InputWithQuestionMarks` and `OutputWithQuestionMarks` types of `object` schemas to skip `MarkOptional` when no entry is optional to improve TypeScript performance (pull request #1666)
+- Change internal `VariantObjectEntries` and `VariantObjectEntriesAsync` types of `variant` schema to only contain base schema types to improve TypeScript performance (pull request #1764)
+- Deprecate unused `OptionalEntrySchema` and `OptionalEntrySchemaAsync` types (pull request #1764)
+- Change `ObjectEntries` and `ObjectEntriesAsync` types to only contain base schema types to improve TypeScript performance (pull request #1668)
+- Change internal `OptionalInputKeys` and `OptionalOutputKeys` types to detect optional entries structurally to improve TypeScript performance (pull request #1667)
+- Change internal `VariantOption` and `VariantOptionAsync` types of `variant` schema to use a structural object option type to improve TypeScript performance (pull request #1670)
 - Change `isbn`, `creditCard` and `imei` actions to check digits by character code instead of splitting and parsing the input to improve performance (pull request #1634)
 - Fix `uuid` action to reject UUIDs with a version outside 1 to 8 or a variant outside RFC 9562, while still accepting the Nil and Max UUIDs (pull request #1643)
+- Fix `toCamelCase`, `toKebabCase`, `toPascalCase` and `toSnakeCase` actions to detect case boundaries at supplementary-plane letters (pull request #1659)
+- Fix `checkItems` and `checkItemsAsync` actions to stop adding issues after the first invalid item when `abortEarly` is enabled (pull request #1702)
+- Fix `hexadecimal` and `octal` actions to accept uppercase `0X`, `0H` and `0O` prefixes (pull request #1720)
+- Fix `base64` action to reject non-ASCII characters accepted by Unicode case folding (pull request #1719)
+- Fix `isbn` action to reject ISBN-13 values that do not start with the 978 or 979 prefix (pull request #1705)
+- Fix `cache` and `cacheAsync` methods to escape strings in cache keys, preventing key collisions between string inputs and config values (pull request #1691)
+- Fix `creditCard` action to accept Discover cards with 644 to 649 prefixes (pull request #1742)
+- Fix `ip` and `ipv6` actions to reject non-ASCII characters in zone IDs accepted by Unicode case folding (pull request #1750)
 
 ## v1.5.0 (September 09, 2026)
 
