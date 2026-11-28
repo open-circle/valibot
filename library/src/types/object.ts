@@ -27,6 +27,9 @@ import type { MarkOptional, MaybeReadonly, Prettify } from './utils.ts';
 
 /**
  * Optional entry schema type.
+ *
+ * @deprecated This type is no longer used and will be removed in the next
+ * major version.
  */
 export type OptionalEntrySchema =
   | ExactOptionalSchema<
@@ -38,6 +41,9 @@ export type OptionalEntrySchema =
 
 /**
  * Optional entry schema async type.
+ *
+ * @deprecated This type is no longer used and will be removed in the next
+ * major version.
  */
 export type OptionalEntrySchemaAsync =
   | ExactOptionalSchemaAsync<
@@ -58,6 +64,10 @@ export type OptionalEntrySchemaAsync =
 
 /**
  * Object entries interface.
+ *
+ * Hint: Any schema can be used as an entry. Entries wrapped with `optional`,
+ * `exactOptional` or `nullish` make their key optional, and the fallback of
+ * an entry created with `fallback` is used if its key is missing.
  */
 export interface ObjectEntries {
   [key: string]: BaseSchema<unknown, unknown, BaseIssue<unknown>>;
@@ -65,6 +75,11 @@ export interface ObjectEntries {
 
 /**
  * Object entries async interface.
+ *
+ * Hint: Any sync or async schema can be used as an entry. Entries wrapped
+ * with `optional`, `exactOptional`, `nullish` or their async counterparts make
+ * their key optional, and the fallback of an entry created with `fallback` or
+ * `fallbackAsync` is used if its key is missing.
  */
 export interface ObjectEntriesAsync {
   [key: string]:
