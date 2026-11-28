@@ -252,6 +252,8 @@ function toValibotActionExp(
   valibotIdentifier: string,
   zodValidatorName: ZodValidatorName,
   inputArgs: j.CallExpression['arguments'],
+  // no type definition found
+  typeParameters: any,
   schemaType: ZodSchemaType,
   useBigInt: boolean
 ) {
@@ -262,7 +264,7 @@ function toValibotActionExp(
     case 'base64url':
       return transformUnimplemented(...args, 'base64url');
     case 'brand':
-      return transformBrand(...args);
+      return transformBrand(...args, typeParameters);
     case 'cidr':
       return transformUnimplemented(...args, 'cidr');
     case 'cuid':
@@ -604,6 +606,9 @@ function transformSchemasAndLinksHelper(
             valibotIdentifier,
             propertyName,
             cur.value.arguments,
+            // parser and types are not in sync
+            // @ts-expect-error
+            cur.value.typeParameters,
             curSchemaType,
             useBigInt
           )
