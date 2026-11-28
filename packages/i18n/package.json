@@ -24,12 +24,12 @@
   },
   "scripts": {
     "lint": "tsc --noEmit",
-    "build.npm": "tsm ./scripts/build-npm.ts",
-    "build.jsr": "tsm ./scripts/build-jsr.ts"
+    "build.npm": "tsx ./scripts/build-npm.ts",
+    "build.jsr": "tsx ./scripts/build-jsr.ts"
   },
   "devDependencies": {
     "@types/node": "^24.19.2",
-    "tsm": "^2.3.0",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "valibot": "^1.5.0"
   },

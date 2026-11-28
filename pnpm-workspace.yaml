@@ -24,6 +24,20 @@ minimumReleaseAgeExclude:
   - tar@7.5.21
   - valibot@1.5.0
 overrides:
+  '@vercel/static-config>ajv': '^8.18.0'
+  '@vercel/fun>@tootallnate/once': '^2.0.1'
+  'satori>fflate@0.7': '^0.7.5'
+  'path-to-regexp@8': '^8.4.0'
+  'vite-imagetools@9>sharp': '^0.35.5'
+  '@vercel/cervel>srvx': '^0.11.13'
+  'glob@10': '^14.0.2'
+  'glob@13': '^14.0.2'
+  'minimatch@9': '^11.0.1'
+  'minimatch@10': '^11.0.1'
+  '@vercel/blob@1>undici': '6.29.1'
+  '@vercel/node>undici': '6.29.1'
+  'path-to-regexp@6.1.0': '6.3.0'
+  'monaco-editor@0.55.1>dompurify': '^3.4.0'
   # Security: pin vulnerable transitive deps to patched versions (CVE Lite findings).
   # Keyed by major so only the affected major line is moved to its fixed version.
   'shell-quote@1': '1.11.0'
@@ -37,4 +51,4 @@ overrides:
   # codemod, so the v3 line is moved to the patched v4 version.
   'simple-git@3': '4.0.2'
 patchedDependencies:
-  '@builder.io/qwik-city@1.19.2': patches/@builder.io__qwik-city@1.19.2.patch
+  '@builder.io/qwik-city@1.20.4': patches/@builder.io__qwik-city@1.20.4.patch

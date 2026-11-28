@@ -46,7 +46,7 @@
     "access": "public"
   },
   "scripts": {
-    "play": "tsm ./playground.ts",
+    "play": "tsx ./playground.ts",
     "test": "vitest --typecheck",
     "coverage": "vitest run --coverage --isolate",
     "lint": "eslint \"src/**/*.ts*\" && tsc --noEmit && deno check ./src/index.ts",
@@ -67,7 +67,7 @@
     "eslint-plugin-security": "^3.0.1",
     "jsdom": "^27.4.0",
     "tsdown": "^0.16.6",
-    "tsm": "^2.3.0",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.73.0",
     "vite": "^7.3.8",
