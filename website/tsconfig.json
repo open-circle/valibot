@@ -22,6 +22,6 @@
       "~/*": ["./src/*"]
     }
   },
-  "include": ["scripts", "src", "./*.d.ts", "./*.config.ts"],
+  "include": ["scripts", "src", "worker", "./*.d.ts", "./*.config.ts"],
   "exclude": ["src/routes/guides/(migration)/migrate-from-zod/zod"]
 }

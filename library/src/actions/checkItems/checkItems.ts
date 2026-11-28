@@ -92,6 +92,9 @@ export function checkItems(
                 },
               ],
             });
+            if (config.abortEarly) {
+              break;
+            }
           }
         }
       }

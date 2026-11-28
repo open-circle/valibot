@@ -1,3 +1,5 @@
+import { _isSameValueZero } from '../../../../utils/index.ts';
+
 /**
  * Merge dataset type.
  */
@@ -21,8 +23,10 @@ export function _merge(value1: unknown, value2: unknown): MergeDataset {
   if (typeof value1 === typeof value2) {
     // Return first value if both are equal
     if (
-      value1 === value2 ||
-      (value1 instanceof Date && value2 instanceof Date && +value1 === +value2)
+      _isSameValueZero(value1, value2) ||
+      (value1 instanceof Date &&
+        value2 instanceof Date &&
+        _isSameValueZero(+value1, +value2))
     ) {
       return { value: value1 };
     }
@@ -34,12 +38,19 @@ export function _merge(value1: unknown, value2: unknown): MergeDataset {
       value1.constructor === Object &&
       value2.constructor === Object
     ) {
-      const nextValue = { ...value1 };
+      // Hint: Spreading both values creates own data properties without
+      // invoking inherited setters.
+      const nextValue = { ...value1, ...value2 };
 
-      // Deeply merge entries of `value2` into `nextValue`
+      // Deeply merge shared entries into `nextValue`
+      // Hint: for...in avoids allocating a keys array.
       for (const key in value2) {
-        // @ts-expect-error
-        if (key in value1) {
+        // Hint: Check value1 first to skip non-shared keys early. The second
+        // check prevents inherited value2 entries from being merged.
+        if (
+          Object.prototype.hasOwnProperty.call(value1, key) &&
+          Object.prototype.hasOwnProperty.call(value2, key)
+        ) {
           // @ts-expect-error
           const dataset = _merge(value1[key], value2[key]);
 
@@ -51,11 +62,6 @@ export function _merge(value1: unknown, value2: unknown): MergeDataset {
           // Otherwise, replace merged entry
           // @ts-expect-error
           nextValue[key] = dataset.value;
-
-          // Otherwise, just add entry
-        } else {
-          // @ts-expect-error
-          nextValue[key] = value2[key];
         }
       }
 

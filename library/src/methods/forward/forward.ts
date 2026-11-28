@@ -9,7 +9,7 @@ import type { RequiredPath, ValidPath } from './types.ts';
 // breaking the type inference, as the current implementation loses some type
 // information by returning a `BaseValidation` instead of the original type.
 // In the process, we should also figure out how to add a `.forward' property
-// to the returnd object in a type-safe way, similar to how the `fallback`
+// to the returned object in a type-safe way, similar to how the `fallback`
 // method works.
 
 /**

@@ -149,8 +149,9 @@ export function stringifyJson(
           _addIssue(this, 'JSON', dataset, config);
           // @ts-expect-error
           dataset.typed = false;
+        } else {
+          dataset.value = output;
         }
-        dataset.value = output;
       } catch (error) {
         if (error instanceof Error) {
           _addIssue(this, 'JSON', dataset, config, {

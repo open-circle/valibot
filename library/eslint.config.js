@@ -25,17 +25,21 @@ export default tseslint.config(
   {
     files: ['src/**/*.ts'],
     extends: [importPlugin.flatConfigs.recommended],
+    plugins: { jsdoc, 'redos-detector': redosDetector },
     languageOptions: {
       parserOptions: {
         project: './tsconfig.json',
         tsconfigRootDir: import.meta.dirname,
       },
     },
-    plugins: { jsdoc, 'redos-detector': redosDetector },
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+    settings: {
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts'],
+      },
+      'import/resolver': {
+        typescript: {
+          project: './tsconfig.json',
+        },
       },
     },
     rules: {
@@ -47,6 +51,7 @@ export default tseslint.config(
 
       // Import
       'import/extensions': ['error', 'always'], // Require file extensions
+      'import/no-cycle': 'error', // Prevent circular dependencies, which can corrupt module state under Vitest's `isolate: false` and cause flaky tests
 
       // JSDoc
       'jsdoc/tag-lines': ['error', 'any', { startLines: 1 }],

@@ -16,7 +16,7 @@ export type SafeParseResult<
 > =
   | {
       /**
-       * Whether is's typed.
+       * Whether it's typed.
        */
       readonly typed: true;
       /**

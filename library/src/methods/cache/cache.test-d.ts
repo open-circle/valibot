@@ -25,12 +25,13 @@ describe('cache', () => {
 
     test('with config', () => {
       const schema = string();
-      expectTypeOf(cache(schema, { maxSize: 10 })).toMatchTypeOf<
+      const cached = cache(schema, { maxSize: 10 });
+      expectTypeOf(cached).toExtend<
         SchemaWithCache<typeof schema, { maxSize: 10 }>
       >();
-      expectTypeOf<
-        SchemaWithCache<typeof schema, { maxSize: 10 }>
-      >().toMatchTypeOf(cache(schema, { maxSize: 10 }));
+      expectTypeOf<SchemaWithCache<typeof schema, { maxSize: 10 }>>().toExtend<
+        typeof cached
+      >();
     });
   });
 

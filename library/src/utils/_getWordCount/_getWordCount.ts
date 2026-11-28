@@ -1,4 +1,4 @@
-let store: Map<Intl.LocalesArgument, Intl.Segmenter>;
+let store: Map<string, Intl.Segmenter>;
 
 /**
  * Returns the word count of the input.
@@ -18,10 +18,17 @@ export function _getWordCount(
   if (!store) {
     store = new Map();
   }
-  if (!store.get(locales)) {
-    store.set(locales, new Intl.Segmenter(locales, { granularity: 'word' }));
+  // Hint: We use a stable string key instead of `locales` directly, because
+  // `Intl.LocalesArgument` is often a non-primitive value (an array or an
+  // `Intl.Locale` object). Such values are compared by reference in a `Map`,
+  // which would defeat the cache and recreate the segmenter on every call.
+  const key = String(locales);
+  let segmenter = store.get(key);
+  if (!segmenter) {
+    segmenter = new Intl.Segmenter(locales, { granularity: 'word' });
+    store.set(key, segmenter);
   }
-  const segments = store.get(locales)!.segment(input);
+  const segments = segmenter.segment(input);
   let count = 0;
   for (const segment of segments) {
     if (segment.isWordLike) {

@@ -5,11 +5,13 @@ import {
   AnthropicLogo,
   BoltLogo,
   BuilderLogo,
+  CloudflareLogo,
+  CodeRabbitLogo,
   DigitalOceanLogo,
   HdmLogo,
   OpenAILogo,
   PaceLogo,
-  StainlessLogo,
+  TestMuAiLogo,
 } from '~/logos';
 
 /**
@@ -62,9 +64,14 @@ export const Credits = component$(() => {
           { Logo: PaceLogo, href: 'https://www.pace.edu' },
           { Logo: HdmLogo, href: 'https://www.hdm-stuttgart.de' },
           { Logo: BoltLogo, href: 'https://bolt.new/' },
-          { Logo: StainlessLogo, href: 'https://www.stainless.com/' },
+          { Logo: CodeRabbitLogo, href: 'https://coderabbit.link/valibot' },
           { Logo: AnthropicLogo, href: 'https://www.anthropic.com' },
           { Logo: OpenAILogo, href: 'https://www.openai.com' },
+          { Logo: CloudflareLogo, href: 'https://www.cloudflare.com' },
+          {
+            Logo: TestMuAiLogo,
+            href: 'https://www.testmuai.com/?utm_medium=sponsor&utm_source=valibot',
+          },
           { Logo: DigitalOceanLogo, href: 'https://www.digitalocean.com/' },
           { Logo: AlgoliaLogo, href: 'https://www.algolia.com' },
           { Logo: BuilderLogo, href: 'https://www.builder.io' },
@@ -85,15 +92,14 @@ export const Credits = component$(() => {
       </p>
       <ul class="mt-4 flex flex-wrap gap-2 md:mt-5 lg:mt-6 lg:gap-3">
         {[
+          'evilmartians',
           'vasilii-kovalev',
-          'UpwayShop',
           'ruiaraujo012',
           'hyunbinseo',
           'nickytonline',
           'kibertoad',
           'caegdeveloper',
           'Thanaen',
-          'bmoyroud',
           'ysknsid25',
           'dslatkin',
         ].map((sponsor) => (

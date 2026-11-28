@@ -174,6 +174,18 @@ describe('convertAction', () => {
     });
   });
 
+  test('should convert ksuid action', () => {
+    expect(convertAction({}, v.ksuid<string>(), undefined)).toStrictEqual({
+      pattern: v.KSUID_REGEX.source,
+    });
+    expect(
+      convertAction({ type: 'string' }, v.ksuid<string>(), undefined)
+    ).toStrictEqual({
+      type: 'string',
+      pattern: v.KSUID_REGEX.source,
+    });
+  });
+
   test('should convert mac action', () => {
     expect(convertAction({}, v.mac<string>(), undefined)).toStrictEqual({
       pattern: v.MAC_REGEX.source,
@@ -409,6 +421,17 @@ describe('convertAction', () => {
     });
   });
 
+  test('examples should type as an array, not a bare JSON Schema value', () => {
+    const jsonSchema = convertAction({}, v.examples(['foo', 'bar']), undefined);
+    // `.map` only exists on the array member of `JsonSchemaType`. If
+    // `examples` regresses to allowing a non-array value, this fails to
+    // compile under `tsc --noEmit`, not just at runtime.
+    expect(jsonSchema.examples?.map((example) => example)).toStrictEqual([
+      'foo',
+      'bar',
+    ]);
+  });
+
   test('should merge examples from multiple actions', () => {
     const jsonSchema = {};
     convertAction(jsonSchema, v.examples(['foo']), undefined);
@@ -453,6 +476,34 @@ describe('convertAction', () => {
     expect(() =>
       convertAction({ type: 'string' }, action, undefined)
     ).toThrowError(error2);
+  });
+
+  test('should warn error for gt value action with invalid type', () => {
+    expect(
+      convertAction({}, v.gtValue<v.ValueInput, 3>(3), { errorMode: 'warn' })
+    ).toStrictEqual({});
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The "gt_value" action is not supported on type "undefined".'
+    );
+    expect(
+      convertAction({ type: 'string' }, v.gtValue<v.ValueInput, 'm'>('m'), {
+        errorMode: 'warn',
+      })
+    ).toStrictEqual({ type: 'string' });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The "gt_value" action is not supported on type "string".'
+    );
+  });
+
+  test('should ignore error for gt value action with invalid type', () => {
+    expect(
+      convertAction({}, v.gtValue<v.ValueInput, 3>(3), { errorMode: 'ignore' })
+    ).toStrictEqual({});
+    expect(
+      convertAction({ type: 'string' }, v.gtValue<v.ValueInput, 'm'>('m'), {
+        errorMode: 'ignore',
+      })
+    ).toStrictEqual({ type: 'string' });
   });
 
   test('should throw error for gt value action with openapi-3.0', () => {
@@ -702,6 +753,36 @@ describe('convertAction', () => {
     ).toThrowError(error2);
   });
 
+  test('should warn error for lt value action with invalid type', () => {
+    expect(
+      convertAction({}, v.ltValue<v.ValueInput, 10>(10), { errorMode: 'warn' })
+    ).toStrictEqual({});
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The "lt_value" action is not supported on type "undefined".'
+    );
+    expect(
+      convertAction({ type: 'string' }, v.ltValue<v.ValueInput, 'm'>('m'), {
+        errorMode: 'warn',
+      })
+    ).toStrictEqual({ type: 'string' });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The "lt_value" action is not supported on type "string".'
+    );
+  });
+
+  test('should ignore error for lt value action with invalid type', () => {
+    expect(
+      convertAction({}, v.ltValue<v.ValueInput, 10>(10), {
+        errorMode: 'ignore',
+      })
+    ).toStrictEqual({});
+    expect(
+      convertAction({ type: 'string' }, v.ltValue<v.ValueInput, 'm'>('m'), {
+        errorMode: 'ignore',
+      })
+    ).toStrictEqual({ type: 'string' });
+  });
+
   test('should throw error for lt value action with openapi-3.0', () => {
     const error = 'The "lt_value" action is not supported for OpenAPI 3.0.';
     expect(() =>
@@ -832,20 +913,31 @@ describe('convertAction', () => {
   test('should warn error for max value action with invalid type', () => {
     expect(
       convertAction({}, v.maxValue<v.ValueInput, 3>(3), { errorMode: 'warn' })
-    ).toStrictEqual({
-      maximum: 3,
-    });
+    ).toStrictEqual({});
     expect(console.warn).toHaveBeenLastCalledWith(
       'The "max_value" action is not supported on type "undefined".'
     );
     expect(
-      convertAction({ type: 'string' }, v.maxValue<v.ValueInput, 3>(3), {
+      convertAction({ type: 'string' }, v.maxValue<v.ValueInput, 'm'>('m'), {
         errorMode: 'warn',
       })
-    ).toStrictEqual({ type: 'string', maximum: 3 });
+    ).toStrictEqual({ type: 'string' });
     expect(console.warn).toHaveBeenLastCalledWith(
       'The "max_value" action is not supported on type "string".'
     );
+  });
+
+  test('should ignore error for max value action with invalid type', () => {
+    expect(
+      convertAction({}, v.maxValue<v.ValueInput, 3>(3), {
+        errorMode: 'ignore',
+      })
+    ).toStrictEqual({});
+    expect(
+      convertAction({ type: 'string' }, v.maxValue<v.ValueInput, 'm'>('m'), {
+        errorMode: 'ignore',
+      })
+    ).toStrictEqual({ type: 'string' });
   });
 
   test('should convert metadata action', () => {
@@ -864,6 +956,7 @@ describe('convertAction', () => {
       title: 'title',
       description: 'description',
       examples: ['example'],
+      other: 'other',
     });
     expect(
       convertAction(
@@ -886,11 +979,50 @@ describe('convertAction', () => {
           title: 123,
           description: null,
           examples: { foo: 'bar' },
-          other: 'other',
         }),
         undefined
       )
     ).toStrictEqual({});
+  });
+
+  test('should add other metadata properties to JSON Schema', () => {
+    expect(
+      convertAction(
+        { type: 'string' },
+        v.metadata({
+          format: 'my-format',
+          'x-custom': { foo: 'bar' },
+          deprecated: true,
+        }),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      format: 'my-format',
+      'x-custom': { foo: 'bar' },
+      deprecated: true,
+    });
+  });
+
+  test('should ignore inherited metadata properties', () => {
+    const metadata: Record<string, unknown> = Object.create({
+      'x-inherited': true,
+    });
+    metadata['x-own'] = 'own';
+    expect(convertAction({}, v.metadata(metadata), undefined)).toStrictEqual({
+      'x-own': 'own',
+    });
+  });
+
+  test('should not pollute prototype via metadata properties', () => {
+    const metadata: Record<string, unknown> = JSON.parse(
+      '{"__proto__": {"polluted": true}, "x-custom": "safe"}'
+    );
+    const jsonSchema = convertAction({}, v.metadata(metadata), undefined);
+    expect(jsonSchema).toStrictEqual({ 'x-custom': 'safe' });
+    expect(Object.getPrototypeOf(jsonSchema)).toBe(Object.prototype);
+    // @ts-expect-error
+    expect({}.polluted).toBeUndefined();
   });
 
   test('should convert min entries action', () => {
@@ -1014,20 +1146,31 @@ describe('convertAction', () => {
   test('should warn error for min value action with invalid type', () => {
     expect(
       convertAction({}, v.minValue<v.ValueInput, 3>(3), { errorMode: 'warn' })
-    ).toStrictEqual({
-      minimum: 3,
-    });
+    ).toStrictEqual({});
     expect(console.warn).toHaveBeenLastCalledWith(
       'The "min_value" action is not supported on type "undefined".'
     );
     expect(
-      convertAction({ type: 'string' }, v.minValue<v.ValueInput, 3>(3), {
+      convertAction({ type: 'string' }, v.minValue<v.ValueInput, 'm'>('m'), {
         errorMode: 'warn',
       })
-    ).toStrictEqual({ type: 'string', minimum: 3 });
+    ).toStrictEqual({ type: 'string' });
     expect(console.warn).toHaveBeenLastCalledWith(
       'The "min_value" action is not supported on type "string".'
     );
+  });
+
+  test('should ignore error for min value action with invalid type', () => {
+    expect(
+      convertAction({}, v.minValue<v.ValueInput, 3>(3), {
+        errorMode: 'ignore',
+      })
+    ).toStrictEqual({});
+    expect(
+      convertAction({ type: 'string' }, v.minValue<v.ValueInput, 'm'>('m'), {
+        errorMode: 'ignore',
+      })
+    ).toStrictEqual({ type: 'string' });
   });
 
   test('should convert multiple of action', () => {
@@ -1132,6 +1275,85 @@ describe('convertAction', () => {
     ).toStrictEqual({
       type: 'number',
       not: { enum: [0, 1] },
+    });
+  });
+
+  test('should merge multiple not restrictions', () => {
+    expect(
+      convertAction(
+        { type: 'number', not: { const: 0 } },
+        v.notValue<v.ValueInput, 1>(1),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      not: { anyOf: [{ const: 0 }, { const: 1 }] },
+    });
+    expect(
+      convertAction(
+        { type: 'number', not: { const: 0 } },
+        v.notValues<v.ValueInput, [1, 2]>([1, 2]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      not: { anyOf: [{ const: 0 }, { enum: [1, 2] }] },
+    });
+  });
+
+  test('should preserve other keywords in existing not restriction', () => {
+    const not = { anyOf: [{ const: 0 }], minimum: 0 };
+    expect(
+      convertAction(
+        { type: 'number', not },
+        v.notValue<v.ValueInput, 1>(1),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      not: { anyOf: [not, { const: 1 }] },
+    });
+    expect(not).toStrictEqual({ anyOf: [{ const: 0 }], minimum: 0 });
+  });
+
+  test('should preserve boolean not restrictions', () => {
+    for (const not of [true, false]) {
+      expect(
+        convertAction(
+          { type: 'number', not },
+          v.notValue<v.ValueInput, 1>(1),
+          undefined
+        )
+      ).toStrictEqual({
+        type: 'number',
+        not: { anyOf: [not, { const: 1 }] },
+      });
+    }
+  });
+
+  test('should skip empty not values requirement', () => {
+    expect(
+      convertAction(
+        { type: 'number', not: { const: 1 } },
+        v.notValues<v.ValueInput, []>([]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      not: { const: 1 },
+    });
+  });
+
+  test('should remove duplicate not values requirements', () => {
+    expect(
+      convertAction(
+        { type: 'number' },
+        v.notValues<v.ValueInput, [1, 1, 2]>([1, 1, 2]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      not: { enum: [1, 2] },
     });
   });
 
@@ -1280,6 +1502,362 @@ describe('convertAction', () => {
     });
   });
 
+  test('should keep stricter lower bound for min value action', () => {
+    expect(
+      convertAction(
+        { type: 'number', minimum: 5 },
+        v.minValue<v.ValueInput, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      minimum: 5,
+    });
+    expect(
+      convertAction(
+        { type: 'number', minimum: 3 },
+        v.minValue<v.ValueInput, 5>(5),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      minimum: 5,
+    });
+  });
+
+  test('should throw error for non-finite numeric bound requirements', () => {
+    for (const requirement of [NaN, Infinity, -Infinity]) {
+      for (const action of [
+        v.minValue<v.ValueInput, number>(requirement),
+        v.maxValue<v.ValueInput, number>(requirement),
+        v.gtValue<v.ValueInput, number>(requirement),
+        v.ltValue<v.ValueInput, number>(requirement),
+      ]) {
+        const error = `The requirement of the "${action.type}" action is not JSON compatible.`;
+        expect(() =>
+          convertAction({ type: 'number' }, action, undefined)
+        ).toThrowError(error);
+        expect(() =>
+          convertAction({ type: 'number' }, action, { errorMode: 'throw' })
+        ).toThrowError(error);
+      }
+    }
+  });
+
+  test('should warn error for non-finite numeric bound requirements', () => {
+    for (const requirement of [NaN, Infinity, -Infinity]) {
+      for (const action of [
+        v.minValue<v.ValueInput, number>(requirement),
+        v.maxValue<v.ValueInput, number>(requirement),
+        v.gtValue<v.ValueInput, number>(requirement),
+        v.ltValue<v.ValueInput, number>(requirement),
+      ]) {
+        const error = `The requirement of the "${action.type}" action is not JSON compatible.`;
+        expect(
+          convertAction({ type: 'number', minimum: -5, maximum: 5 }, action, {
+            errorMode: 'warn',
+          })
+        ).toStrictEqual({ type: 'number', minimum: -5, maximum: 5 });
+        expect(console.warn).toHaveBeenLastCalledWith(error);
+      }
+    }
+  });
+
+  test('should ignore non-finite numeric bound requirements', () => {
+    for (const requirement of [NaN, Infinity, -Infinity]) {
+      for (const action of [
+        v.minValue<v.ValueInput, number>(requirement),
+        v.maxValue<v.ValueInput, number>(requirement),
+        v.gtValue<v.ValueInput, number>(requirement),
+        v.ltValue<v.ValueInput, number>(requirement),
+      ]) {
+        expect(
+          convertAction({ type: 'number', minimum: -5, maximum: 5 }, action, {
+            errorMode: 'ignore',
+          })
+        ).toStrictEqual({ type: 'number', minimum: -5, maximum: 5 });
+      }
+    }
+  });
+
+  test('should throw error for invalid length and entry requirements', () => {
+    for (const type of ['string', 'array', 'object'] as const) {
+      for (const requirement of [
+        -1,
+        -0.5,
+        0.5,
+        1.5,
+        NaN,
+        Infinity,
+        -Infinity,
+      ]) {
+        const actions =
+          type === 'object'
+            ? [
+                v.entries<v.EntriesInput, number>(requirement),
+                v.minEntries<v.EntriesInput, number>(requirement),
+                v.maxEntries<v.EntriesInput, number>(requirement),
+              ]
+            : [
+                v.length<v.LengthInput, number>(requirement),
+                v.minLength<v.LengthInput, number>(requirement),
+                v.maxLength<v.LengthInput, number>(requirement),
+              ];
+        for (const action of actions) {
+          const error = `The requirement of the "${action.type}" action must be a non-negative integer.`;
+          expect(() => convertAction({ type }, action, undefined)).toThrowError(
+            error
+          );
+          expect(() =>
+            convertAction({ type }, action, { errorMode: 'throw' })
+          ).toThrowError(error);
+        }
+      }
+    }
+  });
+
+  test('should warn error for invalid length and entry requirements', () => {
+    for (const type of ['string', 'array', 'object'] as const) {
+      for (const requirement of [
+        -1,
+        -0.5,
+        0.5,
+        1.5,
+        NaN,
+        Infinity,
+        -Infinity,
+      ]) {
+        const actions =
+          type === 'object'
+            ? [
+                v.entries<v.EntriesInput, number>(requirement),
+                v.minEntries<v.EntriesInput, number>(requirement),
+                v.maxEntries<v.EntriesInput, number>(requirement),
+              ]
+            : [
+                v.length<v.LengthInput, number>(requirement),
+                v.minLength<v.LengthInput, number>(requirement),
+                v.maxLength<v.LengthInput, number>(requirement),
+              ];
+        for (const action of actions) {
+          expect(
+            convertAction({ type }, action, { errorMode: 'warn' })
+          ).toStrictEqual({ type });
+          expect(console.warn).toHaveBeenLastCalledWith(
+            `The requirement of the "${action.type}" action must be a non-negative integer.`
+          );
+        }
+      }
+    }
+  });
+
+  test('should ignore invalid length and entry requirements', () => {
+    for (const type of ['string', 'array', 'object'] as const) {
+      for (const requirement of [
+        -1,
+        -0.5,
+        0.5,
+        1.5,
+        NaN,
+        Infinity,
+        -Infinity,
+      ]) {
+        const actions =
+          type === 'object'
+            ? [
+                v.entries<v.EntriesInput, number>(requirement),
+                v.minEntries<v.EntriesInput, number>(requirement),
+                v.maxEntries<v.EntriesInput, number>(requirement),
+              ]
+            : [
+                v.length<v.LengthInput, number>(requirement),
+                v.minLength<v.LengthInput, number>(requirement),
+                v.maxLength<v.LengthInput, number>(requirement),
+              ];
+        for (const action of actions) {
+          expect(
+            convertAction({ type }, action, { errorMode: 'ignore' })
+          ).toStrictEqual({ type });
+        }
+      }
+    }
+  });
+
+  test('should replace a non-finite bound instead of keeping it', () => {
+    for (const bound of [NaN, Infinity, -Infinity]) {
+      expect(
+        convertAction(
+          { type: 'number', minimum: bound },
+          v.minValue<v.ValueInput, 3>(3),
+          undefined
+        )
+      ).toStrictEqual({
+        type: 'number',
+        minimum: 3,
+      });
+      expect(
+        convertAction(
+          { type: 'number', maximum: bound },
+          v.maxValue<v.ValueInput, 3>(3),
+          undefined
+        )
+      ).toStrictEqual({
+        type: 'number',
+        maximum: 3,
+      });
+    }
+  });
+
+  test('should keep stricter upper bound for max value action', () => {
+    expect(
+      convertAction(
+        { type: 'number', maximum: 3 },
+        v.maxValue<v.ValueInput, 5>(5),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      maximum: 3,
+    });
+  });
+
+  test('should keep stricter lower bound for gt value action', () => {
+    expect(
+      convertAction(
+        { type: 'number', exclusiveMinimum: 5 },
+        v.gtValue<v.ValueInput, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      exclusiveMinimum: 5,
+    });
+  });
+
+  test('should keep stricter upper bound for lt value action', () => {
+    expect(
+      convertAction(
+        { type: 'number', exclusiveMaximum: 3 },
+        v.ltValue<v.ValueInput, 5>(5),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      exclusiveMaximum: 3,
+    });
+  });
+
+  test('should keep stricter bounds for length actions on strings', () => {
+    expect(
+      convertAction(
+        { type: 'string', minLength: 3 },
+        v.nonEmpty<v.LengthInput>(),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      minLength: 3,
+    });
+    expect(
+      convertAction(
+        { type: 'string', minLength: 5 },
+        v.minLength<v.LengthInput, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      minLength: 5,
+    });
+    expect(
+      convertAction(
+        { type: 'string', maxLength: 3 },
+        v.maxLength<v.LengthInput, 5>(5),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      maxLength: 3,
+    });
+    expect(
+      convertAction(
+        { type: 'string', minLength: 3, maxLength: 3 },
+        v.length<v.LengthInput, 2>(2),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      minLength: 3,
+      maxLength: 2,
+    });
+  });
+
+  test('should keep stricter bounds for length actions on arrays', () => {
+    expect(
+      convertAction(
+        { type: 'array', minItems: 3 },
+        v.nonEmpty<v.LengthInput>(),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'array',
+      minItems: 3,
+    });
+    expect(
+      convertAction(
+        { type: 'array', minItems: 5 },
+        v.minLength<v.LengthInput, 3>(3),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'array',
+      minItems: 5,
+    });
+    expect(
+      convertAction(
+        { type: 'array', maxItems: 3 },
+        v.maxLength<v.LengthInput, 5>(5),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'array',
+      maxItems: 3,
+    });
+  });
+
+  test('should keep stricter bounds for entries actions', () => {
+    expect(
+      convertAction(
+        { type: 'object', minProperties: 2 },
+        v.minEntries<v.EntriesInput, 1>(1),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'object',
+      minProperties: 2,
+    });
+    expect(
+      convertAction(
+        { type: 'object', maxProperties: 1 },
+        v.maxEntries<v.EntriesInput, 2>(2),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'object',
+      maxProperties: 1,
+    });
+    expect(
+      convertAction(
+        { type: 'object', minProperties: 3, maxProperties: 1 },
+        v.entries<v.EntriesInput, 2>(2),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'object',
+      minProperties: 3,
+      maxProperties: 1,
+    });
+  });
+
   test('should convert starts with action', () => {
     expect(
       convertAction(
@@ -1369,11 +1947,78 @@ describe('convertAction', () => {
     });
   });
 
+  test('should keep identical const restriction for value action', () => {
+    expect(
+      convertAction(
+        { type: 'string', const: 'foo' },
+        v.value<v.ValueInput, 'foo'>('foo'),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'string',
+      const: 'foo',
+    });
+  });
+
+  test('should throw error for value action with different const restriction', () => {
+    expect(() =>
+      convertAction(
+        { type: 'string', const: 'foo' },
+        v.value<v.ValueInput, 'bar'>('bar'),
+        undefined
+      )
+    ).toThrowError(
+      'The "value" action is not supported in combination with a different "const" restriction.'
+    );
+  });
+
+  test('should warn error for value action with different const restriction', () => {
+    expect(
+      convertAction(
+        { type: 'string', const: 'foo' },
+        v.value<v.ValueInput, 'bar'>('bar'),
+        { errorMode: 'warn' }
+      )
+    ).toStrictEqual({
+      type: 'string',
+      const: 'foo',
+    });
+    expect(console.warn).toHaveBeenLastCalledWith(
+      'The "value" action is not supported in combination with a different "const" restriction.'
+    );
+  });
+
+  test('should ignore value action with different const restriction', () => {
+    expect(
+      convertAction(
+        { type: 'string', const: 'foo' },
+        v.value<v.ValueInput, 'bar'>('bar'),
+        { errorMode: 'ignore' }
+      )
+    ).toStrictEqual({
+      type: 'string',
+      const: 'foo',
+    });
+  });
+
   test('should convert value action for openapi-3.0', () => {
     expect(
       convertAction({ type: 'string' }, v.value<v.ValueInput, 'foo'>('foo'), {
         target: 'openapi-3.0',
       })
+    ).toStrictEqual({
+      type: 'string',
+      enum: ['foo'],
+    });
+  });
+
+  test('should reduce existing enum restriction for value action with openapi-3.0', () => {
+    expect(
+      convertAction(
+        { type: 'string', enum: ['foo', 'bar'] },
+        v.value<v.ValueInput, 'foo'>('foo'),
+        { target: 'openapi-3.0' }
+      )
     ).toStrictEqual({
       type: 'string',
       enum: ['foo'],
@@ -1451,6 +2096,72 @@ describe('convertAction', () => {
       type: 'boolean',
       enum: [true, false],
     });
+  });
+
+  test('should reduce existing enum restriction for values action', () => {
+    expect(
+      convertAction(
+        { type: 'number', enum: [1, 2] },
+        v.values<v.ValueInput, [2, 3]>([2, 3]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      enum: [2],
+    });
+  });
+
+  test('should express an empty values intersection as an impossible schema', () => {
+    expect(
+      convertAction(
+        { type: 'number', enum: [1, 2] },
+        v.values<v.ValueInput, [3, 4]>([3, 4]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      not: {},
+    });
+  });
+
+  test('should express empty values requirement as an impossible schema', () => {
+    expect(
+      convertAction(
+        { type: 'number' },
+        v.values<v.ValueInput, []>([]),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      not: {},
+    });
+  });
+
+  test('should remove duplicate values without changing original arrays', () => {
+    const values = [1, 1, 2];
+    const options = [2, 1, 2, 3];
+    expect(
+      convertAction(
+        { type: 'number' },
+        v.values<v.ValueInput, number[]>(values),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      enum: [1, 2],
+    });
+    expect(
+      convertAction(
+        { type: 'number', enum: options },
+        v.values<v.ValueInput, number[]>(values),
+        undefined
+      )
+    ).toStrictEqual({
+      type: 'number',
+      enum: [2, 1],
+    });
+    expect(values).toStrictEqual([1, 1, 2]);
+    expect(options).toStrictEqual([2, 1, 2, 3]);
   });
 
   test('should throw error for unsupported values action', () => {

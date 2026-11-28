@@ -93,7 +93,7 @@ const NumberSchema = v.unwrap(NullishNumberSchema);
 
 ### Nullish with pipes
 
-When using `nullish` in a <Link href="../../pipe/">`pipe`</Link>, missing object keys only execute the pipe if a `default_` value is provided. If the key is present with `null` or `undefined`, later pipe actions still run.
+When using `nullish` in a <Link href="/api/pipe/">`pipe`</Link>, missing object keys only execute the pipe if a `default_` value is provided. If the key is present with `null` or `undefined`, later pipe actions still run.
 
 ```ts
 const SchemaWithoutDefault = v.object({
