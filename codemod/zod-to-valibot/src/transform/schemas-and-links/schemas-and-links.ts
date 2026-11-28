@@ -2,6 +2,7 @@ import j from 'jscodeshift';
 import { assertNever, getIsTypeFn } from '../../utils';
 import {
   ZOD_METHODS,
+  ZOD_PARSE_METHODS,
   ZOD_PROPERTIES,
   ZOD_SCHEMA_TO_TYPE,
   ZOD_SCHEMAS,
@@ -653,7 +654,11 @@ function transformSchemasAndLinksHelper(
           ];
           curSchemaType = 'length';
           useBigInt = false;
-        } else if (isStaticNamespaceCall) {
+        } else if (
+          isStaticNamespaceCall &&
+          // the result of a parse method is not a schema
+          !ZOD_PARSE_METHODS.includes(propertyName)
+        ) {
           curSchemaType = 'none';
         }
       } else if (isZodValidatorName(propertyName)) {

@@ -18,6 +18,9 @@ const Schema10 = z.partial(Foo).describe("some description");
 const Schema11 = Schema8.max(3);
 const output1 = z.parse(Foo, {});
 const output2 = z.safeParse(Foo, {});
+const output3 = z.parse(z.string(), "foo");
+const output4 = output3.toUpperCase();
+const output5 = z.safeParse(z.string(), "foo").data;
 
 // spread arguments are left unchanged
 const args = [Foo, {baz: z.boolean()}] as const;

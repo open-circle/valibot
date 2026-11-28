@@ -18,6 +18,9 @@ const Schema10 = v.pipe(v.partial(Foo), v.description("some description"));
 const Schema11 = v.pipe(Schema8, v.maxLength(3));
 const output1 = v.parse(Foo, {});
 const output2 = v.safeParse(Foo, {});
+const output3 = v.parse(v.string(), "foo");
+const output4 = output3.toUpperCase();
+const output5 = v.safeParse(v.string(), "foo").output;
 
 // spread arguments are left unchanged
 const args = [Foo, {baz: v.boolean()}] as const;
