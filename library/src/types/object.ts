@@ -82,6 +82,11 @@ export interface ObjectEntriesAsync {
 
 /**
  * Object keys type.
+ *
+ * Hint: We describe the object schemas structurally instead of using their
+ * interfaces, because relating an object schema to another instantiation of
+ * the same interface forces TypeScript to measure its variance, which is
+ * expensive (see issue #1663).
  */
 export type ObjectKeys<
   TSchema extends {
