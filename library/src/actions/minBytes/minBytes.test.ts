@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
 import {
@@ -69,6 +69,16 @@ describe('minBytes', () => {
 
     test('for valid strings', () => {
       expectNoActionIssue(action, ['12345', '123456', 'foobarbaz123']);
+    });
+
+    test('without encoding when the UTF-16 length meets the requirement', () => {
+      const encodeSpy = vi.spyOn(TextEncoder.prototype, 'encode');
+      try {
+        expectNoActionIssue(action, ['12345']);
+        expect(encodeSpy).not.toHaveBeenCalled();
+      } finally {
+        encodeSpy.mockRestore();
+      }
     });
 
     test('for valid chars', () => {

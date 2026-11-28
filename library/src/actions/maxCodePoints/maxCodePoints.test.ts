@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import type { StringIssue } from '../../schemas/index.ts';
 import { _getCodePointCount } from '../../utils/index.ts';
 import { expectActionIssue, expectNoActionIssue } from '../../vitest/index.ts';
@@ -70,6 +70,16 @@ describe('maxCodePoints', () => {
 
     test('for valid strings', () => {
       expectNoActionIssue(action, ['', ' ', '1', 'foo', '12345', '12 45']);
+    });
+
+    test('without counting if code unit length is within requirement', () => {
+      const codePointAtSpy = vi.spyOn(String.prototype, 'codePointAt');
+      try {
+        action['~run']({ typed: true, value: '12345' }, {});
+        expect(codePointAtSpy).not.toHaveBeenCalled();
+      } finally {
+        codePointAtSpy.mockRestore();
+      }
     });
 
     test('for valid emoji', () => {
