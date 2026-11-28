@@ -100,9 +100,14 @@ export function pipeAsync<
     | PipeItemAsync<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
 >(
   schema: TSchema,
+  // Hint: The `PipeAction` type only provides the contextual type that lets
+  // generic actions infer their input. Its output and issue are intentionally
+  // `unknown` and `BaseIssue<unknown>` instead of the inferred types of the
+  // item, because referencing the item type forces TypeScript to instantiate
+  // the union again for every inference step (see issue #1663).
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -133,7 +138,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -141,7 +146,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -176,7 +181,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -184,7 +189,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -192,7 +197,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -231,7 +236,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -239,7 +244,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -247,7 +252,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -255,7 +260,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -298,7 +303,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -306,7 +311,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -314,7 +319,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -322,7 +327,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -330,7 +335,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -379,7 +384,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -387,7 +392,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -395,7 +400,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -403,7 +408,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -411,7 +416,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -419,7 +424,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -472,7 +477,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -480,7 +485,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -488,7 +493,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -496,7 +501,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -504,7 +509,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -512,7 +517,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -520,7 +525,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -577,7 +582,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -585,7 +590,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -593,7 +598,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -601,7 +606,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -609,7 +614,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -617,7 +622,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -625,7 +630,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -633,7 +638,7 @@ export function pipeAsync<
       >,
   item8:
     | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+    | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem7>,
         InferOutput<TItem8>,
@@ -704,7 +709,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -712,7 +717,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -720,7 +725,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -728,7 +733,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -736,7 +741,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -744,7 +749,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -752,7 +757,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -760,7 +765,7 @@ export function pipeAsync<
       >,
   item8:
     | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+    | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem7>,
         InferOutput<TItem8>,
@@ -768,7 +773,7 @@ export function pipeAsync<
       >,
   item9:
     | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
+    | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem8>,
         InferOutput<TItem9>,
@@ -844,7 +849,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -852,7 +857,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -860,7 +865,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -868,7 +873,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -876,7 +881,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -884,7 +889,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -892,7 +897,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -900,7 +905,7 @@ export function pipeAsync<
       >,
   item8:
     | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+    | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem7>,
         InferOutput<TItem8>,
@@ -908,7 +913,7 @@ export function pipeAsync<
       >,
   item9:
     | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
+    | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem8>,
         InferOutput<TItem9>,
@@ -916,7 +921,7 @@ export function pipeAsync<
       >,
   item10:
     | TItem10
-    | PipeAction<InferOutput<TItem9>, InferOutput<TItem10>, InferIssue<TItem10>>
+    | PipeAction<InferOutput<TItem9>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem9>,
         InferOutput<TItem10>,
@@ -997,7 +1002,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -1005,7 +1010,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -1013,7 +1018,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -1021,7 +1026,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -1029,7 +1034,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -1037,7 +1042,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -1045,7 +1050,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -1053,7 +1058,7 @@ export function pipeAsync<
       >,
   item8:
     | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+    | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem7>,
         InferOutput<TItem8>,
@@ -1061,7 +1066,7 @@ export function pipeAsync<
       >,
   item9:
     | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
+    | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem8>,
         InferOutput<TItem9>,
@@ -1069,7 +1074,7 @@ export function pipeAsync<
       >,
   item10:
     | TItem10
-    | PipeAction<InferOutput<TItem9>, InferOutput<TItem10>, InferIssue<TItem10>>
+    | PipeAction<InferOutput<TItem9>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem9>,
         InferOutput<TItem10>,
@@ -1077,11 +1082,7 @@ export function pipeAsync<
       >,
   item11:
     | TItem11
-    | PipeAction<
-        InferOutput<TItem10>,
-        InferOutput<TItem11>,
-        InferIssue<TItem11>
-      >
+    | PipeAction<InferOutput<TItem10>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem10>,
         InferOutput<TItem11>,
@@ -1167,7 +1168,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -1175,7 +1176,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -1183,7 +1184,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -1191,7 +1192,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -1199,7 +1200,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -1207,7 +1208,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -1215,7 +1216,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -1223,7 +1224,7 @@ export function pipeAsync<
       >,
   item8:
     | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+    | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem7>,
         InferOutput<TItem8>,
@@ -1231,7 +1232,7 @@ export function pipeAsync<
       >,
   item9:
     | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
+    | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem8>,
         InferOutput<TItem9>,
@@ -1239,7 +1240,7 @@ export function pipeAsync<
       >,
   item10:
     | TItem10
-    | PipeAction<InferOutput<TItem9>, InferOutput<TItem10>, InferIssue<TItem10>>
+    | PipeAction<InferOutput<TItem9>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem9>,
         InferOutput<TItem10>,
@@ -1247,11 +1248,7 @@ export function pipeAsync<
       >,
   item11:
     | TItem11
-    | PipeAction<
-        InferOutput<TItem10>,
-        InferOutput<TItem11>,
-        InferIssue<TItem11>
-      >
+    | PipeAction<InferOutput<TItem10>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem10>,
         InferOutput<TItem11>,
@@ -1259,11 +1256,7 @@ export function pipeAsync<
       >,
   item12:
     | TItem12
-    | PipeAction<
-        InferOutput<TItem11>,
-        InferOutput<TItem12>,
-        InferIssue<TItem12>
-      >
+    | PipeAction<InferOutput<TItem11>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem11>,
         InferOutput<TItem12>,
@@ -1354,7 +1347,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -1362,7 +1355,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -1370,7 +1363,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -1378,7 +1371,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -1386,7 +1379,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -1394,7 +1387,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -1402,7 +1395,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -1410,7 +1403,7 @@ export function pipeAsync<
       >,
   item8:
     | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+    | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem7>,
         InferOutput<TItem8>,
@@ -1418,7 +1411,7 @@ export function pipeAsync<
       >,
   item9:
     | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
+    | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem8>,
         InferOutput<TItem9>,
@@ -1426,7 +1419,7 @@ export function pipeAsync<
       >,
   item10:
     | TItem10
-    | PipeAction<InferOutput<TItem9>, InferOutput<TItem10>, InferIssue<TItem10>>
+    | PipeAction<InferOutput<TItem9>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem9>,
         InferOutput<TItem10>,
@@ -1434,11 +1427,7 @@ export function pipeAsync<
       >,
   item11:
     | TItem11
-    | PipeAction<
-        InferOutput<TItem10>,
-        InferOutput<TItem11>,
-        InferIssue<TItem11>
-      >
+    | PipeAction<InferOutput<TItem10>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem10>,
         InferOutput<TItem11>,
@@ -1446,11 +1435,7 @@ export function pipeAsync<
       >,
   item12:
     | TItem12
-    | PipeAction<
-        InferOutput<TItem11>,
-        InferOutput<TItem12>,
-        InferIssue<TItem12>
-      >
+    | PipeAction<InferOutput<TItem11>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem11>,
         InferOutput<TItem12>,
@@ -1458,11 +1443,7 @@ export function pipeAsync<
       >,
   item13:
     | TItem13
-    | PipeAction<
-        InferOutput<TItem12>,
-        InferOutput<TItem13>,
-        InferIssue<TItem13>
-      >
+    | PipeAction<InferOutput<TItem12>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem12>,
         InferOutput<TItem13>,
@@ -1558,7 +1539,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -1566,7 +1547,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -1574,7 +1555,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -1582,7 +1563,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -1590,7 +1571,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -1598,7 +1579,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -1606,7 +1587,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -1614,7 +1595,7 @@ export function pipeAsync<
       >,
   item8:
     | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+    | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem7>,
         InferOutput<TItem8>,
@@ -1622,7 +1603,7 @@ export function pipeAsync<
       >,
   item9:
     | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
+    | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem8>,
         InferOutput<TItem9>,
@@ -1630,7 +1611,7 @@ export function pipeAsync<
       >,
   item10:
     | TItem10
-    | PipeAction<InferOutput<TItem9>, InferOutput<TItem10>, InferIssue<TItem10>>
+    | PipeAction<InferOutput<TItem9>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem9>,
         InferOutput<TItem10>,
@@ -1638,11 +1619,7 @@ export function pipeAsync<
       >,
   item11:
     | TItem11
-    | PipeAction<
-        InferOutput<TItem10>,
-        InferOutput<TItem11>,
-        InferIssue<TItem11>
-      >
+    | PipeAction<InferOutput<TItem10>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem10>,
         InferOutput<TItem11>,
@@ -1650,11 +1627,7 @@ export function pipeAsync<
       >,
   item12:
     | TItem12
-    | PipeAction<
-        InferOutput<TItem11>,
-        InferOutput<TItem12>,
-        InferIssue<TItem12>
-      >
+    | PipeAction<InferOutput<TItem11>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem11>,
         InferOutput<TItem12>,
@@ -1662,11 +1635,7 @@ export function pipeAsync<
       >,
   item13:
     | TItem13
-    | PipeAction<
-        InferOutput<TItem12>,
-        InferOutput<TItem13>,
-        InferIssue<TItem13>
-      >
+    | PipeAction<InferOutput<TItem12>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem12>,
         InferOutput<TItem13>,
@@ -1674,11 +1643,7 @@ export function pipeAsync<
       >,
   item14:
     | TItem14
-    | PipeAction<
-        InferOutput<TItem13>,
-        InferOutput<TItem14>,
-        InferIssue<TItem14>
-      >
+    | PipeAction<InferOutput<TItem13>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem13>,
         InferOutput<TItem14>,
@@ -1779,7 +1744,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -1787,7 +1752,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -1795,7 +1760,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -1803,7 +1768,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -1811,7 +1776,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -1819,7 +1784,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -1827,7 +1792,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -1835,7 +1800,7 @@ export function pipeAsync<
       >,
   item8:
     | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+    | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem7>,
         InferOutput<TItem8>,
@@ -1843,7 +1808,7 @@ export function pipeAsync<
       >,
   item9:
     | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
+    | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem8>,
         InferOutput<TItem9>,
@@ -1851,7 +1816,7 @@ export function pipeAsync<
       >,
   item10:
     | TItem10
-    | PipeAction<InferOutput<TItem9>, InferOutput<TItem10>, InferIssue<TItem10>>
+    | PipeAction<InferOutput<TItem9>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem9>,
         InferOutput<TItem10>,
@@ -1859,11 +1824,7 @@ export function pipeAsync<
       >,
   item11:
     | TItem11
-    | PipeAction<
-        InferOutput<TItem10>,
-        InferOutput<TItem11>,
-        InferIssue<TItem11>
-      >
+    | PipeAction<InferOutput<TItem10>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem10>,
         InferOutput<TItem11>,
@@ -1871,11 +1832,7 @@ export function pipeAsync<
       >,
   item12:
     | TItem12
-    | PipeAction<
-        InferOutput<TItem11>,
-        InferOutput<TItem12>,
-        InferIssue<TItem12>
-      >
+    | PipeAction<InferOutput<TItem11>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem11>,
         InferOutput<TItem12>,
@@ -1883,11 +1840,7 @@ export function pipeAsync<
       >,
   item13:
     | TItem13
-    | PipeAction<
-        InferOutput<TItem12>,
-        InferOutput<TItem13>,
-        InferIssue<TItem13>
-      >
+    | PipeAction<InferOutput<TItem12>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem12>,
         InferOutput<TItem13>,
@@ -1895,11 +1848,7 @@ export function pipeAsync<
       >,
   item14:
     | TItem14
-    | PipeAction<
-        InferOutput<TItem13>,
-        InferOutput<TItem14>,
-        InferIssue<TItem14>
-      >
+    | PipeAction<InferOutput<TItem13>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem13>,
         InferOutput<TItem14>,
@@ -1907,11 +1856,7 @@ export function pipeAsync<
       >,
   item15:
     | TItem15
-    | PipeAction<
-        InferOutput<TItem14>,
-        InferOutput<TItem15>,
-        InferIssue<TItem15>
-      >
+    | PipeAction<InferOutput<TItem14>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem14>,
         InferOutput<TItem15>,
@@ -2017,7 +1962,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -2025,7 +1970,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -2033,7 +1978,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -2041,7 +1986,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -2049,7 +1994,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -2057,7 +2002,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -2065,7 +2010,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -2073,7 +2018,7 @@ export function pipeAsync<
       >,
   item8:
     | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+    | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem7>,
         InferOutput<TItem8>,
@@ -2081,7 +2026,7 @@ export function pipeAsync<
       >,
   item9:
     | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
+    | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem8>,
         InferOutput<TItem9>,
@@ -2089,7 +2034,7 @@ export function pipeAsync<
       >,
   item10:
     | TItem10
-    | PipeAction<InferOutput<TItem9>, InferOutput<TItem10>, InferIssue<TItem10>>
+    | PipeAction<InferOutput<TItem9>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem9>,
         InferOutput<TItem10>,
@@ -2097,11 +2042,7 @@ export function pipeAsync<
       >,
   item11:
     | TItem11
-    | PipeAction<
-        InferOutput<TItem10>,
-        InferOutput<TItem11>,
-        InferIssue<TItem11>
-      >
+    | PipeAction<InferOutput<TItem10>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem10>,
         InferOutput<TItem11>,
@@ -2109,11 +2050,7 @@ export function pipeAsync<
       >,
   item12:
     | TItem12
-    | PipeAction<
-        InferOutput<TItem11>,
-        InferOutput<TItem12>,
-        InferIssue<TItem12>
-      >
+    | PipeAction<InferOutput<TItem11>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem11>,
         InferOutput<TItem12>,
@@ -2121,11 +2058,7 @@ export function pipeAsync<
       >,
   item13:
     | TItem13
-    | PipeAction<
-        InferOutput<TItem12>,
-        InferOutput<TItem13>,
-        InferIssue<TItem13>
-      >
+    | PipeAction<InferOutput<TItem12>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem12>,
         InferOutput<TItem13>,
@@ -2133,11 +2066,7 @@ export function pipeAsync<
       >,
   item14:
     | TItem14
-    | PipeAction<
-        InferOutput<TItem13>,
-        InferOutput<TItem14>,
-        InferIssue<TItem14>
-      >
+    | PipeAction<InferOutput<TItem13>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem13>,
         InferOutput<TItem14>,
@@ -2145,11 +2074,7 @@ export function pipeAsync<
       >,
   item15:
     | TItem15
-    | PipeAction<
-        InferOutput<TItem14>,
-        InferOutput<TItem15>,
-        InferIssue<TItem15>
-      >
+    | PipeAction<InferOutput<TItem14>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem14>,
         InferOutput<TItem15>,
@@ -2157,11 +2082,7 @@ export function pipeAsync<
       >,
   item16:
     | TItem16
-    | PipeAction<
-        InferOutput<TItem15>,
-        InferOutput<TItem16>,
-        InferIssue<TItem16>
-      >
+    | PipeAction<InferOutput<TItem15>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem15>,
         InferOutput<TItem16>,
@@ -2272,7 +2193,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -2280,7 +2201,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -2288,7 +2209,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -2296,7 +2217,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -2304,7 +2225,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -2312,7 +2233,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -2320,7 +2241,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -2328,7 +2249,7 @@ export function pipeAsync<
       >,
   item8:
     | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+    | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem7>,
         InferOutput<TItem8>,
@@ -2336,7 +2257,7 @@ export function pipeAsync<
       >,
   item9:
     | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
+    | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem8>,
         InferOutput<TItem9>,
@@ -2344,7 +2265,7 @@ export function pipeAsync<
       >,
   item10:
     | TItem10
-    | PipeAction<InferOutput<TItem9>, InferOutput<TItem10>, InferIssue<TItem10>>
+    | PipeAction<InferOutput<TItem9>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem9>,
         InferOutput<TItem10>,
@@ -2352,11 +2273,7 @@ export function pipeAsync<
       >,
   item11:
     | TItem11
-    | PipeAction<
-        InferOutput<TItem10>,
-        InferOutput<TItem11>,
-        InferIssue<TItem11>
-      >
+    | PipeAction<InferOutput<TItem10>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem10>,
         InferOutput<TItem11>,
@@ -2364,11 +2281,7 @@ export function pipeAsync<
       >,
   item12:
     | TItem12
-    | PipeAction<
-        InferOutput<TItem11>,
-        InferOutput<TItem12>,
-        InferIssue<TItem12>
-      >
+    | PipeAction<InferOutput<TItem11>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem11>,
         InferOutput<TItem12>,
@@ -2376,11 +2289,7 @@ export function pipeAsync<
       >,
   item13:
     | TItem13
-    | PipeAction<
-        InferOutput<TItem12>,
-        InferOutput<TItem13>,
-        InferIssue<TItem13>
-      >
+    | PipeAction<InferOutput<TItem12>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem12>,
         InferOutput<TItem13>,
@@ -2388,11 +2297,7 @@ export function pipeAsync<
       >,
   item14:
     | TItem14
-    | PipeAction<
-        InferOutput<TItem13>,
-        InferOutput<TItem14>,
-        InferIssue<TItem14>
-      >
+    | PipeAction<InferOutput<TItem13>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem13>,
         InferOutput<TItem14>,
@@ -2400,11 +2305,7 @@ export function pipeAsync<
       >,
   item15:
     | TItem15
-    | PipeAction<
-        InferOutput<TItem14>,
-        InferOutput<TItem15>,
-        InferIssue<TItem15>
-      >
+    | PipeAction<InferOutput<TItem14>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem14>,
         InferOutput<TItem15>,
@@ -2412,11 +2313,7 @@ export function pipeAsync<
       >,
   item16:
     | TItem16
-    | PipeAction<
-        InferOutput<TItem15>,
-        InferOutput<TItem16>,
-        InferIssue<TItem16>
-      >
+    | PipeAction<InferOutput<TItem15>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem15>,
         InferOutput<TItem16>,
@@ -2424,11 +2321,7 @@ export function pipeAsync<
       >,
   item17:
     | TItem17
-    | PipeAction<
-        InferOutput<TItem16>,
-        InferOutput<TItem17>,
-        InferIssue<TItem17>
-      >
+    | PipeAction<InferOutput<TItem16>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem16>,
         InferOutput<TItem17>,
@@ -2544,7 +2437,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -2552,7 +2445,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -2560,7 +2453,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -2568,7 +2461,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -2576,7 +2469,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -2584,7 +2477,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -2592,7 +2485,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -2600,7 +2493,7 @@ export function pipeAsync<
       >,
   item8:
     | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+    | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem7>,
         InferOutput<TItem8>,
@@ -2608,7 +2501,7 @@ export function pipeAsync<
       >,
   item9:
     | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
+    | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem8>,
         InferOutput<TItem9>,
@@ -2616,7 +2509,7 @@ export function pipeAsync<
       >,
   item10:
     | TItem10
-    | PipeAction<InferOutput<TItem9>, InferOutput<TItem10>, InferIssue<TItem10>>
+    | PipeAction<InferOutput<TItem9>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem9>,
         InferOutput<TItem10>,
@@ -2624,11 +2517,7 @@ export function pipeAsync<
       >,
   item11:
     | TItem11
-    | PipeAction<
-        InferOutput<TItem10>,
-        InferOutput<TItem11>,
-        InferIssue<TItem11>
-      >
+    | PipeAction<InferOutput<TItem10>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem10>,
         InferOutput<TItem11>,
@@ -2636,11 +2525,7 @@ export function pipeAsync<
       >,
   item12:
     | TItem12
-    | PipeAction<
-        InferOutput<TItem11>,
-        InferOutput<TItem12>,
-        InferIssue<TItem12>
-      >
+    | PipeAction<InferOutput<TItem11>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem11>,
         InferOutput<TItem12>,
@@ -2648,11 +2533,7 @@ export function pipeAsync<
       >,
   item13:
     | TItem13
-    | PipeAction<
-        InferOutput<TItem12>,
-        InferOutput<TItem13>,
-        InferIssue<TItem13>
-      >
+    | PipeAction<InferOutput<TItem12>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem12>,
         InferOutput<TItem13>,
@@ -2660,11 +2541,7 @@ export function pipeAsync<
       >,
   item14:
     | TItem14
-    | PipeAction<
-        InferOutput<TItem13>,
-        InferOutput<TItem14>,
-        InferIssue<TItem14>
-      >
+    | PipeAction<InferOutput<TItem13>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem13>,
         InferOutput<TItem14>,
@@ -2672,11 +2549,7 @@ export function pipeAsync<
       >,
   item15:
     | TItem15
-    | PipeAction<
-        InferOutput<TItem14>,
-        InferOutput<TItem15>,
-        InferIssue<TItem15>
-      >
+    | PipeAction<InferOutput<TItem14>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem14>,
         InferOutput<TItem15>,
@@ -2684,11 +2557,7 @@ export function pipeAsync<
       >,
   item16:
     | TItem16
-    | PipeAction<
-        InferOutput<TItem15>,
-        InferOutput<TItem16>,
-        InferIssue<TItem16>
-      >
+    | PipeAction<InferOutput<TItem15>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem15>,
         InferOutput<TItem16>,
@@ -2696,11 +2565,7 @@ export function pipeAsync<
       >,
   item17:
     | TItem17
-    | PipeAction<
-        InferOutput<TItem16>,
-        InferOutput<TItem17>,
-        InferIssue<TItem17>
-      >
+    | PipeAction<InferOutput<TItem16>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem16>,
         InferOutput<TItem17>,
@@ -2708,11 +2573,7 @@ export function pipeAsync<
       >,
   item18:
     | TItem18
-    | PipeAction<
-        InferOutput<TItem17>,
-        InferOutput<TItem18>,
-        InferIssue<TItem18>
-      >
+    | PipeAction<InferOutput<TItem17>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem17>,
         InferOutput<TItem18>,
@@ -2833,7 +2694,7 @@ export function pipeAsync<
   schema: TSchema,
   item1:
     | TItem1
-    | PipeAction<InferOutput<TSchema>, InferOutput<TItem1>, InferIssue<TItem1>>
+    | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TSchema>,
         InferOutput<TItem1>,
@@ -2841,7 +2702,7 @@ export function pipeAsync<
       >,
   item2:
     | TItem2
-    | PipeAction<InferOutput<TItem1>, InferOutput<TItem2>, InferIssue<TItem2>>
+    | PipeAction<InferOutput<TItem1>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem1>,
         InferOutput<TItem2>,
@@ -2849,7 +2710,7 @@ export function pipeAsync<
       >,
   item3:
     | TItem3
-    | PipeAction<InferOutput<TItem2>, InferOutput<TItem3>, InferIssue<TItem3>>
+    | PipeAction<InferOutput<TItem2>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem2>,
         InferOutput<TItem3>,
@@ -2857,7 +2718,7 @@ export function pipeAsync<
       >,
   item4:
     | TItem4
-    | PipeAction<InferOutput<TItem3>, InferOutput<TItem4>, InferIssue<TItem4>>
+    | PipeAction<InferOutput<TItem3>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem3>,
         InferOutput<TItem4>,
@@ -2865,7 +2726,7 @@ export function pipeAsync<
       >,
   item5:
     | TItem5
-    | PipeAction<InferOutput<TItem4>, InferOutput<TItem5>, InferIssue<TItem5>>
+    | PipeAction<InferOutput<TItem4>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem4>,
         InferOutput<TItem5>,
@@ -2873,7 +2734,7 @@ export function pipeAsync<
       >,
   item6:
     | TItem6
-    | PipeAction<InferOutput<TItem5>, InferOutput<TItem6>, InferIssue<TItem6>>
+    | PipeAction<InferOutput<TItem5>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem5>,
         InferOutput<TItem6>,
@@ -2881,7 +2742,7 @@ export function pipeAsync<
       >,
   item7:
     | TItem7
-    | PipeAction<InferOutput<TItem6>, InferOutput<TItem7>, InferIssue<TItem7>>
+    | PipeAction<InferOutput<TItem6>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem6>,
         InferOutput<TItem7>,
@@ -2889,7 +2750,7 @@ export function pipeAsync<
       >,
   item8:
     | TItem8
-    | PipeAction<InferOutput<TItem7>, InferOutput<TItem8>, InferIssue<TItem8>>
+    | PipeAction<InferOutput<TItem7>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem7>,
         InferOutput<TItem8>,
@@ -2897,7 +2758,7 @@ export function pipeAsync<
       >,
   item9:
     | TItem9
-    | PipeAction<InferOutput<TItem8>, InferOutput<TItem9>, InferIssue<TItem9>>
+    | PipeAction<InferOutput<TItem8>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem8>,
         InferOutput<TItem9>,
@@ -2905,7 +2766,7 @@ export function pipeAsync<
       >,
   item10:
     | TItem10
-    | PipeAction<InferOutput<TItem9>, InferOutput<TItem10>, InferIssue<TItem10>>
+    | PipeAction<InferOutput<TItem9>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem9>,
         InferOutput<TItem10>,
@@ -2913,11 +2774,7 @@ export function pipeAsync<
       >,
   item11:
     | TItem11
-    | PipeAction<
-        InferOutput<TItem10>,
-        InferOutput<TItem11>,
-        InferIssue<TItem11>
-      >
+    | PipeAction<InferOutput<TItem10>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem10>,
         InferOutput<TItem11>,
@@ -2925,11 +2782,7 @@ export function pipeAsync<
       >,
   item12:
     | TItem12
-    | PipeAction<
-        InferOutput<TItem11>,
-        InferOutput<TItem12>,
-        InferIssue<TItem12>
-      >
+    | PipeAction<InferOutput<TItem11>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem11>,
         InferOutput<TItem12>,
@@ -2937,11 +2790,7 @@ export function pipeAsync<
       >,
   item13:
     | TItem13
-    | PipeAction<
-        InferOutput<TItem12>,
-        InferOutput<TItem13>,
-        InferIssue<TItem13>
-      >
+    | PipeAction<InferOutput<TItem12>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem12>,
         InferOutput<TItem13>,
@@ -2949,11 +2798,7 @@ export function pipeAsync<
       >,
   item14:
     | TItem14
-    | PipeAction<
-        InferOutput<TItem13>,
-        InferOutput<TItem14>,
-        InferIssue<TItem14>
-      >
+    | PipeAction<InferOutput<TItem13>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem13>,
         InferOutput<TItem14>,
@@ -2961,11 +2806,7 @@ export function pipeAsync<
       >,
   item15:
     | TItem15
-    | PipeAction<
-        InferOutput<TItem14>,
-        InferOutput<TItem15>,
-        InferIssue<TItem15>
-      >
+    | PipeAction<InferOutput<TItem14>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem14>,
         InferOutput<TItem15>,
@@ -2973,11 +2814,7 @@ export function pipeAsync<
       >,
   item16:
     | TItem16
-    | PipeAction<
-        InferOutput<TItem15>,
-        InferOutput<TItem16>,
-        InferIssue<TItem16>
-      >
+    | PipeAction<InferOutput<TItem15>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem15>,
         InferOutput<TItem16>,
@@ -2985,11 +2822,7 @@ export function pipeAsync<
       >,
   item17:
     | TItem17
-    | PipeAction<
-        InferOutput<TItem16>,
-        InferOutput<TItem17>,
-        InferIssue<TItem17>
-      >
+    | PipeAction<InferOutput<TItem16>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem16>,
         InferOutput<TItem17>,
@@ -2997,11 +2830,7 @@ export function pipeAsync<
       >,
   item18:
     | TItem18
-    | PipeAction<
-        InferOutput<TItem17>,
-        InferOutput<TItem18>,
-        InferIssue<TItem18>
-      >
+    | PipeAction<InferOutput<TItem17>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem17>,
         InferOutput<TItem18>,
@@ -3009,11 +2838,7 @@ export function pipeAsync<
       >,
   item19:
     | TItem19
-    | PipeAction<
-        InferOutput<TItem18>,
-        InferOutput<TItem19>,
-        InferIssue<TItem19>
-      >
+    | PipeAction<InferOutput<TItem18>, unknown, BaseIssue<unknown>>
     | PipeActionAsync<
         InferOutput<TItem18>,
         InferOutput<TItem19>,
