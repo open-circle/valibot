@@ -1,6 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
 import { minLength, transform } from '../../actions/index.ts';
-import { string } from '../../schemas/index.ts';
+import { object, string } from '../../schemas/index.ts';
+import { getDotPath } from '../../utils/index.ts';
 import { pipe } from '../index.ts';
 import { cache, type SchemaWithCache } from './cache.ts';
 
@@ -81,6 +82,17 @@ describe('cache', () => {
       });
       expect(runSpy).toHaveBeenCalledTimes(1);
     });
+
+    test('without adding the issue path of a parent schema twice', () => {
+      const schema = object({ key: cache(pipe(string(), minLength(3))) });
+      const dotPaths: (string | null)[] = [];
+      for (let index = 0; index < 3; index++) {
+        const dataset = schema['~run']({ value: { key: 'fo' } }, {});
+        dotPaths.push(getDotPath(dataset.issues![0]));
+      }
+
+      expect(dotPaths).toStrictEqual(['key', 'key', 'key']);
+    });
   });
 
   describe('should respect config changes', () => {
@@ -130,6 +142,24 @@ describe('cache', () => {
       expect(defaultDataset).not.toBe(abortDataset);
       expect(defaultDataset.issues).toHaveLength(2);
       expect(abortDataset.issues).toHaveLength(1);
+    });
+
+    test('for strings containing key delimiters', () => {
+      const baseSchema = string();
+      const runSpy = vi.spyOn(baseSchema, '~run');
+      const schema = cache(baseSchema);
+      const dataset1 = schema['~run'](
+        { value: 'foo"|"en"|"first' },
+        { lang: 'en', message: 'second' }
+      );
+      const dataset2 = schema['~run'](
+        { value: 'foo' },
+        { lang: 'en', message: 'first"|"en"|"second' }
+      );
+
+      expect(dataset1.value).toBe('foo"|"en"|"first');
+      expect(dataset2.value).toBe('foo');
+      expect(runSpy).toHaveBeenCalledTimes(2);
     });
   });
 

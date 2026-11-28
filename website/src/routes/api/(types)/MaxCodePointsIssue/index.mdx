@@ -1,0 +1,28 @@
+---
+title: MaxCodePointsIssue
+description: Max code points issue interface.
+contributors:
+  - fabian-hiller
+  - tats-u
+---
+
+import { Property } from '~/components';
+import { properties } from './properties';
+
+# MaxCodePointsIssue
+
+Max code points issue interface.
+
+## Generics
+
+- `TInput` <Property {...properties.TInput} />
+- `TRequirement` <Property {...properties.TRequirement} />
+
+## Definition
+
+- `MaxCodePointsIssue` <Property {...properties.BaseIssue} />
+  - `kind` <Property {...properties.kind} />
+  - `type` <Property {...properties.type} />
+  - `expected` <Property {...properties.expected} />
+  - `received` <Property {...properties.received} />
+  - `requirement` <Property {...properties.requirement} />

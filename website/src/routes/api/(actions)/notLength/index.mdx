@@ -4,6 +4,7 @@ description: Creates a not length validation action.
 source: /actions/notLength/notLength.ts
 contributors:
   - fabian-hiller
+  - tats-u
 ---
 
 import { ApiList, Property } from '~/components';
@@ -60,7 +61,7 @@ Schema to validate the length of an array.
 
 ```ts
 const ArraySchema = v.pipe(
-  v.array(number()),
+  v.array(v.number()),
   v.notLength(10, 'The array must not contain 10 numbers.')
 );
 ```
@@ -78,6 +79,10 @@ The following APIs can be combined with `notLength`.
 ### Methods
 
 <ApiList items={['pipe']} />
+
+### Actions
+
+<ApiList items={['notCodePoints', 'notGraphemes']} />
 
 ### Utils
 

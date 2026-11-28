@@ -11,11 +11,7 @@ import type {
   PartialDataset,
   SuccessDataset,
 } from '../../types/index.ts';
-import {
-  _addIssue,
-  _getStandardProps,
-  _joinExpects,
-} from '../../utils/index.ts';
+import { _addIssue, _joinExpects, _standardSchema } from '../../utils/index.ts';
 import type { UnionIssue } from './types.ts';
 import { _subIssues } from './utils/index.ts';
 
@@ -91,7 +87,7 @@ export function union(
   UnionOptions,
   ErrorMessage<UnionIssue<BaseIssue<unknown>>> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'union',
     reference: union,
@@ -102,9 +98,6 @@ export function union(
     async: false,
     options,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       // Create variables to collect datasets
       let validDataset: SuccessDataset<unknown> | undefined;
@@ -185,5 +178,5 @@ export function union(
       // @ts-expect-error
       return dataset as OutputDataset<unknown, BaseIssue<unknown>>;
     },
-  };
+  });
 }

@@ -6,6 +6,7 @@ contributors:
   - fabian-hiller
   - depsimon
   - yslpn
+  - tats-u
 ---
 
 import { ApiList, Link, Property } from '~/components';
@@ -37,7 +38,7 @@ const Action = v.maxLength<TInput, TRequirement, TMessage>(
 
 With `maxLength` you can validate the length of a string or array. For strings, length is measured like JavaScript's `value.length`, i.e. by UTF-16 code units. For arrays, length is measured by the number of items. If the input does not match the `requirement`, you can use `message` to customize the error message.
 
-> If you need to validate the maximum number of user-perceived characters, use <Link href="../maxGraphemes/">`maxGraphemes`</Link> instead.
+> If you need to validate the maximum number of user-perceived characters, use <Link href="../maxGraphemes/">`maxGraphemes`</Link> instead. If you need to count each Unicode code point as a single character (a supplementary code point occupies two UTF-16 code units in JavaScript), use <Link href="../maxCodePoints/">`maxCodePoints`</Link> instead.
 
 ## Returns
 
@@ -85,7 +86,7 @@ The following APIs can be combined with `maxLength`.
 
 ### Actions
 
-<ApiList items={['maxGraphemes']} />
+<ApiList items={['maxCodePoints', 'maxGraphemes']} />
 
 ### Utils
 

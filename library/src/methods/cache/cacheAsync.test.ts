@@ -1,6 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
 import { minLength, transformAsync } from '../../actions/index.ts';
-import { string } from '../../schemas/index.ts';
+import { objectAsync, string } from '../../schemas/index.ts';
+import { getDotPath } from '../../utils/index.ts';
 import { pipe, pipeAsync } from '../index.ts';
 import { cacheAsync, type SchemaWithCacheAsync } from './cacheAsync.ts';
 
@@ -89,6 +90,19 @@ describe('cacheAsync', () => {
       );
       expect(runSpy).toHaveBeenCalledTimes(1);
     });
+
+    test('without adding the issue path of a parent schema twice', async () => {
+      const schema = objectAsync({
+        key: cacheAsync(pipe(string(), minLength(3))),
+      });
+      const dotPaths: (string | null)[] = [];
+      for (let index = 0; index < 3; index++) {
+        const dataset = await schema['~run']({ value: { key: 'fo' } }, {});
+        dotPaths.push(getDotPath(dataset.issues![0]));
+      }
+
+      expect(dotPaths).toStrictEqual(['key', 'key', 'key']);
+    });
   });
 
   describe('should respect config changes', () => {
@@ -144,6 +158,25 @@ describe('cacheAsync', () => {
       expect(defaultDataset).not.toBe(abortDataset);
       expect(defaultDataset.issues).toHaveLength(2);
       expect(abortDataset.issues).toHaveLength(1);
+    });
+
+    test('for strings containing key delimiters', async () => {
+      const baseSchema = string();
+      const runSpy = vi.spyOn(baseSchema, '~run');
+      const schema = cacheAsync(baseSchema);
+      const promise1 = schema['~run'](
+        { value: 'foo"|"en"|"first' },
+        { lang: 'en', message: 'second' }
+      );
+      const promise2 = schema['~run'](
+        { value: 'foo' },
+        { lang: 'en', message: 'first"|"en"|"second' }
+      );
+      const [dataset1, dataset2] = await Promise.all([promise1, promise2]);
+
+      expect(dataset1.value).toBe('foo"|"en"|"first');
+      expect(dataset2.value).toBe('foo');
+      expect(runSpy).toHaveBeenCalledTimes(2);
     });
   });
 

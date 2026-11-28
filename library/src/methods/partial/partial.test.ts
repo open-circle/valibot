@@ -143,7 +143,7 @@ describe('partial', () => {
     });
 
     describe('should return dataset with nested issues', () => {
-      test('if non-partialed keys are missing', () => {
+      test('if required keys are missing', () => {
         for (const input of [{}, { key1: 'foo', key3: 'bar' }]) {
           expect(schema2['~run']({ value: input }, {})).toStrictEqual({
             typed: false,
@@ -169,6 +169,15 @@ describe('partial', () => {
             ],
           } satisfies FailureDataset<InferIssue<typeof schema2>>);
         }
+      });
+    });
+
+    test('should validate against the partial entries via "~standard"', () => {
+      expect(schema2['~standard'].validate({ key2: 123 })).toMatchObject({
+        value: { key2: 123, key4: 123 },
+      });
+      expect(schema2['~standard'].validate({})).toMatchObject({
+        issues: [{ path: [{ key: 'key2' }] }],
       });
     });
   });
@@ -300,7 +309,7 @@ describe('partial', () => {
     });
 
     describe('should return dataset with nested issues', () => {
-      test('if non-partialed keys are missing', () => {
+      test('if required keys are missing', () => {
         for (const input of [{}, { key2: 123, key3: 'bar', other: true }]) {
           expect(schema2['~run']({ value: input }, {})).toStrictEqual({
             typed: false,

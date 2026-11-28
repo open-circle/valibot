@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * String issue interface.
@@ -70,16 +70,13 @@ export function string<
 export function string(
   message?: ErrorMessage<StringIssue>
 ): StringSchema<ErrorMessage<StringIssue> | undefined> {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'string',
     reference: string,
     expects: 'string',
     async: false,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       if (typeof dataset.value === 'string') {
         // @ts-expect-error
@@ -90,5 +87,5 @@ export function string(
       // @ts-expect-error
       return dataset as OutputDataset<string, StringIssue>;
     },
-  };
+  });
 }

@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Symbol issue interface.
@@ -70,16 +70,13 @@ export function symbol<
 export function symbol(
   message?: ErrorMessage<SymbolIssue>
 ): SymbolSchema<ErrorMessage<SymbolIssue> | undefined> {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'symbol',
     reference: symbol,
     expects: 'symbol',
     async: false,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       if (typeof dataset.value === 'symbol') {
         // @ts-expect-error
@@ -90,5 +87,5 @@ export function symbol(
       // @ts-expect-error
       return dataset as OutputDataset<symbol, SymbolIssue>;
     },
-  };
+  });
 }

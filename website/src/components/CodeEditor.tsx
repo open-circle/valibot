@@ -111,6 +111,14 @@ export const CodeEditor = component$<CodeEditorProps>(
       });
     });
 
+    // Update value of model on change
+    useTask$(({ track }) => {
+      track(value);
+      if (isBrowser && model.value && value.value !== model.value.getValue()) {
+        model.value.setValue(value.value);
+      }
+    });
+
     // Update theme on change
     useTask$(async ({ track }) => {
       track(editorTheme);

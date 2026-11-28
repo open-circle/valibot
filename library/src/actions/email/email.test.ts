@@ -67,7 +67,7 @@ describe('email', () => {
     });
 
     test('for simple email', () => {
-      expectNoActionIssue(action, ['email@example.com']);
+      expectNoActionIssue(action, ['email@example.com', 'Email@Example.COM']);
     });
 
     test('for very short email', () => {
@@ -299,6 +299,12 @@ describe('email', () => {
         'あいうえお@example.com',
         'email@あいうえお.com',
         'email@example.あいう',
+        'K@example.com',
+        'ſ@example.com',
+        'Kſ@example.com',
+        'email@K.com',
+        'email@ſ.com',
+        'email@example.Kſ',
       ]);
     });
 

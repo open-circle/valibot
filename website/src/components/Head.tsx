@@ -71,6 +71,12 @@ export const Head = component$(() => {
       />
       <link rel="canonical" href={location.url.href} />
       <link rel="manifest" href="/manifest.json" />
+      <link
+        rel="alternate"
+        type="application/atom+xml"
+        title="Valibot Blog"
+        href="/feed.xml"
+      />
 
       {/* Icon metadata */}
       <link rel="icon" type="image/png" sizes="32x32" href="/icon-32px.png" />

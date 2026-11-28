@@ -2,6 +2,15 @@ import graymatter from 'gray-matter';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import {
+  CAPABILITIES,
+  INSTRUCTIONS,
+  LATEST_VERSION,
+  MCP_URL,
+  SERVER_INFO,
+  SUPPORTED_VERSIONS,
+  TRANSPORT_TYPE,
+} from '../worker/mcp-info';
 
 // URL of the official Valibot agent skill (our single source of truth)
 const skillUrl =
@@ -70,3 +79,49 @@ fs.writeFileSync(
 
 // Copy SKILL.md to root of public directory for better discoverability
 fs.writeFileSync(path.join('public', 'skill.md'), skillContent);
+
+// Ensure directory of MCP server card exists
+const mcpDir = path.join('public', '.well-known', 'mcp');
+if (!fs.existsSync(mcpDir)) {
+  fs.mkdirSync(mcpDir, { recursive: true });
+}
+
+// Write MCP server card to public directory for agent discovery (SEP-1649)
+// https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2127
+fs.writeFileSync(
+  path.join(mcpDir, 'server-card.json'),
+  `${JSON.stringify(
+    {
+      // Fields of the evolving SEP-1649 draft (Extensions track)
+      name: 'dev.valibot/docs',
+      title: SERVER_INFO.title,
+      description:
+        'Search and read the documentation of Valibot, the modular and type-safe TypeScript schema library for validating structural data.',
+      version: SERVER_INFO.version,
+      websiteUrl: 'https://valibot.dev/',
+      repository: {
+        url: 'https://github.com/open-circle/valibot',
+        source: 'github',
+      },
+      remotes: [
+        {
+          type: TRANSPORT_TYPE,
+          url: MCP_URL,
+          supportedProtocolVersions: SUPPORTED_VERSIONS,
+        },
+      ],
+      // Fields of the original SEP-1649 proposal for older consumers
+      serverInfo: SERVER_INFO,
+      protocolVersion: LATEST_VERSION,
+      transport: {
+        type: TRANSPORT_TYPE,
+        endpoint: MCP_URL,
+      },
+      capabilities: CAPABILITIES,
+      instructions: INSTRUCTIONS,
+      documentation: 'https://valibot.dev/guides/coding-agents/',
+    },
+    null,
+    2
+  )}\n`
+);
