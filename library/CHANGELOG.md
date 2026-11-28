@@ -16,6 +16,7 @@ All notable changes to the library will be documented in this file.
 - Fix `isbn` action to reject ISBN-13 values that do not start with the 978 or 979 prefix (pull request #1705)
 - Fix `cache` and `cacheAsync` methods to escape strings in cache keys, preventing key collisions between string inputs and config values (pull request #1691)
 - Fix `creditCard` action to accept Discover cards with 644 to 649 prefixes (pull request #1742)
+- Fix `ip` and `ipv6` actions to reject non-ASCII characters in zone IDs accepted by Unicode case folding (pull request #1750)
 
 ## v1.5.0 (September 09, 2026)
 
