@@ -1,15 +1,5 @@
 import type { BaseTransformation, SuccessDataset } from '../../types/index.ts';
-import type { ArrayInput } from '../types.ts';
-
-/**
- * Array requirement type.
- */
-type ArrayRequirement<
-  TInput extends ArrayInput,
-  TOuput extends TInput[number],
-> =
-  | ((item: TInput[number], index: number, array: TInput) => item is TOuput)
-  | ((item: TInput[number], index: number, array: TInput) => boolean);
+import type { ArrayInput, ArrayRequirement } from '../types.ts';
 
 /**
  * Find item action interface.
