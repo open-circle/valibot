@@ -46,6 +46,20 @@ Schema to validate a string and transform it to a number.
 const NumberSchema = v.pipe(v.string(), v.toNumber());
 ```
 
+### Integer schema
+
+Schema to transform a non-empty string to an integer. Since `toNumber` transforms empty and blank strings to `0`, the string is trimmed and checked first.
+
+```ts
+const IntegerSchema = v.pipe(
+  v.string(),
+  v.trim(),
+  v.nonEmpty('Please enter a number.'),
+  v.toNumber('The number is badly formatted.'),
+  v.integer('The number must be an integer.')
+);
+```
+
 ## Related
 
 The following APIs can be combined with `toNumber`.

@@ -1,4 +1,6 @@
 import { describe, expectTypeOf, test } from 'vitest';
+import { pipe } from '../../methods/index.ts';
+import { string } from '../../schemas/index.ts';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
 import { type Brand, brand, type BrandAction } from './brand.ts';
 
@@ -29,19 +31,27 @@ describe('brand', () => {
     type Output = InferOutput<Action>;
 
     test('should not match unbranded types', () => {
-      expectTypeOf<string>().not.toMatchTypeOf<Output>();
+      expectTypeOf<string>().not.toExtend<Output>();
     });
 
     test('should match types with same brand', () => {
       expectTypeOf<
         InferOutput<BrandAction<string, 'foo'>>
-      >().toMatchTypeOf<Output>();
+      >().toExtend<Output>();
     });
 
     test('should not match types with different brand', () => {
       expectTypeOf<
         InferOutput<BrandAction<string, 'bar'>>
-      >().not.toMatchTypeOf<Output>();
+      >().not.toExtend<Output>();
     });
+  });
+
+  test('should infer correct type in pipe', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const schema = pipe(string(), brand('foo'), brand('bar'));
+    expectTypeOf<InferOutput<typeof schema>>().toEqualTypeOf<
+      string & Brand<'foo'> & Brand<'bar'>
+    >();
   });
 });

@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (Month DD, YYYY)
+
+- Fix `typeMode: 'input'` to stop the conversion before `parseBoolean` and `mapItems` actions (pull request #1751)
+
 ## v1.8.0 (September 11, 2026)
 
 - Add support for `ksuid` action (pull request #1370)

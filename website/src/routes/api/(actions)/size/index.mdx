@@ -57,7 +57,7 @@ Schema to validate a set of 8 numbers.
 
 ```ts
 const SetSchema = v.pipe(
-  v.set(number()),
+  v.set(v.number()),
   v.size(8, 'The set must contain 8 numbers.')
 );
 ```
