@@ -1,4 +1,6 @@
 import { describe, expectTypeOf, test } from 'vitest';
+import { pipe } from '../../methods/index.ts';
+import { string } from '../../schemas/index.ts';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
 import { type Brand, brand, type BrandAction } from './brand.ts';
 
@@ -43,5 +45,13 @@ describe('brand', () => {
         InferOutput<BrandAction<string, 'bar'>>
       >().not.toExtend<Output>();
     });
+  });
+
+  test('should infer correct type in pipe', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const schema = pipe(string(), brand('foo'), brand('bar'));
+    expectTypeOf<InferOutput<typeof schema>>().toEqualTypeOf<
+      string & Brand<'foo'> & Brand<'bar'>
+    >();
   });
 });
