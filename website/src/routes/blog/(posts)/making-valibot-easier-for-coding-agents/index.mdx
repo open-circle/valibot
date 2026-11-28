@@ -27,12 +27,13 @@ Add it to Claude Code with this:
 claude mcp add --transport http valibot https://valibot.dev/mcp
 ```
 
-For Cursor and other tools that use a JSON configuration file, add this entry:
+For Cursor, a project-level `.mcp.json` file of Claude Code and other tools that use a JSON configuration file, add this entry:
 
 ```json
 {
   "mcpServers": {
     "valibot": {
+      "type": "http",
       "url": "https://valibot.dev/mcp"
     }
   }

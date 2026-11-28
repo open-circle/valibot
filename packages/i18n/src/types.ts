@@ -111,6 +111,7 @@ export interface Language {
     multipleOf: ErrorMessage<BaseIssue<unknown>>;
     nanoid: ErrorMessage<BaseIssue<unknown>>;
     nonEmpty: ErrorMessage<BaseIssue<unknown>>;
+    nonTrimmed: ErrorMessage<BaseIssue<unknown>>;
     notBytes: ErrorMessage<BaseIssue<unknown>>;
     notCodePoints: ErrorMessage<BaseIssue<unknown>>;
     notEntries: ErrorMessage<BaseIssue<unknown>>;
@@ -141,6 +142,7 @@ export interface Language {
     toDate: ErrorMessage<BaseIssue<unknown>>;
     toNumber: ErrorMessage<BaseIssue<unknown>>;
     toString: ErrorMessage<BaseIssue<unknown>>;
+    trimmed: ErrorMessage<BaseIssue<unknown>>;
     ulid: ErrorMessage<BaseIssue<unknown>>;
     url: ErrorMessage<BaseIssue<unknown>>;
     uuid: ErrorMessage<BaseIssue<unknown>>;

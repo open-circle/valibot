@@ -798,6 +798,16 @@
         "default": "./ar/nonEmpty.cjs"
       }
     },
+    "./ar/nonTrimmed": {
+      "import": {
+        "types": "./ar/nonTrimmed.d.mts",
+        "default": "./ar/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./ar/nonTrimmed.d.cts",
+        "default": "./ar/nonTrimmed.cjs"
+      }
+    },
     "./ar/notBytes": {
       "import": {
         "types": "./ar/notBytes.d.mts",
@@ -1096,6 +1106,16 @@
       "require": {
         "types": "./ar/toString.d.cts",
         "default": "./ar/toString.cjs"
+      }
+    },
+    "./ar/trimmed": {
+      "import": {
+        "types": "./ar/trimmed.d.mts",
+        "default": "./ar/trimmed.mjs"
+      },
+      "require": {
+        "types": "./ar/trimmed.d.cts",
+        "default": "./ar/trimmed.cjs"
       }
     },
     "./ar/ulid": {
@@ -1868,6 +1888,16 @@
         "default": "./az/nonEmpty.cjs"
       }
     },
+    "./az/nonTrimmed": {
+      "import": {
+        "types": "./az/nonTrimmed.d.mts",
+        "default": "./az/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./az/nonTrimmed.d.cts",
+        "default": "./az/nonTrimmed.cjs"
+      }
+    },
     "./az/notBytes": {
       "import": {
         "types": "./az/notBytes.d.mts",
@@ -2166,6 +2196,16 @@
       "require": {
         "types": "./az/toString.d.cts",
         "default": "./az/toString.cjs"
+      }
+    },
+    "./az/trimmed": {
+      "import": {
+        "types": "./az/trimmed.d.mts",
+        "default": "./az/trimmed.mjs"
+      },
+      "require": {
+        "types": "./az/trimmed.d.cts",
+        "default": "./az/trimmed.cjs"
       }
     },
     "./az/ulid": {
@@ -2938,6 +2978,16 @@
         "default": "./ca/nonEmpty.cjs"
       }
     },
+    "./ca/nonTrimmed": {
+      "import": {
+        "types": "./ca/nonTrimmed.d.mts",
+        "default": "./ca/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./ca/nonTrimmed.d.cts",
+        "default": "./ca/nonTrimmed.cjs"
+      }
+    },
     "./ca/notBytes": {
       "import": {
         "types": "./ca/notBytes.d.mts",
@@ -3236,6 +3286,16 @@
       "require": {
         "types": "./ca/toString.d.cts",
         "default": "./ca/toString.cjs"
+      }
+    },
+    "./ca/trimmed": {
+      "import": {
+        "types": "./ca/trimmed.d.mts",
+        "default": "./ca/trimmed.mjs"
+      },
+      "require": {
+        "types": "./ca/trimmed.d.cts",
+        "default": "./ca/trimmed.cjs"
       }
     },
     "./ca/ulid": {
@@ -4008,6 +4068,16 @@
         "default": "./cs/nonEmpty.cjs"
       }
     },
+    "./cs/nonTrimmed": {
+      "import": {
+        "types": "./cs/nonTrimmed.d.mts",
+        "default": "./cs/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./cs/nonTrimmed.d.cts",
+        "default": "./cs/nonTrimmed.cjs"
+      }
+    },
     "./cs/notBytes": {
       "import": {
         "types": "./cs/notBytes.d.mts",
@@ -4306,6 +4376,16 @@
       "require": {
         "types": "./cs/toString.d.cts",
         "default": "./cs/toString.cjs"
+      }
+    },
+    "./cs/trimmed": {
+      "import": {
+        "types": "./cs/trimmed.d.mts",
+        "default": "./cs/trimmed.mjs"
+      },
+      "require": {
+        "types": "./cs/trimmed.d.cts",
+        "default": "./cs/trimmed.cjs"
       }
     },
     "./cs/ulid": {
@@ -5078,6 +5158,16 @@
         "default": "./de/nonEmpty.cjs"
       }
     },
+    "./de/nonTrimmed": {
+      "import": {
+        "types": "./de/nonTrimmed.d.mts",
+        "default": "./de/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./de/nonTrimmed.d.cts",
+        "default": "./de/nonTrimmed.cjs"
+      }
+    },
     "./de/notBytes": {
       "import": {
         "types": "./de/notBytes.d.mts",
@@ -5376,6 +5466,16 @@
       "require": {
         "types": "./de/toString.d.cts",
         "default": "./de/toString.cjs"
+      }
+    },
+    "./de/trimmed": {
+      "import": {
+        "types": "./de/trimmed.d.mts",
+        "default": "./de/trimmed.mjs"
+      },
+      "require": {
+        "types": "./de/trimmed.d.cts",
+        "default": "./de/trimmed.cjs"
       }
     },
     "./de/ulid": {
@@ -6148,6 +6248,16 @@
         "default": "./el/nonEmpty.cjs"
       }
     },
+    "./el/nonTrimmed": {
+      "import": {
+        "types": "./el/nonTrimmed.d.mts",
+        "default": "./el/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./el/nonTrimmed.d.cts",
+        "default": "./el/nonTrimmed.cjs"
+      }
+    },
     "./el/notBytes": {
       "import": {
         "types": "./el/notBytes.d.mts",
@@ -6446,6 +6556,16 @@
       "require": {
         "types": "./el/toString.d.cts",
         "default": "./el/toString.cjs"
+      }
+    },
+    "./el/trimmed": {
+      "import": {
+        "types": "./el/trimmed.d.mts",
+        "default": "./el/trimmed.mjs"
+      },
+      "require": {
+        "types": "./el/trimmed.d.cts",
+        "default": "./el/trimmed.cjs"
       }
     },
     "./el/ulid": {
@@ -7218,6 +7338,16 @@
         "default": "./es/nonEmpty.cjs"
       }
     },
+    "./es/nonTrimmed": {
+      "import": {
+        "types": "./es/nonTrimmed.d.mts",
+        "default": "./es/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./es/nonTrimmed.d.cts",
+        "default": "./es/nonTrimmed.cjs"
+      }
+    },
     "./es/notBytes": {
       "import": {
         "types": "./es/notBytes.d.mts",
@@ -7516,6 +7646,16 @@
       "require": {
         "types": "./es/toString.d.cts",
         "default": "./es/toString.cjs"
+      }
+    },
+    "./es/trimmed": {
+      "import": {
+        "types": "./es/trimmed.d.mts",
+        "default": "./es/trimmed.mjs"
+      },
+      "require": {
+        "types": "./es/trimmed.d.cts",
+        "default": "./es/trimmed.cjs"
       }
     },
     "./es/ulid": {
@@ -8288,6 +8428,16 @@
         "default": "./fa/nonEmpty.cjs"
       }
     },
+    "./fa/nonTrimmed": {
+      "import": {
+        "types": "./fa/nonTrimmed.d.mts",
+        "default": "./fa/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./fa/nonTrimmed.d.cts",
+        "default": "./fa/nonTrimmed.cjs"
+      }
+    },
     "./fa/notBytes": {
       "import": {
         "types": "./fa/notBytes.d.mts",
@@ -8586,6 +8736,16 @@
       "require": {
         "types": "./fa/toString.d.cts",
         "default": "./fa/toString.cjs"
+      }
+    },
+    "./fa/trimmed": {
+      "import": {
+        "types": "./fa/trimmed.d.mts",
+        "default": "./fa/trimmed.mjs"
+      },
+      "require": {
+        "types": "./fa/trimmed.d.cts",
+        "default": "./fa/trimmed.cjs"
       }
     },
     "./fa/ulid": {
@@ -9358,6 +9518,16 @@
         "default": "./fi/nonEmpty.cjs"
       }
     },
+    "./fi/nonTrimmed": {
+      "import": {
+        "types": "./fi/nonTrimmed.d.mts",
+        "default": "./fi/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./fi/nonTrimmed.d.cts",
+        "default": "./fi/nonTrimmed.cjs"
+      }
+    },
     "./fi/notBytes": {
       "import": {
         "types": "./fi/notBytes.d.mts",
@@ -9656,6 +9826,16 @@
       "require": {
         "types": "./fi/toString.d.cts",
         "default": "./fi/toString.cjs"
+      }
+    },
+    "./fi/trimmed": {
+      "import": {
+        "types": "./fi/trimmed.d.mts",
+        "default": "./fi/trimmed.mjs"
+      },
+      "require": {
+        "types": "./fi/trimmed.d.cts",
+        "default": "./fi/trimmed.cjs"
       }
     },
     "./fi/ulid": {
@@ -10428,6 +10608,16 @@
         "default": "./fr/nonEmpty.cjs"
       }
     },
+    "./fr/nonTrimmed": {
+      "import": {
+        "types": "./fr/nonTrimmed.d.mts",
+        "default": "./fr/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./fr/nonTrimmed.d.cts",
+        "default": "./fr/nonTrimmed.cjs"
+      }
+    },
     "./fr/notBytes": {
       "import": {
         "types": "./fr/notBytes.d.mts",
@@ -10726,6 +10916,16 @@
       "require": {
         "types": "./fr/toString.d.cts",
         "default": "./fr/toString.cjs"
+      }
+    },
+    "./fr/trimmed": {
+      "import": {
+        "types": "./fr/trimmed.d.mts",
+        "default": "./fr/trimmed.mjs"
+      },
+      "require": {
+        "types": "./fr/trimmed.d.cts",
+        "default": "./fr/trimmed.cjs"
       }
     },
     "./fr/ulid": {
@@ -11498,6 +11698,16 @@
         "default": "./hu/nonEmpty.cjs"
       }
     },
+    "./hu/nonTrimmed": {
+      "import": {
+        "types": "./hu/nonTrimmed.d.mts",
+        "default": "./hu/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./hu/nonTrimmed.d.cts",
+        "default": "./hu/nonTrimmed.cjs"
+      }
+    },
     "./hu/notBytes": {
       "import": {
         "types": "./hu/notBytes.d.mts",
@@ -11796,6 +12006,16 @@
       "require": {
         "types": "./hu/toString.d.cts",
         "default": "./hu/toString.cjs"
+      }
+    },
+    "./hu/trimmed": {
+      "import": {
+        "types": "./hu/trimmed.d.mts",
+        "default": "./hu/trimmed.mjs"
+      },
+      "require": {
+        "types": "./hu/trimmed.d.cts",
+        "default": "./hu/trimmed.cjs"
       }
     },
     "./hu/ulid": {
@@ -12568,6 +12788,16 @@
         "default": "./id/nonEmpty.cjs"
       }
     },
+    "./id/nonTrimmed": {
+      "import": {
+        "types": "./id/nonTrimmed.d.mts",
+        "default": "./id/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./id/nonTrimmed.d.cts",
+        "default": "./id/nonTrimmed.cjs"
+      }
+    },
     "./id/notBytes": {
       "import": {
         "types": "./id/notBytes.d.mts",
@@ -12866,6 +13096,16 @@
       "require": {
         "types": "./id/toString.d.cts",
         "default": "./id/toString.cjs"
+      }
+    },
+    "./id/trimmed": {
+      "import": {
+        "types": "./id/trimmed.d.mts",
+        "default": "./id/trimmed.mjs"
+      },
+      "require": {
+        "types": "./id/trimmed.d.cts",
+        "default": "./id/trimmed.cjs"
       }
     },
     "./id/ulid": {
@@ -13638,6 +13878,16 @@
         "default": "./it/nonEmpty.cjs"
       }
     },
+    "./it/nonTrimmed": {
+      "import": {
+        "types": "./it/nonTrimmed.d.mts",
+        "default": "./it/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./it/nonTrimmed.d.cts",
+        "default": "./it/nonTrimmed.cjs"
+      }
+    },
     "./it/notBytes": {
       "import": {
         "types": "./it/notBytes.d.mts",
@@ -13936,6 +14186,16 @@
       "require": {
         "types": "./it/toString.d.cts",
         "default": "./it/toString.cjs"
+      }
+    },
+    "./it/trimmed": {
+      "import": {
+        "types": "./it/trimmed.d.mts",
+        "default": "./it/trimmed.mjs"
+      },
+      "require": {
+        "types": "./it/trimmed.d.cts",
+        "default": "./it/trimmed.cjs"
       }
     },
     "./it/ulid": {
@@ -14708,6 +14968,16 @@
         "default": "./ja/nonEmpty.cjs"
       }
     },
+    "./ja/nonTrimmed": {
+      "import": {
+        "types": "./ja/nonTrimmed.d.mts",
+        "default": "./ja/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./ja/nonTrimmed.d.cts",
+        "default": "./ja/nonTrimmed.cjs"
+      }
+    },
     "./ja/notBytes": {
       "import": {
         "types": "./ja/notBytes.d.mts",
@@ -15006,6 +15276,16 @@
       "require": {
         "types": "./ja/toString.d.cts",
         "default": "./ja/toString.cjs"
+      }
+    },
+    "./ja/trimmed": {
+      "import": {
+        "types": "./ja/trimmed.d.mts",
+        "default": "./ja/trimmed.mjs"
+      },
+      "require": {
+        "types": "./ja/trimmed.d.cts",
+        "default": "./ja/trimmed.cjs"
       }
     },
     "./ja/ulid": {
@@ -15778,6 +16058,16 @@
         "default": "./ko/nonEmpty.cjs"
       }
     },
+    "./ko/nonTrimmed": {
+      "import": {
+        "types": "./ko/nonTrimmed.d.mts",
+        "default": "./ko/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./ko/nonTrimmed.d.cts",
+        "default": "./ko/nonTrimmed.cjs"
+      }
+    },
     "./ko/notBytes": {
       "import": {
         "types": "./ko/notBytes.d.mts",
@@ -16076,6 +16366,16 @@
       "require": {
         "types": "./ko/toString.d.cts",
         "default": "./ko/toString.cjs"
+      }
+    },
+    "./ko/trimmed": {
+      "import": {
+        "types": "./ko/trimmed.d.mts",
+        "default": "./ko/trimmed.mjs"
+      },
+      "require": {
+        "types": "./ko/trimmed.d.cts",
+        "default": "./ko/trimmed.cjs"
       }
     },
     "./ko/ulid": {
@@ -16848,6 +17148,16 @@
         "default": "./kr/nonEmpty.cjs"
       }
     },
+    "./kr/nonTrimmed": {
+      "import": {
+        "types": "./kr/nonTrimmed.d.mts",
+        "default": "./kr/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./kr/nonTrimmed.d.cts",
+        "default": "./kr/nonTrimmed.cjs"
+      }
+    },
     "./kr/notBytes": {
       "import": {
         "types": "./kr/notBytes.d.mts",
@@ -17146,6 +17456,16 @@
       "require": {
         "types": "./kr/toString.d.cts",
         "default": "./kr/toString.cjs"
+      }
+    },
+    "./kr/trimmed": {
+      "import": {
+        "types": "./kr/trimmed.d.mts",
+        "default": "./kr/trimmed.mjs"
+      },
+      "require": {
+        "types": "./kr/trimmed.d.cts",
+        "default": "./kr/trimmed.cjs"
       }
     },
     "./kr/ulid": {
@@ -17918,6 +18238,16 @@
         "default": "./mn/nonEmpty.cjs"
       }
     },
+    "./mn/nonTrimmed": {
+      "import": {
+        "types": "./mn/nonTrimmed.d.mts",
+        "default": "./mn/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./mn/nonTrimmed.d.cts",
+        "default": "./mn/nonTrimmed.cjs"
+      }
+    },
     "./mn/notBytes": {
       "import": {
         "types": "./mn/notBytes.d.mts",
@@ -18216,6 +18546,16 @@
       "require": {
         "types": "./mn/toString.d.cts",
         "default": "./mn/toString.cjs"
+      }
+    },
+    "./mn/trimmed": {
+      "import": {
+        "types": "./mn/trimmed.d.mts",
+        "default": "./mn/trimmed.mjs"
+      },
+      "require": {
+        "types": "./mn/trimmed.d.cts",
+        "default": "./mn/trimmed.cjs"
       }
     },
     "./mn/ulid": {
@@ -18988,6 +19328,16 @@
         "default": "./nb/nonEmpty.cjs"
       }
     },
+    "./nb/nonTrimmed": {
+      "import": {
+        "types": "./nb/nonTrimmed.d.mts",
+        "default": "./nb/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./nb/nonTrimmed.d.cts",
+        "default": "./nb/nonTrimmed.cjs"
+      }
+    },
     "./nb/notBytes": {
       "import": {
         "types": "./nb/notBytes.d.mts",
@@ -19286,6 +19636,16 @@
       "require": {
         "types": "./nb/toString.d.cts",
         "default": "./nb/toString.cjs"
+      }
+    },
+    "./nb/trimmed": {
+      "import": {
+        "types": "./nb/trimmed.d.mts",
+        "default": "./nb/trimmed.mjs"
+      },
+      "require": {
+        "types": "./nb/trimmed.d.cts",
+        "default": "./nb/trimmed.cjs"
       }
     },
     "./nb/ulid": {
@@ -20058,6 +20418,16 @@
         "default": "./nl/nonEmpty.cjs"
       }
     },
+    "./nl/nonTrimmed": {
+      "import": {
+        "types": "./nl/nonTrimmed.d.mts",
+        "default": "./nl/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./nl/nonTrimmed.d.cts",
+        "default": "./nl/nonTrimmed.cjs"
+      }
+    },
     "./nl/notBytes": {
       "import": {
         "types": "./nl/notBytes.d.mts",
@@ -20356,6 +20726,16 @@
       "require": {
         "types": "./nl/toString.d.cts",
         "default": "./nl/toString.cjs"
+      }
+    },
+    "./nl/trimmed": {
+      "import": {
+        "types": "./nl/trimmed.d.mts",
+        "default": "./nl/trimmed.mjs"
+      },
+      "require": {
+        "types": "./nl/trimmed.d.cts",
+        "default": "./nl/trimmed.cjs"
       }
     },
     "./nl/ulid": {
@@ -21128,6 +21508,16 @@
         "default": "./nn/nonEmpty.cjs"
       }
     },
+    "./nn/nonTrimmed": {
+      "import": {
+        "types": "./nn/nonTrimmed.d.mts",
+        "default": "./nn/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./nn/nonTrimmed.d.cts",
+        "default": "./nn/nonTrimmed.cjs"
+      }
+    },
     "./nn/notBytes": {
       "import": {
         "types": "./nn/notBytes.d.mts",
@@ -21426,6 +21816,16 @@
       "require": {
         "types": "./nn/toString.d.cts",
         "default": "./nn/toString.cjs"
+      }
+    },
+    "./nn/trimmed": {
+      "import": {
+        "types": "./nn/trimmed.d.mts",
+        "default": "./nn/trimmed.mjs"
+      },
+      "require": {
+        "types": "./nn/trimmed.d.cts",
+        "default": "./nn/trimmed.cjs"
       }
     },
     "./nn/ulid": {
@@ -22198,6 +22598,16 @@
         "default": "./pl/nonEmpty.cjs"
       }
     },
+    "./pl/nonTrimmed": {
+      "import": {
+        "types": "./pl/nonTrimmed.d.mts",
+        "default": "./pl/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./pl/nonTrimmed.d.cts",
+        "default": "./pl/nonTrimmed.cjs"
+      }
+    },
     "./pl/notBytes": {
       "import": {
         "types": "./pl/notBytes.d.mts",
@@ -22496,6 +22906,16 @@
       "require": {
         "types": "./pl/toString.d.cts",
         "default": "./pl/toString.cjs"
+      }
+    },
+    "./pl/trimmed": {
+      "import": {
+        "types": "./pl/trimmed.d.mts",
+        "default": "./pl/trimmed.mjs"
+      },
+      "require": {
+        "types": "./pl/trimmed.d.cts",
+        "default": "./pl/trimmed.cjs"
       }
     },
     "./pl/ulid": {
@@ -23268,6 +23688,16 @@
         "default": "./pt/nonEmpty.cjs"
       }
     },
+    "./pt/nonTrimmed": {
+      "import": {
+        "types": "./pt/nonTrimmed.d.mts",
+        "default": "./pt/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./pt/nonTrimmed.d.cts",
+        "default": "./pt/nonTrimmed.cjs"
+      }
+    },
     "./pt/notBytes": {
       "import": {
         "types": "./pt/notBytes.d.mts",
@@ -23566,6 +23996,16 @@
       "require": {
         "types": "./pt/toString.d.cts",
         "default": "./pt/toString.cjs"
+      }
+    },
+    "./pt/trimmed": {
+      "import": {
+        "types": "./pt/trimmed.d.mts",
+        "default": "./pt/trimmed.mjs"
+      },
+      "require": {
+        "types": "./pt/trimmed.d.cts",
+        "default": "./pt/trimmed.cjs"
       }
     },
     "./pt/ulid": {
@@ -24338,6 +24778,16 @@
         "default": "./ro/nonEmpty.cjs"
       }
     },
+    "./ro/nonTrimmed": {
+      "import": {
+        "types": "./ro/nonTrimmed.d.mts",
+        "default": "./ro/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./ro/nonTrimmed.d.cts",
+        "default": "./ro/nonTrimmed.cjs"
+      }
+    },
     "./ro/notBytes": {
       "import": {
         "types": "./ro/notBytes.d.mts",
@@ -24636,6 +25086,16 @@
       "require": {
         "types": "./ro/toString.d.cts",
         "default": "./ro/toString.cjs"
+      }
+    },
+    "./ro/trimmed": {
+      "import": {
+        "types": "./ro/trimmed.d.mts",
+        "default": "./ro/trimmed.mjs"
+      },
+      "require": {
+        "types": "./ro/trimmed.d.cts",
+        "default": "./ro/trimmed.cjs"
       }
     },
     "./ro/ulid": {
@@ -25408,6 +25868,16 @@
         "default": "./ru/nonEmpty.cjs"
       }
     },
+    "./ru/nonTrimmed": {
+      "import": {
+        "types": "./ru/nonTrimmed.d.mts",
+        "default": "./ru/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./ru/nonTrimmed.d.cts",
+        "default": "./ru/nonTrimmed.cjs"
+      }
+    },
     "./ru/notBytes": {
       "import": {
         "types": "./ru/notBytes.d.mts",
@@ -25706,6 +26176,16 @@
       "require": {
         "types": "./ru/toString.d.cts",
         "default": "./ru/toString.cjs"
+      }
+    },
+    "./ru/trimmed": {
+      "import": {
+        "types": "./ru/trimmed.d.mts",
+        "default": "./ru/trimmed.mjs"
+      },
+      "require": {
+        "types": "./ru/trimmed.d.cts",
+        "default": "./ru/trimmed.cjs"
       }
     },
     "./ru/ulid": {
@@ -26478,6 +26958,16 @@
         "default": "./rw/nonEmpty.cjs"
       }
     },
+    "./rw/nonTrimmed": {
+      "import": {
+        "types": "./rw/nonTrimmed.d.mts",
+        "default": "./rw/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./rw/nonTrimmed.d.cts",
+        "default": "./rw/nonTrimmed.cjs"
+      }
+    },
     "./rw/notBytes": {
       "import": {
         "types": "./rw/notBytes.d.mts",
@@ -26776,6 +27266,16 @@
       "require": {
         "types": "./rw/toString.d.cts",
         "default": "./rw/toString.cjs"
+      }
+    },
+    "./rw/trimmed": {
+      "import": {
+        "types": "./rw/trimmed.d.mts",
+        "default": "./rw/trimmed.mjs"
+      },
+      "require": {
+        "types": "./rw/trimmed.d.cts",
+        "default": "./rw/trimmed.cjs"
       }
     },
     "./rw/ulid": {
@@ -27548,6 +28048,16 @@
         "default": "./sk/nonEmpty.cjs"
       }
     },
+    "./sk/nonTrimmed": {
+      "import": {
+        "types": "./sk/nonTrimmed.d.mts",
+        "default": "./sk/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./sk/nonTrimmed.d.cts",
+        "default": "./sk/nonTrimmed.cjs"
+      }
+    },
     "./sk/notBytes": {
       "import": {
         "types": "./sk/notBytes.d.mts",
@@ -27846,6 +28356,16 @@
       "require": {
         "types": "./sk/toString.d.cts",
         "default": "./sk/toString.cjs"
+      }
+    },
+    "./sk/trimmed": {
+      "import": {
+        "types": "./sk/trimmed.d.mts",
+        "default": "./sk/trimmed.mjs"
+      },
+      "require": {
+        "types": "./sk/trimmed.d.cts",
+        "default": "./sk/trimmed.cjs"
       }
     },
     "./sk/ulid": {
@@ -28618,6 +29138,16 @@
         "default": "./sl/nonEmpty.cjs"
       }
     },
+    "./sl/nonTrimmed": {
+      "import": {
+        "types": "./sl/nonTrimmed.d.mts",
+        "default": "./sl/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./sl/nonTrimmed.d.cts",
+        "default": "./sl/nonTrimmed.cjs"
+      }
+    },
     "./sl/notBytes": {
       "import": {
         "types": "./sl/notBytes.d.mts",
@@ -28916,6 +29446,16 @@
       "require": {
         "types": "./sl/toString.d.cts",
         "default": "./sl/toString.cjs"
+      }
+    },
+    "./sl/trimmed": {
+      "import": {
+        "types": "./sl/trimmed.d.mts",
+        "default": "./sl/trimmed.mjs"
+      },
+      "require": {
+        "types": "./sl/trimmed.d.cts",
+        "default": "./sl/trimmed.cjs"
       }
     },
     "./sl/ulid": {
@@ -29688,6 +30228,16 @@
         "default": "./sv/nonEmpty.cjs"
       }
     },
+    "./sv/nonTrimmed": {
+      "import": {
+        "types": "./sv/nonTrimmed.d.mts",
+        "default": "./sv/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./sv/nonTrimmed.d.cts",
+        "default": "./sv/nonTrimmed.cjs"
+      }
+    },
     "./sv/notBytes": {
       "import": {
         "types": "./sv/notBytes.d.mts",
@@ -29986,6 +30536,16 @@
       "require": {
         "types": "./sv/toString.d.cts",
         "default": "./sv/toString.cjs"
+      }
+    },
+    "./sv/trimmed": {
+      "import": {
+        "types": "./sv/trimmed.d.mts",
+        "default": "./sv/trimmed.mjs"
+      },
+      "require": {
+        "types": "./sv/trimmed.d.cts",
+        "default": "./sv/trimmed.cjs"
       }
     },
     "./sv/ulid": {
@@ -30758,6 +31318,16 @@
         "default": "./tr/nonEmpty.cjs"
       }
     },
+    "./tr/nonTrimmed": {
+      "import": {
+        "types": "./tr/nonTrimmed.d.mts",
+        "default": "./tr/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./tr/nonTrimmed.d.cts",
+        "default": "./tr/nonTrimmed.cjs"
+      }
+    },
     "./tr/notBytes": {
       "import": {
         "types": "./tr/notBytes.d.mts",
@@ -31056,6 +31626,16 @@
       "require": {
         "types": "./tr/toString.d.cts",
         "default": "./tr/toString.cjs"
+      }
+    },
+    "./tr/trimmed": {
+      "import": {
+        "types": "./tr/trimmed.d.mts",
+        "default": "./tr/trimmed.mjs"
+      },
+      "require": {
+        "types": "./tr/trimmed.d.cts",
+        "default": "./tr/trimmed.cjs"
       }
     },
     "./tr/ulid": {
@@ -31828,6 +32408,16 @@
         "default": "./uk/nonEmpty.cjs"
       }
     },
+    "./uk/nonTrimmed": {
+      "import": {
+        "types": "./uk/nonTrimmed.d.mts",
+        "default": "./uk/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./uk/nonTrimmed.d.cts",
+        "default": "./uk/nonTrimmed.cjs"
+      }
+    },
     "./uk/notBytes": {
       "import": {
         "types": "./uk/notBytes.d.mts",
@@ -32126,6 +32716,16 @@
       "require": {
         "types": "./uk/toString.d.cts",
         "default": "./uk/toString.cjs"
+      }
+    },
+    "./uk/trimmed": {
+      "import": {
+        "types": "./uk/trimmed.d.mts",
+        "default": "./uk/trimmed.mjs"
+      },
+      "require": {
+        "types": "./uk/trimmed.d.cts",
+        "default": "./uk/trimmed.cjs"
       }
     },
     "./uk/ulid": {
@@ -32898,6 +33498,16 @@
         "default": "./uz/nonEmpty.cjs"
       }
     },
+    "./uz/nonTrimmed": {
+      "import": {
+        "types": "./uz/nonTrimmed.d.mts",
+        "default": "./uz/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./uz/nonTrimmed.d.cts",
+        "default": "./uz/nonTrimmed.cjs"
+      }
+    },
     "./uz/notBytes": {
       "import": {
         "types": "./uz/notBytes.d.mts",
@@ -33196,6 +33806,16 @@
       "require": {
         "types": "./uz/toString.d.cts",
         "default": "./uz/toString.cjs"
+      }
+    },
+    "./uz/trimmed": {
+      "import": {
+        "types": "./uz/trimmed.d.mts",
+        "default": "./uz/trimmed.mjs"
+      },
+      "require": {
+        "types": "./uz/trimmed.d.cts",
+        "default": "./uz/trimmed.cjs"
       }
     },
     "./uz/ulid": {
@@ -33968,6 +34588,16 @@
         "default": "./vi/nonEmpty.cjs"
       }
     },
+    "./vi/nonTrimmed": {
+      "import": {
+        "types": "./vi/nonTrimmed.d.mts",
+        "default": "./vi/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./vi/nonTrimmed.d.cts",
+        "default": "./vi/nonTrimmed.cjs"
+      }
+    },
     "./vi/notBytes": {
       "import": {
         "types": "./vi/notBytes.d.mts",
@@ -34266,6 +34896,16 @@
       "require": {
         "types": "./vi/toString.d.cts",
         "default": "./vi/toString.cjs"
+      }
+    },
+    "./vi/trimmed": {
+      "import": {
+        "types": "./vi/trimmed.d.mts",
+        "default": "./vi/trimmed.mjs"
+      },
+      "require": {
+        "types": "./vi/trimmed.d.cts",
+        "default": "./vi/trimmed.cjs"
       }
     },
     "./vi/ulid": {
@@ -35038,6 +35678,16 @@
         "default": "./zh-CN/nonEmpty.cjs"
       }
     },
+    "./zh-CN/nonTrimmed": {
+      "import": {
+        "types": "./zh-CN/nonTrimmed.d.mts",
+        "default": "./zh-CN/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./zh-CN/nonTrimmed.d.cts",
+        "default": "./zh-CN/nonTrimmed.cjs"
+      }
+    },
     "./zh-CN/notBytes": {
       "import": {
         "types": "./zh-CN/notBytes.d.mts",
@@ -35336,6 +35986,16 @@
       "require": {
         "types": "./zh-CN/toString.d.cts",
         "default": "./zh-CN/toString.cjs"
+      }
+    },
+    "./zh-CN/trimmed": {
+      "import": {
+        "types": "./zh-CN/trimmed.d.mts",
+        "default": "./zh-CN/trimmed.mjs"
+      },
+      "require": {
+        "types": "./zh-CN/trimmed.d.cts",
+        "default": "./zh-CN/trimmed.cjs"
       }
     },
     "./zh-CN/ulid": {
@@ -36108,6 +36768,16 @@
         "default": "./zh-TW/nonEmpty.cjs"
       }
     },
+    "./zh-TW/nonTrimmed": {
+      "import": {
+        "types": "./zh-TW/nonTrimmed.d.mts",
+        "default": "./zh-TW/nonTrimmed.mjs"
+      },
+      "require": {
+        "types": "./zh-TW/nonTrimmed.d.cts",
+        "default": "./zh-TW/nonTrimmed.cjs"
+      }
+    },
     "./zh-TW/notBytes": {
       "import": {
         "types": "./zh-TW/notBytes.d.mts",
@@ -36406,6 +37076,16 @@
       "require": {
         "types": "./zh-TW/toString.d.cts",
         "default": "./zh-TW/toString.cjs"
+      }
+    },
+    "./zh-TW/trimmed": {
+      "import": {
+        "types": "./zh-TW/trimmed.d.mts",
+        "default": "./zh-TW/trimmed.mjs"
+      },
+      "require": {
+        "types": "./zh-TW/trimmed.d.cts",
+        "default": "./zh-TW/trimmed.cjs"
       }
     },
     "./zh-TW/ulid": {

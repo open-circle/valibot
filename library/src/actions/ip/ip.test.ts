@@ -81,6 +81,9 @@ describe('ip', () => {
         'FE80:0000:0000:0000:0202:B3FF:FE1E:8329',
         'fe80::1ff:fe23:4567:890a',
         '2001:db8:85a3:8d3:1319:8a2e:370:7348',
+        'fe80::1%eth0',
+        'FE80::1%ETH0',
+        '::FFFF:192.0.2.128',
       ]);
     });
   });
@@ -120,6 +123,14 @@ describe('ip', () => {
         '54cb::473f:d516:0.255.256.22',
         '54cb::473f:d516:192.168.1',
         'test:test:test:test:test:test:test:test',
+      ]);
+    });
+
+    test('for non ASCII chars', () => {
+      expectActionIssue(action, baseIssue, [
+        'fe80::1%é',
+        'fe80::1%\u017F', // U+017F LATIN SMALL LETTER LONG S
+        'fe80::1%\u212A', // U+212A KELVIN SIGN
       ]);
     });
   });

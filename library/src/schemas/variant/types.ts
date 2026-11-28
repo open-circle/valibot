@@ -7,29 +7,7 @@ import type {
   MaybeReadonly,
   ObjectEntries,
   ObjectEntriesAsync,
-  OptionalEntrySchema,
-  OptionalEntrySchemaAsync,
 } from '../../types/index.ts';
-import type {
-  LooseObjectIssue,
-  LooseObjectSchema,
-  LooseObjectSchemaAsync,
-} from '../looseObject/index.ts';
-import type {
-  ObjectIssue,
-  ObjectSchema,
-  ObjectSchemaAsync,
-} from '../object/index.ts';
-import type {
-  ObjectWithRestIssue,
-  ObjectWithRestSchema,
-  ObjectWithRestSchemaAsync,
-} from '../objectWithRest/index.ts';
-import type {
-  StrictObjectIssue,
-  StrictObjectSchema,
-  StrictObjectSchemaAsync,
-} from '../strictObject/index.ts';
 import type { variant } from './variant.ts';
 import type { variantAsync } from './variantAsync.ts';
 
@@ -77,70 +55,91 @@ export interface VariantOptionSchemaAsync<TKey extends string>
 
 /**
  * Variant object entries type.
+ *
+ * Hint: Optional schemas are not listed separately for the discriminator key,
+ * because they are assignable to the base schema type and listing them forces
+ * TypeScript to measure their variance, which is expensive (see issue #1663).
  */
 type VariantObjectEntries<TKey extends string> = Record<
   TKey,
-  BaseSchema<unknown, unknown, BaseIssue<unknown>> | OptionalEntrySchema
+  BaseSchema<unknown, unknown, BaseIssue<unknown>>
 > &
   ObjectEntries;
 
 /**
  * Variant object entries async type.
+ *
+ * Hint: Optional schemas are not listed separately for the discriminator key,
+ * because they are assignable to the base schema types and listing them forces
+ * TypeScript to measure their variance, which is expensive (see issue #1663).
  */
 type VariantObjectEntriesAsync<TKey extends string> = Record<
   TKey,
   | BaseSchema<unknown, unknown, BaseIssue<unknown>>
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
-  | OptionalEntrySchema
-  | OptionalEntrySchemaAsync
 > &
   ObjectEntriesAsync;
+
+/**
+ * Variant object option interface.
+ *
+ * Hint: We use a structural interface instead of the object schema interfaces,
+ * because relating an object schema to another instantiation of the same
+ * interface forces TypeScript to measure its variance, which is expensive
+ * (see issue #1663).
+ */
+interface VariantObjectOption<TKey extends string>
+  extends BaseSchema<unknown, unknown, BaseIssue<unknown>> {
+  /**
+   * The schema type.
+   */
+  readonly type:
+    | 'loose_object'
+    | 'object'
+    | 'object_with_rest'
+    | 'strict_object';
+  /**
+   * The entries schema.
+   */
+  readonly entries: VariantObjectEntries<TKey>;
+}
+
+/**
+ * Variant object option async interface.
+ *
+ * Hint: We use a structural interface instead of the object schema interfaces,
+ * because relating an object schema to another instantiation of the same
+ * interface forces TypeScript to measure its variance, which is expensive
+ * (see issue #1663).
+ */
+interface VariantObjectOptionAsync<TKey extends string>
+  extends BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>> {
+  /**
+   * The schema type.
+   */
+  readonly type:
+    | 'loose_object'
+    | 'object'
+    | 'object_with_rest'
+    | 'strict_object';
+  /**
+   * The entries schema.
+   */
+  readonly entries: VariantObjectEntriesAsync<TKey>;
+}
 
 /**
  * Variant option type.
  */
 type VariantOption<TKey extends string> =
-  | LooseObjectSchema<
-      VariantObjectEntries<TKey>,
-      ErrorMessage<LooseObjectIssue> | undefined
-    >
-  | ObjectSchema<
-      VariantObjectEntries<TKey>,
-      ErrorMessage<ObjectIssue> | undefined
-    >
-  | ObjectWithRestSchema<
-      VariantObjectEntries<TKey>,
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  | StrictObjectSchema<
-      VariantObjectEntries<TKey>,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
+  | VariantObjectOption<TKey>
   | VariantOptionSchema<TKey>;
 
 /**
  * Variant option async type.
  */
 type VariantOptionAsync<TKey extends string> =
-  | LooseObjectSchemaAsync<
-      VariantObjectEntriesAsync<TKey>,
-      ErrorMessage<LooseObjectIssue> | undefined
-    >
-  | ObjectSchemaAsync<
-      VariantObjectEntriesAsync<TKey>,
-      ErrorMessage<ObjectIssue> | undefined
-    >
-  | ObjectWithRestSchemaAsync<
-      VariantObjectEntriesAsync<TKey>,
-      | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-      | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  | StrictObjectSchemaAsync<
-      VariantObjectEntriesAsync<TKey>,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
+  | VariantObjectOptionAsync<TKey>
   | VariantOptionSchemaAsync<TKey>;
 
 /**
