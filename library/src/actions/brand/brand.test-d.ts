@@ -47,22 +47,11 @@ describe('brand', () => {
     });
   });
 
-  describe('should combine multiple brands', () => {
+  test('should infer correct type in pipe', () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const schema = pipe(string(), brand('foo'), brand('bar'));
-    type Output = InferOutput<typeof schema>;
-
-    test('should not be never', () => {
-      expectTypeOf<Output>().not.toBeNever();
-    });
-
-    test('should match each brand', () => {
-      expectTypeOf<Output>().toExtend<string & Brand<'foo'>>();
-      expectTypeOf<Output>().toExtend<string & Brand<'bar'>>();
-    });
-
-    test('should not match single brand', () => {
-      expectTypeOf<string & Brand<'foo'>>().not.toExtend<Output>();
-    });
+    expectTypeOf<InferOutput<typeof schema>>().toEqualTypeOf<
+      string & Brand<'foo'> & Brand<'bar'>
+    >();
   });
 });
