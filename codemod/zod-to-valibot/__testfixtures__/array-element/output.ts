@@ -9,3 +9,5 @@ const Schema6 = v.pipe(v.array(v.number()).item, v.minValue(2));
 const Schema7 = v.array(v.number());
 const Schema8 = v.pipe(Schema7.item, v.maxValue(3));
 const Schema9 = v.pipe(Schema7, v.minLength(1));
+const Schema10 = v.pipe(v.array(v.array(v.number())).item.item, v.minValue(2));
+const Schema11 = v.pipe(v.array(v.array(v.number())).item, v.minLength(2));

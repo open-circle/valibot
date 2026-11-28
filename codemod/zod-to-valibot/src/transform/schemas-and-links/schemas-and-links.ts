@@ -471,12 +471,20 @@ function toValiTypeExp(
   }
 }
 
+/**
+ * Schema type and bigint usage of the items of an array.
+ */
+type ItemSchemaType = readonly [
+  schemaType: ZodSchemaType | null,
+  useBigInt: boolean,
+];
+
 function transformSchemasAndLinksHelper(
   root: j.Collection<unknown>,
   valibotIdentifier: string,
   identifier: string,
   schemaType: ZodSchemaType | null,
-  itemSchemaType: ZodSchemaType | null = null
+  itemSchemaTypes: readonly ItemSchemaType[] = []
 ) {
   const relevantExps = [
     ...root
@@ -518,8 +526,7 @@ function transformSchemasAndLinksHelper(
     let coerce = false;
     let useBigInt = false;
     let curSchemaType = schemaType;
-    let curItemSchemaType = itemSchemaType;
-    let itemUseBigInt = false;
+    let curItemSchemaTypes = itemSchemaTypes;
     let cur: UnknownPath = relevantExp;
     let rootExp:
       | j.ASTPath<j.CallExpression>
@@ -551,10 +558,11 @@ function transformSchemasAndLinksHelper(
           );
           // Restore the schema type of the item when it is accessed (e.g.
           // `z.number().array().element.min(1)`)
-          if (propertyName === 'element' && curItemSchemaType !== null) {
-            curSchemaType = curItemSchemaType;
-            useBigInt = itemUseBigInt;
-            curItemSchemaType = null;
+          const itemSchemaType =
+            curItemSchemaTypes[curItemSchemaTypes.length - 1];
+          if (propertyName === 'element' && itemSchemaType) {
+            [curSchemaType, useBigInt] = itemSchemaType;
+            curItemSchemaTypes = curItemSchemaTypes.slice(0, -1);
           }
         } else if (!isCallExp(cur.parentPath)) {
           // unknown property name
@@ -639,8 +647,10 @@ function transformSchemasAndLinksHelper(
         // Update the schema type so that following validators and links are
         // converted (e.g. `z.partial(Schema).array().min(1)`)
         if (propertyName === 'array') {
-          curItemSchemaType = curSchemaType;
-          itemUseBigInt = useBigInt;
+          curItemSchemaTypes = [
+            ...curItemSchemaTypes,
+            [curSchemaType, useBigInt],
+          ];
           curSchemaType = 'length';
           useBigInt = false;
         } else if (isStaticNamespaceCall) {
@@ -693,7 +703,7 @@ function transformSchemasAndLinksHelper(
           valibotIdentifier,
           nxtPath.parentPath.value.id.name,
           curSchemaType,
-          curItemSchemaType
+          curItemSchemaTypes
         );
       }
     }

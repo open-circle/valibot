@@ -9,3 +9,5 @@ const Schema6 = z.number().array().element.min(2);
 const Schema7 = z.number().array();
 const Schema8 = Schema7.element.max(3);
 const Schema9 = Schema7.min(1);
+const Schema10 = z.number().array().array().element.element.min(2);
+const Schema11 = z.number().array().array().element.min(2);
