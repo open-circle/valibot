@@ -267,7 +267,6 @@ describe('convertSchema', () => {
       expect(
         convertSchema(
           {},
-          // @ts-expect-error
           v.pipe(v.string(), v.nonEmpty(), v.parseBoolean(), v.value(true)),
           { typeMode: 'input' },
           createContext()
@@ -282,7 +281,6 @@ describe('convertSchema', () => {
       expect(
         convertSchema(
           {},
-          // @ts-expect-error
           v.pipe(
             v.array(v.string()),
             v.minLength(1),
