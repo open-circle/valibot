@@ -2,6 +2,7 @@ import j from 'jscodeshift';
 import { assertNever, getIsTypeFn } from '../../utils';
 import {
   ZOD_METHODS,
+  ZOD_PARSE_METHODS,
   ZOD_PROPERTIES,
   ZOD_SCHEMA_TO_TYPE,
   ZOD_SCHEMAS,
@@ -471,11 +472,20 @@ function toValiTypeExp(
   }
 }
 
+/**
+ * Schema type and bigint usage of the items of an array.
+ */
+type ItemSchemaType = readonly [
+  schemaType: ZodSchemaType | null,
+  useBigInt: boolean,
+];
+
 function transformSchemasAndLinksHelper(
   root: j.Collection<unknown>,
   valibotIdentifier: string,
   identifier: string,
-  schemaType: ZodSchemaType | null
+  schemaType: ZodSchemaType | null,
+  itemSchemaTypes: readonly ItemSchemaType[] = []
 ) {
   const relevantExps = [
     ...root
@@ -517,6 +527,7 @@ function transformSchemasAndLinksHelper(
     let coerce = false;
     let useBigInt = false;
     let curSchemaType = schemaType;
+    let curItemSchemaTypes = itemSchemaTypes;
     let cur: UnknownPath = relevantExp;
     let rootExp:
       | j.ASTPath<j.CallExpression>
@@ -546,6 +557,14 @@ function transformSchemasAndLinksHelper(
             transformedExp ?? j.identifier(identifier),
             propertyName
           );
+          // Restore the schema type of the item when it is accessed (e.g.
+          // `z.number().array().element.min(1)`)
+          const itemSchemaType =
+            curItemSchemaTypes[curItemSchemaTypes.length - 1];
+          if (propertyName === 'element' && itemSchemaType) {
+            [curSchemaType, useBigInt] = itemSchemaType;
+            curItemSchemaTypes = curItemSchemaTypes.slice(0, -1);
+          }
         } else if (!isCallExp(cur.parentPath)) {
           // unknown property name
           transformLinks = false;
@@ -566,7 +585,13 @@ function transformSchemasAndLinksHelper(
         break;
       }
       const propertyName = cur.value.callee.property.name;
-      if (curSchemaType === null && isZodSchemaName(propertyName)) {
+      if (
+        curSchemaType === null &&
+        // a schema name that follows another call or property (e.g.
+        // `z.partial(Schema).optional()`) is a method and not a new schema
+        transformedExp === null &&
+        isZodSchemaName(propertyName)
+      ) {
         curSchemaType = ZOD_SCHEMA_TO_TYPE[propertyName];
         useBigInt = propertyName === 'bigint';
 
@@ -596,6 +621,15 @@ function transformSchemasAndLinksHelper(
           cur.value.callee.object.type === 'Identifier' &&
           cur.value.callee.object.name === valibotIdentifier &&
           cur.value.arguments.length > 0;
+        if (
+          isStaticNamespaceCall &&
+          cur.value.arguments[0].type === 'SpreadElement'
+        ) {
+          // the schema can't be extracted from a spread argument
+          // it's not safe to transform the chain
+          transformLinks = false;
+          break;
+        }
         const schemaExp = isStaticNamespaceCall
           ? (cur.value.arguments[0] as
               | j.CallExpression
@@ -611,6 +645,22 @@ function transformSchemasAndLinksHelper(
           schemaExp,
           methodArgs
         );
+        // Update the schema type so that following validators and links are
+        // converted (e.g. `z.partial(Schema).array().min(1)`)
+        if (propertyName === 'array') {
+          curItemSchemaTypes = [
+            ...curItemSchemaTypes,
+            [curSchemaType, useBigInt],
+          ];
+          curSchemaType = 'length';
+          useBigInt = false;
+        } else if (
+          isStaticNamespaceCall &&
+          // the result of a parse method is not a schema
+          !ZOD_PARSE_METHODS.includes(propertyName)
+        ) {
+          curSchemaType = 'none';
+        }
       } else if (isZodValidatorName(propertyName)) {
         if (curSchemaType === null) {
           // validators can only be applied to parsed schemas
@@ -657,7 +707,8 @@ function transformSchemasAndLinksHelper(
           root,
           valibotIdentifier,
           nxtPath.parentPath.value.id.name,
-          curSchemaType
+          curSchemaType,
+          curItemSchemaTypes
         );
       }
     }
