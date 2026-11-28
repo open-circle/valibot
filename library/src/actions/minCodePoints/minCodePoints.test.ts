@@ -110,7 +110,8 @@ describe('minCodePoints', () => {
     test('without counting if the lower code point bound meets the requirement', () => {
       const codePointAtSpy = vi.spyOn(String.prototype, 'codePointAt');
       try {
-        minCodePoints(2)['~run']({ typed: true, value: '😀😀' }, {});
+        expectNoActionIssue(minCodePoints(2), ['😀😀']);
+        expectNoActionIssue(minCodePoints(5), ['😀😀😀😀a']);
         expect(codePointAtSpy).not.toHaveBeenCalled();
       } finally {
         codePointAtSpy.mockRestore();

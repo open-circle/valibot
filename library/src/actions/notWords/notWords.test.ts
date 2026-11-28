@@ -116,5 +116,20 @@ describe('notWords', () => {
         (value) => `${_getWordCount('en', value)}`
       );
     });
+
+    test.each([
+      [0, ''],
+      [1, 'a'],
+    ] as const)(
+      'when the word count and UTF-16 length both equal %i',
+      (requirement, value) => {
+        expectActionIssue(
+          notWords('en', requirement, 'message'),
+          { ...baseIssue, requirement, expected: `!${requirement}` },
+          [value],
+          () => String(requirement)
+        );
+      }
+    );
   });
 });
