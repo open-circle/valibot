@@ -11,6 +11,7 @@ permissions:
 concurrency:
   group: publish
   cancel-in-progress: false
+  queue: max
 
 jobs:
   default_ci:
@@ -111,11 +112,17 @@ jobs:
           path: artifact
 
       - name: Stage ${{ matrix.package }}
+        working-directory: artifact
         shell: bash
         run: |
-          set -euo pipefail
-          cd artifact
-          npm stage publish --ignore-scripts
+          version=$(jq -er '.version' package.json)
+          published_at=$(npm view . "time[$version]")
+
+          if [[ -n "$published_at" ]]; then
+            echo "Version $version was already published on $published_at"
+          else
+            npm stage publish --ignore-scripts
+          fi
 
   # ────────────────────────────────────────────────────────────────────────────
   # JSR
