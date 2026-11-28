@@ -77,4 +77,65 @@ describe('pipe', () => {
       >();
     });
   });
+
+  describe('should infer correct types of more than ten items', () => {
+    const schema = pipe(
+      string(),
+      description('text'),
+      trim(),
+      minLength(1),
+      decimal(),
+      transform(parseInt),
+      number(),
+      minValue(100),
+      transform((input) => input.toFixed()),
+      string(),
+      minLength(2),
+      transform((input) => input.length),
+      minValue(1)
+    );
+    type Schema = typeof schema;
+
+    test('of schema', () => {
+      expectTypeOf(schema).toEqualTypeOf<
+        SchemaWithPipe<
+          readonly [
+            StringSchema<undefined>,
+            DescriptionAction<string, 'text'>,
+            TrimAction,
+            MinLengthAction<string, 1, undefined>,
+            DecimalAction<string, undefined>,
+            TransformAction<string, number>,
+            NumberSchema<undefined>,
+            MinValueAction<number, 100, undefined>,
+            TransformAction<number, string>,
+            StringSchema<undefined>,
+            MinLengthAction<string, 2, undefined>,
+            TransformAction<string, number>,
+            MinValueAction<number, 1, undefined>,
+          ]
+        >
+      >();
+    });
+
+    test('of input', () => {
+      expectTypeOf<InferInput<Schema>>().toEqualTypeOf<string>();
+    });
+
+    test('of output', () => {
+      expectTypeOf<InferOutput<Schema>>().toEqualTypeOf<number>();
+    });
+
+    test('of issue', () => {
+      expectTypeOf<InferIssue<Schema>>().toEqualTypeOf<
+        | StringIssue
+        | MinLengthIssue<string, 1>
+        | DecimalIssue<string>
+        | NumberIssue
+        | MinValueIssue<number, 100>
+        | MinLengthIssue<string, 2>
+        | MinValueIssue<number, 1>
+      >();
+    });
+  });
 });
