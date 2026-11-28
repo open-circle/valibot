@@ -100,6 +100,11 @@ export function pipeAsync<
     | PipeItemAsync<InferOutput<TSchema>, unknown, BaseIssue<unknown>>,
 >(
   schema: TSchema,
+  // Hint: The `PipeAction` type only provides the contextual type that lets
+  // generic actions infer their input. Its output and issue are intentionally
+  // `unknown` and `BaseIssue<unknown>` instead of the inferred types of the
+  // item, because referencing the item type forces TypeScript to instantiate
+  // the union again for every inference step (see issue #1663).
   item1:
     | TItem1
     | PipeAction<InferOutput<TSchema>, unknown, BaseIssue<unknown>>
