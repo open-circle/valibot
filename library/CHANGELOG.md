@@ -13,6 +13,7 @@ All notable changes to the library will be documented in this file.
 - Change internal `OptionalInputKeys` and `OptionalOutputKeys` types to detect optional entries structurally to improve TypeScript performance (pull request #1667)
 - Change internal `VariantOption` and `VariantOptionAsync` types of `variant` schema to use a structural object option type to improve TypeScript performance (pull request #1670)
 - Change `isbn`, `creditCard` and `imei` actions to check digits by character code instead of splitting and parsing the input to improve performance (pull request #1634)
+- Change `bytes`, `maxBytes`, `minBytes` and `notBytes` actions to count bytes with `TextEncoder.encodeInto` and a reused buffer instead of allocating a new byte array on every validation to improve performance (pull request #1661)
 - Fix `uuid` action to reject UUIDs with a version outside 1 to 8 or a variant outside RFC 9562, while still accepting the Nil and Max UUIDs (pull request #1643)
 - Fix `toCamelCase`, `toKebabCase`, `toPascalCase` and `toSnakeCase` actions to detect case boundaries at supplementary-plane letters (pull request #1659)
 - Fix `checkItems` and `checkItemsAsync` actions to stop adding issues after the first invalid item when `abortEarly` is enabled (pull request #1702)
