@@ -263,6 +263,40 @@ describe('convertSchema', () => {
       });
     });
 
+    test('should stop input conversion before parse boolean action', () => {
+      expect(
+        convertSchema(
+          {},
+          v.pipe(v.string(), v.nonEmpty(), v.parseBoolean(), v.value(true)),
+          { typeMode: 'input' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'string',
+        minLength: 1,
+      });
+    });
+
+    test('should stop input conversion before map items action', () => {
+      expect(
+        convertSchema(
+          {},
+          v.pipe(
+            v.array(v.string()),
+            v.minLength(1),
+            v.mapItems(Number),
+            v.maxLength(5)
+          ),
+          { typeMode: 'input' },
+          createContext()
+        )
+      ).toStrictEqual({
+        type: 'array',
+        items: { type: 'string' },
+        minItems: 1,
+      });
+    });
+
     test('should convert only output type of pipeline', () => {
       expect(
         convertSchema(

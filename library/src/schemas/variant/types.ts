@@ -7,8 +7,6 @@ import type {
   MaybeReadonly,
   ObjectEntries,
   ObjectEntriesAsync,
-  OptionalEntrySchema,
-  OptionalEntrySchemaAsync,
 } from '../../types/index.ts';
 import type { variant } from './variant.ts';
 import type { variantAsync } from './variantAsync.ts';
@@ -57,22 +55,28 @@ export interface VariantOptionSchemaAsync<TKey extends string>
 
 /**
  * Variant object entries type.
+ *
+ * Hint: Optional schemas are not listed separately for the discriminator key,
+ * because they are assignable to the base schema type and listing them forces
+ * TypeScript to measure their variance, which is expensive (see issue #1663).
  */
 type VariantObjectEntries<TKey extends string> = Record<
   TKey,
-  BaseSchema<unknown, unknown, BaseIssue<unknown>> | OptionalEntrySchema
+  BaseSchema<unknown, unknown, BaseIssue<unknown>>
 > &
   ObjectEntries;
 
 /**
  * Variant object entries async type.
+ *
+ * Hint: Optional schemas are not listed separately for the discriminator key,
+ * because they are assignable to the base schema types and listing them forces
+ * TypeScript to measure their variance, which is expensive (see issue #1663).
  */
 type VariantObjectEntriesAsync<TKey extends string> = Record<
   TKey,
   | BaseSchema<unknown, unknown, BaseIssue<unknown>>
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
-  | OptionalEntrySchema
-  | OptionalEntrySchemaAsync
 > &
   ObjectEntriesAsync;
 
