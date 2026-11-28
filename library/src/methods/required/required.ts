@@ -1,15 +1,7 @@
 import {
-  type LooseObjectIssue,
-  type LooseObjectSchema,
   nonOptional,
   type NonOptionalIssue,
   type NonOptionalSchema,
-  type ObjectIssue,
-  type ObjectSchema,
-  type ObjectWithRestIssue,
-  type ObjectWithRestSchema,
-  type StrictObjectIssue,
-  type StrictObjectSchema,
 } from '../../schemas/index.ts';
 import type {
   BaseIssue,
@@ -32,19 +24,29 @@ import { _standardSchema } from '../../utils/index.ts';
 
 /**
  * Schema type.
+ *
+ * Hint: We describe the object schemas structurally instead of using their
+ * interfaces, because relating an object schema to another instantiation of
+ * the same interface forces TypeScript to measure its variance, which is
+ * expensive (see issue #1663).
  */
 type Schema = SchemaWithoutPipe<
-  | LooseObjectSchema<ObjectEntries, ErrorMessage<LooseObjectIssue> | undefined>
-  | ObjectSchema<ObjectEntries, ErrorMessage<ObjectIssue> | undefined>
-  | ObjectWithRestSchema<
-      ObjectEntries,
-      BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-      ErrorMessage<ObjectWithRestIssue> | undefined
-    >
-  | StrictObjectSchema<
-      ObjectEntries,
-      ErrorMessage<StrictObjectIssue> | undefined
-    >
+  BaseSchema<unknown, unknown, BaseIssue<unknown>> &
+    (
+      | {
+          readonly type: 'object' | 'strict_object';
+          readonly entries: ObjectEntries;
+        }
+      | {
+          readonly type: 'loose_object';
+          readonly entries: ObjectEntries;
+        }
+      | {
+          readonly type: 'object_with_rest';
+          readonly entries: ObjectEntries;
+          readonly rest: BaseSchema<unknown, unknown, BaseIssue<unknown>>;
+        }
+    )
 >;
 
 /**
@@ -352,6 +354,7 @@ export function required(
   }
 
   // Return modified copy of schema
+  // @ts-expect-error
   return _standardSchema({
     ...schema,
     entries,

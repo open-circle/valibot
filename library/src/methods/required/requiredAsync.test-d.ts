@@ -6,8 +6,10 @@ import {
   nullishAsync,
   number,
   type NumberIssue,
+  object,
   objectAsync,
   type ObjectIssue,
+  objectWithRest,
   objectWithRestAsync,
   type ObjectWithRestIssue,
   optional,
@@ -28,6 +30,13 @@ describe('requiredAsync', () => {
     key3: optionalAsync(string()),
     key4: nullishAsync(number(), async () => 123),
   };
+
+  test('should not accept sync object schemas', () => {
+    // @ts-expect-error
+    requiredAsync(object({ key: string() }));
+    // @ts-expect-error
+    requiredAsync(objectWithRest({ key: string() }, boolean()));
+  });
 
   describe('objectAsync', () => {
     const wrapped = objectAsync(entries);
