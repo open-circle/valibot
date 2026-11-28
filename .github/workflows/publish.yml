@@ -15,7 +15,11 @@ concurrency:
 jobs:
   default_ci:
     name: Run default CI of repository
-    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+      # Required by the reusable workflow's PR preview job, even when skipped.
+      pull-requests: write
+    uses: $/.github/workflows/ci.yml
 
   build:
     name: Build and upload release artifacts
@@ -30,7 +34,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
 
       - name: Build i18n npm
         run: pnpm build.npm

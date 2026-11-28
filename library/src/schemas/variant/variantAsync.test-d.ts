@@ -1,7 +1,10 @@
 import { describe, expectTypeOf, test } from 'vitest';
 import type { InferInput, InferIssue, InferOutput } from '../../types/index.ts';
+import { exactOptionalAsync } from '../exactOptional/index.ts';
 import { literal, type LiteralIssue } from '../literal/index.ts';
-import { object } from '../object/object.ts';
+import { nullishAsync } from '../nullish/index.ts';
+import { object, objectAsync } from '../object/index.ts';
+import { optionalAsync } from '../optional/index.ts';
 import {
   strictObjectAsync,
   type StrictObjectIssue,
@@ -58,6 +61,32 @@ describe('variantAsync', () => {
     test('of issue', () => {
       expectTypeOf<InferIssue<Schema>>().toEqualTypeOf<
         VariantIssue | StrictObjectIssue | LiteralIssue
+      >();
+    });
+  });
+
+  describe('should infer correct types of optional discriminators', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const schema = variantAsync(key, [
+      objectAsync({ type: optionalAsync(literal('foo')) }),
+      objectAsync({ type: exactOptionalAsync(literal('bar')) }),
+      objectAsync({ type: nullishAsync(literal('baz')) }),
+    ]);
+    type Schema = typeof schema;
+
+    test('of input', () => {
+      expectTypeOf<InferInput<Schema>>().toEqualTypeOf<
+        | { type?: 'foo' | undefined }
+        | { type?: 'bar' }
+        | { type?: 'baz' | null | undefined }
+      >();
+    });
+
+    test('of output', () => {
+      expectTypeOf<InferOutput<Schema>>().toEqualTypeOf<
+        | { type?: 'foo' | undefined }
+        | { type?: 'bar' }
+        | { type?: 'baz' | null | undefined }
       >();
     });
   });

@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type {
   InferNonNullishInput,
   InferNonNullishIssue,
@@ -77,7 +77,7 @@ export function nonNullish(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<NonNullishIssue> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'non_nullish',
     reference: nonNullish,
@@ -85,9 +85,6 @@ export function nonNullish(
     async: false,
     wrapped,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       // If value is not `null` and `undefined`, run wrapped schema
       if (!(dataset.value === null || dataset.value === undefined)) {
@@ -104,5 +101,5 @@ export function nonNullish(
       // @ts-expect-error
       return dataset as OutputDataset<unknown, BaseIssue<unknown>>;
     },
-  };
+  });
 }

@@ -1,11 +1,11 @@
-import type { OutputDataset } from '../../types/index.ts';
 import type {
   BaseIssue,
   BaseSchema,
   InferIssue,
   InferOutput,
+  OutputDataset,
 } from '../../types/index.ts';
-import { _cloneDataset, _getStandardProps } from '../../utils/index.ts';
+import { _cloneDataset, _standardSchema } from '../../utils/index.ts';
 import { _LruCache } from './_LruCache.ts';
 import type { Cache, CacheConfig } from './types.ts';
 
@@ -33,10 +33,12 @@ export type SchemaWithCache<
 /**
  * Caches the output of a schema.
  *
- * Hint: Primitive inputs are cached by value. Object and function inputs are
- * cached by reference identity, so mutating input objects and reusing the same
- * reference can return a stale cached dataset. Returned objects are also
- * reused by reference, so mutating cached output can affect later cache hits.
+ * Hint: Primitive inputs are cached by value, except for Symbols, which all
+ * share a single cache key, so a cache hit can return the output of a different
+ * Symbol. Object and function inputs are cached by reference identity, so
+ * mutating input objects and reusing the same reference can return a stale
+ * cached dataset. Returned objects are also reused by reference, so mutating
+ * cached output can affect later cache hits.
  *
  * @param schema The schema to cache.
  *
@@ -51,10 +53,12 @@ export function cache<
 /**
  * Caches the output of a schema.
  *
- * Hint: Primitive inputs are cached by value. Object and function inputs are
- * cached by reference identity, so mutating input objects and reusing the same
- * reference can return a stale cached dataset. Returned objects are also
- * reused by reference, so mutating cached output can affect later cache hits.
+ * Hint: Primitive inputs are cached by value, except for Symbols, which all
+ * share a single cache key, so a cache hit can return the output of a different
+ * Symbol. Object and function inputs are cached by reference identity, so
+ * mutating input objects and reusing the same reference can return a stale
+ * cached dataset. Returned objects are also reused by reference, so mutating
+ * cached output can affect later cache hits.
  *
  * @param schema The schema to cache.
  * @param config The cache config.
@@ -79,13 +83,10 @@ export function cache(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   CacheConfig | undefined
 > {
-  return {
+  return _standardSchema({
     ...schema,
     cacheConfig: config,
     cache: new _LruCache(config),
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, runConfig) {
       const key = this.cache.key(dataset.value, runConfig);
       let outputDataset = this.cache.get(key);
@@ -99,5 +100,5 @@ export function cache(
       // do not mutate the cached dataset wrapper or issues array.
       return _cloneDataset(outputDataset);
     },
-  };
+  });
 }

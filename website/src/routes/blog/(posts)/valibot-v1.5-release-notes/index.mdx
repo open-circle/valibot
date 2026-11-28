@@ -1,0 +1,161 @@
+---
+cover: Valibot v1.5
+title: 'Valibot v1.5: Faster schema construction, Unicode code points, and stricter validation'
+description: >-
+  Valibot v1.5 makes schema construction significantly faster, adds four actions
+  for counting Unicode code points, a KSUID validator, and it tightens
+  validation for email addresses, ULIDs, and object schemas.
+published: 2026-09-10
+authors:
+  - fabian-hiller
+  - flySewa
+---
+
+import { Link } from '~/components';
+import SchemaConstructionDark from './schema-construction-dark.webp?jsx';
+import SchemaConstructionLight from './schema-construction-light.webp?jsx';
+
+Valibot v1.5 is here with a major improvement to schema construction speed, new ways to measure strings, a new identifier format, and tighter validation across several actions and schemas.
+
+Huge thanks to [@tats-u](https://github.com/tats-u), [@idleberg](https://github.com/idleberg), [@mahirhir](https://github.com/mahirhir), [@MaxFreedomPollard](https://github.com/MaxFreedomPollard), [@yslpn](https://github.com/yslpn), [@francisjohnjohnston-web](https://github.com/francisjohnjohnston-web), [@LeSingh1](https://github.com/LeSingh1), [@ItzXynx](https://github.com/ItzXynx), [@spokodev](https://github.com/spokodev), [@sanjibani](https://github.com/sanjibani), [@ysknsid25](https://github.com/ysknsid25), and [@cyyynthia](https://github.com/cyyynthia) for their code contributions, bug reports, reviews, and helpful discussions.
+
+## What's new
+
+- Schema construction is around 21 times faster, cutting the time applications spend getting ready when they start up.
+- Four new actions count Unicode code points, giving you more control over how string length is measured.
+- A new `ksuid` action validates KSUIDs, alongside the existing `uuid`, `ulid`, `cuid2`, and `nanoid` actions.
+- Validation is stricter for `email`, `ulid`, and several object schemas. Some values that passed in v1.4.2 will now be rejected.
+
+## Faster schema construction
+
+Schemas defined at module scope are constructed when their modules are evaluated, so applications with many schemas can spend more time building them during startup.
+
+Valibot schemas expose Standard Schema properties so they can be used interchangeably with other validation libraries. In v1.4.2, each schema exposed those properties through a getter that built them on first access and cached them in a `WeakMap`. Every subsequent access called the getter again and looked up the cached properties, and the cache grew as more schemas were accessed. Valibot v1.5 attaches the properties directly when each schema is created, removing both the getter and the `WeakMap` lookup.
+
+The difference is especially noticeable on a fresh start, where reducing the time spent on each schema reduces the amount of work the application has to finish before it can respond. Open Circle's Schema Benchmarks show the effect clearly, with the initialization benchmark dropping from about 57 µs in v1.4.2 to about 2.7 µs in v1.5.0.
+
+For comparison, the same benchmark puts Zod 4.5 at about 208 µs for the same schema, compared with 2.7 µs for Valibot. That makes Valibot's schema construction roughly 77 times faster than Zod's in this benchmark.
+
+<SchemaConstructionDark
+  alt="Schema construction time: Zod 4.5 takes 208 µs and Valibot 1.5 takes 2.7 µs. Less is better."
+  class="hidden dark:block"
+/>
+<SchemaConstructionLight
+  alt="Schema construction time: Zod 4.5 takes 208 µs and Valibot 1.5 takes 2.7 µs. Less is better."
+  class="dark:hidden"
+/>
+
+## Unicode-aware string length validation
+
+A character limit can behave differently from what your users expect.
+
+Imagine a bio field with a 160-character limit. A user filling it with ordinary letters can use 160 characters. Add emoji, and the field can reach that limit much earlier. An emoji such as 😀 takes two UTF-16 code units, even though a user sees it as one character.
+
+That's because JavaScript's `String.length` counts UTF-16 code units:
+
+```ts
+'😀'.length; // 2
+```
+
+Valibot's <Link href="/api/maxLength/">`maxLength`</Link> follows that behavior. A schema using `maxLength(1)` therefore rejects the emoji:
+
+```ts
+import * as v from 'valibot';
+
+v.parse(v.pipe(v.string(), v.maxLength(1)), '😀'); // throws
+```
+
+Valibot v1.5 adds four actions for cases where counting UTF-16 code units isn't what you need: <Link href="/api/codePoints/">`codePoints`</Link>, <Link href="/api/minCodePoints/">`minCodePoints`</Link>, <Link href="/api/maxCodePoints/">`maxCodePoints`</Link>, and <Link href="/api/notCodePoints/">`notCodePoints`</Link>.
+
+With `maxCodePoints`, the same value counts as one code point:
+
+```ts
+import * as v from 'valibot';
+
+v.parse(v.pipe(v.string(), v.maxCodePoints(1)), '😀'); // ok
+```
+
+You can now choose between three different ways of measuring a string. `maxLength` counts UTF-16 code units, `maxCodePoints` counts Unicode code points, and <Link href="/api/maxGraphemes/">`maxGraphemes`</Link> counts grapheme clusters, which are closer to what people see as a single character. Grapheme clusters can also contain sequences joined by zero-width joiners.
+
+For example, a 160-code-point limit can be expressed as:
+
+```ts
+import * as v from 'valibot';
+
+const BioSchema = v.pipe(v.string(), v.maxCodePoints(160));
+```
+
+The right choice depends on what the limit represents. Code points are useful when your application needs to match a limit defined elsewhere, such as a database column or an API that counts characters by code point. Grapheme clusters are a better fit when the limit is meant to reflect what a person sees as a character.
+
+## KSUID validation
+
+Identifiers often need to do more than distinguish one record from another. If you need to retrieve records in creation order, a random identifier doesn't give you that information. You generally need another field, such as a timestamp, to establish when each record was created.
+
+KSUIDs put a timestamp into the identifier itself. They are 27-character Base62 identifiers that sort chronologically, giving you an identifier that also provides rough creation order.
+
+Valibot v1.5 adds a <Link href="/api/ksuid/">`ksuid`</Link> action for validating them:
+
+```ts
+import * as v from 'valibot';
+
+const EventSchema = v.object({
+  id: v.pipe(v.string(), v.ksuid()),
+});
+
+v.parse(EventSchema, {
+  id: '2QqLbLpvOAKz0LhZKO6PtdrKAxs',
+}); // ok
+```
+
+The new action joins Valibot's existing <Link href="/api/uuid/">`uuid`</Link>, `ulid`, <Link href="/api/cuid2/">`cuid2`</Link>, and <Link href="/api/nanoid/">`nanoid`</Link> actions, giving you another option when your application uses KSUIDs for identifiers.
+
+## Stricter email and ULID validation
+
+Some values that passed validation in v1.4.2 no longer pass in v1.5. These changes address cases where the validators accepted values outside the formats they are intended to validate.
+
+### Email
+
+The <Link href="/api/email/">`email`</Link> action previously used a case-insensitive regular expression. Unicode case folding meant that some non-ASCII characters could match ASCII character ranges.
+
+For example, the Kelvin sign (`K`, U+212A) can fold to `k`, while the long s (`ſ`, U+017F) can fold to `s`. An address containing either character could therefore pass the previous check.
+
+Valibot v1.5 removes the `i` flag and matches both cases explicitly instead:
+
+```ts
+import * as v from 'valibot';
+
+const EmailSchema = v.pipe(v.string(), v.email());
+
+v.parse(EmailSchema, 'Email@Example.COM'); // still ok
+v.parse(EmailSchema, 'K@example.com'); // now throws
+v.parse(EmailSchema, 'email@ſ.com'); // now throws
+```
+
+Ordinary mixed-case email addresses continue to work. The change matters for existing data that was accepted under the previous behavior, because those addresses can now fail validation.
+
+### ULID
+
+The <Link href="/api/ulid/">`ulid`</Link> action had a separate issue at the upper end of the allowed range. ULIDs use a 128-bit value, but the previous validation allowed values above the maximum range defined by the specification.
+
+Valibot v1.5 restricts the first character to `0` through `7`, matching the ULID specification and preventing values outside the valid range from passing.
+
+## Compatibility fixes
+
+A few other changes address edge cases that could produce surprising results in existing applications.
+
+- The <Link href="/api/literal/">`literal`</Link> schema and <Link href="/api/value/">`value`</Link>, <Link href="/api/values/">`values`</Link>, <Link href="/api/notValue/">`notValue`</Link>, and <Link href="/api/notValues/">`notValues`</Link> now treat `NaN` as equal to itself by using `SameValueZero`. The <Link href="/api/intersect/">`intersect`</Link> schema follows the same rule, which allows it to merge matching `NaN` values as well as invalid dates correctly.
+- The <Link href="/api/cache/">`cache`</Link> and <Link href="/api/cacheAsync/">`cacheAsync`</Link> methods now clone issues from the cached dataset. Previously, a parent schema could append a path item to the same issue object on every cache hit, causing error paths to grow each time the cached result was reused.
+- The <Link href="/api/strictObject/">`strictObject`</Link>, <Link href="/api/looseObject/">`looseObject`</Link>, and <Link href="/api/objectWithRest/">`objectWithRest`</Link> schemas, including their async variants, handle unknown input keys that collide with members of `Object.prototype`, such as `toString` and `valueOf`. This changes validation behavior for some inputs that passed in v1.4.2 and can cause them to fail in v1.5.
+- The `intersect` and <Link href="/api/intersectAsync/">`intersectAsync`</Link> schemas also ignore inherited properties when merging objects.
+- For <Link href="/api/stringifyJson/">`stringifyJson`</Link>, the dataset value is preserved when `JSON.stringify` returns `undefined`, so the original value isn't lost in that case.
+- The <Link href="/api/url/">`url`</Link> action uses `URL.canParse` when the runtime provides it. This lets Valibot check whether a value can be parsed as a URL without constructing a `URL` object that it immediately discards.
+
+## What's next?
+
+Next, we are preparing a new minor release of `@valibot/to-json-schema` with support for `ksuid`, more flexible metadata handling, and fixes that improve the accuracy of generated JSON Schemas.
+
+We are also looking ahead to Valibot v1.6. The current roadmap includes easier recursive schemas, new validators for formats such as Base64url and cron expressions, and further performance improvements. We will share the final feature set as the release takes shape.
+
+If there is a validator, transformation, or guide you would like to see next, let us know on [Discord](https://discord.gg/w5mRTETqzv) or open a discussion on [GitHub](https://github.com/open-circle/valibot/discussions).
+
+New to Valibot? Check our [quick start guide](/guides/quick-start/). Coming from Zod? Check our [migration guide](/guides/migrate-from-zod/).

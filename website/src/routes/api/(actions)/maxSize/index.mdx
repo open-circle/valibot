@@ -57,7 +57,7 @@ Schema to validate a set with a maximum of 8 numbers.
 
 ```ts
 const SetSchema = v.pipe(
-  v.set(number()),
+  v.set(v.number()),
   v.maxSize(8, 'The set must not exceed 8 numbers.')
 );
 ```

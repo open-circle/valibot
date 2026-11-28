@@ -19,7 +19,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
 
   library_preview:
     name: Publish library via pkg.pr.new
@@ -35,7 +35,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Publish library
         run: pnpx pkg-pr-new publish --compact --comment=update --pnpm
         working-directory: library
@@ -50,7 +50,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Prettier check
         run: pnpm format.check
         working-directory: library
@@ -65,7 +65,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: ESLint check
         run: pnpm lint
         working-directory: library
@@ -80,7 +80,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Vitest tests
         run: pnpm test
         working-directory: library
@@ -95,7 +95,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Prettier check
         run: pnpm format.check
         working-directory: packages/to-json-schema
@@ -110,7 +110,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: ESLint check
         run: pnpm lint
         working-directory: packages/to-json-schema
@@ -125,7 +125,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Vitest tests
         run: pnpm test
         working-directory: packages/to-json-schema
@@ -140,7 +140,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Prettier check
         run: pnpm format.check
         working-directory: website
@@ -155,7 +155,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: ESLint check
         run: pnpm lint
         working-directory: website
@@ -170,7 +170,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Vitest tests
         run: pnpm test
         working-directory: codemod/zod-to-valibot

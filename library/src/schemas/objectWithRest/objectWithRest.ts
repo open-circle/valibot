@@ -16,8 +16,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _getStandardProps,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type { ObjectWithRestIssue } from './types.ts';
 
@@ -104,7 +104,7 @@ export function objectWithRest(
   BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ObjectWithRestIssue> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'object_with_rest',
     reference: objectWithRest,
@@ -113,9 +113,6 @@ export function objectWithRest(
     entries,
     rest,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
@@ -130,22 +127,22 @@ export function objectWithRest(
         // Process each object entry of schema
         for (const key in this.entries) {
           const valueSchema = this.entries[key];
+          const isKeyPresent = key in input;
 
           // If key is present or its an optional schema with a default value,
           // parse input of key or default value
           if (
-            key in input ||
+            isKeyPresent ||
             ((valueSchema.type === 'exact_optional' ||
               valueSchema.type === 'optional' ||
               valueSchema.type === 'nullish') &&
               // @ts-expect-error
               valueSchema.default !== undefined)
           ) {
-            const value: unknown =
-              key in input
-                ? // @ts-expect-error
-                  input[key]
-                : getDefault(valueSchema);
+            const value: unknown = isKeyPresent
+              ? // @ts-expect-error
+                input[key]
+              : getDefault(valueSchema);
             const valueDataset = valueSchema['~run']({ value }, config);
 
             // If there are issues, capture them
@@ -229,7 +226,10 @@ export function objectWithRest(
         // Hint: We exclude specific keys for security reasons
         if (!dataset.issues || !config.abortEarly) {
           for (const key in input) {
-            if (_isValidObjectKey(input, key) && !(key in this.entries)) {
+            if (
+              _isValidObjectKey(input, key) &&
+              !Object.prototype.hasOwnProperty.call(this.entries, key)
+            ) {
               const valueDataset = this.rest['~run'](
                 // @ts-expect-error
                 { value: input[key] },
@@ -297,5 +297,5 @@ export function objectWithRest(
         | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

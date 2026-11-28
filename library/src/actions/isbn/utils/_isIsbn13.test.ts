@@ -13,6 +13,7 @@ describe('_isIsbn13', () => {
   });
 
   test('should return false', () => {
+    expect(_isIsbn13('9780306406X57')).toBe(false);
     expect(_isIsbn13('9780306406158')).toBe(false);
     expect(_isIsbn13('9780451526534')).toBe(false);
     expect(_isIsbn13('9780007149682')).toBe(false);

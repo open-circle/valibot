@@ -8,7 +8,7 @@ import type {
   InferIssue,
   SuccessDataset,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 import type { nullable } from './nullable.ts';
 import type { InferNullableOutput } from './types.ts';
 
@@ -89,7 +89,7 @@ export function nullableAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   unknown
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'nullable',
     reference: nullableAsync,
@@ -97,9 +97,6 @@ export function nullableAsync(
     async: true,
     wrapped,
     default: default_,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     async '~run'(dataset, config) {
       // If value is `null`, override it with default or return dataset
       if (dataset.value === null) {
@@ -120,5 +117,5 @@ export function nullableAsync(
       // Otherwise, return dataset of wrapped schema
       return this.wrapped['~run'](dataset, config);
     },
-  };
+  });
 }

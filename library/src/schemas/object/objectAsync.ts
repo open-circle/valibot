@@ -10,7 +10,7 @@ import type {
   ObjectPathItem,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { object } from './object.ts';
 import type { ObjectIssue } from './types.ts';
 
@@ -89,7 +89,7 @@ export function objectAsync(
   ObjectEntriesAsync,
   ErrorMessage<ObjectIssue> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'object',
     reference: objectAsync,
@@ -97,9 +97,6 @@ export function objectAsync(
     async: true,
     entries,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
@@ -115,19 +112,19 @@ export function objectAsync(
         // parse input of key or default value asynchronously
         const valueDatasets = await Promise.all(
           Object.entries(this.entries).map(async ([key, valueSchema]) => {
+            const isKeyPresent = key in input;
             if (
-              key in input ||
+              isKeyPresent ||
               ((valueSchema.type === 'exact_optional' ||
                 valueSchema.type === 'optional' ||
                 valueSchema.type === 'nullish') &&
                 // @ts-expect-error
                 valueSchema.default !== undefined)
             ) {
-              const value: unknown =
-                key in input
-                  ? // @ts-expect-error
-                    input[key]
-                  : await getDefault(valueSchema);
+              const value: unknown = isKeyPresent
+                ? // @ts-expect-error
+                  input[key]
+                : await getDefault(valueSchema);
               return [
                 key,
                 value,
@@ -238,5 +235,5 @@ export function objectAsync(
         ObjectIssue | InferObjectIssue<ObjectEntriesAsync>
       >;
     },
-  };
+  });
 }
