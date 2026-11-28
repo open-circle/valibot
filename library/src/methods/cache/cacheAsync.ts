@@ -10,7 +10,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _cloneDataset, _getStandardProps } from '../../utils/index.ts';
+import { _cloneDataset, _standardSchema } from '../../utils/index.ts';
 import { _LruCache } from './_LruCache.ts';
 import type { Cache, CacheConfig } from './types.ts';
 
@@ -71,10 +71,12 @@ export type SchemaWithCacheAsync<
 /**
  * Caches the output of a schema.
  *
- * Hint: Primitive inputs are cached by value. Object and function inputs are
- * cached by reference identity, so mutating input objects and reusing the same
- * reference can return a stale cached dataset. Returned objects are also
- * reused by reference, so mutating cached output can affect later cache hits.
+ * Hint: Primitive inputs are cached by value, except for Symbols, which all
+ * share a single cache key, so a cache hit can return the output of a different
+ * Symbol. Object and function inputs are cached by reference identity, so
+ * mutating input objects and reusing the same reference can return a stale
+ * cached dataset. Returned objects are also reused by reference, so mutating
+ * cached output can affect later cache hits.
  *
  * @param schema The schema to cache.
  *
@@ -92,10 +94,12 @@ export function cacheAsync<
 /**
  * Caches the output of a schema.
  *
- * Hint: Primitive inputs are cached by value. Object and function inputs are
- * cached by reference identity, so mutating input objects and reusing the same
- * reference can return a stale cached dataset. Returned objects are also
- * reused by reference, so mutating cached output can affect later cache hits.
+ * Hint: Primitive inputs are cached by value, except for Symbols, which all
+ * share a single cache key, so a cache hit can return the output of a different
+ * Symbol. Object and function inputs are cached by reference identity, so
+ * mutating input objects and reusing the same reference can return a stale
+ * cached dataset. Returned objects are also reused by reference, so mutating
+ * cached output can affect later cache hits.
  *
  * @param schema The schema to cache.
  * @param config The cache config.
@@ -128,14 +132,11 @@ export function cacheAsync(
   let activeRuns:
     | Map<string, Promise<OutputDataset<unknown, BaseIssue<unknown>>>>
     | undefined;
-  return {
+  return _standardSchema({
     ...schema,
     async: true,
     cacheConfig: config,
     cache: new _LruCache(config),
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     async '~run'(dataset, runConfig) {
       // Create cache key based on input and config
       const key = this.cache.key(dataset.value, runConfig);
@@ -169,5 +170,5 @@ export function cacheAsync(
         activeRuns?.delete(key);
       }
     },
-  };
+  });
 }

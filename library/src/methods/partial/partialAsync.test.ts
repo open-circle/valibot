@@ -143,7 +143,7 @@ describe('partialAsync', () => {
     });
 
     describe('should return dataset with nested issues', () => {
-      test('if non-partialed keys are missing', async () => {
+      test('if required keys are missing', async () => {
         for (const input of [{}, { key1: 'foo', key3: 'bar' }]) {
           expect(await schema2['~run']({ value: input }, {})).toStrictEqual({
             typed: false,
@@ -302,7 +302,7 @@ describe('partialAsync', () => {
     });
 
     describe('should return dataset with nested issues', () => {
-      test('if non-partialed keys are missing', async () => {
+      test('if required keys are missing', async () => {
         for (const input of [{}, { key2: 123, key3: 'bar', other: true }]) {
           expect(await schema2['~run']({ value: input }, {})).toStrictEqual({
             typed: false,

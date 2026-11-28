@@ -9,7 +9,7 @@ import type {
   OutputDataset,
   TupleItems,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { TupleIssue } from './types.ts';
 
 /**
@@ -84,7 +84,7 @@ export function tuple(
   items: TupleItems,
   message?: ErrorMessage<TupleIssue>
 ): TupleSchema<TupleItems, ErrorMessage<TupleIssue> | undefined> {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'tuple',
     reference: tuple,
@@ -92,9 +92,6 @@ export function tuple(
     async: false,
     items,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
@@ -167,5 +164,5 @@ export function tuple(
         TupleIssue | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }

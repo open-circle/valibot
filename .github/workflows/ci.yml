@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
   workflow_call:
-    
+
 permissions:
   contents: read
 
@@ -16,8 +16,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
 
   library_preview:
     name: Publish library via pkg.pr.new
@@ -30,8 +32,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Publish library
         run: pnpx pkg-pr-new publish --compact --comment=update --pnpm
         working-directory: library
@@ -43,8 +47,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Prettier check
         run: pnpm format.check
         working-directory: library
@@ -56,8 +62,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: ESLint check
         run: pnpm lint
         working-directory: library
@@ -69,8 +77,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Vitest tests
         run: pnpm test
         working-directory: library
@@ -82,8 +92,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Prettier check
         run: pnpm format.check
         working-directory: packages/to-json-schema
@@ -95,8 +107,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: ESLint check
         run: pnpm lint
         working-directory: packages/to-json-schema
@@ -108,8 +122,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Vitest tests
         run: pnpm test
         working-directory: packages/to-json-schema
@@ -121,8 +137,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Prettier check
         run: pnpm format.check
         working-directory: website
@@ -134,8 +152,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: ESLint check
         run: pnpm lint
         working-directory: website
@@ -147,8 +167,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup environment
-        uses: ./.github/actions/environment
+        uses: $/.github/actions/environment
       - name: Vitest tests
         run: pnpm test
         working-directory: codemod/zod-to-valibot

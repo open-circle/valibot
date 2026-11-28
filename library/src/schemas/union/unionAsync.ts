@@ -14,8 +14,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _getStandardProps,
   _joinExpects,
+  _standardSchema,
   _subIssues,
 } from '../../utils/index.ts';
 import type { UnionIssue } from './types.ts';
@@ -96,7 +96,7 @@ export function unionAsync(
   UnionOptionsAsync,
   ErrorMessage<UnionIssue<BaseIssue<unknown>>> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'union',
     reference: unionAsync,
@@ -107,9 +107,6 @@ export function unionAsync(
     async: true,
     options,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     async '~run'(dataset, config) {
       // Create variables to collect datasets
       let validDataset: SuccessDataset<unknown> | undefined;
@@ -193,5 +190,5 @@ export function unionAsync(
       // @ts-expect-error
       return dataset as OutputDataset<unknown, BaseIssue<unknown>>;
     },
-  };
+  });
 }

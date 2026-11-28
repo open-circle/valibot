@@ -10,7 +10,7 @@ import type {
   ObjectPathItem,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 import type { StrictObjectIssue } from './types.ts';
 
 /**
@@ -78,7 +78,7 @@ export function strictObject(
   ObjectEntries,
   ErrorMessage<StrictObjectIssue> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'strict_object',
     reference: strictObject,
@@ -86,9 +86,6 @@ export function strictObject(
     async: false,
     entries,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
@@ -103,22 +100,22 @@ export function strictObject(
         // Process each object entry of schema
         for (const key in this.entries) {
           const valueSchema = this.entries[key];
+          const isKeyPresent = key in input;
 
           // If key is present or its an optional schema with a default value,
           // parse input of key or default value
           if (
-            key in input ||
+            isKeyPresent ||
             ((valueSchema.type === 'exact_optional' ||
               valueSchema.type === 'optional' ||
               valueSchema.type === 'nullish') &&
               // @ts-expect-error
               valueSchema.default !== undefined)
           ) {
-            const value: unknown =
-              key in input
-                ? // @ts-expect-error
-                  input[key]
-                : getDefault(valueSchema);
+            const value: unknown = isKeyPresent
+              ? // @ts-expect-error
+                input[key]
+              : getDefault(valueSchema);
             const valueDataset = valueSchema['~run']({ value }, config);
 
             // If there are issues, capture them
@@ -201,7 +198,7 @@ export function strictObject(
         // Check input for unknown keys if necessary
         if (!dataset.issues || !config.abortEarly) {
           for (const key in input) {
-            if (!(key in this.entries)) {
+            if (!Object.prototype.hasOwnProperty.call(this.entries, key)) {
               _addIssue(this, 'key', dataset, config, {
                 input: key,
                 expected: 'never',
@@ -239,5 +236,5 @@ export function strictObject(
         StrictObjectIssue | InferObjectIssue<ObjectEntries>
       >;
     },
-  };
+  });
 }

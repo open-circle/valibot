@@ -9,6 +9,21 @@
   "compatibility_date": "2026-06-16",
   // Worker that serves Markdown to AI agents via content negotiation
   "main": "./worker/index.ts",
+  "observability": {
+    "enabled": false,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+      "invocation_logs": true,
+    },
+    "traces": {
+      "enabled": true,
+      "persist": true,
+      "head_sampling_rate": 1,
+    },
+  },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

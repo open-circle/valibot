@@ -76,7 +76,7 @@ export interface JsonSchema {
   default?: JsonSchemaType | undefined;
   readOnly?: boolean | undefined;
   writeOnly?: boolean | undefined;
-  examples?: JsonSchemaType | undefined;
+  examples?: JsonSchemaType[] | undefined;
 }
 
 /**

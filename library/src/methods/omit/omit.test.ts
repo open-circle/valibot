@@ -112,6 +112,15 @@ describe('omit', () => {
         } satisfies FailureDataset<InferIssue<typeof schema>>);
       });
     });
+
+    test('should validate against the omitted entries via "~standard"', () => {
+      expect(
+        schema['~standard'].validate({ key2: 123, key4: 456 })
+      ).toMatchObject({ value: { key2: 123, key4: 456 } });
+      expect(
+        schema['~standard'].validate({ key1: 'foo', key2: 123, key4: 456 })
+      ).toMatchObject({ value: { key2: 123, key4: 456 } });
+    });
   });
 
   describe('objectWithRest', () => {

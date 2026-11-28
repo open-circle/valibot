@@ -16,10 +16,6 @@ runs:
         registry-url: 'https://registry.npmjs.org'
         cache: pnpm
 
-    - name: Setup npm
-      shell: bash
-      run: npm install --global npm@11.11.1
-
     - name: Setup Deno
       uses: denoland/setup-deno@667a34cdef165d8d2b2e98dde39547c9daac7282 # v2.0.4
       with:

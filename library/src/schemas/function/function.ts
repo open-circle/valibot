@@ -4,7 +4,7 @@ import type {
   ErrorMessage,
   OutputDataset,
 } from '../../types/index.ts';
-import { _addIssue, _getStandardProps } from '../../utils/index.ts';
+import { _addIssue, _standardSchema } from '../../utils/index.ts';
 
 /**
  * Function issue interface.
@@ -74,16 +74,13 @@ export function function_<
 export function function_(
   message?: ErrorMessage<FunctionIssue>
 ): FunctionSchema<ErrorMessage<FunctionIssue> | undefined> {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'function',
     reference: function_,
     expects: 'Function',
     async: false,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     '~run'(dataset, config) {
       if (typeof dataset.value === 'function') {
         // @ts-expect-error
@@ -97,7 +94,7 @@ export function function_(
         FunctionIssue
       >;
     },
-  };
+  });
 }
 
 export { function_ as function };

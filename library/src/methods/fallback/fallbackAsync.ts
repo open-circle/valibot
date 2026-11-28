@@ -12,7 +12,7 @@ import type {
   StandardProps,
   UnknownDataset,
 } from '../../types/index.ts';
-import { _getStandardProps } from '../../utils/index.ts';
+import { _standardSchema } from '../../utils/index.ts';
 import { getFallback } from '../getFallback/index.ts';
 
 /**
@@ -79,7 +79,6 @@ export type SchemaWithFallbackAsync<
  *
  * @returns The passed schema.
  */
-// @__NO_SIDE_EFFECTS__
 export function fallbackAsync<
   const TSchema extends
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
@@ -88,14 +87,23 @@ export function fallbackAsync<
 >(
   schema: TSchema,
   fallback: TFallback
-): SchemaWithFallbackAsync<TSchema, TFallback> {
-  return {
+): SchemaWithFallbackAsync<TSchema, TFallback>;
+
+// @__NO_SIDE_EFFECTS__
+export function fallbackAsync(
+  schema:
+    | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+    | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+  fallback: unknown
+): SchemaWithFallbackAsync<
+  | BaseSchema<unknown, unknown, BaseIssue<unknown>>
+  | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+  unknown
+> {
+  return _standardSchema({
     ...schema,
     fallback,
     async: true,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     async '~run'(dataset, config) {
       const outputDataset = await schema['~run'](dataset, config);
       return outputDataset.issues
@@ -105,5 +113,5 @@ export function fallbackAsync<
           }
         : outputDataset;
     },
-  };
+  });
 }

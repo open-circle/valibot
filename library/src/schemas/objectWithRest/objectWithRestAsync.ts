@@ -17,8 +17,8 @@ import type {
 } from '../../types/index.ts';
 import {
   _addIssue,
-  _getStandardProps,
   _isValidObjectKey,
+  _standardSchema,
 } from '../../utils/index.ts';
 import type { objectWithRest } from './objectWithRest.ts';
 import type { ObjectWithRestIssue } from './types.ts';
@@ -115,7 +115,7 @@ export function objectWithRestAsync(
   | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
   ErrorMessage<ObjectWithRestIssue> | undefined
 > {
-  return {
+  return _standardSchema({
     kind: 'schema',
     type: 'object_with_rest',
     reference: objectWithRestAsync,
@@ -124,9 +124,6 @@ export function objectWithRestAsync(
     entries,
     rest,
     message,
-    get '~standard'() {
-      return _getStandardProps(this);
-    },
     async '~run'(dataset, config) {
       // Get input value from dataset
       const input = dataset.value;
@@ -144,19 +141,19 @@ export function objectWithRestAsync(
           // parse input of key or default value asynchronously
           Promise.all(
             Object.entries(this.entries).map(async ([key, valueSchema]) => {
+              const isKeyPresent = key in input;
               if (
-                key in input ||
+                isKeyPresent ||
                 ((valueSchema.type === 'exact_optional' ||
                   valueSchema.type === 'optional' ||
                   valueSchema.type === 'nullish') &&
                   // @ts-expect-error
                   valueSchema.default !== undefined)
               ) {
-                const value: unknown =
-                  key in input
-                    ? // @ts-expect-error
-                      input[key]
-                    : await getDefault(valueSchema);
+                const value: unknown = isKeyPresent
+                  ? // @ts-expect-error
+                    input[key]
+                  : await getDefault(valueSchema);
                 return [
                   key,
                   value,
@@ -180,7 +177,8 @@ export function objectWithRestAsync(
             Object.entries(input)
               .filter(
                 ([key]) =>
-                  _isValidObjectKey(input, key) && !(key in this.entries)
+                  _isValidObjectKey(input, key) &&
+                  !Object.prototype.hasOwnProperty.call(this.entries, key)
               )
               .map(
                 async ([key, value]) =>
@@ -336,5 +334,5 @@ export function objectWithRestAsync(
         | BaseIssue<unknown>
       >;
     },
-  };
+  });
 }
