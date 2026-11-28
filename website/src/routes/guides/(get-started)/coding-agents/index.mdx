@@ -36,12 +36,13 @@ The server is free to use, requires no authentication, and its metadata is publi
 claude mcp add --transport http valibot https://valibot.dev/mcp
 ```
 
-For Cursor and other tools that use a JSON configuration file, add the following entry.
+For Cursor, a project-level `.mcp.json` file of Claude Code and other tools that use a JSON configuration file, add the following entry.
 
 ```json
 {
   "mcpServers": {
     "valibot": {
+      "type": "http",
       "url": "https://valibot.dev/mcp"
     }
   }
