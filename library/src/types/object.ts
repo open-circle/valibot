@@ -1,8 +1,4 @@
-import type { ReadonlyAction } from '../actions/index.ts';
-import type {
-  SchemaWithFallback,
-  SchemaWithFallbackAsync,
-} from '../methods/index.ts';
+import type { readonly } from '../actions/index.ts';
 import type {
   ExactOptionalSchema,
   ExactOptionalSchemaAsync,
@@ -27,10 +23,14 @@ import type { InferInput, InferIssue, InferOutput } from './infer.ts';
 import type { BaseIssue } from './issue.ts';
 import type { ErrorMessage } from './other.ts';
 import type { BaseSchema, BaseSchemaAsync } from './schema.ts';
+import type { BaseTransformation } from './transformation.ts';
 import type { MarkOptional, MaybeReadonly, Prettify } from './utils.ts';
 
 /**
  * Optional entry schema type.
+ *
+ * @deprecated This type is no longer used and will be removed in the next
+ * major version.
  */
 export type OptionalEntrySchema =
   | ExactOptionalSchema<
@@ -42,6 +42,9 @@ export type OptionalEntrySchema =
 
 /**
  * Optional entry schema async type.
+ *
+ * @deprecated This type is no longer used and will be removed in the next
+ * major version.
  */
 export type OptionalEntrySchemaAsync =
   | ExactOptionalSchemaAsync<
@@ -62,35 +65,27 @@ export type OptionalEntrySchemaAsync =
 
 /**
  * Object entries interface.
+ *
+ * Hint: Any schema can be used as an entry. Entries wrapped with `optional`,
+ * `exactOptional` or `nullish` make their key optional, and the fallback of
+ * an entry created with `fallback` is used if its key is missing.
  */
 export interface ObjectEntries {
-  [key: string]:
-    | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-    | SchemaWithFallback<
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        unknown
-      >
-    | OptionalEntrySchema;
+  [key: string]: BaseSchema<unknown, unknown, BaseIssue<unknown>>;
 }
 
 /**
  * Object entries async interface.
+ *
+ * Hint: Any sync or async schema can be used as an entry. Entries wrapped
+ * with `optional`, `exactOptional`, `nullish` or their async counterparts make
+ * their key optional, and the fallback of an entry created with `fallback` or
+ * `fallbackAsync` is used if its key is missing.
  */
 export interface ObjectEntriesAsync {
   [key: string]:
     | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-    | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
-    | SchemaWithFallback<
-        BaseSchema<unknown, unknown, BaseIssue<unknown>>,
-        unknown
-      >
-    | SchemaWithFallbackAsync<
-        | BaseSchema<unknown, unknown, BaseIssue<unknown>>
-        | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
-        unknown
-      >
-    | OptionalEntrySchema
-    | OptionalEntrySchemaAsync;
+    | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>;
 }
 
 /**
@@ -147,12 +142,22 @@ type InferEntriesOutput<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
 };
 
 /**
+ * Optional entry shape interface.
+ */
+interface OptionalEntryShape {
+  readonly type: 'exact_optional' | 'nullish' | 'optional';
+  readonly default: unknown;
+}
+
+/**
  * Optional input keys type.
  */
 type OptionalInputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
-  [TKey in keyof TEntries]: TEntries[TKey] extends
-    | OptionalEntrySchema
-    | OptionalEntrySchemaAsync
+  // NOTE: We use a structural check instead of `OptionalEntrySchema` because
+  // relating an entry to an instantiation of `OptionalSchema` forces TS to
+  // measure the variance of `OptionalSchema`, which is expensive (see issue
+  // #1663).
+  [TKey in keyof TEntries]: TEntries[TKey] extends OptionalEntryShape
     ? TKey
     : never;
 }[keyof TEntries];
@@ -161,9 +166,11 @@ type OptionalInputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
  * Optional output keys type.
  */
 type OptionalOutputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
-  [TKey in keyof TEntries]: TEntries[TKey] extends
-    | OptionalEntrySchema
-    | OptionalEntrySchemaAsync
+  // NOTE: We use a structural check instead of `OptionalEntrySchema` because
+  // relating an entry to an instantiation of `OptionalSchema` forces TS to
+  // measure the variance of `OptionalSchema`, which is expensive (see issue
+  // #1663).
+  [TKey in keyof TEntries]: TEntries[TKey] extends OptionalEntryShape
     ? undefined extends TEntries[TKey]['default']
       ? TKey
       : never
@@ -176,7 +183,13 @@ type OptionalOutputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
 type InputWithQuestionMarks<
   TEntries extends ObjectEntries | ObjectEntriesAsync,
   TObject extends InferEntriesInput<TEntries>,
-> = MarkOptional<TObject, OptionalInputKeys<TEntries>>;
+> =
+  // NOTE: We short-circuit to `TObject` when no entry is optional to avoid
+  // building the `Omit`, `Pick` and `Partial` types of `MarkOptional` in the
+  // common case (see issue #1663).
+  [OptionalInputKeys<TEntries>] extends [never]
+    ? TObject
+    : MarkOptional<TObject, OptionalInputKeys<TEntries>>;
 
 /**
  * Output with question marks type.
@@ -184,7 +197,34 @@ type InputWithQuestionMarks<
 type OutputWithQuestionMarks<
   TEntries extends ObjectEntries | ObjectEntriesAsync,
   TObject extends InferEntriesOutput<TEntries>,
-> = MarkOptional<TObject, OptionalOutputKeys<TEntries>>;
+> =
+  // NOTE: We short-circuit to `TObject` when no entry is optional to avoid
+  // building the `Omit`, `Pick` and `Partial` types of `MarkOptional` in the
+  // common case (see issue #1663).
+  [OptionalOutputKeys<TEntries>] extends [never]
+    ? TObject
+    : MarkOptional<TObject, OptionalOutputKeys<TEntries>>;
+
+/**
+ * Readonly action shape interface.
+ *
+ * Hint: This interface is structurally equivalent to `ReadonlyAction<any>`.
+ * We use it instead of `ReadonlyAction<any>` because relating two
+ * instantiations of `ReadonlyAction` forces TypeScript to measure the variance
+ * of `ReadonlyAction`, which is expensive (see issue #1663).
+ */
+export interface ReadonlyActionShape
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  extends BaseTransformation<any, any, never> {
+  /**
+   * The action type.
+   */
+  readonly type: 'readonly';
+  /**
+   * The action reference.
+   */
+  readonly reference: typeof readonly;
+}
 
 /**
  * Readonly output keys type.
@@ -199,8 +239,7 @@ type ReadonlyOutputKeys<TEntries extends ObjectEntries | ObjectEntriesAsync> = {
   [TKey in keyof TEntries]: TEntries[TKey] extends {
     readonly pipe: readonly unknown[];
   }
-    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ReadonlyAction<any> extends TEntries[TKey]['pipe'][number]
+    ? ReadonlyActionShape extends TEntries[TKey]['pipe'][number]
       ? TKey
       : never
     : never;

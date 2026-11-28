@@ -83,6 +83,7 @@ describe('base64', () => {
         'dmFsaWJvdA==', // 'valibot'
         'SGVsbG8sIEkgYW0gVmFsaWJvdCBhbmQgSSB3b3VsZCBsaWtlIHRvIGhlbHAgeW91IHZhbGlkYXRlIGRhdGEgZWFzaWx5IHVzaW5nIGEgc2NoZW1hLg==', // 'Hello, I am Valibot and I would like to help you validate data easily using a schema.'
         '8J+Mrg==', // '🌮'
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/', // Base64 alphabet
       ]);
     });
   });
@@ -132,6 +133,14 @@ describe('base64', () => {
         'foo<', // <
         'foo>', // >
         'foo?', // ?
+      ]);
+    });
+
+    test('for non ASCII chars', () => {
+      expectActionIssue(action, baseIssue, [
+        'fooé', // é
+        'foo\u017F', // U+017F LATIN SMALL LETTER LONG S
+        'foo\u212A', // U+212A KELVIN SIGN
       ]);
     });
 
